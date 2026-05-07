@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\SendManualReminder;
@@ -37,6 +38,14 @@ final class SendManualReminderTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
+
+    private function createOpenGate(): EmailVerificationGateInterface
+    {
+        $gate = $this->createStub(EmailVerificationGateInterface::class);
+        $gate->method('isGated')->willReturn(false);
+
+        return $gate;
+    }
 
     private function createRequestWithCsrfToken(): Request
     {
@@ -73,7 +82,7 @@ final class SendManualReminderTest extends KernelTestCase
             ->method('info')
             ->with('Manual reminder sent for invoice', self::anything());
 
-        $action = new SendManualReminder($mailer, $router, $logger);
+        $action = new SendManualReminder($mailer, $router, $logger, $this->createOpenGate());
         $action->setContainer(self::getContainer());
 
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
@@ -112,7 +121,7 @@ final class SendManualReminderTest extends KernelTestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::never())->method('info');
 
-        $action = new SendManualReminder($mailer, $router, $logger);
+        $action = new SendManualReminder($mailer, $router, $logger, $this->createOpenGate());
         $action->setContainer(self::getContainer());
 
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
@@ -154,7 +163,7 @@ final class SendManualReminderTest extends KernelTestCase
             ->method('error')
             ->with('Failed to send manual reminder', self::anything());
 
-        $action = new SendManualReminder($mailer, $router, $logger);
+        $action = new SendManualReminder($mailer, $router, $logger, $this->createOpenGate());
         $action->setContainer(self::getContainer());
 
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
@@ -193,7 +202,7 @@ final class SendManualReminderTest extends KernelTestCase
         $logger->expects(self::never())->method('info');
         $logger->expects(self::never())->method('error');
 
-        $action = new SendManualReminder($mailer, $router, $logger);
+        $action = new SendManualReminder($mailer, $router, $logger, $this->createOpenGate());
         $action->setContainer(self::getContainer());
 
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
