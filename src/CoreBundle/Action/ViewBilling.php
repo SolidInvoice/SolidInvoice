@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -46,6 +47,7 @@ class ViewBilling
         private readonly CompanySelector $companySelector,
         private readonly Generator $pdfGenerator,
         private readonly Environment $twig,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
@@ -103,6 +105,10 @@ class ViewBilling
         $entity = $repository->findOneBy(['uuid' => $options['uuid']]);
 
         if (null === $entity) {
+            throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
+        }
+
+        if ($this->emailVerificationGate->isCompanyGated($entity->getCompany())) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
 
