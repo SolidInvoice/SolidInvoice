@@ -246,7 +246,7 @@ final class SendManualReminderTest extends KernelTestCase
         self::assertSame('invoice.manual_reminder.error.invalid_csrf', $flashes[FlashResponse::FLASH_ERROR]);
     }
 
-    public function testSendManualReminderWhenGatedAndInvalidCsrfTokenReturnsCsrfError(): void
+    public function testGatedWithInvalidCsrfReturnsCsrfError(): void
     {
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::never())->method('send');
@@ -295,7 +295,7 @@ final class SendManualReminderTest extends KernelTestCase
         self::assertSame('invoice.manual_reminder.error.invalid_csrf', $flashes[FlashResponse::FLASH_ERROR]);
     }
 
-    public function testSendManualReminderWhenGatedAndValidCsrfTokenReturnsGateError(): void
+    public function testGatedWithValidCsrfReturnsGateError(): void
     {
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::never())->method('send');
