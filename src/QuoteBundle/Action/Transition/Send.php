@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Action\Transition;
 
 use Generator;
 use JsonException;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
@@ -28,13 +29,23 @@ final class Send
 {
     public function __construct(
         private readonly QuoteMailer $mailer,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
     public function __invoke(Request $request, Quote $quote): RedirectResponse
     {
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
+
+        if ($this->emailVerificationGate->isGated()) {
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'email_verification.flash.send_quote';
+                }
+            };
+        }
 
         try {
             $this->mailer->send($quote);
