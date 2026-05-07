@@ -33,4 +33,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Message,Resources,Tests}');
+
+    $services->alias(
+        \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,
+        \SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate::class,
+    );
 };

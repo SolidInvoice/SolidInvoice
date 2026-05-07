@@ -223,3 +223,14 @@ onboarding:
     flash:
         invoice_created: "🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF."
         onboarding_complete: "Welcome to SolidInvoice! You're all set up and ready to go."
+
+email_verification:
+    gate:
+        reason: 'Please verify your email address before %action%.'
+    banner:
+        title: 'Verify your email'
+        message: 'Some features (sending invoices, activating recurring invoices) are disabled until you verify your email address. Check your inbox for the verification link.'
+    flash:
+        send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
+        send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
+        send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
