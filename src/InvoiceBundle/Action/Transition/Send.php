@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action\Transition;
 
 use Generator;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -33,12 +34,24 @@ final class Send
     public function __construct(
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly MailerInterface $mailer,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
+        $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+        if ($this->emailVerificationGate->isGated()) {
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'email_verification.flash.send_invoice';
+                }
+            };
+        }
+
         if (InvoiceStatus::Pending !== $invoice->getStatus() && $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
@@ -46,8 +59,6 @@ final class Send
         $this->save($invoice);
 
         $this->mailer->send(new InvoiceEmail($invoice));
-
-        $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): Generator
