@@ -22,9 +22,10 @@ use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Service\ResetInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class SaasEmailVerificationGate implements EmailVerificationGateInterface
+final class SaasEmailVerificationGate implements EmailVerificationGateInterface, ResetInterface
 {
     private ?bool $cachedIsGated = null;
 
@@ -96,5 +97,11 @@ final class SaasEmailVerificationGate implements EmailVerificationGateInterface
             'email_verification.gate.reason',
             ['%action%' => $action],
         );
+    }
+
+    public function reset(): void
+    {
+        $this->cachedIsGated = null;
+        $this->companyCache = [];
     }
 }
