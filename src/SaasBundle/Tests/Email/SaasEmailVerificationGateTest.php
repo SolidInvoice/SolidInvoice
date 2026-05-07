@@ -138,6 +138,43 @@ final class SaasEmailVerificationGateTest extends TestCase
         self::assertTrue(true);
     }
 
+    public function testResetClearsCachesSoStaleStateIsNotReturned(): void
+    {
+        $user = (new User())->setVerified(false);
+        $companyId = new Ulid();
+        $company = new Company();
+
+        $security = $this->createStub(Security::class);
+        $security->method('getUser')->willReturn($user);
+
+        $companySelector = $this->createStub(CompanySelectorInterface::class);
+        $companySelector->method('getCompany')->willReturn($companyId);
+
+        $companyRepo = $this->createMock(CompanyRepository::class);
+        $companyRepo->expects(self::exactly(2))->method('find')->with($companyId)->willReturn($company);
+
+        $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
+        $subscriptionProvider->expects(self::exactly(2))
+            ->method('getSubscriptionFor')
+            ->with($company)
+            ->willReturn($this->createStub(Subscription::class));
+
+        $gate = new SaasEmailVerificationGate(
+            $security,
+            $companySelector,
+            $companyRepo,
+            $subscriptionProvider,
+            $this->createStub(TranslatorInterface::class),
+        );
+
+        self::assertTrue($gate->isGated());
+
+        $gate->reset();
+
+        // After reset, the next call must re-resolve dependencies (proving the cache was cleared).
+        self::assertTrue($gate->isGated());
+    }
+
     private function makeGate(
         ?User $user = null,
         ?Subscription $subscription = null,
