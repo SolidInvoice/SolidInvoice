@@ -40,6 +40,12 @@ final class ChoosePlanAction extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        if (! $this->isCsrfTokenValid('choose_plan', (string) $request->request->get('_token', ''))) {
+            $this->addFlash('error', 'Invalid security token, please try again.');
+
+            return $this->redirectToRoute('saas_subscription_plans');
+        }
+
         $subscription = $this->getSubscription();
 
         if (! $subscription instanceof Subscription) {

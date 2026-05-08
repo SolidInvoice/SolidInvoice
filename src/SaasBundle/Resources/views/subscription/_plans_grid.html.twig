@@ -53,6 +53,7 @@
 
                     <form method="post" action="{{ path('saas_subscription_choose') }}" class="mt-auto">
                         <input type="hidden" name="plan" value="{{ plan.planId }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('choose_plan') }}">
                         <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
                             {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                             {{ 'Choose plan'|trans }}
@@ -87,6 +88,7 @@
                         <div class="plan-card-free-cta">
                             <form method="post" action="{{ path('saas_subscription_choose') }}">
                                 <input type="hidden" name="plan" value="{{ freePlan.planId }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('choose_plan') }}">
                                 <button type="submit" class="btn btn-outline-secondary">
                                     {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
                                     {{ 'Continue with Free'|trans }}
