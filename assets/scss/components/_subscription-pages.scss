@@ -412,7 +412,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #fff;
+    color: #ffffff;
     background: var(--tblr-primary, #206bc4);
 
     svg {
@@ -432,7 +432,7 @@
 
     &:hover {
         border-color: var(--tblr-primary, #206bc4);
-        background: var(--swp-surface, #fff);
+        background: var(--swp-surface, #ffffff);
     }
 
     .card-body {
