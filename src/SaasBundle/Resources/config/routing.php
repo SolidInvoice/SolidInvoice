@@ -11,16 +11,20 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SaasBundle\Action\CancelDowngradeAction;
+use SolidInvoice\SaasBundle\Action\ChangePlanAction;
 use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
+use SolidInvoice\SaasBundle\Action\ConfirmPlanChangeAction;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
-use SolidInvoice\SaasBundle\Controller\BillingController;
+use SolidInvoice\SaasBundle\Action\SubscriptionOverviewAction;
 use SolidInvoice\SaasBundle\Controller\PaymentSuccess;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('billing_index', '/')
-        ->controller(BillingController::class);
+        ->controller(SubscriptionOverviewAction::class)
+        ->methods(['GET']);
 
     $routingConfigurator->add('saas_payment_success', '/payment/success')
         ->controller(PaymentSuccess::class);
@@ -34,5 +38,17 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('saas_subscription_choose', '/subscription/plans/choose')
         ->controller(ChoosePlanAction::class)
+        ->methods(['POST']);
+
+    $routingConfigurator->add('saas_subscription_change', '/subscription/change')
+        ->controller(ChangePlanAction::class)
+        ->methods(['GET']);
+
+    $routingConfigurator->add('saas_subscription_change_confirm', '/subscription/change/confirm')
+        ->controller(ConfirmPlanChangeAction::class)
+        ->methods(['POST']);
+
+    $routingConfigurator->add('saas_subscription_cancel_downgrade', '/subscription/cancel-downgrade')
+        ->controller(CancelDowngradeAction::class)
         ->methods(['POST']);
 };

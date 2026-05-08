@@ -40,6 +40,9 @@ final readonly class RequestListener implements EventSubscriberInterface
         'saas_subscription_checkout',
         'saas_subscription_plans',
         'saas_subscription_choose',
+        'saas_subscription_change',
+        'saas_subscription_change_confirm',
+        'saas_subscription_cancel_downgrade',
         'saas_payment_success',
 
         // Debug routes

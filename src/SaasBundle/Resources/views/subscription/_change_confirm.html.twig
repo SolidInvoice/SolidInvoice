@@ -1,0 +1,101 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Variables:
+ #   - subscription: Subscription
+ #   - currentPlan: Plan
+ #   - newPlan: Plan
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block title %}{{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'me-2'}) }}{{ 'Confirm downgrade'|trans }}{% endblock %}
+
+{% import _self as macros %}
+
+{% set currentKeys = currentPlan.features|reduce((acc, f) => acc|merge({(f.featureKey): f}), {}) %}
+{% set newKeys = newPlan.features|reduce((acc, f) => acc|merge({(f.featureKey): f}), {}) %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-warning">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        {{ ux_icon('tabler:alert-triangle', {width: 22, height: 22, class: 'text-warning me-2'}) }}
+                        {{ 'Confirm downgrade to %plan%'|trans({'%plan%': newPlan.name}) }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        {% if newPlan.isFree() %}
+                            {{ 'Your paid plan will keep working until the end of your current billing period, then switch to the free plan automatically.'|trans }}
+                        {% else %}
+                            {{ 'Your plan will switch to %plan% immediately. The change is processed by our payment provider and any proration will be applied to your next invoice.'|trans({'%plan%': newPlan.name}) }}
+                        {% endif %}
+                    </p>
+
+                    <h4 class="mt-4">{{ 'What changes'|trans }}</h4>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'Feature'|trans }}</th>
+                                    <th>{{ currentPlan.name }}</th>
+                                    <th>{{ newPlan.name }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, current in currentKeys %}
+                                    {% set new = newKeys[key]|default(null) %}
+                                    {% set label = current.description ?: key %}
+                                    <tr>
+                                        <td>{{ label }}</td>
+                                        <td>{{ macros.format_value(current) }}</td>
+                                        <td class="{{ new is null ? 'text-danger' : '' }}">
+                                            {{ new is null ? 'Not included'|trans : macros.format_value(new) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end gap-2">
+                    <a href="{{ path('saas_subscription_change') }}" class="btn btn-outline-secondary">
+                        {{ 'Cancel'|trans }}
+                    </a>
+                    <form method="post" action="{{ path('saas_subscription_change_confirm') }}">
+                        <input type="hidden" name="plan" value="{{ newPlan.planId }}">
+                        <input type="hidden" name="confirmed" value="1">
+                        <input type="hidden" name="_token" value="{{ csrf_token('change_plan') }}">
+                        <button type="submit" class="btn btn-warning">
+                            {{ ux_icon('tabler:arrow-down-circle', {width: 18, height: 18}) }}
+                            {{ 'Confirm downgrade'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% macro format_value(feature) %}
+    {% set value = feature.value %}
+    {% set isBool = feature.type.value == 'boolean' %}
+    {% if isBool %}
+        {% set isEnabled = value matches '/^(1|true)$/i' or value is same as(true) %}
+        {{ isEnabled ? 'Included'|trans : 'Not included'|trans }}
+    {% elseif value is iterable %}
+        {{ value|join(', ') }}
+    {% elseif value == -1 %}
+        {{ 'Unlimited'|trans }}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}

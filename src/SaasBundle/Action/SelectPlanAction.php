@@ -38,9 +38,7 @@ final class SelectPlanAction extends AbstractController
         $subscription = $this->getSubscription();
 
         if ($subscription instanceof Subscription && $subscription->getStatus() === SubscriptionStatus::ACTIVE) {
-            $this->addFlash('info', 'Changing plans on an active subscription is not supported yet.');
-
-            return $this->redirectToRoute('_dashboard');
+            return $this->redirectToRoute('billing_index');
         }
 
         $plans = $this->planRepository->findAllOrdered();

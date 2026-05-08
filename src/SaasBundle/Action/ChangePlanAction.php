@@ -15,69 +15,46 @@ namespace SolidInvoice\SaasBundle\Action;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
-use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
-use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 
-final class ChoosePlanAction extends AbstractController
+final class ChangePlanAction extends AbstractController
 {
     public function __construct(
         private readonly PlanRepositoryInterface $planRepository,
-        private readonly SubscriptionManager $subscriptionManager,
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
-        if (! $this->isCsrfTokenValid('choose_plan', (string) $request->request->get('_token', ''))) {
-            $this->addFlash('error', 'Invalid security token, please try again.');
-
-            return $this->redirectToRoute('saas_subscription_plans');
-        }
-
         $subscription = $this->getSubscription();
 
         if (! $subscription instanceof Subscription) {
-            $this->addFlash('error', 'No subscription found');
-
-            return $this->redirectToRoute('_dashboard');
-        }
-
-        if ($subscription->getStatus() === SubscriptionStatus::ACTIVE) {
-            return $this->redirectToRoute('billing_index');
-        }
-
-        $planId = (string) $request->request->get('plan', '');
-        $plan = $planId === '' ? null : $this->planRepository->find($planId);
-
-        if (! $plan instanceof Plan || ! $plan->isActive()) {
-            $this->addFlash('error', 'The selected plan is invalid.');
+            $this->addFlash('error', 'No subscription found.');
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
 
-        if ($subscription->getPlan()->getPlanId() !== $plan->getPlanId()) {
-            $this->subscriptionManager->changePlan($subscription, $plan);
+        $plans = $this->planRepository->findAllOrdered();
+
+        if ($plans === []) {
+            $this->addFlash('error', 'No subscription plans are available.');
+
+            return $this->redirectToRoute('billing_index');
         }
 
-        if ($plan->isFree()) {
-            $this->subscriptionManager->activate($subscription);
-            $this->addFlash('success', 'Your free plan is now active.');
-
-            return $this->redirectToRoute('_dashboard');
-        }
-
-        return $this->redirectToRoute('saas_subscription_checkout');
+        return $this->render('@SolidInvoiceSaas/subscription/change.html.twig', [
+            'plans' => $plans,
+            'subscription' => $subscription,
+            'currentPlanId' => $subscription->getPlan()->getPlanId(),
+        ]);
     }
 
     private function getSubscription(): ?Subscription

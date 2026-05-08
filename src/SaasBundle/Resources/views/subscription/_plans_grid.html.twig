@@ -8,9 +8,17 @@
  #
  # Renders the plan picker grid. Expects:
  #   - plans: list<Plan>
+ # Optional:
+ #   - currentPlanId: string|null  (planId of the user's current plan; that card is disabled)
+ #   - actionRoute: string         (form action route name; defaults to saas_subscription_choose)
+ #   - csrfToken: string           (CSRF intent; defaults to choose_plan)
  #}
 
 {% import _self as macros %}
+
+{% set currentPlanId = currentPlanId|default(null) %}
+{% set actionRoute = actionRoute|default('saas_subscription_choose') %}
+{% set csrfToken = csrfToken|default('choose_plan') %}
 
 {# Free plan rendered separately below the main grid. #}
 {% set freePlan = null %}
@@ -29,9 +37,15 @@
 <div class="row row-cards row-deck g-4 justify-content-center">
     {% for plan in paidPlans %}
         {% set isRecommended = loop.index0 == recommendedIndex %}
+        {% set isCurrent = currentPlanId is not null and plan.planId == currentPlanId %}
         <div class="col-md-6 col-lg-4 d-flex">
-            <div class="card flex-fill plan-card {{ isRecommended ? 'plan-card-recommended border-primary' : '' }}">
-                {% if isRecommended %}
+            <div class="card flex-fill plan-card {{ isRecommended and not isCurrent ? 'plan-card-recommended border-primary' : '' }} {{ isCurrent ? 'plan-card-current border-success' : '' }}">
+                {% if isCurrent %}
+                    <div class="plan-card-banner bg-success">
+                        {{ ux_icon('tabler:check', {width: 14, height: 14, class: 'me-1'}) }}
+                        {{ 'Current plan'|trans }}
+                    </div>
+                {% elseif isRecommended %}
                     <div class="plan-card-banner">
                         {{ ux_icon('tabler:star-filled', {width: 14, height: 14, class: 'me-1'}) }}
                         {{ 'Recommended'|trans }}
@@ -51,14 +65,20 @@
 
                     {{ macros.feature_list(plan.features) }}
 
-                    <form method="post" action="{{ path('saas_subscription_choose') }}" class="mt-auto">
-                        <input type="hidden" name="plan" value="{{ plan.planId }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token('choose_plan') }}">
-                        <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
-                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
-                            {{ 'Choose plan'|trans }}
+                    {% if isCurrent %}
+                        <button type="button" class="btn btn-outline-success w-100 mt-auto" disabled>
+                            {{ 'Current plan'|trans }}
                         </button>
-                    </form>
+                    {% else %}
+                        <form method="post" action="{{ path(actionRoute) }}" class="mt-auto">
+                            <input type="hidden" name="plan" value="{{ plan.planId }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
+                            <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
+                                {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                                {{ 'Choose plan'|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -66,14 +86,15 @@
 </div>
 
 {% if freePlan is not null %}
+    {% set freeIsCurrent = currentPlanId is not null and freePlan.planId == currentPlanId %}
     <div class="row justify-content-center mt-4">
         <div class="col-md-11 d-flex">
-            <div class="card flex-fill plan-card-free">
+            <div class="card flex-fill plan-card-free {{ freeIsCurrent ? 'border-success' : '' }}">
                 <div class="card-body">
                     <div class="d-flex flex-column flex-lg-row gap-4 align-items-lg-center">
                         <div class="text-lg-start text-center plan-card-free-header">
                             <div class="text-uppercase text-secondary small fw-semibold mb-1">
-                                {{ 'Just getting started?'|trans }}
+                                {{ freeIsCurrent ? 'Your current plan'|trans : 'Just getting started?'|trans }}
                             </div>
                             <h3 class="h4 mb-1">{{ freePlan.name }}</h3>
                             <div class="text-secondary small">
@@ -86,14 +107,20 @@
                         </div>
 
                         <div class="plan-card-free-cta">
-                            <form method="post" action="{{ path('saas_subscription_choose') }}">
-                                <input type="hidden" name="plan" value="{{ freePlan.planId }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token('choose_plan') }}">
-                                <button type="submit" class="btn btn-outline-secondary">
-                                    {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
-                                    {{ 'Continue with Free'|trans }}
+                            {% if freeIsCurrent %}
+                                <button type="button" class="btn btn-outline-success" disabled>
+                                    {{ 'Current plan'|trans }}
                                 </button>
-                            </form>
+                            {% else %}
+                                <form method="post" action="{{ path(actionRoute) }}">
+                                    <input type="hidden" name="plan" value="{{ freePlan.planId }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
+                                        {{ 'Continue with Free'|trans }}
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

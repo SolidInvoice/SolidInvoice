@@ -40,7 +40,7 @@ final class SaasMenu
             $this->companyRepository->find($this->companySelector->getCompany())
         );
 
-        if (null === $subscription || null === $subscription->getSubscriptionId()) {
+        if (null === $subscription) {
             return;
         }
 

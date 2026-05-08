@@ -1,0 +1,152 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Variables:
+ #   - subscription: Subscription
+ #   - plan: Plan
+ #   - isTrial, isFree, isPastDue, isPaused, hasExternalBilling: bool
+ #   - trialDaysRemaining: int|null
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% set status = subscription.status.value %}
+{% set statusBadge = {
+    'active':    {label: 'Active',    color: 'success'},
+    'trial':     {label: 'Trial',     color: 'info'},
+    'pending':   {label: 'Pending',   color: 'secondary'},
+    'past_due':  {label: 'Past due',  color: 'danger'},
+    'paused':    {label: 'Paused',    color: 'warning'},
+    'cancelled': {label: 'Cancelled', color: 'secondary'},
+    'expired':   {label: 'Expired',   color: 'secondary'},
+    'unpaid':    {label: 'Unpaid',    color: 'danger'},
+    'inactive':  {label: 'Inactive',  color: 'secondary'},
+}[status] ?? {label: status|capitalize, color: 'secondary'} %}
+
+{% block title %}{{ ux_icon('tabler:receipt-2', {width: 24, height: 24, class: 'me-2'}) }}{{ 'Subscription'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row g-3">
+        <div class="col-12">
+            {% if subscription.hasPendingPlanChange() %}
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    {{ ux_icon('tabler:arrow-down-circle', {width: 20, height: 20, class: 'me-2'}) }}
+                    <div class="flex-fill">
+                        <strong>{{ 'Plan change scheduled'|trans }}</strong> —
+                        {{ 'You will be moved to the %plan% plan on %date%.'|trans({
+                            '%plan%': subscription.pendingPlan.name,
+                            '%date%': subscription.pendingPlanChangeAt|date('M j, Y'),
+                        }) }}
+                    </div>
+                    <form method="post" action="{{ path('saas_subscription_cancel_downgrade') }}" class="ms-3">
+                        <input type="hidden" name="_token" value="{{ csrf_token('cancel_downgrade') }}">
+                        <button type="submit" class="btn btn-sm btn-outline-warning">
+                            {{ 'Cancel change'|trans }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+
+            {% if isTrial %}
+                <div class="alert alert-info" role="alert">
+                    {{ ux_icon('tabler:clock', {width: 20, height: 20, class: 'me-2'}) }}
+                    {% if trialDaysRemaining is not null and trialDaysRemaining > 0 %}
+                        <strong>{{ '%count% days left in your trial'|trans({'%count%': trialDaysRemaining}) }}</strong> —
+                        {{ 'Pick a paid plan to keep using all features after the trial ends.'|trans }}
+                    {% else %}
+                        <strong>{{ 'Your trial has ended.'|trans }}</strong>
+                        {{ 'Choose a plan to continue.'|trans }}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if isPastDue %}
+                <div class="alert alert-danger" role="alert">
+                    {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, class: 'me-2'}) }}
+                    <strong>{{ 'Payment past due'|trans }}.</strong>
+                    {{ 'Please update your payment details to keep your subscription active.'|trans }}
+                </div>
+            {% endif %}
+
+            {% if isPaused %}
+                <div class="alert alert-warning" role="alert">
+                    {{ ux_icon('tabler:player-pause', {width: 20, height: 20, class: 'me-2'}) }}
+                    {{ 'Your subscription is currently paused.'|trans }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h3 class="card-title mb-0">{{ 'Current plan'|trans }}</h3>
+                    <span class="badge bg-{{ statusBadge.color }}-lt">{{ statusBadge.label|trans }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-baseline gap-3 mb-3">
+                        <h2 class="mb-0">{{ plan.name }}</h2>
+                        {% if isFree %}
+                            <span class="text-secondary">{{ 'Free'|trans }}</span>
+                        {% else %}
+                            <span class="text-secondary">
+                                <strong>{{ plan.price|formatCurrency('USD') }}</strong>{{ '/month'|trans }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    {% if plan.description is not empty %}
+                        <p class="text-secondary">{{ plan.description }}</p>
+                    {% endif %}
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-secondary">{{ 'Started'|trans }}</dt>
+                        <dd class="col-sm-8">{{ subscription.startDate|date('M j, Y') }}</dd>
+
+                        {% if isTrial %}
+                            <dt class="col-sm-4 text-secondary">{{ 'Trial ends'|trans }}</dt>
+                            <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
+                        {% elseif isFree %}
+                            <dt class="col-sm-4 text-secondary">{{ 'Renewal'|trans }}</dt>
+                            <dd class="col-sm-8">{{ '—'|trans }}</dd>
+                        {% else %}
+                            <dt class="col-sm-4 text-secondary">{{ 'Next renewal'|trans }}</dt>
+                            <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
+                        {% endif %}
+                    </dl>
+
+                    {% block usage %}
+                        {# Per-feature usage bars are wired here once feature gates land. #}
+                    {% endblock %}
+                </div>
+                <div class="card-footer d-flex flex-wrap gap-2">
+                    <a href="{{ path('saas_subscription_change') }}" class="btn btn-primary">
+                        {{ ux_icon('tabler:arrows-exchange', {width: 18, height: 18}) }}
+                        {{ 'Change plan'|trans }}
+                    </a>
+                    {% if hasExternalBilling %}
+                        <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-outline-secondary">
+                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                            {{ 'Manage payment method'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">{{ 'Plan features'|trans }}</h3>
+                </div>
+                <div class="card-body">
+                    {% from '@SolidInvoiceSaas/subscription/_plans_grid.html.twig' import feature_list %}
+                    {{ feature_list(plan.features) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
