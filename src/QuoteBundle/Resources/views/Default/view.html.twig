@@ -124,12 +124,14 @@
                     {{ "quote.view.toolbar.accept"|trans }}
                 </a>
                 {% if is_email_verification_gated() %}
-                    <button type="button" class="btn btn-primary btn-hero disabled" disabled
-                            data-bs-toggle="tooltip"
-                            title="{{ email_verification_message('sending this quote') }}">
-                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
-                        {{ "quote.view.toolbar.send"|trans }}
-                    </button>
+                    <span class="d-inline-block" tabindex="0"
+                          data-bs-toggle="tooltip"
+                          title="{{ email_verification_message('sending this quote') }}">
+                        <button type="button" class="btn btn-primary btn-hero disabled" disabled style="pointer-events: none;">
+                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                            {{ "quote.view.toolbar.send"|trans }}
+                        </button>
+                    </span>
                 {% else %}
                     <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-primary btn-hero">
                         {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
@@ -149,12 +151,14 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             {% if is_email_verification_gated() %}
-                                <button type="button" class="dropdown-item disabled" disabled
-                                        data-bs-toggle="tooltip"
-                                        title="{{ email_verification_message('sending this quote') }}">
-                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                    {{ 'quote.view.toolbar.publish_and_send'|trans }}
-                                </button>
+                                <span class="d-block" tabindex="0"
+                                      data-bs-toggle="tooltip"
+                                      title="{{ email_verification_message('sending this quote') }}">
+                                    <button type="button" class="dropdown-item disabled" disabled style="pointer-events: none;">
+                                        {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                        {{ 'quote.view.toolbar.publish_and_send'|trans }}
+                                    </button>
+                                </span>
                             {% else %}
                                 <a class="dropdown-item" href="{{ path('_send_quote', {'id' : quote.id}) }}">
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
