@@ -1,7 +1,7 @@
 ---
 title: Payment reminders
 description: Automatically chase unpaid invoices with scheduled email reminders, or send a manual reminder at any time.
-sidebar_position: 1
+sidebar_position: 5
 ---
 
 # Payment reminders
