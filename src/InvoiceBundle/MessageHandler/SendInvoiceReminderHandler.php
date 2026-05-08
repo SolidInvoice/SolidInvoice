@@ -28,7 +28,9 @@ use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -47,6 +49,7 @@ final readonly class SendInvoiceReminderHandler
         private ClockInterface $clock,
         private LoggerInterface $logger,
         private InvoiceReminderRepository $reminderRepository,
+        private FeatureGate $featureGate,
     ) {
     }
 
@@ -58,6 +61,17 @@ final readonly class SendInvoiceReminderHandler
         try {
             // Set company context for this invoice
             $this->companySelector->switchCompany($message->companyId);
+
+            // Skip (and log) when the SaaS automated_reminders feature is disabled for the
+            // current plan — discard the message instead of letting it retry.
+            if (! $this->featureGate->isEnabled(Feature::AutomatedReminders->value)) {
+                $this->logger->info('Automated reminders feature is disabled for plan, skipping reminder', [
+                    'company_id' => $message->companyId->toString(),
+                    'invoice_id' => $message->invoiceId->toString(),
+                    'reminder_type' => $message->reminderType->value,
+                ]);
+                return;
+            }
 
             // Check if reminders are enabled for this company
             if (! $this->isRemindersEnabled($message->reminderType)) {
