@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
@@ -28,19 +34,49 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 class ClientType extends AbstractType
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly SystemConfig $systemConfig,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('website', UrlType::class, ['required' => false]);
 
-        $builder->add(
-            'currencyCode',
-            CurrencyType::class,
-            [
-                'placeholder' => 'client.form.currency.empty_value',
-                'required' => false,
-            ]
-        );
+        if ($this->featureGate->isEnabled(Feature::MultiCurrency->value)) {
+            $builder->add(
+                'currencyCode',
+                CurrencyType::class,
+                [
+                    'placeholder' => 'client.form.currency.empty_value',
+                    'required' => false,
+                ]
+            );
+        } else {
+            $defaultCurrency = $this->resolveDefaultCurrencyCode();
+
+            $builder->add(
+                'currencyCode',
+                CurrencyType::class,
+                [
+                    'placeholder' => 'client.form.currency.empty_value',
+                    'required' => false,
+                    'disabled' => true,
+                    'data' => $defaultCurrency,
+                    'feature_gated' => Feature::MultiCurrency->value,
+                ]
+            );
+
+            $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) use ($defaultCurrency): void {
+                $client = $event->getData();
+
+                if ($client instanceof Client) {
+                    $client->setCurrencyCode($defaultCurrency);
+                }
+            });
+        }
 
         $builder->add('vat_number', TaxNumberType::class, ['required' => false]);
 
@@ -83,5 +119,14 @@ class ClientType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'client';
+    }
+
+    private function resolveDefaultCurrencyCode(): ?string
+    {
+        try {
+            return $this->systemConfig->getCurrency()->getCode();
+        } catch (RuntimeException) {
+            return null;
+        }
     }
 }

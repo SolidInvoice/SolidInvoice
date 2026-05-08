@@ -34,9 +34,13 @@
     <watermarktext content="{{ invoice.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
+{# Suppression of "Powered by" only takes effect when the `custom_branding` feature is on
+   for the current plan; without it, we render the line regardless of the stored value. #}
+{% set hide_powered_by_value = setting('system/general/hide_powered_by') is same as ('1') %}
+{% set hide_powered_by = hide_powered_by_value and feature_enabled('custom_branding') %}
 <pagefooter
     name="footer"
-    content-left="{{ setting('system/general/hide_powered_by') is not same as ('1') ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
+    content-left="{{ not hide_powered_by ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
     content-right="{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}"
     line="on"
     footer-style="border-top: 1px solid #e2e8f0; font-size: 8pt; color: #64748b; padding-top: 8px;"
