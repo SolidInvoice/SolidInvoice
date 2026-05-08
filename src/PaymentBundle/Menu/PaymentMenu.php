@@ -15,19 +15,36 @@ namespace SolidInvoice\PaymentBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 
 final class PaymentMenu
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+    ) {
+    }
+
     #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_PAYMENT->value)]
     public function sidebar(ItemInterface $menu): void
     {
+        $extras = ['icon' => 'credit-card'];
+
+        if (! $this->featureGate->isEnabled(Feature::OnlinePayments->value)) {
+            $planLabel = $this->upgradePromptProvider->menuLabel(Feature::OnlinePayments->value);
+
+            if ($planLabel !== null) {
+                $extras['plan_label'] = $planLabel;
+            }
+        }
+
         $section = $menu->addChild(
             'payment.menu.main',
             [
-                'extras' => [
-                    'icon' => 'credit-card',
-                ],
+                'extras' => $extras,
             ],
         );
         $section->addChild(

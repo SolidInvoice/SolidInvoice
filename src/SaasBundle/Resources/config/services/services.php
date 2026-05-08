@@ -38,4 +38,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,
         \SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate::class,
     );
+
+    $services->alias(
+        \SolidInvoice\CoreBundle\Feature\UpgradePromptProvider::class,
+        \SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer::class,
+    );
 };

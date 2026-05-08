@@ -15,20 +15,37 @@ namespace SolidInvoice\QuoteBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 
 final class QuoteMenu
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+    ) {
+    }
+
     #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_QUOTE->value)]
     public function sidebar(ItemInterface $menu): void
     {
+        $extras = ['icon' => Icon::QUOTE];
+
+        if (! $this->featureGate->isEnabled(Feature::Quotes->value)) {
+            $planLabel = $this->upgradePromptProvider->menuLabel(Feature::Quotes->value);
+
+            if ($planLabel !== null) {
+                $extras['plan_label'] = $planLabel;
+            }
+        }
+
         $section = $menu->addChild(
             'quote.menu.main',
             [
-                'extras' => [
-                    'icon' => Icon::QUOTE,
-                ],
+                'extras' => $extras,
             ],
         );
         $section->addChild(
