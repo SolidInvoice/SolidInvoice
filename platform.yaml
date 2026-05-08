@@ -23,6 +23,59 @@ saas:
             api_key: '%env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)%'
             webhook_secret: '%env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)%'
             store_id: '%env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)%'
+    # Canonical catalogue of every gated feature. Keep the keys here in lock-step
+    # with `SolidInvoice\SaasBundle\Feature\Feature` (asserted by FeatureCatalogTest).
+    # Defaults are the un-overridden values returned by FeatureGate::resolve()
+    # when no plan/subscriber is in context (CLI commands, fixtures, etc.).
+    features:
+        total_clients:
+            type: integer
+            default: -1
+            description: 'Maximum number of clients per company (-1 = unlimited).'
+        invoices_per_month:
+            type: integer
+            default: -1
+            description: 'Invoices that can be issued per calendar month (-1 = unlimited).'
+        team_seats:
+            type: integer
+            default: -1
+            description: 'Number of user seats per company (-1 = unlimited).'
+        quotes:
+            type: boolean
+            default: true
+            description: 'Quote management and conversion-to-invoice workflow.'
+        online_payments:
+            type: boolean
+            default: true
+            description: 'Accept online payments via the Payum gateway.'
+        recurring_invoices:
+            type: boolean
+            default: true
+            description: 'Schedule and auto-generate recurring invoices.'
+        automated_reminders:
+            type: boolean
+            default: true
+            description: 'Automatic invoice reminders for overdue invoices.'
+        multi_currency:
+            type: boolean
+            default: true
+            description: 'Issue invoices, quotes and accept payments in multiple currencies.'
+        custom_branding:
+            type: boolean
+            default: true
+            description: 'Custom logo, theme and white-label PDF/email templates.'
+        rest_api_access:
+            type: boolean
+            default: true
+            description: 'Public REST API access and API token management.'
+        mcp_access:
+            type: boolean
+            default: true
+            description: 'Model Context Protocol server access for AI agents.'
+        custom_domain:
+            type: boolean
+            default: true
+            description: 'Host SolidInvoice on a custom domain or subdomain.'
 
 ui:
     templates:

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
+use SolidWorx\Platform\SaasBundle\Feature\FeatureConfigRegistry;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -32,4 +33,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // assert the correct concrete implementation is resolved.
     $services->alias('test.' . FeatureGate::class, FeatureGate::class)->public();
     $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class)->public();
+
+    // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
+    // when SOLIDINVOICE_PLATFORM=saas. Mirror the same gate from bundles.php so
+    // the alias is only declared when the underlying service exists.
+    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+        $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class)->public();
+    }
 };
