@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
+use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFeatureRestrictedExtension;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use SolidWorx\Platform\SaasBundle\Feature\FeatureConfigRegistry;
@@ -39,5 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // the alias is only declared when the underlying service exists.
     if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
         $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class)->public();
+        $services->alias('test.' . RequiredPlanLabelProvider::class, RequiredPlanLabelProvider::class)->public();
+        $services->alias('test.' . SaasFeatureRestrictedExtension::class, SaasFeatureRestrictedExtension::class)->public();
     }
 };

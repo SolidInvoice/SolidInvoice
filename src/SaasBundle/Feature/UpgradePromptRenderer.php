@@ -28,7 +28,7 @@ use Twig\Environment;
  * Lives in SolidInvoice's SaasBundle (not in vendor PlatformBundle) because the
  * banner copy and route names (`saas_subscription_plans`) are SolidInvoice-specific.
  */
-final readonly class UpgradePromptRenderer
+final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider
 {
     private const string BANNER_TEMPLATE = '@SolidInvoiceSaas/feature/_upgrade_banner.html.twig';
 

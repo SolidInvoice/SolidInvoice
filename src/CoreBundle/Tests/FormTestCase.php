@@ -19,6 +19,7 @@ use Faker\Generator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
+use SolidInvoice\CoreBundle\Form\Extension\FeatureRestrictedExtension as NoopFeatureRestrictedExtension;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
@@ -114,6 +115,7 @@ abstract class FormTestCase extends KernelTestCase
             ),
             new UnsanitizeSingleQuotesTypeExtension(),
             new TrialRestrictedExtension(),
+            new NoopFeatureRestrictedExtension(),
         ];
     }
 

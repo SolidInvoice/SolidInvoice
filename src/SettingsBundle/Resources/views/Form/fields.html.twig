@@ -11,7 +11,29 @@
 
 {# Trial-Restricted Form Row #}
 {% block checkbox_row %}
-    {% if trial_restricted_active|default(false) and toggle('saas_enabled') %}
+    {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label">{{ label|trans }}</label>
+                <span class="badge bg-azure-lt">
+                    {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                    {{ 'Subscription Required'|trans }}{% if feature_gated_plan|default(null) %} — {{ feature_gated_plan }}{% endif %}
+                </span>
+            </div>
+
+            {{ parent() }}
+
+            <div class="form-hint text-muted mt-2">
+                {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                {% if feature_gated_plan|default(null) %}
+                    {{ 'This feature is available on the %plan% plan. Upgrade to unlock it.'|trans({'%plan%': feature_gated_plan}) }}
+                {% else %}
+                    {{ 'This feature requires a higher plan. Upgrade now to unlock it.'|trans }}
+                {% endif %}
+                <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+            </div>
+        </div>
+    {% elseif trial_restricted_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label">{{ label|trans }}</label>
@@ -35,7 +57,29 @@
 {% endblock %}
 
 {% block form_row %}
-    {% if trial_restricted_active|default(false) and toggle('saas_enabled') %}
+    {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label">{{ label|trans }}</label>
+                <span class="badge bg-azure-lt">
+                    {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                    {{ 'Subscription Required'|trans }}{% if feature_gated_plan|default(null) %} — {{ feature_gated_plan }}{% endif %}
+                </span>
+            </div>
+
+            {{ form_widget(form) }}
+
+            <div class="form-hint text-muted mt-2">
+                {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                {% if feature_gated_plan|default(null) %}
+                    {{ 'This feature is available on the %plan% plan. Upgrade to unlock it.'|trans({'%plan%': feature_gated_plan}) }}
+                {% else %}
+                    {{ 'This feature requires a higher plan. Upgrade now to unlock it.'|trans }}
+                {% endif %}
+                <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+            </div>
+        </div>
+    {% elseif trial_restricted_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label">{{ label|trans }}</label>

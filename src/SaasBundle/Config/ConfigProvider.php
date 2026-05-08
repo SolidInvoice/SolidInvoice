@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\SaasBundle\Config;
 
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SaasBundle\Form\Type\CustomDomainType;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
@@ -26,7 +27,7 @@ final class ConfigProvider implements ProviderInterface
                 '0',
                 'Hide "Powered by SolidInvoice" text in invoices and quotes.',
                 CheckboxType::class,
-                ['trial_restricted' => true]
+                ['feature_gated' => Feature::CustomBranding->value]
             ),
             new Config(
                 'system/company/custom_domain',
