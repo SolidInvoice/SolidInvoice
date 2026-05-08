@@ -24,7 +24,7 @@ use function getenv;
 
 final class Version30000_7 extends AbstractMigration
 {
-    private const SETTING_KEY = 'system/company/custom_domain';
+    private const SETTING_KEY = 'system/domain/custom_domain';
 
     public function getDescription(): string
     {

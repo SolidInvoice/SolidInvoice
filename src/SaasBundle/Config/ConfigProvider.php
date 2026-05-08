@@ -30,11 +30,14 @@ final class ConfigProvider implements ProviderInterface
                 ['feature_gated' => Feature::CustomBranding->value]
             ),
             new Config(
-                'system/company/custom_domain',
+                'system/domain/custom_domain',
                 null,
                 'Custom domain for this company (leave empty to use the default URL).',
                 CustomDomainType::class,
-                ['trial_restricted' => true],
+                [
+                    'feature_gated' => Feature::CustomDomain->value,
+                    'trial_restricted' => true,
+                ],
             ),
         ];
     }

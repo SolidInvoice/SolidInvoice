@@ -49,7 +49,7 @@ class SettingsRepository extends ServiceEntityRepository
         try {
             $entityManager->wrapInTransaction(function () use ($settings): void {
                 foreach ($settings as $key => $value) {
-                    if ('system/company/custom_domain' === $key) {
+                    if ('system/domain/custom_domain' === $key) {
                         $companyRepository = $this->getEntityManager()->getRepository(Company::class);
                         assert($companyRepository instanceof CompanyRepository);
                         $value = $companyRepository->updateCustomDomain(empty($value) ? null : $value);
