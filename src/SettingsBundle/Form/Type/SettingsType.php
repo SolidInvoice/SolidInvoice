@@ -54,6 +54,7 @@ class SettingsType extends AbstractType
             });
 
             $isTrialRestricted = $formOptions['trial_restricted'] ?? false;
+            $featureGated = $formOptions['feature_gated'] ?? null;
 
             if ($isTrialRestricted && $options['subscription_in_trial']) {
                 // Use default value instead of stored value during trial
@@ -66,9 +67,13 @@ class SettingsType extends AbstractType
             // Add trial-related options that will be handled by TrialRestrictedExtension
             $fieldOptions['subscription_in_trial'] = $options['subscription_in_trial'];
             $fieldOptions['trial_restricted'] = $isTrialRestricted;
+            $fieldOptions['feature_gated'] = $featureGated;
 
-            // Merge remaining form options from Config (excluding our trial-specific options)
-            $additionalOptions = array_diff_key($formOptions, ['trial_restricted' => true]);
+            // Merge remaining form options from Config (excluding our consumed options)
+            $additionalOptions = array_diff_key(
+                $formOptions,
+                ['trial_restricted' => true, 'feature_gated' => true],
+            );
             $fieldOptions = array_merge($fieldOptions, $additionalOptions);
 
             $builder->add($key, $setting->getType(), $fieldOptions);

@@ -68,4 +68,32 @@ final class ConfigTest extends TestCase
         self::assertArrayHasKey('trial_restricted', $config->formOptions);
         self::assertTrue($config->formOptions['trial_restricted']);
     }
+
+    public function testConfigWithFeatureGatedOption(): void
+    {
+        $config = new Config(
+            'system/general/hide_powered_by',
+            '0',
+            'Hide powered by text',
+            TextType::class,
+            ['feature_gated' => 'custom_branding']
+        );
+
+        self::assertArrayHasKey('feature_gated', $config->formOptions);
+        self::assertSame('custom_branding', $config->formOptions['feature_gated']);
+    }
+
+    public function testConfigSupportsFeatureGatedAndTrialRestrictedTogether(): void
+    {
+        $config = new Config(
+            'system/general/some_setting',
+            null,
+            null,
+            TextType::class,
+            ['feature_gated' => 'custom_branding', 'trial_restricted' => true]
+        );
+
+        self::assertSame('custom_branding', $config->formOptions['feature_gated']);
+        self::assertTrue($config->formOptions['trial_restricted']);
+    }
 }

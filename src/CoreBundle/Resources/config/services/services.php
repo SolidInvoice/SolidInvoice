@@ -49,15 +49,19 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude([
             dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}',
             dirname(__DIR__, 3) . '/Twig/Extension/FeatureExtension.php',
+            dirname(__DIR__, 3) . '/Form/Extension/FeatureRestrictedExtension.php',
         ]);
 
     // The no-op FeatureExtension shadows three SaaS-only Twig function names so
     // self-hosted templates can call them safely. SaaS deployments register the
     // real implementations from SolidInvoice\SaasBundle\Twig\FeatureExtension —
     // registering both would duplicate the function names and trigger a Twig
-    // "function already defined" error at compile time.
+    // "function already defined" error at compile time. The same pattern applies
+    // to FeatureRestrictedExtension: SaasBundle ships the real form-extension and
+    // CoreBundle ships a no-op so the `feature_gated` form option remains valid.
     if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
         $services->set(\SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension::class);
+        $services->set(\SolidInvoice\CoreBundle\Form\Extension\FeatureRestrictedExtension::class);
     }
 
     $services
