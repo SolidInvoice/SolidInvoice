@@ -16,12 +16,14 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Bridge\Twig\Attribute\Template;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +32,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
-final class EditRecurring
+final class EditRecurring extends AbstractController
 {
     public function __construct(
         private readonly FormFactoryInterface $formFactory,
@@ -38,16 +40,22 @@ final class EditRecurring
         private readonly WorkflowInterface $recurringInvoiceStateMachine,
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
     /**
-     * @return array{recurring: bool, form: FormView, invoice: RecurringInvoice}|Response
      * @throws MathException
      */
-    #[Template('@SolidInvoiceInvoice/Default/edit.html.twig')]
-    public function __invoke(Request $request, RecurringInvoice $invoice): array | Response
+    public function __invoke(Request $request, RecurringInvoice $invoice): Response
     {
+        if (! $this->featureGate->isEnabled(Feature::RecurringInvoices->value)) {
+            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt(Feature::RecurringInvoices->value),
+            ]);
+        }
+
         $form = $this->formFactory->create(RecurringInvoiceType::class, $invoice, [
             'currency' => $invoice->getClient()->getCurrency(),
         ]);
@@ -73,10 +81,10 @@ final class EditRecurring
             $this->totalCalculator->calculateTotals($invoice);
         }
 
-        return [
+        return $this->render('@SolidInvoiceInvoice/Default/edit.html.twig', [
             'recurring' => true,
             'form' => $form->createView(),
             'invoice' => $invoice,
-        ];
+        ]);
     }
 }

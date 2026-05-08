@@ -18,10 +18,13 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +43,8 @@ final class CreateRecurring extends AbstractController
         private readonly RouterInterface $router,
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
@@ -48,6 +53,12 @@ final class CreateRecurring extends AbstractController
      */
     public function __invoke(Request $request, ?Client $client = null): Response
     {
+        if (! $this->featureGate->isEnabled(Feature::RecurringInvoices->value)) {
+            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt(Feature::RecurringInvoices->value),
+            ]);
+        }
+
         $totalClientsCount = $this->clientRepository->getTotalClients();
         if (0 === $totalClientsCount) {
             return $this->render('@SolidInvoiceInvoice/Default/empty_clients.html.twig');

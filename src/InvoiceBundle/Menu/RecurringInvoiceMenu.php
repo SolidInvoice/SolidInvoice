@@ -15,18 +15,35 @@ namespace SolidInvoice\InvoiceBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 
 final class RecurringInvoiceMenu
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+    ) {
+    }
+
     #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_RECURRING_INVOICE->value)]
     public function sidebar(ItemInterface $menu): void
     {
+        $extras = ['icon' => Icon::RECURRING_INVOICE];
+
+        if (! $this->featureGate->isEnabled(Feature::RecurringInvoices->value)) {
+            $planLabel = $this->upgradePromptProvider->menuLabel(Feature::RecurringInvoices->value);
+
+            if ($planLabel !== null) {
+                $extras['plan_label'] = $planLabel;
+            }
+        }
+
         $recurringInvoices = $menu->addChild('invoice.menu.recurring.main', [
-            'extras' => [
-                'icon' => Icon::RECURRING_INVOICE,
-            ],
+            'extras' => $extras,
         ]);
 
         $recurringInvoices->addChild(
