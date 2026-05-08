@@ -367,6 +367,121 @@
 }
 
 // ============================================================================
+// PRICING PAGE
+// ============================================================================
+
+.subscription-pricing-page {
+
+    .subscription-container {
+        max-width: 1100px;
+        text-align: center;
+    }
+}
+
+.plan-card {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform var(--swp-transition-base),
+        box-shadow var(--swp-transition-base),
+        border-color var(--swp-transition-base);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--swp-shadow-md);
+    }
+}
+
+.plan-card-recommended {
+    border-width: 2px;
+    box-shadow: var(--swp-shadow-md);
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--swp-shadow-xl);
+    }
+}
+
+.plan-card-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--swp-space-1);
+    padding: var(--swp-space-2) var(--swp-space-3);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    background: var(--tblr-primary, #206bc4);
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+// Free plan: presented as a slim secondary card below the main grid.
+
+.plan-card-free {
+    background: var(--swp-gray-50, #f8f9fa);
+    border: 1px dashed var(--swp-border, #dee2e6);
+    box-shadow: none;
+    transition:
+        border-color var(--swp-transition-base),
+        background var(--swp-transition-base);
+
+    &:hover {
+        border-color: var(--tblr-primary, #206bc4);
+        background: var(--swp-surface, #fff);
+    }
+
+    .card-body {
+        padding: var(--swp-space-4) var(--swp-space-6);
+    }
+
+    .plan-card-features {
+        font-size: 0.875rem;
+
+        li {
+            margin-bottom: var(--swp-space-1);
+        }
+    }
+}
+
+.plan-card-free-header {
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.plan-card-free-cta {
+    flex-shrink: 0;
+}
+
+// Inline feature list flows horizontally and wraps; keeps the free strip slim.
+
+.plan-card-features-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--swp-space-2) var(--swp-space-4);
+    font-size: 0.875rem;
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--swp-space-1);
+        white-space: nowrap;
+    }
+}
+
+.plan-card-price {
+    line-height: 1;
+}
+
+.plan-card-features {
+    text-align: start;
+}
+
+// ============================================================================
 // RESPONSIVE DESIGN
 // ============================================================================
 

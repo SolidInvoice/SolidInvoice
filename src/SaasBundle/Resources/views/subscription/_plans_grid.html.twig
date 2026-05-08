@@ -1,0 +1,163 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Renders the plan picker grid. Expects:
+ #   - plans: list<Plan>
+ #}
+
+{% import _self as macros %}
+
+{# Free plan rendered separately below the main grid. #}
+{% set freePlan = null %}
+{% set paidPlans = [] %}
+{% for plan in plans %}
+    {% if plan.isFree() %}
+        {% set freePlan = plan %}
+    {% else %}
+        {% set paidPlans = paidPlans|merge([plan]) %}
+    {% endif %}
+{% endfor %}
+
+{# Highlight the second-to-last paid plan as recommended (e.g. middle of 3, third of 4). #}
+{% set recommendedIndex = paidPlans|length >= 2 ? paidPlans|length - 2 : -1 %}
+
+<div class="row row-cards row-deck g-4 justify-content-center">
+    {% for plan in paidPlans %}
+        {% set isRecommended = loop.index0 == recommendedIndex %}
+        <div class="col-md-6 col-lg-4 d-flex">
+            <div class="card flex-fill plan-card {{ isRecommended ? 'plan-card-recommended border-primary' : '' }}">
+                {% if isRecommended %}
+                    <div class="plan-card-banner">
+                        {{ ux_icon('tabler:star-filled', {width: 14, height: 14, class: 'me-1'}) }}
+                        {{ 'Recommended'|trans }}
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column text-start">
+                    <h2 class="card-title mb-3">{{ plan.name }}</h2>
+
+                    <div class="plan-card-price mb-3">
+                        <span class="display-5 fw-bold">{{ plan.price|formatCurrency('USD') }}</span>
+                        <span class="text-secondary">{{ '/month'|trans }}</span>
+                    </div>
+
+                    {% if plan.description is not empty %}
+                        <p class="text-secondary">{{ plan.description }}</p>
+                    {% endif %}
+
+                    {{ macros.feature_list(plan.features) }}
+
+                    <form method="post" action="{{ path('saas_subscription_choose') }}" class="mt-auto">
+                        <input type="hidden" name="plan" value="{{ plan.planId }}">
+                        <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
+                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                            {{ 'Choose plan'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% if freePlan is not null %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-11 d-flex">
+            <div class="card flex-fill plan-card-free">
+                <div class="card-body">
+                    <div class="d-flex flex-column flex-lg-row gap-4 align-items-lg-center">
+                        <div class="text-lg-start text-center plan-card-free-header">
+                            <div class="text-uppercase text-secondary small fw-semibold mb-1">
+                                {{ 'Just getting started?'|trans }}
+                            </div>
+                            <h3 class="h4 mb-1">{{ freePlan.name }}</h3>
+                            <div class="text-secondary small">
+                                {{ 'No credit card required'|trans }}
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-1">
+                            {{ macros.feature_list_inline(freePlan.features) }}
+                        </div>
+
+                        <div class="plan-card-free-cta">
+                            <form method="post" action="{{ path('saas_subscription_choose') }}">
+                                <input type="hidden" name="plan" value="{{ freePlan.planId }}">
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
+                                    {{ 'Continue with Free'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% macro feature_list(features) %}
+    {% import _self as macros %}
+    {% if features|length > 0 %}
+        <ul class="list-unstyled mb-4 plan-card-features">
+            {% for feature in features %}
+                {% set isBool = feature.type.value == 'boolean' %}
+                {% set isEnabled = feature.value matches '/^(1|true)$/i' or feature.value is same as(true) %}
+                <li class="d-flex align-items-start gap-2 mb-2">
+                    {% if isBool and isEnabled %}
+                        {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success mt-1 flex-shrink-0'}) }}
+                    {% elseif isBool %}
+                        {{ ux_icon('tabler:x', {width: 18, height: 18, class: 'text-secondary mt-1 flex-shrink-0'}) }}
+                    {% else %}
+                        {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success mt-1 flex-shrink-0'}) }}
+                    {% endif %}
+                    <span>{{ macros.feature_label(feature, isBool, isEnabled) }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro feature_list_inline(features) %}
+    {% import _self as macros %}
+    {% if features|length > 0 %}
+        <ul class="list-unstyled mb-0 plan-card-features-inline">
+            {% for feature in features %}
+                {% set isBool = feature.type.value == 'boolean' %}
+                {% set isEnabled = feature.value matches '/^(1|true)$/i' or feature.value is same as(true) %}
+                <li>
+                    {% if isBool and isEnabled %}
+                        {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success flex-shrink-0'}) }}
+                    {% elseif isBool %}
+                        {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'text-secondary flex-shrink-0'}) }}
+                    {% else %}
+                        {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success flex-shrink-0'}) }}
+                    {% endif %}
+                    <span>{{ macros.feature_label(feature, isBool, isEnabled) }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro feature_label(feature, isBool, isEnabled) %}
+    {% set label = feature.description ?: feature.featureKey %}
+    {% set value = feature.value %}
+    {% if isBool %}
+        {% if isEnabled %}
+            <strong>{{ label }}</strong>
+        {% else %}
+            <span class="text-secondary">{{ label }}</span>
+        {% endif %}
+    {% elseif value is iterable %}
+        <strong>{{ label }}:</strong> {{ value|join(', ') }}
+    {% elseif value == -1 %}
+        <strong>{{ 'Unlimited'|trans }} {{ label }}</strong>
+    {% else %}
+        <strong>{{ label }}:</strong> {{ value }}
+    {% endif %}
+{% endmacro %}

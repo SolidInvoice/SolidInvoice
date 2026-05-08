@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
+use SolidInvoice\SaasBundle\Action\SelectPlanAction;
 use SolidInvoice\SaasBundle\Controller\BillingController;
 use SolidInvoice\SaasBundle\Controller\PaymentSuccess;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
@@ -25,4 +27,12 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('saas_subscription_checkout', '/subscription/activate')
         ->controller(SubscribeController::class);
+
+    $routingConfigurator->add('saas_subscription_plans', '/subscription/plans')
+        ->controller(SelectPlanAction::class)
+        ->methods(['GET']);
+
+    $routingConfigurator->add('saas_subscription_choose', '/subscription/plans/choose')
+        ->controller(ChoosePlanAction::class)
+        ->methods(['POST']);
 };

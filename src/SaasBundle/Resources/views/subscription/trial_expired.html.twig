@@ -87,7 +87,7 @@
 
             {# Primary CTA #}
             <div class="subscription-actions">
-                <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-primary btn-lg">
+                <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary btn-lg">
                     {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }}
                     {% if coupon_code|default('') is not empty %}
                         {{ 'Activate & Save 20%'|trans }}

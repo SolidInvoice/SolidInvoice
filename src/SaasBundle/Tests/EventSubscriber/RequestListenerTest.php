@@ -25,6 +25,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -296,6 +297,11 @@ final class RequestListenerTest extends KernelTestCase
         $companyRepository = self::getContainer()->get(CompanyRepository::class);
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
+        // Mock PlanRepository — the Plan entity isn't part of the default
+        // test kernel's Doctrine mapping, so we can't fetch a real one here.
+        $planRepository = M::mock(PlanRepositoryInterface::class);
+        $planRepository->shouldReceive('findAllOrdered')->andReturn([]);
+
         // Mock SubscriptionProviderInterface
         $subscriptionManager = M::mock(SubscriptionProviderInterface::class);
         if ($subscription !== null) {
@@ -340,6 +346,7 @@ final class RequestListenerTest extends KernelTestCase
             $companySelector,
             $companyRepository,
             $subscriptionManager,
+            $planRepository,
             $twig,
             $security,
             $urlGenerator,
