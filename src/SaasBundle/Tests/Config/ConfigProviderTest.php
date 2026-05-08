@@ -37,11 +37,34 @@ final class ConfigProviderTest extends TestCase
         );
     }
 
+    public function testCustomDomainLivesUnderDomainSection(): void
+    {
+        $configs = (new ConfigProvider())->provide([]);
+
+        $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
+
+        self::assertNotNull($customDomain, 'custom_domain config should live under system/domain section');
+        self::assertNull(
+            $this->findConfigByKey($configs, 'system/company/custom_domain'),
+            'custom_domain config should no longer live under system/company section',
+        );
+    }
+
+    public function testCustomDomainIsFeatureGated(): void
+    {
+        $configs = (new ConfigProvider())->provide([]);
+
+        $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
+
+        self::assertNotNull($customDomain);
+        self::assertSame(Feature::CustomDomain->value, $customDomain->formOptions['feature_gated'] ?? null);
+    }
+
     public function testCustomDomainRemainsTrialRestricted(): void
     {
         $configs = (new ConfigProvider())->provide([]);
 
-        $customDomain = $this->findConfigByKey($configs, 'system/company/custom_domain');
+        $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
 
         self::assertNotNull($customDomain);
         self::assertTrue($customDomain->formOptions['trial_restricted'] ?? false);

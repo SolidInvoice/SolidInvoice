@@ -139,59 +139,60 @@
                         </div>
                     {% endif %}
 
-                    {# Custom Domain Section #}
-                    {% if form.company.custom_domain is defined %}
-                        <div class="mb-4 pb-4 border-bottom">
-                            <h3 class="d-flex align-items-center gap-2 mb-3">
-                                {{ ux_icon('tabler:world', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
-                                {{ 'Custom Domain'|trans }}
-                            </h3>
-                            <p class="text-muted small mb-3">
-                                {{ 'Serve SolidInvoice from your own domain (e.g. invoices.yourcompany.com) instead of the default URL.'|trans }}
-                            </p>
-                            {{ form_row(form.company.custom_domain, {
-                                label: 'Custom Domain'|trans,
-                                attr: {placeholder: 'invoices.yourcompany.com'}
-                            }) }}
+                {% endif %}
 
-                            {% if custom_domain_dns_record is not empty %}
-                                <div class="alert alert-info mt-3" role="alert">
-                                    <div class="d-flex">
-                                        <div class="me-3">
-                                            {{ ux_icon('tabler:info-circle', {width: 24, height: 24, 'aria-hidden': 'true'}) }}
+                {# Domain Section #}
+                {% if form.domain is defined and form.domain.custom_domain is defined %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:world', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+                            {{ 'Domain'|trans }}
+                        </h3>
+                        <p class="text-muted small mb-3">
+                            {{ 'Serve SolidInvoice from your own domain (e.g. invoices.yourcompany.com) instead of the default URL.'|trans }}
+                        </p>
+                        {{ form_row(form.domain.custom_domain, {
+                            label: 'Custom Domain'|trans,
+                            attr: {placeholder: 'invoices.yourcompany.com'}
+                        }) }}
+
+                        {% if custom_domain_dns_record is not empty %}
+                            <div class="alert alert-info mt-3" role="alert">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        {{ ux_icon('tabler:info-circle', {width: 24, height: 24, 'aria-hidden': 'true'}) }}
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4 class="alert-title mb-1">{{ 'DNS setup required'|trans }}</h4>
+                                        <p class="mb-2">
+                                            {{ 'After saving, add a CNAME record at your DNS provider so your domain points to SolidInvoice. DNS changes can take up to 24 hours to propagate.'|trans }}
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-bordered mb-2 align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">{{ 'Type'|trans }}</th>
+                                                        <th scope="col">{{ 'Name / Host'|trans }}</th>
+                                                        <th scope="col">{{ 'Value / Target'|trans }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><code>CNAME</code></td>
+                                                        <td><code>{{ form.domain.custom_domain.vars.value|default('invoices.yourcompany.com') }}</code></td>
+                                                        <td><code>{{ custom_domain_dns_record }}</code></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="flex-grow-1">
-                                            <h4 class="alert-title mb-1">{{ 'DNS setup required'|trans }}</h4>
-                                            <p class="mb-2">
-                                                {{ 'After saving, add a CNAME record at your DNS provider so your domain points to SolidInvoice. DNS changes can take up to 24 hours to propagate.'|trans }}
-                                            </p>
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-bordered mb-2 align-middle">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">{{ 'Type'|trans }}</th>
-                                                            <th scope="col">{{ 'Name / Host'|trans }}</th>
-                                                            <th scope="col">{{ 'Value / Target'|trans }}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><code>CNAME</code></td>
-                                                            <td><code>{{ form.company.custom_domain.vars.value|default('invoices.yourcompany.com') }}</code></td>
-                                                            <td><code>{{ custom_domain_dns_record }}</code></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <p class="text-muted small mb-0">
-                                                {{ 'Once the CNAME is in place, your custom domain will resolve to SolidInvoice automatically — no further action required.'|trans }}
-                                            </p>
-                                        </div>
+                                        <p class="text-muted small mb-0">
+                                            {{ 'Once the CNAME is in place, your custom domain will resolve to SolidInvoice automatically — no further action required.'|trans }}
+                                        </p>
                                     </div>
                                 </div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
                 {% endif %}
 
                 {# General Settings Section #}
