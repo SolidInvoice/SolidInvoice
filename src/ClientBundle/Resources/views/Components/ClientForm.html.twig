@@ -71,6 +71,11 @@
 
                         <div class="form-field">
                             {{ form_row(form.currencyCode) }}
+                            {%- if form.currencyCode.vars.feature_gated_active ?? false %}
+                                <small class="form-hint text-muted feature-gated-hint">
+                                    {{ upgrade_prompt('multi_currency') }}
+                                </small>
+                            {%- endif %}
                         </div>
 
                         <div class="form-field form-field-wide">
