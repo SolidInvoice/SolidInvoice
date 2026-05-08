@@ -19,9 +19,9 @@ use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
-use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,7 +40,7 @@ final class CreateCompany extends AbstractController
         private readonly RouterInterface $router,
         private readonly ToggleInterface $toggler,
         private readonly ?TrialManagerInterface $trialManager = null,
-        private readonly ?PlanRepository $planRepository = null,
+        private readonly ?DefaultPlanProvider $defaultPlanProvider = null,
     ) {
     }
 
@@ -73,16 +73,22 @@ final class CreateCompany extends AbstractController
 
         if ($this->toggler->isActive('saas_enabled')) {
             $userHasTrial = $this->trialManager?->userHasTrial($user) ?? false;
-            $plan = $this->planRepository?->findOneBy([]);
-            if ($plan instanceof Plan) {
-                $formatter = new IntlMoneyFormatter(
-                    new \NumberFormatter('en_US', \NumberFormatter::CURRENCY),
-                    new ISOCurrencies()
-                );
-                $planPrice = $formatter->format(Money::USD($plan->getPrice()));
 
-                $trialDuration = $plan->getTrialDuration();
-                $planHasTrial = $trialDuration !== null;
+            // Only surface the default plan's price/trial when this is the
+            // user's first company — additional companies route through the
+            // plan picker after creation, so the price isn't known yet.
+            if (! $userHasTrial) {
+                $plan = $this->defaultPlanProvider?->get();
+                if ($plan instanceof Plan) {
+                    $formatter = new IntlMoneyFormatter(
+                        new \NumberFormatter('en_US', \NumberFormatter::CURRENCY),
+                        new ISOCurrencies()
+                    );
+                    $planPrice = $formatter->format(Money::USD($plan->getPrice()));
+
+                    $trialDuration = $plan->getTrialDuration();
+                    $planHasTrial = $trialDuration !== null;
+                }
             }
         }
 

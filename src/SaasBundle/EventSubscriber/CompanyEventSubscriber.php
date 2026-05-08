@@ -15,13 +15,11 @@ namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
+use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Exception\TrialAlreadyExistsException;
-use SolidWorx\Platform\SaasBundle\Integration\Options;
-use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
-use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -29,6 +27,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function assert;
 
 #[AsEventListener(CompanyCreatedEvent::class, 'onCompanyCreated')]
@@ -38,19 +37,18 @@ final class CompanyEventSubscriber
     private ?Subscription $subscription = null;
 
     public function __construct(
-        private readonly PlanRepository $planRepository,
+        private readonly DefaultPlanProvider $defaultPlanProvider,
         private readonly SubscriptionManager $subscriptionManager,
-        private readonly PaymentIntegrationInterface $paymentIntegration,
         private readonly Security $security,
         private readonly TrialManagerInterface $trialManager,
         private readonly EntityManagerInterface $entityManager,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
     public function onCompanyCreated(CompanyCreatedEvent $event): void
     {
-        // We only have a single plan for now, so we can just get the first one
-        $plan = $this->planRepository->findOneBy([]);
+        $plan = $this->defaultPlanProvider->get();
 
         if ($plan instanceof Plan) {
             $this->subscription = $this->subscriptionManager->createSubscription(
@@ -77,24 +75,20 @@ final class CompanyEventSubscriber
                     });
                 } catch (TrialAlreadyExistsException) {
                     // Race condition: another request already created a trial for this user
-                    $event->setResponse($this->createCheckoutRedirect($this->subscription, $user));
+                    $event->setResponse($this->createPlanSelectionRedirect());
                 }
             } else {
-                // User already had a trial or plan has no trial, redirect to checkout
-                $event->setResponse($this->createCheckoutRedirect($this->subscription, $user));
+                // User already had a trial — let them pick a plan for this new
+                // company instead of silently checking them out on the default.
+                $event->setResponse($this->createPlanSelectionRedirect());
             }
 
             $this->subscription = null;
         }
     }
 
-    private function createCheckoutRedirect(Subscription $subscription, User $user): RedirectResponse
+    private function createPlanSelectionRedirect(): RedirectResponse
     {
-        $checkoutUrl = $this->paymentIntegration->checkout(
-            $subscription,
-            Options::new()->withEmail($user->getEmail())->withSkipTrial(true),
-        );
-
-        return new RedirectResponse($checkoutUrl);
+        return new RedirectResponse($this->urlGenerator->generate('saas_subscription_plans'));
     }
 }

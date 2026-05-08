@@ -122,9 +122,7 @@
                                                 <div class="text-secondary">
                                                     {% if userHasTrial %}
                                                         {{ 'You have already used your free trial.'|trans }}
-                                                    {% endif %}
-                                                    {% if planPrice %}
-                                                        {{ 'Creating this company will start a subscription at'|trans }} <strong>{{ planPrice }}</strong> {{ 'and require payment.'|trans }}
+                                                        {{ 'After creating this company, you\'ll choose a plan and proceed to checkout.'|trans }}
                                                     {% else %}
                                                         {{ 'Creating this company will require payment.'|trans }}
                                                     {% endif %}

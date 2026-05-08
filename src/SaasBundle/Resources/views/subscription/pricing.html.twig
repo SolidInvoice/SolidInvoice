@@ -1,0 +1,29 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
+
+{% block heading %}
+    {% include '@SolidInvoiceSaas/subscription/_header.html.twig' %}
+{% endblock heading %}
+
+{% block content %}
+    <div class="subscription-page subscription-pricing-page">
+        <div class="subscription-container">
+            <h1 class="subscription-title">{{ 'Choose your plan'|trans }}</h1>
+            <p class="subscription-subtitle">
+                {{ 'Pick the plan that fits your needs. You can change it later.'|trans }}
+            </p>
+
+            <div class="mt-4">
+                {% include '@SolidInvoiceSaas/subscription/_plans_grid.html.twig' with { plans: plans } only %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

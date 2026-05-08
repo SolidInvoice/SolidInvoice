@@ -16,6 +16,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -37,6 +38,8 @@ final readonly class RequestListener implements EventSubscriberInterface
         '_view_invoice_external',
         'billing_index',
         'saas_subscription_checkout',
+        'saas_subscription_plans',
+        'saas_subscription_choose',
         'saas_payment_success',
 
         // Debug routes
@@ -53,6 +56,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         private CompanySelector $companySelector,
         private CompanyRepository $companyRepository,
         private SubscriptionProviderInterface $subscriptionManager,
+        private PlanRepositoryInterface $planRepository,
         private Environment $twig,
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
@@ -84,6 +88,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
                             'subscription' => $subscription,
+                            'plans' => $this->planRepository->findAllOrdered(),
                         ]),
                     )
                 );
