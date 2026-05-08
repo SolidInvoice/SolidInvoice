@@ -2425,16 +2425,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.20.10",
+            "version": "2.20.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "9fe8ce4bf75fbb7342f35835d9a90640902164db"
+                "reference": "5fc5b1991d6a4301cbab8ee4d47e90401235be09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/9fe8ce4bf75fbb7342f35835d9a90640902164db",
-                "reference": "9fe8ce4bf75fbb7342f35835d9a90640902164db",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/5fc5b1991d6a4301cbab8ee4d47e90401235be09",
+                "reference": "5fc5b1991d6a4301cbab8ee4d47e90401235be09",
                 "shasum": ""
             },
             "require": {
@@ -2520,9 +2520,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.20.10"
+                "source": "https://github.com/doctrine/orm/tree/2.20.12"
             },
-            "time": "2026-04-02T06:18:54+00:00"
+            "time": "2026-05-08T11:18:45+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -9676,12 +9676,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "18d66747b88c43c0bb6b0c3071c150cd2c0712d5"
+                "reference": "19f85e2ef970a5f59d4deee7ca98c4ca29725b99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/18d66747b88c43c0bb6b0c3071c150cd2c0712d5",
-                "reference": "18d66747b88c43c0bb6b0c3071c150cd2c0712d5",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/19f85e2ef970a5f59d4deee7ca98c4ca29725b99",
+                "reference": "19f85e2ef970a5f59d4deee7ca98c4ca29725b99",
                 "shasum": ""
             },
             "require": {
@@ -9755,7 +9755,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-05-07T06:33:14+00:00"
+            "time": "2026-05-08T13:46:14+00:00"
         },
         {
             "name": "solidworx/toggler",
