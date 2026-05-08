@@ -75,6 +75,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         \SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class,
     );
 
+    $services->set(\SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider::class);
+    $services->alias(
+        \SolidInvoice\CoreBundle\Feature\UpgradePromptProvider::class,
+        \SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider::class,
+    );
+
     $services
         ->set(TimestampableListener::class)
         ->tag('doctrine.event_subscriber')

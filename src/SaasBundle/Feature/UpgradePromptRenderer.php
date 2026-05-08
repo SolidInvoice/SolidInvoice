@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Feature;
 
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
@@ -28,7 +29,7 @@ use Twig\Environment;
  * Lives in SolidInvoice's SaasBundle (not in vendor PlatformBundle) because the
  * banner copy and route names (`saas_subscription_plans`) are SolidInvoice-specific.
  */
-final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider
+final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider, UpgradePromptProvider
 {
     private const string BANNER_TEMPLATE = '@SolidInvoiceSaas/feature/_upgrade_banner.html.twig';
 
