@@ -46,7 +46,19 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
-        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
+        ->exclude([
+            dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}',
+            dirname(__DIR__, 3) . '/Twig/Extension/FeatureExtension.php',
+        ]);
+
+    // The no-op FeatureExtension shadows three SaaS-only Twig function names so
+    // self-hosted templates can call them safely. SaaS deployments register the
+    // real implementations from SolidInvoice\SaasBundle\Twig\FeatureExtension —
+    // registering both would duplicate the function names and trigger a Twig
+    // "function already defined" error at compile time.
+    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
+        $services->set(\SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension::class);
+    }
 
     $services
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')

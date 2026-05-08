@@ -1,0 +1,33 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Upgrade-prompt banner. Rendered by UpgradePromptRenderer for both the
+ # "feature locked" prompt and the "approaching limit" usage banner.
+ #
+ # @param string      type      - Tabler alert variant: warning, danger, info.
+ # @param string      icon      - Tabler icon name (e.g. 'tabler:arrow-up-circle').
+ # @param string      title     - Bold title text.
+ # @param string      message   - Body copy following the title.
+ # @param string|null plan_name - Optional plan name; when set, renders an "Upgrade to {plan_name}" CTA pointing at the GET plan picker.
+ #}
+<div class="alert alert-{{ type }} alert-banner mb-0" role="alert">
+    <div class="d-flex align-items-center gap-3">
+        <div class="alert-icon">
+            {{ ux_icon(icon, {width: 24, height: 24}) }}
+        </div>
+        <div class="flex-grow-1">
+            <strong>{{ title }}</strong> - {{ message }}
+        </div>
+        {% if plan_name is defined and plan_name %}
+            <a href="{{ path('saas_subscription_plans') }}" class="btn btn-{{ type }} btn-sm">
+                {{ ux_icon('tabler:arrow-up-circle', {width: 16, height: 16}) }}
+                {{ 'Upgrade to %plan%'|trans({'%plan%': plan_name}) }}
+            </a>
+        {% endif %}
+    </div>
+</div>
