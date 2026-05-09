@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -89,7 +90,7 @@ final class PublicViewLinkGateTest extends KernelTestCase
         );
     }
 
-    private function createInvoice(): \SolidInvoice\InvoiceBundle\Entity\Invoice
+    private function createInvoice(): Invoice
     {
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
         ContactFactory::createOne(['client' => $client, 'company' => $this->company]);
