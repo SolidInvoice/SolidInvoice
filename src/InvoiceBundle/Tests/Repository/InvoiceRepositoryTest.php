@@ -216,4 +216,38 @@ final class InvoiceRepositoryTest extends KernelTestCase
         self::assertCount(1, $results);
         self::assertSame($overdueInvoice->getId()->toBase32(), $results[0]->getId()->toBase32());
     }
+
+    public function testCountCreatedInMonthCountsInvoicesInTheCalendarMonth(): void
+    {
+        $month = new DateTimeImmutable('2024-02-15 10:00:00', new \DateTimeZone('UTC'));
+
+        InvoiceFactory::createMany(3, [
+            'company' => $this->company,
+            'created' => new DateTimeImmutable('2024-02-10 10:00:00', new \DateTimeZone('UTC')),
+        ]);
+
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'created' => new DateTimeImmutable('2024-02-28 23:00:00', new \DateTimeZone('UTC')),
+        ]);
+
+        // Outside the month (should be excluded)
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'created' => new DateTimeImmutable('2024-01-31 23:00:00', new \DateTimeZone('UTC')),
+        ]);
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'created' => new DateTimeImmutable('2024-03-01 00:00:00', new \DateTimeZone('UTC')),
+        ]);
+
+        self::assertSame(4, $this->repository->countCreatedInMonth($month));
+    }
+
+    public function testCountCreatedInMonthReturnsZeroWhenNoInvoicesExist(): void
+    {
+        $month = new DateTimeImmutable('2024-04-15 10:00:00', new \DateTimeZone('UTC'));
+
+        self::assertSame(0, $this->repository->countCreatedInMonth($month));
+    }
 }

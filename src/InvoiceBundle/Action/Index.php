@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
@@ -26,6 +27,7 @@ final readonly class Index
         private InvoiceRepository $invoiceRepository,
         private PaymentRepository $paymentRepository,
         private EntityManagerInterface $entityManager,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -65,6 +67,7 @@ final readonly class Index
             'paidCount' => $paidCount,
             'overdueCount' => $overdueCount,
             'draftCount' => $draftCount,
+            'invoicesThisMonth' => $this->invoiceRepository->countCreatedInMonth($this->clock->now()),
             'status_list_count' => [
                 InvoiceStatus::Pending->value => $pendingCount,
                 InvoiceStatus::Paid->value => $paidCount,

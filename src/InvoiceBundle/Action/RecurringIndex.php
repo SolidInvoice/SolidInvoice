@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +26,13 @@ final readonly class RecurringIndex
     public function __construct(
         private RecurringInvoiceRepository $repository,
         private EntityManagerInterface $entityManager,
+        private InvoiceRepository $invoiceRepository,
+        private ClockInterface $clock,
     ) {
     }
 
     /**
-     * @return array{recurring: bool, isArchived: bool, isCompleted: bool, totalActiveRecurring: int, totalArchivedRecurring: int, activeCount: int, draftCount: int, pausedCount: int, cancelledCount: int, completeCount: int, upcomingIn7Days: int, totalGeneratedInvoices: int, monthlyRecurringRevenue: array<string, mixed>, status_list_count: array{active: int, draft: int, paused: int, cancelled: int, complete: int}}
+     * @return array{recurring: bool, isArchived: bool, isCompleted: bool, totalActiveRecurring: int, totalArchivedRecurring: int, activeCount: int, draftCount: int, pausedCount: int, cancelledCount: int, completeCount: int, upcomingIn7Days: int, totalGeneratedInvoices: int, monthlyRecurringRevenue: array<string, mixed>, invoicesThisMonth: int, status_list_count: array{active: int, draft: int, paused: int, cancelled: int, complete: int}}
      */
     #[Template('@SolidInvoiceInvoice/Default/index.html.twig')]
     public function __invoke(Request $request): array
@@ -78,6 +82,7 @@ final readonly class RecurringIndex
             'upcomingIn7Days' => $upcomingIn7Days,
             'totalGeneratedInvoices' => $totalGeneratedInvoices,
             'monthlyRecurringRevenue' => $monthlyRecurringRevenue,
+            'invoicesThisMonth' => $this->invoiceRepository->countCreatedInMonth($this->clock->now()),
             'status_list_count' => [
                 RecurringInvoiceStatus::Active->value => $activeCount,
                 RecurringInvoiceStatus::Draft->value => $draftCount,

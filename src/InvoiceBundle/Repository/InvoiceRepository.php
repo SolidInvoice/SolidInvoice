@@ -17,6 +17,7 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
+use DateTimeInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
@@ -116,6 +117,30 @@ class InvoiceRepository extends EntityRepository
         try {
             return (int) $this->createQueryBuilder('i')
                 ->select('COUNT(i)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException) {
+            return 0;
+        }
+    }
+
+    /**
+     * Counts non-recurring invoices created in the calendar month containing
+     * `$date`. Used by the `invoices_per_month` quota gate. Scoping to the
+     * active company is handled by the global `CompanyFilter`.
+     */
+    public function countCreatedInMonth(DateTimeInterface $date): int
+    {
+        $monthStart = (new \DateTimeImmutable($date->format('Y-m-01 00:00:00'), $date->getTimezone()));
+        $monthEnd = $monthStart->modify('+1 month');
+
+        try {
+            return (int) $this->createQueryBuilder('i')
+                ->select('COUNT(i)')
+                ->where('i.created >= :start')
+                ->andWhere('i.created < :end')
+                ->setParameter('start', $monthStart)
+                ->setParameter('end', $monthEnd)
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NoResultException | NonUniqueResultException) {
