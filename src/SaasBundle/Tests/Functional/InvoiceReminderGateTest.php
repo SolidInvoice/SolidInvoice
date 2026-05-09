@@ -88,12 +88,12 @@ final class InvoiceReminderGateTest extends KernelTestCase
     {
         $container = self::getContainer();
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn($gated);

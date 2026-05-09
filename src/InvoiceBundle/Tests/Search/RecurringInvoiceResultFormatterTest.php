@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Search;
 
 use Money\Currency;
 use Money\Money;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
@@ -26,19 +26,19 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class RecurringInvoiceResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private Stub&RouterInterface $router;
 
-    private MockObject&MoneyFormatterInterface $moneyFormatter;
+    private Stub&MoneyFormatterInterface $moneyFormatter;
 
-    private MockObject&SystemConfig $systemConfig;
+    private Stub&SystemConfig $systemConfig;
 
     private RecurringInvoiceResultFormatter $formatter;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
-        $this->systemConfig = $this->createMock(SystemConfig::class);
+        $this->router = $this->createStub(RouterInterface::class);
+        $this->moneyFormatter = $this->createStub(MoneyFormatterInterface::class);
+        $this->systemConfig = $this->createStub(SystemConfig::class);
         $this->formatter = new RecurringInvoiceResultFormatter($this->router, $this->moneyFormatter, $this->systemConfig);
     }
 
@@ -136,47 +136,57 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatConvertsAmountFromMajorToMinorUnits(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/invoices/recurring/rec-1');
 
-        $this->moneyFormatter
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(50000, new Currency('EUR')))
             ->willReturn('€500.00');
 
+        $formatter = new RecurringInvoiceResultFormatter($router, $moneyFormatter, $this->systemConfig);
         $hit = ['id' => 'rec-1', 'total' => '500.00', 'client' => ['currencyCode' => 'EUR']];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('€500.00', $result->meta);
     }
 
     public function testFormatFallsBackToSystemCurrencyWhenCurrencyCodeMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
-        $this->systemConfig->method('getCurrency')->willReturn(new Currency('GBP'));
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/invoices/recurring/rec-1');
 
-        $this->moneyFormatter
+        $systemConfig = $this->createStub(SystemConfig::class);
+        $systemConfig->method('getCurrency')->willReturn(new Currency('GBP'));
+
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(2500, new Currency('GBP')))
             ->willReturn('£25.00');
 
+        $formatter = new RecurringInvoiceResultFormatter($router, $moneyFormatter, $systemConfig);
         $hit = ['id' => 'rec-1', 'total' => '25.00'];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('£25.00', $result->meta);
     }
 
     public function testFormatGeneratesCorrectRoute(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_invoices_view_recurring', ['id' => 'my-rec-id'])
             ->willReturn('/invoices/recurring/my-rec-id');
 
-        $this->formatter->format(['id' => 'my-rec-id']);
+        $formatter = new RecurringInvoiceResultFormatter($router, $this->moneyFormatter, $this->systemConfig);
+        $formatter->format(['id' => 'my-rec-id']);
     }
 }

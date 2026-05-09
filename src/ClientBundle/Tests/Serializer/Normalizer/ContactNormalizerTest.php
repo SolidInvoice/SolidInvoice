@@ -13,7 +13,7 @@ namespace SolidInvoice\ClientBundle\Tests\Serializer\Normalizer;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -25,17 +25,17 @@ final class ContactNormalizerTest extends TestCase
 {
     private ContactNormalizer $normalizer;
 
-    private ManagerRegistry | MockObject $registry;
+    private ManagerRegistry&Stub $registry;
 
-    private DenormalizerInterface | MockObject $denormalizer;
+    private DenormalizerInterface&Stub $denormalizer;
 
-    private NormalizerInterface | MockObject $innerNormalizer;
+    private NormalizerInterface&Stub $innerNormalizer;
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->denormalizer = $this->createMock(DenormalizerInterface::class);
-        $this->innerNormalizer = $this->createMock(NormalizerInterface::class);
+        $this->registry = $this->createStub(ManagerRegistry::class);
+        $this->denormalizer = $this->createStub(DenormalizerInterface::class);
+        $this->innerNormalizer = $this->createStub(NormalizerInterface::class);
 
         $this->normalizer = new ContactNormalizer($this->registry);
         $this->normalizer->setDenormalizer($this->denormalizer);
@@ -55,17 +55,23 @@ final class ContactNormalizerTest extends TestCase
             ->with(1)
             ->willReturn($client);
 
-        $this->registry->expects($this->once())
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->once())
             ->method('getRepository')
             ->with(Client::class)
             ->willReturn($clientRepository);
 
-        $this->denormalizer->expects($this->once())
+        $denormalizer = $this->createMock(DenormalizerInterface::class);
+        $denormalizer->expects($this->once())
             ->method('denormalize')
             ->with($data, Contact::class, null, $context + [ContactNormalizer::class => true])
             ->willReturn($contact);
 
-        $result = $this->normalizer->denormalize($data, Contact::class, null, $context);
+        $normalizer = new ContactNormalizer($registry);
+        $normalizer->setDenormalizer($denormalizer);
+        $normalizer->setNormalizer($this->innerNormalizer);
+
+        $result = $normalizer->denormalize($data, Contact::class, null, $context);
 
         self::assertSame($contact, $result);
         self::assertSame($client, $result->getClient());
@@ -77,10 +83,13 @@ final class ContactNormalizerTest extends TestCase
         $context = [];
         $contact = new Contact();
 
-        $this->denormalizer->expects($this->once())
+        $denormalizer = $this->createMock(DenormalizerInterface::class);
+        $denormalizer->expects($this->once())
             ->method('denormalize')
             ->with($data, Contact::class, null, $context + [ContactNormalizer::class => true])
             ->willReturn($contact);
+
+        $this->normalizer->setDenormalizer($denormalizer);
 
         $result = $this->normalizer->denormalize($data, Contact::class, null, $context);
 
@@ -114,10 +123,13 @@ final class ContactNormalizerTest extends TestCase
         $context = [];
         $normalizedData = ['street' => '123 Main St'];
 
-        $this->innerNormalizer->expects($this->once())
+        $innerNormalizer = $this->createMock(NormalizerInterface::class);
+        $innerNormalizer->expects($this->once())
             ->method('normalize')
             ->with($contact, null, $context + [ContactNormalizer::class => true])
             ->willReturn($normalizedData);
+
+        $this->normalizer->setNormalizer($innerNormalizer);
 
         $result = $this->normalizer->normalize($contact, null, $context);
 

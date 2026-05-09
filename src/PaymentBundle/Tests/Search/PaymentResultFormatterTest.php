@@ -15,7 +15,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Search;
 
 use Money\Currency;
 use Money\Money;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
@@ -26,19 +26,19 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class PaymentResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private Stub&RouterInterface $router;
 
-    private MockObject&MoneyFormatterInterface $moneyFormatter;
+    private Stub&MoneyFormatterInterface $moneyFormatter;
 
-    private MockObject&SystemConfig $systemConfig;
+    private Stub&SystemConfig $systemConfig;
 
     private PaymentResultFormatter $formatter;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
-        $this->systemConfig = $this->createMock(SystemConfig::class);
+        $this->router = $this->createStub(RouterInterface::class);
+        $this->moneyFormatter = $this->createStub(MoneyFormatterInterface::class);
+        $this->systemConfig = $this->createStub(SystemConfig::class);
         $this->formatter = new PaymentResultFormatter($this->router, $this->moneyFormatter, $this->systemConfig);
     }
 
@@ -161,24 +161,28 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatLinksToInvoiceViewWhenInvoiceIdPresent(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_invoices_view', ['id' => 'inv-99'])
             ->willReturn('/invoices/inv-99');
 
-        $this->formatter->format(['id' => 'pay-1', 'invoice' => ['id' => 'inv-99']]);
+        $formatter = new PaymentResultFormatter($router, $this->moneyFormatter, $this->systemConfig);
+        $formatter->format(['id' => 'pay-1', 'invoice' => ['id' => 'inv-99']]);
     }
 
     public function testFormatLinksToPaymentsIndexWhenNoInvoiceId(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_payments_index')
             ->willReturn('/payments');
 
-        $this->formatter->format(['id' => 'pay-1']);
+        $formatter = new PaymentResultFormatter($router, $this->moneyFormatter, $this->systemConfig);
+        $formatter->format(['id' => 'pay-1']);
     }
 
     public function testFormatWithStatus(): void
@@ -201,17 +205,20 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatMetaWithAmount(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/payments');
 
-        $this->moneyFormatter
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(25000, new Currency('USD')))
             ->willReturn('$250.00');
 
+        $formatter = new PaymentResultFormatter($router, $moneyFormatter, $this->systemConfig);
         $hit = ['id' => 'pay-1', 'total' => '250.00', 'currencyCode' => 'USD'];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('$250.00', $result->meta);
     }
@@ -227,35 +234,43 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatFallsBackToSystemCurrencyWhenCurrencyCodeMissing(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
-        $this->systemConfig->method('getCurrency')->willReturn(new Currency('EUR'));
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/payments');
 
-        $this->moneyFormatter
+        $systemConfig = $this->createStub(SystemConfig::class);
+        $systemConfig->method('getCurrency')->willReturn(new Currency('EUR'));
+
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(10000, new Currency('EUR')))
             ->willReturn('€100.00');
 
+        $formatter = new PaymentResultFormatter($router, $moneyFormatter, $systemConfig);
         $hit = ['id' => 'pay-1', 'total' => '100.00'];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('€100.00', $result->meta);
     }
 
     public function testFormatConvertsAmountFromMajorToMinorUnits(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/payments');
 
-        $this->moneyFormatter
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(99, new Currency('USD')))
             ->willReturn('$0.99');
 
+        $formatter = new PaymentResultFormatter($router, $moneyFormatter, $this->systemConfig);
         $hit = ['id' => 'pay-1', 'total' => '0.99', 'currencyCode' => 'USD'];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('$0.99', $result->meta);
     }

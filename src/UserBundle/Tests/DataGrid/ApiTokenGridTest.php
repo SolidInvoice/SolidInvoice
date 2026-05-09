@@ -24,7 +24,7 @@ final class ApiTokenGridTest extends TestCase
 {
     private function createGrid(): ApiTokenGrid
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         return new ApiTokenGrid($security);
     }
 

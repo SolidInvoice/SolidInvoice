@@ -169,7 +169,7 @@ class InvoiceClonerTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
 
-        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createMock(SystemConfig::class)));
+        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createStub(SystemConfig::class)));
 
         /** @var RecurringInvoice $newInvoice */
         $newInvoice = $invoiceCloner->clone($invoice);

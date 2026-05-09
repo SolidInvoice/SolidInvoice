@@ -94,17 +94,17 @@ final class CreateUserStepTest extends TestCase
 
     public function testExecuteHandlesDuplicateUser(): void
     {
-        $hasher = $this->createMock(PasswordHasherInterface::class);
+        $hasher = $this->createStub(PasswordHasherInterface::class);
         $hasher
             ->method('hash')
             ->willReturn('hashed_password');
 
-        $hasherFactory = $this->createMock(PasswordHasherFactoryInterface::class);
+        $hasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $hasherFactory
             ->method('getPasswordHasher')
             ->willReturn($hasher);
 
-        $exception = $this->createMock(UniqueConstraintViolationException::class);
+        $exception = $this->createStub(UniqueConstraintViolationException::class);
 
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository
@@ -138,12 +138,12 @@ final class CreateUserStepTest extends TestCase
 
     public function testExecuteWithoutCallback(): void
     {
-        $hasher = $this->createMock(PasswordHasherInterface::class);
+        $hasher = $this->createStub(PasswordHasherInterface::class);
         $hasher
             ->method('hash')
             ->willReturn('hashed_password');
 
-        $hasherFactory = $this->createMock(PasswordHasherFactoryInterface::class);
+        $hasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $hasherFactory
             ->method('getPasswordHasher')
             ->willReturn($hasher);

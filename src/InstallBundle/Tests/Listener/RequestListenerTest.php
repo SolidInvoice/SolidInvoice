@@ -49,14 +49,14 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 
@@ -80,7 +80,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
@@ -88,7 +88,7 @@ final class RequestListenerTest extends TestCase
         $request->attributes->set('_route', '_profiler');
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 
@@ -110,7 +110,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
@@ -118,7 +118,7 @@ final class RequestListenerTest extends TestCase
         $request->attributes->set('_route', RequestListener::INSTALLER_ROUTE);
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 
@@ -137,7 +137,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
             true,
         );
@@ -146,7 +146,7 @@ final class RequestListenerTest extends TestCase
         $request->attributes->set('_route', '_profiler');
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 
@@ -166,7 +166,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -174,7 +174,7 @@ final class RequestListenerTest extends TestCase
         $request->setSession(new Session(new MockArraySessionStorage()));
         $request->attributes->set('_route', '_home');
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 
@@ -193,7 +193,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
@@ -205,7 +205,7 @@ final class RequestListenerTest extends TestCase
         $request->setSession($session);
         $request->attributes->set('_route', RequestListener::INSTALLER_ROUTE);
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         $listener->onKernelRequest($event);
 
@@ -224,14 +224,14 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST);
 
         $listener->onKernelRequest($event);
 
@@ -248,7 +248,7 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             null,
         );
 
@@ -256,7 +256,7 @@ final class RequestListenerTest extends TestCase
         $request->setSession(new Session(new MockArraySessionStorage()));
         $request->attributes->set('_route', 'ux_live_component');
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         $listener->onKernelRequest($event);
 

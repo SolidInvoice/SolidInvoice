@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Search;
 
 use Money\Currency;
 use Money\Money;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
@@ -26,19 +26,19 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class InvoiceResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private Stub&RouterInterface $router;
 
-    private MockObject&MoneyFormatterInterface $moneyFormatter;
+    private Stub&MoneyFormatterInterface $moneyFormatter;
 
-    private MockObject&SystemConfig $systemConfig;
+    private Stub&SystemConfig $systemConfig;
 
     private InvoiceResultFormatter $formatter;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
-        $this->systemConfig = $this->createMock(SystemConfig::class);
+        $this->router = $this->createStub(RouterInterface::class);
+        $this->moneyFormatter = $this->createStub(MoneyFormatterInterface::class);
+        $this->systemConfig = $this->createStub(SystemConfig::class);
         $this->formatter = new InvoiceResultFormatter($this->router, $this->moneyFormatter, $this->systemConfig);
     }
 
@@ -136,48 +136,58 @@ final class InvoiceResultFormatterTest extends TestCase
 
     public function testFormatConvertsAmountFromMajorToMinorUnitsForMoneyFormatter(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/inv-1');
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/invoices/inv-1');
 
         // total = 15.50 major units → 1550 minor units
-        $this->moneyFormatter
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(1550, new Currency('EUR')))
             ->willReturn('€15.50');
 
+        $formatter = new InvoiceResultFormatter($router, $moneyFormatter, $this->systemConfig);
         $hit = ['id' => 'inv-1', 'total' => '15.50', 'client' => ['currencyCode' => 'EUR']];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('€15.50', $result->meta);
     }
 
     public function testFormatFallsBackToSystemCurrencyWhenCurrencyCodeMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/inv-1');
-        $this->systemConfig->method('getCurrency')->willReturn(new Currency('GBP'));
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('generate')->willReturn('/invoices/inv-1');
 
-        $this->moneyFormatter
+        $systemConfig = $this->createStub(SystemConfig::class);
+        $systemConfig->method('getCurrency')->willReturn(new Currency('GBP'));
+
+        $moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
+        $moneyFormatter
             ->expects(self::once())
             ->method('format')
             ->with(new Money(1000, new Currency('GBP')))
             ->willReturn('£10.00');
 
+        $formatter = new InvoiceResultFormatter($router, $moneyFormatter, $systemConfig);
         $hit = ['id' => 'inv-1', 'total' => '10.00'];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('£10.00', $result->meta);
     }
 
     public function testFormatGeneratesCorrectRoute(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_invoices_view', ['id' => 'my-inv-id'])
             ->willReturn('/invoices/my-inv-id');
 
-        $this->formatter->format(['id' => 'my-inv-id']);
+        $formatter = new InvoiceResultFormatter($router, $this->moneyFormatter, $this->systemConfig);
+        $formatter->format(['id' => 'my-inv-id']);
     }
 }

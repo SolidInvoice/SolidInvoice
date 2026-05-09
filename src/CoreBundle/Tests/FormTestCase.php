@@ -167,7 +167,7 @@ abstract class FormTestCase extends KernelTestCase
         $moneyType = new HiddenMoneyType();
 
         return array_merge([
-            new PreloadedExtension([$type, $moneyType, new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))], []),
+            new PreloadedExtension([$type, $moneyType, new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class))], []),
             new DoctrineOrmExtension($this->registry),
         ], $this->getExtensions());
     }

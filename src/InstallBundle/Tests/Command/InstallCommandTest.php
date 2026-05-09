@@ -199,7 +199,7 @@ final class InstallCommandTest extends TestCase
         ManagerRegistry $registry,
         ?UserPasswordHasherInterface $passwordHasher = null,
     ): InstallCommand {
-        $vault = $this->createMock(AbstractVault::class);
+        $vault = $this->createStub(AbstractVault::class);
         $configWriter = new ConfigWriter($vault, '/tmp/test-secrets');
 
         return new InstallCommand(
@@ -207,7 +207,7 @@ final class InstallCommandTest extends TestCase
             $registry,
             $passwordHasher ?? M::mock(UserPasswordHasherInterface::class),
             new ServiceLocator([]),
-            $this->createMock(KernelInterface::class),
+            $this->createStub(KernelInterface::class),
             '/tmp/test',
             null
         );

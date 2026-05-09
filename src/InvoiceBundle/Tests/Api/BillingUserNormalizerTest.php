@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Api;
 
 use ApiPlatform\Metadata\IriConverterInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Api\BillingUserNormalizer;
@@ -33,25 +33,25 @@ final class BillingUserNormalizerTest extends TestCase
     private BillingUserNormalizer $billingUserNormalizer;
 
     /**
-     * @var IriConverterInterface&MockObject
+     * @var IriConverterInterface&Stub
      */
     private IriConverterInterface $iriConverter;
 
     /**
-     * @var DenormalizerInterface&MockObject
+     * @var DenormalizerInterface&Stub
      */
     private DenormalizerInterface $denormalizer;
 
     /**
-     * @var NormalizerInterface&MockObject
+     * @var NormalizerInterface&Stub
      */
     private NormalizerInterface $normalizer;
 
     protected function setUp(): void
     {
-        $this->iriConverter = $this->createMock(IriConverterInterface::class);
-        $this->denormalizer = $this->createMock(DenormalizerInterface::class);
-        $this->normalizer = $this->createMock(NormalizerInterface::class);
+        $this->iriConverter = $this->createStub(IriConverterInterface::class);
+        $this->denormalizer = $this->createStub(DenormalizerInterface::class);
+        $this->normalizer = $this->createStub(NormalizerInterface::class);
 
         $this->billingUserNormalizer = new BillingUserNormalizer($this->iriConverter);
         $this->billingUserNormalizer->setDenormalizer($this->denormalizer);
@@ -95,13 +95,18 @@ final class BillingUserNormalizerTest extends TestCase
         $class = Invoice::class;
         $invoice = new Invoice();
 
-        $this->denormalizer
+        $denormalizer = $this->createMock(DenormalizerInterface::class);
+        $denormalizer
             ->expects(self::once())
             ->method('denormalize')
             ->with($data, $class, 'json', [BillingUserNormalizer::class => true])
             ->willReturn($invoice);
 
-        self::assertSame($invoice, $this->billingUserNormalizer->denormalize($data, $class, 'json'));
+        $billingUserNormalizer = new BillingUserNormalizer($this->iriConverter);
+        $billingUserNormalizer->setDenormalizer($denormalizer);
+        $billingUserNormalizer->setNormalizer($this->normalizer);
+
+        self::assertSame($invoice, $billingUserNormalizer->denormalize($data, $class, 'json'));
     }
 
     public function testNormalize(): void
@@ -111,19 +116,25 @@ final class BillingUserNormalizerTest extends TestCase
         $context = ['resource_class' => Invoice::class];
 
         $iri = '/some/iri';
-        $this->iriConverter
+        $iriConverter = $this->createMock(IriConverterInterface::class);
+        $iriConverter
             ->expects(self::once())
             ->method('getIriFromResource')
             ->with($user)
             ->willReturn($iri);
 
-        $this->normalizer
+        $normalizer = $this->createMock(NormalizerInterface::class);
+        $normalizer
             ->expects(self::once())
             ->method('normalize')
             ->with(['users' => [$iri]], $format, ['resource_class' => Invoice::class, BillingUserNormalizer::class => true])
             ->willReturn($normalized = ['users' => [$iri]]);
 
-        $result = $this->billingUserNormalizer->normalize($object, $format, $context);
+        $billingUserNormalizer = new BillingUserNormalizer($iriConverter);
+        $billingUserNormalizer->setDenormalizer($this->denormalizer);
+        $billingUserNormalizer->setNormalizer($normalizer);
+
+        $result = $billingUserNormalizer->normalize($object, $format, $context);
 
         self::assertSame($normalized, $result);
     }

@@ -11,7 +11,7 @@
 
 namespace SolidInvoice\UserBundle\Tests\Security;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -28,22 +28,20 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelper;
 
 final class EmailVerifierTest extends TestCase
 {
-    private EmailVerifier $emailVerifier;
-
     private VerifyEmailHelper $verifyEmailHelper;
 
-    private MailerInterface|MockObject $mailer;
+    private MailerInterface&Stub $mailer;
 
-    private UserRepository|MockObject $userRepository;
+    private UserRepository&Stub $userRepository;
 
-    private UrlGeneratorInterface|MockObject $urlGenerator;
+    private UrlGeneratorInterface&Stub $urlGenerator;
 
     protected function setUp(): void
     {
-        // Create mocks for dependencies
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->mailer = $this->createMock(MailerInterface::class);
-        $this->userRepository = $this->createMock(UserRepository::class);
+        // Create stubs for dependencies
+        $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $this->mailer = $this->createStub(MailerInterface::class);
+        $this->userRepository = $this->createStub(UserRepository::class);
 
         // Create real instances for VerifyEmailHelper dependencies
         $uriSigner = new UriSigner('test_signing_key');
@@ -59,11 +57,6 @@ final class EmailVerifierTest extends TestCase
             $lifetime
         );
 
-        $this->emailVerifier = new EmailVerifier(
-            $this->verifyEmailHelper,
-            $this->mailer,
-            $this->userRepository
-        );
     }
 
     public function testSendEmailConfirmation(): void
@@ -74,7 +67,8 @@ final class EmailVerifierTest extends TestCase
 
         // Set up the URL generator to return a valid URL
         $generatedUrl = 'https://example.com/verify-email';
-        $this->urlGenerator->expects($this->once())
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->expects($this->once())
             ->method('generate')
             ->with(
                 $routeName,
@@ -98,11 +92,19 @@ final class EmailVerifierTest extends TestCase
             }))
             ->willReturnSelf();
 
-        $this->mailer->expects($this->once())
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
             ->method('send')
             ->with($email);
 
-        $this->emailVerifier->sendEmailConfirmation($routeName, $user, $email);
+        // Create fresh helper and verifier with expectation mocks
+        $uriSigner = new UriSigner('test_signing_key');
+        $queryUtility = new VerifyEmailQueryUtility();
+        $tokenGenerator = new VerifyEmailTokenGenerator('test_signing_key');
+        $verifyEmailHelper = new VerifyEmailHelper($urlGenerator, $uriSigner, $queryUtility, $tokenGenerator, 3600);
+        $emailVerifier = new EmailVerifier($verifyEmailHelper, $mailer, $this->userRepository);
+
+        $emailVerifier->sendEmailConfirmation($routeName, $user, $email);
     }
 
     public function testHandleEmailConfirmation(): void
@@ -124,16 +126,18 @@ final class EmailVerifierTest extends TestCase
         $uriSignerReflection = new \ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
-        $uriSignerMock = $this->createMock(UriSigner::class);
+        $uriSignerMock = $this->createStub(UriSigner::class);
         $uriSignerMock->method('checkRequest')->willReturn(true);
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSignerMock);
 
         // Expect the repository to save the user
-        $this->userRepository->expects($this->once())
+        $userRepository = $this->createMock(UserRepository::class);
+        $userRepository->expects($this->once())
             ->method('save')
             ->with($user);
 
-        $this->emailVerifier->handleEmailConfirmation($request, $user);
+        $emailVerifier = new EmailVerifier($this->verifyEmailHelper, $this->mailer, $userRepository);
+        $emailVerifier->handleEmailConfirmation($request, $user);
 
         // Restore the original UriSigner
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSigner);
@@ -156,18 +160,21 @@ final class EmailVerifierTest extends TestCase
         $uriSignerReflection = new \ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
-        $uriSignerMock = $this->createMock(UriSigner::class);
+        $uriSignerMock = $this->createStub(UriSigner::class);
         $uriSignerMock->method('checkRequest')->willReturn(true);
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSignerMock);
 
         // Expect the repository to never save the user
-        $this->userRepository->expects($this->never())
+        $userRepository = $this->createMock(UserRepository::class);
+        $userRepository->expects($this->never())
             ->method('save');
+
+        $emailVerifier = new EmailVerifier($this->verifyEmailHelper, $this->mailer, $userRepository);
 
         $this->expectException(VerifyEmailExceptionInterface::class);
 
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $emailVerifier->handleEmailConfirmation($request, $user);
         } finally {
             $this->assertFalse($user->isVerified());
             // Restore the original UriSigner

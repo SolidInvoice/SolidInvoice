@@ -15,7 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Action;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Meilisearch\Client;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Action\Search;
@@ -29,15 +29,15 @@ use Symfony\Component\Uid\Ulid;
 
 final class SearchTest extends TestCase
 {
-    private MockObject&Client $client;
+    private Stub&Client $client;
 
     private CompanySelector $companySelector;
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(Client::class);
+        $this->client = $this->createStub(Client::class);
 
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $this->companySelector = new CompanySelector($registry);
     }
 
@@ -63,7 +63,9 @@ final class SearchTest extends TestCase
 
     public function testReturnsEmptyJsonForQueryShorterThanTwoChars(): void
     {
-        $this->client->expects(self::never())->method('multiSearch');
+        $client = $this->createMock(Client::class);
+        $client->expects(self::never())->method('multiSearch');
+        $this->client = $client;
 
         $action = $this->makeAction();
         $response = $action(new Request(['q' => 'a']));
@@ -74,7 +76,9 @@ final class SearchTest extends TestCase
 
     public function testReturnsEmptyJsonForEmptyQuery(): void
     {
-        $this->client->expects(self::never())->method('multiSearch');
+        $client = $this->createMock(Client::class);
+        $client->expects(self::never())->method('multiSearch');
+        $this->client = $client;
 
         $action = $this->makeAction();
         $response = $action(new Request(['q' => '']));
@@ -84,7 +88,9 @@ final class SearchTest extends TestCase
 
     public function testTrimsQueryBeforeLengthCheck(): void
     {
-        $this->client->expects(self::never())->method('multiSearch');
+        $client = $this->createMock(Client::class);
+        $client->expects(self::never())->method('multiSearch');
+        $this->client = $client;
 
         $action = $this->makeAction();
         // Single space after trimming becomes empty
@@ -95,7 +101,9 @@ final class SearchTest extends TestCase
 
     public function testMissingQueryParameterTreatedAsEmpty(): void
     {
-        $this->client->expects(self::never())->method('multiSearch');
+        $client = $this->createMock(Client::class);
+        $client->expects(self::never())->method('multiSearch');
+        $this->client = $client;
 
         $action = $this->makeAction();
         $response = $action(new Request());
@@ -107,12 +115,14 @@ final class SearchTest extends TestCase
     {
         $this->setCompany();
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
 
-        $this->client->expects(self::once())
+        $client = $this->createMock(Client::class);
+        $client->expects(self::once())
             ->method('multiSearch')
             ->willReturn(['results' => []]);
+        $this->client = $client;
 
         $action = $this->makeAction([$formatter]);
         $response = $action(new Request(['q' => 'ab']));
@@ -134,7 +144,7 @@ final class SearchTest extends TestCase
             meta: '$1,500.00',
         );
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
         $formatter->method('format')->willReturn($expectedResult);
 
@@ -164,7 +174,7 @@ final class SearchTest extends TestCase
     {
         $this->setCompany();
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
 
         $this->client->method('multiSearch')->willReturn(['results' => []]);
@@ -190,11 +200,11 @@ final class SearchTest extends TestCase
         $invoiceResult = new SearchResult('invoice', 'i1', 'INV-001', '', '/invoices/i1');
         $quoteResult = new SearchResult('quote', 'q1', 'Q-001', '', '/quotes/q1');
 
-        $invoiceFormatter = $this->createMock(ResultFormatterInterface::class);
+        $invoiceFormatter = $this->createStub(ResultFormatterInterface::class);
         $invoiceFormatter->method('getIndexName')->willReturn('invoices');
         $invoiceFormatter->method('format')->willReturn($invoiceResult);
 
-        $quoteFormatter = $this->createMock(ResultFormatterInterface::class);
+        $quoteFormatter = $this->createStub(ResultFormatterInterface::class);
         $quoteFormatter->method('getIndexName')->willReturn('quotes');
         $quoteFormatter->method('format')->willReturn($quoteResult);
 
@@ -219,7 +229,9 @@ final class SearchTest extends TestCase
     public function testNoCompanyReturnsEmptyResult(): void
     {
         // No company set → MultiSearchService returns []
-        $this->client->expects(self::never())->method('multiSearch');
+        $client = $this->createMock(Client::class);
+        $client->expects(self::never())->method('multiSearch');
+        $this->client = $client;
 
         $action = $this->makeAction();
         $response = $action(new Request(['q' => 'acme']));

@@ -54,7 +54,7 @@ final class ReviewStepTest extends TestCase
 
     public function testConfigureOptions(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $reviewStep = new ReviewStep($csrfTokenManager);
 
         $resolver = new OptionsResolver();

@@ -15,7 +15,7 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder;
 
 use Closure;
 use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 
@@ -26,11 +26,11 @@ final class QueryTest extends TestCase
 {
     private Query $query;
 
-    private QueryBuilder&MockObject $queryBuilder;
+    private QueryBuilder&Stub $queryBuilder;
 
     protected function setUp(): void
     {
-        $this->queryBuilder = $this->createMock(QueryBuilder::class);
+        $this->queryBuilder = $this->createStub(QueryBuilder::class);
         $this->query = new Query($this->queryBuilder, 'e');
     }
 
@@ -41,7 +41,7 @@ final class QueryTest extends TestCase
 
     public function testSetQueryBuilder(): void
     {
-        $newBuilder = $this->createMock(QueryBuilder::class);
+        $newBuilder = $this->createStub(QueryBuilder::class);
         $newBuilder->method('getRootAliases')->willReturn(['alias']);
 
         $result = $this->query->setQueryBuilder($newBuilder);

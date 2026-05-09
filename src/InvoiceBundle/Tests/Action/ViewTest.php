@@ -400,7 +400,7 @@ final class ViewTest extends KernelTestCase
 
     public function testViewWithClientContacts(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
 
         self::getContainer()
             ->set('security.csrf.token_manager', $csrfTokenManager);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
@@ -27,11 +26,11 @@ final class ChoiceFilterTest extends TestCase
 {
     private ChoiceFilter $filter;
 
-    private QueryBuilder&MockObject $queryBuilder;
+    private QueryBuilder $queryBuilder;
 
     protected function setUp(): void
     {
-        $this->queryBuilder = $this->createMock(QueryBuilder::class);
+        $this->queryBuilder = $this->createStub(QueryBuilder::class);
         $this->filter = ChoiceFilter::new('status', ['draft' => 'Draft', 'pending' => 'Pending', 'paid' => 'Paid']);
     }
 
@@ -67,6 +66,7 @@ final class ChoiceFilterTest extends TestCase
 
     public function testFilterWithSingleValue(): void
     {
+        $this->queryBuilder = $this->createMock(QueryBuilder::class);
         $this->queryBuilder
             ->expects(self::once())
             ->method('andWhere')
@@ -83,6 +83,7 @@ final class ChoiceFilterTest extends TestCase
 
     public function testFilterWithEmptyValueDoesNothing(): void
     {
+        $this->queryBuilder = $this->createMock(QueryBuilder::class);
         $this->queryBuilder
             ->expects(self::never())
             ->method('andWhere');
@@ -99,6 +100,7 @@ final class ChoiceFilterTest extends TestCase
         $filter = ChoiceFilter::new('status', ['draft' => 'Draft', 'pending' => 'Pending'])
             ->multiple();
 
+        $this->queryBuilder = $this->createMock(QueryBuilder::class);
         $this->queryBuilder
             ->expects(self::once())
             ->method('andWhere')
@@ -118,6 +120,7 @@ final class ChoiceFilterTest extends TestCase
         $filter = ChoiceFilter::new('status', ['draft' => 'Draft'])
             ->multiple();
 
+        $this->queryBuilder = $this->createMock(QueryBuilder::class);
         $this->queryBuilder
             ->expects(self::never())
             ->method('andWhere');

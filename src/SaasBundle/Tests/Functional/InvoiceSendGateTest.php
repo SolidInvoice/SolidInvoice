@@ -84,7 +84,7 @@ final class InvoiceSendGateTest extends KernelTestCase
     {
         $container = self::getContainer();
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');

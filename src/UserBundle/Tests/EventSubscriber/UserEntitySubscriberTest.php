@@ -45,7 +45,7 @@ final class UserEntitySubscriberTest extends TestCase
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();
@@ -79,7 +79,7 @@ final class UserEntitySubscriberTest extends TestCase
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();
@@ -116,12 +116,12 @@ final class UserEntitySubscriberTest extends TestCase
     public function testPostPersistWithException(): void
     {
         $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
-        $mailer = $this->createMock(MailerInterface::class);
+        $mailer = $this->createStub(MailerInterface::class);
 
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();

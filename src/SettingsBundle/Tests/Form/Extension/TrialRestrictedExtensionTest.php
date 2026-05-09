@@ -35,7 +35,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDisablesFieldWhenBothOptionsAreTrue(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -53,7 +53,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['checked'] = true; // Simulate checkbox that was checked
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -71,7 +71,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['attr']['class'] = 'existing-class';
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -86,7 +86,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDoesNotDisableWhenTrialRestrictedIsFalse(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => true,
@@ -101,7 +101,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDoesNotDisableWhenSubscriptionNotInTrial(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => false,
@@ -116,7 +116,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDoesNotDisableWhenBothOptionsAreFalse(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => false,
@@ -133,7 +133,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         // No attr['class'] set initially
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -197,7 +197,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['disabled'] = true; // Already disabled
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => false,

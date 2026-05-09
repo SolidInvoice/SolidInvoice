@@ -34,7 +34,7 @@ final class OAuthUserTest extends TestCase
 
     public function testGetEmailWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
@@ -54,7 +54,7 @@ final class OAuthUserTest extends TestCase
 
     public function testGetFirstNameWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
@@ -86,7 +86,7 @@ final class OAuthUserTest extends TestCase
 
     public function testGetLastNameWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
@@ -104,7 +104,7 @@ final class OAuthUserTest extends TestCase
 
     public function testGetPropertyMapWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
@@ -144,7 +144,7 @@ final class OAuthUserTest extends TestCase
 
     public function testGetEmailVerifiedWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 

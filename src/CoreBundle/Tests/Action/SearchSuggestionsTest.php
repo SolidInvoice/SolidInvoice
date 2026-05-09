@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Tests\Action;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
@@ -31,7 +30,7 @@ final class SearchSuggestionsTest extends TestCase
 
     protected function setUp(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $this->companySelector = new CompanySelector($registry);
     }
 
@@ -41,7 +40,7 @@ final class SearchSuggestionsTest extends TestCase
         $prop->setValue($this->companySelector, new Ulid());
     }
 
-    private function makeAction(MockObject&ClientRepository $repository): SearchSuggestions
+    private function makeAction(ClientRepository $repository): SearchSuggestions
     {
         return new SearchSuggestions($repository, $this->companySelector);
     }
@@ -88,10 +87,10 @@ final class SearchSuggestionsTest extends TestCase
         $this->setCompany();
         $names = ['Acme Corp', 'Acme Ltd'];
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->createStub(AbstractQuery::class);
         $query->method('getSingleColumnResult')->willReturn($names);
 
-        $qb = $this->createMock(QueryBuilder::class);
+        $qb = $this->createStub(QueryBuilder::class);
         $qb->method('select')->willReturnSelf();
         $qb->method('where')->willReturnSelf();
         $qb->method('setParameter')->willReturnSelf();
@@ -117,17 +116,17 @@ final class SearchSuggestionsTest extends TestCase
         $this->setCompany();
         $names = ['Alpha Corp', 'Beta Inc'];
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->createStub(AbstractQuery::class);
         $query->method('getSingleColumnResult')->willReturn($names);
 
-        $qb = $this->createMock(QueryBuilder::class);
+        $qb = $this->createStub(QueryBuilder::class);
         $qb->method('select')->willReturnSelf();
         $qb->method('where')->willReturnSelf();
         $qb->method('setParameter')->willReturnSelf();
         $qb->method('setMaxResults')->willReturnSelf();
         $qb->method('getQuery')->willReturn($query);
 
-        $repository = $this->createMock(ClientRepository::class);
+        $repository = $this->createStub(ClientRepository::class);
         $repository->method('createQueryBuilder')->willReturn($qb);
 
         $action = $this->makeAction($repository);
@@ -140,7 +139,7 @@ final class SearchSuggestionsTest extends TestCase
 
     public function testResponseContentTypeIsJson(): void
     {
-        $repository = $this->createMock(ClientRepository::class);
+        $repository = $this->createStub(ClientRepository::class);
 
         $action = $this->makeAction($repository);
         $response = $action(new Request(['qualifier' => 'client', 'q' => '']));
@@ -165,7 +164,7 @@ final class SearchSuggestionsTest extends TestCase
     {
         $this->setCompany();
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->createStub(AbstractQuery::class);
         $query->method('getSingleColumnResult')->willReturn([]);
 
         $qb = $this->createMock(QueryBuilder::class);
@@ -180,7 +179,7 @@ final class SearchSuggestionsTest extends TestCase
             ->with('partial', '%acme%')
             ->willReturnSelf();
 
-        $repository = $this->createMock(ClientRepository::class);
+        $repository = $this->createStub(ClientRepository::class);
         $repository->method('createQueryBuilder')->willReturn($qb);
 
         $action = $this->makeAction($repository);
@@ -191,7 +190,7 @@ final class SearchSuggestionsTest extends TestCase
     {
         $this->setCompany();
 
-        $query = $this->createMock(AbstractQuery::class);
+        $query = $this->createStub(AbstractQuery::class);
         $query->method('getSingleColumnResult')->willReturn([]);
 
         $qb = $this->createMock(QueryBuilder::class);
@@ -205,7 +204,7 @@ final class SearchSuggestionsTest extends TestCase
             ->with(10)
             ->willReturnSelf();
 
-        $repository = $this->createMock(ClientRepository::class);
+        $repository = $this->createStub(ClientRepository::class);
         $repository->method('createQueryBuilder')->willReturn($qb);
 
         $action = $this->makeAction($repository);
