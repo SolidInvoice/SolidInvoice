@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Security\Voter;
 
 use SolidInvoice\McpBundle\Security\Attribute;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
@@ -24,11 +25,16 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * disabled (self-hosted installs) so requests succeed without any SaaS
  * voter being registered. When SaaS is enabled it abstains, leaving the
  * decision to whichever subscription-aware voter has been registered.
+ *
+ * Even on self-hosted the `mcp_access` feature gate is consulted so the
+ * same denial path runs end-to-end. NoopFeatureGate always returns true
+ * on self-hosted, preserving the historical "always granted" behaviour.
  */
 final class McpAccessVoter extends Voter
 {
     public function __construct(
         private readonly ToggleInterface $toggler,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -40,6 +46,12 @@ final class McpAccessVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
+        if (! $this->featureGate->isEnabled('mcp_access')) {
+            $vote?->addReason('MCP access is not available on the current plan.');
+
+            return false;
+        }
+
         return true;
     }
 }

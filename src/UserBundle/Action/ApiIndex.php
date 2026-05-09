@@ -13,17 +13,28 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use Symfony\Bridge\Twig\Attribute\Template;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-final class ApiIndex
+final class ApiIndex extends AbstractController
 {
-    /**
-     * @return array{}
-     */
-    #[Template('@SolidInvoiceUser/Api/index.html.twig')]
-    public function __invoke(Request $request): array
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+    ) {
+    }
+
+    public function __invoke(Request $request): Response
     {
-        return [];
+        if (! $this->featureGate->isEnabled('rest_api_access')) {
+            return $this->render('@SolidInvoiceUser/Api/gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt('rest_api_access'),
+            ]);
+        }
+
+        return $this->render('@SolidInvoiceUser/Api/index.html.twig');
     }
 }

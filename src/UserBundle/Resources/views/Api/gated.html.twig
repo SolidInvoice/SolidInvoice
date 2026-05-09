@@ -1,0 +1,18 @@
+{##
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set menuItem = 'api-tokens' %}
+
+{% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
+
+{% block title %}{{ ux_icon('tabler:key', {width: 24, height: 24, class: 'me-2'}) }}{{ "profile.api.title"|trans }}{% endblock title %}
+
+{% block profile_content %}
+    {{ banner|raw }}
+{% endblock profile_content %}

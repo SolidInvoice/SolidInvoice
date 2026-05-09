@@ -17,9 +17,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Form\Type\ApiTokenType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -45,6 +47,7 @@ final class CreateApiToken extends AbstractController
     public function __construct(
         private readonly Security $security,
         private readonly ApiTokenManager $apiTokenManager,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -71,6 +74,10 @@ final class CreateApiToken extends AbstractController
     #[LiveAction]
     public function save(EntityManagerInterface $entityManager): void
     {
+        if (! $this->featureGate->isEnabled('rest_api_access')) {
+            throw new AccessDeniedException('REST API access is not available on the current plan.');
+        }
+
         // Submit the form! If validation fails, an exception is thrown
         // and the component is automatically re-rendered with the errors
         $this->submitForm();

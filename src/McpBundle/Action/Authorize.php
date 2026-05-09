@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\UserEligibleCompanies;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\OAuth\ConsentService;
 use SolidInvoice\McpBundle\OAuth\OAuthUserEntity;
@@ -29,6 +30,7 @@ use SolidInvoice\McpBundle\OAuth\ScopeEntity;
 use SolidInvoice\McpBundle\OAuth\ServerFactoryInterface;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -60,6 +62,8 @@ final class Authorize
         private readonly LoggerInterface $logger,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
         private readonly Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -76,6 +80,22 @@ final class Authorize
             $request->getSession()->set('_security.main.target_path', $request->getUri());
 
             return new RedirectResponse($this->urlGenerator->generate('_login_main'));
+        }
+
+        $companies = $this->eligibleCompanies->getFor($user);
+
+        if ($companies === []) {
+            return $this->renderError('access_denied', 'No companies available for this user.', Response::HTTP_FORBIDDEN);
+        }
+
+        // Surface the upgrade page before any OAuth-server handshake so that
+        // gated tenants (whose plan does not include `mcp_access`) get a
+        // friendly error instead of an OAuth-protocol error string. Single
+        // pass over the user's companies — if none have the feature we deny.
+        $companies = $this->filterCompaniesWithMcpAccess($companies);
+
+        if ($companies === []) {
+            return $this->renderUpgradeRequired();
         }
 
         $server = $this->serverFactory->createAuthorizationServer();
@@ -97,12 +117,6 @@ final class Authorize
 
         if (! $client instanceof OAuthClient) {
             return $this->renderError('invalid_client', 'Unknown client.', Response::HTTP_BAD_REQUEST);
-        }
-
-        $companies = $this->eligibleCompanies->getFor($user);
-
-        if ($companies === []) {
-            return $this->renderError('access_denied', 'No companies available for this user.', Response::HTTP_FORBIDDEN);
         }
 
         $requestedScopeValues = array_map(
@@ -330,5 +344,29 @@ final class Authorize
             ]),
             $status,
         );
+    }
+
+    private function renderUpgradeRequired(): Response
+    {
+        return new Response(
+            $this->twig->render('@SolidInvoiceMcp/Authorize/upgrade_required.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt('mcp_access'),
+                'plan_label' => $this->upgradePromptProvider->menuLabel('mcp_access'),
+            ]),
+            Response::HTTP_FORBIDDEN,
+        );
+    }
+
+    /**
+     * @param list<Company> $companies
+     *
+     * @return list<Company>
+     */
+    private function filterCompaniesWithMcpAccess(array $companies): array
+    {
+        return array_values(array_filter(
+            $companies,
+            fn (Company $company): bool => $this->featureGate->isEnabled('mcp_access', $company),
+        ));
     }
 }

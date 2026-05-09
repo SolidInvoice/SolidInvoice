@@ -23,6 +23,12 @@ use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureValue;
+use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
+use SolidWorx\Platform\PlatformBundle\Feature\SubscribableInterface;
+use SolidWorx\Platform\PlatformBundle\Feature\UpgradeOptions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -51,7 +57,7 @@ final class HostRoutingListenerTest extends TestCase
         $repository = M::mock(CompanyRepository::class);
         $repository->shouldNotReceive('findOneByCustomDomain');
 
-        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), null);
+        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), new NoopFeatureGate(), null);
 
         $request = Request::create('https://anything.example/');
         $listener->onKernelRequest($this->event($request));
@@ -64,7 +70,7 @@ final class HostRoutingListenerTest extends TestCase
         $repository = M::mock(CompanyRepository::class);
         $repository->shouldNotReceive('findOneByCustomDomain');
 
-        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), '2025');
+        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), new NoopFeatureGate(), '2025');
 
         $request = Request::create('https://anything.example/install');
         $listener->onKernelRequest($this->event($request));
@@ -80,6 +86,7 @@ final class HostRoutingListenerTest extends TestCase
         $listener = new HostRoutingListener(
             $this->resolver($repository, 'https://app.example.com'),
             $this->router(),
+            new NoopFeatureGate(),
             '2025',
         );
 
@@ -100,6 +107,7 @@ final class HostRoutingListenerTest extends TestCase
         $listener = new HostRoutingListener(
             $this->resolver($repository, 'https://app.example.com'),
             $router,
+            new NoopFeatureGate(),
             '2025',
         );
 
@@ -127,6 +135,7 @@ final class HostRoutingListenerTest extends TestCase
         $listener = new HostRoutingListener(
             $this->resolver($repository, 'https://app.example.com'),
             $router,
+            new NoopFeatureGate(),
             '2025',
         );
 
@@ -150,6 +159,7 @@ final class HostRoutingListenerTest extends TestCase
         $listener = new HostRoutingListener(
             $this->resolver($repository, 'https://app.example.com'),
             $this->router(),
+            new NoopFeatureGate(),
             '2025',
         );
 
@@ -159,6 +169,60 @@ final class HostRoutingListenerTest extends TestCase
         $this->expectException(NotFoundHttpException::class);
 
         $listener->onKernelRequest($this->event($request));
+    }
+
+    public function testFallsBackToDefaultHostWhenCustomDomainFeatureGateDenies(): void
+    {
+        $company = new Company();
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldReceive('findOneByCustomDomain')->once()->with('downgraded.example')->andReturn($company);
+
+        $context = new RequestContext('', 'GET', 'app.example.com', 'http', 80, 0);
+        $router = M::mock(RouterInterface::class);
+        $router->shouldNotReceive('getContext');
+
+        $featureGate = $this->featureGate(static fn (string $key, ?SubscribableInterface $for): bool => $key !== 'custom_domain' || ! $for instanceof Company);
+
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $router,
+            $featureGate,
+            '2025',
+        );
+
+        $request = Request::create('https://downgraded.example/dashboard');
+        $listener->onKernelRequest($this->event($request));
+
+        $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
+        self::assertInstanceOf(ResolvedHost::class, $resolved);
+        self::assertSame(HostType::DefaultHost, $resolved->type);
+    }
+
+    public function testCustomDomainHonouredWhenFeatureGateGrants(): void
+    {
+        $company = new Company();
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldReceive('findOneByCustomDomain')->once()->with('acme.example')->andReturn($company);
+
+        $context = new RequestContext('', 'GET', 'acme.example', 'http', 80, 0);
+        $router = M::mock(RouterInterface::class);
+        $router->shouldReceive('getContext')->andReturn($context);
+
+        $featureGate = $this->featureGate(static fn (string $key, ?SubscribableInterface $for): bool => true);
+
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $router,
+            $featureGate,
+            '2025',
+        );
+
+        $request = Request::create('https://acme.example/dashboard');
+        $listener->onKernelRequest($this->event($request));
+
+        $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
+        self::assertInstanceOf(ResolvedHost::class, $resolved);
+        self::assertSame(HostType::CustomDomain, $resolved->type);
     }
 
     /**
@@ -191,5 +255,51 @@ final class HostRoutingListenerTest extends TestCase
     private function resolver(CompanyRepository $repository, string $applicationUrl = ''): CompanyDomainResolver
     {
         return new CompanyDomainResolver($repository, $applicationUrl);
+    }
+
+    /**
+     * @param callable(string, SubscribableInterface|null): bool $isEnabled
+     */
+    private function featureGate(callable $isEnabled): FeatureGate
+    {
+        return new class($isEnabled) implements FeatureGate {
+            /**
+             * @var callable(string, SubscribableInterface|null): bool
+             */
+            private $isEnabled;
+
+            /**
+             * @param callable(string, SubscribableInterface|null): bool $isEnabled
+             */
+            public function __construct(callable $isEnabled)
+            {
+                $this->isEnabled = $isEnabled;
+            }
+
+            public function resolve(string $featureKey, ?SubscribableInterface $for = null): FeatureValue
+            {
+                return new FeatureValue($featureKey, FeatureType::BOOLEAN, ($this->isEnabled)($featureKey, $for));
+            }
+
+            public function isEnabled(string $featureKey, ?SubscribableInterface $for = null): bool
+            {
+                return ($this->isEnabled)($featureKey, $for);
+            }
+
+            public function canUse(string $featureKey, int $currentUsage = 0, ?SubscribableInterface $for = null): bool
+            {
+                return $this->isEnabled($featureKey, $for);
+            }
+
+            public function remaining(string $featureKey, int $currentUsage = 0, ?SubscribableInterface $for = null): ?int
+            {
+                return null;
+            }
+
+            public function upgradeOptions(string $featureKey): UpgradeOptions
+            {
+                return new UpgradeOptions([]);
+            }
+        };
     }
 }

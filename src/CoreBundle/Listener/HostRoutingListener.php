@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Listener;
 use SolidInvoice\CoreBundle\Company\CompanyDomainResolver;
 use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -48,6 +49,7 @@ final class HostRoutingListener implements EventSubscriberInterface
     public function __construct(
         private readonly CompanyDomainResolver $resolver,
         private readonly RouterInterface $router,
+        private readonly FeatureGate $featureGate,
         private readonly ?string $installed = null,
     ) {
     }
@@ -75,6 +77,24 @@ final class HostRoutingListener implements EventSubscriberInterface
 
         if ($resolved->type === HostType::Unknown) {
             throw new NotFoundHttpException();
+        }
+
+        // Defensive: when a company has been downgraded to a plan without
+        // `custom_domain`, the row still carries `Company::customDomain` but
+        // the gate refuses to honour it. Fall back to canonical-host routing
+        // by re-tagging the resolution as DefaultHost — the request continues
+        // without forcing the downgraded tenant into the user's session, so
+        // they can still reach the canonical app via the standard selector.
+        if ($resolved->isCustomDomain()
+            && $resolved->company !== null
+            && ! $this->featureGate->isEnabled('custom_domain', $resolved->company)
+        ) {
+            $resolved = new ResolvedHost(
+                HostType::DefaultHost,
+                $resolved->host,
+                $resolved->scheme,
+                $resolved->port,
+            );
         }
 
         $request->attributes->set(self::REQUEST_ATTR, $resolved);

@@ -24,6 +24,8 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Security\Attribute as McpAttribute;
 use SolidInvoice\SaasBundle\Security\Voter\SubscriptionVoter;
 use SolidInvoice\SaasBundle\Service\SubscriptionEligibility;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -201,6 +203,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             new SubscriptionEligibility($provider, M::mock(ClockInterface::class)),
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),
+            new NoopFeatureGate(),
         );
 
         self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
@@ -214,6 +217,56 @@ final class SubscriptionVoterTest extends KernelTestCase
         );
 
         self::assertDeniedWithReason($voter, $attribute, 'Your subscription is not currently active.');
+    }
+
+    public function testDeniesWhenRestApiAccessFeatureIsDisabled(): void
+    {
+        $voter = $this->createVoter(
+            subscription: $this->createSubscription(SubscriptionStatus::ACTIVE),
+            featureGate: $this->featureGateDenying('rest_api_access'),
+        );
+
+        self::assertDeniedWithReason(
+            $voter,
+            ApiAttribute::ACCESS,
+            'REST API access is not available on the current plan.',
+        );
+    }
+
+    public function testDeniesWhenMcpAccessFeatureIsDisabled(): void
+    {
+        $voter = $this->createVoter(
+            subscription: $this->createSubscription(SubscriptionStatus::ACTIVE),
+            featureGate: $this->featureGateDenying('mcp_access'),
+        );
+
+        self::assertDeniedWithReason(
+            $voter,
+            McpAttribute::ACCESS,
+            'MCP access is not available on the current plan.',
+        );
+    }
+
+    #[DataProvider('provideAttributes')]
+    public function testGrantsWhenSubscriptionActiveAndFeatureGateAllows(string $attribute): void
+    {
+        $voter = $this->createVoter(
+            subscription: $this->createSubscription(SubscriptionStatus::ACTIVE),
+            featureGate: new NoopFeatureGate(),
+        );
+
+        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+    }
+
+    private function featureGateDenying(string $disabledKey): FeatureGate
+    {
+        $featureGate = M::mock(FeatureGate::class);
+        $featureGate->shouldReceive('isEnabled')
+            ->withArgs(static fn (string $key, ?object $for): bool => $key === $disabledKey)
+            ->andReturn(false);
+        $featureGate->shouldReceive('isEnabled')->andReturn(true);
+
+        return $featureGate;
     }
 
     private static function assertVoteResult(int $expected, SubscriptionVoter $voter, string $attribute): void
@@ -233,6 +286,7 @@ final class SubscriptionVoterTest extends KernelTestCase
     private function createVoter(
         ?Subscription $subscription = null,
         ?DateTimeImmutable $now = null,
+        ?FeatureGate $featureGate = null,
     ): SubscriptionVoter {
         $container = self::getContainer();
 
@@ -246,6 +300,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             new SubscriptionEligibility($subscriptionProvider, $clock),
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),
+            $featureGate ?? $container->get(FeatureGate::class),
         );
     }
 
