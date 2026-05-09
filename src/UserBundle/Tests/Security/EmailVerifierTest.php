@@ -118,7 +118,7 @@ final class EmailVerifierTest extends TestCase
 
         // Create a token using the same algorithm as VerifyEmailTokenGenerator
         $tokenGenerator = new VerifyEmailTokenGenerator('test_signing_key');
-        $token = $tokenGenerator->createToken($user->getId(), $user->getEmail());
+        $token = $tokenGenerator->createToken((string) $user->getId(), (string) $user->getEmail());
 
         // Set the necessary query parameters
         $request->query->set('token', $token);

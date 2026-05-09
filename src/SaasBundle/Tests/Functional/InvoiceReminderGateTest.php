@@ -90,7 +90,6 @@ final class InvoiceReminderGateTest extends KernelTestCase
 
         $router = $this->createStub(RouterInterface::class);
         $router->method('generate')
-            ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
         $logger = $this->createStub(LoggerInterface::class);
