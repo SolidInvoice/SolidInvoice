@@ -16,9 +16,11 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -27,6 +29,9 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +53,10 @@ final class Create extends AbstractController
         private readonly MailerInterface $mailer,
         private readonly TotalCalculator $totalCalculator,
         private readonly InvoiceFormManager $formManager,
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+        private readonly ClockInterface $clock,
     ) {
     }
 
@@ -56,6 +65,15 @@ final class Create extends AbstractController
      */
     public function __invoke(Request $request, ?Client $client = null): Response
     {
+        if (! $this->featureGate->canUse(
+            Feature::InvoicesPerMonth->value,
+            $this->invoiceRepository->countCreatedInMonth($this->clock->now()),
+        )) {
+            return $this->render('@SolidInvoiceInvoice/Default/invoice_gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt(Feature::InvoicesPerMonth->value),
+            ]);
+        }
+
         $totalClientsCount = $this->clientRepository->getTotalClients();
         if (1 === $totalClientsCount && ! $client instanceof Client) {
             $client = $this->clientRepository->findOneBy([]);

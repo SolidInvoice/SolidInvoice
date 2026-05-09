@@ -18,7 +18,9 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
@@ -41,6 +43,28 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
         } catch (NoResultException|NonUniqueResultException|Exception $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Counts users associated with the given company. Used by the `team_seats`
+     * quota gate. Scoped explicitly via the user-companies join (not the global
+     * `CompanyFilter`, since `User` participates as the *inverse* side of the
+     * Many-to-Many on `Company::users`).
+     */
+    public function getUserCountForCompany(Company $company): int
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('COUNT(u.id)')
+            ->innerJoin('u.companies', 'c')
+            ->where('c.id = :companyId')
+            ->setParameter('companyId', $company->getId(), UlidType::NAME);
+
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException|NonUniqueResultException|Exception) {
             return 0;
         }
     }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -22,11 +25,13 @@ final class Users
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly UserInvitationRepository $invitationRepository,
+        private readonly CompanySelector $companySelector,
+        private readonly CompanyRepository $companyRepository,
     ) {
     }
 
     /**
-     * @return array{totalActiveUsers: int, totalPendingInvitations: int, recentlyJoinedCount: int}
+     * @return array{totalActiveUsers: int, totalPendingInvitations: int, recentlyJoinedCount: int, seatsUsage: int}
      */
     #[Template('@SolidInvoiceUser/Users/index.html.twig')]
     public function __invoke(): array
@@ -35,10 +40,17 @@ final class Users
         $totalPendingInvitations = $this->invitationRepository->countPendingInvitations();
         $recentlyJoinedCount = $this->userRepository->getRecentlyJoinedCount(30);
 
+        $company = $this->companyRepository->find($this->companySelector->getCompany());
+        $seatsUsage = $company instanceof Company
+            ? $this->userRepository->getUserCountForCompany($company)
+                + $this->invitationRepository->countPending($company)
+            : 0;
+
         return [
             'totalActiveUsers' => $totalActiveUsers,
             'totalPendingInvitations' => $totalPendingInvitations,
             'recentlyJoinedCount' => $recentlyJoinedCount,
+            'seatsUsage' => $seatsUsage,
         ];
     }
 }

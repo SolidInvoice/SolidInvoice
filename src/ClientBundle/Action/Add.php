@@ -16,9 +16,12 @@ namespace SolidInvoice\ClientBundle\Action;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
-use Symfony\Bridge\Twig\Attribute\Template;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,21 +29,26 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use function assert;
 
-final class Add
+final class Add extends AbstractController
 {
     public function __construct(
         private readonly FormFactoryInterface $formFactory,
         private readonly RouterInterface $router,
-        private readonly ManagerRegistry $doctrine
+        private readonly ManagerRegistry $doctrine,
+        private readonly ClientRepository $clientRepository,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
-    /**
-     * @return array{form: FormView}|Response
-     */
-    #[Template('@SolidInvoiceClient/Default/add.html.twig')]
-    public function __invoke(Request $request): array | Response
+    public function __invoke(Request $request): Response
     {
+        if (! $this->featureGate->canUse(Feature::TotalClients->value, $this->clientRepository->getTotalClients())) {
+            return $this->render('@SolidInvoiceClient/Default/gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt(Feature::TotalClients->value),
+            ]);
+        }
+
         $client = new Client();
         $form = $this->formFactory->create(ClientType::class, $client);
         $form->handleRequest($request);
@@ -57,6 +65,8 @@ final class Add
             return new RedirectResponse($this->router->generate('_clients_view', ['id' => $client->getId()]));
         }
 
-        return ['form' => $form->createView()];
+        return $this->render('@SolidInvoiceClient/Default/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

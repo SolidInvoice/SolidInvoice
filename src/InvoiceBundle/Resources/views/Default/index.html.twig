@@ -28,6 +28,8 @@
 {% endblock %}
 
 {% block content %}
+    {{ feature_usage_banner('invoices_per_month', invoicesThisMonth) }}
+
     {% if recurring %}
         {# Recurring Invoices Stats Row #}
         <div class="row row-deck row-cards mb-4">

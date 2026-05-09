@@ -93,4 +93,32 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $alias = $queryBuilder->getRootAliases()[0];
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
     }
+
+    public function testCountPendingScopesByCompany(): void
+    {
+        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
+        $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
+
+        $registry = self::getContainer()->get('doctrine');
+        $em = $registry->getManager();
+        $company = $registry->getRepository(Company::class)->find($this->company->getId());
+
+        self::assertSame(0, $this->repository->countPending($company));
+
+        $pending = new UserInvitation();
+        $pending->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($company)
+            ->setStatus(UserInvitation::STATUS_PENDING);
+        $this->repository->save($pending);
+
+        $accepted = new UserInvitation();
+        $accepted->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($company)
+            ->setStatus('accepted');
+        $this->repository->save($accepted);
+
+        self::assertSame(1, $this->repository->countPending($company));
+    }
 }

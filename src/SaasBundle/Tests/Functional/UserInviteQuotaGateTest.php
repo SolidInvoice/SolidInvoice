@@ -24,60 +24,59 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
- * Verifies the SaaS feature-gate short-circuits the InvoiceBundle CreateRecurring
- * action with the upgrade banner when the `recurring_invoices` feature is
- * disabled, and lets the form render normally when the feature is enabled or
- * in self-hosted mode.
+ * Verifies the SaaS feature-gate short-circuits the UserBundle InviteUser action
+ * with the upgrade banner when the `team_seats` quota is exhausted, and lets
+ * the form render normally when under quota or in self-hosted mode.
  *
  * @group functional
  */
-final class RecurringInvoiceCreateGateTest extends WebTestCase
+final class UserInviteQuotaGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
 
-    public function testGatedCreateRendersUpgradeBanner(): void
+    public function testAtLimitRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
-        $featureGate = $this->buildFeatureGate(['recurring_invoices' => false]);
+        $featureGate = $this->buildFeatureGate(['team_seats' => false]);
 
         $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
         $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'recurring_invoices'
-                ? '<div class="alert alert-warning"><strong>Upgrade required for recurring</strong></div>'
+            ->willReturnCallback(static fn (string $key): string => $key === 'team_seats'
+                ? '<div class="alert alert-warning"><strong>Upgrade required for seats</strong></div>'
                 : '');
         $upgradePromptProvider->method('menuLabel')->willReturn(null);
 
         self::getContainer()->set(FeatureGate::class, $featureGate);
         self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
     }
 
-    public function testUngatedCreateBypassesBanner(): void
+    public function testUnderQuotaBypassesBanner(): void
     {
         $client = $this->bootClient();
 
-        $featureGate = $this->buildFeatureGate(['recurring_invoices' => true]);
+        $featureGate = $this->buildFeatureGate(['team_seats' => true]);
 
         $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
         $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->expects(self::never())->method('prompt');
+        $upgradePromptProvider->method('prompt')->willReturn('');
 
         self::getContainer()->set(FeatureGate::class, $featureGate);
         self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
     }
 
-    public function testSelfHostedCreateBypassesBanner(): void
+    public function testSelfHostedBypassesBanner(): void
     {
         $client = $this->bootClient();
 
@@ -90,10 +89,10 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
     }
 
     /**

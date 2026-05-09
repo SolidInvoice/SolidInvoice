@@ -21,6 +21,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
@@ -85,7 +86,29 @@ final class UserInvitationRepository extends ServiceEntityRepository
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception $e) {
+        } catch (NoResultException|NonUniqueResultException|Exception) {
+            return 0;
+        }
+    }
+
+    /**
+     * Counts pending invitations for the given company. Used by the
+     * `team_seats` quota gate to combine with the existing user count
+     * (a sent-but-not-yet-accepted invitation reserves a seat).
+     */
+    public function countPending(Company $company): int
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('COUNT(u.id)')
+            ->where('u.status = :status')
+            ->andWhere('u.company = :companyId')
+            ->setParameter('status', UserInvitation::STATUS_PENDING)
+            ->setParameter('companyId', $company->getId(), UlidType::NAME);
+
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException|NonUniqueResultException|Exception) {
             return 0;
         }
     }

@@ -16,14 +16,18 @@ namespace SolidInvoice\UserBundle\Action;
 use Exception;
 use Generator;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Type\UserInviteType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\UserInvitation\UserInvitation as SendUserInvitation;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,6 +49,8 @@ final class InviteUser extends AbstractController
         private readonly ValidatorInterface $validator,
         private readonly SendUserInvitation $userInvitation,
         private readonly UserInvitationRepository $userInvitationRepository,
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
@@ -53,6 +59,18 @@ final class InviteUser extends AbstractController
      */
     public function __invoke(Request $request): Response
     {
+        $company = $this->companyRepository->find($this->companySelector->getCompany());
+
+        if ($company instanceof Company && ! $this->featureGate->canUse(
+            Feature::TeamSeats->value,
+            $this->userRepository->getUserCountForCompany($company)
+                + $this->userInvitationRepository->countPending($company),
+        )) {
+            return $this->render('@SolidInvoiceUser/Users/invite_gated.html.twig', [
+                'banner' => $this->upgradePromptProvider->prompt(Feature::TeamSeats->value),
+            ]);
+        }
+
         $form = $this->createForm(UserInviteType::class);
 
         $form->handleRequest($request);
@@ -70,7 +88,7 @@ final class InviteUser extends AbstractController
             $invitedBy = $this->security->getUser();
             assert($invitedBy instanceof User);
 
-            $data->setCompany($this->companyRepository->find($this->companySelector->getCompany()));
+            $data->setCompany($company);
             $data->setInvitedBy($invitedBy);
             $data->setStatus(UserInvitation::STATUS_PENDING);
 

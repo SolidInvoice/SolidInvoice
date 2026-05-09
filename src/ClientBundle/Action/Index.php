@@ -45,6 +45,7 @@ final readonly class Index
         $filters = $this->entityManager->getFilters();
         $filters->disable('archivable');
         $totalArchivedClients = $this->clientRepository->getTotalClients(ClientStatus::Archived);
+        $totalClients = $this->clientRepository->getTotalClients();
         $filters->enable('archivable');
 
         // Get total contacts count
@@ -57,6 +58,7 @@ final readonly class Index
             'isArchived' => $isArchived,
             'totalActiveClients' => $totalActiveClients,
             'totalArchivedClients' => $totalArchivedClients,
+            'totalClients' => $totalClients,
             'totalContacts' => $totalContacts,
             'totalOutstanding' => $totalOutstanding,
         ];

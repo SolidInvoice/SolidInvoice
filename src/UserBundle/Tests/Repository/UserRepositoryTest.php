@@ -218,4 +218,22 @@ final class UserRepositoryTest extends KernelTestCase
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
         self::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }
+
+    public function testGetUserCountForCompanyOnlyCountsUsersInThatCompany(): void
+    {
+        self::assertSame(0, $this->repository->getUserCountForCompany($this->company));
+
+        $user = new User();
+        $user->setEmail($this->faker->email)
+            ->setPassword($this->faker->password)
+            ->addCompany($this->company);
+        $this->repository->save($user);
+
+        $userInOtherCompany = new User();
+        $userInOtherCompany->setEmail($this->faker->email)
+            ->setPassword($this->faker->password);
+        $this->repository->save($userInOtherCompany);
+
+        self::assertSame(1, $this->repository->getUserCountForCompany($this->company));
+    }
 }
