@@ -73,7 +73,12 @@
                             {{ form_row(form.currencyCode) }}
                             {%- if form.currencyCode.vars.feature_gated_active ?? false %}
                                 <small class="form-hint text-muted feature-gated-hint">
-                                    {{ upgrade_prompt('multi_currency') }}
+                                    {%- if form.currencyCode.vars.feature_gated_plan ?? null %}
+                                        {{ 'This feature is available on the %plan% plan. Upgrade to unlock it.'|trans({'%plan%': form.currencyCode.vars.feature_gated_plan}) }}
+                                    {%- else %}
+                                        {{ 'This feature requires a higher plan. Upgrade now to unlock it.'|trans }}
+                                    {%- endif %}
+                                    <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
                                 </small>
                             {%- endif %}
                         </div>
