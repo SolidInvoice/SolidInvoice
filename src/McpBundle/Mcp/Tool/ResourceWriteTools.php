@@ -74,7 +74,7 @@ final class ResourceWriteTools
      * @var array<string, list<string>>
      */
     private const array SETTABLE_FIELDS = [
-        Client::class => ['name', 'website', 'status', 'currency_code', 'vat_number'],
+        Client::class => ['name', 'website', 'status', 'currency_code'],
         Contact::class => ['first_name', 'last_name', 'email'],
         Tax::class => ['name', 'rate', 'type'],
     ];

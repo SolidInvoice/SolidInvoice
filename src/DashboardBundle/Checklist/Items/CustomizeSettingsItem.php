@@ -60,7 +60,6 @@ final readonly class CustomizeSettingsItem implements ChecklistItemInterface
             'system/company/contact_details/address',
             'system/company/contact_details/phone_number',
             'system/company/contact_details/email',
-            'system/company/vat_number',
         ];
 
         $configuredCount = 0;

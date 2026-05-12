@@ -71,7 +71,6 @@ class SystemConfigTest extends TestCase
             'system/company/contact_details/phone_number' => null,
             'system/company/currency' => 'USD',
             'system/company/logo' => null,
-            'system/company/vat_number' => null,
         ], $config->getAll());
     }
 

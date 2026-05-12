@@ -153,7 +153,6 @@ final class ChecklistItemsTest extends KernelTestCase
         $systemConfig->set('system/company/contact_details/address', '123 Main St');
         $systemConfig->set('system/company/contact_details/phone_number', '555-1234');
         $systemConfig->set('system/company/contact_details/email', 'hello@example.com');
-        $systemConfig->set('system/company/vat_number', 'VAT123456');
 
         $item = self::getContainer()->get(CustomizeSettingsItem::class);
 

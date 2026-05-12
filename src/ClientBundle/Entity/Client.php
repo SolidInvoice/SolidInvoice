@@ -38,6 +38,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -136,9 +137,12 @@ class Client implements Stringable
 
     private Currency $currency;
 
-    #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
-    private ?string $vatNumber = null;
+    /**
+     * @var Collection<int, TaxIdentifier>
+     */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: TaxIdentifier::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Serialize\Groups(['client_api:read'])]
+    private Collection $taxIdentifiers;
 
     /**
      * @var Collection<int, Contact>
@@ -218,6 +222,7 @@ class Client implements Stringable
         $this->recurringInvoices = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
+        $this->taxIdentifiers = new ArrayCollection();
 
         $this->setCredit(new Credit());
     }
@@ -451,16 +456,43 @@ class Client implements Stringable
         return $this;
     }
 
-    public function getVatNumber(): ?string
+    /**
+     * @return Collection<int, TaxIdentifier>
+     */
+    public function getTaxIdentifiers(): Collection
     {
-        return $this->vatNumber;
+        return $this->taxIdentifiers;
     }
 
-    public function setVatNumber(?string $vatNumber): self
+    public function addTaxIdentifier(TaxIdentifier $taxIdentifier): self
     {
-        $this->vatNumber = $vatNumber;
+        if (! $this->taxIdentifiers->contains($taxIdentifier)) {
+            $this->taxIdentifiers->add($taxIdentifier);
+            $taxIdentifier->setClient($this);
+        }
 
         return $this;
+    }
+
+    public function removeTaxIdentifier(TaxIdentifier $taxIdentifier): self
+    {
+        $this->taxIdentifiers->removeElement($taxIdentifier);
+
+        return $this;
+    }
+
+    /**
+     * Returns the value of the primary VAT TaxIdentifier, when one is configured.
+     */
+    public function getVatNumber(): ?string
+    {
+        foreach ($this->taxIdentifiers as $identifier) {
+            if ($identifier->isPrimary() && $identifier->getLabel() === 'VAT') {
+                return $identifier->getValue();
+            }
+        }
+
+        return null;
     }
 
     public function __toString(): string

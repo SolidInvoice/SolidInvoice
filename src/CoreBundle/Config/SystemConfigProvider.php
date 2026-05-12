@@ -16,7 +16,6 @@ use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use SolidInvoice\SettingsBundle\Form\Type\AddressType;
-use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -31,7 +30,6 @@ final class SystemConfigProvider implements ProviderInterface
             new Config('system/company/contact_details/email', null, null, EmailType::class),
             new Config('system/company/contact_details/phone_number', null, null, TextType::class),
             new Config('system/company/currency', $data['currency'] ?? null, null, CurrencyType::class),
-            new Config('system/company/vat_number', null, null, TaxNumberType::class),
         ];
     }
 }
