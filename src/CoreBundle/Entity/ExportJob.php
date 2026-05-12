@@ -40,6 +40,13 @@ class ExportJob
     #[ORM\Column(type: UlidType::NAME, unique: true)]
     private Ulid $id;
 
+    /**
+     * Stored as a bare ULID rather than an `#[ORM\ManyToOne]` to `User` on purpose.
+     * The export feature lives in CoreBundle, and depending on UserBundle from here
+     * would invert the dependency direction used elsewhere in the codebase. The
+     * `requested_by` FK constraint in the migration (`ON DELETE CASCADE`) still
+     * guarantees orphan cleanup at the database level.
+     */
     #[ORM\Column(type: UlidType::NAME)]
     private Ulid $requestedBy;
 
@@ -55,7 +62,14 @@ class ExportJob
     #[ORM\Column(type: Types::STRING, length: 512, nullable: true)]
     private ?string $archivePath = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    /**
+     * Size of the generated archive in bytes. The column uses INTEGER (signed
+     * 32-bit, ~2.1 GB) because Doctrine's BIGINT type returns a string on MySQL
+     * and would break the `?int` PHP property. ZIP archives produced by the
+     * exporter are well under this cap; if/when that changes, widen both the
+     * column type and the PHP property in tandem.
+     */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $fileSize = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]

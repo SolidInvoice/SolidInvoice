@@ -29,8 +29,9 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Filesystem\Filesystem;
 use ZipArchive;
 use function array_map;
+use function bin2hex;
+use function random_bytes;
 use function sys_get_temp_dir;
-use function uniqid;
 
 /**
  * Produces a ZIP archive containing one file per company-owned entity plus a manifest.
@@ -64,13 +65,26 @@ final class CompanyExporter
      */
     public function export(ExportJob $job): string
     {
+        // Defense in depth: the handler always switches company before invoking the
+        // exporter, but explicitly asserting it here means any future caller that
+        // forgets to switch (tests, console commands) fails loudly rather than
+        // silently exporting another tenant's rows for child entities that fall
+        // back to repository->findAll().
+        if ($this->companySelector->getCompany() === null) {
+            throw new RuntimeException('CompanyExporter requires an active company context (CompanySelector::switchCompany).');
+        }
+
         $manager = $this->registry->getManager();
         assert($manager instanceof EntityManagerInterface);
 
         $specs = $this->discovery->discover();
         $format = $job->getFormat();
 
-        $stagingDir = sys_get_temp_dir() . '/solidinvoice_export_' . $job->getId()->toBase58() . '_' . uniqid();
+        $stagingDir = sys_get_temp_dir()
+            . '/solidinvoice_export_'
+            . $job->getId()->toBase58()
+            . '_'
+            . bin2hex(random_bytes(8));
         $this->filesystem->mkdir($stagingDir, 0o755);
 
         try {

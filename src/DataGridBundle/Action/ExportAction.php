@@ -176,6 +176,20 @@ final class ExportAction
             throw new BadRequestHttpException('"context" must decode to an object.');
         }
 
+        // Defense-in-depth: context values are forwarded to each grid's initialize()
+        // method, which typically binds them as Doctrine parameters. Match the same
+        // key whitelist used for `gridFilters` so a tampered context cannot smuggle
+        // unexpected identifier shapes through.
+        foreach ($decoded as $key => $value) {
+            if (! is_string($key) || ! preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+                throw new BadRequestHttpException('Invalid context key.');
+            }
+
+            if ($value !== null && ! is_scalar($value)) {
+                throw new BadRequestHttpException(sprintf('Context value for "%s" must be a scalar or null.', $key));
+            }
+        }
+
         /** @var array<string, mixed> $decoded */
         return $decoded;
     }
