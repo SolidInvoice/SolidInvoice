@@ -153,30 +153,50 @@
                     gridFilters: gridFilters,
                     context: context|json_encode,
                 } %}
+                {% set exportFormats = [
+                    {value: 'csv',  label: 'CSV',  icon: 'tabler:file-type-csv',  hint: 'Spreadsheet-friendly'},
+                    {value: 'json', label: 'JSON', icon: 'tabler:braces',         hint: 'Machine-readable'},
+                    {value: 'xml',  label: 'XML',  icon: 'tabler:file-type-xml',  hint: 'Structured markup'},
+                ] %}
                 <div class="dropdown datagrid-export-dropdown">
                     <button
                         type="button"
-                        class="dropdown-toggle"
+                        class="btn btn-sm btn-ghost"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         aria-label="{{ 'Export'|trans }}"
-                        title="{{ 'Export'|trans }}"
                     >
                         {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                        <span class="d-none d-sm-inline ms-1">{{ 'Export'|trans }}</span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'csv'})) }}" class="dropdown-item" target="_blank" rel="noopener">
-                            {{ ux_icon('tabler:file-type-csv', {width: 16, height: 16}) }}
-                            {{ 'Export as CSV'|trans }}
-                        </a>
-                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'json'})) }}" class="dropdown-item" target="_blank" rel="noopener">
-                            {{ ux_icon('tabler:braces', {width: 16, height: 16}) }}
-                            {{ 'Export as JSON'|trans }}
-                        </a>
-                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'xml'})) }}" class="dropdown-item" target="_blank" rel="noopener">
-                            {{ ux_icon('tabler:file-type-xml', {width: 16, height: 16}) }}
-                            {{ 'Export as XML'|trans }}
-                        </a>
+                    <div class="dropdown-menu dropdown-menu-end datagrid-export-menu">
+                        <div class="datagrid-export-menu-header">
+                            <h6 class="datagrid-export-menu-title">
+                                {{ ux_icon('tabler:download', {width: 16, height: 16}) }}
+                                {{ 'Export'|trans }}
+                            </h6>
+                            <p class="datagrid-export-menu-subtitle">
+                                {{ 'Choose a format to download the filtered results.'|trans }}
+                            </p>
+                        </div>
+                        <div class="datagrid-export-menu-body">
+                            {% for format in exportFormats %}
+                                <a
+                                    href="{{ path('_datagrid_export', exportQuery|merge({format: format.value})) }}"
+                                    class="datagrid-export-option"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <span class="datagrid-export-option-icon">
+                                        {{ ux_icon(format.icon, {width: 20, height: 20}) }}
+                                    </span>
+                                    <span class="datagrid-export-option-text">
+                                        <span class="datagrid-export-option-label">{{ format.label|trans }}</span>
+                                        <span class="datagrid-export-option-hint">{{ format.hint|trans }}</span>
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
