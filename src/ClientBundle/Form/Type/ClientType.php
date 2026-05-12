@@ -72,7 +72,9 @@ class ClientType extends AbstractType
             $builder->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) use ($defaultCurrency): void {
                 $client = $event->getData();
 
-                if ($client instanceof Client) {
+                // Only override when a concrete default currency is available — passing null
+                // would clear the existing currency on the entity when editing.
+                if ($client instanceof Client && null !== $defaultCurrency) {
                     $client->setCurrencyCode($defaultCurrency);
                 }
             });

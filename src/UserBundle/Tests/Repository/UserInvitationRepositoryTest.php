@@ -100,7 +100,6 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
 
         $registry = self::getContainer()->get('doctrine');
-        $em = $registry->getManager();
         $company = $registry->getRepository(Company::class)->find($this->company->getId());
 
         self::assertSame(0, $this->repository->countPending($company));
@@ -112,6 +111,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
             ->setStatus(UserInvitation::STATUS_PENDING);
         $this->repository->save($pending);
 
+        // A same-company invitation in a non-pending status must not be counted.
         $accepted = new UserInvitation();
         $accepted->setEmail($this->faker->email)
             ->setInvitedBy($inviter)

@@ -14,14 +14,17 @@
     {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label">{{ label|trans }}</label>
+                <label class="form-label mb-0">{{ label|trans }}</label>
                 <span class="badge bg-azure-lt">
                     {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
                     {{ 'Subscription Required'|trans }}{% if feature_gated_plan|default(null) %} — {{ feature_gated_plan }}{% endif %}
                 </span>
             </div>
 
-            {{ parent() }}
+            {# Suppress the inner switch label to avoid duplicate-label visual #}
+            {{ form_widget(form, {parent_label_class: 'checkbox-switch', label: false}) }}
+            {{ form_help(form) }}
+            {{ form_errors(form) }}
 
             <div class="form-hint text-muted mt-2">
                 {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
@@ -36,14 +39,17 @@
     {% elseif trial_restricted_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label">{{ label|trans }}</label>
+                <label class="form-label mb-0">{{ label|trans }}</label>
                 <span class="badge bg-azure-lt">
                     {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
                     {{ 'Subscription Required'|trans }}
                 </span>
             </div>
 
-            {{ parent() }}
+            {# Suppress the inner switch label to avoid duplicate-label visual #}
+            {{ form_widget(form, {parent_label_class: 'checkbox-switch', label: false}) }}
+            {{ form_help(form) }}
+            {{ form_errors(form) }}
 
             <div class="form-hint text-muted mt-2">
                 {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}

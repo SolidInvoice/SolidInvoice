@@ -262,7 +262,7 @@ final class SubscriptionVoterTest extends KernelTestCase
     {
         $featureGate = M::mock(FeatureGate::class);
         $featureGate->shouldReceive('isEnabled')
-            ->withArgs(static fn (string $key, ?object $for): bool => $key === $disabledKey)
+            ->withArgs(static fn (string $key, ?object $_for): bool => $key === $disabledKey)
             ->andReturn(false);
         $featureGate->shouldReceive('isEnabled')->andReturn(true);
 
