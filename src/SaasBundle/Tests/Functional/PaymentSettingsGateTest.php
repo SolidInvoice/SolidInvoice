@@ -36,26 +36,20 @@ final class PaymentSettingsGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
+    private const string GATED_HEADLINE = 'Accept payments online';
+
     public function testGatedSettingsRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
         $featureGate = $this->buildFeatureGate(['online_payments' => false]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'online_payments'
-                ? '<div class="alert alert-warning"><strong>Upgrade required</strong></div>'
-                : '');
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/payments/methods');
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testUngatedSettingsBypassesBanner(): void
@@ -64,17 +58,12 @@ final class PaymentSettingsGateTest extends WebTestCase
 
         $featureGate = $this->buildFeatureGate(['online_payments' => true]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->expects(self::never())->method('prompt');
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/payments/methods');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testSelfHostedSettingsBypassesBanner(): void
@@ -93,7 +82,7 @@ final class PaymentSettingsGateTest extends WebTestCase
         $client->request('GET', '/payments/methods');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     /**

@@ -19,7 +19,6 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
@@ -46,7 +45,6 @@ final class CreateRecurring extends AbstractController
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly ClockInterface $clock,
     ) {
@@ -58,18 +56,14 @@ final class CreateRecurring extends AbstractController
     public function __invoke(Request $request, ?Client $client = null): Response
     {
         if (! $this->featureGate->isEnabled(Feature::RecurringInvoices->value)) {
-            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::RecurringInvoices->value),
-            ]);
+            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig');
         }
 
         if (! $this->featureGate->canUse(
             Feature::InvoicesPerMonth->value,
             $this->invoiceRepository->countCreatedInMonth($this->clock->now()),
         )) {
-            return $this->render('@SolidInvoiceInvoice/Default/invoice_gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::InvoicesPerMonth->value),
-            ]);
+            return $this->render('@SolidInvoiceInvoice/Default/invoice_gated.html.twig');
         }
 
         $totalClientsCount = $this->clientRepository->getTotalClients();

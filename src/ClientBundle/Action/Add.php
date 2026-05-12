@@ -17,7 +17,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,16 +36,13 @@ final class Add extends AbstractController
         private readonly ManagerRegistry $doctrine,
         private readonly ClientRepository $clientRepository,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
         if (! $this->featureGate->canUse(Feature::TotalClients->value, $this->clientRepository->getTotalClients())) {
-            return $this->render('@SolidInvoiceClient/Default/gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::TotalClients->value),
-            ]);
+            return $this->render('@SolidInvoiceClient/Default/gated.html.twig');
         }
 
         $client = new Client();

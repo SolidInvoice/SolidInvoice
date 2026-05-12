@@ -35,26 +35,20 @@ final class QuoteCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
+    private const string GATED_HEADLINE = 'Send branded quotes to your clients';
+
     public function testGatedCreateRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
         $featureGate = $this->buildFeatureGate(['quotes' => false]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'quotes'
-                ? '<div class="alert alert-warning"><strong>Upgrade required</strong></div>'
-                : '');
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/quotes/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testUngatedCreateBypassesBanner(): void
@@ -63,17 +57,12 @@ final class QuoteCreateGateTest extends WebTestCase
 
         $featureGate = $this->buildFeatureGate(['quotes' => true]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->expects(self::never())->method('prompt');
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/quotes/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testSelfHostedCreateBypassesBanner(): void
@@ -92,7 +81,7 @@ final class QuoteCreateGateTest extends WebTestCase
         $client->request('GET', '/quotes/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     /**

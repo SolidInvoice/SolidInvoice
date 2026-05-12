@@ -14,5 +14,10 @@
 {% block title %}{{ ux_icon('tabler:key', {width: 24, height: 24, class: 'me-2'}) }}{{ "profile.api.title"|trans }}{% endblock title %}
 
 {% block profile_content %}
-    {{ banner|raw }}
+    {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
+        feature: 'rest_api_access',
+        icon: 'tabler:api',
+        headline: 'Enable the REST API'|trans,
+        description: 'Integrate SolidInvoice with your other tools — manage invoices, clients, and payments programmatically via a full-featured REST API.'|trans,
+    } only %}
 {% endblock profile_content %}

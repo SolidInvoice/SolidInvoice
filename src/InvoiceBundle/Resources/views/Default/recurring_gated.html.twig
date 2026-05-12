@@ -12,5 +12,10 @@
 {% block title %}{{ 'invoice.menu.recurring.main'|trans|default('Recurring Invoices') }}{% endblock title %}
 
 {% block content %}
-    {{ banner|raw }}
+    {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
+        feature: 'recurring_invoices',
+        icon: 'tabler:repeat',
+        headline: 'Bill clients on a schedule'|trans,
+        description: 'Recurring invoices automatically bill your clients every week, month, or year — no manual work.'|trans,
+    } only %}
 {% endblock content %}

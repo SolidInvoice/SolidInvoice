@@ -1,0 +1,69 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Full-page "feature gated" empty-state card. Rendered by every gated full-page
+ # action when the current plan does not include the requested feature.
+ #
+ # Lives in CoreBundle (not SaasBundle) so it is reachable on every deployment —
+ # including self-hosted, where the gate never fires in production but tests
+ # may force-fire it via mocked FeatureGate. `feature_required_plan_label()` is
+ # registered in both SaasBundle (real) and CoreBundle (no-op), so the resolved
+ # plan label gracefully falls back to null on self-hosted.
+ #
+ # @param string      feature      - Feature key (e.g. 'quotes'). Used to resolve
+ #                                   the cheapest upgrade plan via
+ #                                   `feature_required_plan_label()`.
+ # @param string      icon         - Tabler icon name. Default 'tabler:lock'.
+ # @param string      headline     - Bold title. Default 'This feature requires an upgrade'.
+ # @param string|null description  - One-sentence value prop shown under the title.
+ #                                   Default null (no description rendered).
+ #}
+{% set plan_name = feature_required_plan_label(feature) %}
+{% set _icon = icon|default('tabler:lock') %}
+{% set _headline = headline|default('This feature requires an upgrade'|trans) %}
+{% set _description = description|default(null) %}
+
+<div class="card card-md">
+    <div class="card-body">
+        <div class="empty">
+            <div class="empty-icon">
+                {{ ux_icon(_icon, {width: 64, height: 64, class: 'text-primary'}) }}
+            </div>
+
+            <p class="empty-title">{{ _headline }}</p>
+
+            {% if plan_name %}
+                <p class="empty-subtitle text-secondary">
+                    {{ 'Available on the %plan% plan and higher.'|trans({'%plan%': plan_name}) }}
+                </p>
+            {% endif %}
+
+            {% if _description %}
+                <p class="text-muted mt-2 mb-0" style="max-width: 36rem; margin-left: auto; margin-right: auto;">
+                    {{ _description }}
+                </p>
+            {% endif %}
+
+            <div class="empty-action">
+                {% if plan_name %}
+                    <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary">
+                        {{ ux_icon('tabler:arrow-up-circle', {width: 18, height: 18}) }}
+                        {{ 'Upgrade to %plan%'|trans({'%plan%': plan_name}) }}
+                    </a>
+                    <a href="{{ path('saas_subscription_plans') }}" class="btn btn-link ms-2">
+                        {{ 'View all plans'|trans }}
+                    </a>
+                {% else %}
+                    <p class="text-muted mb-0">
+                        {{ 'Contact your administrator to enable this feature.'|trans }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
