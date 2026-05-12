@@ -18,7 +18,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -48,7 +47,6 @@ final class Create extends AbstractController
         private readonly TotalCalculator $totalCalculator,
         private readonly QuoteFormManager $formManager,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
@@ -58,9 +56,7 @@ final class Create extends AbstractController
     public function __invoke(Request $request, ?Client $client = null): Response
     {
         if (! $this->featureGate->isEnabled(Feature::Quotes->value)) {
-            return $this->render('@SolidInvoiceQuote/Default/gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::Quotes->value),
-            ]);
+            return $this->render('@SolidInvoiceQuote/Default/gated.html.twig');
         }
 
         $totalClientsCount = $this->repository->getTotalClients();

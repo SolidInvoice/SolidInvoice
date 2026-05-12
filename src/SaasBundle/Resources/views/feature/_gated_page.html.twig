@@ -1,0 +1,13 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Thin wrapper for backwards compatibility — the canonical partial lives in
+ # CoreBundle so it is reachable on every deployment. Forwards all parameters
+ # transparently via the implicit context.
+ #}
+{% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' %}

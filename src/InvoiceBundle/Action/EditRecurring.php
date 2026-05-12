@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -41,7 +40,6 @@ final class EditRecurring extends AbstractController
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
@@ -51,9 +49,7 @@ final class EditRecurring extends AbstractController
     public function __invoke(Request $request, RecurringInvoice $invoice): Response
     {
         if (! $this->featureGate->isEnabled(Feature::RecurringInvoices->value)) {
-            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::RecurringInvoices->value),
-            ]);
+            return $this->render('@SolidInvoiceInvoice/Default/recurring_gated.html.twig');
         }
 
         $form = $this->formFactory->create(RecurringInvoiceType::class, $invoice, [

@@ -35,26 +35,20 @@ final class UserInviteQuotaGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
+    private const string GATED_HEADLINE = 'Team seat limit reached';
+
     public function testAtLimitRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
         $featureGate = $this->buildFeatureGate(['team_seats' => false]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'team_seats'
-                ? '<div class="alert alert-warning"><strong>Upgrade required for seats</strong></div>'
-                : '');
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
+        self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testUnderQuotaBypassesBanner(): void
@@ -63,17 +57,12 @@ final class UserInviteQuotaGateTest extends WebTestCase
 
         $featureGate = $this->buildFeatureGate(['team_seats' => true]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->method('prompt')->willReturn('');
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testSelfHostedBypassesBanner(): void
@@ -92,7 +81,7 @@ final class UserInviteQuotaGateTest extends WebTestCase
         $client->request('GET', '/users/invite');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for seats', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     /**

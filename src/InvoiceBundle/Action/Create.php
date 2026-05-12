@@ -20,7 +20,6 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -55,7 +54,6 @@ final class Create extends AbstractController
         private readonly InvoiceFormManager $formManager,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
         private readonly ClockInterface $clock,
     ) {
     }
@@ -69,9 +67,7 @@ final class Create extends AbstractController
             Feature::InvoicesPerMonth->value,
             $this->invoiceRepository->countCreatedInMonth($this->clock->now()),
         )) {
-            return $this->render('@SolidInvoiceInvoice/Default/invoice_gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::InvoicesPerMonth->value),
-            ]);
+            return $this->render('@SolidInvoiceInvoice/Default/invoice_gated.html.twig');
         }
 
         $totalClientsCount = $this->clientRepository->getTotalClients();

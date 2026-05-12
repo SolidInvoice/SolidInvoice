@@ -36,27 +36,21 @@ final class ApiTokenCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
+    private const string GATED_HEADLINE = 'Enable the REST API';
+
     public function testGatedIndexRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
         $featureGate = $this->buildFeatureGate(['rest_api_access' => false]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'rest_api_access'
-                ? '<div class="alert alert-warning"><strong>API access locked</strong></div>'
-                : '');
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/profile/api');
 
         self::assertResponseIsSuccessful();
         $body = (string) $client->getResponse()->getContent();
-        self::assertStringContainsString('API access locked', $body);
+        self::assertStringContainsString(self::GATED_HEADLINE, $body);
         // Confirm the live component (and its create-button) is NOT in the gated page
         self::assertStringNotContainsString('id="api-token-', $body);
     }
@@ -67,18 +61,13 @@ final class ApiTokenCreateGateTest extends WebTestCase
 
         $featureGate = $this->buildFeatureGate(['rest_api_access' => true]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->expects(self::never())->method('prompt');
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/profile/api');
 
         self::assertResponseIsSuccessful();
         $body = (string) $client->getResponse()->getContent();
-        self::assertStringNotContainsString('API access locked', $body);
+        self::assertStringNotContainsString(self::GATED_HEADLINE, $body);
     }
 
     public function testSelfHostedIndexRendersTokenList(): void
@@ -97,7 +86,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
         $client->request('GET', '/profile/api');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('API access locked', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     /**

@@ -12,5 +12,10 @@
 {% block title %}{{ 'invoice.action.create'|trans }}{% endblock title %}
 
 {% block content %}
-    {{ banner|raw }}
+    {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
+        feature: 'invoices_per_month',
+        icon: 'tabler:file-invoice',
+        headline: 'Monthly invoice limit reached'|trans,
+        description: 'You have hit your plan\'s monthly invoice quota. Upgrade to keep invoicing this month.'|trans,
+    } only %}
 {% endblock content %}

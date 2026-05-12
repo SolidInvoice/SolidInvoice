@@ -17,7 +17,6 @@ use Exception;
 use Generator;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\SaasBundle\Feature\Feature;
@@ -50,7 +49,6 @@ final class InviteUser extends AbstractController
         private readonly SendUserInvitation $userInvitation,
         private readonly UserInvitationRepository $userInvitationRepository,
         private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 
@@ -66,9 +64,7 @@ final class InviteUser extends AbstractController
             $this->userRepository->getUserCountForCompany($company)
                 + $this->userInvitationRepository->countPending($company),
         )) {
-            return $this->render('@SolidInvoiceUser/Users/invite_gated.html.twig', [
-                'banner' => $this->upgradePromptProvider->prompt(Feature::TeamSeats->value),
-            ]);
+            return $this->render('@SolidInvoiceUser/Users/invite_gated.html.twig');
         }
 
         $form = $this->createForm(UserInviteType::class);

@@ -36,26 +36,20 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
+    private const string GATED_HEADLINE = 'Bill clients on a schedule';
+
     public function testGatedCreateRendersUpgradeBanner(): void
     {
         $client = $this->bootClient();
 
         $featureGate = $this->buildFeatureGate(['recurring_invoices' => false]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('prompt')
-            ->willReturnCallback(static fn (string $key): string => $key === 'recurring_invoices'
-                ? '<div class="alert alert-warning"><strong>Upgrade required for recurring</strong></div>'
-                : '');
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testUngatedCreateBypassesBanner(): void
@@ -64,17 +58,12 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
 
         $featureGate = $this->buildFeatureGate(['recurring_invoices' => true]);
 
-        $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
-        $upgradePromptProvider->method('menuLabel')->willReturn(null);
-        $upgradePromptProvider->expects(self::never())->method('prompt');
-
         self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradePromptProvider);
 
         $client->request('GET', '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     public function testSelfHostedCreateBypassesBanner(): void
@@ -93,7 +82,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
         $client->request('GET', '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('Upgrade required for recurring', (string) $client->getResponse()->getContent());
+        self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
     }
 
     /**
