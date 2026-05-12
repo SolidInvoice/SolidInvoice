@@ -34,6 +34,10 @@ use function strstr;
 /**
  * Extracts raw, export-friendly values from entities using grid column definitions.
  *
+ * Every row starts with the entity's primary identifier as `id` (base58 for ULIDs),
+ * regardless of whether the grid exposes an `id` column — this guarantees exported
+ * rows are uniquely addressable for downstream import/sync flows.
+ *
  * Relation columns (backed by a Doctrine association) emit two keys per column:
  *   - `{field}`     the display label (column's formatValue output, or the related entity's __toString)
  *   - `{field}_id`  the related entity's ULID (base58)
@@ -62,7 +66,7 @@ final class GridRowExtractor
     public function extract(array $columns, object $entity): array
     {
         $metadata = $this->metadataFor($entity::class);
-        $row = [];
+        $row = ['id' => $this->extractEntityId($entity, $metadata)];
 
         foreach ($columns as $column) {
             foreach ($this->extractColumn($column, $entity, $metadata) as $key => $value) {
@@ -71,6 +75,41 @@ final class GridRowExtractor
         }
 
         return $row;
+    }
+
+    /**
+     * Returns the entity's primary identifier as a string. ULIDs are encoded as
+     * base58 for compactness and consistency with relation `_id` fields.
+     */
+    private function extractEntityId(object $entity, ?ClassMetadata $metadata): ?string
+    {
+        if ($metadata !== null) {
+            $values = $metadata->getIdentifierValues($entity);
+            if ($values !== []) {
+                return $this->stringifyIdentifier(reset($values));
+            }
+        }
+
+        try {
+            $id = $this->propertyAccessor->getValue($entity, 'id');
+        } catch (NoSuchPropertyException) {
+            return null;
+        }
+
+        return $this->stringifyIdentifier($id);
+    }
+
+    private function stringifyIdentifier(mixed $id): ?string
+    {
+        if ($id instanceof Ulid) {
+            return $id->toBase58();
+        }
+
+        if (is_scalar($id)) {
+            return (string) $id;
+        }
+
+        return null;
     }
 
     /**
@@ -177,15 +216,7 @@ final class GridRowExtractor
             return null;
         }
 
-        if ($id instanceof Ulid) {
-            return $id->toBase58();
-        }
-
-        if (is_scalar($id)) {
-            return (string) $id;
-        }
-
-        return null;
+        return $this->stringifyIdentifier($id);
     }
 
     /**
