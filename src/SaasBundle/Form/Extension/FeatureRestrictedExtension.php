@@ -61,7 +61,7 @@ final class FeatureRestrictedExtension extends AbstractTypeExtension
         $view->vars['disabled'] = true;
         $view->vars['feature_gated_active'] = true;
         $view->vars['feature_gated_plan'] = $this->planLabelProvider->menuLabel($featureKey);
-        $view->vars['attr']['class'] = ($view->vars['attr']['class'] ?? '') . ' feature-gated';
+        $view->vars['attr']['class'] = trim(($view->vars['attr']['class'] ?? '') . ' feature-gated');
 
         if (isset($view->vars['checked'])) {
             $view->vars['checked'] = false;

@@ -42,7 +42,10 @@ final class FeatureTwigFunctionsTest extends KernelTestCase
     protected static function createKernel(array $options = []): SaasTestKernel
     {
         $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debug = $options['debug'] ?? (bool) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true);
+        $debugRaw = $options['debug'] ?? $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
+        $debug = is_bool($debugRaw)
+            ? $debugRaw
+            : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
 
         return new SaasTestKernel($env, $debug);
     }
