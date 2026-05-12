@@ -65,10 +65,9 @@
 
             {# Company Details #}
             <div class="company-details" style="font-size: 9pt; color: #475569; line-height: 1.6;">
-                {% set vatNumber = setting('system/company/vat_number') %}
-                {% if vatNumber is not empty %}
-                    <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ vatNumber }}</div>
-                {% endif %}
+                {% for identifier in tax_identifiers() %}
+                    <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+                {% endfor %}
 
                 {% set email = setting('system/company/contact_details/email') %}
                 {% if email is not empty %}
@@ -185,9 +184,9 @@
 
     {# Client Details - Simplified: VAT, Address, Primary Contact Email only #}
     <div class="client-details" style="font-size: 9pt; color: #475569; line-height: 1.6;">
-        {% if quote.client.vatNumber is not empty %}
-            <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ quote.client.vatNumber }}</div>
-        {% endif %}
+        {% for identifier in tax_identifiers(quote.client) %}
+            <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+        {% endfor %}
 
         {% for clientAddress in quote.client.addresses %}
             <div>{{ clientAddress|replace({"\n": ", "}) }}</div>

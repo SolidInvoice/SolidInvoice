@@ -21,10 +21,12 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class ClientReadTools
@@ -33,6 +35,7 @@ final class ClientReadTools
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly PaymentRepository $paymentRepository,
+        private readonly EntityNormalizer $normalizer,
         private readonly McpScopeGuard $scopeGuard,
     ) {
     }
@@ -110,5 +113,30 @@ final class ClientReadTools
             'total_paid_amount' => $totalPaid,
             'currency' => $client->getCurrencyCode(),
         ];
+    }
+
+    /**
+     * List the tax identifiers configured for a client.
+     *
+     * @param string $client_id Client ULID
+     *
+     * @return list<array<string, mixed>>
+     */
+    #[McpTool(name: 'list_client_tax_identifiers', description: 'List the tax identifiers (e.g. VAT, GSTIN, TIN) configured for a client.')]
+    #[McpScopeRequired(McpScope::Read)]
+    public function listTaxIdentifiers(string $client_id): array
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
+
+        if (! $client instanceof Client) {
+            throw new ToolCallException(sprintf('Client %s not found.', $client_id));
+        }
+
+        return array_values(array_map(
+            fn (TaxIdentifier $identifier): array => $this->normalizer->normalize($identifier),
+            $client->getTaxIdentifiers()->toArray(),
+        ));
     }
 }

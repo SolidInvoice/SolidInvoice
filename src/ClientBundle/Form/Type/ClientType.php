@@ -19,6 +19,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
+use SolidInvoice\TaxBundle\Form\Type\TaxIdentifierType;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -105,6 +107,33 @@ class ClientType extends AbstractType
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'taxIdentifiers',
+            LiveCollectionType::class,
+            [
+                'entry_type' => TaxIdentifierType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+            ]
+        );
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
+            $client = $event->getData();
+
+            if (! $client instanceof Client) {
+                return;
+            }
+
+            if ($client->getTaxIdentifiers()->isEmpty()) {
+                $identifier = new TaxIdentifier();
+                $identifier->setLabel('VAT');
+                $identifier->setPrimary(true);
+                $client->addTaxIdentifier($identifier);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

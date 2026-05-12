@@ -64,10 +64,9 @@
                                     </div>
                                 {% endif %}
                                 <h2 class="ext-doc-company-name mb-1">{{ company_name() }}</h2>
-                                {% set vatNumber = setting('system/company/vat_number') %}
-                                {% if vatNumber is not empty %}
-                                    <div class="ext-doc-vat-number">{{ 'tax.vat_number'|trans }}: {{ vatNumber }}</div>
-                                {% endif %}
+                                {% for identifier in tax_identifiers() %}
+                                    <div class="ext-doc-vat-number">{{ identifier.label }}: {{ identifier.value }}</div>
+                                {% endfor %}
                             </div>
                             <div class="col-6 text-end">
                                 <div class="ext-doc-number-label text-uppercase small mb-1">{{ 'quote.title'|trans({'%id%': ''}) }}</div>
@@ -118,9 +117,9 @@
                                 <div class="ext-doc-party-label text-uppercase small mb-2">{{ 'quote.to'|trans }}</div>
                                 <div class="ext-doc-party-name fw-bold mb-2">{{ quote.client }}</div>
 
-                                {% if quote.client.vatNumber is not empty %}
-                                    <div class="ext-doc-party-detail">{{ 'tax.vat_number'|trans }}: {{ quote.client.vatNumber }}</div>
-                                {% endif %}
+                                {% for identifier in tax_identifiers(quote.client) %}
+                                    <div class="ext-doc-party-detail">{{ identifier.label }}: {{ identifier.value }}</div>
+                                {% endfor %}
 
                                 {% for address in quote.client.addresses %}
                                     <div class="ext-doc-party-detail">{{ address }}</div>

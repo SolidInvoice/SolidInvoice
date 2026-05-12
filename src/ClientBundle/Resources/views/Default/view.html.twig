@@ -41,12 +41,12 @@
                             <span>{{ client.currencyCode }}</span>
                         </span>
                     {% endif %}
-                    {% if client.vatNumber is not empty %}
+                    {% for identifier in tax_identifiers(client) %}
                         <span class="client-hero-meta-item">
                             {{ ux_icon('tabler:receipt-tax', {width: 16, height: 16}) }}
-                            <span>{{ client.vatNumber }}</span>
+                            <span>{{ identifier.label }}: {{ identifier.value }}</span>
                         </span>
-                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
 

@@ -19,9 +19,9 @@
             {{ invoice.client }}
         </div>
         <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
-            {% if invoice.client.vatNumber is not empty %}
-                <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ invoice.client.vatNumber }}</div>
-            {% endif %}
+            {% for identifier in tax_identifiers(invoice.client) %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+            {% endfor %}
 
             {% for clientAddress in invoice.client.addresses %}
                 <div>{{ clientAddress|replace({"\n": ", "}) }}</div>
@@ -44,10 +44,9 @@
             {{ company_name() }}
         </div>
         <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
-            {% set vatNumber = setting('system/company/vat_number') %}
-            {% if vatNumber is not empty %}
-                <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ vatNumber }}</div>
-            {% endif %}
+            {% for identifier in tax_identifiers() %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+            {% endfor %}
 
             {% set companyEmail = setting('system/company/contact_details/email') %}
             {% if companyEmail is not empty %}

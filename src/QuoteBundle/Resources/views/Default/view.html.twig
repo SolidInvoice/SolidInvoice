@@ -191,13 +191,12 @@
                         <div class="doc-party-label">{{ 'quote.from'|trans }}</div>
                         <h3 class="doc-party-name">{{ company_name() }}</h3>
 
-                        {% set vatNumber = setting('system/company/vat_number') %}
-                        {% if vatNumber is not empty %}
+                        {% for identifier in tax_identifiers() %}
                             <div class="doc-party-detail">
-                                <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
-                                <span class="detail-value">{{ vatNumber }}</span>
+                                <span class="detail-label">{{ identifier.label }}</span>
+                                <span class="detail-value">{{ identifier.value }}</span>
                             </div>
-                        {% endif %}
+                        {% endfor %}
 
                         {% set email = setting('system/company/contact_details/email') %}
                         {% if email is not empty %}
@@ -239,12 +238,12 @@
                             </div>
                         {% endif %}
 
-                        {% if quote.client.vatNumber is not empty %}
+                        {% for identifier in tax_identifiers(quote.client) %}
                             <div class="doc-party-detail">
-                                <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
-                                <span class="detail-value">{{ quote.client.vatNumber }}</span>
+                                <span class="detail-label">{{ identifier.label }}</span>
+                                <span class="detail-value">{{ identifier.value }}</span>
                             </div>
-                        {% endif %}
+                        {% endfor %}
 
                         {% for address in quote.client.addresses %}
                             <div class="doc-party-detail">

@@ -16,9 +16,9 @@
 {% if client.website is not empty -%}
 {{ 'client.create.details.website'|trans({}, 'email') }}: {{ client.website }}
 {% endif -%}
-{% if client.vatNumber is not empty -%}
-{{ 'client.create.details.vat_number'|trans({}, 'email') }}: {{ client.vatNumber }}
-{% endif %}
+{% for identifier in tax_identifiers(client) -%}
+{{ identifier.label }}: {{ identifier.value }}
+{% endfor %}
 
 {% if client.contacts|length > 0 %}
 {{ '-'|repeat(60) }}

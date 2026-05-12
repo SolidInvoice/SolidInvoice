@@ -25,12 +25,11 @@
                             From:
                             <h4>{{ company_name() }}</h4>
 
-                            {% set vatNumber = setting('system/company/vat_number') %}
-                            {% if vatNumber is not empty %}
+                            {% for identifier in tax_identifiers() %}
                                 <p>
-                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ vatNumber }}
+                                    <strong>{{ identifier.label }}</strong> {{ identifier.value }}
                                 </p>
-                            {% endif %}
+                            {% endfor %}
 
                             {% set email = setting('system/company/contact_details/email') %}
                             {% if email is not empty %}
@@ -64,11 +63,11 @@
                                 </p>
                             {% endif %}
 
-                            {% if invoice.client.vatNumber is not empty %}
+                            {% for identifier in tax_identifiers(invoice.client) %}
                                 <p>
-                                    <strong>{{ 'tax.vat_number'|trans }}</strong> {{ invoice.client.vatNumber }}
+                                    <strong>{{ identifier.label }}</strong> {{ identifier.value }}
                                 </p>
-                            {% endif %}
+                            {% endfor %}
 
                             {% for address in invoice.client.addresses %}
                                 <address>

@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"taxIdentifiers":[{"label":"VAT","value":"","primary":"1"}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
@@ -307,6 +307,54 @@
 
                     <div class="add-item-action">
                         <button type="button" id="client_contacts_add" name="client[contacts][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts]" class="btn btn-outline-primary add-item-btn btn">Add Contact</button>
+                    </div>
+                </div>
+            </section>
+
+                        <section class="form-page-section client-form-section-optional" id="client-tax-identifiers-collection">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 14l6-6"></path><path fill="currentColor" d="M9 8.5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0m5 5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2l-2 2l-2-2l-2 2l-2-2z"></path></g></svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">
+                            client.tax_identifiers.info
+                            <span class="badge bg-secondary-lt ms-1">Optional</span>
+                        </h2>
+                        <p class="section-description">client.form.tax_identifiers_description</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="tax-identifiers-list">
+                                                    <fieldset class="mb-3">                
+    <div id="client_taxIdentifiers_0">
+<div class="mb-3">                
+            <label class="control-label form-label" for="client_taxIdentifiers_0_label">Label</label><select id="client_taxIdentifiers_0_label" name="client[taxIdentifiers][0][label]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="VAT" selected>VAT</option>
+<option value="GSTIN">GSTIN</option>
+<option value="TIN">TIN</option>
+<option value="ABN">ABN</option>
+<option value="CNPJ">CNPJ</option>
+<option value="TRN">TRN</option>
+<option value="Other">Other</option></select>
+</div>
+<div class="mb-3">                
+            <label class="control-label form-label" for="client_taxIdentifiers_0_value">Value</label><input type="text" id="client_taxIdentifiers_0_value" name="client[taxIdentifiers][0][value]" class="form-control">
+</div>                                <div class="form-switch-field">
+            <div class="form-switch-wrapper"><div class="form-check form-switch">
+<input type="checkbox" id="client_taxIdentifiers_0_primary" name="client[taxIdentifiers][0][primary]" class="form-check-input" value="1" checked>
+        <label class="form-check-label checkbox-switch" for="client_taxIdentifiers_0_primary">Primary</label>
+</div></div>
+</div>
+    </div>
+</fieldset>
+<div class="mb-3"><button type="button" id="client_taxIdentifiers_0_delete" name="client[taxIdentifiers][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[taxIdentifiers]" data-live-index-param="0" class="btn-secondary btn">Delete</button></div>
+                                            </div>
+
+                    
+
+                    <div class="add-item-action">
+                        <button type="button" id="client_taxIdentifiers_add" name="client[taxIdentifiers][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[taxIdentifiers]" class="btn btn-outline-primary add-item-btn btn">client.tax_identifiers.add</button>
                     </div>
                 </div>
             </section>
