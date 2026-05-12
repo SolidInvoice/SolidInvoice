@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -105,6 +106,36 @@ class Tax implements Stringable
     )]
     private ?string $type = null;
 
+    #[ORM\Column(name: 'category', type: Types::STRING, length: 32, enumType: TaxCategory::class, options: ['default' => TaxCategory::Standard->value])]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'enum' => [
+                TaxCategory::Standard->value,
+                TaxCategory::ZeroRated->value,
+                TaxCategory::Exempt->value,
+                TaxCategory::OutOfScope->value,
+                TaxCategory::ReverseCharge->value,
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => 'string',
+            'enum' => [
+                TaxCategory::Standard->value,
+                TaxCategory::ZeroRated->value,
+                TaxCategory::Exempt->value,
+                TaxCategory::OutOfScope->value,
+                TaxCategory::ReverseCharge->value,
+            ],
+        ]
+    )]
+    private TaxCategory $category = TaxCategory::Standard;
+
+    #[ORM\Column(name: 'compound', type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
+    private bool $compound = false;
+
     /**
      * @var Collection<int, Line>
      */
@@ -174,6 +205,30 @@ class Tax implements Stringable
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCategory(): TaxCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(TaxCategory $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function isCompound(): bool
+    {
+        return $this->compound;
+    }
+
+    public function setCompound(bool $compound): self
+    {
+        $this->compound = $compound;
 
         return $this;
     }

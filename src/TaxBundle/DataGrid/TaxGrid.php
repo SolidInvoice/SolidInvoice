@@ -17,7 +17,9 @@ use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
 #[AsDataGrid(name: 'tax_grid', title: 'Tax Rates')]
@@ -35,6 +37,9 @@ final class TaxGrid extends Grid
             StringColumn::new('rate')
                 ->formatValue(static fn (string $value) => $value . '%'),
             StringColumn::new('type'),
+            StringColumn::new('category')
+                ->formatValue(static fn (mixed $value) => $value instanceof TaxCategory ? $value->getLabel() : (string) $value)
+                ->filter(ChoiceFilter::new('category', array_column(array_map(static fn (TaxCategory $c) => [$c->value, $c->getLabel()], TaxCategory::cases()), 1, 0))->multiple()),
             DateTimeColumn::new('created')
                 ->format('d F Y'),
         ];

@@ -53,6 +53,8 @@ final class TaxTest extends ApiTestCase
             'name' => 'VAT',
             'rate' => 15.0,
             'type' => Tax::TYPE_INCLUSIVE,
+            'category' => 'Standard',
+            'compound' => false,
         ], $result);
     }
 
@@ -74,6 +76,8 @@ final class TaxTest extends ApiTestCase
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),
+            'category' => $tax->getCategory()->value,
+            'compound' => $tax->isCompound(),
         ], $data);
     }
 
@@ -101,6 +105,8 @@ final class TaxTest extends ApiTestCase
             'name' => 'NewTax',
             'rate' => 7.5,
             'type' => Tax::TYPE_FLAT_RATE,
+            'category' => $tax->getCategory()->value,
+            'compound' => $tax->isCompound(),
         ], $data);
     }
 
