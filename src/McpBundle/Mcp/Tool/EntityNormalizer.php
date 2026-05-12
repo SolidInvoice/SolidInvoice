@@ -243,6 +243,8 @@ final class EntityNormalizer
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),
+            'category' => $tax->getCategory()->value,
+            'compound' => $tax->isCompound(),
         ];
     }
 

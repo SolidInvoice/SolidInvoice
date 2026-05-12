@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Form\Type;
 
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,6 +41,24 @@ class TaxType extends AbstractType
                 'help' => 'tax.rates.explanation',
                 'help_html' => true,
                 'placeholder' => 'tax.rates.type.select',
+            ]
+        );
+
+        $builder->add(
+            'category',
+            EnumType::class,
+            [
+                'class' => TaxCategory::class,
+                'choice_label' => static fn (TaxCategory $c) => $c->getLabel(),
+                'placeholder' => false,
+            ]
+        );
+
+        $builder->add(
+            'compound',
+            CheckboxType::class,
+            [
+                'required' => false,
             ]
         );
     }
