@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Export;
 
-use BackedEnum;
 use Brick\Math\BigNumber;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currencies\ISOCurrencies;
 use Money\Money;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
+use SolidInvoice\CoreBundle\Export\ValueFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
-use Stringable;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Uid\Ulid;
@@ -156,22 +154,8 @@ final class GridRowExtractor
      */
     private function normalizeValue(Column $column, string $field, mixed $value): array
     {
-        if ($value === null) {
-            return [$field => null];
-        }
-
         if ($value instanceof Money) {
-            $exponent = $this->currencies->contains($value->getCurrency())
-                ? $this->currencies->subunitFor($value->getCurrency())
-                : 2;
-
-            return [
-                $field . '_amount' => ExportMoneyNormalizer::amountToDecimalString(
-                    BigNumber::of($value->getAmount()),
-                    $exponent,
-                ),
-                $field . '_currency' => $value->getCurrency()->getCode(),
-            ];
+            return ValueFormatter::flattenMoney($field, $value, $this->currencies);
         }
 
         if ($value instanceof BigNumber) {
@@ -182,30 +166,13 @@ final class GridRowExtractor
                 ];
             }
 
+            // Non-MoneyColumn BigNumber falls through to its raw string form. Grids
+            // that use BigNumber values typically attach a formatValue closure that
+            // converts to Money, so this branch is rarely hit in practice.
             return [$field => $value->__toString()];
         }
 
-        if ($value instanceof DateTimeInterface) {
-            return [$field => $value->format(DateTimeInterface::ATOM)];
-        }
-
-        if ($value instanceof BackedEnum) {
-            return [$field => $value->value];
-        }
-
-        if ($value instanceof Ulid) {
-            return [$field => $value->toBase58()];
-        }
-
-        if (is_scalar($value)) {
-            return [$field => $value];
-        }
-
-        if ($value instanceof Stringable) {
-            return [$field => (string) $value];
-        }
-
-        return [$field => null];
+        return [$field => ValueFormatter::formatScalar($value)];
     }
 
     private function extractUlid(object $related): ?string

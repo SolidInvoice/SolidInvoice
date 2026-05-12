@@ -40,7 +40,13 @@ final class GridQueryService
         string $search,
         array $gridFilters,
     ): void {
-        (new SortFilter(...explode(',', $sort)))->filter($builder, null);
+        // SortFilter's constructor expects (field, direction = ASC); explode on an
+        // empty string yields a single empty element which SortFilter::filter()
+        // already treats as a no-op. The early return keeps intent obvious and
+        // avoids constructing a throw-away filter when sort is unset.
+        if ($sort !== '') {
+            (new SortFilter(...explode(',', $sort, 2)))->filter($builder, null);
+        }
 
         $searchFields = array_filter($grid->columns(), static fn (Column $column): bool => $column->isSearchable());
         $searchFields = array_map(static fn (Column $column): string => $column->getField(), $searchFields);

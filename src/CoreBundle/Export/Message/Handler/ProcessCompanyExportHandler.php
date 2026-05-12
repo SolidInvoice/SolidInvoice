@@ -46,6 +46,14 @@ use Throwable;
 #[AsMessageHandler]
 final readonly class ProcessCompanyExportHandler
 {
+    /**
+     * Generic user-facing failure message. The full exception (class, message, trace)
+     * is captured via the logger; only this safe label is persisted on the export job
+     * so the failure reason rendered in /profile/exports never leaks DB error text,
+     * file paths, or other internals.
+     */
+    private const FAILURE_REASON_USER_MESSAGE = 'Export failed. Please try again or contact support if the problem persists.';
+
     public function __construct(
         private ManagerRegistry $registry,
         private EntityManagerInterface $entityManager,
@@ -89,7 +97,11 @@ final readonly class ProcessCompanyExportHandler
             $relativePath = $this->companyExporter->export($job);
 
             $absolutePath = $this->projectDir . '/' . $relativePath;
-            $fileSize = @filesize($absolutePath);
+            // CompanyExporter::zipDirectory throws if the archive could not be written,
+            // so reaching this point means the file exists. filesize() may still return
+            // false if the file is unreadable for unrelated reasons — fall back to 0
+            // rather than swallowing the underlying I/O error silently.
+            $fileSize = is_file($absolutePath) ? filesize($absolutePath) : false;
 
             $job->markCompleted($relativePath, $fileSize === false ? 0 : $fileSize);
             $this->entityManager->flush();
@@ -101,7 +113,7 @@ final readonly class ProcessCompanyExportHandler
                 'exception' => $e,
             ]);
 
-            $this->persistFailure($job, $e);
+            $this->persistFailure($job);
 
             throw $e;
         } finally {
@@ -114,8 +126,13 @@ final readonly class ProcessCompanyExportHandler
      * during the original failure (constraint violation, lost connection, etc).
      * Without this, the failure write would itself throw EntityManagerClosed and the
      * job would be silently stuck in Processing.
+     *
+     * Note: after `resetManager()` the constructor-injected `$this->entityManager` is
+     * the stale (closed) reference. This handler does no further flushes after the
+     * catch block, so the stale reference is never reused. Any future code that
+     * touches the EM after this point must obtain a fresh manager via the registry.
      */
-    private function persistFailure(ExportJob $job, Throwable $cause): void
+    private function persistFailure(ExportJob $job): void
     {
         if (! $this->entityManager->isOpen()) {
             $this->registry->resetManager();
@@ -125,7 +142,7 @@ final readonly class ProcessCompanyExportHandler
         assert($manager instanceof EntityManagerInterface);
 
         $tracked = $manager->find(ExportJob::class, $job->getId()) ?? $job;
-        $tracked->markFailed(sprintf('%s: %s', $cause::class, $cause->getMessage()));
+        $tracked->markFailed(self::FAILURE_REASON_USER_MESSAGE);
 
         $manager->persist($tracked);
         $manager->flush();

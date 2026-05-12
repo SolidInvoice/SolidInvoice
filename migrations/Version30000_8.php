@@ -43,7 +43,7 @@ final class Version30000_8 extends AbstractMigration
         $table->addColumn('format', Types::STRING, ['length' => 10, 'notnull' => true]);
         $table->addColumn('status', Types::STRING, ['length' => 20, 'notnull' => true]);
         $table->addColumn('archive_path', Types::STRING, ['length' => 512, 'notnull' => false]);
-        $table->addColumn('file_size', Types::BIGINT, ['notnull' => false]);
+        $table->addColumn('file_size', Types::INTEGER, ['notnull' => false]);
         $table->addColumn('created_at', Types::DATETIME_IMMUTABLE, ['notnull' => true]);
         $table->addColumn('completed_at', Types::DATETIME_IMMUTABLE, ['notnull' => false]);
         $table->addColumn('failure_reason', Types::TEXT, ['notnull' => false]);
