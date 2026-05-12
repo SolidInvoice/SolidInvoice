@@ -71,7 +71,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -135,7 +134,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -217,7 +215,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -283,7 +280,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -345,7 +341,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -432,7 +427,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
@@ -495,7 +489,6 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
         ])->_real();
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 

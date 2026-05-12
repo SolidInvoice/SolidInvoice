@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","vat_number":"12345","contacts":[],"addresses":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","contacts":[],"addresses":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
@@ -220,20 +220,6 @@
 </div>
                                                     </div>
 
-                        <div class="form-field form-field-wide">
-                            <div class="mb-3">                
-            <label class="control-label form-label" for="client_vat_number">Vat number</label><div class="input-group input-icon-group input-validate-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
-        <span class="input-group-text">
-            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17a1 1 0 1 0 2 0a1 1 0 1 0-2 0M6 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 11L18 6"></path></svg>
-        </span>
-        <input type="text" id="client_vat_number" name="client[vat_number]" class="form-control" value="12345" placeholder="e.g. GB123456789" data-vat-validator-target="input">
-        <button type="button" class="btn btn-outline-secondary btn-validate" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button" title="Validate VAT Number (EU Countries Only)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
-            <span>Validate</span>
-        </button>
-    </div>
-</div>
-                        </div>
                     </div>
                 </div>
             </section>

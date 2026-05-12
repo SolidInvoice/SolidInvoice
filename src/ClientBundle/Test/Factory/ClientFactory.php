@@ -69,7 +69,6 @@ final class ClientFactory extends PersistentProxyObjectFactory
             'website' => 'https://' . self::faker()->domainName(),
             'status' => self::faker()->randomElement(ClientStatus::cases()),
             'currencyCode' => self::faker()->currencyCode(),
-            'vatNumber' => self::faker()->word(),
             'archived' => null,
             'created' => self::faker()->dateTime('2014-02-25 08:37:17'),
             'updated' => self::faker()->dateTime('2014-02-25 08:37:17'),
