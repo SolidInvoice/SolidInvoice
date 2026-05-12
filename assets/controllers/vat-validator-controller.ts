@@ -20,10 +20,16 @@ export default class VatValidator extends Controller<HTMLDivElement> {
             this.inputTarget.classList.remove('is-valid')
             this.inputTarget.classList.remove('is-invalid')
         })
+
+        this.refreshButtonVisibility()
     }
 
     async validate(e: Event) {
         e.preventDefault();
+
+        if (! this.isVatLabel()) {
+            return
+        }
 
         const originalText = this.buttonTarget.innerHTML
 
@@ -46,5 +52,24 @@ export default class VatValidator extends Controller<HTMLDivElement> {
         this.inputTarget.classList.add(data.valid ? 'is-valid' : 'is-invalid')
 
         this.buttonTarget.innerHTML = originalText
+    }
+
+    private isVatLabel(): boolean {
+        const label = this.element.dataset.taxIdentifierLabel
+            ?? this.inputTarget.dataset.taxIdentifierLabel
+
+        if (label === undefined) {
+            return true
+        }
+
+        return label.trim().toUpperCase() === 'VAT'
+    }
+
+    private refreshButtonVisibility(): void {
+        if (! this.hasButtonTarget) {
+            return
+        }
+
+        this.buttonTarget.hidden = ! this.isVatLabel()
     }
 }

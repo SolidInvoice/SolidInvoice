@@ -126,6 +126,41 @@
                 </div>
             </section>
 
+            {# Section: Tax Identifiers (Optional) #}
+            <section class="form-page-section client-form-section-optional" id="client-tax-identifiers-collection">
+                <div class="section-header">
+                    <div class="section-icon">
+                        {{ ux_icon('tabler:receipt-tax', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">
+                            {{ 'client.tax_identifiers.info'|trans }}
+                            <span class="badge bg-secondary-lt ms-1">{{ 'optional'|trans }}</span>
+                        </h2>
+                        <p class="section-description">{{ 'client.form.tax_identifiers_description'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="tax-identifiers-list">
+                        {% for taxIdentifier in form.taxIdentifiers %}
+                            {{ form_row(taxIdentifier) }}
+                        {% endfor %}
+                    </div>
+
+                    {{ form_errors(form.taxIdentifiers) }}
+
+                    <div class="add-item-action">
+                        {{ form_widget(form.taxIdentifiers.vars.button_add, {
+                            label: 'client.tax_identifiers.add'|trans,
+                            attr: {
+                                class: 'btn btn-outline-primary add-item-btn'
+                            }
+                        }) }}
+                    </div>
+                </div>
+            </section>
+
             {# Section 3: Addresses (Optional) #}
             <section class="form-page-section client-form-section-optional" id="client-address-collection">
                 <div class="section-header">

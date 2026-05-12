@@ -38,10 +38,10 @@
         {{ email.spacer('xs') }}
     {% endif %}
 
-    {% if client.vatNumber is not empty %}
-        {{ email.info_row('client.create.details.vat_number'|trans({}, 'email'), client.vatNumber) }}
+    {% for identifier in tax_identifiers(client) %}
+        {{ email.info_row(identifier.label, identifier.value) }}
         {{ email.spacer('xs') }}
-    {% endif %}
+    {% endfor %}
 
     {# Contacts section #}
     {% if client.contacts|length > 0 %}

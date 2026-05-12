@@ -141,7 +141,7 @@ class Client implements Stringable
      * @var Collection<int, TaxIdentifier>
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: TaxIdentifier::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Serialize\Groups(['client_api:read'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private Collection $taxIdentifiers;
 
     /**
@@ -479,20 +479,6 @@ class Client implements Stringable
         $this->taxIdentifiers->removeElement($taxIdentifier);
 
         return $this;
-    }
-
-    /**
-     * Returns the value of the primary VAT TaxIdentifier, when one is configured.
-     */
-    public function getVatNumber(): ?string
-    {
-        foreach ($this->taxIdentifiers as $identifier) {
-            if ($identifier->isPrimary() && $identifier->getLabel() === 'VAT') {
-                return $identifier->getValue();
-            }
-        }
-
-        return null;
     }
 
     public function __toString(): string

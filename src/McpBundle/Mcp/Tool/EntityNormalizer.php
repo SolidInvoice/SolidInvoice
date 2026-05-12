@@ -25,6 +25,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 
 /**
  * Normalises business entities to plain arrays suitable for MCP tool results.
@@ -46,6 +47,7 @@ final class EntityNormalizer
             $entity instanceof Payment => $this->payment($entity),
             $entity instanceof PaymentMethod => $this->paymentMethod($entity),
             $entity instanceof Tax => $this->tax($entity),
+            $entity instanceof TaxIdentifier => $this->taxIdentifier($entity),
             default => throw new ToolCallException(sprintf(
                 'Unsupported entity type "%s". Add a dedicated serializer before exposing it via MCP.',
                 $entity::class,
@@ -166,8 +168,24 @@ final class EntityNormalizer
             'status' => $status instanceof \BackedEnum ? $status->value : $status,
             'website' => $client->getWebsite(),
             'currency' => $client->getCurrencyCode(),
-            'vat_number' => $client->getVatNumber(),
+            'tax_identifiers' => array_values(array_map(
+                fn (TaxIdentifier $identifier): array => $this->taxIdentifier($identifier),
+                $client->getTaxIdentifiers()->toArray(),
+            )),
             'created' => $this->date($client->getCreated()),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function taxIdentifier(TaxIdentifier $taxIdentifier): array
+    {
+        return [
+            'id' => $taxIdentifier->getId()?->toRfc4122(),
+            'label' => $taxIdentifier->getLabel(),
+            'value' => $taxIdentifier->getValue(),
+            'primary' => $taxIdentifier->isPrimary(),
         ];
     }
 

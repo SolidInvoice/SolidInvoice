@@ -91,14 +91,6 @@
                                     }) }}
                                 </div>
                             {% endif %}
-                            {% if form.company.vat_number is defined %}
-                                <div class="col-md-6">
-                                    {{ form_row(form.company.vat_number, {
-                                        label: 'VAT / Tax Number'|trans,
-                                        help: 'Your company VAT or tax identification number. Click Validate to verify EU VAT numbers.'|trans
-                                    }) }}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
 
