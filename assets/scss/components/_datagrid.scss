@@ -477,6 +477,116 @@
 }
 
 // ============================================================================
+// EXPORT MENU (Dropdown)
+// ============================================================================
+
+.datagrid-export-dropdown {
+    position: relative;
+}
+
+.datagrid-export-menu {
+    width: 280px;
+    padding: 0 !important;
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-lg);
+    overflow: hidden;
+}
+
+.datagrid-export-menu-header {
+    padding: var(--swp-space-3) var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.datagrid-export-menu-title {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    margin: 0;
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+
+    svg {
+        width: 16px;
+        height: 16px;
+        color: var(--swp-text-muted);
+    }
+}
+
+.datagrid-export-menu-subtitle {
+    margin: var(--swp-space-1) 0 0;
+    font-size: var(--swp-text-xs);
+    color: var(--swp-text-muted);
+}
+
+.datagrid-export-menu-body {
+    display: flex;
+    flex-direction: column;
+    padding: var(--swp-space-2);
+    gap: var(--swp-space-1);
+}
+
+.datagrid-export-option {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-2) var(--swp-space-3);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-text-primary);
+    text-decoration: none;
+    transition: background-color var(--swp-transition-fast),
+                color var(--swp-transition-fast);
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background: var(--swp-gray-50);
+        color: var(--swp-text-primary);
+        outline: none;
+    }
+}
+
+.datagrid-export-option-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    color: var(--swp-text-secondary);
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-md);
+
+    .datagrid-export-option:hover &,
+    .datagrid-export-option:focus-visible & {
+        color: var(--swp-primary);
+        border-color: var(--swp-primary-light);
+        background: var(--swp-primary-lighter);
+    }
+}
+
+.datagrid-export-option-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.datagrid-export-option-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    letter-spacing: 0.02em;
+}
+
+.datagrid-export-option-hint {
+    font-size: var(--swp-text-xs);
+    color: var(--swp-text-muted);
+}
+
+// ============================================================================
 // COLUMN VISIBILITY
 // ============================================================================
 
