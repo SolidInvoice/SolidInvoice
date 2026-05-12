@@ -15,16 +15,14 @@ use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
-use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportCurrencyNormalizer;
-use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportDateTimeNormalizer;
-use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportEnumNormalizer;
-use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
-use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Uid\Command\GenerateUlidCommand;
 use Symfony\Component\Uid\Command\GenerateUuidCommand;
@@ -32,6 +30,7 @@ use Symfony\Component\Uid\Command\InspectUlidCommand;
 use Symfony\Component\Uid\Command\InspectUuidCommand;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
@@ -53,8 +52,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
+        // Export/Serializer/Normalizer is excluded so the normalizers there are NOT
+        // registered as global `serializer.normalizer` services. They are loaded
+        // inline as fresh instances inside the dedicated export Serializer below
+        // (see solidinvoice.core.export.serializer) so they never pollute the API
+        // Platform normalizer chain.
         ->exclude([
-            dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}',
+            dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests,Export/Serializer/Normalizer}',
             dirname(__DIR__, 3) . '/Twig/Extension/FeatureExtension.php',
             dirname(__DIR__, 3) . '/Form/Extension/FeatureRestrictedExtension.php',
         ]);
@@ -119,33 +123,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(SearchQueryParser::class)
         ->arg('$formatters', tagged_iterator('solidinvoice.search.result_formatter'));
 
-    // Export normalizers are composed into a dedicated serializer below and must not
-    // be tagged as global serializer.normalizer (they would conflict with the API
-    // Platform normalizer chain).
-    foreach ([
-        ExportUlidNormalizer::class,
-        ExportMoneyNormalizer::class,
-        ExportEnumNormalizer::class,
-        ExportDateTimeNormalizer::class,
-        ExportCurrencyNormalizer::class,
-    ] as $normalizerClass) {
-        $services->set($normalizerClass)->autoconfigure(false);
-    }
-
+    // Dedicated encoder chain for the export feature. The export pipeline does its
+    // own value normalisation (GridRowExtractor / EntityRowNormalizer produce flat
+    // associative arrays), so the inner Serializer is wired with NO normalizers and
+    // fresh encoder instances. Reusing the global `serializer.encoder.*` services or
+    // the global `serializer.normalizer.object` would cause Symfony's Serializer
+    // constructor to call setSerializer() on the shared instance and silently
+    // replace the API Platform serializer reference — breaking JSON-LD output.
     $services->set('solidinvoice.core.export.serializer', SymfonySerializer::class)
         ->args([
+            [],
             [
-                service(ExportUlidNormalizer::class),
-                service(ExportMoneyNormalizer::class),
-                service(ExportEnumNormalizer::class),
-                service(ExportDateTimeNormalizer::class),
-                service(ExportCurrencyNormalizer::class),
-                service('serializer.normalizer.object'),
-            ],
-            [
-                service('serializer.encoder.json'),
-                service('serializer.encoder.csv'),
-                service('serializer.encoder.xml'),
+                inline_service(JsonEncoder::class),
+                inline_service(CsvEncoder::class),
+                inline_service(XmlEncoder::class),
             ],
         ]);
 
