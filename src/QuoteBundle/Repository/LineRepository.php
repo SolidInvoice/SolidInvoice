@@ -18,6 +18,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Line;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
@@ -34,24 +35,30 @@ class LineRepository extends ServiceEntityRepository
     }
 
     /**
-     * Removes all tax rates from invoices.
+     * Recalculates quote totals after a Tax rate is deleted. LineTax rows
+     * retain their snapshots; the FK is auto-nulled by ON DELETE SET NULL.
      *
      * @throws MathException
      */
     public function removeTax(Tax $tax): void
     {
-        $qb = $this->createQueryBuilder('i');
+        $em = $this->getEntityManager();
 
-        $query = $qb
-            ->where('i.tax = :tax')
+        $query = $em->createQueryBuilder()
+            ->select('lt')
+            ->from(LineTax::class, 'lt')
+            ->join('lt.quoteLine', 'l')
+            ->where('lt.tax = :tax')
             ->setParameter('tax', $tax->getId(), UlidType::NAME)
             ->getQuery();
 
-        $em = $this->getEntityManager();
+        /** @var LineTax $lineTax */
+        foreach ($query->toIterable() as $lineTax) {
+            $quoteLine = $lineTax->getQuoteLine();
 
-        /** @var Line $quoteLine */
-        foreach ($query->toIterable() as $quoteLine) {
-            $quoteLine->setTax(null);
+            if ($quoteLine === null) {
+                continue;
+            }
 
             $quoteLine->getQuote()->setTax(0);
             $this->calculator->calculateTotals($quoteLine->getQuote());

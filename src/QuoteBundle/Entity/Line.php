@@ -25,6 +25,8 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\State\Processor\QuoteLinePersistProcessor;
@@ -33,6 +35,7 @@ use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\QuoteBundle\Repository\LineRepository;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -130,10 +133,11 @@ class Line implements LineInterface, Stringable
     )]
     private ?Quote $quote = null;
 
-    #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'quoteLines')]
-    #[Groups(['quote_api:read', 'quote_api:write'])]
-    #[ApiProperty(example: '/api/taxes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
-    private ?Tax $tax = null;
+    /**
+     * @var Collection<int, LineTax>
+     */
+    #[ORM\OneToMany(mappedBy: 'quoteLine', targetEntity: LineTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $taxes;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['quote_api:read'])]
@@ -151,6 +155,7 @@ class Line implements LineInterface, Stringable
     {
         $this->total = BigDecimal::zero();
         $this->price = BigDecimal::zero();
+        $this->taxes = new ArrayCollection();
     }
 
     public function getId(): Ulid
@@ -224,14 +229,62 @@ class Line implements LineInterface, Stringable
         return $this->total;
     }
 
-    public function getTax(): ?Tax
+    /**
+     * @return Collection<int, LineTax>
+     */
+    public function getTaxes(): Collection
     {
-        return $this->tax;
+        return $this->taxes;
     }
 
+    public function addTax(LineTax $lineTax): static
+    {
+        if (! $this->taxes->contains($lineTax)) {
+            $this->taxes->add($lineTax);
+            $lineTax->setQuoteLine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTax(LineTax $lineTax): static
+    {
+        if ($this->taxes->removeElement($lineTax)) {
+            if ($lineTax->getQuoteLine() === $this) {
+                $lineTax->setQuoteLine(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Transitional helper: returns the first tax in the collection. The TaxCalc
+     * refactor story will migrate callers to iterate over {@see self::getTaxes()}.
+     */
+    public function getTax(): ?Tax
+    {
+        $first = $this->taxes->first();
+
+        return $first instanceof LineTax ? $first->getTax() : null;
+    }
+
+    /**
+     * Transitional helper: replaces the taxes collection with a single LineTax
+     * snapshotted from the given Tax. The TaxCalc refactor story will replace
+     * callers with explicit LineTax construction.
+     *
+     * @throws MathException
+     */
     public function setTax(?Tax $tax): static
     {
-        $this->tax = $tax;
+        $this->taxes->clear();
+
+        if ($tax !== null) {
+            $lineTax = new LineTax();
+            $lineTax->snapshotFrom($tax);
+            $this->addTax($lineTax);
+        }
 
         return $this;
     }
