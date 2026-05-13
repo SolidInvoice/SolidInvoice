@@ -93,7 +93,7 @@
 
 {% block planLabelBadge %}
     {% if item.extras.plan_label is defined and item.extras.plan_label %}
-        <span class="badge bg-blue-lt text-uppercase ms-2">{{ item.extras.plan_label }}</span>
+        <span class="badge badge-sm bg-blue-lt ms-auto flex-shrink-0 fw-normal" title="{{ 'Upgrade to %plan%'|trans({'%plan%': item.extras.plan_label}) }}">{{ item.extras.plan_label }}</span>
     {% endif %}
 {% endblock %}
 
