@@ -84,18 +84,20 @@ final class ConfirmPlanChangeAction extends AbstractController
 
         // From here the subscription is either pending, on a trial, or
         // already active on the free plan — none of which involve the
-        // payment provider on the existing record. Swap the plan and route
-        // to the appropriate finishing step.
-        $this->subscriptionManager->changePlan($subscription, $plan);
-
+        // payment provider on the existing record yet. The plan switch
+        // is only committed locally for free plans (no LS round-trip);
+        // paid plans defer the switch to webhook confirmation.
         if ($plan->isFree()) {
+            $this->subscriptionManager->changePlan($subscription, $plan);
             $this->subscriptionManager->activate($subscription);
             $this->addFlash('success', 'Your plan has been changed.');
 
             return $this->redirectToRoute('billing_index');
         }
 
-        return $this->redirectToRoute('saas_subscription_checkout');
+        return $this->redirectToRoute('saas_subscription_checkout', [
+            ChoosePlanAction::PENDING_PLAN_QUERY_PARAMETER => $plan->getPlanId(),
+        ]);
     }
 
     private function handleActivePlanChange(Subscription $subscription, Plan $plan, bool $isDowngrade): Response

@@ -11,14 +11,19 @@
 
 namespace SolidInvoice\SaasBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Integration\Options;
+use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 
 class SubscribeController extends AbstractController
@@ -27,10 +32,12 @@ class SubscribeController extends AbstractController
         private readonly SubscriptionManager $subscriptionManager,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly PlanRepositoryInterface $planRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(): RedirectResponse
+    public function __invoke(Request $request): RedirectResponse
     {
         $user = $this->getUser();
         assert($user instanceof User);
@@ -46,8 +53,37 @@ class SubscribeController extends AbstractController
             // @TODO: If status is trial, and we want to allow the trial to be extended, skipTrial should be false.
             ->withSkipTrial(true);
 
-        $checkoutUrl = $this->subscriptionManager
-            ->getCheckoutUrl($subscription, $options);
+        // The chosen plan id (LS variant) is passed in via query parameter
+        // from ChoosePlanAction / ConfirmPlanChangeAction. We swap it onto the
+        // subscription IN MEMORY only — the checkout URL builder reads
+        // `subscription->getPlan()->getPlanId()` for the variant — and then
+        // refresh the entity afterwards to discard the in-memory mutation.
+        // Nothing is flushed, so a failed checkout leaves the local plan
+        // untouched. The webhook handler commits the swap on confirmation.
+        $pendingPlanId = (string) $request->query->get(ChoosePlanAction::PENDING_PLAN_QUERY_PARAMETER, '');
+        $swapped = false;
+
+        if ($pendingPlanId !== '' && $pendingPlanId !== $subscription->getPlan()->getPlanId()) {
+            $targetPlan = $this->planRepository->find($pendingPlanId);
+
+            if ($targetPlan instanceof Plan && $targetPlan->isActive()) {
+                $subscription->setPlan($targetPlan);
+                $swapped = true;
+            }
+        }
+
+        try {
+            $checkoutUrl = $this->subscriptionManager
+                ->getCheckoutUrl($subscription, $options);
+        } finally {
+            // Discard the in-memory plan swap. The subscription entity is
+            // reloaded from the database so the in-memory mutation is never
+            // persisted. The webhook handler is the only authority for
+            // committing a paid plan change locally.
+            if ($swapped) {
+                $this->entityManager->refresh($subscription);
+            }
+        }
 
         return $this->redirect($checkoutUrl);
     }
