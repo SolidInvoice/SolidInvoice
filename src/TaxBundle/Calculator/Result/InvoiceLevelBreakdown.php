@@ -18,21 +18,29 @@ use Brick\Math\BigDecimal;
 /**
  * Result of running invoice-level (whole-document) tax calculations.
  *
- * In US-005 this is a skeleton — the actual implementation lands in US-008.
+ * - {@see $totalInvoiceLevelTax} is the sum of additive invoice-level taxes.
+ * - {@see $totalWithholding} is the sum of deductive (TDS) amounts that reduce
+ *   the amount the client must pay.
+ * - {@see $taxRows} contains a row per invoice-level tax (additive, deductive,
+ *   and informational); informational rows carry {@see TaxSummaryRow::$note}.
  */
 final readonly class InvoiceLevelBreakdown
 {
+    public BigDecimal $totalWithholding;
+
     /**
      * @param list<TaxSummaryRow> $taxRows
      */
     public function __construct(
         public BigDecimal $totalInvoiceLevelTax,
         public array $taxRows,
+        ?BigDecimal $totalWithholding = null,
     ) {
+        $this->totalWithholding = $totalWithholding ?? BigDecimal::zero();
     }
 
     public static function empty(): self
     {
-        return new self(BigDecimal::zero(), []);
+        return new self(BigDecimal::zero(), [], BigDecimal::zero());
     }
 }

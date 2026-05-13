@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -81,11 +82,18 @@ final class QuoteFormDTO
     #[Assert\Count(min: 1, groups: ['existing_client'])]
     public ArrayCollection $users;
 
+    /**
+     * @var ArrayCollection<int, InvoiceTax>
+     */
+    #[Assert\Valid]
+    public ArrayCollection $invoiceTaxes;
+
     public function __construct()
     {
         $this->clientMode = QuoteClientMode::Existing;
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->invoiceTaxes = new ArrayCollection();
         $this->total = '0';
         $this->baseTotal = '0';
         $this->tax = '0';

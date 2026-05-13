@@ -23,6 +23,7 @@ use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -72,6 +73,25 @@ class RecurringInvoiceType extends AbstractType
                 'required' => false,
                 'entry_options' => [
                     'currency' => $options['currency'],
+                ],
+            ]
+        );
+
+        // RecurringInvoice is a template; invoice-level taxes are not persisted at
+        // the template level (no recurring_invoice_id FK on invoice_tax) but the
+        // collection surface is rendered for visual parity with InvoiceType/QuoteType.
+        $builder->add(
+            'invoiceTaxes',
+            LiveCollectionType::class,
+            [
+                'entry_type' => InvoiceTaxType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'mapped' => false,
+                'label' => 'Withholding & adjustments',
+                'attr' => [
+                    'data-controller' => 'invoice-tax',
                 ],
             ]
         );

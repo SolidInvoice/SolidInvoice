@@ -20,17 +20,26 @@ use Brick\Math\BigDecimal;
  *
  * - {@see $subTotal} is the sum of line subtotals (tax-exclusive).
  * - {@see $totalLineTax} is the sum of all line-level tax components.
- * - {@see $invoiceLevelBreakdown} contains invoice-wide taxes (US-008 lands the math).
- * - {@see $total} is the gross total before discount.
- * - {@see $summaryRows} aggregates {@see TaxSummaryRow} entries across all lines plus
- *   any invoice-level rows, with rows merged by (name, rate, type, category, compound).
+ * - {@see $invoiceLevelBreakdown} contains invoice-wide taxes (additive
+ *   contribute to {@see $total}; deductive contribute to
+ *   {@see $totalWithholding}).
+ * - {@see $total} is the gross total before discount, before withholding.
+ * - {@see $totalWithholding} is the total deductive amount (TDS).
+ * - {@see $amountPayable} is what the client actually owes after withholding
+ *   (`$total - $totalWithholding`, before discount).
+ * - {@see $summaryRows} aggregates {@see TaxSummaryRow} entries across all
+ *   lines plus any invoice-level rows.
  *
  * @phpstan-type LineBreakdowns array<int, LineBreakdown>
  */
 final readonly class CalculationResult
 {
+    public BigDecimal $totalWithholding;
+
+    public BigDecimal $amountPayable;
+
     /**
-     * @param LineBreakdowns $lineBreakdowns
+     * @param LineBreakdowns      $lineBreakdowns
      * @param list<TaxSummaryRow> $summaryRows
      */
     public function __construct(
@@ -41,6 +50,8 @@ final readonly class CalculationResult
         public InvoiceLevelBreakdown $invoiceLevelBreakdown,
         public array $summaryRows,
     ) {
+        $this->totalWithholding = $invoiceLevelBreakdown->totalWithholding;
+        $this->amountPayable = $this->total->minus($this->totalWithholding);
     }
 
     public function getTotalTax(): BigDecimal

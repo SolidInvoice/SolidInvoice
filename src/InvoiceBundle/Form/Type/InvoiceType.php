@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
@@ -154,6 +155,22 @@ class InvoiceType extends AbstractType
                 'required' => false,
                 'entry_options' => [
                     'currency' => $options['currency'],
+                ],
+            ]
+        );
+
+        $builder->add(
+            'invoiceTaxes',
+            LiveCollectionType::class,
+            [
+                'entry_type' => InvoiceTaxType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'by_reference' => false,
+                'label' => 'Withholding & adjustments',
+                'attr' => [
+                    'data-controller' => 'invoice-tax',
                 ],
             ]
         );

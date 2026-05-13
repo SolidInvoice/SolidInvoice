@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":"","taxes":[]}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":"","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-model="on(change)|*">
 
@@ -250,6 +250,10 @@
 </fieldset>
 <div class="mb-3"><button type="button" id="quote_lines_0_delete" name="quote[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="quote[lines]" data-live-index-param="0" class="btn-secondary btn">Delete</button></div>
 </div>
+</fieldset>
+<fieldset class="mb-3">    
+    <div id="quote_invoiceTaxes" data-controller="invoice-tax"></div>
+<div class="mb-3"><button type="button" id="quote_invoiceTaxes_add" name="quote[invoiceTaxes][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[invoiceTaxes]" class="btn-secondary btn">Add</button></div>
 </fieldset>
 <input type="hidden" id="quote___dynamic_error" name="quote[__dynamic_error]"><input type="hidden" id="quote__token" name="quote[_token]" data-controller="csrf-protection">
 </form>
