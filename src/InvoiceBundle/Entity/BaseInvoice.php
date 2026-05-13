@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
@@ -122,12 +123,40 @@ abstract class BaseInvoice
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $notes = null;
 
+    #[ORM\Column(name: 'withholding_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(
+        writable: false,
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
+    protected BigNumber $withholdingAmount;
+
+    #[ORM\Column(name: 'payable_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(
+        writable: false,
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
+    protected BigNumber $payableAmount;
+
     public function __construct()
     {
         $this->discount = new Discount();
         $this->baseTotal = BigDecimal::zero();
         $this->tax = BigDecimal::zero();
         $this->total = BigDecimal::zero();
+        $this->withholdingAmount = BigInteger::zero();
+        $this->payableAmount = BigInteger::zero();
     }
 
     public function getTotal(): BigNumber
@@ -217,6 +246,36 @@ abstract class BaseInvoice
     public function setTax(BigNumber|float|int|string $tax): self
     {
         $this->tax = BigNumber::of($tax);
+
+        return $this;
+    }
+
+    public function getWithholdingAmount(): BigNumber
+    {
+        return $this->withholdingAmount;
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function setWithholdingAmount(BigNumber|float|int|string $withholdingAmount): self
+    {
+        $this->withholdingAmount = BigNumber::of($withholdingAmount);
+
+        return $this;
+    }
+
+    public function getPayableAmount(): BigNumber
+    {
+        return $this->payableAmount;
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function setPayableAmount(BigNumber|float|int|string $payableAmount): self
+    {
+        $this->payableAmount = BigNumber::of($payableAmount);
 
         return $this;
     }

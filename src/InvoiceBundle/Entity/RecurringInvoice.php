@@ -37,6 +37,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -368,6 +369,17 @@ class RecurringInvoice extends BaseInvoice
                 ->filter(static fn (?string $d) => $d !== null && $d !== '')
                 ->toArray()
         );
+    }
+
+    /**
+     * RecurringInvoices are templates and do not own InvoiceTax rows directly;
+     * the `invoice_tax` table only references concrete invoices/quotes.
+     *
+     * @return Collection<int, InvoiceTax>
+     */
+    public function getInvoiceTaxes(): Collection
+    {
+        return new ArrayCollection();
     }
 
     public function hasInvoiceForDay(DateTimeInterface $now): bool
