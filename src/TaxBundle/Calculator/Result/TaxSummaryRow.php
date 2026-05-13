@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\TaxBundle\Calculator\Result;
+
+use Brick\Math\BigDecimal;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxType;
+
+/**
+ * Per-tax breakdown line, suitable for rendering on an invoice/quote summary.
+ */
+final readonly class TaxSummaryRow
+{
+    public function __construct(
+        public string $name,
+        public string $rate,
+        public TaxCategory $category,
+        public TaxType $type,
+        public bool $compound,
+        public BigDecimal $amount,
+        public int $sequence = 0,
+    ) {
+    }
+}

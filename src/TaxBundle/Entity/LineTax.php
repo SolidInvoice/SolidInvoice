@@ -31,6 +31,7 @@ use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxType;
 use SolidInvoice\TaxBundle\Repository\LineTaxRepository;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLine;
+use SolidInvoice\TaxBundle\Validator\Constraints\IncompatibleTaxConfiguration;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -40,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LineTaxRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ExactlyOneLine]
+#[IncompatibleTaxConfiguration]
 class LineTax
 {
     final public const TABLE_NAME = 'line_tax';
@@ -243,10 +245,19 @@ class LineTax
     /**
      * Populate snapshot fields from a source Tax entity.
      *
+     * Refuses to overwrite once {@see $snapshottedAt} has been set — that timestamp is
+     * the canonical "frozen" marker, written by
+     * {@see \SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener} on the
+     * draft→issued transition.
+     *
      * @throws MathException
      */
     public function snapshotFrom(Tax $tax): self
     {
+        if ($this->snapshottedAt !== null) {
+            return $this;
+        }
+
         $this->tax = $tax;
         $this->nameSnapshot = (string) $tax->getName();
         $this->setRateSnapshot((string) ($tax->getRate() ?? 0));
