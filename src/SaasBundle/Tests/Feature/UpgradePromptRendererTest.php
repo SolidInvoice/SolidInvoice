@@ -104,6 +104,44 @@ final class UpgradePromptRendererTest extends TestCase
         self::assertNull($renderer->lowestPlanFor('mcp_access'));
     }
 
+    public function testLowestPlanForSkipsFreePlan(): void
+    {
+        $free = $this->makeFreePlan();
+        $solo = $this->makePlan('Solo', 900);
+
+        $gate = M::mock(FeatureGate::class);
+        $gate->shouldReceive('upgradeOptions')->with('quotes')->andReturn(new UpgradeOptions([
+            new PlanReference($free->getId()->toBase58(), $free->getName()),
+            new PlanReference($solo->getId()->toBase58(), $solo->getName()),
+        ]));
+
+        $repo = M::mock(PlanRepositoryInterface::class);
+        $repo->shouldReceive('find')->with(M::on(static fn (Ulid $id) => $id->equals($free->getId())))->andReturn($free);
+        $repo->shouldReceive('find')->with(M::on(static fn (Ulid $id) => $id->equals($solo->getId())))->andReturn($solo);
+
+        $renderer = $this->makeRenderer(gate: $gate, repo: $repo);
+
+        // Even though Free is cheaper (price 0), Solo is the lowest *paid* plan.
+        self::assertSame('Solo', $renderer->lowestPlanFor('quotes')?->getName());
+    }
+
+    public function testLowestPlanForReturnsNullWhenOnlyFreeOffersTheFeature(): void
+    {
+        $free = $this->makeFreePlan();
+
+        $gate = M::mock(FeatureGate::class);
+        $gate->shouldReceive('upgradeOptions')->with('quotes')->andReturn(new UpgradeOptions([
+            new PlanReference($free->getId()->toBase58(), $free->getName()),
+        ]));
+
+        $repo = M::mock(PlanRepositoryInterface::class);
+        $repo->shouldReceive('find')->with(M::on(static fn (Ulid $id) => $id->equals($free->getId())))->andReturn($free);
+
+        $renderer = $this->makeRenderer(gate: $gate, repo: $repo);
+
+        self::assertNull($renderer->lowestPlanFor('quotes'));
+    }
+
     public function testUsageBannerReturnsEmptyForUnlimitedFeature(): void
     {
         $gate = M::mock(FeatureGate::class);
@@ -168,6 +206,20 @@ final class UpgradePromptRendererTest extends TestCase
         $plan->setPlanId('plan-' . strtolower($name));
 
         // Force a real ULID so toBase58() round-trips through Ulid::fromBase58().
+        $reflection = new \ReflectionProperty(Plan::class, 'id');
+        $reflection->setValue($plan, new Ulid());
+
+        return $plan;
+    }
+
+    private function makeFreePlan(): Plan
+    {
+        // Plan::isFree() requires both price === 0 AND planId === '0'.
+        $plan = new Plan();
+        $plan->setName('Free');
+        $plan->setPrice(0);
+        $plan->setPlanId('0');
+
         $reflection = new \ReflectionProperty(Plan::class, 'id');
         $reflection->setValue($plan, new Ulid());
 

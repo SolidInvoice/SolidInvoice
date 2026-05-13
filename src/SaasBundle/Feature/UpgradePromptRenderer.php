@@ -43,7 +43,13 @@ final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider,
     }
 
     /**
-     * Returns the cheapest active Plan that exposes the feature, or null when none does.
+     * Returns the cheapest paid Plan that exposes the feature, or null when no
+     * paid upgrade path exists.
+     *
+     * The Free plan is intentionally excluded: every signed-in user is already
+     * on at least Free (the floor), so surfacing "Upgrade to Free" as a nudge
+     * is confusing — and for features that ship in Free, the gate should not
+     * fire for an authenticated user in the first place.
      */
     public function lowestPlanFor(string $featureKey): ?Plan
     {
@@ -59,6 +65,11 @@ final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider,
             $plan = $this->resolvePlan($reference->id);
 
             if (! $plan instanceof Plan) {
+                continue;
+            }
+
+            // Free is the floor — it isn't a meaningful upgrade target.
+            if ($plan->isFree()) {
                 continue;
             }
 
