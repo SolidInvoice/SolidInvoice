@@ -179,11 +179,24 @@
                                             <div class="ext-doc-totals-label">{{ 'quote.subtotal'|trans }}</div>
                                             <div class="ext-doc-totals-value">{{ quote.baseTotal|formatCurrency(currency) }}</div>
                                         </div>
+                                        {% set _tb = tax_breakdown(quote) %}
                                         {% if quote.tax.positive %}
                                             <div class="ext-doc-totals-row">
-                                                <div class="ext-doc-totals-label">{{ 'quote.tax'|trans }}</div>
+                                                <div class="ext-doc-totals-label">{{ 'quote.line_tax'|trans }}</div>
                                                 <div class="ext-doc-totals-value">{{ quote.tax|formatCurrency(currency) }}</div>
                                             </div>
+                                            {% for row in _tb.lineTaxRows %}
+                                                <div class="ext-doc-totals-row ext-doc-totals-row-sub">
+                                                    <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%)</div>
+                                                    <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
+                                                </div>
+                                            {% endfor %}
+                                            {% for row in _tb.additiveRows %}
+                                                <div class="ext-doc-totals-row">
+                                                    <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%)</div>
+                                                    <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
+                                                </div>
+                                            {% endfor %}
                                         {% endif %}
                                         {% if quote.discount.type is not empty %}
                                             <div class="ext-doc-totals-row">
@@ -197,6 +210,18 @@
                                                 <div class="ext-doc-totals-value text-primary">{{ quote.total|formatCurrency(currency) }}</div>
                                             </div>
                                         </div>
+                                        {% if quote.withholdingAmount.positive %}
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'quote.withholding'|trans }}</div>
+                                                <div class="ext-doc-totals-value text-danger">-{{ quote.withholdingAmount|formatCurrency(currency) }}</div>
+                                            </div>
+                                            <div class="ext-doc-totals-final">
+                                                <div class="ext-doc-totals-row">
+                                                    <div class="ext-doc-totals-label">{{ 'quote.amount_payable'|trans }}</div>
+                                                    <div class="ext-doc-totals-value text-primary">{{ payable_amount(quote)|formatCurrency(currency) }}</div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

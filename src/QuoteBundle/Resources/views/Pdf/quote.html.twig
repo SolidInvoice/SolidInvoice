@@ -267,16 +267,37 @@
             </td>
         </tr>
 
-        {# Tax #}
+        {# Tax breakdown #}
+        {% set _tb = tax_breakdown(quote) %}
         {% if quote.tax.positive %}
             <tr class="tax-row">
                 <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
-                    {{ 'quote.tax'|trans }}
+                    {{ 'quote.line_tax'|trans }}
                 </td>
                 <td class="value-cell" style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: 'Courier New', monospace; color: #1e293b;">
                     {{ quote.tax|formatCurrency(currency) }}
                 </td>
             </tr>
+            {% for row in _tb.lineTaxRows %}
+                <tr class="tax-breakdown-row">
+                    <td class="label-cell" style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: #64748b;">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td class="value-cell" style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; color: #475569;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in _tb.additiveRows %}
+                <tr class="invoice-tax-row">
+                    <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td class="value-cell" style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: 'Courier New', monospace; color: #1e293b;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
         {% endif %}
 
         {# Discount #}
@@ -305,6 +326,24 @@
                 {{ quote.total|formatCurrency(currency) }}
             </td>
         </tr>
+        {% if quote.withholdingAmount.positive %}
+            <tr class="withholding-row">
+                <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
+                    {{ 'quote.withholding'|trans }}
+                </td>
+                <td class="value-cell" style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: 'Courier New', monospace; color: #ef4444;">
+                    -{{ quote.withholdingAmount|formatCurrency(currency) }}
+                </td>
+            </tr>
+            <tr class="payable-row" style="background-color: #eff6ff;">
+                <td class="label-cell" style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                    {{ 'quote.amount_payable'|trans }}
+                </td>
+                <td class="value-cell" style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: 'Courier New', monospace; color: #1d4ed8;">
+                    {{ payable_amount(quote)|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
     </table>
 </div>
 

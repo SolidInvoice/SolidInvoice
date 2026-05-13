@@ -104,15 +104,36 @@
                 {{ invoice.baseTotal|formatCurrency(currency) }}
             </td>
         </tr>
+        {% set _tb = tax_breakdown(invoice) %}
         {% if invoice.tax.positive %}
             <tr>
                 <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
-                    {{ 'invoice.tax'|trans }}
+                    {{ 'invoice.line_tax'|trans }}
                 </td>
                 <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
                     {{ invoice.tax|formatCurrency(currency) }}
                 </td>
             </tr>
+            {% for row in _tb.lineTaxRows %}
+                <tr>
+                    <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #475569;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in _tb.additiveRows %}
+                <tr>
+                    <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
         {% endif %}
         {% if invoice.discount.type is not empty %}
             <tr>
@@ -153,6 +174,24 @@
                 </td>
                 <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
                     {{ invoice.total|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if invoice.withholdingAmount.positive %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'invoice.withholding'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.discountColor }};">
+                    -{{ invoice.withholdingAmount|formatCurrency(currency) }}
+                </td>
+            </tr>
+            <tr style="background-color: {{ p.totalBg }};">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.totalLabelColor }};">
+                    {{ 'invoice.amount_payable'|trans }}
+                </td>
+                <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
+                    {{ payable_amount(invoice)|formatCurrency(currency) }}
                 </td>
             </tr>
         {% endif %}

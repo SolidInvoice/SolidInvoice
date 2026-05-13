@@ -24,6 +24,9 @@ quote:
     total: Total
     subtotal: Sub-Total
     tax: Tax
+    line_tax: 'Line taxes'
+    withholding: Withholding
+    amount_payable: 'Amount payable'
     discount: Discount
     edit:
         title: 'Edit Quote'

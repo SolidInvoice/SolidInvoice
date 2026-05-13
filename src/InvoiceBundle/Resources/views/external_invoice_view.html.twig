@@ -196,11 +196,24 @@
                                         <div class="ext-doc-totals-label">{{ 'invoice.subtotal'|trans }}</div>
                                         <div class="ext-doc-totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</div>
                                     </div>
+                                    {% set _tb = tax_breakdown(invoice) %}
                                     {% if invoice.tax.positive %}
                                         <div class="ext-doc-totals-row">
-                                            <div class="ext-doc-totals-label">{{ 'invoice.tax'|trans }}</div>
+                                            <div class="ext-doc-totals-label">{{ 'invoice.line_tax'|trans }}</div>
                                             <div class="ext-doc-totals-value">{{ invoice.tax|formatCurrency(currency) }}</div>
                                         </div>
+                                        {% for row in _tb.lineTaxRows %}
+                                            <div class="ext-doc-totals-row ext-doc-totals-row-sub">
+                                                <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%)</div>
+                                                <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
+                                            </div>
+                                        {% endfor %}
+                                        {% for row in _tb.additiveRows %}
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%)</div>
+                                                <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
+                                            </div>
+                                        {% endfor %}
                                     {% endif %}
                                     {% if invoice.hasDiscount %}
                                         <div class="ext-doc-totals-row">
@@ -232,6 +245,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {% if invoice.withholdingAmount.positive %}
+                                        <div class="ext-doc-totals-row">
+                                            <div class="ext-doc-totals-label">{{ 'invoice.withholding'|trans }}</div>
+                                            <div class="ext-doc-totals-value">-{{ invoice.withholdingAmount|formatCurrency(currency) }}</div>
+                                        </div>
+                                        <div class="ext-doc-totals-final">
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'invoice.amount_payable'|trans }}</div>
+                                                <div class="ext-doc-totals-value text-primary">{{ payable_amount(invoice)|formatCurrency(currency) }}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

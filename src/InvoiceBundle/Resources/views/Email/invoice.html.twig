@@ -85,9 +85,18 @@
     {# Financial breakdown #}
     {{ email.info_row('invoice.subtotal'|trans({}, 'email'), invoice.baseTotal|formatCurrency(invoice.client.currency)) }}
 
+    {% set _tb = tax_breakdown(invoice) %}
     {% if invoice.tax.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('invoice.line_tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.client.currency)) }}
+        {% for row in _tb.lineTaxRows %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(invoice.client.currency)) }}
+        {% endfor %}
+        {% for row in _tb.additiveRows %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(invoice.client.currency)) }}
+        {% endfor %}
     {% endif %}
 
     {% if invoice.discount.type is not empty %}
@@ -110,6 +119,13 @@
         invoice.payments|length > 0 and not invoice.balance.zero ? invoice.balance|formatCurrency(invoice.client.currency) : invoice.total|formatCurrency(invoice.client.currency),
         true
     ) }}
+
+    {% if invoice.withholdingAmount.positive %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.withholding'|trans({}, 'email'), '-' ~ invoice.withholdingAmount|formatCurrency(invoice.client.currency)) }}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.amount_payable'|trans({}, 'email'), payable_amount(invoice)|formatCurrency(invoice.client.currency), true) }}
+    {% endif %}
 
     {# Terms section if present #}
     {% if invoice.terms is not empty %}
