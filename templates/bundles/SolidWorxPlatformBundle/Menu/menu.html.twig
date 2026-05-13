@@ -91,9 +91,17 @@
     {% endif %}
 {% endblock %}
 
+{# Plan-label upgrade badge — renders on its own line BELOW the menu title so
+   the plan name is always fully visible regardless of sidebar width and never
+   clipped by the dropdown-toggle chevron. Uses Tabler's primary tone for clear
+   contrast against the sidebar background. #}
 {% block planLabelBadge %}
     {% if item.extras.plan_label is defined and item.extras.plan_label %}
-        <span class="badge badge-sm bg-blue-lt ms-auto flex-shrink-0 fw-normal" title="{{ 'Upgrade to %plan%'|trans({'%plan%': item.extras.plan_label}) }}">{{ item.extras.plan_label }}</span>
+        <span class="d-block mt-1 text-primary fw-medium"
+              style="font-size: 0.7rem;"
+              title="{{ 'Upgrade to %plan% to unlock'|trans({'%plan%': item.extras.plan_label}) }}">
+            {{ ux_icon('tabler:arrow-up-circle', {width: 12, height: 12, class: 'me-1'}) }}{{ 'Upgrade to %plan%'|trans({'%plan%': item.extras.plan_label}) }}
+        </span>
     {% endif %}
 {% endblock %}
 
@@ -107,8 +115,8 @@
             {% endif %}
             <span class="nav-link-title">
                 {{ block('label') }}
+                {{ block('planLabelBadge') }}
             </span>
-            {{ block('planLabelBadge') }}
         </a>
     {% else %}
         <span{{ ui.attributes(item.labelAttributes) }}>
@@ -127,8 +135,8 @@
         {% endif %}
         <span class="nav-link-title">
             {{ block('label') }}
+            {{ block('planLabelBadge') }}
         </span>
-        {{ block('planLabelBadge') }}
     </a>
 {% endblock %}
 
