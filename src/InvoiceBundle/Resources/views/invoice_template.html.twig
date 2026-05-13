@@ -159,10 +159,11 @@
                                     </div>
                                 </td>
                             </tr>
+                            {% set _tb = tax_breakdown(invoice) %}
                             {% if invoice.tax.positive %}
                                 <tr>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                        <strong>{{ 'invoice.tax'|trans }}</strong>
+                                        <strong>{{ 'invoice.line_tax'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-error invoice-tax">
@@ -170,6 +171,26 @@
                                         </span>
                                     </td>
                                 </tr>
+                                {% for row in _tb.lineTaxRows %}
+                                    <tr>
+                                        <td colspan="{{ footerSpan }}" class="no-line text-right text-muted">
+                                            {{ row.name }} ({{ row.rate }}%)
+                                        </td>
+                                        <td class="no-line text-right text-muted">
+                                            {{ row.amount|formatCurrency(invoice.client.currency) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% for row in _tb.additiveRows %}
+                                    <tr>
+                                        <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                            <strong>{{ row.name }} ({{ row.rate }}%)</strong>
+                                        </td>
+                                        <td class="no-line text-right">
+                                            {{ row.amount|formatCurrency(invoice.client.currency) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             {% endif %}
 
                             {% if invoice.hasDiscount %}
@@ -222,6 +243,26 @@
                                     </div>
                                 </td>
                             </tr>
+                            {% if invoice.withholdingAmount.positive %}
+                                <tr>
+                                    <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                        <strong>{{ 'invoice.withholding'|trans }}</strong>
+                                    </td>
+                                    <td class="no-line text-right">
+                                        -{{ invoice.withholdingAmount|formatCurrency(invoice.client.currency) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                        <strong>{{ 'invoice.amount_payable'|trans }}</strong>
+                                    </td>
+                                    <td class="no-line text-right">
+                                        <div class="invoice-total">
+                                            {{ payable_amount(invoice)|formatCurrency(invoice.client.currency) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
                             </tfoot>
                         </table>
                     </div>

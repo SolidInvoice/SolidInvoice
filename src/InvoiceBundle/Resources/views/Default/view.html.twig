@@ -289,11 +289,24 @@
                             <span class="totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</span>
                         </div>
 
+                        {% set _tb = tax_breakdown(invoice) %}
                         {% if invoice.tax.positive %}
                             <div class="totals-row">
-                                <span class="totals-label">{{ 'invoice.tax'|trans }}</span>
+                                <span class="totals-label">{{ 'invoice.line_tax'|trans }}</span>
                                 <span class="totals-value">{{ invoice.tax|formatCurrency(currency) }}</span>
                             </div>
+                            {% for row in _tb.lineTaxRows %}
+                                <div class="totals-row totals-row-tax-breakdown">
+                                    <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%)</span>
+                                    <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
+                                </div>
+                            {% endfor %}
+                            {% for row in _tb.additiveRows %}
+                                <div class="totals-row">
+                                    <span class="totals-label">{{ row.name }} ({{ row.rate }}%)</span>
+                                    <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
+                                </div>
+                            {% endfor %}
                         {% endif %}
 
                         {% if invoice.hasDiscount %}
@@ -324,6 +337,16 @@
                                 {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
                             </span>
                         </div>
+                        {% if invoice.withholdingAmount.positive %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ 'invoice.withholding'|trans }}</span>
+                                <span class="totals-value">-{{ invoice.withholdingAmount|formatCurrency(currency) }}</span>
+                            </div>
+                            <div class="totals-row totals-row-final">
+                                <span class="totals-label">{{ 'invoice.amount_payable'|trans }}</span>
+                                <span class="totals-value">{{ payable_amount(invoice)|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
