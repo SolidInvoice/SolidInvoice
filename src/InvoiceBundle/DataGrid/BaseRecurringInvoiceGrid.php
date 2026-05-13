@@ -82,6 +82,19 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     }
                     return new Money((string) $value, $client->getCurrency());
                 }),
+            MoneyColumn::new('payableAmount')
+                ->label('Payable')
+                ->searchable(false)
+                ->formatValue(function (BigNumber $value, RecurringInvoice $invoice): Money {
+                    $client = $invoice->getClient();
+                    if ($client === null) {
+                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                    }
+                    $withholding = $invoice->getWithholdingAmount();
+                    $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
+
+                    return new Money((string) $amount, $client->getCurrency());
+                }),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)

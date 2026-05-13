@@ -26,6 +26,7 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -45,6 +46,7 @@ final class QuoteWriteTools
         private readonly QuoteCloner $cloner,
         private readonly InvoiceManager $invoiceManager,
         private readonly LineItemBuilder $lineItemBuilder,
+        private readonly InvoiceTaxBuilder $invoiceTaxBuilder,
         private readonly TotalCalculator $totalCalculator,
         private readonly BillingIdGenerator $billingIdGenerator,
         private readonly EntityManagerInterface $entityManager,
@@ -72,10 +74,12 @@ final class QuoteWriteTools
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach (optional)
      * @param string|null                     $quote_id       Explicit quote number (generated if omitted)
+     * @param list<array<string, mixed>>      $invoice_taxes  Invoice-level taxes (withholding/surcharge/informational):
+     *                                                        [{tax_id, direction: Additive|Deductive|Informational, sequence?, note?}].
      *
      * @return array<string, mixed>
      */
-    #[McpTool(name: 'create_quote', description: 'Create a new quote for a client, with line items, optional discount, due date, and contacts.')]
+    #[McpTool(name: 'create_quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
     #[McpScopeRequired(McpScope::Write)]
     public function createQuote(
         string $client_id,
@@ -87,6 +91,7 @@ final class QuoteWriteTools
         ?string $notes = null,
         array $contact_ids = [],
         ?string $quote_id = null,
+        array $invoice_taxes = [],
     ): array {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -142,6 +147,8 @@ final class QuoteWriteTools
                 ? $quote_id
                 : $this->billingIdGenerator->generate($quote, ['field' => 'quoteId']),
         );
+
+        $this->invoiceTaxBuilder->attach($quote, $invoice_taxes);
 
         $this->totalCalculator->calculateTotals($quote);
 

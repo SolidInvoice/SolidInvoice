@@ -25,6 +25,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
@@ -91,6 +92,8 @@ final class EntityNormalizer
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
             'balance' => $this->bigNumber($invoice->getBalance()),
             'tax' => $this->bigNumber($invoice->getTax()),
+            'withholding_amount' => $this->bigNumber($invoice->getWithholdingAmount()),
+            'amount_payable' => $this->bigNumber($invoice->getPayableAmount()),
             'discount' => [
                 'type' => $discount->getType(),
                 'value_money' => $this->bigNumber($discount->getValueMoney()),
@@ -103,6 +106,7 @@ final class EntityNormalizer
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
             'lines' => $this->lines($invoice->getLines()->toArray()),
+            'invoice_taxes' => $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray()),
         ];
     }
 
@@ -121,6 +125,8 @@ final class EntityNormalizer
             'total' => $this->bigNumber($invoice->getTotal()),
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
             'tax' => $this->bigNumber($invoice->getTax()),
+            'withholding_amount' => $this->bigNumber($invoice->getWithholdingAmount()),
+            'amount_payable' => $this->bigNumber($invoice->getPayableAmount()),
             'date_start' => $this->date($invoice->getDateStart()),
             'date_end' => $this->date($invoice->getDateEnd()),
             'schedule' => [
@@ -135,6 +141,7 @@ final class EntityNormalizer
             'notes' => $invoice->getNotes(),
             'created' => $this->date($invoice->getCreated()),
             'lines' => $this->lines($invoice->getLines()->toArray()),
+            'invoice_taxes' => $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray()),
         ];
     }
 
@@ -152,11 +159,14 @@ final class EntityNormalizer
             'total' => $this->bigNumber($quote->getTotal()),
             'base_total' => $this->bigNumber($quote->getBaseTotal()),
             'tax' => $this->bigNumber($quote->getTax()),
+            'withholding_amount' => $this->bigNumber($quote->getWithholdingAmount()),
+            'amount_payable' => $this->bigNumber($quote->getPayableAmount()),
             'due' => $this->date($quote->getDue()),
             'created' => $this->date($quote->getCreated()),
             'terms' => $quote->getTerms(),
             'notes' => $quote->getNotes(),
             'lines' => $this->lines($quote->getLines()->toArray()),
+            'invoice_taxes' => $this->invoiceTaxes($quote->getInvoiceTaxes()->toArray()),
         ];
     }
 
@@ -184,6 +194,32 @@ final class EntityNormalizer
         }
 
         return $result;
+    }
+
+    /**
+     * @param list<InvoiceTax> $invoiceTaxes
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function invoiceTaxes(array $invoiceTaxes): array
+    {
+        $rows = [];
+
+        foreach ($invoiceTaxes as $invoiceTax) {
+            $rows[] = [
+                'id' => $invoiceTax->getId()?->toRfc4122(),
+                'tax_id' => $invoiceTax->getTax()?->getId()?->toRfc4122(),
+                'name' => $invoiceTax->getNameSnapshot(),
+                'rate' => $invoiceTax->getRateSnapshot(),
+                'category' => $invoiceTax->getCategorySnapshot()->value,
+                'direction' => $invoiceTax->getDirection()->value,
+                'sequence' => $invoiceTax->getSequence(),
+                'amount' => $this->bigNumber($invoiceTax->getAmount()),
+                'note' => $invoiceTax->getNote(),
+            ];
+        }
+
+        return $rows;
     }
 
     /**

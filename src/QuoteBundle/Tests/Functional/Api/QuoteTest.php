@@ -216,7 +216,7 @@ final class QuoteTest extends ApiTestCase
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
-            'payableAmount' => 0,
+            'payableAmount' => 100,
         ], $data);
     }
 
@@ -306,7 +306,7 @@ final class QuoteTest extends ApiTestCase
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
-            'payableAmount' => 0,
+            'payableAmount' => 11250,
         ], $data);
     }
 }

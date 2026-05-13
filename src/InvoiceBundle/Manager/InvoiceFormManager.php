@@ -61,6 +61,12 @@ final class InvoiceFormManager
             $invoice->addLine($line);
         }
 
+        // Sync invoice-level taxes (withholding / surcharges / informational)
+        foreach ($dto->invoiceTaxes as $invoiceTax) {
+            $this->ensureInvoiceTaxSnapshot($invoiceTax);
+            $invoice->addInvoiceTax($invoiceTax);
+        }
+
         // Sync users collection
         // If new client mode, add the newly created contact from the client
         if ($dto->clientMode === InvoiceClientMode::NewClient) {
@@ -99,10 +105,33 @@ final class InvoiceFormManager
             $invoice->addLine($line);
         }
 
+        // Sync invoice-level taxes
+        foreach ($invoice->getInvoiceTaxes() as $existing) {
+            if (! $dto->invoiceTaxes->contains($existing)) {
+                $invoice->removeInvoiceTax($existing);
+            }
+        }
+        foreach ($dto->invoiceTaxes as $invoiceTax) {
+            $this->ensureInvoiceTaxSnapshot($invoiceTax);
+            $invoice->addInvoiceTax($invoiceTax);
+        }
+
         // Sync users collection
         $invoice->getUsers()->clear();
         foreach ($dto->users as $user) {
             $invoice->addUser($user);
+        }
+    }
+
+    private function ensureInvoiceTaxSnapshot(\SolidInvoice\TaxBundle\Entity\InvoiceTax $invoiceTax): void
+    {
+        if ($invoiceTax->getNameSnapshot() !== null && $invoiceTax->getNameSnapshot() !== '') {
+            return;
+        }
+
+        $tax = $invoiceTax->getTax();
+        if ($tax !== null) {
+            $invoiceTax->snapshotFrom($tax);
         }
     }
 
@@ -135,6 +164,10 @@ final class InvoiceFormManager
 
         foreach ($invoice->getUsers() as $user) {
             $dto->users->add($user);
+        }
+
+        foreach ($invoice->getInvoiceTaxes() as $invoiceTax) {
+            $dto->invoiceTaxes->add($invoiceTax);
         }
 
         return $dto;

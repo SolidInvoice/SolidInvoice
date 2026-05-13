@@ -70,6 +70,19 @@ abstract class BaseInvoiceGrid extends Grid
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('tax')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+            MoneyColumn::new('payableAmount')
+                ->label('Payable')
+                ->searchable(false)
+                ->formatValue(function (BigNumber $value, Invoice $invoice): Money {
+                    $client = $invoice->getClient();
+                    // Render the explicit payable figure only when withholding is in
+                    // play; otherwise mirror the grand total so the column stays
+                    // meaningful for invoices without TDS-style deductions.
+                    $withholding = $invoice->getWithholdingAmount();
+                    $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
+
+                    return new Money((string) $amount, $client?->getCurrency());
+                }),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)

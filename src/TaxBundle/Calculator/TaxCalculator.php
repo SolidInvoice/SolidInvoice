@@ -98,12 +98,14 @@ final class TaxCalculator implements TaxCalculatorInterface
 
         foreach ($rows as $row) {
             $key = sprintf(
-                '%s|%s|%s|%s|%d',
+                '%s|%s|%s|%s|%d|%s|%s',
                 $row->name,
                 $row->rate,
                 $row->type->value,
                 $row->category->value,
                 $row->compound ? 1 : 0,
+                $row->direction->value,
+                $row->note ?? '',
             );
 
             if (! isset($merged[$key])) {
@@ -120,6 +122,8 @@ final class TaxCalculator implements TaxCalculatorInterface
                 compound: $existing->compound,
                 amount: $existing->amount->plus($row->amount),
                 sequence: $existing->sequence,
+                direction: $existing->direction,
+                note: $existing->note,
             );
         }
 

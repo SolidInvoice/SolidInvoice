@@ -15,10 +15,14 @@ namespace SolidInvoice\TaxBundle\Calculator\Result;
 
 use Brick\Math\BigDecimal;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Enum\TaxType;
 
 /**
  * Per-tax breakdown line, suitable for rendering on an invoice/quote summary.
+ *
+ * {@see $direction} and {@see $note} are only populated for invoice-level rows
+ * (see {@see InvoiceLevelBreakdown}); line-level rows leave them as defaults.
  */
 final readonly class TaxSummaryRow
 {
@@ -30,6 +34,8 @@ final readonly class TaxSummaryRow
         public bool $compound,
         public BigDecimal $amount,
         public int $sequence = 0,
+        public TaxDirection $direction = TaxDirection::Additive,
+        public ?string $note = null,
     ) {
     }
 }

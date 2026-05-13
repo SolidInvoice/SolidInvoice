@@ -223,7 +223,7 @@ final class InvoiceTest extends ApiTestCase
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
             'withholdingAmount' => 0,
-            'payableAmount' => 0,
+            'payableAmount' => 100,
         ], $data);
     }
 
@@ -304,7 +304,7 @@ final class InvoiceTest extends ApiTestCase
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
             'withholdingAmount' => 0,
-            'payableAmount' => 0,
+            'payableAmount' => 9000,
         ], $data);
     }
 }

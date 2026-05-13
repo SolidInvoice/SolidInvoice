@@ -75,6 +75,7 @@ class TotalCalculator
         $subTotal = $result->subTotal;
         $tax = $result->getTotalTax();
         $total = $result->total;
+        $withholding = $result->totalWithholding;
 
         $entity->setBaseTotal($subTotal);
 
@@ -84,6 +85,8 @@ class TotalCalculator
 
         $entity->setTotal($total);
         $entity->setTax($tax);
+        $entity->setWithholdingAmount($withholding);
+        $entity->setPayableAmount(BigDecimal::of($total)->minus($withholding));
     }
 
     /**

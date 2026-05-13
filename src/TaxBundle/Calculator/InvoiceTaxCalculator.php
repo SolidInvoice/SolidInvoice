@@ -14,25 +14,177 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Calculator;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Calculator\Result\InvoiceLevelBreakdown;
+use SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
+use SolidInvoice\TaxBundle\Enum\TaxDirection;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 
 /**
  * Computes whole-document (invoice-level) tax breakdowns.
  *
- * Skeleton in US-005; the actual math (e.g. shipping tax, document-wide fees) lands in
- * US-008. Returning an empty breakdown keeps the orchestrator and {@see TotalCalculator}
- * delegation in place without changing existing totals.
+ * Each {@see InvoiceTax} dispatches on its {@see TaxDirection}:
+ *
+ * - {@see TaxDirection::Additive} — adds to {@see InvoiceLevelBreakdown::$totalInvoiceLevelTax};
+ *   used for invoice-wide surcharges, shipping, environmental fees, etc.
+ * - {@see TaxDirection::Deductive} — adds to {@see InvoiceLevelBreakdown::$totalWithholding};
+ *   used for TDS / withholding taxes that reduce what the client pays without
+ *   reducing the invoice grand total.
+ * - {@see TaxDirection::Informational} — emits a row with `amount = 0` so the
+ *   note can still be rendered (reverse-charge VAT in particular).
+ *
+ * For percentage rates, the base is the document subtotal (line subtotals,
+ * tax-exclusive). Flat-rate amounts are independent of base. Inclusive rates
+ * extract from `subTotal + totalLineTax`.
  */
 final class InvoiceTaxCalculator
 {
+    /**
+     * @throws MathException
+     */
     public function calculateInvoiceLevel(
         BaseInvoice|Quote $document,
         BigDecimal $subTotal,
         BigDecimal $totalLineTax,
         Rounder $rounder,
     ): InvoiceLevelBreakdown {
-        return InvoiceLevelBreakdown::empty();
+        $invoiceTaxes = $this->orderedTaxes($document);
+
+        if ($invoiceTaxes === []) {
+            return InvoiceLevelBreakdown::empty();
+        }
+
+        $totalAdditive = BigDecimal::zero();
+        $totalWithholding = BigDecimal::zero();
+        $rows = [];
+
+        foreach ($invoiceTaxes as $invoiceTax) {
+            $direction = $invoiceTax->getDirection();
+
+            if ($direction === TaxDirection::Informational) {
+                $rows[] = $this->summary($invoiceTax, BigDecimal::zero());
+                continue;
+            }
+
+            $amount = $this->computeAmount($invoiceTax, $subTotal, $totalLineTax, $rounder);
+            $rows[] = $this->summary($invoiceTax, $amount);
+
+            if ($direction === TaxDirection::Deductive) {
+                $totalWithholding = $totalWithholding->plus($amount);
+                continue;
+            }
+
+            $totalAdditive = $totalAdditive->plus($amount);
+        }
+
+        return new InvoiceLevelBreakdown($totalAdditive, $rows, $totalWithholding);
+    }
+
+    /**
+     * @throws MathException
+     */
+    private function computeAmount(
+        InvoiceTax $invoiceTax,
+        BigDecimal $subTotal,
+        BigDecimal $totalLineTax,
+        Rounder $rounder,
+    ): BigDecimal {
+        $rate = BigDecimal::of($invoiceTax->getRateSnapshot());
+
+        return match ($this->typeFor($invoiceTax)) {
+            TaxType::Inclusive => $this->extractInclusive($subTotal->plus($totalLineTax), $rate, $rounder),
+            TaxType::Exclusive => $rounder->round($subTotal->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))),
+            TaxType::FlatRate => $rounder->round($rate->multipliedBy(100)),
+        };
+    }
+
+    /**
+     * @throws MathException
+     */
+    private function extractInclusive(BigDecimal $gross, BigDecimal $rate, Rounder $rounder): BigDecimal
+    {
+        if ($rate->isZero()) {
+            return BigDecimal::zero();
+        }
+
+        $divisor = $rate->dividedBy(100, 10, RoundingMode::HalfEven)->plus(1);
+        $net = $gross->dividedBy($divisor, 2, $rounder->getStrategy()->toRoundingMode());
+
+        return $gross->minus($net);
+    }
+
+    /**
+     * Source the tax type from the linked Tax entity when available, falling
+     * back to Exclusive (the most common case) so the calculator never blows
+     * up on legacy rows that predate the type snapshot.
+     */
+    private function typeFor(InvoiceTax $invoiceTax): TaxType
+    {
+        $tax = $invoiceTax->getTax();
+
+        if ($tax === null) {
+            return TaxType::Exclusive;
+        }
+
+        $type = $tax->getType();
+
+        return match ($type) {
+            TaxType::Inclusive->value => TaxType::Inclusive,
+            TaxType::FlatRate->value, 'FlatRate' => TaxType::FlatRate,
+            default => TaxType::Exclusive,
+        };
+    }
+
+    private function summary(InvoiceTax $invoiceTax, BigDecimal $amount): TaxSummaryRow
+    {
+        return new TaxSummaryRow(
+            name: (string) $invoiceTax->getNameSnapshot(),
+            rate: $invoiceTax->getRateSnapshot(),
+            category: $invoiceTax->getCategorySnapshot(),
+            type: $this->typeFor($invoiceTax),
+            compound: false,
+            amount: $amount,
+            sequence: $invoiceTax->getSequence(),
+            direction: $invoiceTax->getDirection(),
+            note: $invoiceTax->getNote(),
+        );
+    }
+
+    /**
+     * @return list<InvoiceTax>
+     */
+    private function orderedTaxes(BaseInvoice|Quote $document): array
+    {
+        $collection = match (true) {
+            $document instanceof Invoice,
+            $document instanceof RecurringInvoice,
+            $document instanceof Quote => $document->getInvoiceTaxes(),
+            default => null,
+        };
+
+        if ($collection === null) {
+            return [];
+        }
+
+        $taxes = [];
+
+        foreach ($collection as $tax) {
+            if ($tax instanceof InvoiceTax) {
+                $taxes[] = $tax;
+            }
+        }
+
+        usort(
+            $taxes,
+            static fn (InvoiceTax $a, InvoiceTax $b): int => $a->getSequence() <=> $b->getSequence()
+        );
+
+        return $taxes;
     }
 }

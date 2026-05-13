@@ -20,6 +20,7 @@ use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 
 /**
  * Manager for handling Quote form DTO transformations
@@ -59,6 +60,12 @@ final class QuoteFormManager
             $quote->addLine($line);
         }
 
+        // Sync invoice-level taxes (withholding / surcharges / informational)
+        foreach ($dto->invoiceTaxes as $invoiceTax) {
+            $this->ensureInvoiceTaxSnapshot($invoiceTax);
+            $quote->addInvoiceTax($invoiceTax);
+        }
+
         // Sync users collection
         // If new client mode, add the newly created contact from the client
         if ($dto->clientMode === QuoteClientMode::NewClient) {
@@ -96,10 +103,33 @@ final class QuoteFormManager
             $quote->addLine($line);
         }
 
+        // Sync invoice-level taxes
+        foreach ($quote->getInvoiceTaxes() as $existing) {
+            if (! $dto->invoiceTaxes->contains($existing)) {
+                $quote->removeInvoiceTax($existing);
+            }
+        }
+        foreach ($dto->invoiceTaxes as $invoiceTax) {
+            $this->ensureInvoiceTaxSnapshot($invoiceTax);
+            $quote->addInvoiceTax($invoiceTax);
+        }
+
         // Sync users collection
         $quote->getUsers()->clear();
         foreach ($dto->users as $user) {
             $quote->addUser($user);
+        }
+    }
+
+    private function ensureInvoiceTaxSnapshot(InvoiceTax $invoiceTax): void
+    {
+        if ($invoiceTax->getNameSnapshot() !== null && $invoiceTax->getNameSnapshot() !== '') {
+            return;
+        }
+
+        $tax = $invoiceTax->getTax();
+        if ($tax !== null) {
+            $invoiceTax->snapshotFrom($tax);
         }
     }
 
@@ -131,6 +161,10 @@ final class QuoteFormManager
 
         foreach ($quote->getUsers() as $user) {
             $dto->users->add($user);
+        }
+
+        foreach ($quote->getInvoiceTaxes() as $invoiceTax) {
+            $dto->invoiceTaxes->add($invoiceTax);
         }
 
         return $dto;
