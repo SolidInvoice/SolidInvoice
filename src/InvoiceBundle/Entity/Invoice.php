@@ -48,6 +48,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -221,6 +222,12 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $users;
 
+    /**
+     * @var Collection<int, InvoiceTax>
+     */
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $invoiceTaxes;
+
     public function __construct()
     {
         parent::__construct();
@@ -228,6 +235,7 @@ class Invoice extends BaseInvoice implements Stringable
         $this->payments = new ArrayCollection();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->invoiceTaxes = new ArrayCollection();
         $this->balance = BigInteger::zero();
         $this->invoiceDate = new DateTimeImmutable();
         $this->setUuid(Uuid::v7());
@@ -494,5 +502,34 @@ class Invoice extends BaseInvoice implements Stringable
     public function setRecurringInvoice(?RecurringInvoice $recurringInvoice): void
     {
         $this->recurringInvoice = $recurringInvoice;
+    }
+
+    /**
+     * @return Collection<int, InvoiceTax>
+     */
+    public function getInvoiceTaxes(): Collection
+    {
+        return $this->invoiceTaxes;
+    }
+
+    public function addInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        if (! $this->invoiceTaxes->contains($invoiceTax)) {
+            $this->invoiceTaxes->add($invoiceTax);
+            $invoiceTax->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        if ($this->invoiceTaxes->removeElement($invoiceTax)) {
+            if ($invoiceTax->getInvoice() === $this) {
+                $invoiceTax->setInvoice(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -27,6 +27,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateTimeInterface;
@@ -50,6 +51,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -210,6 +212,32 @@ class Quote
     )]
     private BigNumber $tax;
 
+    #[ORM\Column(name: 'withholding_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        writable: false,
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
+    private BigNumber $withholdingAmount;
+
+    #[ORM\Column(name: 'payable_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        writable: false,
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
+    private BigNumber $payableAmount;
+
     #[ORM\Embedded(class: Discount::class)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     #[ApiProperty(
@@ -292,14 +320,23 @@ class Quote
     )]
     private ?Invoice $invoice = null;
 
+    /**
+     * @var Collection<int, InvoiceTax>
+     */
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $invoiceTaxes;
+
     public function __construct()
     {
         $this->discount = new Discount();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->invoiceTaxes = new ArrayCollection();
         $this->baseTotal = BigDecimal::zero();
         $this->tax = BigDecimal::zero();
         $this->total = BigDecimal::zero();
+        $this->withholdingAmount = BigInteger::zero();
+        $this->payableAmount = BigInteger::zero();
         $this->setUuid(Uuid::v7());
     }
 
@@ -559,5 +596,64 @@ class Quote
         } catch (EntityNotFoundException) {
             return false;
         }
+    }
+
+    public function getWithholdingAmount(): BigNumber
+    {
+        return $this->withholdingAmount;
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function setWithholdingAmount(BigNumber|float|int|string $withholdingAmount): self
+    {
+        $this->withholdingAmount = BigNumber::of($withholdingAmount);
+
+        return $this;
+    }
+
+    public function getPayableAmount(): BigNumber
+    {
+        return $this->payableAmount;
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function setPayableAmount(BigNumber|float|int|string $payableAmount): self
+    {
+        $this->payableAmount = BigNumber::of($payableAmount);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InvoiceTax>
+     */
+    public function getInvoiceTaxes(): Collection
+    {
+        return $this->invoiceTaxes;
+    }
+
+    public function addInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        if (! $this->invoiceTaxes->contains($invoiceTax)) {
+            $this->invoiceTaxes->add($invoiceTax);
+            $invoiceTax->setQuote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        if ($this->invoiceTaxes->removeElement($invoiceTax)) {
+            if ($invoiceTax->getQuote() === $this) {
+                $invoiceTax->setQuote(null);
+            }
+        }
+
+        return $this;
     }
 }
