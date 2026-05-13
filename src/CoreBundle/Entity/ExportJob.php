@@ -26,6 +26,9 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: ExportJob::TABLE_NAME)]
+#[ORM\Index(columns: ['company_id'])]
+#[ORM\Index(columns: ['requested_by'])]
+#[ORM\Index(columns: ['status'])]
 #[ORM\Entity(repositoryClass: ExportJobRepository::class)]
 #[ExportIgnore]
 class ExportJob
@@ -47,19 +50,19 @@ class ExportJob
      * `requested_by` FK constraint in the migration (`ON DELETE CASCADE`) still
      * guarantees orphan cleanup at the database level.
      */
-    #[ORM\Column(type: UlidType::NAME)]
+    #[ORM\Column(name: 'requested_by', type: UlidType::NAME)]
     private Ulid $requestedBy;
 
-    #[ORM\Column(type: Types::STRING, length: 10, enumType: ExportFormat::class)]
+    #[ORM\Column(name: 'format', type: Types::STRING, length: 10, enumType: ExportFormat::class)]
     private ExportFormat $format;
 
-    #[ORM\Column(type: Types::STRING, length: 20, enumType: ExportStatus::class)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 20, enumType: ExportStatus::class)]
     private ExportStatus $status;
 
     /**
      * Relative path from the project root, e.g. `var/exports/{companyId58}/{jobId58}.zip`.
      */
-    #[ORM\Column(type: Types::STRING, length: 512, nullable: true)]
+    #[ORM\Column(name: 'archive_path', type: Types::STRING, length: 512, nullable: true)]
     private ?string $archivePath = null;
 
     /**
@@ -69,16 +72,16 @@ class ExportJob
      * exporter are well under this cap; if/when that changes, widen both the
      * column type and the PHP property in tandem.
      */
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(name: 'file_size', type: Types::INTEGER, nullable: true)]
     private ?int $fileSize = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(name: 'completed_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $completedAt = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'failure_reason', type: Types::TEXT, nullable: true)]
     private ?string $failureReason = null;
 
     public function __construct(Ulid $requestedBy, ExportFormat $format)
