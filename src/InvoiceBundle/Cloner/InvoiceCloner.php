@@ -26,6 +26,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\TaxBundle\Service\TaxSnapshotCopier;
 use Traversable;
 
 /**
@@ -36,6 +37,7 @@ final class InvoiceCloner
     public function __construct(
         private readonly InvoiceManager $invoiceManager,
         private readonly BillingIdGenerator $billingIdGenerator,
+        private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
     }
 
@@ -97,6 +99,12 @@ final class InvoiceCloner
         array_map(static fn (Line $item): Invoice|RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
 
         if ($newInvoice instanceof Invoice) {
+            foreach ($invoice->getInvoiceTaxes() as $sourceInvoiceTax) {
+                $newInvoice->addInvoiceTax($this->taxSnapshotCopier->copyInvoiceTax($sourceInvoiceTax));
+            }
+        }
+
+        if ($newInvoice instanceof Invoice) {
             $this->invoiceManager->create($newInvoice);
         }
 
@@ -122,8 +130,9 @@ final class InvoiceCloner
             $invoiceLine->setPrice($line->getPrice());
             $invoiceLine->setQty($line->getQty());
 
-            if (null !== $line->getTax()) {
-                $invoiceLine->setTax($line->getTax());
+            $invoiceLine->getTaxes()->clear();
+            foreach ($line->getTaxes() as $sourceLineTax) {
+                $invoiceLine->addTax($this->taxSnapshotCopier->copyLineTax($sourceLineTax));
             }
 
             yield $invoiceLine;

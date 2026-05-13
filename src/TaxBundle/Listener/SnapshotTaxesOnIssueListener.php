@@ -15,9 +15,11 @@ namespace SolidInvoice\TaxBundle\Listener;
 
 use DateTimeImmutable;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
@@ -94,6 +96,20 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
                 }
 
                 $lineTax->freeze($stamp);
+            }
+        }
+
+        if ($subject instanceof Invoice || $subject instanceof Quote) {
+            foreach ($subject->getInvoiceTaxes() as $invoiceTax) {
+                if (! $invoiceTax instanceof InvoiceTax) {
+                    continue;
+                }
+
+                if ($invoiceTax->getSnapshottedAt() !== null) {
+                    continue;
+                }
+
+                $invoiceTax->freeze($stamp);
             }
         }
     }

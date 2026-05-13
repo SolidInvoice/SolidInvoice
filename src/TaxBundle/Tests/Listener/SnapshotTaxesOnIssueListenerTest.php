@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener;
@@ -117,6 +118,26 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
 
         self::assertSame('Initial', $lineTax->getNameSnapshot());
         self::assertSame('10.0000', $lineTax->getRateSnapshot());
+    }
+
+    public function testInvoiceLevelInvoiceTaxIsFrozenOnTransition(): void
+    {
+        $invoice = $this->buildInvoiceWithTaxedLine();
+        $invoiceTax = new InvoiceTax();
+        $invoiceTax->setNameSnapshot('TDS');
+        $invoiceTax->setRateSnapshot('10.0000');
+        $invoice->addInvoiceTax($invoiceTax);
+
+        $listener = new SnapshotTaxesOnIssueListener();
+        $event = $this->makeEvent(
+            $invoice,
+            'invoice',
+            new Transition('accept', InvoiceStatus::Draft->value, InvoiceStatus::Pending->value),
+        );
+
+        $listener->onTransition($event);
+
+        self::assertInstanceOf(DateTimeImmutable::class, $invoiceTax->getSnapshottedAt());
     }
 
     private function buildInvoiceWithTaxedLine(): Invoice
