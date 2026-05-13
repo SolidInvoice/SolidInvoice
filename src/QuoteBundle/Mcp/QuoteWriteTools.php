@@ -62,7 +62,9 @@ final class QuoteWriteTools
      * as a draft — use `apply_quote_transition` to send/accept/etc.
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
-     * @param list<array<string, mixed>>      $lines          Line items: [{description, price, qty, tax_id?}, ...]
+     * @param list<array<string, mixed>>      $lines          Line items: [{description, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
+     *                                                        Provide `taxes[]` for multi-tax lines (India GST, Quebec compound, etc.);
+     *                                                        `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $due            ISO-8601 due date (optional)
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
      * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set

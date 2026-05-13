@@ -19,11 +19,13 @@ use Mcp\Exception\ToolCallException;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 
@@ -100,6 +102,7 @@ final class EntityNormalizer
             'created' => $this->date($invoice->getCreated()),
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
+            'lines' => $this->lines($invoice->getLines()->toArray()),
         ];
     }
 
@@ -131,6 +134,7 @@ final class EntityNormalizer
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
             'created' => $this->date($invoice->getCreated()),
+            'lines' => $this->lines($invoice->getLines()->toArray()),
         ];
     }
 
@@ -152,6 +156,51 @@ final class EntityNormalizer
             'created' => $this->date($quote->getCreated()),
             'terms' => $quote->getTerms(),
             'notes' => $quote->getNotes(),
+            'lines' => $this->lines($quote->getLines()->toArray()),
+        ];
+    }
+
+    /**
+     * @param list<LineInterface> $lines
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function lines(array $lines): array
+    {
+        $result = [];
+
+        foreach ($lines as $line) {
+            $result[] = [
+                'id' => $line->getId()->toRfc4122(),
+                'description' => $line->getDescription(),
+                'price' => $this->bigNumber($line->getPrice()),
+                'qty' => $line->getQty(),
+                'total' => $this->bigNumber($line->getTotal()),
+                'taxes' => array_values(array_map(
+                    fn (LineTax $lineTax): array => $this->lineTax($lineTax),
+                    $line->getTaxes()->toArray(),
+                )),
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function lineTax(LineTax $lineTax): array
+    {
+        return [
+            'id' => $lineTax->getId()?->toRfc4122(),
+            'tax_id' => $lineTax->getTax()?->getId()?->toRfc4122(),
+            'name' => $lineTax->getNameSnapshot(),
+            'rate' => $lineTax->getRateSnapshot(),
+            'type' => $lineTax->getTypeSnapshot()->value,
+            'category' => $lineTax->getCategorySnapshot()->value,
+            'compound' => $lineTax->isCompound(),
+            'sequence' => $lineTax->getSequence(),
+            'amount' => $this->bigNumber($lineTax->getAmount()),
         ];
     }
 

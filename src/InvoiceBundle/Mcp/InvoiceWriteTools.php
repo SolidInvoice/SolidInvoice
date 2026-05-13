@@ -72,8 +72,9 @@ final class InvoiceWriteTools
      * `apply_invoice_transition` to move it through the workflow.
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
-     * @param list<array<string, mixed>>      $lines          Line items: [{description, price, qty, tax_id?}, ...].
-     *                                                        Price is in the minor unit (e.g. cents).
+     * @param list<array<string, mixed>>      $lines          Line items: [{description, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
+     *                                                        Price is in the minor unit (e.g. cents). Provide `taxes[]` for multi-tax lines
+     *                                                        (India GST split, Quebec GST+QST compound); `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $invoice_date   ISO-8601 date (defaults to today)
      * @param string|null                     $due            ISO-8601 due date (optional)
      * @param string|null                     $discount_type  "percentage" or "money" (optional)

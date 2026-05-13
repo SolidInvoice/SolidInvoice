@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 /**
@@ -154,23 +155,70 @@ final class LineItemBuilder
 
             $line->setQty((float) $qty);
 
-            $taxId = $data['tax_id'] ?? null;
-
-            if (\is_string($taxId) && $taxId !== '') {
-                $tax = $this->entityManager
-                    ->getRepository(Tax::class)
-                    ->find(UlidParser::parse($taxId, sprintf('line[%d].tax_id', $index)));
-
-                if (! $tax instanceof Tax) {
-                    throw new ToolCallException(sprintf('Line item #%d tax %s not found.', $index, $taxId));
-                }
-
-                $line->setTax($tax);
-            }
+            $this->attachTaxes($line, $data, $index);
 
             $built[] = $line;
         }
 
         return $built;
+    }
+
+    /**
+     * Attach LineTax entities to the line.
+     *
+     * Accepts either:
+     *  - `taxes`: list of {tax_id, sequence?, compound?} (preferred for multi-tax)
+     *  - `tax_id`: single ULID (legacy single-tax shorthand)
+     *
+     * @param array<string, mixed> $data
+     */
+    private function attachTaxes(InvoiceLine|QuoteLine|RecurringInvoiceLine $line, array $data, int $index): void
+    {
+        $taxesInput = $data['taxes'] ?? null;
+
+        if (\is_array($taxesInput) && $taxesInput !== []) {
+            foreach (array_values($taxesInput) as $position => $taxData) {
+                if (! \is_array($taxData)) {
+                    throw new ToolCallException(sprintf('line[%d].taxes[%d] must be an object.', $index, $position));
+                }
+
+                $taxId = $taxData['tax_id'] ?? null;
+
+                if (! \is_string($taxId) || $taxId === '') {
+                    throw new ToolCallException(sprintf('line[%d].taxes[%d].tax_id is required.', $index, $position));
+                }
+
+                $tax = $this->entityManager
+                    ->getRepository(Tax::class)
+                    ->find(UlidParser::parse($taxId, sprintf('line[%d].taxes[%d].tax_id', $index, $position)));
+
+                if (! $tax instanceof Tax) {
+                    throw new ToolCallException(sprintf('line[%d].taxes[%d] tax %s not found.', $index, $position, $taxId));
+                }
+
+                $lineTax = new LineTax();
+                $lineTax->snapshotFrom($tax);
+                $lineTax->setSequence((int) ($taxData['sequence'] ?? $position));
+                $lineTax->setCompound((bool) ($taxData['compound'] ?? $tax->isCompound()));
+
+                $line->addTax($lineTax);
+            }
+
+            return;
+        }
+
+        $taxId = $data['tax_id'] ?? null;
+
+        if (\is_string($taxId) && $taxId !== '') {
+            $tax = $this->entityManager
+                ->getRepository(Tax::class)
+                ->find(UlidParser::parse($taxId, sprintf('line[%d].tax_id', $index)));
+
+            if (! $tax instanceof Tax) {
+                throw new ToolCallException(sprintf('Line item #%d tax %s not found.', $index, $taxId));
+            }
+
+            $line->setTax($tax);
+        }
     }
 }
