@@ -35,7 +35,12 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxDirection;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -156,6 +161,111 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
+    }
+
+    public function testQuoteToInvoiceCopiesLineTaxSnapshotsAsNewRows(): void
+    {
+        $client = new Client();
+        $client->setName('Test Client');
+
+        $sourceLineTax = new LineTax();
+        $sourceLineTax->setNameSnapshot('GST');
+        $sourceLineTax->setRateSnapshot('5.0000');
+        $sourceLineTax->setCategorySnapshot(TaxCategory::Standard);
+        $sourceLineTax->setTypeSnapshot(TaxType::Exclusive);
+        $sourceLineTax->setCompound(false);
+        $sourceLineTax->setSequence(1);
+
+        $line = new Line();
+        $line->setDescription('Service');
+        $line->setPrice(120);
+        $line->setQty(1);
+        $line->setTotal(120);
+        $line->addTax($sourceLineTax);
+
+        $quote = new Quote();
+        $quote->setBaseTotal(120);
+        $quote->setTotal(126);
+        $quote->setClient($client);
+        $quote->addLine($line);
+        $quote->setCompany(new Company());
+
+        $sourceInvoiceTax = new InvoiceTax();
+        $sourceInvoiceTax->setNameSnapshot('TDS');
+        $sourceInvoiceTax->setRateSnapshot('10.0000');
+        $sourceInvoiceTax->setDirection(TaxDirection::Deductive);
+        $sourceInvoiceTax->setNote('Withholding 10%');
+        $quote->addInvoiceTax($sourceInvoiceTax);
+
+        $invoice = $this->manager->createFromQuote($quote);
+
+        // New LineTax row, not a shared reference.
+        $invoiceLineTaxes = $invoice->getLines()->first()->getTaxes();
+        self::assertCount(1, $invoiceLineTaxes);
+        $copiedLineTax = $invoiceLineTaxes->first();
+        self::assertInstanceOf(LineTax::class, $copiedLineTax);
+        self::assertNotSame($sourceLineTax, $copiedLineTax);
+        self::assertSame('GST', $copiedLineTax->getNameSnapshot());
+        self::assertSame('5.0000', $copiedLineTax->getRateSnapshot());
+        self::assertSame(TaxType::Exclusive, $copiedLineTax->getTypeSnapshot());
+        self::assertSame(1, $copiedLineTax->getSequence());
+
+        // Quote→Invoice does NOT freeze on conversion (draft invoice still mutable).
+        self::assertNull($copiedLineTax->getSnapshottedAt());
+
+        // New InvoiceTax row preserving direction + note + snapshot fields.
+        self::assertCount(1, $invoice->getInvoiceTaxes());
+        $copiedInvoiceTax = $invoice->getInvoiceTaxes()->first();
+        self::assertNotSame($sourceInvoiceTax, $copiedInvoiceTax);
+        self::assertSame('TDS', $copiedInvoiceTax->getNameSnapshot());
+        self::assertSame(TaxDirection::Deductive, $copiedInvoiceTax->getDirection());
+        self::assertSame('Withholding 10%', $copiedInvoiceTax->getNote());
+    }
+
+    public function testRecurringGenerationFreezesSnapshotsAtGenerationTime(): void
+    {
+        $client = new Client();
+        $client->setName('Test Client');
+
+        $sourceLineTax = new LineTax();
+        $sourceLineTax->setNameSnapshot('VAT');
+        $sourceLineTax->setRateSnapshot('20.0000');
+        $sourceLineTax->setTypeSnapshot(TaxType::Exclusive);
+
+        $line = new RecurringInvoiceLine();
+        $line->setDescription('Recurring Service');
+        $line->setPrice(1000);
+        $line->setQty(1);
+        $line->setTotal(1000);
+        $line->addTax($sourceLineTax);
+
+        $recurring = new RecurringInvoice();
+        $recurring->setBaseTotal(1000);
+        $recurring->setTotal(1200);
+        $recurring->setClient($client);
+        $recurring->addLine($line);
+        $recurring->setCompany(new Company());
+
+        $invoice = $this->manager->createFromRecurring($recurring);
+
+        $copiedLineTax = $invoice->getLines()->first()->getTaxes()->first();
+        self::assertInstanceOf(LineTax::class, $copiedLineTax);
+        self::assertNotSame($sourceLineTax, $copiedLineTax);
+
+        // Recurring generation freezes snapshots at generation time.
+        self::assertNotNull($copiedLineTax->getSnapshottedAt());
+        self::assertSame('VAT', $copiedLineTax->getNameSnapshot());
+        self::assertSame('20.0000', $copiedLineTax->getRateSnapshot());
+
+        // Editing the new LineTax with snapshotFrom() must be refused — frozen.
+        $newRate = (new Tax())
+            ->setName('VAT-updated')
+            ->setRate(99.0)
+            ->setType(Tax::TYPE_EXCLUSIVE);
+        $copiedLineTax->snapshotFrom($newRate);
+
+        self::assertSame('VAT', $copiedLineTax->getNameSnapshot());
+        self::assertSame('20.0000', $copiedLineTax->getRateSnapshot());
     }
 
     public function testCreateFromRecurring(): void

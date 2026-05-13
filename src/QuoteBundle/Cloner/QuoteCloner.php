@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
-use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Service\TaxSnapshotCopier;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Traversable;
 
@@ -32,6 +32,7 @@ final class QuoteCloner
     public function __construct(
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly BillingIdGenerator $billingIdGenerator,
+        private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
     }
 
@@ -66,6 +67,10 @@ final class QuoteCloner
 
         array_map(static fn (Line $line): Quote => $newQuote->addLine($line), iterator_to_array($this->addLines($quote, $now)));
 
+        foreach ($quote->getInvoiceTaxes() as $sourceInvoiceTax) {
+            $newQuote->addInvoiceTax($this->taxSnapshotCopier->copyInvoiceTax($sourceInvoiceTax));
+        }
+
         $this->quoteStateMachine->apply($newQuote, Graph::TRANSITION_NEW);
 
         return $newQuote;
@@ -85,8 +90,9 @@ final class QuoteCloner
             $quoteLine->setPrice($line->getPrice());
             $quoteLine->setQty($line->getQty());
 
-            if ($line->getTax() instanceof Tax) {
-                $quoteLine->setTax($line->getTax());
+            $quoteLine->getTaxes()->clear();
+            foreach ($line->getTaxes() as $sourceLineTax) {
+                $quoteLine->addTax($this->taxSnapshotCopier->copyLineTax($sourceLineTax));
             }
 
             yield $quoteLine;

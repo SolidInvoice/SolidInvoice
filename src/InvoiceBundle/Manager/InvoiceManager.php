@@ -31,7 +31,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Service\TaxSnapshotCopier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function str_replace;
@@ -50,6 +50,7 @@ class InvoiceManager
         private readonly NotificationManager $notification,
         private readonly BillingIdGenerator $billingIdGenerator,
         private readonly ClockInterface $clock,
+        private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
         $this->entityManager = $doctrine->getManager();
     }
@@ -59,7 +60,7 @@ class InvoiceManager
      */
     public function createFromQuote(Quote $quote): Invoice
     {
-        return $this->createFromObject($quote)
+        return $this->createFromObject($quote, freezeSnapshots: false)
             ->setQuote($quote);
     }
 
@@ -68,7 +69,7 @@ class InvoiceManager
      */
     public function createFromRecurring(RecurringInvoice $recurringInvoice): Invoice
     {
-        $invoice = $this->createFromObject($recurringInvoice);
+        $invoice = $this->createFromObject($recurringInvoice, freezeSnapshots: true);
         $invoice->setRecurringInvoice($recurringInvoice);
 
         $now = CarbonImmutable::instance($this->clock->now());
@@ -102,12 +103,13 @@ class InvoiceManager
     /**
      * @throws MathException|ContainerExceptionInterface
      */
-    private function createFromObject(RecurringInvoice | Quote $object): Invoice
+    private function createFromObject(RecurringInvoice | Quote $object, bool $freezeSnapshots = false): Invoice
     {
         /** @var RecurringInvoice|Quote $object */
         $invoice = new Invoice();
 
         $now = $this->clock->now();
+        $freezeAt = $freezeSnapshots ? $now : null;
 
         $invoice->setCreated($now);
         $invoice->setInvoiceDate($now);
@@ -138,11 +140,17 @@ class InvoiceManager
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());
 
-            if ($item->getTax() instanceof Tax) {
-                $invoiceItem->setTax($item->getTax());
+            // Snapshot fresh LineTax rows so the new invoice owns its own tax history.
+            $invoiceItem->getTaxes()->clear();
+            foreach ($item->getTaxes() as $sourceLineTax) {
+                $invoiceItem->addTax($this->taxSnapshotCopier->copyLineTax($sourceLineTax, $freezeAt));
             }
 
             $invoice->addLine($invoiceItem);
+        }
+
+        foreach ($object->getInvoiceTaxes() as $sourceInvoiceTax) {
+            $invoice->addInvoiceTax($this->taxSnapshotCopier->copyInvoiceTax($sourceInvoiceTax, $freezeAt));
         }
 
         return $invoice;
