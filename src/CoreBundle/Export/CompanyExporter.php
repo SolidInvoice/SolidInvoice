@@ -91,9 +91,15 @@ final class CompanyExporter
             $counts = $this->writeEntityFiles($manager, $specs, $format, $stagingDir);
 
             $manifest = $this->manifestGenerator->generate($job, $counts);
+            // JSON_THROW_ON_ERROR surfaces encoder failures (e.g. a non-UTF-8 byte
+            // sneaking in via an entity field) rather than silently writing an empty
+            // manifest from a `false`-cast result.
             $this->filesystem->dumpFile(
                 $stagingDir . '/manifest.json',
-                (string) json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                json_encode(
+                    $manifest,
+                    JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+                ),
             );
 
             $relativePath = $this->archivePath($job);
