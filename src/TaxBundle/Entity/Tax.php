@@ -20,15 +20,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
-use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Stringable;
@@ -137,24 +132,6 @@ class Tax implements Stringable
     private bool $compound = false;
 
     /**
-     * @var Collection<int, Line>
-     */
-    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: InvoiceLine::class)]
-    private Collection $invoiceLines;
-
-    /**
-     * @var Collection<int, QuoteLine>
-     */
-    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: QuoteLine::class)]
-    private Collection $quoteLines;
-
-    public function __construct()
-    {
-        $this->invoiceLines = new ArrayCollection();
-        $this->quoteLines = new ArrayCollection();
-    }
-
-    /**
      * @return array{Inclusive: string, Exclusive: string}
      */
     public static function getTypes(): array
@@ -229,42 +206,6 @@ class Tax implements Stringable
     public function setCompound(bool $compound): self
     {
         $this->compound = $compound;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Line>
-     */
-    public function getInvoiceLines(): Collection
-    {
-        return $this->invoiceLines;
-    }
-
-    /**
-     * @param Line[] $invoiceLines
-     */
-    public function setInvoiceLines(array $invoiceLines): self
-    {
-        $this->invoiceLines = new ArrayCollection($invoiceLines);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, QuoteLine>
-     */
-    public function getQuoteLines(): Collection
-    {
-        return $this->quoteLines;
-    }
-
-    /**
-     * @param QuoteLine[] $quoteLines
-     */
-    public function setQuoteLines(array $quoteLines): self
-    {
-        $this->quoteLines = new ArrayCollection($quoteLines);
 
         return $this;
     }
