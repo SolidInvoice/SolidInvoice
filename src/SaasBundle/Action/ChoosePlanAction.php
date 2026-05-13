@@ -28,6 +28,14 @@ use Symfony\Component\Uid\Ulid;
 
 final class ChoosePlanAction extends AbstractController
 {
+    /**
+     * Query parameter used to hand off the desired plan id to the SaaS
+     * checkout route. The subscription's `plan` field is intentionally NOT
+     * mutated here for paid plans — that switch only commits once Lemon
+     * Squeezy confirms the upgrade via webhook (see SubscriptionPlanSyncListener).
+     */
+    public const string PENDING_PLAN_QUERY_PARAMETER = 'plan';
+
     public function __construct(
         private readonly PlanRepositoryInterface $planRepository,
         private readonly SubscriptionManager $subscriptionManager,
@@ -66,18 +74,24 @@ final class ChoosePlanAction extends AbstractController
             return $this->redirectToRoute('saas_subscription_plans');
         }
 
-        if ($subscription->getPlan()->getPlanId() !== $plan->getPlanId()) {
-            $this->subscriptionManager->changePlan($subscription, $plan);
-        }
-
+        // Free plan: no Lemon Squeezy round-trip; safe to commit locally now.
         if ($plan->isFree()) {
+            if ($subscription->getPlan()->getPlanId() !== $plan->getPlanId()) {
+                $this->subscriptionManager->changePlan($subscription, $plan);
+            }
             $this->subscriptionManager->activate($subscription);
             $this->addFlash('success', 'Your free plan is now active.');
 
             return $this->redirectToRoute('_dashboard');
         }
 
-        return $this->redirectToRoute('saas_subscription_checkout');
+        // Paid plan: defer the local plan switch. Pass the desired plan id
+        // to the checkout route via query parameter — the webhook handler
+        // commits the switch only if Lemon Squeezy confirms the new
+        // subscription / variant.
+        return $this->redirectToRoute('saas_subscription_checkout', [
+            self::PENDING_PLAN_QUERY_PARAMETER => $plan->getPlanId(),
+        ]);
     }
 
     private function getSubscription(): ?Subscription
