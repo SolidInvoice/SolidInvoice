@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":"","taxes":[]}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="invoice" method="post" data-model="on(change)|*">
 
@@ -244,7 +244,22 @@
         </div>
     </div>
 
-    <input type="hidden" id="invoice___dynamic_error" name="invoice[__dynamic_error]"><input type="hidden" id="invoice__token" name="invoice[_token]" data-controller="csrf-protection">
+    <fieldset class="mb-3">                
+    <div id="invoice_lines">
+<fieldset class="mb-3">                
+    <div id="invoice_lines_0"><fieldset class="mb-3">                
+    <div id="invoice_lines_0_taxes" class="line-tax-collection" data-controller="line-tax" data-prototype='&lt;fieldset class="mb-3"&gt;    
+    &lt;div id="invoice_lines_0_taxes___name__"&gt;&lt;div class="mb-3"&gt;                
+            &lt;label class="control-label form-label" for="invoice_lines_0_taxes___name___tax"&gt;Tax&lt;/label&gt;&lt;select id="invoice_lines_0_taxes___name___tax" name="invoice[lines][0][taxes][__name__][tax]"    class="line-tax-select form-select" data-line-tax-target="tax" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" &gt;&lt;option value=""&gt;No Tax&lt;/option&gt;&lt;option value="0FKT8YC1NT27QT6CAT5KS1MNM0"&gt;VAT (20%)&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;input type="hidden" id="invoice_lines_0_taxes___name___sequence" name="invoice[lines][0][taxes][__name__][sequence]"    data-line-tax-target="sequence"  /&gt;                                &lt;div class="form-switch-field"&gt;
+            &lt;div class="form-switch-wrapper"&gt;&lt;div class="form-check form-switch"&gt;&lt;input type="checkbox" id="invoice_lines_0_taxes___name___compound" name="invoice[lines][0][taxes][__name__][compound]"    data-line-tax-target="compound" class="form-check-input"  value="1" /&gt;
+        &lt;label class="form-check-label checkbox-switch" for="invoice_lines_0_taxes___name___compound"&gt;Compound&lt;/label&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;&lt;/fieldset&gt;'></div>
+</fieldset></div>
+</fieldset>
+<div class="mb-3"><button type="button" id="invoice_lines_0_delete" name="invoice[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="0" class="btn-secondary btn">Delete</button></div>
+</div>
+</fieldset>
+<input type="hidden" id="invoice___dynamic_error" name="invoice[__dynamic_error]"><input type="hidden" id="invoice__token" name="invoice[_token]" data-controller="csrf-protection">
 </form>
 </div>
 </body></html>
