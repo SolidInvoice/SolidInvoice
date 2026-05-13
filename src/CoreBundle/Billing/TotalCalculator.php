@@ -17,23 +17,36 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Brick\Math\RoundingMode;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\LineTaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\TaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 
 /**
+ * Populates {@see BaseInvoice}/{@see Quote} totals (subtotal, tax, grand total,
+ * balance) by delegating tax math to {@see TaxCalculatorInterface} and discount math
+ * to {@see Calculator::calculateDiscount()}.
+ *
  * @see \SolidInvoice\CoreBundle\Tests\Billing\TotalCalculatorTest
  */
 class TotalCalculator
 {
+    private readonly TaxCalculatorInterface $taxCalculator;
+
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
         private readonly Calculator $calculator,
+        ?TaxCalculatorInterface $taxCalculator = null,
     ) {
+        $this->taxCalculator = $taxCalculator ?? new TaxCalculator(
+            new LineTaxCalculator(),
+            new InvoiceTaxCalculator(),
+        );
     }
 
     /**
@@ -57,49 +70,16 @@ class TotalCalculator
      */
     private function updateTotal(BaseInvoice|Quote $entity): void
     {
+        $result = $this->taxCalculator->calculate($entity);
 
-        $total = BigDecimal::zero();
-        $subTotal = BigDecimal::zero();
-        $tax = BigDecimal::zero();
-
-        foreach ($entity->getLines() as $line) {
-            $line->updateTotal();
-
-            $rowTotal = $line->getTotal();
-
-            $total = $total->plus($line->getTotal());
-            $subTotal = $subTotal->plus($line->getTotal());
-
-            if (($rowTax = $line->getTax()) instanceof Tax) {
-                switch ($rowTax->getType()) {
-                    case Tax::TYPE_INCLUSIVE:
-                        $rate = BigDecimal::of((string) $rowTax->getRate());
-                        $divisor = $rate->dividedBy(100, 10, RoundingMode::HalfEven)->plus(1);
-                        $taxAmount = $rowTotal->toBigDecimal()->dividedBy($divisor, 2, RoundingMode::HalfEven)->minus($rowTotal)->negated();
-                        $subTotal = $subTotal->minus($taxAmount);
-                        break;
-                    case Tax::TYPE_EXCLUSIVE:
-                        $rate = BigDecimal::of((string) $rowTax->getRate());
-                        $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))->toScale(0, RoundingMode::HalfEven);
-                        $total = $total->plus($taxAmount);
-                        break;
-                    case Tax::TYPE_FLAT_RATE:
-                        $taxAmount = BigDecimal::of((string) $rowTax->getRate())->multipliedBy(100)->toScale(0, RoundingMode::HalfEven);
-                        $total = $total->plus($taxAmount);
-                        break;
-                    default:
-                        $taxAmount = BigDecimal::zero();
-                        break;
-                }
-
-                $tax = $tax->plus($taxAmount);
-            }
-        }
+        $subTotal = $result->subTotal;
+        $tax = $result->getTotalTax();
+        $total = $result->total;
 
         $entity->setBaseTotal($subTotal);
 
         if ($entity->getDiscount()->getValue()) {
-            $total = $this->setDiscount($entity, $total);
+            $total = $this->applyDiscount($entity, $total);
         }
 
         $entity->setTotal($total);
@@ -109,7 +89,7 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    private function setDiscount(BaseInvoice|Quote $entity, BigDecimal|BigInteger $total): BigNumber
+    private function applyDiscount(BaseInvoice|Quote $entity, BigDecimal|BigInteger $total): BigNumber
     {
         return $total->minus($this->calculator->calculateDiscount($entity));
     }

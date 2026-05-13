@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use SolidInvoice\TaxBundle\Validator\Constraints\IncompatibleTaxConfiguration;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Tax::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[UniqueEntity('name')]
+#[IncompatibleTaxConfiguration]
 #[ApiResource(
     operations: [
         new GetCollection(),
