@@ -38,10 +38,9 @@
     </a>
 {% endmacro %}
 
-{% import _self as upgrade %}
-
 {# Trial-Restricted Form Row #}
 {% block checkbox_row %}
+    {% import _self as upgrade %}
     {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -72,6 +71,7 @@
 {% endblock %}
 
 {% block form_row %}
+    {% import _self as upgrade %}
     {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
