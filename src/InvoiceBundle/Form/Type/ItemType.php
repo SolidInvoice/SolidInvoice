@@ -17,7 +17,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use SolidInvoice\TaxBundle\Form\Type\LineTaxCollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -83,11 +82,6 @@ class ItemType extends AbstractType
                     'required' => false,
                 ]
             );
-
-            $builder->add('taxes', LineTaxCollectionType::class, [
-                'label' => false,
-                'required' => false,
-            ]);
         }
     }
 

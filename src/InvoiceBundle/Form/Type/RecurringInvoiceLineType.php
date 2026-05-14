@@ -17,7 +17,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use SolidInvoice\TaxBundle\Form\Type\LineTaxCollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -83,11 +82,6 @@ class RecurringInvoiceLineType extends AbstractType
                     'required' => false,
                 ]
             );
-
-            $builder->add('taxes', LineTaxCollectionType::class, [
-                'label' => false,
-                'required' => false,
-            ]);
         }
     }
 
