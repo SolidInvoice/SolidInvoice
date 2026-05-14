@@ -321,12 +321,12 @@ final class Version30000_9 extends AbstractMigration
     private array $capturedCompanyVatNumbers = [];
 
     /**
-     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, name: string, rate: string, type: string, category: string|null, compound: int|bool|null, snapshotted_at: string|null}>
+     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      */
     private array $capturedInvoiceLineTaxes = [];
 
     /**
-     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, name: string, rate: string, type: string, category: string|null, compound: int|bool|null, snapshotted_at: string|null}>
+     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      */
     private array $capturedQuoteLineTaxes = [];
 
@@ -343,7 +343,7 @@ final class Version30000_9 extends AbstractMigration
 
         /** @var list<array{id: string, company_id: string, vat_number: string}> $rows */
         $rows = $this->connection->fetchAllAssociative(
-            "SELECT id, company_id, vat_number FROM clients WHERE vat_number IS NOT NULL AND vat_number != ''"
+            "SELECT id, company_id, vat_number FROM clients WHERE vat_number IS NOT NULL AND vat_number <> ''"
         );
 
         return $rows;
@@ -357,7 +357,7 @@ final class Version30000_9 extends AbstractMigration
     {
         /** @var list<array{company_id: string, setting_value: string}> $rows */
         $rows = $this->connection->fetchAllAssociative(
-            "SELECT company_id, setting_value FROM app_config WHERE setting_key = ? AND setting_value IS NOT NULL AND setting_value != ''",
+            "SELECT company_id, setting_value FROM app_config WHERE setting_key = ? AND setting_value IS NOT NULL AND setting_value <> ''",
             [self::COMPANY_VAT_SETTING_KEY]
         );
 
@@ -365,7 +365,7 @@ final class Version30000_9 extends AbstractMigration
     }
 
     /**
-     * @return list<array{line_id: string, parent_company_id: string, tax_id: string, name: string, rate: string, type: string, category: string|null, compound: int|bool|null, snapshotted_at: string|null}>
+     * @return list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      * @throws Exception
      */
     private function fetchLineTaxes(Schema $schema, string $lineTable, string $parentTable): array
@@ -393,12 +393,15 @@ final class Version30000_9 extends AbstractMigration
             return [];
         }
 
-        $statusFilter = "p.status != 'draft'";
+        // Avoid reserved-word aliases (`type`, `name`, `status`) so the query parses on every
+        // platform without identifier quoting. The associative-array keys consumed by
+        // backfillLineTaxes() are renamed to match.
+        $statusFilter = "p.status <> 'draft'";
 
         $sql = sprintf(
             'SELECT l.id AS line_id, l.company_id AS parent_company_id, l.tax_id AS tax_id,
-                    t.name AS name, t.rate AS rate, t.tax_type AS type,
-                    %s AS category, %s AS compound,
+                    t.name AS tax_name, t.rate AS tax_rate, t.tax_type AS tax_type_value,
+                    %s AS tax_category, %s AS tax_compound,
                     CASE WHEN %s THEN p.updated ELSE NULL END AS snapshotted_at
              FROM %s l
              INNER JOIN %s t ON t.id = l.tax_id
@@ -413,7 +416,7 @@ final class Version30000_9 extends AbstractMigration
             $parentColumn,
         );
 
-        /** @var list<array{line_id: string, parent_company_id: string, tax_id: string, name: string, rate: string, type: string, category: string|null, compound: int|bool|null, snapshotted_at: string|null}> $rows */
+        /** @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}> $rows */
         $rows = $this->connection->fetchAllAssociative($sql);
 
         return $rows;
@@ -436,14 +439,14 @@ final class Version30000_9 extends AbstractMigration
     }
 
     /**
-     * @param list<array{line_id: string, parent_company_id: string, tax_id: string, name: string, rate: string, type: string, category: string|null, compound: int|bool|null, snapshotted_at: string|null}> $rows
+     * @param list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}> $rows
      * @throws Exception
      */
     private function backfillLineTaxes(array $rows, string $lineColumn, string $now): void
     {
         foreach ($rows as $row) {
-            $type = TaxType::tryFrom((string) $row['type']) ?? TaxType::Exclusive;
-            $category = TaxCategory::tryFrom((string) ($row['category'] ?? '')) ?? TaxCategory::Standard;
+            $type = TaxType::tryFrom((string) $row['tax_type_value']) ?? TaxType::Exclusive;
+            $category = TaxCategory::tryFrom((string) ($row['tax_category'] ?? '')) ?? TaxCategory::Standard;
 
             $this->connection->insert(LineTax::TABLE_NAME, [
                 'id' => (new Ulid())->toBinary(),
@@ -451,11 +454,11 @@ final class Version30000_9 extends AbstractMigration
                 'tax_id' => $row['tax_id'],
                 'invoice_line_id' => $lineColumn === 'invoice_line_id' ? $row['line_id'] : null,
                 'quote_line_id' => $lineColumn === 'quote_line_id' ? $row['line_id'] : null,
-                'name_snapshot' => (string) $row['name'],
-                'rate_snapshot' => $this->normaliseRate($row['rate']),
+                'name_snapshot' => (string) $row['tax_name'],
+                'rate_snapshot' => $this->normaliseRate($row['tax_rate']),
                 'category_snapshot' => $category->value,
                 'type_snapshot' => $type->value,
-                'compound' => $row['compound'] ? 1 : 0,
+                'compound' => $row['tax_compound'] ? 1 : 0,
                 'sequence' => 0,
                 'amount' => 0,
                 'snapshotted_at' => $row['snapshotted_at'],
@@ -513,44 +516,86 @@ final class Version30000_9 extends AbstractMigration
 
     private function addInvoiceTaxCheckConstraint(): void
     {
-        // MySQL 8+ and PostgreSQL support adding CHECK constraints via ALTER TABLE.
-        // SQLite cannot ALTER TABLE ADD CONSTRAINT; the ExactlyOneDocument validator covers it.
-        if ($this->platform instanceof SqlitePlatform) {
-            return;
-        }
+        $sql = $this->buildExactlyOneNullCheck(
+            'invoice_tax',
+            'invoice_tax_exactly_one_document',
+            'invoice_id',
+            'quote_id',
+        );
 
-        if (! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof PostgreSQLPlatform) {
+        if ($sql === null) {
             return;
         }
 
         try {
-            $this->connection->executeStatement(
-                'ALTER TABLE invoice_tax ADD CONSTRAINT invoice_tax_exactly_one_document CHECK ((invoice_id IS NULL) <> (quote_id IS NULL))'
-            );
+            $this->connection->executeStatement($sql);
         } catch (Exception) {
-            // Best-effort: older MySQL silently ignores CHECK constraints.
+            // Best-effort: older MySQL silently ignores CHECK constraints. The
+            // ExactlyOneDocument validator remains the canonical enforcement.
         }
     }
 
     private function addLineTaxCheckConstraint(): void
     {
-        // MySQL 8+ and PostgreSQL support adding CHECK constraints via ALTER TABLE.
-        // SQLite cannot ALTER TABLE ADD CONSTRAINT; the ExactlyOneLine validator covers it.
-        if ($this->platform instanceof SqlitePlatform) {
-            return;
-        }
+        $sql = $this->buildExactlyOneNullCheck(
+            'line_tax',
+            'line_tax_exactly_one_line',
+            'invoice_line_id',
+            'quote_line_id',
+        );
 
-        if (! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof PostgreSQLPlatform) {
+        if ($sql === null) {
             return;
         }
 
         try {
-            $this->connection->executeStatement(
-                'ALTER TABLE line_tax ADD CONSTRAINT line_tax_exactly_one_line CHECK ((invoice_line_id IS NULL) <> (quote_line_id IS NULL))'
-            );
+            $this->connection->executeStatement($sql);
         } catch (Exception) {
-            // Best-effort: older MySQL versions silently ignore CHECK constraints. Application-level
-            // validation (ExactlyOneLine validator) remains the canonical enforcement.
+            // Best-effort: older MySQL versions silently ignore CHECK constraints. The
+            // ExactlyOneLine validator remains the canonical enforcement.
         }
+    }
+
+    /**
+     * Build a portable `ALTER TABLE ADD CONSTRAINT CHECK` for the XOR-null invariant on two columns.
+     *
+     * Returns null when the current platform either does not support adding CHECK constraints
+     * via ALTER TABLE (SQLite) or is not yet covered by this migration (anything other than
+     * MySQL/MariaDB, PostgreSQL, Oracle, or SQL Server).
+     *
+     * The CHECK expression is the long-form `(a IS NULL AND b IS NOT NULL) OR …` rather than
+     * `(a IS NULL) <> (b IS NULL)`: the latter compares boolean expressions, which is rejected
+     * by Oracle and SQL Server because they don't have a SQL-level boolean type. The long form
+     * is standard SQL and is accepted by every supported platform.
+     */
+    private function buildExactlyOneNullCheck(string $table, string $constraint, string $columnA, string $columnB): ?string
+    {
+        // SQLite cannot ALTER TABLE ADD CONSTRAINT; application-level validators cover it.
+        if ($this->platform instanceof SqlitePlatform) {
+            return null;
+        }
+
+        // Doctrine's MySQLPlatform covers MariaDB; PostgreSQLPlatform covers PostgreSQL.
+        // Oracle and SQL Server also support `ALTER TABLE ADD CONSTRAINT CHECK`, so include
+        // them so the invariant is enforced at the DB level on every server-class platform.
+        $supported = $this->platform instanceof MySQLPlatform
+            || $this->platform instanceof PostgreSQLPlatform
+            || $this->platform instanceof OraclePlatform
+            || (class_exists(\Doctrine\DBAL\Platforms\SQLServerPlatform::class)
+                && $this->platform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform);
+
+        if (! $supported) {
+            return null;
+        }
+
+        return sprintf(
+            'ALTER TABLE %s ADD CONSTRAINT %s CHECK ((%s IS NULL AND %s IS NOT NULL) OR (%s IS NOT NULL AND %s IS NULL))',
+            $table,
+            $constraint,
+            $columnA,
+            $columnB,
+            $columnA,
+            $columnB,
+        );
     }
 }
