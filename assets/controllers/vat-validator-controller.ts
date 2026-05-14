@@ -12,6 +12,7 @@ export default class VatValidator extends Controller<HTMLDivElement> {
 
     declare inputTarget: HTMLInputElement
     declare buttonTarget: HTMLInputElement
+    declare readonly hasButtonTarget: boolean
 
     connect () {
         super.connect();
