@@ -191,13 +191,19 @@
                                                     <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
                                                 </div>
                                             {% endfor %}
-                                            {% for row in _tb.additiveRows %}
-                                                <div class="ext-doc-totals-row">
-                                                    <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%)</div>
-                                                    <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
-                                                </div>
-                                            {% endfor %}
                                         {% endif %}
+                                        {% for row in _tb.additiveRows %}
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%)</div>
+                                                <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
+                                            </div>
+                                        {% endfor %}
+                                        {% for row in _tb.informationalRows %}
+                                            <div class="ext-doc-totals-row ext-doc-totals-row-sub">
+                                                <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}</div>
+                                                <div class="ext-doc-totals-value text-muted">{{ 'quote.invoice_taxes.informational'|trans }}</div>
+                                            </div>
+                                        {% endfor %}
                                         {% if quote.discount.type is not empty %}
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">{{ 'quote.discount'|trans }}</div>

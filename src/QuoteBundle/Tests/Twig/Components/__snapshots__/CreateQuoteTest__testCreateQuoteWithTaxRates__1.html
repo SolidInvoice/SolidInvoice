@@ -140,7 +140,22 @@
                         <button type="button" id="quote_lines_add" name="quote[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[lines]" class="add-item-btn btn-sm btn">Add Item</button>
                     </div>
                 </div>
-            </div>
+
+                                                        <div class="billing-invoice-taxes" data-controller="invoice-tax">
+                        <div class="billing-invoice-taxes-header">
+                            <div class="billing-items-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 14l6-6"></path><path fill="currentColor" d="M9 8.5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0m5 5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2l-2 2l-2-2l-2 2l-2-2z"></path></g></svg>
+                            </div>
+                            <h3 class="billing-invoice-taxes-title">Withholding &amp; adjustments</h3>
+                            <p class="billing-invoice-taxes-subtitle text-secondary">Add document-level taxes such as withholding tax or flat surcharges.</p>
+                        </div>
+
+                        
+                        <div class="add-item-action">
+                            <button type="button" id="quote_invoiceTaxes_add" name="quote[invoiceTaxes][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[invoiceTaxes]" class="add-item-btn btn-sm btn">Add tax</button>
+                        </div>
+                    </div>
+                            </div>
 
                         <div class="billing-totals-sidebar">
                 <div class="billing-totals-card">
@@ -238,7 +253,6 @@
 
     <fieldset class="mb-3">    
     <div id="quote_invoiceTaxes" data-controller="invoice-tax"></div>
-<div class="mb-3"><button type="button" id="quote_invoiceTaxes_add" name="quote[invoiceTaxes][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[invoiceTaxes]" class="btn-secondary btn">Add</button></div>
 </fieldset>
 <input type="hidden" id="quote___dynamic_error" name="quote[__dynamic_error]"><input type="hidden" id="quote__token" name="quote[_token]" data-controller="csrf-protection">
 </form>

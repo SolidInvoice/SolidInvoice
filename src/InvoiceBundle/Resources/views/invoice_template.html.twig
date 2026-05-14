@@ -181,17 +181,27 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
-                                {% for row in _tb.additiveRows %}
-                                    <tr>
-                                        <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                            <strong>{{ row.name }} ({{ row.rate }}%)</strong>
-                                        </td>
-                                        <td class="no-line text-right">
-                                            {{ row.amount|formatCurrency(invoice.client.currency) }}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
                             {% endif %}
+                            {% for row in _tb.additiveRows %}
+                                <tr>
+                                    <td colspan="{{ footerSpan }}" class="no-line text-right">
+                                        <strong>{{ row.name }} ({{ row.rate }}%)</strong>
+                                    </td>
+                                    <td class="no-line text-right">
+                                        {{ row.amount|formatCurrency(invoice.client.currency) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% for row in _tb.informationalRows %}
+                                <tr>
+                                    <td colspan="{{ footerSpan }}" class="no-line text-right text-muted">
+                                        {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}
+                                    </td>
+                                    <td class="no-line text-right text-muted">
+                                        {{ 'invoice.invoice_taxes.informational'|trans }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
 
                             {% if invoice.hasDiscount %}
                                 <tr>
