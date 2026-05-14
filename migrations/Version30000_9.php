@@ -321,12 +321,12 @@ final class Version30000_9 extends AbstractMigration
     private array $capturedCompanyVatNumbers = [];
 
     /**
-     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
+     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: float|int|string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      */
     private array $capturedInvoiceLineTaxes = [];
 
     /**
-     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
+     * @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: float|int|string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      */
     private array $capturedQuoteLineTaxes = [];
 
@@ -341,12 +341,27 @@ final class Version30000_9 extends AbstractMigration
             return [];
         }
 
-        /** @var list<array{id: string, company_id: string, vat_number: string}> $rows */
-        $rows = $this->connection->fetchAllAssociative(
-            "SELECT id, company_id, vat_number FROM clients WHERE vat_number IS NOT NULL AND vat_number <> ''"
-        );
+        $qb = $this->connection->createQueryBuilder()
+            ->select('id', 'company_id', 'vat_number')
+            ->from('clients')
+            ->where('vat_number IS NOT NULL');
 
-        return $rows;
+        /** @var list<array{id: string, company_id: string, vat_number: mixed}> $rows */
+        $rows = $qb->executeQuery()->fetchAllAssociative();
+
+        // Filter empty strings in PHP — Oracle conflates '' with NULL anyway, but other
+        // platforms allow empty strings through the IS NOT NULL guard.
+        return array_values(array_filter(
+            array_map(
+                static fn (array $row): array => [
+                    'id' => $row['id'],
+                    'company_id' => $row['company_id'],
+                    'vat_number' => (string) $row['vat_number'],
+                ],
+                $rows,
+            ),
+            static fn (array $row): bool => $row['vat_number'] !== '',
+        ));
     }
 
     /**
@@ -355,17 +370,30 @@ final class Version30000_9 extends AbstractMigration
      */
     private function fetchCompanyVatNumbers(): array
     {
-        /** @var list<array{company_id: string, setting_value: string}> $rows */
-        $rows = $this->connection->fetchAllAssociative(
-            "SELECT company_id, setting_value FROM app_config WHERE setting_key = ? AND setting_value IS NOT NULL AND setting_value <> ''",
-            [self::COMPANY_VAT_SETTING_KEY]
-        );
+        $qb = $this->connection->createQueryBuilder()
+            ->select('company_id', 'setting_value')
+            ->from('app_config')
+            ->where('setting_key = :key')
+            ->andWhere('setting_value IS NOT NULL')
+            ->setParameter('key', self::COMPANY_VAT_SETTING_KEY);
 
-        return $rows;
+        /** @var list<array{company_id: string, setting_value: mixed}> $rows */
+        $rows = $qb->executeQuery()->fetchAllAssociative();
+
+        return array_values(array_filter(
+            array_map(
+                static fn (array $row): array => [
+                    'company_id' => $row['company_id'],
+                    'setting_value' => (string) $row['setting_value'],
+                ],
+                $rows,
+            ),
+            static fn (array $row): bool => $row['setting_value'] !== '',
+        ));
     }
 
     /**
-     * @return list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
+     * @return list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: float|int|string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}>
      * @throws Exception
      */
     private function fetchLineTaxes(Schema $schema, string $lineTable, string $parentTable): array
@@ -379,47 +407,127 @@ final class Version30000_9 extends AbstractMigration
             return [];
         }
 
-        $taxesTable = Tax::TABLE_NAME;
-        $hasCategory = $schema->getTable($taxesTable)->hasColumn('category');
-        $hasCompound = $schema->getTable($taxesTable)->hasColumn('compound');
-        $categoryExpr = $hasCategory ? 't.category' : 'NULL';
-        $compoundExpr = $hasCompound ? 't.compound' : 'NULL';
-
         // Doctrine's default FK column name follows {assoc}_id (e.g., invoice_id, quote_id),
         // but we resolve dynamically so the migration is robust against any historical naming.
         $parentColumn = $this->resolveParentForeignKeyColumn($schema, $lineTable, $parentTable);
-
         if ($parentColumn === null) {
             return [];
         }
 
-        // Avoid reserved-word aliases (`type`, `name`, `status`) so the query parses on every
-        // platform without identifier quoting. The associative-array keys consumed by
-        // backfillLineTaxes() are renamed to match.
-        $statusFilter = "p.status <> 'draft'";
+        // Fetch each table separately and join in PHP — avoids reserved-word aliases, CASE
+        // expressions, and dialect-specific join behaviour entirely.
+        $lineRows = $this->connection->createQueryBuilder()
+            ->select('id', 'company_id', 'tax_id', $parentColumn)
+            ->from($lineTable)
+            ->where('tax_id IS NOT NULL')
+            ->executeQuery()
+            ->fetchAllAssociative();
 
-        $sql = sprintf(
-            'SELECT l.id AS line_id, l.company_id AS parent_company_id, l.tax_id AS tax_id,
-                    t.name AS tax_name, t.rate AS tax_rate, t.tax_type AS tax_type_value,
-                    %s AS tax_category, %s AS tax_compound,
-                    CASE WHEN %s THEN p.updated ELSE NULL END AS snapshotted_at
-             FROM %s l
-             INNER JOIN %s t ON t.id = l.tax_id
-             LEFT JOIN %s p ON p.id = l.%s
-             WHERE l.tax_id IS NOT NULL',
-            $categoryExpr,
-            $compoundExpr,
-            $statusFilter,
-            $lineTable,
-            $taxesTable,
-            $parentTable,
-            $parentColumn,
-        );
+        if ($lineRows === []) {
+            return [];
+        }
 
-        /** @var list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}> $rows */
-        $rows = $this->connection->fetchAllAssociative($sql);
+        $taxes = $this->loadTaxesById($schema);
+        $parents = $this->loadParentsById($parentTable);
 
-        return $rows;
+        $result = [];
+
+        foreach ($lineRows as $line) {
+            $taxId = (string) $line['tax_id'];
+            $tax = $taxes[$taxId] ?? null;
+            if ($tax === null) {
+                // The line points at a tax that no longer exists; skip.
+                continue;
+            }
+
+            $parent = $parents[(string) $line[$parentColumn]] ?? null;
+            $snapshottedAt = null;
+            if ($parent !== null && $parent['status'] !== 'draft') {
+                $snapshottedAt = $parent['updated'];
+            }
+
+            $result[] = [
+                'line_id' => (string) $line['id'],
+                'parent_company_id' => (string) $line['company_id'],
+                'tax_id' => $taxId,
+                'tax_name' => (string) $tax['name'],
+                'tax_rate' => $tax['rate'],
+                'tax_type_value' => (string) $tax['tax_type'],
+                'tax_category' => $tax['category'] !== null ? (string) $tax['category'] : null,
+                'tax_compound' => $tax['compound'],
+                'snapshotted_at' => $snapshottedAt,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array<string, array{name: string, rate: float|int|string, tax_type: string, category: string|null, compound: int|bool|null}>
+     * @throws Exception
+     */
+    private function loadTaxesById(Schema $schema): array
+    {
+        $taxesTable = Tax::TABLE_NAME;
+        $hasCategory = $schema->getTable($taxesTable)->hasColumn('category');
+        $hasCompound = $schema->getTable($taxesTable)->hasColumn('compound');
+
+        $columns = ['id', 'name', 'rate', 'tax_type'];
+        if ($hasCategory) {
+            $columns[] = 'category';
+        }
+        if ($hasCompound) {
+            $columns[] = 'compound';
+        }
+
+        $rows = $this->connection->createQueryBuilder()
+            ->select(...$columns)
+            ->from($taxesTable)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $out = [];
+        foreach ($rows as $row) {
+            $out[(string) $row['id']] = [
+                'name' => (string) $row['name'],
+                'rate' => $row['rate'],
+                'tax_type' => (string) $row['tax_type'],
+                'category' => $hasCategory ? ($row['category'] ?? null) : null,
+                'compound' => $hasCompound ? ($row['compound'] ?? null) : null,
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return array<string, array{status: string, updated: string|null}>
+     * @throws Exception
+     */
+    private function loadParentsById(string $parentTable): array
+    {
+        $rows = $this->connection->createQueryBuilder()
+            ->select('id', 'status', 'updated')
+            ->from($parentTable)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $out = [];
+        foreach ($rows as $row) {
+            $updated = $row['updated'];
+            if ($updated instanceof DateTimeImmutable) {
+                $updated = $updated->format('Y-m-d H:i:s');
+            } elseif ($updated !== null) {
+                $updated = (string) $updated;
+            }
+
+            $out[(string) $row['id']] = [
+                'status' => (string) $row['status'],
+                'updated' => $updated,
+            ];
+        }
+
+        return $out;
     }
 
     private function resolveParentForeignKeyColumn(Schema $schema, string $lineTable, string $parentTable): ?string
@@ -439,7 +547,7 @@ final class Version30000_9 extends AbstractMigration
     }
 
     /**
-     * @param list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}> $rows
+     * @param list<array{line_id: string, parent_company_id: string, tax_id: string, tax_name: string, tax_rate: float|int|string, tax_type_value: string, tax_category: string|null, tax_compound: int|bool|null, snapshotted_at: string|null}> $rows
      * @throws Exception
      */
     private function backfillLineTaxes(array $rows, string $lineColumn, string $now): void
@@ -468,7 +576,7 @@ final class Version30000_9 extends AbstractMigration
         }
     }
 
-    private function normaliseRate(string $rate): string
+    private function normaliseRate(float|int|string $rate): string
     {
         // tax_rates.rate is float in the legacy schema; force 4-decimal text representation.
         return number_format((float) $rate, 4, '.', '');
