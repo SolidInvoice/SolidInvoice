@@ -613,6 +613,84 @@
 }
 
 // ============================================================================
+// INVOICE-LEVEL TAXES (Withholding & adjustments)
+// ============================================================================
+
+.billing-invoice-taxes {
+    margin-top: var(--swp-space-4);
+    padding: var(--swp-space-4) var(--swp-space-6) var(--swp-space-6);
+    border-top: 1px solid var(--swp-border-light);
+    background: var(--swp-gray-50);
+}
+
+.billing-invoice-taxes-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--swp-space-3);
+    margin-bottom: var(--swp-space-3);
+}
+
+.billing-invoice-taxes-title {
+    font-size: var(--swp-text-md);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+.billing-invoice-taxes-subtitle {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: var(--swp-text-sm);
+}
+
+.billing-invoice-taxes-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-3);
+    margin-bottom: var(--swp-space-3);
+}
+
+.billing-invoice-tax-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 3fr) auto;
+    gap: var(--swp-space-3);
+    align-items: start;
+    padding: var(--swp-space-3);
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+
+    @media (width <= 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.invoice-tax-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-1);
+
+    .mobile-label {
+        display: none;
+        font-size: var(--swp-text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--swp-text-muted);
+
+        @media (width <= 768px) {
+            display: block;
+        }
+    }
+}
+
+.invoice-tax-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+// ============================================================================
 // TOTALS SIDEBAR (Sticky on Desktop)
 // ============================================================================
 

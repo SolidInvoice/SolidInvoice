@@ -124,17 +124,27 @@
                     </td>
                 </tr>
             {% endfor %}
-            {% for row in _tb.additiveRows %}
-                <tr>
-                    <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
-                        {{ row.name }} ({{ row.rate }}%)
-                    </td>
-                    <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
-                        {{ row.amount|formatCurrency(currency) }}
-                    </td>
-                </tr>
-            {% endfor %}
         {% endif %}
+        {% for row in _tb.additiveRows %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ row.name }} ({{ row.rate }}%)
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                    {{ row.amount|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for row in _tb.informationalRows %}
+            <tr>
+                <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}
+                </td>
+                <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #64748b;">
+                    {{ 'invoice.invoice_taxes.informational'|trans }}
+                </td>
+            </tr>
+        {% endfor %}
         {% if invoice.discount.type is not empty %}
             <tr>
                 <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">

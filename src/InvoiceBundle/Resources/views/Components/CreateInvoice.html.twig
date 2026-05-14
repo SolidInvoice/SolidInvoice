@@ -214,6 +214,58 @@
                         }) }}
                     </div>
                 </div>
+
+                {% if hasTax %}
+                    {# Invoice-Level Taxes Section (Withholding & adjustments) #}
+                    <div class="billing-invoice-taxes" {{ stimulus_controller('invoice-tax') }}>
+                        <div class="billing-invoice-taxes-header">
+                            <div class="billing-items-icon">
+                                {{ ux_icon('tabler:receipt-tax', {width: 18, height: 18}) }}
+                            </div>
+                            <h3 class="billing-invoice-taxes-title">{{ 'invoice.invoice_taxes.title'|trans }}</h3>
+                            <p class="billing-invoice-taxes-subtitle text-secondary">{{ 'invoice.invoice_taxes.subtitle'|trans }}</p>
+                        </div>
+
+                        {% if form.invoiceTaxes|length > 0 %}
+                            <div class="billing-invoice-taxes-list">
+                                {% for index, invoiceTax in form.invoiceTaxes %}
+                                    <div class="billing-invoice-tax-row" data-invoice-tax-target="row">
+                                        <div class="invoice-tax-field invoice-tax-field-tax">
+                                            <span class="mobile-label">{{ 'invoice.invoice_taxes.heading.tax'|trans }}</span>
+                                            {{ form_widget(invoiceTax.tax) }}
+                                            {{ form_errors(invoiceTax.tax) }}
+                                        </div>
+                                        <div class="invoice-tax-field invoice-tax-field-direction">
+                                            <span class="mobile-label">{{ 'invoice.invoice_taxes.heading.direction'|trans }}</span>
+                                            {{ form_widget(invoiceTax.direction) }}
+                                            {{ form_errors(invoiceTax.direction) }}
+                                        </div>
+                                        <div class="invoice-tax-field invoice-tax-field-note">
+                                            <span class="mobile-label">{{ 'invoice.invoice_taxes.heading.note'|trans }}</span>
+                                            {{ form_widget(invoiceTax.note) }}
+                                            {{ form_errors(invoiceTax.note) }}
+                                        </div>
+                                        {{ form_widget(invoiceTax.sequence) }}
+                                        <div class="invoice-tax-actions">
+                                            {{ form_widget(invoiceTax.vars.button_delete, {
+                                                label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,
+                                                label_html: true,
+                                                attr: {class: 'remove-item-btn', title: 'invoice.invoice_taxes.remove'|trans, 'aria-label': 'invoice.invoice_taxes.remove'|trans}
+                                            }) }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="add-item-action">
+                            {{ form_widget(form.invoiceTaxes.vars.button_add, {
+                                label: 'invoice.invoice_taxes.add'|trans,
+                                attr: {class: 'add-item-btn btn-sm'}
+                            }) }}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             {# Totals Sidebar #}

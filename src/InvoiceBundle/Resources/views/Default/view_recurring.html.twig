@@ -255,13 +255,19 @@
                                     <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
                                 </div>
                             {% endfor %}
-                            {% for row in _tb.additiveRows %}
-                                <div class="totals-row">
-                                    <span class="totals-label">{{ row.name }} ({{ row.rate }}%)</span>
-                                    <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
-                                </div>
-                            {% endfor %}
                         {% endif %}
+                        {% for row in _tb.additiveRows %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ row.name }} ({{ row.rate }}%)</span>
+                                <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endfor %}
+                        {% for row in _tb.informationalRows %}
+                            <div class="totals-row totals-row-tax-breakdown">
+                                <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}</span>
+                                <span class="totals-value text-muted">{{ 'invoice.invoice_taxes.informational'|trans }}</span>
+                            </div>
+                        {% endfor %}
 
                         {% if invoice.hasDiscount %}
                             <div class="totals-row totals-row-discount">
