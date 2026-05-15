@@ -37,6 +37,8 @@ package-lock.json
 /frankenphp/app.tar
 /frankenphp/app.tar.gz
 /frankenphp/app_checksum.txt
+/.claude/settings.local.json
+/.phpunit.cache
 
 ###> symfony/framework-bundle ###
 /.env.local
