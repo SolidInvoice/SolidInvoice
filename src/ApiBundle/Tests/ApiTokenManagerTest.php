@@ -21,6 +21,8 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\ApiBundle\GeneratedApiToken;
+use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -28,9 +30,16 @@ class ApiTokenManagerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    private const SECRET = 'unit-test-secret';
+
+    private function hasher(): ApiTokenHasher
+    {
+        return new ApiTokenHasher(self::SECRET);
+    }
+
     public function testGenerateToken(): void
     {
-        $tm = new ApiTokenManager(M::mock(ManagerRegistry::class));
+        $tm = new ApiTokenManager(M::mock(ManagerRegistry::class), $this->hasher());
 
         $token = $tm->generateToken();
 
@@ -39,7 +48,7 @@ class ApiTokenManagerTest extends TestCase
         self::assertMatchesRegularExpression('/[a-zA-Z0-9]{64}/', $token);
     }
 
-    public function testCreate(): void
+    public function testCreateStoresHashAndReturnsPlaintext(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -58,16 +67,23 @@ class ApiTokenManagerTest extends TestCase
         $manager->shouldReceive('flush')
             ->withNoArgs();
 
-        $tm = new ApiTokenManager($registry);
+        $tm = new ApiTokenManager($registry, $this->hasher());
 
-        $token = $tm->create($user, 'test token');
+        $generated = $tm->create($user, 'test token');
 
-        self::assertInstanceOf(ApiToken::class, $token);
-        self::assertSame($user, $token->getUser());
-        self::assertSame('test token', $token->getName());
+        self::assertInstanceOf(GeneratedApiToken::class, $generated);
+        self::assertInstanceOf(ApiToken::class, $generated->token);
+        self::assertSame($user, $generated->token->getUser());
+        self::assertSame('test token', $generated->token->getName());
+        self::assertSame(64, strlen($generated->plaintext));
+        self::assertNotSame($generated->plaintext, $generated->token->getToken());
+        self::assertSame(
+            hash_hmac('sha256', $generated->plaintext, self::SECRET),
+            $generated->token->getToken(),
+        );
     }
 
-    public function testGet(): void
+    public function testGetReturnsExistingTokenWithoutPlaintext(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -83,15 +99,15 @@ class ApiTokenManagerTest extends TestCase
         $apiTokens = new ArrayCollection([$token1, $token2]);
         $user->setApiTokens($apiTokens);
 
-        $tm = new ApiTokenManager($registry);
+        $tm = new ApiTokenManager($registry, $this->hasher());
 
-        $token = $tm->getOrCreate($user, 'token1');
+        $generated = $tm->getOrCreate($user, 'token1');
 
-        self::assertInstanceOf(ApiToken::class, $token);
-        self::assertSame($token1, $token);
+        self::assertSame($token1, $generated->token);
+        self::assertSame('', $generated->plaintext);
     }
 
-    public function testGetOrCreate(): void
+    public function testGetOrCreateCreatesWhenMissing(): void
     {
         $registry = M::mock(ManagerRegistry::class);
 
@@ -120,14 +136,14 @@ class ApiTokenManagerTest extends TestCase
         $manager->shouldReceive('flush')
             ->withNoArgs();
 
-        $tm = new ApiTokenManager($registry);
+        $tm = new ApiTokenManager($registry, $this->hasher());
 
-        $token = $tm->getOrCreate($user, 'token3');
+        $generated = $tm->getOrCreate($user, 'token3');
 
-        self::assertInstanceOf(ApiToken::class, $token);
-        self::assertNotSame($token1, $token);
-        self::assertNotSame($token2, $token);
-        self::assertSame($user, $token->getUser());
-        self::assertSame('token3', $token->getName());
+        self::assertNotSame($token1, $generated->token);
+        self::assertNotSame($token2, $generated->token);
+        self::assertSame($user, $generated->token->getUser());
+        self::assertSame('token3', $generated->token->getName());
+        self::assertNotSame('', $generated->plaintext);
     }
 }

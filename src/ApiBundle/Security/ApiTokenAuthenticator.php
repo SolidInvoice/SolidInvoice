@@ -18,9 +18,9 @@ use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
-use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +43,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         private readonly TranslatorInterface $translator,
         private readonly CompanySelector $companySelector,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ApiTokenRepository $apiTokenRepository,
     ) {
     }
 
@@ -68,20 +69,20 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
         $repository->addHistory($history, $apiToken);
 
-        $apiToken = $this->registry->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
+        $apiTokenEntity = $this->apiTokenRepository->findOneByPlaintext($apiToken);
 
-        if (null !== $apiToken) {
+        if (null !== $apiTokenEntity) {
             $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
             if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain()) {
                 if ($resolved->company === null
-                    || ! $resolved->company->getId()->equals($apiToken->getCompany()->getId())
+                    || ! $resolved->company->getId()->equals($apiTokenEntity->getCompany()->getId())
                 ) {
                     throw new CustomUserMessageAuthenticationException('Invalid API token');
                 }
             }
 
-            $this->companySelector->switchCompany($apiToken->getCompany()->getId());
+            $this->companySelector->switchCompany($apiTokenEntity->getCompany()->getId());
 
             $decision = new AccessDecision();
 

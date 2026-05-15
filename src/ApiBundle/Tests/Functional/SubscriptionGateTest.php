@@ -16,12 +16,13 @@ namespace SolidInvoice\ApiBundle\Tests\Functional;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\ApiBundle\GeneratedApiToken;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,7 +57,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->grantingAuthorizationChecker());
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->getToken()]);
+        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,
@@ -74,7 +75,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->denyingAuthorizationChecker($reason));
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->getToken()]);
+        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,
@@ -96,7 +97,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->denyingAuthorizationChecker(null));
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->getToken()]);
+        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,
@@ -110,7 +111,7 @@ final class SubscriptionGateTest extends KernelTestCase
         self::assertSame('Access denied.', $body['message']);
     }
 
-    private function createApiToken(): ApiToken
+    private function createApiToken(): GeneratedApiToken
     {
         $container = self::getContainer();
 
@@ -119,15 +120,15 @@ final class SubscriptionGateTest extends KernelTestCase
         $manager = $container->get(ApiTokenManager::class);
         self::assertInstanceOf(ApiTokenManager::class, $manager);
 
-        $token = $manager->getOrCreate($user, 'Subscription Gate Test');
+        $generated = $manager->getOrCreate($user, 'Subscription Gate Test');
         // Bind the token to the active company so the authenticator can switch into it.
-        $token->setCompany($this->company);
+        $generated->token->setCompany($this->company);
 
         $registry = $container->get('doctrine');
         self::assertInstanceOf(ManagerRegistry::class, $registry);
         $registry->getManager()->flush();
 
-        return $token;
+        return $generated;
     }
 
     private function buildAuthenticator(AuthorizationCheckerInterface $authorizationChecker): ApiTokenAuthenticator
@@ -140,6 +141,7 @@ final class SubscriptionGateTest extends KernelTestCase
             $container->get(TranslatorInterface::class),
             $container->get(CompanySelector::class),
             $authorizationChecker,
+            $container->get(ApiTokenRepository::class),
         );
     }
 

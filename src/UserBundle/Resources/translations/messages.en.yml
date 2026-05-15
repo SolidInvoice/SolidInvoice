@@ -35,6 +35,12 @@ profile:
                 text: '%date% from %ip%'
                 never: Never
                 last: 'Last Used:'
+            created:
+                title: 'Your new API token'
+                done: 'Done'
+                warning:
+                    title: 'Copy this token now.'
+                    body: 'For security reasons it will not be shown again. If you lose it, revoke this token and create a new one.'
         form:
             title: 'Create API Token'
             actions:

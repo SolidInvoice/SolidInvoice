@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
     public function __construct(
-        private readonly ApiTokenManager $tokenManager
+        private readonly ApiTokenManager $tokenManager,
     ) {
     }
 
@@ -33,8 +33,28 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         /** @var User $user */
         $user = $token->getUser();
 
-        $token = $this->tokenManager->getOrCreate($user, $request->request->get('token_name') ?: 'API Token');
+        $name = $request->request->get('token_name') ?: 'API Token';
 
-        return new JsonResponse(['token' => $token->getToken()]);
+        // Tokens are stored as hashes, so we cannot return the plaintext of an
+        // existing token. Refuse to silently invalidate one — the caller must
+        // pick a unique name or revoke the existing token first.
+        foreach ($user->getApiTokens() as $existing) {
+            if ($existing->getName() === $name) {
+                return new JsonResponse(
+                    [
+                        'error' => 'token_name_already_exists',
+                        'message' => sprintf(
+                            'An API token named "%s" already exists. Revoke it first or pass a different "token_name" parameter.',
+                            $name,
+                        ),
+                    ],
+                    Response::HTTP_CONFLICT,
+                );
+            }
+        }
+
+        $generated = $this->tokenManager->create($user, $name);
+
+        return new JsonResponse(['token' => $generated->plaintext]);
     }
 }

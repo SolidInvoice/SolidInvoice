@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ApiTokenType;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,6 +38,11 @@ final class CreateApiToken extends AbstractController
 
     public const API_TOKEN_CREATED_EVENT = 'api.token.created';
 
+    /**
+     * Plaintext of the most recently created token, exposed to the template
+     * exactly once after a successful create. Cleared by clearToken() so it
+     * does not persist across re-renders.
+     */
     #[LiveProp]
     public ?string $createdToken = null;
 
@@ -72,7 +77,7 @@ final class CreateApiToken extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager): void
+    public function save(): void
     {
         if (! $this->featureGate->isEnabled('rest_api_access')) {
             throw new AccessDeniedException('REST API access is not available on the current plan.');
@@ -82,17 +87,21 @@ final class CreateApiToken extends AbstractController
         // and the component is automatically re-rendered with the errors
         $this->submitForm();
 
-        /** @var ApiToken $token */
-        $token = $this->getForm()->getData();
-        $token->setUser($this->security->getUser());
-        $token->setToken($this->apiTokenManager->generateToken());
+        /** @var ApiToken $formData */
+        $formData = $this->getForm()->getData();
 
-        $entityManager->persist($token);
-        $entityManager->flush();
+        /** @var User $user */
+        $user = $this->security->getUser();
 
-        // Store token for one-time display
-        $this->createdToken = $token->getToken();
-        $this->createdTokenName = $token->getName();
+        $generated = $this->apiTokenManager->create(
+            $user,
+            (string) $formData->getName(),
+            $formData->getDescription(),
+        );
+
+        // Plaintext is shown exactly once; the DB only stores the hash.
+        $this->createdToken = $generated->plaintext;
+        $this->createdTokenName = $generated->token->getName();
 
         $this->addFlash('success', 'API Token created successfully');
 

@@ -39,6 +39,11 @@ The 3.0.x series is a major release focused on a complete UI redesign and new au
 * Cascade all entities during deletion so nothing is left behind
 * Installation command now creates an admin user if one does not exist instead of resetting an existing one
 
+2.3.17
+------
+
+* API tokens are now stored as HMAC-SHA256 hashes instead of plaintext. Existing API tokens continue to work. Token values are no longer visible from the management UI after creation; the plaintext is shown exactly once at creation time. Rotating `SOLIDINVOICE_APP_SECRET` now invalidates all API tokens (previously it only invalidated sessions)
+
 2.3.16 / 2026-03-01
 -------------------
 

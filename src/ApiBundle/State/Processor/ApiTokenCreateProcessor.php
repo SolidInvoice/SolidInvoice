@@ -42,10 +42,20 @@ final class ApiTokenCreateProcessor implements ProcessorInterface
             throw new AccessDeniedHttpException('You must be authenticated to create an API token.');
         }
 
-        $token = $this->apiTokenManager->create($user, $data->getName() ?? '');
-        $token->setDescription($data->getDescription());
-        $this->entityManager->flush();
+        $generated = $this->apiTokenManager->create(
+            $user,
+            $data->getName() ?? '',
+            $data->getDescription(),
+        );
 
-        return $token;
+        $entity = $generated->token;
+
+        // The DB row holds the hash; expose the plaintext on the response object
+        // for serialization (api_token:create_read group). Detach so any later
+        // flush in the request lifecycle does not write the plaintext back.
+        $entity->setToken($generated->plaintext);
+        $this->entityManager->detach($entity);
+
+        return $entity;
     }
 }
