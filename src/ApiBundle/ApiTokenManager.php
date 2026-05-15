@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle;
 
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -25,38 +26,42 @@ class ApiTokenManager
     final public const TOKEN_LENGTH = 32;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly ApiTokenHasher $hasher,
     ) {
     }
 
-    public function getOrCreate(User $user, string $name): ApiToken
+    /**
+     * Returns an existing token entity by name when present, otherwise creates
+     * a new one. When an existing token is returned, the plaintext is not
+     * available (it is never persisted) and {@see GeneratedApiToken::$plaintext}
+     * is an empty string.
+     */
+    public function getOrCreate(User $user, string $name): GeneratedApiToken
     {
-        $tokens = $user->getApiTokens();
-
-        /** @var ApiToken $token */
-        foreach ($tokens as $token) {
+        foreach ($user->getApiTokens() as $token) {
             if ($token->getName() === $name) {
-                return $token;
+                return new GeneratedApiToken($token, '');
             }
         }
 
         return $this->create($user, $name);
     }
 
-    public function create(User $user, string $name): ApiToken
+    public function create(User $user, string $name): GeneratedApiToken
     {
-        $apiToken = new ApiToken();
+        $plaintext = $this->generateToken();
 
-        $apiToken->setToken($this->generateToken());
+        $apiToken = new ApiToken();
+        $apiToken->setToken($this->hasher->hash($plaintext));
         $apiToken->setUser($user);
         $apiToken->setName($name);
 
         $entityManager = $this->registry->getManager();
-
         $entityManager->persist($apiToken);
         $entityManager->flush();
 
-        return $apiToken;
+        return new GeneratedApiToken($apiToken, $plaintext);
     }
 
     public function generateToken(): string

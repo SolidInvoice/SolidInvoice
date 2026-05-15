@@ -15,44 +15,26 @@
                                     {{ token.name }}
                                 </h6>
                                 <p>
-                                    <div class="input-group" {{ stimulus_controller('password-visibility', controllerClasses = { 'hidden': 'd-none' })|stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
-                                        <div class="input-group-prepend">
-                                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'Copy to clipboard'|trans }}" rel="tooltip" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
-                                                {{ icon('paste')}}
-                                            </a>
-                                        </div>
-                                        <div class="input-group-prepend">
-                                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'View Token'|trans }}" rel="tooltip" {{ stimulus_action('password-visibility', 'toggle') }}">
-                                                <span {{ stimulus_target('password-visibility', 'icon') }}>
-                                                    {{ icon('eye')}}
-                                                </span>
-                                                <span {{ stimulus_target('password-visibility', 'icon') }} class="d-none">
-                                                    {{ icon('eye-slash')}}
-                                                </span>
-                                            </a>
-                                        </div>
-                                        <input readonly="readonly" value="{{ token.token }}" class="form-control" type="password" {{ stimulus_target('clipboard', 'source') }} {{ stimulus_target('password-visibility', 'input') }} spellcheck="false" />
-                                        <div class="input-group-append">
-                                            <a href="#" class="btn btn-danger btn-sm revoke-token pt-2" data-toggle="modal" data-target="#{{ 'revoke-' ~ token.id }}">
-                                                {{ icon('ban')}} {{ 'profile.api.tokens.revoke'|trans }}
-                                            </a>
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-danger btn-sm revoke-token" data-toggle="modal" data-target="#{{ 'revoke-' ~ token.id }}">
+                                            {{ icon('ban') }} {{ 'profile.api.tokens.revoke'|trans }}
+                                        </a>
 
-                                            {% component BootstrapModal with {id: 'revoke-' ~ token.id} %}
-                                                {% block modal_header %}
-                                                    <h5>{{ 'Confirm'|trans }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                {% endblock %}
-                                                {% block modal_body %}
-                                                    {{ 'Are you sure you want to revoke this token?'|trans }}
-                                                {% endblock %}
-                                                {% block modal_footer %}
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                                                    <button type="button" class="btn btn-primary" {{ live_action('revoke:prevent', {'token': token.id}) }}>{{ 'Confirm'|trans }}</button>
-                                                {% endblock %}
-                                            {% endcomponent %}
-                                        </div>
+                                        {% component BootstrapModal with {id: 'revoke-' ~ token.id} %}
+                                            {% block modal_header %}
+                                                <h5>{{ 'Confirm'|trans }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            {% endblock %}
+                                            {% block modal_body %}
+                                                {{ 'Are you sure you want to revoke this token?'|trans }}
+                                            {% endblock %}
+                                            {% block modal_footer %}
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                                                <button type="button" class="btn btn-primary" {{ live_action('revoke:prevent', {'token': token.id}) }}>{{ 'Confirm'|trans }}</button>
+                                            {% endblock %}
+                                        {% endcomponent %}
                                     </div>
                                 </p>
                                 <p>

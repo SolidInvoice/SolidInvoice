@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -25,19 +26,25 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
  */
 class ApiTokenHistoryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly ApiTokenHasher $hasher,
+    ) {
         parent::__construct($registry, ApiTokenHistory::class);
     }
 
-    public function addHistory(ApiTokenHistory $history, string $token): void
+    public function addHistory(ApiTokenHistory $history, string $plaintextToken): void
     {
         $entityManager = $this->getEntityManager();
 
-        /** @var ApiToken $apiToken */
+        /** @var ApiToken|null $apiToken */
         $apiToken = $entityManager
             ->getRepository(ApiToken::class)
-            ->findOneBy(['token' => $token]);
+            ->findOneBy(['token' => $this->hasher->hash($plaintextToken)]);
+
+        if (null === $apiToken) {
+            return;
+        }
 
         $apiToken->addHistory($history);
 

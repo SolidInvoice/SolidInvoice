@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
@@ -28,19 +29,25 @@ use function array_map;
 
 class ApiTokenRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly ApiTokenHasher $hasher,
+    ) {
         parent::__construct($registry, ApiToken::class);
     }
 
-    public function getUsernameForToken(string $token): ?string
+    /**
+     * Looks up the username for a given plaintext API token. The token is
+     * hashed before the query so the database only ever sees the hash.
+     */
+    public function getUsernameForToken(string $plaintextToken): ?string
     {
         $q = $this
             ->createQueryBuilder('t')
             ->select('u.email')
             ->join('t.user', 'u')
             ->where('t.token = :token')
-            ->setParameter('token', $token)
+            ->setParameter('token', $this->hasher->hash($plaintextToken))
             ->getQuery();
 
         try {
@@ -52,14 +59,23 @@ class ApiTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
+     * Finds an ApiToken entity by its plaintext value. Returns null when no
+     * matching token exists.
+     */
+    public function findOneByPlaintext(string $plaintextToken): ?ApiToken
+    {
+        return $this->findOneBy(['token' => $this->hasher->hash($plaintextToken)]);
+    }
+
+    /**
+     * @return list<array{id: mixed, name: mixed, ip: mixed, lastUsed: mixed}>
      */
     public function getApiTokensForUser(UserInterface $user): array
     {
         assert($user instanceof User);
 
         $tokens = $this->createQueryBuilder('t')
-            ->select('t.id', 't.name', 't.token')
+            ->select('t.id', 't.name')
             ->where('t.user = :user')
             ->orderBy('t.created', 'DESC')
             ->setParameter('user', $user->getId(), UlidType::NAME)
@@ -80,7 +96,6 @@ class ApiTokenRepository extends ServiceEntityRepository
             'id' => $token['id'],
             'name' => $token['name'],
             'ip' => $historyMap[$token['id']->toBinary()]['ip'] ?? null,
-            'token' => $token['token'],
             'lastUsed' => $historyMap[$token['id']->toBinary()]['max_created'] ?? null,
         ], $tokens);
     }

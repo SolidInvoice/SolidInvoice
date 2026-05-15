@@ -16,9 +16,9 @@ namespace SolidInvoice\ApiBundle\Security;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +37,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         private readonly ApiTokenUserProvider $userProvider,
         private readonly ManagerRegistry $registry,
         private readonly TranslatorInterface $translator,
-        private readonly CompanySelector $companySelector
+        private readonly CompanySelector $companySelector,
+        private readonly ApiTokenRepository $apiTokenRepository,
     ) {
     }
 
@@ -63,10 +64,10 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
         $repository->addHistory($history, $apiToken);
 
-        $apiToken = $this->registry->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
+        $apiTokenEntity = $this->apiTokenRepository->findOneByPlaintext($apiToken);
 
-        if (null !== $apiToken) {
-            $this->companySelector->switchCompany($apiToken->getCompany()->getId());
+        if (null !== $apiTokenEntity) {
+            $this->companySelector->switchCompany($apiTokenEntity->getCompany()->getId());
         }
 
         return null;

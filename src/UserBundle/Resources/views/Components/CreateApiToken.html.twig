@@ -12,17 +12,44 @@
 
     {% component BootstrapModal with {id: 'create-' ~ attributes.all.id} %}
         {% block modal_header %}
-            <h5>{{ 'Confirm'|trans }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5>
+                {% if newPlaintextToken is not empty %}
+                    {{ 'profile.api.tokens.created.title'|trans }}
+                {% else %}
+                    {{ 'Confirm'|trans }}
+                {% endif %}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" {{ live_action('dismissNewToken') }}>
                 <span aria-hidden="true">&times;</span>
             </button>
         {% endblock %}
         {% block modal_body %}
-            {{ form_row(form) }}
+            {% if newPlaintextToken is not empty %}
+                <div class="alert alert-warning">
+                    <strong>{{ 'profile.api.tokens.created.warning.title'|trans }}</strong>
+                    {{ 'profile.api.tokens.created.warning.body'|trans }}
+                </div>
+                <div class="input-group" {{ stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
+                    <input readonly="readonly" value="{{ newPlaintextToken }}" class="form-control" type="text" {{ stimulus_target('clipboard', 'source') }} spellcheck="false" />
+                    <div class="input-group-append">
+                        <a href="#" class="btn btn-default" title="{{ 'Copy to clipboard'|trans }}" rel="tooltip" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
+                            {{ icon('paste') }}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                {{ form_row(form) }}
+            {% endif %}
         {% endblock %}
         {% block modal_footer %}
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-            <button type="submit" class="btn btn-primary">{{ 'Confirm'|trans }}</button>
+            {% if newPlaintextToken is not empty %}
+                <button type="button" class="btn btn-primary" {{ live_action('dismissNewToken') }}>
+                    {{ 'profile.api.tokens.created.done'|trans }}
+                </button>
+            {% else %}
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                <button type="submit" class="btn btn-primary">{{ 'Confirm'|trans }}</button>
+            {% endif %}
         {% endblock %}
     {% endcomponent %}
 

@@ -108,9 +108,9 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
 
         $tokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $token = $tokenManager->getOrCreate($user, 'Functional Test');
+        $generated = $tokenManager->getOrCreate($user, 'Functional Test');
 
-        self::$client = static::createClient(defaultOptions: ['headers' => ['X-API-TOKEN' => $token->getToken()]]);
+        self::$client = static::createClient(defaultOptions: ['headers' => ['X-API-TOKEN' => $generated->plaintext]]);
 
         // We need to switch the company again,
         // because the ::createClient call resets the container

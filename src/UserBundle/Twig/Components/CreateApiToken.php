@@ -11,15 +11,16 @@
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ApiTokenType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -33,6 +34,14 @@ final class CreateApiToken extends AbstractController
 
     public const API_TOKEN_CREATED_EVENT = 'api.token.created';
 
+    /**
+     * Plaintext of the most recently created token, exposed to the template
+     * exactly once after a successful create. Cleared as soon as the modal
+     * is dismissed so it does not persist across re-renders.
+     */
+    #[LiveProp(writable: true)]
+    public ?string $newPlaintextToken = null;
+
     public function __construct(
         private readonly Security $security,
         private readonly ApiTokenManager $apiTokenManager,
@@ -45,7 +54,7 @@ final class CreateApiToken extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager): void
+    public function save(): void
     {
         // Submit the form! If validation fails, an exception is thrown
         // and the component is automatically re-rendered with the errors
@@ -53,17 +62,23 @@ final class CreateApiToken extends AbstractController
 
         /** @var ApiToken $token */
         $token = $this->getForm()->getData();
-        $token->setUser($this->security->getUser());
-        $token->setToken($this->apiTokenManager->generateToken());
 
-        $entityManager->persist($token);
-        $entityManager->flush();
+        /** @var User $user */
+        $user = $this->security->getUser();
 
-        $this->addFlash('success', 'Api Token created');
+        $generated = $this->apiTokenManager->create($user, (string) $token->getName());
+
+        $this->newPlaintextToken = $generated->plaintext;
 
         $this->emit(self::API_TOKEN_CREATED_EVENT);
-        $this->dispatchBrowserEvent('modal:close');
 
         $this->resetForm();
+    }
+
+    #[LiveAction]
+    public function dismissNewToken(): void
+    {
+        $this->newPlaintextToken = null;
+        $this->dispatchBrowserEvent('modal:close');
     }
 }
