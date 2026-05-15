@@ -1,0 +1,85 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bin/ecs:*)",
+      "Bash(bin/phpunit:*)",
+      "Bash(bin/phpstan:*)",
+      "Bash(bin/console lint:twig:*)",
+      "Bash(bin/console cache:clear:*)",
+      "Bash(bin/console debug:router:*)",
+      "Bash(bin/console lint:yaml:*)",
+      "Bash(bin/console debug:container:*)",
+      "Bash(bin/console lint:container:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(bun run build:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(git log:*)",
+      "Bash(wc:*)",
+      "mcp__github__pull_request_read",
+      "mcp__github__issue_read",
+      "Bash(bun run dev)",
+      "Bash(php -l:*)",
+      "Skill(frontend-design:frontend-design)",
+      "Bash(xargs cat:*)",
+      "mcp__sentry__find_organizations",
+      "mcp__sentry__search_issues",
+      "mcp__sentry__find_projects",
+      "Skill(sentry:sentry-code-review)",
+      "mcp__sentry__get_issue_details",
+      "Bash(bin/console list:*)",
+      "Bash(composer show:*)",
+      "Skill(sentry:sentry-setup-tracing)",
+      "WebFetch(domain:docs.sentry.io)",
+      "Bash(composer --version)",
+      "Skill(code-review:code-review)",
+      "mcp__fff__find_files",
+      "mcp__fff__grep",
+      "mcp__solidinvoice__list_resource",
+      "mcp__solidinvoice__create_invoice",
+      "mcp__solidinvoice__apply_invoice_transition",
+      "mcp__solidinvoice__send_invoice_reminder",
+      "Bash(go version *)",
+      "Bash(go mod *)",
+      "Bash(GOFLAGS=\"-mod=mod\" go mod tidy -e)",
+      "mcp__sentry__get_sentry_resource",
+      "mcp__solidinvoice__list_invoices_by_status",
+      "Bash(rtk ls *)",
+      "Bash(command rtk *)",
+      "mcp__fff__multi_grep",
+      "Bash(rtk grep *)",
+      "Bash(rtk find *)",
+      "Read(//Users/pierre/projects/SolidWorx/platform/**)",
+      "Bash(rtk git *)",
+      "Bash(pwd -P)",
+      "Bash(vendor/bin/phpunit --filter Feature)",
+      "Bash(vendor/bin/phpunit -c vendor/solidworx/platform/phpunit.xml.dist --filter Feature)",
+      "Bash(vendor/solidworx/platform/vendor/bin/phpunit -c vendor/solidworx/platform/phpunit.xml.dist --filter Feature)",
+      "Bash(vendor/bin/phpunit tests/Bundle/PlatformBundle/Feature/FeatureValueTest.php)",
+      "Bash(vendor/bin/phpunit)",
+      "Bash(rtk read *)",
+      "Bash(vendor/bin/phpunit --filter \"PlanFeatureManager\")"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "case \"$CLAUDE_FILE_PATH\" in *.php) symfony php bin/ecs check --fix --quiet \"$CLAUDE_FILE_PATH\" 2>/dev/null || true ;; esac",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "case \"$CLAUDE_FILE_PATH\" in *.yaml|*.yml) symfony console lint:yaml \"$CLAUDE_FILE_PATH\" ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}
