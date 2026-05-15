@@ -36,7 +36,7 @@ final class PaymentSettingsGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const string GATED_HEADLINE = 'Accept payments online';
+    private const string GATED_HEADLINE = 'This feature requires an upgrade';
 
     public function testGatedSettingsRendersUpgradeBanner(): void
     {

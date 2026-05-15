@@ -36,7 +36,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const string GATED_HEADLINE = 'Bill clients on a schedule';
+    private const string GATED_HEADLINE = 'This feature requires an upgrade';
 
     public function testGatedCreateRendersUpgradeBanner(): void
     {

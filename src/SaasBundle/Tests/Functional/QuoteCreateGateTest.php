@@ -35,7 +35,7 @@ final class QuoteCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const string GATED_HEADLINE = 'Send branded quotes to your clients';
+    private const string GATED_HEADLINE = 'This feature requires an upgrade';
 
     public function testGatedCreateRendersUpgradeBanner(): void
     {

@@ -35,7 +35,7 @@ final class UserInviteQuotaGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const string GATED_HEADLINE = 'Team seat limit reached';
+    private const string GATED_HEADLINE = 'This feature requires an upgrade';
 
     public function testAtLimitRendersUpgradeBanner(): void
     {

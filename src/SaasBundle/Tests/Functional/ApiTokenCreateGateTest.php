@@ -36,7 +36,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const string GATED_HEADLINE = 'Enable the REST API';
+    private const string GATED_HEADLINE = 'This feature requires an upgrade';
 
     public function testGatedIndexRendersUpgradeBanner(): void
     {
