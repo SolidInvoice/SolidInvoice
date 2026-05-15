@@ -14,8 +14,5 @@
 {% block content %}
     {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
         feature: 'quotes',
-        icon: 'tabler:file-text',
-        headline: 'Send branded quotes to your clients'|trans,
-        description: 'Create polished quotes that clients can accept online — and turn into invoices in one click.'|trans,
     } only %}
 {% endblock content %}

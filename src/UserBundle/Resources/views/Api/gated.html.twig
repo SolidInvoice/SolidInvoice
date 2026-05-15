@@ -16,8 +16,5 @@
 {% block profile_content %}
     {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
         feature: 'rest_api_access',
-        icon: 'tabler:api',
-        headline: 'Enable the REST API'|trans,
-        description: 'Integrate SolidInvoice with your other tools — manage invoices, clients, and payments programmatically via a full-featured REST API.'|trans,
     } only %}
 {% endblock profile_content %}

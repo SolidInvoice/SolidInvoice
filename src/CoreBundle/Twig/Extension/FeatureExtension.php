@@ -50,6 +50,10 @@ final class FeatureExtension extends AbstractExtension
                 static fn (string $featureKey, int $currentUsage = 0): string => '',
                 ['is_safe' => ['html']],
             ),
+            new TwigFunction(
+                'feature_copy',
+                static fn (string $featureKey): ?object => null,
+            ),
         ];
     }
 }

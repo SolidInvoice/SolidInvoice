@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Twig;
 
 use Override;
+use SolidInvoice\SaasBundle\Feature\FeatureCopy;
+use SolidInvoice\SaasBundle\Feature\FeatureCopyRegistry;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Twig\Extension\AbstractExtension;
@@ -39,6 +41,7 @@ final class FeatureExtension extends AbstractExtension
     public function __construct(
         private readonly UpgradePromptRenderer $renderer,
         private readonly FeatureGate $gate,
+        private readonly FeatureCopyRegistry $copyRegistry,
     ) {
     }
 
@@ -63,7 +66,16 @@ final class FeatureExtension extends AbstractExtension
                 $this->usageBanner(...),
                 ['is_safe' => ['html']],
             ),
+            new TwigFunction(
+                'feature_copy',
+                $this->featureCopy(...),
+            ),
         ];
+    }
+
+    public function featureCopy(string $featureKey): ?FeatureCopy
+    {
+        return $this->copyRegistry->get($featureKey);
     }
 
     public function requiredPlanLabel(string $featureKey): ?string

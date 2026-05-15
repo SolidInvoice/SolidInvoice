@@ -11,22 +11,39 @@
  #
  # Lives in CoreBundle (not SaasBundle) so it is reachable on every deployment —
  # including self-hosted, where the gate never fires in production but tests
- # may force-fire it via mocked FeatureGate. `feature_required_plan_label()` is
- # registered in both SaasBundle (real) and CoreBundle (no-op), so the resolved
- # plan label gracefully falls back to null on self-hosted.
+ # may force-fire it via mocked FeatureGate. `feature_required_plan_label()` and
+ # `feature_copy()` are registered in both SaasBundle (real) and CoreBundle
+ # (no-op), so the resolved plan label and per-feature copy gracefully fall
+ # back to null on self-hosted.
  #
- # @param string      feature      - Feature key (e.g. 'quotes'). Used to resolve
- #                                   the cheapest upgrade plan via
- #                                   `feature_required_plan_label()`.
- # @param string      icon         - Tabler icon name. Default 'tabler:lock'.
- # @param string      headline     - Bold title. Default 'This feature requires an upgrade'.
- # @param string|null description  - One-sentence value prop shown under the title.
- #                                   Default null (no description rendered).
+ # All copy fields (icon, headline, description, bullets) default to values
+ # from the FeatureCopyRegistry, keyed on `feature`. Pass an explicit
+ # parameter to override the registry value for a single render — useful for
+ # variants (e.g. a "limit reached" framing vs. a "feature locked" framing).
+ #
+ # @param string             feature      - Feature key (e.g. 'quotes'). Used to resolve
+ #                                          the cheapest upgrade plan via
+ #                                          `feature_required_plan_label()` and the
+ #                                          marketing copy via `feature_copy()`.
+ # @param string|null        icon         - Tabler icon name. Defaults to the
+ #                                          registry icon, else 'tabler:lock'.
+ # @param string|null        headline     - Bold title. Defaults to the registry
+ #                                          headline, else 'This feature requires
+ #                                          an upgrade'.
+ # @param string|null        description  - One-sentence value prop shown under the
+ #                                          title. Defaults to the registry
+ #                                          description.
+ # @param list<string>|null  bullets      - Short capability list. Defaults to the
+ #                                          registry bullets. Pass `[]` to suppress.
  #}
 {% set plan_name = feature_required_plan_label(feature) %}
-{% set _icon = icon|default('tabler:lock') %}
-{% set _headline = headline|default('This feature requires an upgrade'|trans) %}
-{% set _description = description|default(null) %}
+{% set _copy = feature_copy(feature) %}
+{% set _icon = icon|default(_copy ? _copy.icon : 'tabler:lock') %}
+{% set _headline = headline|default(_copy ? _copy.headline|trans : 'This feature requires an upgrade'|trans) %}
+{% set _description = description ?? (_copy ? _copy.description|trans : null) %}
+{% set _bullets = bullets ?? (_copy ? _copy.bullets : []) %}
+{% set _quote = _copy ? _copy.quote : null %}
+{% set _quote_author = _copy ? _copy.quoteAuthor : null %}
 
 <div class="card card-md">
     <div class="card-body">
@@ -47,6 +64,26 @@
                 <p class="text-muted mt-2 mb-0" style="max-width: 36rem; margin-left: auto; margin-right: auto;">
                     {{ _description }}
                 </p>
+            {% endif %}
+
+            {% if _bullets is not empty %}
+                <ul class="list-unstyled text-start mt-3 mb-0 mx-auto" style="max-width: 26rem;">
+                    {% for bullet in _bullets %}
+                        <li class="d-flex align-items-start gap-2 mb-1">
+                            {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success flex-shrink-0 mt-1'}) }}
+                            <span>{{ bullet|trans }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if _quote %}
+                <blockquote class="blockquote mt-4 mx-auto" style="max-width: 32rem;">
+                    <p class="mb-1 fst-italic">&ldquo;{{ _quote|trans }}&rdquo;</p>
+                    {% if _quote_author %}
+                        <footer class="blockquote-footer">{{ _quote_author }}</footer>
+                    {% endif %}
+                </blockquote>
             {% endif %}
 
             <div class="empty-action">

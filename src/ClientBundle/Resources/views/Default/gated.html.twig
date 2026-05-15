@@ -14,8 +14,5 @@
 {% block content %}
     {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
         feature: 'total_clients',
-        icon: 'tabler:users-plus',
-        headline: 'Client limit reached'|trans,
-        description: 'You have hit your plan\'s client limit. Upgrade to manage more clients and keep growing your business.'|trans,
     } only %}
 {% endblock content %}
