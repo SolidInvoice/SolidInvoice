@@ -121,8 +121,14 @@ abstract class FormTestCase extends KernelTestCase
      */
     protected function getTypes(): array
     {
+        $validator = M::mock(ValidatorInterface::class);
+        $validator
+            ->shouldReceive('validate')
+            ->zeroOrMoreTimes()
+            ->andReturn(new ConstraintViolationList());
+
         return [
-            'image_upload' => new ImageUploadType(),
+            'image_upload' => new ImageUploadType($validator),
         ];
     }
 
