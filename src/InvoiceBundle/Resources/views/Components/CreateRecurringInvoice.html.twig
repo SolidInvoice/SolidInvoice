@@ -109,8 +109,37 @@
                                     {% if hasTax %}
                                         <div class="column-tax">
                                             <span class="mobile-label">{{ 'invoice.item.heading.tax'|trans }}</span>
-                                            {{ form_widget(item.tax) }}
-                                            {{ form_errors(item.tax) }}
+                                            {% if item.taxes is defined %}
+                                                <div class="line-tax-collection" {{ stimulus_controller('line-tax') }}>
+                                                    {% if item.taxes|length > 0 %}
+                                                        <div class="line-tax-list">
+                                                            {% for taxIndex, lineTax in item.taxes %}
+                                                                <div class="line-tax-row" data-line-tax-target="row">
+                                                                    <div class="line-tax-field line-tax-field-tax">
+                                                                        {{ form_widget(lineTax.tax) }}
+                                                                        {{ form_errors(lineTax.tax) }}
+                                                                    </div>
+                                                                    <div class="line-tax-field line-tax-compound-wrapper">
+                                                                        {{ form_row(lineTax.compound) }}
+                                                                    </div>
+                                                                    {{ form_widget(lineTax.sequence) }}
+                                                                    <div class="line-tax-actions">
+                                                                        {{ form_widget(lineTax.vars.button_delete, {
+                                                                            label: ux_icon('tabler:x', {width: 14, height: 14})|raw,
+                                                                            label_html: true,
+                                                                            attr: {class: 'line-tax-remove-btn', title: 'invoice.item.tax.remove'|trans, 'aria-label': 'invoice.item.tax.remove'|trans}
+                                                                        }) }}
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {{ form_widget(item.taxes.vars.button_add, {
+                                                        label: 'invoice.item.tax.add'|trans,
+                                                        attr: {class: 'line-tax-add-btn'}
+                                                    }) }}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                     <div class="column-total">

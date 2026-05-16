@@ -73,6 +73,9 @@ invoice:
             qty: Qty
             total: Total
             tax: Tax
+        tax:
+            add: '+ Add tax'
+            remove: 'Remove tax'
     invoice_taxes:
         title: 'Withholding & adjustments'
         subtitle: 'Add invoice-level taxes such as withholding tax (TDS) or flat surcharges.'
