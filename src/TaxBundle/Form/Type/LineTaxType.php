@@ -21,6 +21,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class LineTaxType extends AbstractType
@@ -65,6 +67,27 @@ final class LineTaxType extends AbstractType
                     'data-line-tax-target' => 'compound',
                 ],
             ]);
+
+        // Populate snapshot fields (name/rate/category/type/compound) from the selected
+        // Tax entity so newly-bound LineTax rows pass NotBlank validation and persist
+        // with the rate frozen at the time of selection.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $event): void {
+            $lineTax = $event->getData();
+            if (! $lineTax instanceof LineTax) {
+                return;
+            }
+
+            $tax = $lineTax->getTax();
+            if (! $tax instanceof Tax) {
+                return;
+            }
+
+            if ($lineTax->getNameSnapshot() !== null && $lineTax->getNameSnapshot() !== '') {
+                return;
+            }
+
+            $lineTax->snapshotFrom($tax);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

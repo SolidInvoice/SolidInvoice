@@ -17,13 +17,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\ItemTypeTest
@@ -71,15 +72,18 @@ class ItemType extends AbstractType
 
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(
-                'tax',
-                EntityType::class,
+                'taxes',
+                LiveCollectionType::class,
                 [
-                    'class' => Tax::class,
-                    'placeholder' => 'No Tax',
-                    'attr' => [
-                        'class' => 'input-mini invoice-item-tax',
-                    ],
+                    'entry_type' => LineTaxType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
                     'required' => false,
+                    'by_reference' => false,
+                    'label' => false,
+                    'attr' => [
+                        'data-controller' => 'line-tax',
+                    ],
                 ]
             );
         }

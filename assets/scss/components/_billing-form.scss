@@ -613,6 +613,101 @@
 }
 
 // ============================================================================
+// PER-LINE MULTI-TAX (Stacked rows in the Tax column)
+// ============================================================================
+
+.line-tax-collection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+    min-width: 0;
+}
+
+.line-tax-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+}
+
+.line-tax-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--swp-space-2);
+    align-items: center;
+    padding: var(--swp-space-2);
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-sm);
+}
+
+.line-tax-field-tax select,
+.line-tax-field-tax .form-select {
+    width: 100%;
+    min-width: 0;
+}
+
+.line-tax-compound-wrapper {
+    .form-check {
+        margin: 0;
+    }
+
+    .form-check-label {
+        font-size: var(--swp-text-xs);
+        color: var(--swp-text-muted);
+        white-space: nowrap;
+    }
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.line-tax-actions {
+    display: flex;
+    align-items: center;
+}
+
+.line-tax-remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: var(--swp-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--swp-radius-sm);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        color: var(--swp-danger);
+        border-color: var(--swp-danger-light);
+        background: rgba(var(--swp-danger-rgb), 0.06);
+    }
+}
+
+.line-tax-add-btn {
+    align-self: flex-start;
+    padding: var(--swp-space-1) var(--swp-space-2);
+    font-size: var(--swp-text-xs);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-primary);
+    background: transparent;
+    border: 1px dashed var(--swp-border);
+    border-radius: var(--swp-radius-sm);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        color: var(--swp-primary-dark);
+        border-color: var(--swp-primary);
+        background: var(--swp-primary-lighter);
+    }
+}
+
+// ============================================================================
 // INVOICE-LEVEL TAXES (Withholding & adjustments)
 // ============================================================================
 

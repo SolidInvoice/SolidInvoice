@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-model="on(change)|*">
 
@@ -123,10 +123,10 @@
                                     </div>
                                                                             <div class="column-tax">
                                             <span class="mobile-label">Tax</span>
-                                            <select id="quote_lines_0_tax" name="quote[lines][0][tax]" class="input-mini quote-item-tax form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="">No Tax</option>
-<option value="0FKT8YC1NT27QT6CAT5KS1MNM0">20% VAT (inc)</option></select>
-                                            
-                                        </div>
+                                                                                            <div class="line-tax-collection" data-controller="line-tax">
+                                                                                                        <button type="button" id="quote_lines_0_taxes_add" name="quote[lines][0][taxes][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[lines][0][taxes]" class="line-tax-add-btn btn">+ Add tax</button>
+                                                </div>
+                                                                                    </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
                                         <span class="item-total-value">$0.00</span>
@@ -251,7 +251,17 @@
         </div>
     </div>
 
-    <fieldset class="mb-3">    
+    <fieldset class="mb-3">                
+    <div id="quote_lines">
+<fieldset class="mb-3">                
+    <div id="quote_lines_0"><fieldset class="mb-3">                
+    <div id="quote_lines_0_taxes" data-controller="line-tax"></div>
+</fieldset></div>
+</fieldset>
+<div class="mb-3"><button type="button" id="quote_lines_0_delete" name="quote[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="quote[lines]" data-live-index-param="0" class="btn-secondary btn">Delete</button></div>
+</div>
+</fieldset>
+<fieldset class="mb-3">    
     <div id="quote_invoiceTaxes" data-controller="invoice-tax"></div>
 </fieldset>
 <input type="hidden" id="quote___dynamic_error" name="quote[__dynamic_error]"><input type="hidden" id="quote__token" name="quote[_token]" data-controller="csrf-protection">
