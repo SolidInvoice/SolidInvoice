@@ -135,6 +135,7 @@ final class QuoteTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'taxes' => [],
                 ],
             ],
             'users' => $contacts,
@@ -211,12 +212,14 @@ final class QuoteTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'taxes' => [],
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
             'payableAmount' => 100,
+            'invoiceTaxes' => [],
         ], $data);
     }
 
@@ -292,6 +295,7 @@ final class QuoteTest extends ApiTestCase
                     'price' => 10000,
                     'qty' => 1,
                     'total' => 10000,
+                    'taxes' => [],
                 ],
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->get(1)),
@@ -301,12 +305,14 @@ final class QuoteTest extends ApiTestCase
                     'price' => 500,
                     'qty' => 5,
                     'total' => 2500,
+                    'taxes' => [],
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
             'payableAmount' => 11250,
+            'invoiceTaxes' => [],
         ], $data);
     }
 }

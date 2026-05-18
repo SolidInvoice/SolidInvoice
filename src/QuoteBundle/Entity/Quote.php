@@ -324,6 +324,7 @@ class Quote
      * @var Collection<int, InvoiceTax>
      */
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $invoiceTaxes;
 
     public function __construct()

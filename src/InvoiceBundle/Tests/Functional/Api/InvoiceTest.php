@@ -138,6 +138,7 @@ final class InvoiceTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'taxes' => [],
                 ],
             ],
             'users' => $contacts,
@@ -209,6 +210,7 @@ final class InvoiceTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'taxes' => [],
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
@@ -224,6 +226,7 @@ final class InvoiceTest extends ApiTestCase
             'notes' => $invoice->getNotes(),
             'withholdingAmount' => 0,
             'payableAmount' => 100,
+            'invoiceTaxes' => [],
         ], $data);
     }
 
@@ -290,6 +293,7 @@ final class InvoiceTest extends ApiTestCase
                     'price' => 10000,
                     'qty' => 1,
                     'total' => 10000,
+                    'taxes' => [],
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
@@ -305,6 +309,7 @@ final class InvoiceTest extends ApiTestCase
             'notes' => $invoice->getNotes(),
             'withholdingAmount' => 0,
             'payableAmount' => 9000,
+            'invoiceTaxes' => [],
         ], $data);
     }
 }

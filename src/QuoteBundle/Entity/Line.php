@@ -136,6 +136,7 @@ class Line implements LineInterface, Stringable
      * @var Collection<int, LineTax>
      */
     #[ORM\OneToMany(mappedBy: 'quoteLine', targetEntity: LineTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $taxes;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
