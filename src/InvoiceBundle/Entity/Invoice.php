@@ -226,6 +226,7 @@ class Invoice extends BaseInvoice implements Stringable
      * @var Collection<int, InvoiceTax>
      */
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $invoiceTaxes;
 
     public function __construct()

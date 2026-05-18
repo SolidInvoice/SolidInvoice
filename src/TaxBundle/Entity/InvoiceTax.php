@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
@@ -33,6 +34,7 @@ use SolidInvoice\TaxBundle\Repository\InvoiceTaxRepository;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocument;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,6 +57,8 @@ class InvoiceTax
 
     #[ORM\ManyToOne(targetEntity: Tax::class)]
     #[ORM\JoinColumn(name: 'tax_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
+    #[ApiProperty(readableLink: false, writableLink: false)]
     private ?Tax $tax = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'invoiceTaxes')]
@@ -66,26 +70,33 @@ class InvoiceTax
     private ?Quote $quote = null;
 
     #[ORM\Column(name: 'direction', type: Types::STRING, length: 32, enumType: TaxDirection::class, options: ['default' => TaxDirection::Additive->value])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
     private TaxDirection $direction = TaxDirection::Additive;
 
     #[ORM\Column(name: 'name_snapshot', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
     private ?string $nameSnapshot = null;
 
     #[ORM\Column(name: 'rate_snapshot', type: Types::DECIMAL, precision: 10, scale: 4)]
     #[Assert\NotBlank]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
     private string $rateSnapshot = '0.0000';
 
     #[ORM\Column(name: 'category_snapshot', type: Types::STRING, length: 32, enumType: TaxCategory::class, options: ['default' => TaxCategory::Standard->value])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
     private TaxCategory $categorySnapshot = TaxCategory::Standard;
 
     #[ORM\Column(name: 'amount', type: BigIntegerType::NAME)]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
     private BigNumber $amount;
 
     #[ORM\Column(name: 'note', type: Types::TEXT, nullable: true)]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
     private ?string $note = null;
 
     #[ORM\Column(name: 'sequence', type: Types::SMALLINT, options: ['default' => 0])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
     private int $sequence = 0;
 
     #[ORM\Column(name: 'snapshotted_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
@@ -260,6 +271,22 @@ class InvoiceTax
         $this->categorySnapshot = $tax->getCategory();
 
         return $this;
+    }
+
+    /**
+     * Populate snapshot fields from the linked Tax on persist when callers (REST API)
+     * skip the explicit snapshotFrom() step. Form/MCP flows already snapshot before persist;
+     * this is the safety net for everything else.
+     */
+    #[ORM\PrePersist]
+    public function autoSnapshotOnPersist(): void
+    {
+        if ($this->nameSnapshot !== null && $this->nameSnapshot !== '') {
+            return;
+        }
+        if ($this->tax instanceof Tax) {
+            $this->snapshotFrom($this->tax);
+        }
     }
 
     /**
