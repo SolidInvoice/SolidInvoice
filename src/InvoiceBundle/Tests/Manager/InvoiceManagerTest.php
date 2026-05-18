@@ -116,7 +116,9 @@ class InvoiceManagerTest extends KernelTestCase
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $line = new Line();
-        $line->setTax($tax);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+        $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
         $line->setPrice(120);
@@ -156,7 +158,8 @@ class InvoiceManagerTest extends KernelTestCase
         $invoiceLine = $invoice->getLines();
         self::assertInstanceOf(InvoiceLine::class, $invoiceLine[0]);
 
-        self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
+        self::assertCount(1, $invoiceLine[0]->getTaxes());
+        self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
@@ -283,7 +286,9 @@ class InvoiceManagerTest extends KernelTestCase
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $line = new RecurringInvoiceLine();
-        $line->setTax($tax);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+        $line->addTax($lineTax);
         $line->setDescription('Line Description {day} {day_name} {month} {year}');
         $line->setCreated(new DateTime('now'));
         $line->setPrice(120);
@@ -322,7 +327,8 @@ class InvoiceManagerTest extends KernelTestCase
         $invoiceLine = $invoice->getLines();
         self::assertInstanceOf(InvoiceLine::class, $invoiceLine[0]);
 
-        self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
+        self::assertCount(1, $invoiceLine[0]->getTaxes());
+        self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());

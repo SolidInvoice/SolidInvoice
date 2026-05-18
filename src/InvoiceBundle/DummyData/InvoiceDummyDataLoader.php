@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use function array_rand;
@@ -124,7 +125,9 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
 
                     if ([] !== $taxes && $this->faker->boolean(50)) {
                         $tax = $taxes[array_rand($taxes)];
-                        $line->setTax($tax);
+                        $lineTax = new LineTax();
+                        $lineTax->snapshotFrom($tax);
+                        $line->addTax($lineTax);
 
                         if ($tax->getType() === Tax::TYPE_EXCLUSIVE && $tax->getRate() > 0.0) {
                             $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);

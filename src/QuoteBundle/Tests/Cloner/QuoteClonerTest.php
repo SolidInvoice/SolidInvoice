@@ -26,6 +26,7 @@ use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -52,7 +53,9 @@ class QuoteClonerTest extends TestCase
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $item = new Line();
-        $item->setTax($tax);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+        $item->addTax($lineTax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
         $item->setPrice(BigInteger::of(120));
@@ -121,7 +124,8 @@ class QuoteClonerTest extends TestCase
         $quoteItem = $newQuote->getLines();
         self::assertInstanceOf(Line::class, $quoteItem[0]);
 
-        self::assertSame($item->getTax(), $quoteItem[0]->getTax());
+        self::assertCount(1, $quoteItem[0]->getTaxes());
+        self::assertSame('VAT', $quoteItem[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
         self::assertInstanceOf(DateTime::class, $quoteItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());

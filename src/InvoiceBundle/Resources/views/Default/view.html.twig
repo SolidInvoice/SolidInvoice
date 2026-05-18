@@ -272,7 +272,9 @@
                                     <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
                                     <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
                                     {% if invoice.tax.positive %}
-                                        <td class="column-tax" data-label="{{ 'invoice.item.heading.tax'|trans }}">{{ item.tax }}</td>
+                                        <td class="column-tax" data-label="{{ 'invoice.item.heading.tax'|trans }}">
+                                            {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
+                                        </td>
                                     {% endif %}
                                     <td class="column-total" data-label="{{ 'invoice.item.heading.total'|trans }}">{{ item.total|formatCurrency(currency) }}</td>
                                 </tr>

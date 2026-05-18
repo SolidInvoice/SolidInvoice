@@ -36,7 +36,6 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\QuoteBundle\Repository\LineRepository;
 use SolidInvoice\TaxBundle\Entity\LineTax;
-use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -253,37 +252,6 @@ class Line implements LineInterface, Stringable
             if ($lineTax->getQuoteLine() === $this) {
                 $lineTax->setQuoteLine(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Transitional helper: returns the first tax in the collection. The TaxCalc
-     * refactor story will migrate callers to iterate over {@see self::getTaxes()}.
-     */
-    public function getTax(): ?Tax
-    {
-        $first = $this->taxes->first();
-
-        return $first instanceof LineTax ? $first->getTax() : null;
-    }
-
-    /**
-     * Transitional helper: replaces the taxes collection with a single LineTax
-     * snapshotted from the given Tax. The TaxCalc refactor story will replace
-     * callers with explicit LineTax construction.
-     *
-     * @throws MathException
-     */
-    public function setTax(?Tax $tax): static
-    {
-        $this->taxes->clear();
-
-        if ($tax !== null) {
-            $lineTax = new LineTax();
-            $lineTax->snapshotFrom($tax);
-            $this->addTax($lineTax);
         }
 
         return $this;

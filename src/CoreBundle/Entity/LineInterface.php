@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Entity;
 use Brick\Math\BigNumber;
 use Doctrine\Common\Collections\Collection;
 use SolidInvoice\TaxBundle\Entity\LineTax;
-use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Uid\Ulid;
 
 interface LineInterface
@@ -39,9 +38,9 @@ interface LineInterface
 
     public function getTotal(): BigNumber;
 
-    public function getTax(): ?Tax;
+    public function addTax(LineTax $lineTax): static;
 
-    public function setTax(?Tax $tax): self;
+    public function removeTax(LineTax $lineTax): static;
 
     /**
      * @return Collection<int, LineTax>

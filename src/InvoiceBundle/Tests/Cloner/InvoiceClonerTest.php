@@ -31,6 +31,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
@@ -54,7 +55,9 @@ class InvoiceClonerTest extends TestCase
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $line = new Line();
-        $line->setTax($tax);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+        $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
         $line->setPrice(120);
@@ -120,7 +123,8 @@ class InvoiceClonerTest extends TestCase
         $invoiceLine = $newInvoice->getLines();
         self::assertInstanceOf(Line::class, $invoiceLine[0]);
 
-        self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
+        self::assertCount(1, $invoiceLine[0]->getTaxes());
+        self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
@@ -142,7 +146,9 @@ class InvoiceClonerTest extends TestCase
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
         $line = new RecurringInvoiceLine();
-        $line->setTax($tax);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+        $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
         $line->setPrice(120);
@@ -190,7 +196,8 @@ class InvoiceClonerTest extends TestCase
         $invoiceLine = $newInvoice->getLines();
         self::assertInstanceOf(Line::class, $invoiceLine[0]);
 
-        self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
+        self::assertCount(1, $invoiceLine[0]->getTaxes());
+        self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
