@@ -159,7 +159,9 @@
                                             <td class="text-end item-amount">{{ item.price|formatCurrency(currency) }}</td>
                                             <td class="text-center">{{ item.qty }}</td>
                                             {% if quote.tax.positive %}
-                                                <td class="text-end item-amount">{{ item.tax }}</td>
+                                                <td class="text-end item-amount">
+                                                    {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
+                                                </td>
                                             {% endif %}
                                             <td class="text-end fw-bold item-amount">{{ item.total|formatCurrency(currency) }}</td>
                                         </tr>

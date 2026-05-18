@@ -218,7 +218,10 @@ final class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d tax %s not found.', $index, $taxId));
             }
 
-            $line->setTax($tax);
+            $lineTax = new LineTax();
+            $lineTax->snapshotFrom($tax);
+
+            $line->addTax($lineTax);
         }
     }
 }

@@ -139,7 +139,7 @@
                                     </td>
                                     {% if invoice.tax.positive %}
                                         <td class="column-tax">
-                                            {{ item.tax }}
+                                            {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
                                         </td>
                                     {% endif %}
                                     <td class="column-total text-right">

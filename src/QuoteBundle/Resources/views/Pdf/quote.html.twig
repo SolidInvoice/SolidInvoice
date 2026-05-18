@@ -241,7 +241,7 @@
                 </td>
                 {% if quote.tax.positive %}
                     <td class="col-tax" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">
-                        {{ line.tax }}
+                        {% for lineTax in line.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
                     </td>
                 {% endif %}
                 <td class="col-total" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">
