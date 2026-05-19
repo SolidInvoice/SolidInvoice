@@ -199,7 +199,7 @@
                                                                         {{ form_widget(lineTax.vars.button_delete, {
                                                                             label: ux_icon('tabler:x', {width: 14, height: 14})|raw,
                                                                             label_html: true,
-                                                                            attr: {class: 'line-tax-remove-btn', title: 'invoice.item.tax.remove'|trans, 'aria-label': 'invoice.item.tax.remove'|trans}
+                                                                            attr: {class: 'btn btn-sm line-tax-remove-btn', title: 'invoice.item.tax.remove'|trans, 'aria-label': 'invoice.item.tax.remove'|trans}
                                                                         }) }}
                                                                     </div>
                                                                 </div>
@@ -223,7 +223,7 @@
                                             {{ form_widget(item.vars.button_delete, {
                                                 label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,
                                                 label_html: true,
-                                                attr: {class: 'remove-item-btn', title: 'invoice.item.remove'|trans, 'aria-label': 'invoice.item.remove'|trans}
+                                                attr: {class: 'btn btn-sm remove-item-btn', title: 'invoice.item.remove'|trans, 'aria-label': 'invoice.item.remove'|trans}
                                             }) }}
                                         {% endif %}
                                     </div>
@@ -276,7 +276,7 @@
                                             {{ form_widget(invoiceTax.vars.button_delete, {
                                                 label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,
                                                 label_html: true,
-                                                attr: {class: 'remove-item-btn', title: 'invoice.invoice_taxes.remove'|trans, 'aria-label': 'invoice.invoice_taxes.remove'|trans}
+                                                attr: {class: 'btn btn-sm remove-item-btn', title: 'invoice.invoice_taxes.remove'|trans, 'aria-label': 'invoice.invoice_taxes.remove'|trans}
                                             }) }}
                                         </div>
                                     </div>
