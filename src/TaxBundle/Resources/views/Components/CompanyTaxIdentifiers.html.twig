@@ -1,0 +1,72 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({class: 'company-tax-identifiers'}) }}>
+    <h3 class="d-flex align-items-center gap-2 mb-2">
+        {{ ux_icon('tabler:receipt-tax', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+        {{ 'tax.company_identifiers.title'|trans }}
+    </h3>
+    <p class="text-muted small mb-3">
+        {{ 'tax.company_identifiers.description'|trans }}
+    </p>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    <div class="tax-identifiers-list mb-3">
+        {% for identifier in form.identifiers %}
+            <div class="row g-2 align-items-end mb-2 company-tax-identifier-row">
+                <div class="col-md-4">
+                    {{ form_row(identifier.label, {label: 'tax.company_identifiers.label'|trans}) }}
+                </div>
+                <div class="col-md-5">
+                    {{ form_row(identifier.value, {label: 'tax.company_identifiers.value'|trans}) }}
+                </div>
+                <div class="col-md-2">
+                    {{ form_row(identifier.primary, {label: 'tax.company_identifiers.primary'|trans}) }}
+                </div>
+                <div class="col-md-1 d-flex justify-content-end">
+                    {{ form_widget(identifier.vars.button_delete, {
+                        label: 'tax.company_identifiers.remove'|trans,
+                        attr: {
+                            class: 'btn btn-sm btn-outline-danger',
+                            title: 'tax.company_identifiers.remove'|trans
+                        }
+                    }) }}
+                </div>
+            </div>
+        {% else %}
+            <p class="text-muted small mb-2">
+                {{ 'tax.company_identifiers.empty'|trans }}
+            </p>
+        {% endfor %}
+    </div>
+
+    {{ form_errors(form.identifiers) }}
+
+    <div class="d-flex justify-content-between align-items-center">
+        {{ form_widget(form.identifiers.vars.button_add, {
+            label: 'tax.company_identifiers.add'|trans,
+            attr: {
+                class: 'btn btn-outline-primary btn-sm'
+            }
+        }) }}
+
+        <button type="submit" class="btn btn-primary btn-sm">
+            {{ ux_icon('tabler:device-floppy', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
+            {{ 'tax.company_identifiers.save'|trans }}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
