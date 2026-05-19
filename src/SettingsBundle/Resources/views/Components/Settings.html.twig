@@ -456,6 +456,15 @@
 
     {{ form_end(form) }}
 
+    {# Company Tax Identifiers - Only for System Section #}
+    {% if section is same as('system') %}
+        <div class="card settings-content-card mt-4">
+            <div class="card-body">
+                <twig:CompanyTaxIdentifiers />
+            </div>
+        </div>
+    {% endif %}
+
     {# Danger Zone - Only for System Section #}
     {% if section is same as('system') %}
         <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading"

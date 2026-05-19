@@ -24,6 +24,16 @@ tax:
       input:
         validate: Validate
     vat_number: 'Vat Number:'
+    company_identifiers:
+        title: 'Company Tax Identifiers'
+        description: 'Add the tax identifiers (VAT, GST, TIN, ABN, etc.) for your own business — these will appear on the invoices and quotes you issue.'
+        label: 'Type'
+        value: 'Number'
+        primary: 'Primary'
+        add: 'Add tax identifier'
+        remove: 'Remove tax identifier'
+        save: 'Save tax identifiers'
+        empty: 'No tax identifiers configured. Add one to display it on your invoices.'
 
 inclusive: Inclusive
 exclusive: Exclusive
