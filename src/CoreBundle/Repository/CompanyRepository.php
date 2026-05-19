@@ -16,8 +16,11 @@ namespace SolidInvoice\CoreBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
+use Payum\Core\Model\Identity;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
@@ -104,15 +107,46 @@ class CompanyRepository extends ServiceEntityRepository
             return;
         }
 
-        // Delete Payum security tokens for this company's payments (no company_id FK, invisible to ORM cascade)
-        $this->getEntityManager()
-            ->getConnection()
-            ->executeStatement(
-                'DELETE FROM security_token WHERE details_id IN (SELECT id FROM payments WHERE company_id = ?)',
-                [$companyId->toBinary()]
-            );
+        $em = $this->getEntityManager();
 
-        $this->getEntityManager()->remove($company);
-        $this->getEntityManager()->flush();
+        // Delete Payum security tokens for this company's payments. The
+        // `security_token` table stores the Payum model identity as a
+        // serialized object in the single `details` column (Doctrine `object`
+        // type, courtesy of Payum's base Token mapping). There is no
+        // `details_id` column and no FK back to `payments`/`company`, so we
+        // cannot filter in SQL — load the company's payments, then iterate
+        // the SecurityTokens and remove any whose Identity points at one of
+        // them via the ORM so Doctrine handles the actual column mapping.
+        $payments = $em->getRepository(Payment::class)->findBy(['company' => $companyId]);
+
+        if ($payments !== []) {
+            $paymentIds = [];
+            foreach ($payments as $payment) {
+                $paymentIds[(string) $payment->getId()] = true;
+            }
+
+            /** @var SecurityToken[] $tokens */
+            $tokens = $em->getRepository(SecurityToken::class)->findAll();
+            foreach ($tokens as $token) {
+                $details = $token->getDetails();
+
+                if (! $details instanceof Identity) {
+                    continue;
+                }
+
+                if ($details->getClass() !== Payment::class) {
+                    continue;
+                }
+
+                if (! isset($paymentIds[(string) $details->getId()])) {
+                    continue;
+                }
+
+                $em->remove($token);
+            }
+        }
+
+        $em->remove($company);
+        $em->flush();
     }
 }
