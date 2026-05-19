@@ -336,8 +336,8 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
-    gap: var(--swp-space-4);
+    grid-template-columns: minmax(0, 1.8fr) minmax(110px, 0.9fr) 64px minmax(220px, 1.6fr) minmax(90px, 0.8fr) 40px;
+    gap: var(--swp-space-3);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
 
@@ -368,11 +368,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
+        grid-template-columns: minmax(0, 3fr) minmax(110px, 0.9fr) 64px minmax(90px, 0.8fr) 40px;
     }
 
     .billing-item-row {
-        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
+        grid-template-columns: minmax(0, 3fr) minmax(110px, 0.9fr) 64px minmax(90px, 0.8fr) 40px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -382,8 +382,8 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
-    gap: var(--swp-space-4);
+    grid-template-columns: minmax(0, 1.8fr) minmax(110px, 0.9fr) 64px minmax(220px, 1.6fr) minmax(90px, 0.8fr) 40px;
+    gap: var(--swp-space-3);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
     align-items: start;
@@ -614,6 +614,13 @@
 
 // ============================================================================
 // PER-LINE MULTI-TAX (Stacked rows in the Tax column)
+//
+// Each .line-tax-row is laid out as a two-row grid:
+//   ┌──────────────────────────────┬─────┐
+//   │ tax dropdown                 │  ×  │   ← row 1
+//   ├──────────────────────────────┴─────┤
+//   │ ⓘ Compound  [toggle]               │   ← row 2 (hidden when only one tax)
+//   └────────────────────────────────────┘
 // ============================================================================
 
 .line-tax-collection {
@@ -631,23 +638,45 @@
 
 .line-tax-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: var(--swp-space-2);
+    grid-template-columns: minmax(0, 1fr) 28px;
+    grid-template-areas:
+        'tax actions'
+        'compound compound';
+    column-gap: var(--swp-space-2);
+    row-gap: var(--swp-space-1);
     align-items: center;
     padding: var(--swp-space-2);
-    background: var(--swp-gray-50);
+    background: var(--swp-surface);
     border: 1px solid var(--swp-border-light);
     border-radius: var(--swp-radius-sm);
 }
 
-.line-tax-field-tax select,
-.line-tax-field-tax .form-select {
-    width: 100%;
+.line-tax-field-tax {
+    grid-area: tax;
     min-width: 0;
+
+    select,
+    .form-select {
+        width: 100%;
+        min-width: 0;
+        padding-block: var(--swp-space-1);
+        font-size: var(--swp-text-sm);
+    }
 }
 
 .line-tax-compound-wrapper {
+    grid-area: compound;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: var(--swp-space-1);
+    padding-top: var(--swp-space-1);
+    border-top: 1px dashed var(--swp-border-light);
+
     .form-check {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--swp-space-2);
         margin: 0;
     }
 
@@ -663,8 +692,10 @@
 }
 
 .line-tax-actions {
+    grid-area: actions;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .line-tax-remove-btn {
