@@ -23,6 +23,8 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class InvoiceTaxType extends AbstractType
@@ -77,6 +79,27 @@ final class InvoiceTaxType extends AbstractType
                     'data-invoice-tax-target' => 'sequence',
                 ],
             ]);
+
+        // Populate snapshot fields (name/rate/category) from the selected Tax
+        // entity so newly-bound InvoiceTax rows pass NotBlank validation and
+        // persist with the rate frozen at the time of selection.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $event): void {
+            $invoiceTax = $event->getData();
+            if (! $invoiceTax instanceof InvoiceTax) {
+                return;
+            }
+
+            $tax = $invoiceTax->getTax();
+            if (! $tax instanceof Tax) {
+                return;
+            }
+
+            if ($invoiceTax->getNameSnapshot() !== null && $invoiceTax->getNameSnapshot() !== '') {
+                return;
+            }
+
+            $invoiceTax->snapshotFrom($tax);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -23,10 +23,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
-use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
-use Symfony\UX\TwigComponent\Attribute\PreMount;
 
 #[AsLiveComponent]
 final class CompanyTaxIdentifiers extends AbstractController
@@ -34,33 +32,22 @@ final class CompanyTaxIdentifiers extends AbstractController
     use DefaultActionTrait;
     use LiveCollectionTrait;
 
-    /**
-     * @var array{identifiers: list<TaxIdentifier>}
-     */
-    #[LiveProp(fieldName: 'formData')]
-    public array $data = ['identifiers' => []];
-
     public function __construct(
         private readonly TaxIdentifierRepository $repository,
         private readonly CompanySelector $companySelector,
     ) {
     }
 
-    #[PreMount]
-    public function preMount(): void
-    {
-        $companyId = $this->companySelector->getCompany();
-
-        if ($companyId === null) {
-            return;
-        }
-
-        $this->data = ['identifiers' => $this->repository->findCompanyIdentifiers($companyId)];
-    }
-
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(CompanyTaxIdentifiersFormType::class, $this->data);
+        $companyId = $this->companySelector->getCompany();
+        $identifiers = $companyId !== null
+            ? $this->repository->findCompanyIdentifiers($companyId)
+            : [];
+
+        return $this->createForm(CompanyTaxIdentifiersFormType::class, [
+            'identifiers' => $identifiers,
+        ]);
     }
 
     #[LiveAction]

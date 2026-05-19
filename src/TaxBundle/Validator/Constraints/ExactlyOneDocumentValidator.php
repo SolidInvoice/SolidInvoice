@@ -38,6 +38,14 @@ final class ExactlyOneDocumentValidator extends ConstraintValidator
         $hasInvoice = $value->getInvoice() !== null;
         $hasQuote = $value->getQuote() !== null;
 
+        // Skip new (unpersisted) entries with no parent yet — the form-manager
+        // (InvoiceFormManager / QuoteFormManager) wires the back-reference
+        // after form validation runs, so an in-flight InvoiceTax legitimately
+        // has neither side set during binding.
+        if ($value->getId() === null && ! $hasInvoice && ! $hasQuote) {
+            return;
+        }
+
         if ($hasInvoice === $hasQuote) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();

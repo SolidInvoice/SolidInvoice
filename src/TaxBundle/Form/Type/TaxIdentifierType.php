@@ -33,6 +33,8 @@ final class TaxIdentifierType extends AbstractType
         $builder->add('label', ChoiceType::class, [
             'choices' => array_combine(self::PRESET_LABELS, self::PRESET_LABELS),
             'required' => true,
+            'empty_data' => self::PRESET_LABELS[0],
+            'placeholder' => false,
         ]);
 
         $builder->add('value', TextType::class, [
