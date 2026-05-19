@@ -190,9 +190,6 @@
                                                                         {{ form_widget(lineTax.tax) }}
                                                                         {{ form_errors(lineTax.tax) }}
                                                                     </div>
-                                                                    <div class="line-tax-field line-tax-compound-wrapper" title="{{ 'quote.item.tax.compound'|trans }}">
-                                                                        {{ form_row(lineTax.compound, {attr: {title: 'quote.item.tax.compound'|trans, 'aria-label': 'quote.item.tax.compound'|trans}}) }}
-                                                                    </div>
                                                                     {{ form_widget(lineTax.sequence) }}
                                                                     <div class="line-tax-actions">
                                                                         {{ form_widget(lineTax.vars.button_delete, {

@@ -2,23 +2,20 @@ import { Controller } from '@hotwired/stimulus';
 
 /* stimulusFetch: 'lazy' */
 export default class LineTax extends Controller<HTMLElement> {
-    static targets: string[] = ['row', 'compoundRow'];
+    static targets: string[] = ['row'];
 
     declare rowTargets: HTMLElement[];
 
     connect(): void {
         super.connect();
-        this.refreshCompoundVisibility();
         this.refreshSequenceButtons();
     }
 
     rowTargetConnected(): void {
-        this.refreshCompoundVisibility();
         this.refreshSequenceButtons();
     }
 
     rowTargetDisconnected(): void {
-        this.refreshCompoundVisibility();
         this.refreshSequenceButtons();
         this.renumberSequences();
     }
@@ -39,7 +36,6 @@ export default class LineTax extends Controller<HTMLElement> {
 
         row.dispatchEvent(new CustomEvent('line-tax:remove', { bubbles: true, detail: { row } }));
         row.remove();
-        this.refreshCompoundVisibility();
         this.refreshSequenceButtons();
         this.renumberSequences();
     }
@@ -66,17 +62,6 @@ export default class LineTax extends Controller<HTMLElement> {
         row.parentElement?.insertBefore(row.nextElementSibling, row);
         this.renumberSequences();
         this.refreshSequenceButtons();
-    }
-
-    private refreshCompoundVisibility(): void {
-        const showCompound = this.rowTargets.length >= 2;
-        for (const row of this.rowTargets) {
-            const compound = row.querySelector<HTMLElement>('[data-line-tax-target="compound"]');
-            const wrapper = compound?.closest<HTMLElement>('.line-tax-compound-wrapper') ?? compound;
-            if (wrapper !== null && wrapper !== undefined) {
-                wrapper.hidden = ! showCompound;
-            }
-        }
     }
 
     private refreshSequenceButtons(): void {
