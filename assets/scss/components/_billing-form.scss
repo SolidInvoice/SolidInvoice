@@ -336,7 +336,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(110px, 0.9fr) 64px minmax(220px, 1.6fr) minmax(90px, 0.8fr) 40px;
+    grid-template-columns: minmax(0, 2.4fr) minmax(110px, 1fr) 60px minmax(160px, 1.1fr) minmax(85px, 0.75fr) 36px;
     gap: var(--swp-space-3);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -368,11 +368,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: minmax(0, 3fr) minmax(110px, 0.9fr) 64px minmax(90px, 0.8fr) 40px;
+        grid-template-columns: minmax(0, 3.4fr) minmax(110px, 1fr) 60px minmax(85px, 0.75fr) 36px;
     }
 
     .billing-item-row {
-        grid-template-columns: minmax(0, 3fr) minmax(110px, 0.9fr) 64px minmax(90px, 0.8fr) 40px;
+        grid-template-columns: minmax(0, 3.4fr) minmax(110px, 1fr) 60px minmax(85px, 0.75fr) 36px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -382,7 +382,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(110px, 0.9fr) 64px minmax(220px, 1.6fr) minmax(90px, 0.8fr) 40px;
+    grid-template-columns: minmax(0, 2.4fr) minmax(110px, 1fr) 60px minmax(160px, 1.1fr) minmax(85px, 0.75fr) 36px;
     gap: var(--swp-space-3);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -615,12 +615,13 @@
 // ============================================================================
 // PER-LINE MULTI-TAX (Stacked rows in the Tax column)
 //
-// Each .line-tax-row is laid out as a two-row grid:
-//   ┌──────────────────────────────┬─────┐
-//   │ tax dropdown                 │  ×  │   ← row 1
-//   ├──────────────────────────────┴─────┤
-//   │ ⓘ Compound  [toggle]               │   ← row 2 (hidden when only one tax)
-//   └────────────────────────────────────┘
+// Each .line-tax-row uses a single-row flex layout:
+//   ┌─────────────────────────────────┬──────────┬─────┐
+//   │ tax dropdown                    │ ⊙ compd  │  ×  │
+//   └─────────────────────────────────┴──────────┴─────┘
+// The compound toggle is rendered as a compact icon-only switch with a
+// tooltip on hover; it collapses to display:none when only one tax row is
+// present (controlled by the line-tax Stimulus controller).
 // ============================================================================
 
 .line-tax-collection {
@@ -637,22 +638,17 @@
 }
 
 .line-tax-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 28px;
-    grid-template-areas:
-        'tax actions'
-        'compound compound';
-    column-gap: var(--swp-space-2);
-    row-gap: var(--swp-space-1);
+    display: flex;
     align-items: center;
-    padding: var(--swp-space-2);
+    gap: var(--swp-space-1);
+    padding: var(--swp-space-1) var(--swp-space-2);
     background: var(--swp-surface);
     border: 1px solid var(--swp-border-light);
     border-radius: var(--swp-radius-sm);
 }
 
 .line-tax-field-tax {
-    grid-area: tax;
+    flex: 1 1 auto;
     min-width: 0;
 
     select,
@@ -665,25 +661,39 @@
 }
 
 .line-tax-compound-wrapper {
-    grid-area: compound;
-    display: flex;
+    flex: 0 0 auto;
+    display: inline-flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-top: var(--swp-space-1);
-    padding-top: var(--swp-space-1);
-    border-top: 1px dashed var(--swp-border-light);
 
     .form-check {
         display: inline-flex;
         align-items: center;
-        gap: var(--swp-space-2);
+        gap: 0;
         margin: 0;
+        padding: 0;
+        min-height: auto;
     }
 
+    .form-check-input {
+        width: 1.75em;
+        height: 1em;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    // Visually hide the label text; the toggle itself communicates state.
+    // The label remains accessible via screen-reader announcement of the
+    // native title attribute injected by Symfony's form-theme.
     .form-check-label {
-        font-size: var(--swp-text-xs);
-        color: var(--swp-text-muted);
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
         white-space: nowrap;
+        border: 0;
     }
 
     &[hidden] {
@@ -692,18 +702,17 @@
 }
 
 .line-tax-actions {
-    grid-area: actions;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
 .line-tax-remove-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     padding: 0;
     color: var(--swp-text-muted);
     background: transparent;
