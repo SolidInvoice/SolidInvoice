@@ -336,7 +336,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(100px, 0.9fr) 56px minmax(120px, 0.7fr) minmax(80px, 0.6fr) 32px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(120px, 0.9fr) minmax(80px, 0.6fr) 32px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -382,7 +382,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(100px, 0.9fr) 56px minmax(120px, 0.7fr) minmax(80px, 0.6fr) 32px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(120px, 0.9fr) minmax(80px, 0.6fr) 32px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -420,6 +420,24 @@
         input,
         select {
             width: 100%;
+        }
+    }
+
+    .column-price {
+
+        // Slim down the leading currency-symbol addon (the "$"/"€" prefix)
+        // so it stops eating ~30% of the column's usable input width.
+        .input-group-text {
+            padding: 0.25rem 0.4rem;
+            font-size: var(--swp-text-xs);
+            font-weight: var(--swp-font-medium);
+            color: var(--swp-text-muted);
+            background: var(--swp-gray-50);
+            border-color: var(--swp-border-light);
+        }
+
+        input {
+            min-width: 0;
         }
     }
 
