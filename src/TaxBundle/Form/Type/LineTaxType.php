@@ -18,7 +18,6 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -58,13 +57,6 @@ final class LineTaxType extends AbstractType
                 'empty_data' => '0',
                 'attr' => [
                     'data-line-tax-target' => 'sequence',
-                ],
-            ])
-            ->add('compound', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Compound',
-                'attr' => [
-                    'data-line-tax-target' => 'compound',
                 ],
             ]);
 

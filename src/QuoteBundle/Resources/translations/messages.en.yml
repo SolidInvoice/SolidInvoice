@@ -61,7 +61,6 @@ quote:
         tax:
             add: '+ Add tax'
             remove: 'Remove tax'
-            compound: 'Compound: apply on top of preceding taxes'
     invoice_taxes:
         title: 'Withholding & adjustments'
         subtitle: 'Add document-level taxes such as withholding tax or flat surcharges.'
