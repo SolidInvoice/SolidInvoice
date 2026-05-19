@@ -52,12 +52,31 @@ final class InvoiceTaxTest extends KernelTestCase
 
     public function testValidatorRejectsWithNeitherDocumentSet(): void
     {
+        // Validator only fires for persisted entities — new in-flight rows are
+        // legitimately unwired during form binding, so simulate a persisted id.
         $invoiceTax = $this->buildInvoiceTax();
+        $this->assignId($invoiceTax);
 
         $violations = $this->validator->validate($invoiceTax);
 
         self::assertGreaterThan(0, $violations->count());
         self::assertSame((new ExactlyOneDocument())->message, $violations->get(0)->getMessage());
+    }
+
+    public function testValidatorSkipsUnpersistedRowsWithNoDocument(): void
+    {
+        $invoiceTax = $this->buildInvoiceTax();
+
+        $violations = $this->validator->validate($invoiceTax);
+
+        $messages = array_map(static fn ($v) => $v->getMessage(), iterator_to_array($violations));
+        self::assertNotContains((new ExactlyOneDocument())->message, $messages);
+    }
+
+    private function assignId(InvoiceTax $invoiceTax): void
+    {
+        $ref = new \ReflectionProperty(InvoiceTax::class, 'id');
+        $ref->setValue($invoiceTax, new \Symfony\Component\Uid\Ulid());
     }
 
     public function testValidatorRejectsWithBothDocumentsSet(): void

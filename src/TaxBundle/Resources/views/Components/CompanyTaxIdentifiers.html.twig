@@ -25,24 +25,27 @@
 
     <div class="tax-identifiers-list mb-3">
         {% for identifier in form.identifiers %}
-            <div class="row g-2 align-items-end mb-2 company-tax-identifier-row">
+            <div class="row g-3 align-items-end mb-2 company-tax-identifier-row">
                 <div class="col-md-4">
                     {{ form_row(identifier.label, {label: 'tax.company_identifiers.label'|trans}) }}
                 </div>
-                <div class="col-md-5">
+                <div class="col">
                     {{ form_row(identifier.value, {label: 'tax.company_identifiers.value'|trans}) }}
                 </div>
-                <div class="col-md-2">
+                <div class="col-auto">
                     {{ form_row(identifier.primary, {label: 'tax.company_identifiers.primary'|trans}) }}
                 </div>
-                <div class="col-md-1 d-flex justify-content-end">
-                    {{ form_widget(identifier.vars.button_delete, {
-                        label: 'tax.company_identifiers.remove'|trans,
-                        attr: {
-                            class: 'btn btn-sm btn-outline-danger',
-                            title: 'tax.company_identifiers.remove'|trans
-                        }
-                    }) }}
+                <div class="col-auto">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            data-action="live#action"
+                            data-live-action-param="removeCollectionItem"
+                            data-live-name-param="{{ form.identifiers.vars.full_name }}"
+                            data-live-index-param="{{ loop.index0 }}"
+                            title="{{ 'tax.company_identifiers.remove'|trans }}"
+                            aria-label="{{ 'tax.company_identifiers.remove'|trans }}">
+                        {{ ux_icon('tabler:trash', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
+                    </button>
                 </div>
             </div>
         {% else %}
