@@ -39,7 +39,8 @@ final class InvoiceTaxType extends AbstractType
                 'choice_label' => static function (Tax $tax): string {
                     $rate = $tax->getRate() ?? 0;
                     $category = $tax->getCategory();
-                    $base = sprintf('%s (%s%%)', $tax->getName() ?? '', $rate);
+                    $rateLabel = $tax->getType() === Tax::TYPE_FLAT_RATE ? (string) $rate : $rate . '%';
+                    $base = sprintf('%s (%s)', $tax->getName() ?? '', $rateLabel);
 
                     return match ($category) {
                         TaxCategory::Exempt => $base . ' [exempt]',

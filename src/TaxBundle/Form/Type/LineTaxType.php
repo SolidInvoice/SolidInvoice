@@ -37,7 +37,8 @@ final class LineTaxType extends AbstractType
                     $rate = $tax->getRate() ?? 0;
                     $category = $tax->getCategory();
                     $compound = $tax->isCompound() ? ', compound' : '';
-                    $base = sprintf('%s (%s%%%s)', $tax->getName() ?? '', $rate, $compound);
+                    $rateLabel = $tax->getType() === Tax::TYPE_FLAT_RATE ? (string) $rate : $rate . '%';
+                    $base = sprintf('%s (%s%s)', $tax->getName() ?? '', $rateLabel, $compound);
 
                     return match ($category) {
                         TaxCategory::Exempt => $base . ' [exempt]',

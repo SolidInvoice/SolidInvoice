@@ -162,6 +162,7 @@ final class Version30000_9 extends AbstractMigration
             $invoiceTax->addColumn('tax_id', UlidType::NAME, ['notnull' => false]);
             $invoiceTax->addColumn('invoice_id', UlidType::NAME, ['notnull' => false]);
             $invoiceTax->addColumn('quote_id', UlidType::NAME, ['notnull' => false]);
+            $invoiceTax->addColumn('recurring_invoice_id', UlidType::NAME, ['notnull' => false]);
             $invoiceTax->addColumn('direction', Types::STRING, [
                 'length' => 32,
                 'default' => TaxDirection::Additive->value,
@@ -184,11 +185,13 @@ final class Version30000_9 extends AbstractMigration
             $invoiceTax->addIndex(['tax_id']);
             $invoiceTax->addIndex(['invoice_id']);
             $invoiceTax->addIndex(['quote_id']);
+            $invoiceTax->addIndex(['recurring_invoice_id']);
 
             $invoiceTax->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
             $invoiceTax->addForeignKeyConstraint(Tax::TABLE_NAME, ['tax_id'], ['id'], ['onDelete' => 'SET NULL']);
             $invoiceTax->addForeignKeyConstraint(Invoice::TABLE_NAME, ['invoice_id'], ['id'], ['onDelete' => 'CASCADE']);
             $invoiceTax->addForeignKeyConstraint(Quote::TABLE_NAME, ['quote_id'], ['id'], ['onDelete' => 'CASCADE']);
+            $invoiceTax->addForeignKeyConstraint(RecurringInvoice::TABLE_NAME, ['recurring_invoice_id'], ['id'], ['onDelete' => 'CASCADE']);
         }
 
         $this->addDocumentTotalsColumns($schema, Invoice::TABLE_NAME);
@@ -629,6 +632,7 @@ final class Version30000_9 extends AbstractMigration
             'invoice_tax_exactly_one_document',
             'invoice_id',
             'quote_id',
+            'recurring_invoice_id',
         );
 
         if ($sql === null) {
@@ -665,21 +669,26 @@ final class Version30000_9 extends AbstractMigration
     }
 
     /**
-     * Build a portable `ALTER TABLE ADD CONSTRAINT CHECK` for the XOR-null invariant on two columns.
+     * Build a portable `ALTER TABLE ADD CONSTRAINT CHECK` for the "exactly one is NOT NULL"
+     * invariant across an arbitrary set of columns.
      *
      * Returns null when the current platform either does not support adding CHECK constraints
      * via ALTER TABLE (SQLite) or is not yet covered by this migration (anything other than
      * MySQL/MariaDB, PostgreSQL, Oracle, or SQL Server).
      *
-     * The CHECK expression is the long-form `(a IS NULL AND b IS NOT NULL) OR …` rather than
-     * `(a IS NULL) <> (b IS NULL)`: the latter compares boolean expressions, which is rejected
-     * by Oracle and SQL Server because they don't have a SQL-level boolean type. The long form
-     * is standard SQL and is accepted by every supported platform.
+     * The CHECK expression is the long-form disjunction `(a IS NOT NULL AND b IS NULL AND ...)`
+     * rather than `(a IS NULL) <> (b IS NULL)`: the latter compares boolean expressions, which
+     * is rejected by Oracle and SQL Server because they don't have a SQL-level boolean type.
+     * The long form is standard SQL and is accepted by every supported platform.
      */
-    private function buildExactlyOneNullCheck(string $table, string $constraint, string $columnA, string $columnB): ?string
+    private function buildExactlyOneNullCheck(string $table, string $constraint, string ...$columns): ?string
     {
         // SQLite cannot ALTER TABLE ADD CONSTRAINT; application-level validators cover it.
         if ($this->platform instanceof SqlitePlatform) {
+            return null;
+        }
+
+        if (count($columns) < 2) {
             return null;
         }
 
@@ -696,14 +705,20 @@ final class Version30000_9 extends AbstractMigration
             return null;
         }
 
+        $branches = [];
+        foreach ($columns as $notNull) {
+            $parts = [];
+            foreach ($columns as $col) {
+                $parts[] = sprintf('%s IS %s NULL', $col, $col === $notNull ? 'NOT' : '');
+            }
+            $branches[] = '(' . implode(' AND ', $parts) . ')';
+        }
+
         return sprintf(
-            'ALTER TABLE %s ADD CONSTRAINT %s CHECK ((%s IS NULL AND %s IS NOT NULL) OR (%s IS NOT NULL AND %s IS NULL))',
+            'ALTER TABLE %s ADD CONSTRAINT %s CHECK (%s)',
             $table,
             $constraint,
-            $columnA,
-            $columnB,
-            $columnA,
-            $columnB,
+            implode(' OR ', $branches),
         );
     }
 }

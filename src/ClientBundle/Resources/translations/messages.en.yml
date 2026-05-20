@@ -101,8 +101,14 @@ client:
         info_description: "Basic information about your client's business"
         contact_description: 'Add at least one contact person for this client'
         address_description: 'Add billing or shipping addresses for this client'
+        tax_identifiers_description: "The client's tax registration numbers (VAT, GSTIN, TIN, ABN, etc.). These appear on invoices and quotes issued to this client."
         currency:
             empty_value: 'System Default'
+    tax_identifiers:
+        info: 'Tax Identifiers'
+        add: 'Add tax identifier'
+        remove: 'Remove tax identifier'
+        empty_hint: 'No tax identifiers added yet. Add one if this client has a VAT, GST or other registered tax number.'
     contacts:
       info:
         list: 'Select contacts to send %type% to'

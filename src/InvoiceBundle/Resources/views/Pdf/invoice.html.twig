@@ -250,7 +250,7 @@
                 </td>
                 {% if invoice.tax.positive %}
                     <td class="col-tax" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">
-                        {% for lineTax in line.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
+                        {% for lineTax in line.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.typeSnapshot.value == 'Flat Rate' ? lineTax.rateSnapshot : lineTax.rateSnapshot ~ '%' }}){% if not loop.last %}, {% endif %}{% endfor %}
                     </td>
                 {% endif %}
                 <td class="col-total" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">
@@ -290,7 +290,7 @@
             {% for row in _tb.lineTaxRows %}
                 <tr class="tax-breakdown-row">
                     <td class="label-cell" style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: #64748b;">
-                        {{ row.name }} ({{ row.rate }}%)
+                        {{ row.name }} ({{ row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%' }})
                     </td>
                     <td class="value-cell" style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; color: #475569;">
                         {{ row.amount|formatCurrency(currency) }}
@@ -301,7 +301,7 @@
         {% for row in _tb.additiveRows %}
             <tr class="invoice-tax-row">
                 <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
-                    {{ row.name }} ({{ row.rate }}%)
+                    {{ row.name }} ({{ row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%' }})
                 </td>
                 <td class="value-cell" style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: 'Courier New', monospace; color: #1e293b;">
                     {{ row.amount|formatCurrency(currency) }}
@@ -311,7 +311,7 @@
         {% for row in _tb.informationalRows %}
             <tr class="invoice-tax-row">
                 <td class="label-cell" style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: #64748b;">
-                    {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}
+                    {{ row.name }} ({{ row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%' }}){% if row.note %} — {{ row.note }}{% endif %}
                 </td>
                 <td class="value-cell" style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; color: #64748b;">
                     {{ 'invoice.invoice_taxes.informational'|trans }}

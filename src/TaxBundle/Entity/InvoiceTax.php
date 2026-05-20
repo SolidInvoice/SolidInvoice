@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
@@ -68,6 +69,10 @@ class InvoiceTax
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'invoiceTaxes')]
     #[ORM\JoinColumn(name: 'quote_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?Quote $quote = null;
+
+    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoiceTaxes')]
+    #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?RecurringInvoice $recurringInvoice = null;
 
     #[ORM\Column(name: 'direction', type: Types::STRING, length: 32, enumType: TaxDirection::class, options: ['default' => TaxDirection::Additive->value])]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
@@ -144,6 +149,18 @@ class InvoiceTax
     public function setQuote(?Quote $quote): self
     {
         $this->quote = $quote;
+
+        return $this;
+    }
+
+    public function getRecurringInvoice(): ?RecurringInvoice
+    {
+        return $this->recurringInvoice;
+    }
+
+    public function setRecurringInvoice(?RecurringInvoice $recurringInvoice): self
+    {
+        $this->recurringInvoice = $recurringInvoice;
 
         return $this;
     }

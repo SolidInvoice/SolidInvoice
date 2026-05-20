@@ -38,6 +38,10 @@ class LineRepository extends ServiceEntityRepository
      * Recalculates invoice totals after a Tax rate is deleted. LineTax rows
      * retain their snapshots; the FK is auto-nulled by ON DELETE SET NULL.
      *
+     * Distinct-by-invoice so a multi-tax line (or several lines on the same
+     * invoice sharing the rate) only triggers a single recalculation per
+     * invoice instead of one per LineTax row.
+     *
      * @throws MathException
      */
     public function removeTax(Tax $tax): void
@@ -45,25 +49,19 @@ class LineRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         $query = $em->createQueryBuilder()
-            ->select('lt')
+            ->select('DISTINCT i')
             ->from(LineTax::class, 'lt')
             ->join('lt.invoiceLine', 'l')
+            ->join('l.invoice', 'i')
             ->where('lt.tax = :tax')
             ->setParameter('tax', $tax->getId(), UlidType::NAME)
             ->getQuery();
 
-        /** @var LineTax $lineTax */
-        foreach ($query->toIterable() as $lineTax) {
-            $invoiceLine = $lineTax->getInvoiceLine();
+        foreach ($query->toIterable() as $invoice) {
+            $invoice->setTax(0);
+            $this->calculator->calculateTotals($invoice);
 
-            if ($invoiceLine === null) {
-                continue;
-            }
-
-            $invoiceLine->getInvoice()?->setTax(0);
-            $this->calculator->calculateTotals($invoiceLine->getInvoice());
-
-            $em->persist($invoiceLine);
+            $em->persist($invoice);
         }
 
         $em->flush();
