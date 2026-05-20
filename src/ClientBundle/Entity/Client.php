@@ -476,7 +476,11 @@ class Client implements Stringable
 
     public function removeTaxIdentifier(TaxIdentifier $taxIdentifier): self
     {
-        $this->taxIdentifiers->removeElement($taxIdentifier);
+        if ($this->taxIdentifiers->removeElement($taxIdentifier)) {
+            if ($taxIdentifier->getClient() === $this) {
+                $taxIdentifier->setClient(null);
+            }
+        }
 
         return $this;
     }

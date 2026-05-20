@@ -185,11 +185,20 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private RecurringOptions $recurringOptions;
 
+    /**
+     * @var Collection<int, InvoiceTax>
+     */
+    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    private Collection $invoiceTaxes;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->invoiceTaxes = new ArrayCollection();
         $this->setRecurringOptions(new RecurringOptions());
         parent::__construct();
     }
@@ -372,14 +381,41 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * RecurringInvoices are templates and do not own InvoiceTax rows directly;
-     * the `invoice_tax` table only references concrete invoices/quotes.
-     *
      * @return Collection<int, InvoiceTax>
      */
     public function getInvoiceTaxes(): Collection
     {
-        return new ArrayCollection();
+        // Lazy-init guards against Foundry / Doctrine flows that bypass the
+        // constructor (e.g. ReflectionClass::newInstanceWithoutConstructor) so
+        // calculators that walk this collection don't blow up on fresh entities.
+        if (! isset($this->invoiceTaxes)) {
+            $this->invoiceTaxes = new ArrayCollection();
+        }
+
+        return $this->invoiceTaxes;
+    }
+
+    public function addInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        $taxes = $this->getInvoiceTaxes();
+
+        if (! $taxes->contains($invoiceTax)) {
+            $taxes->add($invoiceTax);
+            $invoiceTax->setRecurringInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceTax(InvoiceTax $invoiceTax): self
+    {
+        if ($this->getInvoiceTaxes()->removeElement($invoiceTax)) {
+            if ($invoiceTax->getRecurringInvoice() === $this) {
+                $invoiceTax->setRecurringInvoice(null);
+            }
+        }
+
+        return $this;
     }
 
     public function hasInvoiceForDay(DateTimeInterface $now): bool

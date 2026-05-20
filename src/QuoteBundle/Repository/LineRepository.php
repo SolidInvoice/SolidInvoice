@@ -38,6 +38,10 @@ class LineRepository extends ServiceEntityRepository
      * Recalculates quote totals after a Tax rate is deleted. LineTax rows
      * retain their snapshots; the FK is auto-nulled by ON DELETE SET NULL.
      *
+     * Distinct-by-quote so a multi-tax line (or several lines on the same
+     * quote sharing the rate) only triggers a single recalculation per quote
+     * instead of one per LineTax row.
+     *
      * @throws MathException
      */
     public function removeTax(Tax $tax): void
@@ -45,25 +49,19 @@ class LineRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         $query = $em->createQueryBuilder()
-            ->select('lt')
+            ->select('DISTINCT q')
             ->from(LineTax::class, 'lt')
             ->join('lt.quoteLine', 'l')
+            ->join('l.quote', 'q')
             ->where('lt.tax = :tax')
             ->setParameter('tax', $tax->getId(), UlidType::NAME)
             ->getQuery();
 
-        /** @var LineTax $lineTax */
-        foreach ($query->toIterable() as $lineTax) {
-            $quoteLine = $lineTax->getQuoteLine();
+        foreach ($query->toIterable() as $quote) {
+            $quote->setTax(0);
+            $this->calculator->calculateTotals($quote);
 
-            if ($quoteLine === null) {
-                continue;
-            }
-
-            $quoteLine->getQuote()->setTax(0);
-            $this->calculator->calculateTotals($quoteLine->getQuote());
-
-            $em->persist($quoteLine);
+            $em->persist($quote);
         }
 
         $em->flush();

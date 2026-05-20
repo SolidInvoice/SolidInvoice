@@ -35,18 +35,23 @@ final class ExactlyOneDocumentValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, InvoiceTax::class);
         }
 
-        $hasInvoice = $value->getInvoice() !== null;
-        $hasQuote = $value->getQuote() !== null;
+        $owners = [
+            $value->getInvoice() !== null,
+            $value->getQuote() !== null,
+            $value->getRecurringInvoice() !== null,
+        ];
+
+        $ownerCount = count(array_filter($owners));
 
         // Skip new (unpersisted) entries with no parent yet — the form-manager
         // (InvoiceFormManager / QuoteFormManager) wires the back-reference
         // after form validation runs, so an in-flight InvoiceTax legitimately
-        // has neither side set during binding.
-        if ($value->getId() === null && ! $hasInvoice && ! $hasQuote) {
+        // has no side set during binding.
+        if ($value->getId() === null && $ownerCount === 0) {
             return;
         }
 
-        if ($hasInvoice === $hasQuote) {
+        if ($ownerCount !== 1) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }
