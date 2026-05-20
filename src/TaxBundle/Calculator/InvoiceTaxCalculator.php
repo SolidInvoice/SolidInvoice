@@ -119,26 +119,9 @@ final class InvoiceTaxCalculator
         return $gross->minus($net);
     }
 
-    /**
-     * Source the tax type from the linked Tax entity when available, falling
-     * back to Exclusive (the most common case) so the calculator never blows
-     * up on legacy rows that predate the type snapshot.
-     */
     private function typeFor(InvoiceTax $invoiceTax): TaxType
     {
-        $tax = $invoiceTax->getTax();
-
-        if ($tax === null) {
-            return TaxType::Exclusive;
-        }
-
-        $type = $tax->getType();
-
-        return match ($type) {
-            TaxType::Inclusive->value => TaxType::Inclusive,
-            TaxType::FlatRate->value, 'FlatRate' => TaxType::FlatRate,
-            default => TaxType::Exclusive,
-        };
+        return $invoiceTax->getTypeSnapshot();
     }
 
     private function summary(InvoiceTax $invoiceTax, BigDecimal $amount): TaxSummaryRow

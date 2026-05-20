@@ -102,7 +102,7 @@ final class ApiTokenTest extends ApiTestCase
         $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
         $secondUserToken = $apiTokenManager->create($secondUser, 'Second User Token');
 
-        self::$client->request('GET', '/api/profile/api-tokens/' . $secondUserToken->getId()->toString(), [
+        self::$client->request('GET', '/api/profile/api-tokens/' . $secondUserToken->token->getId()->toString(), [
             'headers' => [
                 'content-type' => 'application/ld+json',
                 'accept' => 'application/ld+json',

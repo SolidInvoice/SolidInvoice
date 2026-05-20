@@ -173,6 +173,10 @@ final class Version30000_9 extends AbstractMigration
                 'length' => 32,
                 'default' => TaxCategory::Standard->value,
             ]);
+            $invoiceTax->addColumn('type_snapshot', Types::STRING, [
+                'length' => 32,
+                'default' => TaxType::Exclusive->value,
+            ]);
             $invoiceTax->addColumn('amount', Types::BIGINT, ['notnull' => true, 'default' => 0]);
             $invoiceTax->addColumn('note', Types::TEXT, ['notnull' => false]);
             $invoiceTax->addColumn('sequence', Types::SMALLINT, ['notnull' => true, 'default' => 0]);
@@ -192,6 +196,16 @@ final class Version30000_9 extends AbstractMigration
             $invoiceTax->addForeignKeyConstraint(Invoice::TABLE_NAME, ['invoice_id'], ['id'], ['onDelete' => 'CASCADE']);
             $invoiceTax->addForeignKeyConstraint(Quote::TABLE_NAME, ['quote_id'], ['id'], ['onDelete' => 'CASCADE']);
             $invoiceTax->addForeignKeyConstraint(RecurringInvoice::TABLE_NAME, ['recurring_invoice_id'], ['id'], ['onDelete' => 'CASCADE']);
+        }
+
+        if ($schema->hasTable(InvoiceTax::TABLE_NAME)) {
+            $existingInvoiceTax = $schema->getTable(InvoiceTax::TABLE_NAME);
+            if (! $existingInvoiceTax->hasColumn('type_snapshot')) {
+                $existingInvoiceTax->addColumn('type_snapshot', Types::STRING, [
+                    'length' => 32,
+                    'default' => TaxType::Exclusive->value,
+                ]);
+            }
         }
 
         $this->addDocumentTotalsColumns($schema, Invoice::TABLE_NAME);

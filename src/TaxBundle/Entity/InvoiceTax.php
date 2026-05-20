@@ -31,6 +31,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use SolidInvoice\TaxBundle\Repository\InvoiceTaxRepository;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocument;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -91,6 +92,10 @@ class InvoiceTax
     #[ORM\Column(name: 'category_snapshot', type: Types::STRING, length: 32, enumType: TaxCategory::class, options: ['default' => TaxCategory::Standard->value])]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
     private TaxCategory $categorySnapshot = TaxCategory::Standard;
+
+    #[ORM\Column(name: 'type_snapshot', type: Types::STRING, length: 32, enumType: TaxType::class, options: ['default' => TaxType::Exclusive->value])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    private TaxType $typeSnapshot = TaxType::Exclusive;
 
     #[ORM\Column(name: 'amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
@@ -217,6 +222,18 @@ class InvoiceTax
         return $this;
     }
 
+    public function getTypeSnapshot(): TaxType
+    {
+        return $this->typeSnapshot;
+    }
+
+    public function setTypeSnapshot(TaxType $typeSnapshot): self
+    {
+        $this->typeSnapshot = $typeSnapshot;
+
+        return $this;
+    }
+
     public function getAmount(): BigNumber
     {
         return $this->amount;
@@ -286,6 +303,7 @@ class InvoiceTax
         $this->nameSnapshot = (string) $tax->getName();
         $this->setRateSnapshot((string) ($tax->getRate() ?? 0));
         $this->categorySnapshot = $tax->getCategory();
+        $this->typeSnapshot = TaxType::from((string) ($tax->getType() ?? TaxType::Exclusive->value));
 
         return $this;
     }
