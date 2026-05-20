@@ -25,34 +25,33 @@
 
     <twig:Ui:Card>
         <twig:block name="header">
-            <div class="w-100">
-                <h3 class="mb-1">{{ 'Request a new export'|trans }}</h3>
-                <p class="text-muted mb-3">
-                    {{ 'Exports run in the background. You will receive an email with a download link once the archive is ready.'|trans }}
-                </p>
-                <form method="post" action="{{ path('_export_request') }}" class="d-flex align-items-end gap-3 flex-wrap">
-                    <div>
-                        <label for="export-format" class="form-label">{{ 'Format'|trans }}</label>
-                        <select name="format" id="export-format" class="form-select" required>
-                            {% for format in formats %}
-                                <option value="{{ format.value }}">{{ format.value|upper }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <input type="hidden" name="_token" value="{{ csrf_token('export.request') }}">
-                    <button type="submit" class="btn btn-primary">
-                        {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
-                        {{ 'Request Export'|trans }}
-                    </button>
-                </form>
-            </div>
+            <h3 class="card-title mb-0">{{ 'Request a new export'|trans }}</h3>
         </twig:block>
+
+        <p class="text-muted mb-3">
+            {{ 'Exports run in the background. You will receive an email with a download link once the archive is ready.'|trans }}
+        </p>
+        <form method="post" action="{{ path('_export_request') }}" class="d-flex align-items-end gap-3 flex-wrap">
+            <div>
+                <label for="export-format" class="form-label">{{ 'Format'|trans }}</label>
+                <select name="format" id="export-format" class="form-select" required>
+                    {% for format in formats %}
+                        <option value="{{ format.value }}">{{ format.value|upper }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" name="_token" value="{{ csrf_token('export.request') }}">
+            <button type="submit" class="btn btn-primary">
+                {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                {{ 'Request Export'|trans }}
+            </button>
+        </form>
     </twig:Ui:Card>
 
     <div class="mt-4">
         <twig:Ui:Card>
             <twig:block name="header">
-                <h3 class="mb-0">{{ 'Export history'|trans }}</h3>
+                <h3 class="card-title mb-0">{{ 'Export history'|trans }}</h3>
             </twig:block>
 
             {% if jobs is empty %}
@@ -76,14 +75,14 @@
                         {% for job in jobs %}
                             <tr>
                                 <td>{{ job.createdAt|date('Y-m-d H:i') }}</td>
-                                <td><span class="badge bg-secondary">{{ job.format.value|upper }}</span></td>
+                                <td><span class="badge bg-secondary-lt text-uppercase">{{ job.format.value }}</span></td>
                                 <td>
                                     {% set status = job.status.value %}
                                     {% set badgeClass = {
-                                        'pending': 'bg-info',
-                                        'processing': 'bg-warning',
-                                        'completed': 'bg-success',
-                                        'failed': 'bg-danger',
+                                        'pending': 'bg-info-lt',
+                                        'processing': 'bg-warning-lt',
+                                        'completed': 'bg-success-lt',
+                                        'failed': 'bg-danger-lt',
                                     }[status] %}
                                     <span class="badge {{ badgeClass }}">{{ status|title|trans }}</span>
                                     {% if job.status.value == 'failed' and job.failureReason %}
