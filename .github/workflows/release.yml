@@ -109,7 +109,10 @@ jobs:
       - name: Generate SHA256 checksums
         working-directory: build/dist
         env:
-          REF: ${{ needs.prepare.outputs.ref || github.ref }}
+          # Use the resolved release ref only. Falling back to github.ref
+          # produces invalid filenames (e.g. "refs/heads/main") on non-tag
+          # runs — the actual tarball is named after prepare.outputs.ref.
+          REF: ${{ needs.prepare.outputs.ref }}
         run: |
           sha256sum "SolidInvoice-${REF}.tar.gz" > "SolidInvoice-${REF}.tar.gz.sha256"
           sha256sum "SolidInvoice-${REF}.zip" > "SolidInvoice-${REF}.zip.sha256"

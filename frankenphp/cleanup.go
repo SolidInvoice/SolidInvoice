@@ -30,17 +30,28 @@ func cleanupOldVersions(ctx context.Context) error {
 
 	var appDirs []string
 	var totalSize int64
+	thresholdReached := false
 	for _, e := range entries {
 		if !e.IsDir() || !strings.HasPrefix(e.Name(), "app_") {
 			continue
 		}
 		full := filepath.Join(root, e.Name())
 		appDirs = append(appDirs, full)
-		size, _ := dirSize(full)
+		if thresholdReached {
+			continue
+		}
+		size, sizeErr := dirSize(full)
+		if sizeErr != nil {
+			log.Error(ctx, sizeErr)
+			continue
+		}
 		totalSize += size
+		if totalSize >= cleanupMinTotalSize {
+			thresholdReached = true
+		}
 	}
 
-	if totalSize < cleanupMinTotalSize {
+	if !thresholdReached {
 		return nil
 	}
 

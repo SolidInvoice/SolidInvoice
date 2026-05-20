@@ -1,14 +1,18 @@
 package main
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"context"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestIsNewer(t *testing.T) {
@@ -23,7 +27,11 @@ func TestIsNewer(t *testing.T) {
 		{"3.0.0-alpha2", "3.0.0-alpha1", true},
 		{"v3.0.1", "3.0.0", true},
 		{"garbage", "3.0.0", false},
-		{"3.0.0", "garbage", true},
+		// Unparseable current → don't update. Treating a malformed version
+		// as always-older lets any release replace a dev build, which is
+		// the wrong default.
+		{"3.0.0", "garbage", false},
+		{"3.0.0", "", false},
 	}
 	for _, c := range cases {
 		if got := isNewer(c.latest, c.current); got != c.want {
@@ -205,6 +213,166 @@ func TestValidateStagedAppRejectsIncomplete(t *testing.T) {
 	}
 	if err := validateStagedApp(dir); err != nil {
 		t.Fatalf("expected complete staged dir to validate, got %v", err)
+	}
+}
+
+func TestDownloadFileRemovesPartialOnError(t *testing.T) {
+	// Server hangs up mid-stream — io.Copy returns an unexpected EOF.
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hj, ok := w.(http.Hijacker)
+		if !ok {
+			http.Error(w, "no hijacker", http.StatusInternalServerError)
+			return
+		}
+		conn, _, err := hj.Hijack()
+		if err != nil {
+			return
+		}
+		_, _ = conn.Write([]byte("HTTP/1.1 200 OK\r\nContent-Length: 100\r\n\r\nshort"))
+		conn.Close()
+	}))
+	defer server.Close()
+
+	dest := filepath.Join(t.TempDir(), "out.tar.gz")
+	err := downloadFile(context.Background(), http.DefaultClient, server.URL, dest)
+	if err == nil {
+		t.Fatal("expected truncation error")
+	}
+	if _, statErr := os.Stat(dest); !os.IsNotExist(statErr) {
+		t.Errorf("expected partial file removed, got %v", statErr)
+	}
+}
+
+func TestDownloadFileRejectsOversizedResponse(t *testing.T) {
+	// Stream just over maxTarballBytes+1 — should be rejected.
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		// Write maxTarballBytes+2 bytes in a single chunk via io.CopyN
+		// from a /dev/zero-like reader.
+		_, _ = io.CopyN(w, zeroReader{}, maxTarballBytes+2)
+	}))
+	defer server.Close()
+
+	dest := filepath.Join(t.TempDir(), "out.tar.gz")
+	// Wrap with a tight timeout so we don't actually wait for 2 GiB of zeros
+	// — io.LimitReader will short-circuit at maxTarballBytes+1 anyway, but
+	// guarding with a context keeps the test brisk.
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	err := downloadFile(ctx, http.DefaultClient, server.URL, dest)
+	if err == nil {
+		t.Fatal("expected size-limit error")
+	}
+	if !strings.Contains(err.Error(), "exceeded") {
+		t.Errorf("error = %v, want exceeded-limit", err)
+	}
+	if _, statErr := os.Stat(dest); !os.IsNotExist(statErr) {
+		t.Errorf("expected oversized file removed, got %v", statErr)
+	}
+}
+
+type zeroReader struct{}
+
+func (zeroReader) Read(p []byte) (int, error) {
+	for i := range p {
+		p[i] = 0
+	}
+	return len(p), nil
+}
+
+func TestExtractTarballCleansStaleDestination(t *testing.T) {
+	tmp := t.TempDir()
+	// Build a minimal valid gzipped tarball containing just one file.
+	tarPath := filepath.Join(tmp, "in.tar.gz")
+	writeMinimalTarball(t, tarPath, "hello.txt", []byte("hi"))
+
+	dest := filepath.Join(tmp, "dest")
+	// Plant a stale file that should be wiped before extraction.
+	if err := os.MkdirAll(dest, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	stale := filepath.Join(dest, "stale.txt")
+	if err := os.WriteFile(stale, []byte("old"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := extractTarball(tarPath, dest); err != nil {
+		t.Fatalf("extract: %v", err)
+	}
+	if _, err := os.Stat(stale); !os.IsNotExist(err) {
+		t.Errorf("expected stale file removed, got %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(dest, "hello.txt")); err != nil {
+		t.Errorf("expected extracted file, got %v", err)
+	}
+}
+
+func writeMinimalTarball(t *testing.T, dest, name string, content []byte) {
+	t.Helper()
+	f, err := os.Create(dest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	gz := gzip.NewWriter(f)
+	tw := tar.NewWriter(gz)
+	if err := tw.WriteHeader(&tar.Header{Name: name, Size: int64(len(content)), Mode: 0o644}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := tw.Write(content); err != nil {
+		t.Fatal(err)
+	}
+	if err := tw.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := gz.Close(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestResolveAppPathPrefersValidActiveVersion(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+
+	stagedPath := filepath.Join(home, "."+appName, "app_staged")
+	for _, rel := range []string{"Caddyfile", "bin/console", "public/index.php"} {
+		fp := filepath.Join(stagedPath, rel)
+		if err := os.MkdirAll(filepath.Dir(fp), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(fp, []byte("x"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	v := &activeVersion{Version: "99.0.0", Path: stagedPath}
+	if err := saveActiveVersion(v); err != nil {
+		t.Fatal(err)
+	}
+
+	got, err := resolveAppPath(home)
+	if err != nil {
+		t.Fatalf("resolveAppPath: %v", err)
+	}
+	if got != stagedPath {
+		t.Errorf("resolveAppPath = %q, want %q", got, stagedPath)
+	}
+}
+
+func TestResolveAppPathFallsBackWhenActiveInvalid(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	// active.json points at a missing path → should fall back to embedded
+	// extraction. extractEmbeddedApp may fail locally because app.tar.gz
+	// is a stub, but we only care that the fallback branch is taken, not
+	// that it succeeds — so accept either a successful fallback or the
+	// extraction-failure error, but NOT a return of the bogus active path.
+	v := &activeVersion{Version: "99.0.0", Path: filepath.Join(home, "does-not-exist")}
+	if err := saveActiveVersion(v); err != nil {
+		t.Fatal(err)
+	}
+	got, _ := resolveAppPath(home)
+	if got == v.Path {
+		t.Errorf("resolveAppPath returned invalid active path %q", got)
 	}
 }
 

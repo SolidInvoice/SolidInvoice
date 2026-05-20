@@ -16,15 +16,20 @@ import (
 	"time"
 )
 
-// untar reads the tar file from r and writes it into dir.
+// untar reads a buffered tarball (already in memory) and writes it into dir.
+// Convenience wrapper around untarStream for the embedded-tarball path.
+func untar(app []byte, dir string) error {
+	return untarStream(tar.NewReader(bytes.NewReader(app)), dir)
+}
+
+// untarStream reads tar entries from tr and writes them into dir.
 //
 // Adapted from https://github.com/golang/build/blob/master/cmd/buildlet/buildlet.go
-func untar(app []byte, dir string) (err error) {
+func untarStream(tr *tar.Reader, dir string) (err error) {
 	t0 := time.Now()
 	nFiles := 0
 	madeDir := map[string]bool{}
 
-	tr := tar.NewReader(bytes.NewReader(app))
 	loggedChtimesError := false
 	for {
 		f, err := tr.Next()

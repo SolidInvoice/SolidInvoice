@@ -1,6 +1,8 @@
 package main
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"context"
 	"crypto/sha256"
 	"crypto/subtle"
@@ -33,6 +35,18 @@ const (
 	previousCap           = 5
 	tarballAssetSuffix    = ".tar.gz"
 	sha256AssetSuffix     = ".tar.gz.sha256"
+
+	// maxTarballBytes caps how much we will stream to disk during a release
+	// download. 2 GiB is a generous ceiling for a PHP application bundle and
+	// guards against a malicious or misconfigured origin streaming
+	// unbounded bytes.
+	maxTarballBytes = 2 << 30
+
+	// downloadTimeout is the per-attempt context timeout for a release
+	// download. It must accommodate large tarballs over slow links —
+	// 30 minutes is well above any realistic legitimate transfer.
+	downloadTimeout = 30 * time.Minute
+	apiTimeout      = 60 * time.Second
 )
 
 type releaseAsset struct {
@@ -171,6 +185,10 @@ func fetchLatestRelease(ctx context.Context, client *http.Client) (*releaseInfo,
 	return info, nil
 }
 
+// isNewer reports whether latest is strictly greater than current under
+// semver. Unparseable inputs default to "no update": treating a malformed
+// current version as always-older would let any release replace a dev build,
+// which we don't want during local development or partially-built CI images.
 func isNewer(latest, current string) bool {
 	l, err := semver.NewVersion(latest)
 	if err != nil {
@@ -178,7 +196,7 @@ func isNewer(latest, current string) bool {
 	}
 	c, err := semver.NewVersion(current)
 	if err != nil {
-		return true
+		return false
 	}
 	return l.GreaterThan(c)
 }
@@ -208,7 +226,11 @@ func downloadAndVerify(ctx context.Context, client *http.Client, info *releaseIn
 	return tarPath, actual, nil
 }
 
-func downloadFile(ctx context.Context, client *http.Client, url, dest string) error {
+// downloadFile streams a release asset to dest. The body is bounded by
+// maxTarballBytes so a misbehaving origin can't fill the disk; the
+// destination file is removed on any error so failures don't leave partial
+// files behind for `cleanupOldVersions` to eventually trip over.
+func downloadFile(ctx context.Context, client *http.Client, url, dest string) (err error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return err
@@ -228,11 +250,26 @@ func downloadFile(ctx context.Context, client *http.Client, url, dest string) er
 	if err != nil {
 		return err
 	}
-	if _, err := io.Copy(f, resp.Body); err != nil {
-		f.Close()
-		return err
+	ok := false
+	defer func() {
+		closeErr := f.Close()
+		if !ok {
+			_ = os.Remove(dest)
+			return
+		}
+		if err == nil {
+			err = closeErr
+		}
+	}()
+	n, copyErr := io.Copy(f, io.LimitReader(resp.Body, maxTarballBytes+1))
+	if copyErr != nil {
+		return copyErr
 	}
-	return f.Close()
+	if n > maxTarballBytes {
+		return fmt.Errorf("download exceeded %d byte limit", maxTarballBytes)
+	}
+	ok = true
+	return nil
 }
 
 func fetchSHA256(ctx context.Context, client *http.Client, url string) (string, error) {
@@ -279,19 +316,28 @@ func hashFile(path string) (string, error) {
 	return hex.EncodeToString(h.Sum(nil)), nil
 }
 
+// extractTarball streams the gzipped tar from disk directly into destDir,
+// without ever holding the full archive in memory. destDir is cleaned first
+// so a previous partial extraction can't leave stale files mixed in with the
+// new version.
 func extractTarball(tarPath, destDir string) error {
-	data, err := os.ReadFile(tarPath)
-	if err != nil {
-		return err
-	}
-	app, err := gUnzipData(data)
-	if err != nil {
+	if err := os.RemoveAll(destDir); err != nil {
 		return err
 	}
 	if err := os.MkdirAll(destDir, 0o755); err != nil {
 		return err
 	}
-	if err := untar(app, destDir); err != nil {
+	f, err := os.Open(tarPath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	gz, err := gzip.NewReader(f)
+	if err != nil {
+		return err
+	}
+	defer gz.Close()
+	if err := untarStream(tar.NewReader(gz), destDir); err != nil {
 		os.RemoveAll(destDir)
 		return err
 	}
@@ -314,20 +360,44 @@ func runStagedMigrations(stagedPath string) error {
 	)
 }
 
-func sendReloadInProc(newPath string) error {
-	if err := os.Setenv("APP_PATH", newPath); err != nil {
-		return err
-	}
-	if err := os.Chdir(newPath); err != nil {
-		return err
-	}
+// sendReloadInProc atomically switches the running process to a new staged
+// app. Caddy config is loaded and parsed FIRST so a malformed Caddyfile is
+// caught before any global state changes; only if validation succeeds do we
+// flip APP_PATH and the working directory. Any subsequent failure rolls
+// those back so the process never lands in a half-switched state.
+func sendReloadInProc(newPath string) (err error) {
 	config, _, _, err := caddycmd.LoadConfig(filepath.Join(newPath, "Caddyfile"), "")
 	if err != nil {
 		return fmt.Errorf("load Caddyfile: %w", err)
 	}
+
+	prevPath := os.Getenv("APP_PATH")
+	prevWD, _ := os.Getwd()
+
+	if err := os.Setenv("APP_PATH", newPath); err != nil {
+		return err
+	}
+	if err := os.Chdir(newPath); err != nil {
+		_ = os.Setenv("APP_PATH", prevPath)
+		return err
+	}
+
+	committed := false
+	defer func() {
+		if committed {
+			return
+		}
+		_ = os.Setenv("APP_PATH", prevPath)
+		if prevWD != "" {
+			_ = os.Chdir(prevWD)
+		}
+	}()
+
 	if err := caddy.Load(config, true); err != nil {
 		return fmt.Errorf("reload caddy: %w", err)
 	}
+	committed = true
+
 	if err := runConsoleCommand("cache:clear"); err != nil {
 		return fmt.Errorf("clear cache: %w", err)
 	}
@@ -345,16 +415,27 @@ func checkAndApplyUpdate(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	client := &http.Client{Timeout: 60 * time.Second}
-	info, err := fetchLatestRelease(ctx, client)
-	if err != nil {
-		return fmt.Errorf("fetch latest release: %w", err)
+
+	apiCtx, cancel := context.WithTimeout(ctx, apiTimeout)
+	info, fetchErr := fetchLatestRelease(apiCtx, http.DefaultClient)
+	cancel()
+	if fetchErr != nil {
+		return fmt.Errorf("fetch latest release: %w", fetchErr)
 	}
 
+	// Capture active version once and reuse it for both the version
+	// comparison and the "previous" history below. Re-reading later would
+	// race with any concurrent writer (TOCTOU).
+	// We also only trust active.Version if its on-disk app validates —
+	// otherwise a corrupt active.json could indefinitely suppress updates.
+	prior, _ := loadActiveVersion()
 	currentVersion := strings.TrimSpace(string(embeddedAppVersion))
-	if active, loadErr := loadActiveVersion(); loadErr == nil && active.Version != "" {
-		currentVersion = active.Version
+	if prior != nil && prior.Version != "" && validateStagedApp(prior.Path) == nil {
+		currentVersion = prior.Version
+	} else if prior != nil && prior.Version != "" {
+		log.Info(ctx, fmt.Sprintf("auto-update: active.json points at invalid path %s, comparing against embedded version", prior.Path))
 	}
+
 	if !isNewer(info.Version, currentVersion) {
 		log.Info(ctx, fmt.Sprintf("auto-update: already on latest version (%s)", currentVersion))
 		return nil
@@ -362,27 +443,35 @@ func checkAndApplyUpdate(ctx context.Context) error {
 	log.Info(ctx, fmt.Sprintf("auto-update: new version available %s (current %s)", info.Version, currentVersion))
 
 	stagingDir := filepath.Join(root, stagingDirName)
-	tarPath, sum, err := downloadAndVerify(ctx, client, info, stagingDir)
+	dlCtx, dlCancel := context.WithTimeout(ctx, downloadTimeout)
+	defer dlCancel()
+	tarPath, sum, err := downloadAndVerify(dlCtx, http.DefaultClient, info, stagingDir)
 	if err != nil {
 		return err
 	}
-	defer os.Remove(tarPath)
+	// Best-effort cleanup of the staging directory once we've consumed the
+	// tarball. Defer ensures it runs on every exit path below.
+	defer func() {
+		_ = os.Remove(tarPath)
+		_ = os.RemoveAll(stagingDir)
+	}()
 
 	stagedPath := filepath.Join(root, "app_"+sum)
 	if err := extractTarball(tarPath, stagedPath); err != nil {
+		_ = os.RemoveAll(stagedPath)
 		return fmt.Errorf("extract: %w", err)
 	}
 	if err := validateStagedApp(stagedPath); err != nil {
-		os.RemoveAll(stagedPath)
+		_ = os.RemoveAll(stagedPath)
 		return err
 	}
 
 	if err := runStagedMigrations(stagedPath); err != nil {
 		log.Error(ctx, fmt.Errorf("auto-update: staged migrations failed, aborting activation: %w", err))
+		_ = os.RemoveAll(stagedPath)
 		return err
 	}
 
-	prior, _ := loadActiveVersion()
 	next := &activeVersion{
 		Version:        info.Version,
 		Path:           stagedPath,

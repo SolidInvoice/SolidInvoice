@@ -8,12 +8,32 @@ import (
 	"testing"
 )
 
-func writeFile(t *testing.T, path string, size int) {
+// writeSparseFile creates a sparse file of the requested size — only metadata
+// is allocated, so tests can simulate gigabyte-scale app directories without
+// the multi-hundred-MB transient allocations that buffered writes would
+// produce on CI runners.
+func writeSparseFile(t *testing.T, path string, size int64) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	data := make([]byte, size)
+	f, err := os.Create(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	if size > 0 {
+		if err := f.Truncate(size); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+func writeFileBytes(t *testing.T, path string, data []byte) {
+	t.Helper()
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +43,7 @@ func TestCleanupSkipsWhenBelowThreshold(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	root := filepath.Join(home, "."+appName)
-	writeFile(t, filepath.Join(root, "app_old", "Caddyfile"), 1024)
+	writeSparseFile(t, filepath.Join(root, "app_old", "Caddyfile"), 1024)
 	if err := cleanupOldVersions(context.Background()); err != nil {
 		t.Fatal(err)
 	}
@@ -38,10 +58,11 @@ func TestCleanupRetainsEmbeddedActiveAndRecent(t *testing.T) {
 	root := filepath.Join(home, "."+appName)
 	mkapp := func(name string, embedded bool) string {
 		dir := filepath.Join(root, name)
-		// Make it large enough that the total exceeds the threshold.
-		writeFile(t, filepath.Join(dir, "big.dat"), 150*1024*1024)
+		// Sparse 150MiB — total across all five dirs blows past the 500MiB
+		// threshold without actually consuming the disk.
+		writeSparseFile(t, filepath.Join(dir, "big.dat"), 150*1024*1024)
 		if embedded {
-			writeFile(t, filepath.Join(dir, embeddedMarkerFile), 1)
+			writeFileBytes(t, filepath.Join(dir, embeddedMarkerFile), []byte{1})
 		}
 		return dir
 	}
@@ -58,8 +79,10 @@ func TestCleanupRetainsEmbeddedActiveAndRecent(t *testing.T) {
 			{Version: "3.0.0", Path: prev2Dir},
 		},
 	}
-	data, _ := json.Marshal(active)
-	writeFile(t, filepath.Join(root, activeMarkerFile), 0)
+	data, err := json.Marshal(active)
+	if err != nil {
+		t.Fatalf("marshal active: %v", err)
+	}
 	if err := os.WriteFile(filepath.Join(root, activeMarkerFile), data, 0o644); err != nil {
 		t.Fatal(err)
 	}

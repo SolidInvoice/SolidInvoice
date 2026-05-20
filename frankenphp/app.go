@@ -497,7 +497,15 @@ func setupCommands() {
 
 			if !autoUpdateDisabled() {
 				updateLoop := process.Loop(func(ctx context.Context) error {
+					// Guard the dev-only immediate check against an already-
+					// cancelled context so shutdown isn't delayed by an extra
+					// HTTP round-trip we know we don't need.
 					if os.Getenv(autoUpdateCheckNowEnv) == "1" {
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						default:
+						}
 						if err := checkAndApplyUpdate(ctx); err != nil {
 							log.Error(ctx, errors.Join(errors.New("auto-update check failed"), err))
 						}
@@ -765,7 +773,13 @@ func extractEmbeddedApp(appDir string) (string, error) {
 		}
 	}
 	// Mark this dir as the embedded fallback so cleanup never removes it.
-	_ = os.WriteFile(filepath.Join(appPath, embeddedMarkerFile), []byte(strings.TrimSpace(string(embeddedAppVersion))), 0o644)
+	// Failure is non-fatal — the binary still runs from this directory —
+	// but log it because future cleanup passes may delete the only known-
+	// good fallback if the marker is missing.
+	markerPath := filepath.Join(appPath, embeddedMarkerFile)
+	if err := os.WriteFile(markerPath, []byte(strings.TrimSpace(string(embeddedAppVersion))), 0o644); err != nil {
+		log.Error(nil, fmt.Errorf("failed to write embedded marker %s: %w", markerPath, err))
+	}
 	return appPath, nil
 }
 
