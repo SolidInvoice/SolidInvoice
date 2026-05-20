@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -137,7 +138,7 @@ final class Version30000_9 extends AbstractMigration
             $lineTax->addColumn('type_snapshot', Types::STRING, ['length' => 32]);
             $lineTax->addColumn('compound', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
             $lineTax->addColumn('sequence', Types::SMALLINT, ['notnull' => true, 'default' => 0]);
-            $lineTax->addColumn('amount', Types::BIGINT, ['notnull' => true, 'default' => 0]);
+            $lineTax->addColumn('amount', BigIntegerType::NAME, ['notnull' => true]);
             $lineTax->addColumn('snapshotted_at', Types::DATETIME_IMMUTABLE, ['notnull' => false]);
             $lineTax->addColumn('created', Types::DATETIME_MUTABLE);
             $lineTax->addColumn('updated', Types::DATETIME_MUTABLE);
@@ -177,7 +178,7 @@ final class Version30000_9 extends AbstractMigration
                 'length' => 32,
                 'default' => TaxType::Exclusive->value,
             ]);
-            $invoiceTax->addColumn('amount', Types::BIGINT, ['notnull' => true, 'default' => 0]);
+            $invoiceTax->addColumn('amount', BigIntegerType::NAME, ['notnull' => true]);
             $invoiceTax->addColumn('note', Types::TEXT, ['notnull' => false]);
             $invoiceTax->addColumn('sequence', Types::SMALLINT, ['notnull' => true, 'default' => 0]);
             $invoiceTax->addColumn('snapshotted_at', Types::DATETIME_IMMUTABLE, ['notnull' => false]);
@@ -608,14 +609,14 @@ final class Version30000_9 extends AbstractMigration
         $table = $schema->getTable($tableName);
 
         if (! $table->hasColumn('withholding_amount')) {
-            $table->addColumn('withholding_amount', Types::BIGINT, [
+            $table->addColumn('withholding_amount', BigIntegerType::NAME, [
                 'notnull' => true,
                 'default' => 0,
             ]);
         }
 
         if (! $table->hasColumn('payable_amount')) {
-            $table->addColumn('payable_amount', Types::BIGINT, [
+            $table->addColumn('payable_amount', BigIntegerType::NAME, [
                 'notnull' => true,
                 'default' => 0,
             ]);
