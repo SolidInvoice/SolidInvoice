@@ -102,9 +102,7 @@ final class InvoiceCloner
             foreach ($invoice->getInvoiceTaxes() as $sourceInvoiceTax) {
                 $newInvoice->addInvoiceTax($this->taxSnapshotCopier->copyInvoiceTax($sourceInvoiceTax));
             }
-        }
 
-        if ($newInvoice instanceof Invoice) {
             $this->invoiceManager->create($newInvoice);
         }
 

@@ -27,6 +27,9 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\LineTaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\TaxCalculator;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -44,7 +47,7 @@ class TotalCalculatorTest extends KernelTestCase
      */
     public function testUpdateWithSingleItem(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
@@ -62,7 +65,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
@@ -80,7 +83,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
@@ -102,7 +105,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne()->_real());
@@ -124,7 +127,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxIncl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -151,7 +154,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxFlat(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_FLAT_RATE)
@@ -178,7 +181,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExcl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -205,7 +208,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -235,7 +238,7 @@ class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -285,7 +288,7 @@ class TotalCalculatorTest extends KernelTestCase
         $this->em->persist($invoice);
         $this->em->flush();
 
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $updater->calculateTotals($invoice);
 
@@ -302,7 +305,7 @@ class TotalCalculatorTest extends KernelTestCase
      */
     public function testUpdateWithTaxExclRoundingIssue(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)

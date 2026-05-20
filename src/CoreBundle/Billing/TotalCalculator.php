@@ -22,9 +22,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
-use SolidInvoice\TaxBundle\Calculator\LineTaxCalculator;
-use SolidInvoice\TaxBundle\Calculator\TaxCalculator;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 
 /**
@@ -36,17 +33,11 @@ use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
  */
 class TotalCalculator
 {
-    private readonly TaxCalculatorInterface $taxCalculator;
-
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
         private readonly Calculator $calculator,
-        ?TaxCalculatorInterface $taxCalculator = null,
+        private readonly TaxCalculatorInterface $taxCalculator,
     ) {
-        $this->taxCalculator = $taxCalculator ?? new TaxCalculator(
-            new LineTaxCalculator(),
-            new InvoiceTaxCalculator(),
-        );
     }
 
     /**
