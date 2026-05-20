@@ -80,6 +80,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire(true)
         ->tag('controller.service_arguments');
 
+    $services
+        ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\Export\\Action\\', dirname(__DIR__, 3) . '/Export/Action')
+        ->autowire(true)
+        ->tag('controller.service_arguments');
+
     $services->set(\SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class);
     $services->alias(
         \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,

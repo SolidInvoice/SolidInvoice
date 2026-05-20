@@ -22,7 +22,6 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class Version30000_8 extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Create export_jobs table for tracking full company data export requests';
