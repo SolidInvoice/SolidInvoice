@@ -53,6 +53,12 @@ var embeddedApp []byte
 //go:embed app_checksum.txt
 var embeddedAppChecksum []byte
 
+//go:embed app_sha256.txt
+var embeddedAppSha256 []byte
+
+//go:embed app_version.txt
+var embeddedAppVersion []byte
+
 type runningProcess struct {
 	cmd    *exec.Cmd
 	stderr *os.File
@@ -88,7 +94,7 @@ func main() {
 		os.Exit(1)
 	}
 
-    setupCommands()
+	setupCommands()
 
 	// Run CLI
 	if err := rootCmd.Execute(); err != nil {
@@ -115,9 +121,9 @@ func initializeApp() error {
 		return fmt.Errorf("cannot access home directory: %w", err)
 	}
 
-	appPath, err := extractEmbeddedApp(appDir)
+	appPath, err := resolveAppPath(appDir)
 	if err != nil {
-		return fmt.Errorf("failed to extract application: %w", err)
+		return fmt.Errorf("failed to resolve application path: %w", err)
 	}
 
 	if err := os.Chdir(appPath); err != nil {
@@ -137,13 +143,13 @@ func initializeApp() error {
 	}
 
 	// Only set if not already set
-    for key, value := range envVars {
-        if os.Getenv(key) == "" {
-            if err := os.Setenv(key, value); err != nil {
-                return fmt.Errorf("cannot set environment: %w", err)
-            }
-        }
-    }
+	for key, value := range envVars {
+		if os.Getenv(key) == "" {
+			if err := os.Setenv(key, value); err != nil {
+				return fmt.Errorf("cannot set environment: %w", err)
+			}
+		}
+	}
 
 	return nil
 }
@@ -489,6 +495,45 @@ func setupCommands() {
 				app.AddProcess(messengerWorker)
 			}
 
+			if !autoUpdateDisabled() {
+				updateLoop := process.Loop(func(ctx context.Context) error {
+					if os.Getenv(autoUpdateCheckNowEnv) == "1" {
+						if err := checkAndApplyUpdate(ctx); err != nil {
+							log.Error(ctx, errors.Join(errors.New("auto-update check failed"), err))
+						}
+					}
+					ticker := time.NewTicker(7 * 24 * time.Hour)
+					defer ticker.Stop()
+					for {
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						case <-ticker.C:
+							if err := checkAndApplyUpdate(ctx); err != nil {
+								log.Error(ctx, errors.Join(errors.New("auto-update check failed"), err))
+							}
+						}
+					}
+				})
+				app.AddProcess(updateLoop)
+
+				cleanupLoop := process.Loop(func(ctx context.Context) error {
+					ticker := time.NewTicker(24 * time.Hour)
+					defer ticker.Stop()
+					for {
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						case <-ticker.C:
+							if err := cleanupOldVersions(ctx); err != nil {
+								log.Error(ctx, errors.Join(errors.New("auto-update cleanup failed"), err))
+							}
+						}
+					}
+				})
+				app.AddProcess(cleanupLoop)
+			}
+
 			app.OnEvent = func(ctx context.Context, event lu.Event) {
 				switch event.Type {
 				case lu.AppStartup:
@@ -683,8 +728,28 @@ func getAvailablePort(defaultPort string) string {
 	return defaultPort
 }
 
+// resolveAppPath returns the active PHP application directory. It prefers a
+// previously activated auto-updated app (recorded in ~/.SolidInvoice/active.json)
+// over the binary-embedded tarball, falling back to the embedded extraction
+// when the marker is missing, unparseable, points at a corrupt directory, or
+// references a version older than the embedded one.
+func resolveAppPath(appDir string) (string, error) {
+	if active, err := loadActiveVersion(); err == nil && active != nil && active.Path != "" {
+		switch {
+		case validateStagedApp(active.Path) != nil:
+			log.Info(nil, "active.json points at invalid app, falling back to embedded")
+		case len(embeddedAppVersion) > 0 && isNewer(strings.TrimSpace(string(embeddedAppVersion)), active.Version):
+			log.Info(nil, fmt.Sprintf("embedded version %s is newer than active %s; falling back to embedded",
+				strings.TrimSpace(string(embeddedAppVersion)), active.Version))
+		default:
+			return active.Path, nil
+		}
+	}
+	return extractEmbeddedApp(appDir)
+}
+
 func extractEmbeddedApp(appDir string) (string, error) {
-	appPath := filepath.Join(appDir, "."+appName, "app_"+string(embeddedAppChecksum))
+	appPath := filepath.Join(appDir, "."+appName, "app_"+strings.TrimSpace(string(embeddedAppChecksum)))
 
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
 		must(os.Setenv("COPYFILE_DISABLE", "1"))
@@ -699,6 +764,8 @@ func extractEmbeddedApp(appDir string) (string, error) {
 			return "", err
 		}
 	}
+	// Mark this dir as the embedded fallback so cleanup never removes it.
+	_ = os.WriteFile(filepath.Join(appPath, embeddedMarkerFile), []byte(strings.TrimSpace(string(embeddedAppVersion))), 0o644)
 	return appPath, nil
 }
 
@@ -782,6 +849,26 @@ func runConsoleCommand(args ...string) error {
 	args = append(args, "--no-interaction")
 
 	return runInternalCommand(args...)
+}
+
+// runConsoleCommandWithEnv runs a console subcommand with environment variables
+// overridden on top of the current process env. Used by the auto-update flow to
+// run migrations against a staged APP_PATH before flipping the active marker.
+func runConsoleCommandWithEnv(extraEnv map[string]string, args ...string) error {
+	binary, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	cmdArgs := append([]string{"console"}, args...)
+	cmdArgs = append(cmdArgs, "--no-ansi", "--no-interaction")
+	c := exec.Command(binary, cmdArgs...)
+	c.Env = os.Environ()
+	for k, v := range extraEnv {
+		c.Env = append(c.Env, k+"="+v)
+	}
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+	return c.Run()
 }
 
 func isAppInstalled() bool {
