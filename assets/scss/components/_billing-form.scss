@@ -392,7 +392,6 @@
     }
 
     .billing-item-row {
-
         @media (width <= 900px) {
             grid-template-columns: 1fr;
         }
@@ -443,9 +442,9 @@
     }
 
     .column-price {
-
         // Slim down the leading currency-symbol addon (the "$"/"€" prefix)
         // so it stops eating ~30% of the column's usable input width.
+
         .input-group-text {
             padding: 0.25rem 0.4rem;
             font-size: var(--swp-text-xs);
@@ -651,7 +650,6 @@
 
 // ============================================================================
 // PER-LINE MULTI-TAX (Stacked rows in the Tax column)
-//
 // Each .line-tax-row uses a single-row flex layout:
 //   ┌─────────────────────────────────┬─────┐
 //   │ tax dropdown                    │  ×  │
