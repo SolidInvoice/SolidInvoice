@@ -1,0 +1,42 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # PDF-safe rendering of CLIENT_VISIBLE custom fields.
+ # Inline styles only — no Stimulus, no external assets.
+ #
+ # Required: `rows` — list of {field, formatted, raw} from CustomFieldsList
+ #}
+{% set populated = this.rows|filter(row => row.raw is not null) %}
+{% if populated|length > 0 %}
+    <div class="custom-fields-additional" style="margin: 20px 0; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 4px; background-color: #f8fafc;">
+        <h4 style="margin: 0 0 10px 0; font-size: 10pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.05em;">
+            {{ 'Additional information'|trans }}
+        </h4>
+        <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            {% for row in populated %}
+                {% set t = row.field.type.value %}
+                <tr>
+                    <td style="padding: 4px 12px 4px 0; font-size: 9pt; color: #64748b; vertical-align: top; width: 35%;">
+                        {{ row.field.label }}
+                    </td>
+                    <td style="padding: 4px 0; font-size: 9pt; color: #1e293b; vertical-align: top;">
+                        {% if t == 'date' and row.raw is not empty %}
+                            {{ row.raw|date('M d, Y') }}
+                        {% elseif t == 'checkbox' %}
+                            {{ row.raw == '1' ? 'Yes'|trans : 'No'|trans }}
+                        {% elseif t == 'textarea' %}
+                            {{ row.formatted|nl2br }}
+                        {% else %}
+                            {{ row.formatted }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}

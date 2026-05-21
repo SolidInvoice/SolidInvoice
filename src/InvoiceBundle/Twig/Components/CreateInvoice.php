@@ -19,6 +19,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -72,6 +74,7 @@ final class CreateInvoice extends AbstractController
         private readonly InvoiceFormManager $formManager,
         private readonly Calculator $calculator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
+        private readonly CustomFieldFormWriter $customFieldFormWriter,
     ) {
         $this->dto = new InvoiceFormDTO();
     }
@@ -147,6 +150,10 @@ final class CreateInvoice extends AbstractController
             $options['currency'] = $client?->getCurrency();
         }
 
+        if ($this->isEdit && $this->invoice instanceof Invoice && $this->invoice->getId() instanceof Ulid) {
+            $options['existing_target_id'] = $this->invoice->getId();
+        }
+
         return $this->createForm(InvoiceType::class, $this->dto, $options);
     }
 
@@ -213,6 +220,16 @@ final class CreateInvoice extends AbstractController
                 $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
             }
 
+            $invoiceId = $this->invoice->getId();
+            if ($invoiceId instanceof Ulid) {
+                $this->customFieldFormWriter->write(
+                    $form->get('customFields'),
+                    CustomFieldTarget::INVOICE,
+                    $invoiceId,
+                    $this->invoice,
+                );
+            }
+
             $this->entityManager->flush();
 
             if ('send' === $action) {
@@ -240,6 +257,17 @@ final class CreateInvoice extends AbstractController
         // Persist invoice (client cascades if new)
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
+
+        $newInvoiceId = $invoice->getId();
+        if ($newInvoiceId instanceof Ulid) {
+            $this->customFieldFormWriter->write(
+                $form->get('customFields'),
+                CustomFieldTarget::INVOICE,
+                $newInvoiceId,
+                $invoice,
+            );
+            $this->entityManager->flush();
+        }
 
         // Send the invoice only if the action is 'send'
         if ('send' === $action) {

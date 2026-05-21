@@ -36,11 +36,27 @@
                 <span>{{ 'Contact fields'|trans }}</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab-invoice" role="tab" aria-controls="tab-invoice">
+                <span class="nav-link-icon d-none d-sm-inline-block">
+                    {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Invoice fields'|trans }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab-quote" role="tab" aria-controls="tab-quote">
+                <span class="nav-link-icon d-none d-sm-inline-block">
+                    {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Quote fields'|trans }}</span>
+            </a>
+        </li>
     </ul>
 
     <div class="card mt-3">
         <div class="tab-content">
-            {% for tabId, rows in {'client': client, 'contact': contact} %}
+            {% for tabId, rows in {'client': client, 'contact': contact, 'invoice': invoice, 'quote': quote} %}
                 <div class="tab-pane{% if loop.first %} active show{% endif %}" id="tab-{{ tabId }}">
                     {% if rows is empty %}
                         <div class="card-body text-center text-muted">
@@ -58,6 +74,13 @@
                                         <strong>{{ row.field.label }}</strong>
                                         <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
                                         {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'Required'|trans }}</span>{% endif %}
+                                        {% if row.field.visibility is not null %}
+                                            {% if row.field.visibility.value == 'CLIENT_VISIBLE' %}
+                                                <span class="badge bg-blue-lt ms-1">{{ 'Client-visible'|trans }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary-lt ms-1">{{ 'Internal'|trans }}</span>
+                                            {% endif %}
+                                        {% endif %}
                                         <div class="text-muted small">{{ row.count }} {{ 'values'|trans }}</div>
                                     </div>
                                     <div class="d-flex gap-1">

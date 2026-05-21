@@ -170,6 +170,13 @@
                             </table>
                         </div>
 
+                        {# Client-visible custom fields #}
+                        <twig:CustomFieldsListPdf
+                            :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').QUOTE"
+                            :recordId="quote.id"
+                            :visibility="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldVisibility').CLIENT_VISIBLE"
+                        />
+
                         <hr class="my-4">
 
                         {# Totals Section #}

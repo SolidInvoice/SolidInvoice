@@ -19,6 +19,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -69,6 +71,7 @@ final class CreateQuote extends AbstractController
         private readonly QuoteFormManager $formManager,
         private readonly Calculator $calculator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
+        private readonly CustomFieldFormWriter $customFieldFormWriter,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -144,6 +147,10 @@ final class CreateQuote extends AbstractController
             $options['currency'] = $client?->getCurrency();
         }
 
+        if ($this->isEdit && $this->quote instanceof Quote && $this->quote->getId() instanceof Ulid) {
+            $options['existing_target_id'] = $this->quote->getId();
+        }
+
         return $this->createForm(QuoteType::class, $this->dto, $options);
     }
 
@@ -214,6 +221,16 @@ final class CreateQuote extends AbstractController
                 $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_PUBLISH);
             }
 
+            $quoteId = $this->quote->getId();
+            if ($quoteId instanceof Ulid) {
+                $this->customFieldFormWriter->write(
+                    $form->get('customFields'),
+                    CustomFieldTarget::QUOTE,
+                    $quoteId,
+                    $this->quote,
+                );
+            }
+
             $this->entityManager->flush();
 
             $this->addFlash('success', 'quote.action.edit.success');
@@ -242,6 +259,17 @@ final class CreateQuote extends AbstractController
         // Persist quote (client cascades if new)
         $this->entityManager->persist($quote);
         $this->entityManager->flush();
+
+        $newQuoteId = $quote->getId();
+        if ($newQuoteId instanceof Ulid) {
+            $this->customFieldFormWriter->write(
+                $form->get('customFields'),
+                CustomFieldTarget::QUOTE,
+                $newQuoteId,
+                $quote,
+            );
+            $this->entityManager->flush();
+        }
 
         // Add flash message and redirect
         $this->addFlash('success', 'quote.action.create.success');

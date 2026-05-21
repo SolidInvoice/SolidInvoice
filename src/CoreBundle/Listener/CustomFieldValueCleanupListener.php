@@ -19,6 +19,9 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 
 #[AsDoctrineListener(event: \Doctrine\ORM\Events::preRemove)]
 final class CustomFieldValueCleanupListener
@@ -35,6 +38,8 @@ final class CustomFieldValueCleanupListener
         $target = match (true) {
             $entity instanceof Client => CustomFieldTarget::CLIENT,
             $entity instanceof Contact => CustomFieldTarget::CONTACT,
+            $entity instanceof Invoice, $entity instanceof RecurringInvoice => CustomFieldTarget::INVOICE,
+            $entity instanceof Quote => CustomFieldTarget::QUOTE,
             default => null,
         };
 

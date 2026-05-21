@@ -19,7 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -33,6 +35,7 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Service\TaxSnapshotCopier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function str_replace;
 
@@ -50,6 +53,7 @@ class InvoiceManager
         private readonly NotificationManager $notification,
         private readonly BillingIdGenerator $billingIdGenerator,
         private readonly ClockInterface $clock,
+        private readonly CustomFieldValueCopier $customFieldValueCopier,
         private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
         $this->entityManager = $doctrine->getManager();
@@ -166,6 +170,8 @@ class InvoiceManager
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
+        $this->propagateCustomFields($invoice);
+
         $this->applyTransition($invoice);
 
         $this->dispatcher->dispatch(new InvoiceEvent($invoice), InvoiceEvents::INVOICE_PRE_CREATE);
@@ -176,6 +182,34 @@ class InvoiceManager
         $this->dispatcher->dispatch(new InvoiceEvent($invoice), InvoiceEvents::INVOICE_POST_CREATE);
 
         return $invoice;
+    }
+
+    private function propagateCustomFields(Invoice $invoice): void
+    {
+        $invoiceId = $invoice->getId();
+        if (! $invoiceId instanceof Ulid) {
+            return;
+        }
+
+        $quote = $invoice->getQuote();
+        if ($quote !== null && $quote->getId() instanceof Ulid) {
+            $this->customFieldValueCopier->copy(
+                CustomFieldTarget::QUOTE,
+                $quote->getId(),
+                CustomFieldTarget::INVOICE,
+                $invoiceId,
+            );
+        }
+
+        $recurring = $invoice->getRecurringInvoice();
+        if ($recurring !== null && $recurring->getId() instanceof Ulid) {
+            $this->customFieldValueCopier->copy(
+                CustomFieldTarget::INVOICE,
+                $recurring->getId(),
+                CustomFieldTarget::INVOICE,
+                $invoiceId,
+            );
+        }
     }
 
     /**

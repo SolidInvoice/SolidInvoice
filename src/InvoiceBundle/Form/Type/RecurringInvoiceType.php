@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -138,6 +140,11 @@ class RecurringInvoiceType extends AbstractType
                 ],
             ]
         );
+
+        $builder->add('customFields', CustomFieldValueCollectionType::class, [
+            'target' => CustomFieldTarget::INVOICE,
+            'parent_record' => $options['data'] ?? null,
+        ]);
     }
 
     public function getBlockPrefix(): string

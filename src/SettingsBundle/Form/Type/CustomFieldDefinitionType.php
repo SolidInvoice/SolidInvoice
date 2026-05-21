@@ -16,6 +16,7 @@ namespace SolidInvoice\SettingsBundle\Form\Type;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType as CFType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldVisibility;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -72,6 +73,22 @@ final class CustomFieldDefinitionType extends AbstractType
                 'choice_label' => static fn (CFType $t): string => $t->label(),
             ])
             ->add('required', CheckboxType::class, ['required' => false]);
+
+        $builder->addDependent('visibility', ['target'], static function (DependentField $field, ?CustomFieldTarget $target): void {
+            if ($target === null || ! $target->supportsVisibility()) {
+                return;
+            }
+
+            $field->add(EnumType::class, [
+                'class' => CustomFieldVisibility::class,
+                'choice_label' => static fn (CustomFieldVisibility $v): string => $v->label(),
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Visibility',
+                'help' => 'Internal fields appear only on admin views. Client-visible fields also appear on PDF and online views.',
+                'placeholder' => false,
+            ]);
+        });
 
         $builder->addDependent('options', ['type'], static function (DependentField $field, ?CFType $type): void {
             if ($type !== CFType::SELECT && $type !== CFType::MULTI_SELECT) {
@@ -140,6 +157,10 @@ final class CustomFieldDefinitionType extends AbstractType
             $form = $event->getForm();
             if (! $form->has('options')) {
                 $field->setOptions(null);
+            }
+
+            if (! $form->has('visibility')) {
+                $field->setVisibility(null);
             }
 
             if (! $form->has('defaultValue')) {

@@ -23,6 +23,9 @@ use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use function is_array;
 
@@ -49,7 +52,13 @@ final class CustomFieldsStateProcessor implements ProcessorInterface
     {
         $result = $this->inner->process($data, $operation, $uriVariables, $context);
 
-        if (! ($data instanceof Client || $data instanceof Contact)) {
+        if (
+            ! $data instanceof Client
+            && ! $data instanceof Contact
+            && ! $data instanceof Invoice
+            && ! $data instanceof RecurringInvoice
+            && ! $data instanceof Quote
+        ) {
             return $result;
         }
 
@@ -58,7 +67,12 @@ final class CustomFieldsStateProcessor implements ProcessorInterface
             return $result;
         }
 
-        $target = $data instanceof Client ? CustomFieldTarget::CLIENT : CustomFieldTarget::CONTACT;
+        $target = match (true) {
+            $data instanceof Client => CustomFieldTarget::CLIENT,
+            $data instanceof Contact => CustomFieldTarget::CONTACT,
+            $data instanceof Invoice, $data instanceof RecurringInvoice => CustomFieldTarget::INVOICE,
+            $data instanceof Quote => CustomFieldTarget::QUOTE,
+        };
         $existing = [];
         foreach ($this->values->findForRecord($target, $data->getId()) as $v) {
             $existing[(string) $v->getField()->getId()] = $v;

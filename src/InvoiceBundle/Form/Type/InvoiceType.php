@@ -21,6 +21,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
@@ -211,6 +213,12 @@ class InvoiceType extends AbstractType
                 ]
             );
         });
+
+        $builder->add('customFields', CustomFieldValueCollectionType::class, [
+            'target' => CustomFieldTarget::INVOICE,
+            'existing_target_id' => $options['existing_target_id'],
+            'manage_persistence' => false,
+        ]);
     }
 
     public function getBlockPrefix(): string
@@ -224,6 +232,7 @@ class InvoiceType extends AbstractType
             [
                 'data_class' => InvoiceFormDTO::class,
                 'currency' => $this->systemConfig->getCurrency(),
+                'existing_target_id' => null,
                 'validation_groups' => function (FormInterface $form) {
                     $data = $form->getData();
                     $groups = ['Default'];
@@ -238,6 +247,7 @@ class InvoiceType extends AbstractType
                 },
             ]
         )
-            ->setAllowedTypes('currency', [Currency::class]);
+            ->setAllowedTypes('currency', [Currency::class])
+            ->setAllowedTypes('existing_target_id', [Ulid::class, 'null']);
     }
 }

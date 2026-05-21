@@ -22,8 +22,8 @@ use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use Symfony\Component\Uid\Ulid;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('CustomFieldsList', template: '@SolidInvoiceCore/Components/CustomFieldsList.html.twig')]
-final class CustomFieldsList
+#[AsTwigComponent('CustomFieldsListPdf', template: '@SolidInvoiceCore/Components/_custom-fields-pdf.html.twig')]
+final class CustomFieldsListPdf
 {
     public CustomFieldTarget $target;
 

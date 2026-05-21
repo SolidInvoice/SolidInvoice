@@ -21,6 +21,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -38,6 +40,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
@@ -210,6 +213,12 @@ class QuoteType extends AbstractType
                 ]
             );
         });
+
+        $builder->add('customFields', CustomFieldValueCollectionType::class, [
+            'target' => CustomFieldTarget::QUOTE,
+            'existing_target_id' => $options['existing_target_id'],
+            'manage_persistence' => false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -218,6 +227,7 @@ class QuoteType extends AbstractType
             [
                 'data_class' => QuoteFormDTO::class,
                 'currency' => $this->systemConfig->getCurrency(),
+                'existing_target_id' => null,
                 'validation_groups' => function (FormInterface $form) {
                     $data = $form->getData();
                     $groups = ['Default'];
@@ -232,7 +242,8 @@ class QuoteType extends AbstractType
                 },
             ]
         )
-            ->setAllowedTypes('currency', [Currency::class]);
+            ->setAllowedTypes('currency', [Currency::class])
+            ->setAllowedTypes('existing_target_id', [Ulid::class, 'null']);
     }
 
     public function getBlockPrefix(): string

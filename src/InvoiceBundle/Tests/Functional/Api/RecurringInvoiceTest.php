@@ -158,6 +158,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'notes' => null,
             'withholdingAmount' => 0,
             'payableAmount' => 90.09,
+            'customFields' => [],
         ], $result);
     }
 
@@ -241,6 +242,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'notes' => $recurringInvoice->getNotes(),
             'withholdingAmount' => 0,
             'payableAmount' => 1,
+            'customFields' => [],
         ], $data);
     }
 
@@ -329,6 +331,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'notes' => $recurringInvoice->getNotes(),
             'withholdingAmount' => 0,
             'payableAmount' => 90,
+            'customFields' => [],
         ], $data);
     }
 }

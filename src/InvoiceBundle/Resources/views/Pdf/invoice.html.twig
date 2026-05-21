@@ -262,6 +262,15 @@
 </table>
 
 {# ============================================================================
+   CLIENT-VISIBLE CUSTOM FIELDS
+============================================================================ #}
+<twig:CustomFieldsListPdf
+    :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').INVOICE"
+    :recordId="invoice.id"
+    :visibility="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldVisibility').CLIENT_VISIBLE"
+/>
+
+{# ============================================================================
    TOTALS SUMMARY
 ============================================================================ #}
 <div class="totals-wrapper">

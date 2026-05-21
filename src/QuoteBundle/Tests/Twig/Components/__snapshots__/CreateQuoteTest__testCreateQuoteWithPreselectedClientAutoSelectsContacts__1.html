@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":"01JBYEQCR7DJ2YW4EXP6FYJZCR","formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1"}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"01JBYEQCR7DJ2YW4EXP6FYJZCR","users":["01JBYEQCR7DJ2YW4EXP6FYJZCR","01JBYEQCR7DJ2YW4EXP6FYJZCR"],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":"01JBYEQCR7DJ2YW4EXP6FYJZCR","formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1"}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"01JBYEQCR7DJ2YW4EXP6FYJZCR","users":["01JBYEQCR7DJ2YW4EXP6FYJZCR","01JBYEQCR7DJ2YW4EXP6FYJZCR"],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-model="on(change)|*">
 
@@ -270,6 +270,9 @@
     <fieldset class="mb-3">    
     <div id="quote_invoiceTaxes" data-controller="invoice-tax"></div>
 <div class="mb-3"><button type="button" id="quote_invoiceTaxes_add" name="quote[invoiceTaxes][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[invoiceTaxes]" class="btn-secondary btn">Add</button></div>
+</fieldset>
+<fieldset class="mb-3">                
+    <div id="quote_customFields"></div>
 </fieldset>
 <input type="hidden" id="quote___dynamic_error" name="quote[__dynamic_error]"><input type="hidden" id="quote__token" name="quote[_token]" data-controller="csrf-protection">
 </form>

@@ -358,6 +358,9 @@
                     </div>
                 </div>
 
+                {# Custom Fields (admin view shows ALL fields) #}
+                <twig:CustomFieldsList :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').INVOICE" :recordId="invoice.id" />
+
                 {# Terms & Notes #}
                 {% if invoice.terms is not empty or invoice.notes is not empty %}
                     <div class="doc-footer">

@@ -15,11 +15,16 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
@@ -91,6 +96,12 @@ class RecurringInvoiceTypeTest extends FormTestCase
 
         $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry);
         $itemType = new ItemType($this->registry);
+        $customFieldsType = new CustomFieldValueCollectionType(
+            M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
+            M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
+            new CustomFieldTypeResolver(),
+            $this->createMock(EntityManagerInterface::class),
+        );
 
         return [
             // register the type instances with the PreloadedExtension
@@ -98,6 +109,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
                 $invoiceType,
                 $itemType,
                 new DiscountType($systemConfig),
+                $customFieldsType,
             ], []),
         ];
     }
