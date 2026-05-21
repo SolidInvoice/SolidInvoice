@@ -15,12 +15,17 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
@@ -109,12 +114,20 @@ class InvoiceTypeTest extends FormTestCase
         }]), $systemConfig));
         $itemType = new ItemType($this->registry);
 
+        $customFieldsType = new CustomFieldValueCollectionType(
+            M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
+            M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
+            new CustomFieldTypeResolver(),
+            $this->createMock(EntityManagerInterface::class),
+        );
+
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([
                 $invoiceType,
                 $itemType,
                 new DiscountType($systemConfig),
+                $customFieldsType,
                 new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))
             ], [
                 ChoiceType::class => [

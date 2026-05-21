@@ -19,6 +19,9 @@ use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -50,7 +53,13 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
             return ['customFields' => (object) []];
         }
 
-        $target = $object instanceof Client ? CustomFieldTarget::CLIENT : CustomFieldTarget::CONTACT;
+        $target = match (true) {
+            $object instanceof Client => CustomFieldTarget::CLIENT,
+            $object instanceof Contact => CustomFieldTarget::CONTACT,
+            $object instanceof Invoice, $object instanceof RecurringInvoice => CustomFieldTarget::INVOICE,
+            $object instanceof Quote => CustomFieldTarget::QUOTE,
+            default => CustomFieldTarget::CONTACT,
+        };
         $defs = $this->fields->findByTargetOrdered($target);
 
         if ($defs === [] || $object->getId() === null) {
@@ -78,7 +87,11 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
         if ($context[self::SKIP_KEY] ?? false) {
             return false;
         }
-        return $data instanceof Client || $data instanceof Contact;
+        return $data instanceof Client
+            || $data instanceof Contact
+            || $data instanceof Invoice
+            || $data instanceof RecurringInvoice
+            || $data instanceof Quote;
     }
 
     /**
@@ -86,6 +99,12 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
      */
     public function getSupportedTypes(?string $format): array
     {
-        return [Client::class => false, Contact::class => false];
+        return [
+            Client::class => false,
+            Contact::class => false,
+            Invoice::class => false,
+            RecurringInvoice::class => false,
+            Quote::class => false,
+        ];
     }
 }

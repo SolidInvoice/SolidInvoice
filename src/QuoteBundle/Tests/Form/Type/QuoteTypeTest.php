@@ -14,12 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
+use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
@@ -104,8 +109,15 @@ class QuoteTypeTest extends FormTestCase
         }]), $systemConfig));
         $itemType = new ItemType($this->registry);
 
+        $customFieldsType = new CustomFieldValueCollectionType(
+            M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
+            M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
+            new CustomFieldTypeResolver(),
+            $this->createMock(EntityManagerInterface::class),
+        );
+
         return [
-            new PreloadedExtension([$type, $itemType, new DiscountType($systemConfig)], [
+            new PreloadedExtension([$type, $itemType, new DiscountType($systemConfig), $customFieldsType], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
                 ],

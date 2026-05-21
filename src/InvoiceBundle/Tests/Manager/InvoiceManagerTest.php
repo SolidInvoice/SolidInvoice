@@ -26,6 +26,9 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
+use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
@@ -93,7 +96,12 @@ class InvoiceManagerTest extends KernelTestCase
                 new ServiceLocator(['generator' => fn () => $this->createMock(IdGeneratorInterface::class)]),
                 $config
             ),
-            $clock
+            $clock,
+            new CustomFieldValueCopier(
+                M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
+                M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
+                $entityManager,
+            ),
         );
 
         $entityManager

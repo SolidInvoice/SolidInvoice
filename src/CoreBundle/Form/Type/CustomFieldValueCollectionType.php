@@ -49,13 +49,21 @@ final class CustomFieldValueCollectionType extends AbstractType
 
         $existingValues = [];
         $parent = $options['parent_record'] ?? null;
-        if ($defs !== [] && $parent !== null && method_exists($parent, 'getId') && $parent->getId() instanceof Ulid) {
+        $existingId = $options['existing_target_id'] ?? null;
+        if ($defs !== [] && $existingId instanceof Ulid) {
+            foreach ($this->values->findForRecord($target, $existingId) as $v) {
+                $existingValues[(string) $v->getField()->getId()] = $v;
+            }
+        } elseif ($defs !== [] && $parent !== null && method_exists($parent, 'getId') && $parent->getId() instanceof Ulid) {
             foreach ($this->values->findForRecord($target, $parent->getId()) as $v) {
                 $existingValues[(string) $v->getField()->getId()] = $v;
             }
         }
 
         $isNewParent = $parent === null || ! (method_exists($parent, 'getId') && $parent->getId() instanceof Ulid && $this->em->contains($parent));
+        if ($existingId instanceof Ulid) {
+            $isNewParent = false;
+        }
 
         foreach ($defs as $def) {
             [$type, $opts] = $this->resolver->formTypeAndOptions($def);
@@ -76,6 +84,9 @@ final class CustomFieldValueCollectionType extends AbstractType
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event) use ($defs, $target, $existingValues): void {
             $form = $event->getForm();
+            if ($form->getConfig()->getOption('manage_persistence') === false) {
+                return;
+            }
             $parent = $form->getConfig()->getOption('parent_record');
             if ($parent === null || ! method_exists($parent, 'getId')) {
                 return;
@@ -203,10 +214,16 @@ final class CustomFieldValueCollectionType extends AbstractType
         $resolver->setAllowedTypes('target', CustomFieldTarget::class);
         $resolver->setDefined('parent_record');
         $resolver->setAllowedTypes('parent_record', ['object', 'null']);
+        $resolver->setDefined('existing_target_id');
+        $resolver->setAllowedTypes('existing_target_id', [Ulid::class, 'null']);
+        $resolver->setDefined('manage_persistence');
+        $resolver->setAllowedTypes('manage_persistence', 'bool');
         $resolver->setDefaults([
             'mapped' => false,
             'label' => false,
             'parent_record' => null,
+            'existing_target_id' => null,
+            'manage_persistence' => true,
         ]);
     }
 

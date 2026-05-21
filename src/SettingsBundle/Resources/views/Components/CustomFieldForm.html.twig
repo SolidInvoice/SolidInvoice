@@ -19,8 +19,35 @@
             }
         }) }}
             <div class="mb-3">
-                {{ form_row(form.target) }}
+                {{ form_label(form.target) }}
+                <div class="d-flex flex-wrap gap-4 mb-1">
+                    {% for child in form.target %}
+                        <div class="form-check m-0">
+                            {{ form_widget(child) }}
+                            {{ form_label(child) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form_help(form.target) }}
+                {{ form_errors(form.target) }}
             </div>
+
+            {% if form.visibility is defined %}
+                <div class="mb-3">
+                    {{ form_label(form.visibility) }}
+                    <div class="d-flex flex-wrap gap-4 mb-1">
+                        {% for child in form.visibility %}
+                            <div class="form-check m-0">
+                                {{ form_widget(child) }}
+                                {{ form_label(child) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {{ form_help(form.visibility) }}
+                    {{ form_errors(form.visibility) }}
+                </div>
+            {% endif %}
+
             <div class="row g-3">
                 <div class="col-md-6">{{ form_row(form.label) }}</div>
                 <div class="col-md-6">

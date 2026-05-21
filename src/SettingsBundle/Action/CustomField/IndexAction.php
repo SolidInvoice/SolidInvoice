@@ -28,7 +28,12 @@ final class IndexAction
     }
 
     /**
-     * @return array{client: list<array{field: CustomField, count: int}>, contact: list<array{field: CustomField, count: int}>}
+     * @return array{
+     *     client: list<array{field: CustomField, count: int}>,
+     *     contact: list<array{field: CustomField, count: int}>,
+     *     invoice: list<array{field: CustomField, count: int}>,
+     *     quote: list<array{field: CustomField, count: int}>
+     * }
      */
     #[Template('@SolidInvoiceSettings/CustomField/index.html.twig')]
     public function __invoke(): array
@@ -36,6 +41,8 @@ final class IndexAction
         return [
             'client' => $this->buildRows(CustomFieldTarget::CLIENT),
             'contact' => $this->buildRows(CustomFieldTarget::CONTACT),
+            'invoice' => $this->buildRows(CustomFieldTarget::INVOICE),
+            'quote' => $this->buildRows(CustomFieldTarget::QUOTE),
         ];
     }
 

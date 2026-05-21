@@ -18,6 +18,9 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -53,7 +56,13 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         $context[self::SKIP_KEY] = true;
         $object = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        $target = $type === Client::class ? CustomFieldTarget::CLIENT : CustomFieldTarget::CONTACT;
+        $target = match ($type) {
+            Client::class => CustomFieldTarget::CLIENT,
+            Contact::class => CustomFieldTarget::CONTACT,
+            Invoice::class, RecurringInvoice::class => CustomFieldTarget::INVOICE,
+            Quote::class => CustomFieldTarget::QUOTE,
+            default => CustomFieldTarget::CONTACT,
+        };
         $defs = [];
         foreach ($this->fields->findByTargetOrdered($target) as $def) {
             $defs[$def->getFieldKey()] = $def;
@@ -96,7 +105,11 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         if ($context[self::SKIP_KEY] ?? false) {
             return false;
         }
-        return $type === Client::class || $type === Contact::class;
+        return $type === Client::class
+            || $type === Contact::class
+            || $type === Invoice::class
+            || $type === RecurringInvoice::class
+            || $type === Quote::class;
     }
 
     /**
@@ -104,6 +117,12 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
      */
     public function getSupportedTypes(?string $format): array
     {
-        return [Client::class => false, Contact::class => false];
+        return [
+            Client::class => false,
+            Contact::class => false,
+            Invoice::class => false,
+            RecurringInvoice::class => false,
+            Quote::class => false,
+        ];
     }
 }

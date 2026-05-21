@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Action\Api\CustomFieldReorderAction;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldVisibility;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -120,6 +121,10 @@ class CustomField
     #[ORM\Column(name: 'default_value', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?string $defaultValue = null;
+
+    #[ORM\Column(name: 'visibility', type: Types::STRING, length: 32, nullable: true, enumType: CustomFieldVisibility::class)]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
+    private ?CustomFieldVisibility $visibility = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
@@ -218,6 +223,18 @@ class CustomField
         return $this;
     }
 
+    public function getVisibility(): ?CustomFieldVisibility
+    {
+        return $this->visibility;
+    }
+
+    public function setVisibility(?CustomFieldVisibility $visibility): self
+    {
+        $this->visibility = $visibility;
+
+        return $this;
+    }
+
     public function isRequired(): bool
     {
         return $this->required;
@@ -251,6 +268,29 @@ class CustomField
         if ($this->options === null || $this->options === []) {
             $context->buildViolation('At least one option is required for select fields.')
                 ->atPath('options')
+                ->addViolation();
+        }
+    }
+
+    #[Assert\Callback]
+    public function validateVisibility(ExecutionContextInterface $context): void
+    {
+        if ($this->target === null) {
+            return;
+        }
+
+        if ($this->target->supportsVisibility()) {
+            if ($this->visibility === null) {
+                $context->buildViolation('Visibility is required for invoice and quote custom fields.')
+                    ->atPath('visibility')
+                    ->addViolation();
+            }
+            return;
+        }
+
+        if ($this->visibility !== null) {
+            $context->buildViolation('Visibility only applies to invoice and quote custom fields.')
+                ->atPath('visibility')
                 ->addViolation();
         }
     }

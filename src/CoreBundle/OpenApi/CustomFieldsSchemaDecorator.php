@@ -35,7 +35,11 @@ final class CustomFieldsSchemaDecorator implements OpenApiFactoryInterface
         $components = $openApi->getComponents();
         $schemas = $components->getSchemas() ?? new ArrayObject();
 
-        foreach (['Client', 'Contact', 'Client.jsonld', 'Contact.jsonld'] as $name) {
+        $names = [
+            'Client', 'Contact', 'Invoice', 'Quote', 'RecurringInvoice',
+            'Client.jsonld', 'Contact.jsonld', 'Invoice.jsonld', 'Quote.jsonld', 'RecurringInvoice.jsonld',
+        ];
+        foreach ($names as $name) {
             if (! isset($schemas[$name])) {
                 continue;
             }
@@ -44,7 +48,8 @@ final class CustomFieldsSchemaDecorator implements OpenApiFactoryInterface
                 continue;
             }
 
-            $entity = strtoupper(str_replace('.jsonld', '', $name));
+            $base = str_replace('.jsonld', '', $name);
+            $entity = strtoupper($base === 'RecurringInvoice' ? 'INVOICE' : $base);
             $properties = $schema['properties'] ?? [];
             $properties['customFields'] = [
                 'type' => 'object',

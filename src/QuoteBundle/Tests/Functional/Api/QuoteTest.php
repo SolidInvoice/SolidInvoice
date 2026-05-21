@@ -220,6 +220,7 @@ final class QuoteTest extends ApiTestCase
             'withholdingAmount' => 0,
             'payableAmount' => 100,
             'invoiceTaxes' => [],
+            'customFields' => [],
         ], $data);
     }
 
@@ -313,6 +314,7 @@ final class QuoteTest extends ApiTestCase
             'withholdingAmount' => 0,
             'payableAmount' => 11250,
             'invoiceTaxes' => [],
+            'customFields' => [],
         ], $data);
     }
 }
