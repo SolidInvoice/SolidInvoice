@@ -11,22 +11,34 @@
 
 {% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ "Custom fields"|trans }}{% endblock %}
 
+{% block heading %}
+    <a href="{{ path('_settings_custom_fields_create') }}" class="btn btn-primary">
+        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+        {{ 'Add field'|trans }}
+    </a>
+{% endblock %}
+
 {% block content %}
-    <div class="page-header">
-        <h2 class="page-title">{{ 'Custom fields'|trans }}</h2>
-        <div class="page-actions">
-            <a href="{{ path('_settings_custom_fields_create') }}" class="btn btn-primary">
-                {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                {{ 'Add field'|trans }}
+    <ul class="nav nav-underline" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#tab-client" role="tab" aria-controls="tab-client">
+                <span class="nav-link-icon d-none d-sm-inline-block">
+                    {{ ux_icon('tabler:building', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Client fields'|trans }}</span>
             </a>
-        </div>
-    </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab-contact" role="tab" aria-controls="tab-contact">
+                <span class="nav-link-icon d-none d-sm-inline-block">
+                    {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Contact fields'|trans }}</span>
+            </a>
+        </li>
+    </ul>
 
     <div class="card mt-3">
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-client">{{ 'Client fields'|trans }}</a></li>
-            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-contact">{{ 'Contact fields'|trans }}</a></li>
-        </ul>
         <div class="tab-content">
             {% for tabId, rows in {'client': client, 'contact': contact} %}
                 <div class="tab-pane{% if loop.first %} active show{% endif %}" id="tab-{{ tabId }}">
@@ -35,25 +47,44 @@
                             {{ 'No custom fields yet — click Add field to create one.'|trans }}
                         </div>
                     {% else %}
-                        <div class="list-group list-group-flush"
+                        <div class="list-group list-group-flush custom-field-list"
                              {{ stimulus_controller('custom-field-reorder', {url: path('_settings_custom_fields_reorder')}) }}>
                             {% for row in rows %}
-                                <div class="list-group-item d-flex align-items-center" data-id="{{ row.field.id }}">
-                                    <span class="me-3 text-muted" data-handle>{{ ux_icon('tabler:grip-vertical') }}</span>
+                                <div class="list-group-item d-flex align-items-center custom-field-row" data-id="{{ row.field.id }}">
+                                    <span class="custom-field-handle me-3" data-handle title="{{ 'Drag to reorder'|trans }}" aria-label="{{ 'Drag to reorder'|trans }}">
+                                        {{ ux_icon('tabler:grip-vertical', {width: 18, height: 18}) }}
+                                    </span>
                                     <div class="flex-fill">
                                         <strong>{{ row.field.label }}</strong>
                                         <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
                                         {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'Required'|trans }}</span>{% endif %}
                                         <div class="text-muted small">{{ row.count }} {{ 'values'|trans }}</div>
                                     </div>
-                                    <a href="{{ path('_settings_custom_fields_edit', {id: row.field.id}) }}" class="btn btn-sm btn-link">{{ 'Edit'|trans }}</a>
-                                    <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('cf_delete_' ~ row.field.id) }}">
-                                        <button class="btn btn-sm btn-link text-danger" type="submit">{{ 'Delete'|trans }}</button>
-                                    </form>
+                                    <div class="d-flex gap-1">
+                                        <a href="{{ path('_settings_custom_fields_edit', {id: row.field.id}) }}"
+                                           class="btn btn-ghost-secondary btn-icon btn-icon-sm"
+                                           title="{{ 'Edit'|trans }}"
+                                           aria-label="{{ 'Edit'|trans }}">
+                                            {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                                        </a>
+                                        <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('cf_delete_' ~ row.field.id) }}">
+                                            <button class="btn btn-ghost-danger btn-icon btn-icon-sm" type="submit"
+                                                    title="{{ 'Delete'|trans }}"
+                                                    aria-label="{{ 'Delete'|trans }}">
+                                                {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
+                        {% if rows|length > 1 %}
+                            <div class="px-3 py-2 text-muted small d-flex align-items-center gap-2">
+                                {{ ux_icon('tabler:arrows-sort', {width: 16, height: 16}) }}
+                                {{ 'Drag the handle on the left of each row to reorder fields.'|trans }}
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endfor %}

@@ -117,6 +117,10 @@ class CustomField
     #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?array $options = null;
 
+    #[ORM\Column(name: 'default_value', type: Types::TEXT, nullable: true)]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
+    private ?string $defaultValue = null;
+
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private bool $required = false;
@@ -198,6 +202,18 @@ class CustomField
     public function setOptions(?array $options): self
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    public function getDefaultValue(): ?string
+    {
+        return $this->defaultValue;
+    }
+
+    public function setDefaultValue(?string $defaultValue): self
+    {
+        $this->defaultValue = ($defaultValue === null || $defaultValue === '') ? null : $defaultValue;
 
         return $this;
     }

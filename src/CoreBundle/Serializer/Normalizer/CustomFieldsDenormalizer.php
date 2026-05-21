@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Serializer\Normalizer;
 
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
@@ -25,9 +24,11 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use function array_diff;
+use function array_key_exists;
 use function array_keys;
 use function implode;
 use function is_array;
+use function method_exists;
 
 #[AutoconfigureTag('serializer.normalizer')]
 final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, DenormalizerInterface
@@ -52,32 +53,40 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         $context[self::SKIP_KEY] = true;
         $object = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        if (! is_array($payload)) {
-            return $object;
-        }
-
         $target = $type === Client::class ? CustomFieldTarget::CLIENT : CustomFieldTarget::CONTACT;
         $defs = [];
         foreach ($this->fields->findByTargetOrdered($target) as $def) {
             $defs[$def->getFieldKey()] = $def;
         }
 
-        $unknown = array_diff(array_keys($payload), array_keys($defs));
+        $payloadArray = is_array($payload) ? $payload : [];
+        $unknown = array_diff(array_keys($payloadArray), array_keys($defs));
         if ($unknown !== []) {
             throw new UnexpectedValueException('Unknown custom field keys: ' . implode(', ', $unknown));
         }
 
+        $isNew = ! (method_exists($object, 'getId') && $object->getId() !== null);
+
         $staged = [];
-        foreach ($payload as $key => $raw) {
-            /** @var CustomField $def */
-            $def = $defs[$key];
-            $staged[(string) $def->getId()] = [
-                'field' => $def,
-                'value' => $this->resolver->serialize($def, $raw),
-            ];
+        foreach ($defs as $key => $def) {
+            if (array_key_exists($key, $payloadArray)) {
+                $staged[(string) $def->getId()] = [
+                    'field' => $def,
+                    'value' => $this->resolver->serialize($def, $payloadArray[$key]),
+                ];
+                continue;
+            }
+            if ($isNew && $def->getDefaultValue() !== null) {
+                $staged[(string) $def->getId()] = [
+                    'field' => $def,
+                    'value' => $def->getDefaultValue(),
+                ];
+            }
         }
 
-        $object->__customFieldsStaged = $staged;
+        if ($staged !== [] || is_array($payload)) {
+            $object->__customFieldsStaged = $staged;
+        }
 
         return $object;
     }

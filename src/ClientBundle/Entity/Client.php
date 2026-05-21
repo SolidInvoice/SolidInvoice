@@ -224,6 +224,7 @@ class Client implements Stringable
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->taxIdentifiers = new ArrayCollection();
+        $this->status = ClientStatus::Active;
 
         $this->setCredit(new Credit());
     }

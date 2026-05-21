@@ -8,35 +8,64 @@
  #}
 
 {% set rows = this.rows %}
-{% if rows is not empty %}
-<div class="card mt-3">
-    <div class="card-header">
-        <h3 class="card-title">{{ 'Custom fields'|trans }}</h3>
-    </div>
-    <div class="card-body">
-        <div class="datagrid">
-            {% for row in rows %}
-                <div class="datagrid-item">
-                    <div class="datagrid-title">{{ row.field.label }}</div>
-                    <div class="datagrid-content">
-                        {% set t = row.field.type.value %}
-                        {% if row.raw is null %}
-                            <span class="text-muted">—</span>
-                        {% elseif t == 'url' %}
-                            <a href="{{ row.raw }}" target="_blank" rel="noopener">{{ row.raw }}</a>
-                        {% elseif t == 'email' %}
-                            <a href="mailto:{{ row.raw }}">{{ row.raw }}</a>
-                        {% elseif t == 'date' %}
-                            {{ row.raw|date('M d, Y') }}
-                        {% elseif t == 'textarea' %}
-                            <span class="text-pre-wrap">{{ row.formatted|nl2br }}</span>
-                        {% else %}
-                            {{ row.formatted }}
-                        {% endif %}
+{% set populated = rows|filter(row => row.raw is not null) %}
+{% if populated|length > 0 %}
+    {% set typeIcons = {
+        text: 'tabler:cursor-text',
+        textarea: 'tabler:align-left',
+        number: 'tabler:number',
+        date: 'tabler:calendar',
+        email: 'tabler:mail',
+        url: 'tabler:link',
+        checkbox: 'tabler:checkbox',
+        select: 'tabler:list',
+        multi_select: 'tabler:list-check',
+    } %}
+
+    <div class="card my-3 custom-fields-card">
+        <div class="card-header">
+            <span class="d-flex align-items-center gap-2">
+                {{ ux_icon('tabler:forms', {width: 16, height: 16, class: 'text-muted'}) }}
+                <span class="fw-medium">{{ 'Custom fields'|trans }}</span>
+            </span>
+        </div>
+        <div class="card-body py-2">
+            <dl class="custom-fields-list mb-0">
+                {% for row in populated %}
+                    {% set t = row.field.type.value %}
+                    <div class="custom-fields-item">
+                        <dt class="custom-fields-label">
+                            {{ ux_icon(typeIcons[t]|default('tabler:tag'), {width: 14, height: 14, class: 'text-muted'}) }}
+                            <span>{{ row.field.label }}</span>
+                        </dt>
+                        <dd class="custom-fields-value mb-0">
+                            {% if t == 'url' %}
+                                <a href="{{ row.raw }}" target="_blank" rel="noopener">{{ row.raw }}</a>
+                            {% elseif t == 'email' %}
+                                <a href="mailto:{{ row.raw }}">{{ row.raw }}</a>
+                            {% elseif t == 'date' %}
+                                {{ row.raw|date('M d, Y') }}
+                            {% elseif t == 'textarea' %}
+                                <span class="text-pre-wrap">{{ row.formatted|nl2br }}</span>
+                            {% elseif t == 'checkbox' %}
+                                {% if row.raw == '1' %}
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success'}) }}
+                                {% else %}
+                                    {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'text-muted'}) }}
+                                {% endif %}
+                            {% elseif t == 'multi_select' %}
+                                {% for label in row.formatted|split(', ') %}
+                                    <span class="badge bg-secondary-lt">{{ label }}</span>
+                                {% endfor %}
+                            {% elseif t == 'select' %}
+                                <span class="badge bg-secondary-lt">{{ row.formatted }}</span>
+                            {% else %}
+                                {{ row.formatted }}
+                            {% endif %}
+                        </dd>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </dl>
         </div>
     </div>
-</div>
 {% endif %}
