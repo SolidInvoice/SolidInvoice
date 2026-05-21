@@ -1,0 +1,72 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set mode = this.mode %}
+{% set usageCount = this.usageCount %}
+
+<div {{ attributes.defaults({class: 'card mt-3'}) }}>
+    <div class="card-body">
+        {{ form_start(form, {
+            attr: {
+                'data-action': 'live#action:prevent',
+                'data-live-action-param': 'save',
+            }
+        }) }}
+            <div class="mb-3">
+                {{ form_row(form.target) }}
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">{{ form_row(form.label) }}</div>
+                <div class="col-md-6">
+                    {% if mode == 'edit' and usageCount > 0 %}
+                        <div class="alert alert-info">
+                            {{ 'This field has %count% values; type cannot be changed. Delete and recreate to change type.'|trans({'%count%': usageCount}) }}
+                        </div>
+                        {{ form_row(form.type, {attr: {disabled: 'disabled'}}) }}
+                    {% else %}
+                        {{ form_row(form.type) }}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">{{ form_row(form.required) }}</div>
+                {% if form.defaultValue is defined %}
+                    <div class="col-md-6">{{ form_row(form.defaultValue) }}</div>
+                {% endif %}
+            </div>
+
+            {% if form.options is defined %}
+                <div class="mt-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <h4 class="mb-0 me-2">{{ 'Options'|trans }}</h4>
+                        <span class="text-muted small">{{ '(used for single- and multi-select)'|trans }}</span>
+                    </div>
+
+                    <div>
+                        {% for option in form.options %}
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-fill">{{ form_widget(option) }}</div>
+                                {{ form_widget(option.vars.button_delete, {
+                                    label: ux_icon('tabler:trash', {width: 18, height: 18})|raw,
+                                    label_html: true,
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {{ form_widget(form.options.vars.button_add) }}
+                    {{ form_errors(form.options) }}
+                </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                <a class="btn btn-link" href="{{ path('_settings_custom_fields') }}">{{ 'Cancel'|trans }}</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>

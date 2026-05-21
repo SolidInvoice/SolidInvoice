@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Service\CustomField;
 
 use const JSON_THROW_ON_ERROR;
-use DateTimeImmutable;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -48,7 +47,11 @@ final class CustomFieldTypeResolver
             CustomFieldType::TEXT => [TextType::class, []],
             CustomFieldType::TEXTAREA => [TextareaType::class, []],
             CustomFieldType::NUMBER => [NumberType::class, ['html5' => true]],
-            CustomFieldType::DATE => [DateType::class, ['widget' => 'single_text']],
+            CustomFieldType::DATE => [DateType::class, [
+                'widget' => 'single_text',
+                'input' => 'string',
+                'input_format' => 'Y-m-d',
+            ]],
             CustomFieldType::EMAIL => [EmailType::class, []],
             CustomFieldType::URL => [UrlType::class, []],
             CustomFieldType::CHECKBOX => [CheckboxType::class, []],
@@ -134,7 +137,7 @@ final class CustomFieldTypeResolver
             CustomFieldType::SELECT
                 => $stored,
             CustomFieldType::NUMBER => str_contains($stored, '.') ? (float) $stored : (int) $stored,
-            CustomFieldType::DATE => new DateTimeImmutable($stored),
+            CustomFieldType::DATE => $stored,
             CustomFieldType::CHECKBOX => $stored === '1',
             CustomFieldType::MULTI_SELECT => json_decode($stored, true, flags: JSON_THROW_ON_ERROR),
             null => throw new \LogicException('CustomField type must not be null.'),

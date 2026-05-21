@@ -383,6 +383,82 @@
 }
 
 // ============================================================================
+// CUSTOM FIELDS CARD
+// ============================================================================
+
+.custom-fields-card {
+
+    .card-header {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        background: transparent;
+        border-bottom: 1px solid var(--swp-border-light);
+    }
+
+    .card-body {
+        padding: var(--swp-space-2) var(--swp-space-4);
+    }
+}
+
+.custom-fields-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-1);
+}
+
+.custom-fields-item {
+    display: grid;
+    grid-template-columns: minmax(140px, 30%) 1fr;
+    gap: var(--swp-space-3);
+    align-items: baseline;
+    padding: var(--swp-space-2) 0;
+    border-bottom: 1px solid var(--swp-border-light);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.custom-fields-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1-5);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--swp-text-muted);
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.custom-fields-value {
+    font-size: 0.875rem;
+    color: var(--swp-text-primary);
+    word-break: break-word;
+
+    a {
+        color: var(--swp-primary);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .badge {
+        margin-right: var(--swp-space-1);
+        font-weight: 500;
+    }
+}
+
+@media (width <= 575.98px) {
+
+    .custom-fields-item {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-1);
+    }
+}
+
+// ============================================================================
 // RESPONSIVE STYLES
 // ============================================================================
 

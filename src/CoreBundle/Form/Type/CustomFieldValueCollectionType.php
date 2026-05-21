@@ -55,6 +55,8 @@ final class CustomFieldValueCollectionType extends AbstractType
             }
         }
 
+        $isNewParent = $parent === null || ! (method_exists($parent, 'getId') && $parent->getId() instanceof Ulid && $this->em->contains($parent));
+
         foreach ($defs as $def) {
             [$type, $opts] = $this->resolver->formTypeAndOptions($def);
             $opts['label'] = $def->getLabel();
@@ -65,6 +67,8 @@ final class CustomFieldValueCollectionType extends AbstractType
             $existing = $existingValues[(string) $def->getId()] ?? null;
             if ($existing !== null) {
                 $opts['data'] = $this->resolver->deserialize($def, $existing->getValue());
+            } elseif ($isNewParent && $def->getDefaultValue() !== null) {
+                $opts['data'] = $this->resolver->deserialize($def, $def->getDefaultValue());
             }
 
             $builder->add($def->getFieldKey(), $type, $opts);
@@ -78,13 +82,13 @@ final class CustomFieldValueCollectionType extends AbstractType
             }
 
             $parentId = $parent->getId();
-            $companyId = null;
+            $parentCompany = null;
             if (method_exists($parent, 'getCompany')) {
                 try {
-                    $companyId = $parent->getCompany();
+                    $parentCompany = $parent->getCompany();
                 } catch (\Error) {
-                    // Company not yet initialized on the entity — skip persistence for this submit.
-                    return;
+                    // Company not yet initialized on the parent (new record).
+                    // CompanyListener (prePersist) will assign one when CustomFieldValue is persisted.
                 }
             }
             // An entity is "persisted" (has a stable Doctrine-assigned ID) only when it
@@ -114,8 +118,8 @@ final class CustomFieldValueCollectionType extends AbstractType
                         ->setField($def)
                         ->setTarget($target)
                         ->setValue($serialized);
-                    if ($companyId !== null) {
-                        $value->setCompany($companyId);
+                    if ($parentCompany !== null) {
+                        $value->setCompany($parentCompany);
                     }
 
                     if ($parentIsManaged) {

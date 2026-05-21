@@ -185,6 +185,42 @@
 }
 
 // ============================================================================
+// Custom Fields - Reorderable list
+// ============================================================================
+
+.custom-field-list {
+
+    .custom-field-row {
+        transition: background-color 120ms ease;
+
+        &:hover .custom-field-handle {
+            color: var(--tblr-body-color, #1e293b);
+        }
+
+        &.sortable-ghost {
+            opacity: 0.4;
+            background-color: rgba(var(--swp-primary-rgb, 99 102 241), 0.06);
+        }
+
+        &.sortable-chosen {
+            background-color: rgba(var(--swp-primary-rgb, 99 102 241), 0.04);
+        }
+    }
+
+    .custom-field-handle {
+        cursor: grab;
+        padding: 0.25rem;
+        color: var(--tblr-muted, #94a3b8);
+        line-height: 1;
+        border-radius: 0.25rem;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+}
+
+// ============================================================================
 // Print Styles
 // ============================================================================
 
