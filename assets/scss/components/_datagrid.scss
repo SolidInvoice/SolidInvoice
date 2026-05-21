@@ -680,6 +680,11 @@
         user-select: none;
     }
 
+    tbody {
+        // Tabular figures across the table so amounts, IDs and dates align cleanly
+        font-variant-numeric: tabular-nums;
+    }
+
     tbody tr {
         transition: background-color var(--swp-transition-fast);
 
@@ -703,6 +708,11 @@
         text-align: center;
     }
 
+    th.col-checkbox {
+        // Keep header checkbox centered to match cells
+        text-align: center;
+    }
+
     .col-id {
         font-family: var(--swp-font-mono);
         font-size: var(--swp-text-xs);
@@ -713,11 +723,24 @@
         white-space: nowrap;
     }
 
+    // Money columns: right-align both header and cell, tabular figures on system font.
+    // Mono is reserved for identifiers per the design system; money reads as data, not code.
     .col-amount,
     .col-money {
         text-align: right;
-        font-family: var(--swp-font-mono);
+        font-variant-numeric: tabular-nums;
         font-weight: var(--swp-font-medium);
+    }
+
+    th.col-amount,
+    th.col-money {
+        text-align: right;
+    }
+
+    // The sortable link inside a right-aligned header needs its content pushed right too
+    th.col-amount .datagrid-sort-link,
+    th.col-money .datagrid-sort-link {
+        justify-content: flex-end;
     }
 
     .col-status {
@@ -728,6 +751,14 @@
         width: 1%;
         white-space: nowrap;
         text-align: right;
+    }
+
+    // Tabler badges live inside status cells. The design system mandates pill chips.
+    tbody .badge {
+        border-radius: var(--swp-radius-full);
+        padding: 2px 10px;
+        font-weight: var(--swp-font-medium);
+        letter-spacing: 0;
     }
 }
 
@@ -750,14 +781,18 @@
     }
 
     .datagrid-sort-icon {
+        display: inline-flex;
         width: 14px;
         height: 14px;
-        opacity: 0;
+        opacity: 0.35;
         transition: opacity var(--swp-transition-fast);
+
+        &.is-active {
+            opacity: 1;
+        }
     }
 
-    &:hover .datagrid-sort-icon,
-    &.sorted .datagrid-sort-icon {
+    &:hover .datagrid-sort-icon {
         opacity: 1;
     }
 }
@@ -1238,7 +1273,9 @@ tbody tr:hover .datagrid-more-btn,
 
 .datagrid-relative-date {
     cursor: help;
-    border-bottom: 1px dotted var(--swp-gray-300);
+    text-decoration: underline dotted var(--swp-border-dark);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
 }
 
 // ============================================================================

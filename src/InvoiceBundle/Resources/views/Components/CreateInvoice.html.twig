@@ -148,7 +148,7 @@
                                 {{ ux_icon('tabler:file-plus', {width: 32, height: 32}) }}
                             </div>
                             <p class="empty-title">{{ 'invoice.items.empty.title'|trans }}</p>
-                            <p class="empty-subtitle text-secondary">{{ 'invoice.items.empty.description'|trans }}</p>
+                            <p class="empty-subtitle text-muted">{{ 'invoice.items.empty.description'|trans }}</p>
                         </div>
                     {% else %}
                         {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
@@ -249,7 +249,7 @@
                                 {{ ux_icon('tabler:receipt-tax', {width: 18, height: 18}) }}
                             </div>
                             <h3 class="billing-invoice-taxes-title">{{ 'invoice.invoice_taxes.title'|trans }}</h3>
-                            <p class="billing-invoice-taxes-subtitle text-secondary">{{ 'invoice.invoice_taxes.subtitle'|trans }}</p>
+                            <p class="billing-invoice-taxes-subtitle text-muted">{{ 'invoice.invoice_taxes.subtitle'|trans }}</p>
                         </div>
 
                         {% if form.invoiceTaxes|length > 0 %}

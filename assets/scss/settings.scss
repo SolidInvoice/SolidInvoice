@@ -40,13 +40,55 @@
 }
 
 // ============================================================================
-// Settings Card - Disable hover transform
+// Settings Card - paper-on-desk surface per design system
 // ============================================================================
 
 .settings-content-card {
+    border-radius: var(--swp-radius-lg);
 
     &:hover {
         transform: none;
+    }
+
+    > .card-body {
+        padding: var(--swp-space-6);
+
+        @include media-breakpoint-up(md) {
+            padding: var(--swp-space-8) var(--swp-space-8) var(--swp-space-6);
+        }
+    }
+
+    > .card-footer {
+        padding: var(--swp-space-4) var(--swp-space-6);
+        border-top-color: var(--swp-border-light);
+
+        @include media-breakpoint-up(md) {
+            padding: var(--swp-space-4) var(--swp-space-8);
+        }
+    }
+
+    // Section blocks inside the card use lighter dividers so the page reads as
+    // a single quiet surface, not five stacked cards.
+    .card-body > .border-bottom {
+        border-bottom-color: var(--swp-border-light) !important;
+    }
+
+    // Section heading: match the design system title scale and let the icon
+    // be a slate accent rather than a fifth green element on the page.
+    .card-body h3 {
+        font-size: var(--swp-text-lg);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-text-primary);
+        letter-spacing: -0.01em;
+
+        > svg {
+            color: var(--swp-text-muted);
+        }
+    }
+
+    // Helper paragraphs sit under headings; cap their reading width.
+    .card-body h3 + p.text-muted {
+        max-width: 65ch;
     }
 }
 
@@ -88,14 +130,39 @@
 }
 
 // ============================================================================
-// Danger Zone - Custom border styling
+// Danger Zone - serious, not theatrical
 // ============================================================================
 
 .settings-danger-zone .card {
-    border-width: 2px;
+    border-radius: var(--swp-radius-lg);
+    border-color: var(--swp-danger-light);
 
     &:hover {
         transform: none;
+    }
+
+    .card-header {
+        background: var(--swp-danger-lighter) !important;
+        border-bottom-color: var(--swp-danger-light) !important;
+        padding: var(--swp-space-3) var(--swp-space-6);
+
+        .card-title {
+            font-size: var(--swp-text-sm);
+            font-weight: var(--swp-font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--swp-danger);
+        }
+    }
+
+    .card-body {
+        padding: var(--swp-space-5) var(--swp-space-6);
+
+        h3 {
+            font-size: var(--swp-text-base);
+            font-weight: var(--swp-font-semibold);
+            color: var(--swp-text-primary);
+        }
     }
 }
 

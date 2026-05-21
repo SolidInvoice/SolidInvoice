@@ -127,7 +127,11 @@
     .billing-id-value {
         font-size: var(--swp-text-2xl);
         font-weight: var(--swp-font-bold);
-        color: var(--swp-primary);
+        // Identifiers are not money. Primary green is reserved for paid states and CTAs.
+        color: var(--swp-text-primary);
+        font-family: var(--swp-font-mono);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
     }
 
     .billing-id-edit {
@@ -475,6 +479,7 @@
             font-weight: var(--swp-font-semibold);
             color: var(--swp-text-primary);
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
     }
 
@@ -897,19 +902,21 @@
     font-size: var(--swp-text-base);
     font-weight: var(--swp-font-medium);
     color: var(--swp-text-primary);
+    font-variant-numeric: tabular-nums;
 }
 
 .totals-row-discount {
 
+    // A discount is a deduction, not an error. Quiet it down instead of flagging it red.
     .totals-value {
-        color: var(--swp-danger);
+        color: var(--swp-text-muted);
     }
 }
 
 .totals-row-total {
     padding-top: var(--swp-space-4);
     margin-top: var(--swp-space-2);
-    border-top: 2px solid var(--swp-border-dark);
+    border-top: 1px solid var(--swp-border-dark);
 
     .totals-label {
         font-size: var(--swp-text-lg);
@@ -917,10 +924,14 @@
         color: var(--swp-text-primary);
     }
 
+    // The grand total is informational, not a "Paid" state. Green only when the
+    // invoice is actually paid; on the edit screen this stays neutral text.
     .totals-value {
         font-size: var(--swp-text-2xl);
         font-weight: var(--swp-font-bold);
-        color: var(--swp-primary);
+        color: var(--swp-text-primary);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
     }
 }
 

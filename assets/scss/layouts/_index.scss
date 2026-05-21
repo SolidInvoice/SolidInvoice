@@ -8,5 +8,6 @@
  * This file imports only custom extensions when needed.
  */
 
-// No custom layout overrides currently needed.
-// Tabler provides comprehensive page layout styling.
+// Vertical sidebar recolor — converts Tabler's dark slate sidebar into
+// the quiet light panel prescribed by DESIGN.md (gray-100 behind the body).
+@import 'navbar-vertical';

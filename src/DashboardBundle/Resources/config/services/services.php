@@ -84,18 +84,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'location' => 'left_column',
         ]);
 
-    // Right column - Attention, Actions, Distribution
+    // Right column - Actions, Attention, Distribution
     $services
-        ->set(AttentionRequiredWidget::class)
+        ->set(QuickActionsWidget::class)
         ->tag('dashboard.widget', [
-            'priority' => 100,
+            'priority' => 110,
             'location' => 'right_column',
         ]);
 
     $services
-        ->set(QuickActionsWidget::class)
+        ->set(AttentionRequiredWidget::class)
         ->tag('dashboard.widget', [
-            'priority' => 95,
+            'priority' => 100,
             'location' => 'right_column',
         ]);
 

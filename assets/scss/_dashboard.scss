@@ -25,32 +25,33 @@
 
 .stat-card {
     background: var(--swp-surface);
+    border: 1px solid var(--swp-border-light);
     border-radius: var(--swp-radius-lg);
     box-shadow: var(--swp-shadow-sm);
-    padding: var(--swp-space-5);
+    padding: var(--swp-space-6);
     transition: transform var(--swp-transition-fast),
-                box-shadow var(--swp-transition-fast);
-    border-left: 4px solid transparent;
+                box-shadow var(--swp-transition-fast),
+                border-color var(--swp-transition-fast);
 
     &:hover {
         transform: translateY(-2px);
         box-shadow: var(--swp-shadow-md);
     }
 
+    // State carried by icon tint + value color; the surface stays calm.
+    // Overdue gets a faint warm tint to draw the eye without a side stripe.
     &--danger {
-        border-left-color: var(--swp-danger);
+        background: var(--swp-danger-lighter);
+        border-color: var(--swp-danger-light);
     }
 
-    &--success {
-        border-left-color: var(--swp-success);
-    }
+    @media (prefers-reduced-motion: reduce) {
 
-    &--warning {
-        border-left-color: var(--swp-warning);
-    }
-
-    &--primary {
-        border-left-color: var(--swp-primary);
+        &,
+        &:hover {
+            transition: none;
+            transform: none;
+        }
     }
 }
 
@@ -103,31 +104,34 @@
 }
 
 .stat-label {
-    font-size: 0.8125rem;
+    font-size: var(--swp-text-xs);
     color: var(--swp-text-muted);
-    font-weight: 500;
+    font-weight: var(--swp-font-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.025em;
+    letter-spacing: var(--swp-tracking-wider);
 }
 
 .stat-value {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: var(--swp-text-2xl);
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     line-height: 1.2;
+    letter-spacing: var(--swp-tracking-tight);
+    font-variant-numeric: tabular-nums;
 
     &--success {
-        color: var(--swp-success);
+        color: var(--swp-success-hover);
     }
 
     &--danger {
-        color: var(--swp-danger);
+        color: var(--swp-danger-hover);
     }
 }
 
 .stat-subvalue {
-    font-size: 0.8125rem;
+    font-size: var(--swp-text-sm);
     color: var(--swp-text-muted);
+    font-variant-numeric: tabular-nums;
 }
 
 // =============================================================================
@@ -168,17 +172,20 @@
 .dashboard-donut-total {
     display: block;
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     line-height: 1;
+    letter-spacing: var(--swp-tracking-tight);
+    font-variant-numeric: tabular-nums;
 }
 
 .dashboard-donut-label {
     display: block;
-    font-size: 0.75rem;
+    font-size: var(--swp-text-xs);
     color: var(--swp-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--swp-tracking-wider);
+    font-weight: var(--swp-font-semibold);
     margin-top: var(--swp-space-1);
 }
 
@@ -249,10 +256,10 @@
     display: flex;
     align-items: center;
     gap: var(--swp-space-2);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--swp-text-xs);
+    font-weight: var(--swp-font-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.025em;
+    letter-spacing: var(--swp-tracking-wider);
     margin-bottom: var(--swp-space-3);
 
     &--danger {
@@ -314,10 +321,16 @@
     border-radius: var(--swp-radius-md);
     text-decoration: none;
     color: inherit;
-    transition: background-color var(--swp-transition-fast);
+    transition: background-color var(--swp-transition-fast),
+                box-shadow var(--swp-transition-fast);
 
     &:hover {
         background: var(--swp-surface-hover);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
     }
 
     &--danger {
@@ -325,6 +338,10 @@
 
         &:hover {
             background: var(--swp-danger-light);
+        }
+
+        &:focus-visible {
+            box-shadow: var(--swp-ring-danger);
         }
     }
 }
@@ -338,9 +355,10 @@
 }
 
 .attention-item-id {
-    font-weight: 600;
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
-    font-family: monospace;
+    font-family: var(--swp-font-mono);
+    font-size: var(--swp-text-sm);
 }
 
 .attention-item-client {
@@ -358,13 +376,15 @@
 }
 
 .attention-item-amount {
-    font-weight: 600;
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
+    font-variant-numeric: tabular-nums;
 }
 
 .attention-item-date {
-    font-size: 0.8125rem;
+    font-size: var(--swp-text-sm);
     color: var(--swp-text-muted);
+    font-variant-numeric: tabular-nums;
 }
 
 // =============================================================================
@@ -387,10 +407,17 @@
     border-radius: var(--swp-radius-md);
     text-decoration: none;
     transition: transform var(--swp-transition-fast),
+                background-color var(--swp-transition-fast),
                 box-shadow var(--swp-transition-fast);
 
     &:hover {
         transform: translateY(-2px);
+        box-shadow: var(--swp-shadow-md);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
     }
 
     &--primary {
@@ -399,7 +426,6 @@
 
         &:hover {
             background: var(--swp-primary-light);
-            box-shadow: var(--swp-shadow-primary);
         }
     }
 
@@ -427,6 +453,15 @@
 
         &:hover {
             background: var(--swp-success-light);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        &,
+        &:hover {
+            transition: none;
+            transform: none;
         }
     }
 }
@@ -535,14 +570,21 @@
 }
 
 .activity-doc-link {
-    font-weight: 600;
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-primary);
     text-decoration: none;
-    font-family: monospace;
+    font-family: var(--swp-font-mono);
+    font-size: var(--swp-text-sm);
+    border-radius: var(--swp-radius-sm);
 
     &:hover {
         text-decoration: underline;
         color: var(--swp-primary-dark);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
     }
 }
 
@@ -560,9 +602,16 @@
     gap: 4px;
     color: var(--swp-text-secondary);
     text-decoration: none;
+    border-radius: var(--swp-radius-sm);
     transition: color var(--swp-transition-fast);
 
     &:hover {
+        color: var(--swp-primary);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
         color: var(--swp-primary);
     }
 
@@ -576,8 +625,9 @@
 }
 
 .activity-amount {
-    font-weight: 600;
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
+    font-variant-numeric: tabular-nums;
 }
 
 .activity-time {
@@ -592,12 +642,19 @@
 
 .activity-action-btn {
     opacity: 0.4;
-    transition: opacity var(--swp-transition-fast);
+    transition: opacity var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
     padding: var(--swp-space-2);
 
     &:hover {
         opacity: 1;
         background: var(--swp-surface-hover);
+    }
+
+    &:focus-visible {
+        opacity: 1;
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
     }
 }
 

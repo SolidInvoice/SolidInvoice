@@ -1,0 +1,143 @@
+/**
+ * SolidInvoice — Vertical Navbar (Sidebar)
+ *
+ * Tabler ships `.navbar-vertical.navbar-dark` as a heavy slate panel (gray-800)
+ * that PRODUCT.md names as the AdminLTE anti-reference the rewrite is escaping.
+ * This file recolors the sidebar one shade lighter (gray-700) so it still
+ * carries presence, but uses tinted neutrals and a green-tinted active state
+ * to differentiate it from generic Tabler admin output.
+ *
+ * Selector specificity targets `.navbar-vertical` so Tabler's mobile-collapse,
+ * drawer, and dropdown rules continue to apply.
+ */
+
+.navbar.navbar-vertical,
+.navbar.navbar-vertical.navbar-dark {
+    background-color: var(--swp-gray-700);
+    color: var(--swp-gray-300);
+    border-right: 1px solid var(--swp-gray-800);
+    box-shadow: none;
+
+    // Brand: logo + product name at the top of the sidebar.
+    .navbar-brand {
+        color: var(--swp-gray-50);
+        font-weight: var(--swp-font-semibold);
+    }
+
+    .navbar-brand-autodark {
+        filter: none;
+    }
+
+    // Nav link default state.
+    .nav-link {
+        color: var(--swp-gray-300);
+        border-radius: var(--swp-radius-md);
+        transition: background-color var(--swp-transition-fast),
+                    color var(--swp-transition-fast);
+
+        .nav-link-icon,
+        .nav-link-title {
+            color: inherit;
+        }
+
+        // Hover: lift to a slightly lighter slate, brighter text.
+        &:hover {
+            background-color: var(--swp-gray-600);
+            color: var(--swp-gray-50);
+        }
+
+        // Keyboard focus halo, per The Focus Halo Rule.
+        &:focus-visible {
+            outline: none;
+            box-shadow: var(--swp-ring-primary);
+            color: var(--swp-gray-50);
+        }
+
+        // Active route: tinted background pulled from Trust Green family.
+        // Looks like a soft "button" on the dark slate without any side stripe.
+        &.active {
+            background-color: var(--swp-primary-light);
+            color: var(--swp-primary-dark);
+            font-weight: var(--swp-font-semibold);
+
+            .nav-link-icon,
+            .nav-link-title {
+                color: var(--swp-primary-dark);
+            }
+
+            &:hover {
+                background-color: var(--swp-primary-light);
+                color: var(--swp-primary-dark);
+            }
+        }
+    }
+
+    // Section labels (if any) sit quietly.
+    .nav-subtitle,
+    .nav-header {
+        color: var(--swp-gray-400);
+        text-transform: uppercase;
+        letter-spacing: var(--swp-tracking-wider);
+        font-weight: var(--swp-font-semibold);
+        font-size: var(--swp-text-xs);
+    }
+
+    // Dropdown chevrons match secondary text.
+    .nav-link-toggle,
+    .dropdown-toggle::after {
+        color: var(--swp-gray-400);
+    }
+
+    // Nested dropdown menus inside the sidebar lift onto a paper surface so
+    // submenu content reads like content, not nav chrome.
+    .navbar-nav .dropdown-menu {
+        background-color: var(--swp-surface);
+        border: 1px solid var(--swp-border-light);
+        box-shadow: var(--swp-shadow-md);
+
+        .dropdown-item {
+            color: var(--swp-text-secondary);
+            border-radius: var(--swp-radius-sm);
+
+            &:hover,
+            &:focus {
+                background-color: var(--swp-surface-hover);
+                color: var(--swp-text-primary);
+            }
+
+            &.active {
+                background-color: var(--swp-primary-light);
+                color: var(--swp-primary-dark);
+            }
+        }
+    }
+
+    // Collapsed expand toggle (hamburger on mobile).
+    .navbar-toggler {
+        color: var(--swp-gray-200);
+        border-color: var(--swp-gray-600);
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: var(--swp-ring-primary);
+        }
+    }
+}
+
+// Mobile horizontal navbar (rendered when the vertical drawer collapses).
+.navbar.navbar-vertical.navbar-expand-lg .navbar-collapse {
+
+    @media (width < 992px) {
+        background-color: var(--swp-gray-700);
+    }
+}
+
+// Quote/avoid: when the system enables dark mode preference, leave the dark
+// theme to Tabler. Light overrides scope only to default theme.
+@media (prefers-color-scheme: dark) {
+
+    [data-bs-theme="dark"] .navbar.navbar-vertical.navbar-dark {
+        // Intentionally empty: defer to Tabler dark defaults until SolidInvoice
+        // ships a documented dark theme.
+    }
+}

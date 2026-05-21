@@ -274,7 +274,7 @@
 
                         {# Data Columns #}
                         {% for column in this.getVisibleColumns() %}
-                            <th>
+                            <th{% if column.getCellClass() %} class="{{ column.getCellClass() }}"{% endif %}>
                                 {% if column.isSortable %}
                                     <a
                                         href="#"
@@ -284,11 +284,13 @@
                                         data-action="live#update:prevent"
                                     >
                                         {{ column.getLabel|trans }}
-                                        {% if sortField is same as column.getSortableField %}
-                                            <span class="datagrid-sort-icon">
+                                        <span class="datagrid-sort-icon{{ sortField is same as column.getSortableField ? ' is-active' : '' }}">
+                                            {% if sortField is same as column.getSortableField %}
                                                 {{ ux_icon(sortDir is same as('asc') ? 'tabler:chevron-up' : 'tabler:chevron-down', {width: 14, height: 14}) }}
-                                            </span>
-                                        {% endif %}
+                                            {% else %}
+                                                {{ ux_icon('tabler:selector', {width: 14, height: 14}) }}
+                                            {% endif %}
+                                        </span>
                                     </a>
                                 {% else %}
                                     {{ column.getLabel|trans }}
