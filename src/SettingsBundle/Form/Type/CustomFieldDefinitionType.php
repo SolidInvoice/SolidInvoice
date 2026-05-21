@@ -32,16 +32,6 @@ final class CustomFieldDefinitionType extends AbstractType
             ->add('label', TextType::class, [
                 'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 125)],
             ])
-            ->add('fieldKey', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(max: 64),
-                    new Assert\Regex(
-                        pattern: '/^[a-z][a-z0-9_]*$/',
-                        message: 'Use lowercase letters, digits, and underscores; must start with a letter.',
-                    ),
-                ],
-            ])
             ->add('type', EnumType::class, [
                 'class' => CFType::class,
                 'choice_label' => static fn (CFType $t): string => $t->label(),
@@ -53,6 +43,8 @@ final class CustomFieldDefinitionType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'required' => false,
+                'label' => false,
+                'prototype_name' => '__option_name__',
             ]);
     }
 

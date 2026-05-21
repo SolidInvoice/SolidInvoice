@@ -121,7 +121,6 @@ class ClientType extends AbstractType
             ]
         );
 
-
         $builder->add('customFields', CustomFieldValueCollectionType::class, [
             'target' => CustomFieldTarget::CLIENT,
             'parent_record' => $options['data'] ?? null,

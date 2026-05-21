@@ -31,10 +31,14 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use function in_array;
 
 #[ApiResource(
     shortName: 'CustomField',
@@ -67,6 +71,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(name: 'idx_cf_company_target_pos', columns: ['company_id', 'target', 'position'])]
 #[ORM\UniqueConstraint(name: 'uq_cf_company_target_key', columns: ['company_id', 'target', 'field_key'])]
 #[ORM\Entity(repositoryClass: CustomFieldRepository::class)]
+#[UniqueEntity(fields: ['company', 'target', 'label'], errorPath: 'label', message: 'A custom field with this label already exists for the selected target.')]
+#[UniqueEntity(fields: ['company', 'target', 'fieldKey'], errorPath: 'label', message: 'A custom field with a similar label already exists for the selected target.')]
 class CustomField
 {
     final public const TABLE_NAME = 'custom_field';
@@ -149,6 +155,7 @@ class CustomField
     public function setLabel(string $label): self
     {
         $this->label = $label;
+        $this->fieldKey = (new AsciiSlugger())->slug($label, '_')->lower()->toString();
 
         return $this;
     }
@@ -217,5 +224,18 @@ class CustomField
         $this->position = $position;
 
         return $this;
+    }
+
+    #[Assert\Callback]
+    public function validateOptions(ExecutionContextInterface $context): void
+    {
+        if (! in_array($this->type, [CustomFieldType::SELECT, CustomFieldType::MULTI_SELECT], true)) {
+            return;
+        }
+        if ($this->options === null || $this->options === []) {
+            $context->buildViolation('At least one option is required for select fields.')
+                ->atPath('options')
+                ->addViolation();
+        }
     }
 }

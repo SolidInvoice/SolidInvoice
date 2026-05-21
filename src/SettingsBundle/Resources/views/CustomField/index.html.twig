@@ -36,8 +36,7 @@
                         </div>
                     {% else %}
                         <div class="list-group list-group-flush"
-                             data-controller="custom-field-reorder"
-                             data-custom-field-reorder-url-value="{{ path('_settings_custom_fields_reorder') }}">
+                             {{ stimulus_controller('custom-field-reorder', {url: path('_settings_custom_fields_reorder')}) }}>
                             {% for row in rows %}
                                 <div class="list-group-item d-flex align-items-center" data-id="{{ row.field.id }}">
                                     <span class="me-3 text-muted" data-handle>{{ ux_icon('tabler:grip-vertical') }}</span>
@@ -45,7 +44,7 @@
                                         <strong>{{ row.field.label }}</strong>
                                         <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
                                         {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'Required'|trans }}</span>{% endif %}
-                                        <div class="text-muted small">field_key: <code>{{ row.field.fieldKey }}</code> · {{ row.count }} {{ 'values'|trans }}</div>
+                                        <div class="text-muted small">{{ row.count }} {{ 'values'|trans }}</div>
                                     </div>
                                     <a href="{{ path('_settings_custom_fields_edit', {id: row.field.id}) }}" class="btn btn-sm btn-link">{{ 'Edit'|trans }}</a>
                                     <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
