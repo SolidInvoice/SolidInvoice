@@ -69,14 +69,20 @@
     font-weight: 700;
     line-height: 1.2;
     color: var(--swp-text-primary);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
 }
 
+// Income received is a positive state; success green earns its place.
 .client-stat-value--success {
     color: var(--swp-success);
 }
 
+// "Outstanding" means owed, not overdue. Amber, not danger red.
+// Kept --danger alias so any legacy callers still render meaningfully.
+.client-stat-value--warning,
 .client-stat-value--danger {
-    color: var(--swp-danger);
+    color: var(--swp-warning);
 }
 
 .client-stat-badges {

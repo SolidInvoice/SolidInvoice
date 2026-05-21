@@ -45,7 +45,7 @@ enum QuoteStatus: string implements HasStatusLabel
             self::Draft => 'secondary',
             self::Pending => 'yellow',
             self::Accepted => 'green',
-            self::Cancelled => 'teal',
+            self::Cancelled => 'gray',
             self::Declined => 'red',
             self::Archived => 'purple',
         };

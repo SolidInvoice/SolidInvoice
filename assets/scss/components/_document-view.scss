@@ -206,6 +206,26 @@
     overflow: hidden;
 }
 
+// Pill-shaped status chips wherever they appear inside the document view or its
+// sidebar, matching the design system spec (radius-full, weight 500, 2px x 10px).
+.doc-card .badge,
+.doc-page-header .badge,
+.doc-view-header .badge,
+.doc-view-sidebar .badge {
+    border-radius: var(--swp-radius-full);
+    padding: 2px 10px;
+    font-weight: var(--swp-font-medium, 500);
+    letter-spacing: 0;
+
+    // Tabler binds `text-gray-fg` to amber via --bs-secondary; this makes a
+    // `Cancelled` chip read as a warning. Pin the neutral chip to slate so the
+    // colour matches what the class name implies.
+    &.bg-gray.text-gray-fg {
+        background-color: var(--swp-gray-100);
+        color: var(--swp-text-secondary);
+    }
+}
+
 // Document Header (From/To)
 
 .doc-header-from-to {
@@ -368,6 +388,7 @@
             &.column-total {
                 text-align: right;
                 white-space: nowrap;
+                font-variant-numeric: tabular-nums;
             }
 
             &.column-total {
@@ -478,18 +499,24 @@
         font-weight: var(--swp-font-medium, 500);
         color: var(--swp-text-primary);
         text-align: right;
+        font-variant-numeric: tabular-nums;
     }
 }
 
-.totals-row-discount .totals-value,
+// Payments received are money in; success green earns its place here.
 .totals-row-payment .totals-value {
     color: var(--swp-success);
+}
+
+// A discount is a deduction, not a success state. Stay neutral; quiet $0 cases.
+.totals-row-discount .totals-value {
+    color: var(--swp-text-muted);
 }
 
 .totals-row-final {
     margin-top: var(--swp-space-2);
     padding-top: var(--swp-space-3);
-    border-top: 2px solid var(--swp-border);
+    border-top: 1px solid var(--swp-border-dark);
 
     .totals-label {
         font-size: var(--swp-text-base, 1rem);
@@ -497,10 +524,13 @@
         color: var(--swp-text-primary);
     }
 
+    // Grand total is informational; green is reserved for actually-paid states
+    // (handled by .summary-item-paid / .totals-row-payment).
     .totals-value {
         font-size: var(--swp-text-lg, 1.125rem);
         font-weight: var(--swp-font-bold, 700);
-        color: var(--swp-primary);
+        color: var(--swp-text-primary);
+        letter-spacing: -0.01em;
     }
 }
 
@@ -630,14 +660,19 @@
         font-size: var(--swp-text-sm, 0.875rem);
         font-weight: var(--swp-font-medium, 500);
         color: var(--swp-text-primary);
+        font-variant-numeric: tabular-nums;
     }
 
+    // Amount field: total invoice value. Neutral by default; the status row carries
+    // the "Paid / Overdue / Draft" meaning. Green here would double-encode.
     .summary-value-amount {
         font-size: var(--swp-text-base, 1rem);
         font-weight: var(--swp-font-bold, 700);
-        color: var(--swp-primary);
+        color: var(--swp-text-primary);
+        letter-spacing: -0.01em;
     }
 
+    // Balance still owed: amber attention is appropriate.
     .summary-value-balance {
         font-weight: var(--swp-font-bold, 700);
         color: var(--swp-warning);

@@ -49,7 +49,7 @@ enum InvoiceStatus: string implements HasStatusLabel
             self::Paid => 'green',
             self::Active => 'green',
             self::Overdue => 'red',
-            self::Cancelled => 'teal',
+            self::Cancelled => 'gray',
             self::Archived => 'purple',
         };
     }

@@ -86,7 +86,7 @@
     <div class="row row-cards mb-4">
         {# Total Income #}
         <div class="col-sm-6 col-lg-3">
-            <twig:Ui:Card status="success" statusPosition="top">
+            <twig:Ui:Card>
                 <div class="client-stat-label">{{ 'client.stats.income'|trans }}</div>
                 <div class="client-stat-value client-stat-value--success">
                     {{ total_income(client)|formatCurrency(client.currency) }}
@@ -96,9 +96,9 @@
 
         {# Outstanding #}
         <div class="col-sm-6 col-lg-3">
-            <twig:Ui:Card status="danger" statusPosition="top">
+            <twig:Ui:Card>
                 <div class="client-stat-label">{{ 'client.stats.outstanding'|trans }}</div>
-                <div class="client-stat-value client-stat-value--danger">
+                <div class="client-stat-value client-stat-value--warning">
                     {{ total_outstanding(client)|formatCurrency(client.currency) }}
                 </div>
             </twig:Ui:Card>
@@ -133,7 +133,7 @@
        CLIENT CREDIT SECTION
        ======================================================================== #}
     <div class="client-credit-card">
-        <twig:Ui:Card status="info" statusPosition="start">
+        <twig:Ui:Card>
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div class="client-credit-icon">
