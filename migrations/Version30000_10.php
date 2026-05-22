@@ -20,7 +20,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\Migrations\Exception\IrreversibleMigration;
 
-final class Version30100_1 extends AbstractMigration
+final class Version30000_10 extends AbstractMigration
 {
     /**
      * @var list<array<string, mixed>>
