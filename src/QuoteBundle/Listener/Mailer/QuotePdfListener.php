@@ -26,7 +26,7 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuotePdfListenerTest
  */
-readonly class QuotePdfListener implements EventSubscriberInterface
+final readonly class QuotePdfListener implements EventSubscriberInterface
 {
     public function __construct(
         private Generator $generator,
