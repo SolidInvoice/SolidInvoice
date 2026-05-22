@@ -121,10 +121,12 @@ class ClientType extends AbstractType
             ]
         );
 
-        $builder->add('customFields', CustomFieldValueCollectionType::class, [
-            'target' => CustomFieldTarget::CLIENT,
-            'parent_record' => $options['data'] ?? null,
-        ]);
+        if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $builder->add('customFields', CustomFieldValueCollectionType::class, [
+                'target' => CustomFieldTarget::CLIENT,
+                'parent_record' => $options['data'] ?? null,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

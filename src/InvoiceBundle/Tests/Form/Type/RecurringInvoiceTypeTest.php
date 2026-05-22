@@ -31,6 +31,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
@@ -94,7 +95,10 @@ class RecurringInvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry);
+        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate->method('isEnabled')->willReturn(true);
+
+        $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry, $featureGate);
         $itemType = new ItemType($this->registry);
         $customFieldsType = new CustomFieldValueCollectionType(
             M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),

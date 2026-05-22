@@ -28,7 +28,9 @@ use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,6 +74,7 @@ final class CreateQuote extends AbstractController
         private readonly Calculator $calculator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly CustomFieldFormWriter $customFieldFormWriter,
+        private readonly FeatureGate $featureGate,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -222,7 +225,7 @@ final class CreateQuote extends AbstractController
             }
 
             $quoteId = $this->quote->getId();
-            if ($quoteId instanceof Ulid) {
+            if ($quoteId instanceof Ulid && $this->featureGate->isEnabled(Feature::CustomFields->value) && $form->has('customFields')) {
                 $this->customFieldFormWriter->write(
                     $form->get('customFields'),
                     CustomFieldTarget::QUOTE,
@@ -261,7 +264,7 @@ final class CreateQuote extends AbstractController
         $this->entityManager->flush();
 
         $newQuoteId = $quote->getId();
-        if ($newQuoteId instanceof Ulid) {
+        if ($newQuoteId instanceof Ulid && $this->featureGate->isEnabled(Feature::CustomFields->value) && $form->has('customFields')) {
             $this->customFieldFormWriter->write(
                 $form->get('customFields'),
                 CustomFieldTarget::QUOTE,

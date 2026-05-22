@@ -156,6 +156,16 @@ final readonly class FeatureCopyRegistry
                     'Branded portal and email links',
                 ],
             ),
+            Feature::CustomFields => new FeatureCopy(
+                icon: 'tabler:forms',
+                headline: 'Capture the data that matters to you',
+                description: 'Add your own fields to clients, contacts, invoices and quotes — track project codes, PO numbers or anything unique to how you bill.',
+                bullets: [
+                    'Custom fields on clients, contacts, invoices and quotes',
+                    'Show internal-only or client-visible on PDFs',
+                    'Auto-copied on recurring invoices and quote→invoice conversion',
+                ],
+            ),
         };
     }
 }

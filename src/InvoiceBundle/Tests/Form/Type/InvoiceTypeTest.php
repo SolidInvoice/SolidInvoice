@@ -32,6 +32,7 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
@@ -106,12 +107,15 @@ class InvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn('random_number');
 
+        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate->method('isEnabled')->willReturn(true);
+
         $invoiceType = new InvoiceType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string
             {
                 return '10';
             }
-        }]), $systemConfig));
+        }]), $systemConfig), $featureGate);
         $itemType = new ItemType($this->registry);
 
         $customFieldsType = new CustomFieldValueCollectionType(

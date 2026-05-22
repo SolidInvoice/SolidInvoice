@@ -76,6 +76,10 @@ saas:
             type: boolean
             default: true
             description: 'Host SolidInvoice on a custom domain or subdomain.'
+        custom_fields:
+            type: boolean
+            default: true
+            description: 'Capture and display custom fields on clients, contacts, invoices, quotes and recurring invoices.'
 
 ui:
     templates:

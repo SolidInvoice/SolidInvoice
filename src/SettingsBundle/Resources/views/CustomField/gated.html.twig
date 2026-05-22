@@ -1,0 +1,18 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ "Custom fields"|trans }}{% endblock title %}
+
+{% block content %}
+    {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
+        feature: 'custom_fields',
+    } only %}
+{% endblock content %}

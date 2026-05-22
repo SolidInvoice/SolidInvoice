@@ -31,6 +31,7 @@ use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
@@ -101,12 +102,15 @@ class QuoteTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn('random_number');
 
+        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate->method('isEnabled')->willReturn(true);
+
         $type = new QuoteType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string
             {
                 return '10';
             }
-        }]), $systemConfig));
+        }]), $systemConfig), $featureGate);
         $itemType = new ItemType($this->registry);
 
         $customFieldsType = new CustomFieldValueCollectionType(

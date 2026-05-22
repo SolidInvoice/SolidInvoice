@@ -15,6 +15,8 @@ namespace SolidInvoice\SettingsBundle\Action\CustomField;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,11 +27,16 @@ final class EditAction extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
     public function __invoke(Request $request, string $id): Response
     {
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            return $this->render('@SolidInvoiceSettings/CustomField/gated.html.twig');
+        }
+
         $field = $this->em->find(CustomField::class, Ulid::fromString($id));
         if ($field === null) {
             throw new NotFoundHttpException('Field not found.');

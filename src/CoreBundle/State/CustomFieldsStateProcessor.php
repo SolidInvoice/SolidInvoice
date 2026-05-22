@@ -26,6 +26,8 @@ use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use function is_array;
 
@@ -45,12 +47,17 @@ final class CustomFieldsStateProcessor implements ProcessorInterface
         private readonly ProcessorInterface $inner,
         private readonly EntityManagerInterface $em,
         private readonly CustomFieldValueRepository $values,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         $result = $this->inner->process($data, $operation, $uriVariables, $context);
+
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            return $result;
+        }
 
         if (
             ! $data instanceof Client

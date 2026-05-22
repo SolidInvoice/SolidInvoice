@@ -16,6 +16,8 @@ namespace SolidInvoice\ClientBundle\Form\Type;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,16 +27,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ContactType extends AbstractType
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('firstName', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('lastName', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('email');
 
-        $builder->add('customFields', CustomFieldValueCollectionType::class, [
-            'target' => CustomFieldTarget::CONTACT,
-            'parent_record' => $options['data'] ?? null,
-        ]);
+        if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $builder->add('customFields', CustomFieldValueCollectionType::class, [
+                'target' => CustomFieldTarget::CONTACT,
+                'parent_record' => $options['data'] ?? null,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -17,33 +17,32 @@ use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
-use Symfony\Bridge\Twig\Attribute\Template;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
-final class IndexAction
+final class IndexAction extends AbstractController
 {
     public function __construct(
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldValueRepository $values,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
-    /**
-     * @return array{
-     *     client: list<array{field: CustomField, count: int}>,
-     *     contact: list<array{field: CustomField, count: int}>,
-     *     invoice: list<array{field: CustomField, count: int}>,
-     *     quote: list<array{field: CustomField, count: int}>
-     * }
-     */
-    #[Template('@SolidInvoiceSettings/CustomField/index.html.twig')]
-    public function __invoke(): array
+    public function __invoke(): Response
     {
-        return [
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            return $this->render('@SolidInvoiceSettings/CustomField/gated.html.twig');
+        }
+
+        return $this->render('@SolidInvoiceSettings/CustomField/index.html.twig', [
             'client' => $this->buildRows(CustomFieldTarget::CLIENT),
             'contact' => $this->buildRows(CustomFieldTarget::CONTACT),
             'invoice' => $this->buildRows(CustomFieldTarget::INVOICE),
             'quote' => $this->buildRows(CustomFieldTarget::QUOTE),
-        ];
+        ]);
     }
 
     /**
