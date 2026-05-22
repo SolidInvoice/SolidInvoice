@@ -18,6 +18,8 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -55,15 +57,19 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
     public function testGatedPlanAlwaysShowsPoweredByEvenWhenSettingHides(): void
     {
-        // Persist hide_powered_by=1 in the database (the "I'm hiding it" intent
-        // baked in from a prior plan that had custom_branding).
-        $this->seedHidePoweredBy('1');
+        self::ensureKernelShutdown();
+        self::bootKernel();
 
         // SaaS plan that does NOT include custom_branding: the gate is OFF.
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
         self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        // Persist hide_powered_by=1 in the database (the "I'm hiding it" intent
+        // baked in from a prior plan that had custom_branding).
+        $this->seedHidePoweredBy('1');
 
         $output = $this->renderPdfTemplate();
 
@@ -73,11 +79,15 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
     public function testUngatedPlanRespectsHidePoweredBySetting(): void
     {
-        $this->seedHidePoweredBy('1');
+        self::ensureKernelShutdown();
+        self::bootKernel();
 
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('1');
 
         $output = $this->renderPdfTemplate();
 
@@ -87,11 +97,15 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
     public function testUngatedPlanShowsPoweredByWhenSettingNotHidden(): void
     {
-        $this->seedHidePoweredBy('0');
+        self::ensureKernelShutdown();
+        self::bootKernel();
 
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('0');
 
         $output = $this->renderPdfTemplate();
 
@@ -112,6 +126,17 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $output = $this->renderPdfTemplate();
 
         self::assertStringNotContainsString('Powered By', $output);
+    }
+
+    private function reloadCompany(): void
+    {
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        \assert($em instanceof EntityManagerInterface);
+        $company = $em->find(Company::class, $this->company->getId());
+        \assert($company instanceof Company);
+        $this->company = $company;
+
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
 
     private function seedHidePoweredBy(string $value): void

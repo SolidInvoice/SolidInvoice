@@ -17,6 +17,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldStagingStore;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -46,6 +47,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldTypeResolver $resolver,
         private readonly FeatureGate $featureGate,
+        private readonly CustomFieldStagingStore $stagingStore,
     ) {
     }
 
@@ -106,7 +108,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         }
 
         if ($staged !== [] || is_array($payload)) {
-            $object->__customFieldsStaged = $staged;
+            $this->stagingStore->stage($object, $staged);
         }
 
         return $object;

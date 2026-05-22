@@ -64,7 +64,10 @@
                         </div>
                     {% else %}
                         <div class="list-group list-group-flush custom-field-list"
-                             {{ stimulus_controller('custom-field-reorder', {url: path('_settings_custom_fields_reorder')}) }}>
+                             {{ stimulus_controller('custom-field-reorder', {
+                                 url: path('_settings_custom_fields_reorder'),
+                                 csrfToken: csrf_token('custom_field_reorder'),
+                             }) }}>
                             {% for row in rows %}
                                 <div class="list-group-item d-flex align-items-center custom-field-row" data-id="{{ row.field.id }}">
                                     <span class="custom-field-handle me-3" data-handle title="{{ 'Drag to reorder'|trans }}" aria-label="{{ 'Drag to reorder'|trans }}">

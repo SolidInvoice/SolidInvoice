@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use Throwable;
 use function is_array;
 use function json_decode;
 
@@ -46,12 +47,24 @@ final class CustomFieldReorderAction
         $repo = $this->em->getRepository(CustomField::class);
         foreach ($payload as $row) {
             if (! is_array($row) || ! isset($row['id'], $row['position'])) {
-                continue;
+                return new JsonResponse(['error' => 'Each row must contain "id" and "position".'], 400);
             }
-            $field = $repo->find(Ulid::fromString((string) $row['id']));
-            if ($field !== null) {
-                $field->setPosition((int) $row['position']);
+
+            try {
+                $id = Ulid::fromString((string) $row['id']);
+            } catch (Throwable) {
+                return new JsonResponse(['error' => 'Invalid custom field id.'], 400);
             }
+
+            // CompanyFilter is global, so find() will return null for any ULID
+            // outside the current company — we surface that as 404 instead of
+            // silently skipping, to avoid leaking the existence of foreign IDs.
+            $field = $repo->find($id);
+            if ($field === null) {
+                return new JsonResponse(['error' => 'Custom field not found.'], 404);
+            }
+
+            $field->setPosition((int) $row['position']);
         }
         $this->em->flush();
 

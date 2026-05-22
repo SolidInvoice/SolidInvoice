@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * @extends ServiceEntityRepository<CustomFieldValue>
+ * @extends EntityRepository<CustomFieldValue>
  */
-class CustomFieldValueRepository extends ServiceEntityRepository
+class CustomFieldValueRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -64,6 +64,40 @@ class CustomFieldValueRepository extends ServiceEntityRepository
             ->setParameter('field', $field->getId(), UlidType::NAME)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @param iterable<CustomField> $fields
+     * @return array<string, int> map of field-id-string => count
+     */
+    public function countByFields(iterable $fields): array
+    {
+        $ids = [];
+        foreach ($fields as $field) {
+            $id = $field->getId();
+            if ($id !== null) {
+                $ids[] = $id;
+            }
+        }
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('v')
+            ->select('IDENTITY(v.field) AS field_id, COUNT(v.id) AS total')
+            ->andWhere('v.field IN (:fields)')
+            ->setParameter('fields', $ids)
+            ->groupBy('v.field')
+            ->getQuery()
+            ->getArrayResult();
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(string) $row['field_id']] = (int) $row['total'];
+        }
+
+        return $counts;
     }
 
     public function deleteForRecord(CustomFieldTarget $target, Ulid $targetId): void

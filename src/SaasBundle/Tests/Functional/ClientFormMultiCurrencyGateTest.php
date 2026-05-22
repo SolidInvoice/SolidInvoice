@@ -39,6 +39,9 @@ final class ClientFormMultiCurrencyGateTest extends KernelTestCase
 
     public function testFormGatesCurrencyCodeFieldWhenFeatureDisabled(): void
     {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $key !== Feature::MultiCurrency->value);
@@ -70,6 +73,9 @@ final class ClientFormMultiCurrencyGateTest extends KernelTestCase
 
     public function testFormKeepsCurrencyCodeFieldEditableWhenFeatureEnabled(): void
     {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
 

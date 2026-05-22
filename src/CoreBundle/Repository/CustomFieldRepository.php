@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 /**
- * @extends ServiceEntityRepository<CustomField>
+ * @extends EntityRepository<CustomField>
  */
-class CustomFieldRepository extends ServiceEntityRepository
+class CustomFieldRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -36,6 +38,23 @@ class CustomFieldRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('f')
             ->andWhere('f.target = :target')
             ->setParameter('target', $target->value)
+            ->orderBy('f.position', 'ASC')
+            ->addOrderBy('f.label', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return list<CustomField>
+     */
+    public function findByTargetAndCompany(CustomFieldTarget $target, Ulid $companyId): array
+    {
+        return $this->createQueryBuilder('f')
+            ->innerJoin('f.company', 'c')
+            ->andWhere('f.target = :target')
+            ->andWhere('c.id = :company')
+            ->setParameter('target', $target->value)
+            ->setParameter('company', $companyId, UlidType::NAME)
             ->orderBy('f.position', 'ASC')
             ->addOrderBy('f.label', 'ASC')
             ->getQuery()

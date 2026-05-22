@@ -39,11 +39,7 @@ final class ClientCreateQuotaGateTest extends WebTestCase
 
     public function testAtLimitRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['total_clients' => false]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['total_clients' => false]));
 
         $client->request('GET', '/clients/add');
 
@@ -53,11 +49,7 @@ final class ClientCreateQuotaGateTest extends WebTestCase
 
     public function testUnderQuotaBypassesBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['total_clients' => true]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['total_clients' => true]));
 
         $client->request('GET', '/clients/add');
 
@@ -98,11 +90,15 @@ final class ClientCreateQuotaGateTest extends WebTestCase
         return $featureGate;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);

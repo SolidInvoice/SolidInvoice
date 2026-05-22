@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Serializer\Normalizer;
 
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
@@ -28,20 +29,39 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
 #[AutoconfigureTag('serializer.normalizer')]
-final class CustomFieldsNormalizer implements NormalizerAwareInterface, NormalizerInterface
+#[AutoconfigureTag('kernel.reset', ['method' => 'reset'])]
+final class CustomFieldsNormalizer implements NormalizerAwareInterface, NormalizerInterface, ResetInterface
 {
     use NormalizerAwareTrait;
 
     private const SKIP_KEY = self::class . '::skip';
+
+    /**
+     * Per-request cache of field definitions keyed by target value. There are
+     * only four target values (client/contact/invoice/quote) and a paginated
+     * GET runs this normalizer once per item, so caching saves N-1 queries
+     * per page. Cleared via {@see reset()} between requests in long-running
+     * processes (FrankenPHP / worker mode) to avoid leaking stale defs.
+     *
+     * @var array<string, list<CustomField>>
+     */
+    private array $defsByTarget = [];
 
     public function __construct(
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldValueRepository $values,
         private readonly CustomFieldTypeResolver $resolver,
         private readonly FeatureGate $featureGate,
+        private readonly CompanySelectorInterface $companySelector,
     ) {
+    }
+
+    public function reset(): void
+    {
+        $this->defsByTarget = [];
     }
 
     /**
@@ -63,7 +83,13 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
             $object instanceof Quote => CustomFieldTarget::QUOTE,
             default => CustomFieldTarget::CONTACT,
         };
-        $defs = $this->fields->findByTargetOrdered($target);
+        $companyId = $this->companySelector->getCompany();
+        if ($companyId === null) {
+            $data['customFields'] = (object) [];
+            return $data;
+        }
+        $cacheKey = $target->value . ':' . $companyId->toBase32();
+        $defs = $this->defsByTarget[$cacheKey] ??= $this->fields->findByTargetAndCompany($target, $companyId);
 
         if ($defs === [] || $object->getId() === null) {
             $data['customFields'] = (object) [];

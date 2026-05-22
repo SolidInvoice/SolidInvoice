@@ -18,6 +18,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
+use SolidInvoice\ClientBundle\Form\Type\ContactType;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -106,12 +107,13 @@ class ClientTypeTest extends FormTestCase
 
         $valueRepo = M::mock(CustomFieldValueRepository::class);
         $em = M::mock(EntityManagerInterface::class);
+        $em->shouldReceive('contains')->zeroOrMoreTimes()->andReturn(false);
 
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([
                 new ClientType($featureGate, $systemConfig),
-                new ContactDetailType(),
+                new ContactType($featureGate),
                 new CustomFieldValueCollectionType($fieldRepo, $valueRepo, new CustomFieldTypeResolver(), $em),
                 new CurrencyType('en'),
             ], []),

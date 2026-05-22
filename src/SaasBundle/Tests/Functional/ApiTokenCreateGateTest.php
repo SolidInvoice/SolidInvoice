@@ -40,11 +40,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
 
     public function testGatedIndexRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['rest_api_access' => false]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['rest_api_access' => false]));
 
         $client->request('GET', '/profile/api');
 
@@ -57,11 +53,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
 
     public function testUngatedIndexRendersTokenList(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['rest_api_access' => true]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['rest_api_access' => true]));
 
         $client->request('GET', '/profile/api');
 
@@ -101,11 +93,15 @@ final class ApiTokenCreateGateTest extends WebTestCase
         return $featureGate;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);

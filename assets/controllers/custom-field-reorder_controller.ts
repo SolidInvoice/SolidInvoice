@@ -3,8 +3,9 @@ import Sortable from 'sortablejs';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller<HTMLElement> {
-    static values = { url: String };
+    static values = { url: String, csrfToken: String };
     declare urlValue: string;
+    declare csrfTokenValue: string;
 
     private sortable: Sortable | null = null;
 
@@ -27,7 +28,10 @@ export default class extends Controller<HTMLElement> {
 
         const res = await fetch(this.urlValue, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': this.csrfTokenValue,
+            },
             body: JSON.stringify(payload),
             credentials: 'same-origin',
         });

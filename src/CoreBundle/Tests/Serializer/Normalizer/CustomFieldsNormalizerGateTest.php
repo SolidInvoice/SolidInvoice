@@ -15,10 +15,12 @@ namespace SolidInvoice\CoreBundle\Tests\Serializer\Normalizer;
 
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Serializer\Normalizer\CustomFieldsDenormalizer;
 use SolidInvoice\CoreBundle\Serializer\Normalizer\CustomFieldsNormalizer;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldStagingStore;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
@@ -42,6 +44,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
             $this->createMock(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
+            $this->createMock(CompanySelectorInterface::class),
         );
 
         self::assertFalse($normalizer->supportsNormalization(new Client()));
@@ -57,6 +60,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
             $this->createMock(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
+            $this->createMock(CompanySelectorInterface::class),
         );
 
         self::assertTrue($normalizer->supportsNormalization(new Client()));
@@ -72,6 +76,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
             $this->createMock(CustomFieldRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
+            new CustomFieldStagingStore(),
         );
         $denormalizer->setDenormalizer($inner);
 
@@ -94,6 +99,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
             $this->createMock(CustomFieldRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
+            new CustomFieldStagingStore(),
         );
         $denormalizer->setDenormalizer($inner);
 

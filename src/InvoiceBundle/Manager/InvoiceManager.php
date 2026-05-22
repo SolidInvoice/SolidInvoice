@@ -199,6 +199,8 @@ class InvoiceManager
                 CustomFieldTarget::INVOICE,
                 $invoiceId,
             );
+
+            return;
         }
 
         $recurring = $invoice->getRecurringInvoice();

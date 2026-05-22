@@ -73,6 +73,7 @@ final class ClientTest extends ApiTestCase
             'payments' => [],
             'addresses' => [],
             'credit' => 125.5,
+            'customFields' => [],
         ], $result);
     }
 
@@ -152,6 +153,7 @@ final class ClientTest extends ApiTestCase
                 $this->getIriFromResource($address),
             ],
             'credit' => 0,
+            'customFields' => [],
         ], $data);
     }
 
@@ -198,6 +200,7 @@ final class ClientTest extends ApiTestCase
             'payments' => [],
             'addresses' => [],
             'credit' => 0,
+            'customFields' => [],
         ], $data);
     }
 }

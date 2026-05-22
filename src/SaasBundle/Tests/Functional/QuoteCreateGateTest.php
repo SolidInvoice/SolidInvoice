@@ -39,11 +39,7 @@ final class QuoteCreateGateTest extends WebTestCase
 
     public function testGatedCreateRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['quotes' => false]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['quotes' => false]));
 
         $client->request('GET', '/quotes/create');
 
@@ -53,11 +49,7 @@ final class QuoteCreateGateTest extends WebTestCase
 
     public function testUngatedCreateBypassesBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['quotes' => true]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['quotes' => true]));
 
         $client->request('GET', '/quotes/create');
 
@@ -96,11 +88,15 @@ final class QuoteCreateGateTest extends WebTestCase
         return $featureGate;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);
