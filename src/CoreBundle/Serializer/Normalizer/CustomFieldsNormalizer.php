@@ -22,6 +22,8 @@ use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -38,6 +40,7 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldValueRepository $values,
         private readonly CustomFieldTypeResolver $resolver,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -85,6 +88,9 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         if ($context[self::SKIP_KEY] ?? false) {
+            return false;
+        }
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
             return false;
         }
         return $data instanceof Client

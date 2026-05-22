@@ -24,8 +24,10 @@ use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -43,7 +45,8 @@ class RecurringInvoiceType extends AbstractType
 {
     public function __construct(
         private readonly SystemConfig $systemConfig,
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -141,10 +144,12 @@ class RecurringInvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('customFields', CustomFieldValueCollectionType::class, [
-            'target' => CustomFieldTarget::INVOICE,
-            'parent_record' => $options['data'] ?? null,
-        ]);
+        if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $builder->add('customFields', CustomFieldValueCollectionType::class, [
+                'target' => CustomFieldTarget::INVOICE,
+                'parent_record' => $options['data'] ?? null,
+            ]);
+        }
     }
 
     public function getBlockPrefix(): string

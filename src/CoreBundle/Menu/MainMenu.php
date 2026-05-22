@@ -15,11 +15,20 @@ namespace SolidInvoice\CoreBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 
 class MainMenu
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+        private readonly UpgradePromptProvider $upgradePromptProvider,
+    ) {
+    }
+
     #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_SYSTEM->value)]
     public function sidebar(ItemInterface $menu): void
     {
@@ -37,7 +46,7 @@ class MainMenu
         self::api($section);
         self::users($section);
         self::settings($section);
-        self::customFields($section);
+        $this->addCustomFields($section);
     }
 
     public static function user(ItemInterface $item, User $user): ItemInterface
@@ -144,13 +153,23 @@ class MainMenu
         );
     }
 
-    public static function customFields(ItemInterface $item): ItemInterface
+    public function addCustomFields(ItemInterface $item): ItemInterface
     {
+        $extras = ['icon' => 'forms'];
+
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $planLabel = $this->upgradePromptProvider->menuLabel(Feature::CustomFields->value);
+
+            if ($planLabel !== null) {
+                $extras['plan_label'] = $planLabel;
+            }
+        }
+
         return $item->addChild(
             'menu.top.custom_fields',
             [
                 'route' => '_settings_custom_fields',
-                'extras' => ['icon' => 'forms'],
+                'extras' => $extras,
             ],
         );
     }

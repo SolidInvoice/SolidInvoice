@@ -29,8 +29,10 @@ use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
@@ -53,6 +55,7 @@ class QuoteType extends AbstractType
     public function __construct(
         private readonly SystemConfig $systemConfig,
         private readonly BillingIdGenerator $billingIdGenerator,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -214,11 +217,13 @@ class QuoteType extends AbstractType
             );
         });
 
-        $builder->add('customFields', CustomFieldValueCollectionType::class, [
-            'target' => CustomFieldTarget::QUOTE,
-            'existing_target_id' => $options['existing_target_id'],
-            'manage_persistence' => false,
-        ]);
+        if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $builder->add('customFields', CustomFieldValueCollectionType::class, [
+                'target' => CustomFieldTarget::QUOTE,
+                'existing_target_id' => $options['existing_target_id'],
+                'manage_persistence' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

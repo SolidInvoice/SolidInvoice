@@ -16,14 +16,25 @@ namespace SolidInvoice\SettingsBundle\Action\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CreateAction extends AbstractController
 {
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+    ) {
+    }
+
     public function __invoke(Request $request): Response
     {
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            return $this->render('@SolidInvoiceSettings/CustomField/gated.html.twig');
+        }
+
         $target = CustomFieldTarget::from((string) $request->query->get('target', CustomFieldTarget::CLIENT->value));
 
         $field = (new CustomField())

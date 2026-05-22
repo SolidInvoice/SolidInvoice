@@ -37,6 +37,7 @@ enum Feature: string
     case RestApiAccess = 'rest_api_access';
     case McpAccess = 'mcp_access';
     case CustomDomain = 'custom_domain';
+    case CustomFields = 'custom_fields';
 
     public function getType(): FeatureType
     {
@@ -52,7 +53,8 @@ enum Feature: string
             self::CustomBranding,
             self::RestApiAccess,
             self::McpAccess,
-            self::CustomDomain => FeatureType::BOOLEAN,
+            self::CustomDomain,
+            self::CustomFields => FeatureType::BOOLEAN,
         };
     }
 }

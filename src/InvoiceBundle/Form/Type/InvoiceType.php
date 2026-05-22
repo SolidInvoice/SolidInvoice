@@ -29,8 +29,10 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
@@ -55,6 +57,7 @@ class InvoiceType extends AbstractType
     public function __construct(
         private readonly SystemConfig $systemConfig,
         private readonly BillingIdGenerator $billingIdGenerator,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -214,11 +217,13 @@ class InvoiceType extends AbstractType
             );
         });
 
-        $builder->add('customFields', CustomFieldValueCollectionType::class, [
-            'target' => CustomFieldTarget::INVOICE,
-            'existing_target_id' => $options['existing_target_id'],
-            'manage_persistence' => false,
-        ]);
+        if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            $builder->add('customFields', CustomFieldValueCollectionType::class, [
+                'target' => CustomFieldTarget::INVOICE,
+                'existing_target_id' => $options['existing_target_id'],
+                'manage_persistence' => false,
+            ]);
+        }
     }
 
     public function getBlockPrefix(): string

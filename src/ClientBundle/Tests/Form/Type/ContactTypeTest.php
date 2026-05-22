@@ -23,6 +23,7 @@ use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ContactTypeTest extends FormTestCase
@@ -59,9 +60,14 @@ class ContactTypeTest extends FormTestCase
 
         $valueRepo = M::mock(CustomFieldValueRepository::class);
         $em = M::mock(EntityManagerInterface::class);
+        $em->shouldReceive('contains')->zeroOrMoreTimes()->andReturn(false);
+
+        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate->method('isEnabled')->willReturn(true);
 
         return [
             new PreloadedExtension([
+                new ContactType($featureGate),
                 new CustomFieldValueCollectionType($fieldRepo, $valueRepo, new CustomFieldTypeResolver(), $em),
             ], []),
         ];

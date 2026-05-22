@@ -20,7 +20,9 @@ use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\Form\Type\CustomFieldDefinitionType;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -47,6 +49,7 @@ final class CustomFieldForm extends AbstractController
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldValueRepository $values,
         private readonly CompanySelector $companies,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -76,6 +79,10 @@ final class CustomFieldForm extends AbstractController
     #[LiveAction]
     public function save(): RedirectResponse
     {
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            throw $this->createAccessDeniedException('Custom fields are not available on the current plan.');
+        }
+
         $this->submitForm();
 
         /** @var CustomField $field */

@@ -21,6 +21,8 @@ use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -43,6 +45,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
     public function __construct(
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldTypeResolver $resolver,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -51,6 +54,15 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         $payload = is_array($data) ? ($data['customFields'] ?? null) : null;
         if (is_array($data)) {
             unset($data['customFields']);
+        }
+
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            if (is_array($payload) && $payload !== []) {
+                throw new UnexpectedValueException('Custom fields are not available on the current plan.');
+            }
+
+            $context[self::SKIP_KEY] = true;
+            return $this->denormalizer->denormalize($data, $type, $format, $context);
         }
 
         $context[self::SKIP_KEY] = true;

@@ -19,6 +19,8 @@ use SolidInvoice\CoreBundle\Enum\CustomFieldVisibility;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
+use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Uid\Ulid;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
@@ -35,6 +37,7 @@ final class CustomFieldsListPdf
         private readonly CustomFieldRepository $fields,
         private readonly CustomFieldValueRepository $values,
         private readonly CustomFieldTypeResolver $resolver,
+        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -43,6 +46,10 @@ final class CustomFieldsListPdf
      */
     public function getRows(): array
     {
+        if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
+            return [];
+        }
+
         $defs = $this->fields->findByTargetOrdered($this->target);
         if ($this->visibility !== null) {
             $defs = array_values(array_filter(

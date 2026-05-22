@@ -29,7 +29,9 @@ use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\MoneyBundle\Calculator;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +77,7 @@ final class CreateInvoice extends AbstractController
         private readonly Calculator $calculator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly CustomFieldFormWriter $customFieldFormWriter,
+        private readonly FeatureGate $featureGate,
     ) {
         $this->dto = new InvoiceFormDTO();
     }
@@ -221,7 +224,7 @@ final class CreateInvoice extends AbstractController
             }
 
             $invoiceId = $this->invoice->getId();
-            if ($invoiceId instanceof Ulid) {
+            if ($invoiceId instanceof Ulid && $this->featureGate->isEnabled(Feature::CustomFields->value) && $form->has('customFields')) {
                 $this->customFieldFormWriter->write(
                     $form->get('customFields'),
                     CustomFieldTarget::INVOICE,
@@ -259,7 +262,7 @@ final class CreateInvoice extends AbstractController
         $this->entityManager->flush();
 
         $newInvoiceId = $invoice->getId();
-        if ($newInvoiceId instanceof Ulid) {
+        if ($newInvoiceId instanceof Ulid && $this->featureGate->isEnabled(Feature::CustomFields->value) && $form->has('customFields')) {
             $this->customFieldFormWriter->write(
                 $form->get('customFields'),
                 CustomFieldTarget::INVOICE,
