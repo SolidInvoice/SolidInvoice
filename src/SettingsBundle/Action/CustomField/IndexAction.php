@@ -50,10 +50,21 @@ final class IndexAction extends AbstractController
      */
     private function buildRows(CustomFieldTarget $target): array
     {
-        $rows = [];
-        foreach ($this->fields->findByTargetOrdered($target) as $field) {
-            $rows[] = ['field' => $field, 'count' => $this->values->countByField($field)];
+        $fields = $this->fields->findByTargetOrdered($target);
+        if ($fields === []) {
+            return [];
         }
+
+        $counts = $this->values->countByFields($fields);
+
+        $rows = [];
+        foreach ($fields as $field) {
+            $rows[] = [
+                'field' => $field,
+                'count' => $counts[(string) $field->getId()] ?? 0,
+            ];
+        }
+
         return $rows;
     }
 }

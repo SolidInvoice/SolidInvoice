@@ -40,11 +40,7 @@ final class PaymentSettingsGateTest extends WebTestCase
 
     public function testGatedSettingsRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['online_payments' => false]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['online_payments' => false]));
 
         $client->request('GET', '/payments/methods');
 
@@ -54,11 +50,7 @@ final class PaymentSettingsGateTest extends WebTestCase
 
     public function testUngatedSettingsBypassesBanner(): void
     {
-        $client = $this->bootClient();
-
-        $featureGate = $this->buildFeatureGate(['online_payments' => true]);
-
-        self::getContainer()->set(FeatureGate::class, $featureGate);
+        $client = $this->bootClient($this->buildFeatureGate(['online_payments' => true]));
 
         $client->request('GET', '/payments/methods');
 
@@ -97,11 +89,15 @@ final class PaymentSettingsGateTest extends WebTestCase
         return $featureGate;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);

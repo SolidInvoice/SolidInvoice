@@ -22,15 +22,20 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 use function is_array;
 use function json_decode;
 
 final class ReorderAction
 {
+    public const string CSRF_TOKEN_ID = 'custom_field_reorder';
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly FeatureGate $featureGate,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 
@@ -38,6 +43,11 @@ final class ReorderAction
     {
         if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
             return new JsonResponse(['error' => 'Custom fields are not available on the current plan.'], 403);
+        }
+
+        $token = (string) $request->headers->get('X-CSRF-Token', '');
+        if (! $this->csrfTokenManager->isTokenValid(new CsrfToken(self::CSRF_TOKEN_ID, $token))) {
+            return new JsonResponse(['error' => 'Invalid CSRF token.'], 403);
         }
 
         try {

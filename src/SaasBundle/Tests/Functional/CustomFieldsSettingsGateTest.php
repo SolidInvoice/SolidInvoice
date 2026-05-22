@@ -37,8 +37,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
 
     public function testGatedIndexRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-        self::getContainer()->set(FeatureGate::class, $this->buildFeatureGate(['custom_fields' => false]));
+        $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
         $client->request('GET', '/settings/custom-fields');
 
@@ -48,8 +47,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
 
     public function testGatedCreateRendersUpgradeBanner(): void
     {
-        $client = $this->bootClient();
-        self::getContainer()->set(FeatureGate::class, $this->buildFeatureGate(['custom_fields' => false]));
+        $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
         $client->request('GET', '/settings/custom-fields/new');
 
@@ -59,8 +57,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
 
     public function testGatedReorderReturnsForbidden(): void
     {
-        $client = $this->bootClient();
-        self::getContainer()->set(FeatureGate::class, $this->buildFeatureGate(['custom_fields' => false]));
+        $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
         $client->request('POST', '/settings/custom-fields/reorder', content: '[]');
 
@@ -69,8 +66,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
 
     public function testUngatedIndexBypassesBanner(): void
     {
-        $client = $this->bootClient();
-        self::getContainer()->set(FeatureGate::class, $this->buildFeatureGate(['custom_fields' => true]));
+        $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => true]));
 
         $client->request('GET', '/settings/custom-fields');
 
@@ -92,11 +88,15 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
         return $featureGate;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);

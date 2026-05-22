@@ -41,10 +41,6 @@ final class McpAuthorizeGateTest extends WebTestCase
 
     public function testRendersUpgradePageWhenMcpAccessFeatureDeniedForAllCompanies(): void
     {
-        $client = $this->bootClient();
-
-        $oauthClient = $this->seedOAuthClient();
-
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $key !== 'mcp_access');
@@ -56,8 +52,9 @@ final class McpAuthorizeGateTest extends WebTestCase
                 : '');
         $upgradeProvider->method('menuLabel')->willReturn('Business');
 
-        self::getContainer()->set(FeatureGate::class, $featureGate);
-        self::getContainer()->set(UpgradePromptProvider::class, $upgradeProvider);
+        $client = $this->bootClient($featureGate, $upgradeProvider);
+
+        $oauthClient = $this->seedOAuthClient();
 
         $client->request('GET', '/oauth/authorize', [
             'response_type' => 'code',
@@ -88,11 +85,19 @@ final class McpAuthorizeGateTest extends WebTestCase
         return $client;
     }
 
-    private function bootClient(): KernelBrowser
+    private function bootClient(?FeatureGate $featureGate = null, ?UpgradePromptProvider $upgradeProvider = null): KernelBrowser
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
+
+        if ($featureGate !== null) {
+            self::getContainer()->set(FeatureGate::class, $featureGate);
+        }
+
+        if ($upgradeProvider !== null) {
+            self::getContainer()->set(UpgradePromptProvider::class, $upgradeProvider);
+        }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
         \assert($user instanceof User);

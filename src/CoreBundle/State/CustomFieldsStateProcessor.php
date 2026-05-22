@@ -23,17 +23,17 @@ use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldStagingStore;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use function is_array;
 
 /**
- * Reads `__customFieldsStaged` from Client/Contact (set by CustomFieldsDenormalizer)
- * and persists `CustomFieldValue` rows after the parent is saved.
+ * Persists the custom-field values staged in {@see CustomFieldStagingStore} by
+ * the denormalizer once the parent entity has been written.
  *
  * @implements ProcessorInterface<object, object>
  */
@@ -48,6 +48,7 @@ final class CustomFieldsStateProcessor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
         private readonly CustomFieldValueRepository $values,
         private readonly FeatureGate $featureGate,
+        private readonly CustomFieldStagingStore $stagingStore,
     ) {
     }
 
@@ -69,8 +70,8 @@ final class CustomFieldsStateProcessor implements ProcessorInterface
             return $result;
         }
 
-        $staged = $data->__customFieldsStaged ?? null;
-        if (! is_array($staged) || $data->getId() === null) {
+        $staged = $this->stagingStore->pull($data);
+        if ($staged === null || $data->getId() === null) {
             return $result;
         }
 

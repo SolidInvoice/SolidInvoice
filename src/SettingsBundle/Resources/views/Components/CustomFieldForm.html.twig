@@ -78,8 +78,12 @@
                             <div class="d-flex align-items-center mb-2">
                                 <div class="flex-fill">{{ form_widget(option) }}</div>
                                 {{ form_widget(option.vars.button_delete, {
-                                    label: ux_icon('tabler:trash', {width: 18, height: 18})|raw,
+                                    label: ux_icon('tabler:trash', {width: 18, height: 18, 'aria-hidden': 'true'})|raw,
                                     label_html: true,
+                                    attr: {
+                                        'aria-label': 'Delete option'|trans,
+                                        title: 'Delete option'|trans,
+                                    },
                                 }) }}
                             </div>
                         {% endfor %}
@@ -90,9 +94,12 @@
                 </div>
             {% endif %}
 
-            <div class="mt-4">
-                <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
-                <a class="btn btn-link" href="{{ path('_settings_custom_fields') }}">{{ 'Cancel'|trans }}</a>
+            <div class="mt-4 d-flex justify-content-between">
+                <a class="btn btn-outline-secondary" href="{{ path('_settings_custom_fields') }}">{{ 'Cancel'|trans }}</a>
+                <button class="btn btn-primary btn-save" type="submit" aria-label="{{ 'Save'|trans }}">
+                    {{ ux_icon('tabler:device-floppy', {width: 18, height: 18, 'aria-hidden': 'true'}) }}
+                    {{ 'Save'|trans }}
+                </button>
             </div>
         {{ form_end(form) }}
     </div>

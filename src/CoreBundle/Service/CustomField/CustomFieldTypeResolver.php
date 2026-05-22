@@ -137,7 +137,7 @@ final class CustomFieldTypeResolver
             CustomFieldType::SELECT
                 => $stored,
             CustomFieldType::NUMBER => str_contains($stored, '.') ? (float) $stored : (int) $stored,
-            CustomFieldType::DATE => $stored,
+            CustomFieldType::DATE => new \DateTimeImmutable($stored),
             CustomFieldType::CHECKBOX => $stored === '1',
             CustomFieldType::MULTI_SELECT => json_decode($stored, true, flags: JSON_THROW_ON_ERROR),
             null => throw new \LogicException('CustomField type must not be null.'),

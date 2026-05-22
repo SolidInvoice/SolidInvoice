@@ -40,7 +40,12 @@
                         </dt>
                         <dd class="custom-fields-value mb-0">
                             {% if t == 'url' %}
-                                <a href="{{ row.raw }}" target="_blank" rel="noopener">{{ row.raw }}</a>
+                                {% set safeUrl = row.raw matches '#^(https?:)?//#i' ? row.raw : null %}
+                                {% if safeUrl %}
+                                    <a href="{{ safeUrl }}" target="_blank" rel="noopener noreferrer">{{ row.raw }}</a>
+                                {% else %}
+                                    {{ row.raw }}
+                                {% endif %}
                             {% elseif t == 'email' %}
                                 <a href="mailto:{{ row.raw }}">{{ row.raw }}</a>
                             {% elseif t == 'date' %}
