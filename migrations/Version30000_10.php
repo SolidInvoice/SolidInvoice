@@ -68,6 +68,8 @@ final class Version30100_1 extends AbstractMigration
         $cf->addColumn('options', 'json', ['notnull' => false]);
         $cf->addColumn('required', 'boolean', ['notnull' => true, 'default' => false]);
         $cf->addColumn('position', 'integer', ['notnull' => true, 'default' => 0]);
+        $cf->addColumn('default_value', 'text', ['notnull' => false]);
+        $cf->addColumn('visibility', 'string', ['length' => 32, 'notnull' => false]);
         $cf->addColumn('created', 'datetime', ['notnull' => true]);
         $cf->addColumn('updated', 'datetime', ['notnull' => true]);
         $cf->setPrimaryKey(['id']);
