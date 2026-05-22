@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\Mailer\QuotePdfListener;
@@ -38,9 +39,11 @@ class QuotePdfListenerTest extends TestCase
         $mailer->shouldReceive('send');
 
         $twig = M::mock(Environment::class);
-        $twig->shouldReceive('render')
+
+        $resolver = M::mock(BillingTemplateResolver::class);
+        $resolver->shouldReceive('render')
             ->once()
-            ->with('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote])
+            ->with($twig, 'quote', 'pdf', ['quote' => $quote])
             ->andReturn('<p>Quote #1</p>');
 
         $pdf = M::mock(Generator::class);
@@ -51,7 +54,7 @@ class QuotePdfListenerTest extends TestCase
             ->with('<p>Quote #1</p>')
             ->andReturn('PDF: Quote #1');
 
-        $listener = new QuotePdfListener($pdf, $twig);
+        $listener = new QuotePdfListener($pdf, $resolver, $twig);
 
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));

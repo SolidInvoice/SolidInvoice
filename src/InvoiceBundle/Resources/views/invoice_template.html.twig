@@ -31,24 +31,24 @@
                                 </p>
                             {% endfor %}
 
-                            {% set email = setting('system/company/contact_details/email') %}
+                            {% set email = template_setting('system/company/contact_details/email') %}
                             {% if email is not empty %}
                                 <p>
                                     {{ icon('envelope-o') }} {{ email }}
                                 </p>
                             {% endif %}
 
-                            {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
+                            {% set phoneNumber = template_setting('system/company/contact_details/phone_number') %}
                             {% if phoneNumber is not empty %}
                                 <p>
                                     {{ icon('phone') }} {{ phoneNumber }}
                                 </p>
                             {% endif %}
 
-                            {% set address = setting('system/company/contact_details/address', null, true) %}
+                            {% set address = template_setting('system/company/contact_details/address', null, true) %}
                             {% if address is not null and address|filter(v => v) is not empty %}
                                 <address>
-                                    {{ icon('map-marker') }} {{ address(address)|replace({"\n": ", "}) }}
+                                    {{ icon('map-marker') }} {{ template_address(address)|replace({"\n": ", "}) }}
                                 </address>
                             {% endif %}
                         </div>

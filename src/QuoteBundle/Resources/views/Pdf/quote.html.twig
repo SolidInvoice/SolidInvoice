@@ -29,7 +29,7 @@
 {# ============================================================================
    STATUS WATERMARK
 ============================================================================ #}
-{% if setting('quote/watermark') %}
+{% if template_setting('quote/watermark') %}
     <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
@@ -38,7 +38,7 @@
 ============================================================================ #}
 <pagefooter
     name="footer"
-    content-left="{{ setting('system/general/hide_powered_by') is not same as ('1') ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
+    content-left="{{ template_setting('system/general/hide_powered_by') is not same as ('1') ? 'powered_by'|trans ~ ' ' ~ app_name }}"
     content-right="{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}"
     line="on"
     footer-style="border-top: 1px solid #e2e8f0; font-size: 8pt; color: #64748b; padding-top: 8px;"
@@ -51,7 +51,7 @@
     <tr>
         <td class="header-left" style="width: 50%; vertical-align: top;">
             {# Company Logo #}
-            {% set logo = setting('system/company/logo') %}
+            {% set logo = template_setting('system/company/logo') %}
             {% if logo is not empty %}
                 <div class="company-logo" style="margin-bottom: 10px;">
                     {{ app_logo(50) }}
@@ -69,19 +69,19 @@
                     <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
                 {% endfor %}
 
-                {% set email = setting('system/company/contact_details/email') %}
+                {% set email = template_setting('system/company/contact_details/email') %}
                 {% if email is not empty %}
                     <div>{{ email }}</div>
                 {% endif %}
 
-                {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
+                {% set phoneNumber = template_setting('system/company/contact_details/phone_number') %}
                 {% if phoneNumber is not empty %}
                     <div>{{ phoneNumber }}</div>
                 {% endif %}
 
-                {% set companyAddress = setting('system/company/contact_details/address', null, true) %}
+                {% set companyAddress = template_setting('system/company/contact_details/address', null, true) %}
                 {% if companyAddress is not empty %}
-                    <div>{{ address(companyAddress)|replace({"\n": ", "}) }}</div>
+                    <div>{{ template_address(companyAddress)|replace({"\n": ", "}) }}</div>
                 {% endif %}
             </div>
         </td>
