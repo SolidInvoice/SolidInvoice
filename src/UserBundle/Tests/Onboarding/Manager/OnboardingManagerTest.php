@@ -207,7 +207,7 @@ final class OnboardingManagerTest extends KernelTestCase
         self::assertCount(1, $user->getCompanies());
         $company = $user->getCompanies()->first();
         self::assertSame('Test Company', $company->getName());
-        self::assertSame('EUR', $company->currency);
+        self::assertSame('EUR', $company->getCurrency());
 
         // Verify no clients or invoices were created
         self::assertCount(0, $this->clientRepository->findBy(['company' => $company]));

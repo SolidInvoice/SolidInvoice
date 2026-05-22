@@ -80,7 +80,7 @@ class Company implements Stringable, SubscribableInterface
     private Collection $users;
 
     #[Assert\NotBlank()]
-    public ?string $currency = '';
+    private ?string $currency = '';
 
     #[ORM\Column(name: 'custom_domain', type: Types::STRING, length: 253, unique: true, nullable: true)]
     #[Assert\Length(max: 253)]
@@ -222,6 +222,18 @@ class Company implements Stringable, SubscribableInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
 
         return $this;
     }

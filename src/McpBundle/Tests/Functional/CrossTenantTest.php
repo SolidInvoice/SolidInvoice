@@ -152,7 +152,7 @@ final class CrossTenantTest extends KernelTestCase
 
         $company = new Company();
         $company->setName('Foreign Co');
-        $company->currency = 'EUR';
+        $company->setCurrency('EUR');
         $em->persist($company);
         $em->flush();
 

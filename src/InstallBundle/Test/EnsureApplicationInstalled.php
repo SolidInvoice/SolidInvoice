@@ -50,7 +50,7 @@ trait EnsureApplicationInstalled
 
         $this->company = new Company();
         $this->company->setName('SolidInvoice');
-        $this->company->currency = 'USD';
+        $this->company->setCurrency('USD');
         $registry->getManager()->persist($this->company);
         $registry->getManager()->flush();
 
