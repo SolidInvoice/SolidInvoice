@@ -135,6 +135,10 @@ return static function (SecurityConfig $config): void {
         ->roles(['PUBLIC_ACCESS']);
 
     $config->accessControl()
+        ->path('^/settings')
+        ->roles(['ROLE_ADMIN']);
+
+    $config->accessControl()
         ->path('^/')
         ->roles(['ROLE_USER']);
 
