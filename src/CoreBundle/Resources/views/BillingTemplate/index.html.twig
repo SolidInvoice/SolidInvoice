@@ -1,0 +1,100 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ 'billing_templates.title'|trans }}{% endblock %}
+
+{% block heading %}
+    <h1>{{ 'billing_templates.title'|trans }}</h1>
+    <p class="text-muted">{{ 'billing_templates.subtitle'|trans }}</p>
+{% endblock %}
+
+{% block content %}
+    {% set variantLabels = {
+        'html': 'billing_templates.variant.html'|trans,
+        'pdf': 'billing_templates.variant.pdf'|trans,
+        'email': 'billing_templates.variant.email'|trans,
+    } %}
+
+    {% set typeLabels = {
+        'invoice': 'billing_templates.type.invoice'|trans,
+        'quote': 'billing_templates.type.quote'|trans,
+    } %}
+
+    {% for type, variants in grouped %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">{{ typeLabels[type] }}</h3>
+            </div>
+            <div class="card-body">
+                {% for variant, templates in variants %}
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h4 class="m-0">{{ variantLabels[variant] }}</h4>
+                            <a class="btn btn-primary btn-sm" href="{{ path('_billing_templates_new', {type: type, variant: variant}) }}">
+                                {{ icon('plus') }} {{ 'billing_templates.action.new'|trans }}
+                            </a>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'billing_templates.list.name'|trans }}</th>
+                                    <th>{{ 'billing_templates.list.kind'|trans }}</th>
+                                    <th>{{ 'billing_templates.list.status'|trans }}</th>
+                                    <th class="text-right">{{ 'billing_templates.list.actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for template in templates %}
+                                    <tr>
+                                        <td>{{ template.name }}</td>
+                                        <td>
+                                            {% if template.system %}
+                                                <span class="badge badge-secondary">{{ 'billing_templates.kind.system'|trans }}</span>
+                                            {% else %}
+                                                <span class="badge badge-info">{{ 'billing_templates.kind.custom'|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if template.active %}
+                                                <span class="badge badge-success">{{ 'billing_templates.status.active'|trans }}</span>
+                                            {% else %}
+                                                <span class="badge badge-light">{{ 'billing_templates.status.inactive'|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-right">
+                                            <a class="btn btn-sm btn-secondary" href="{{ path('_billing_templates_edit', {id: template.id}) }}">
+                                                {{ icon('edit') }} {{ 'billing_templates.action.edit'|trans }}
+                                            </a>
+
+                                            {% if not template.active %}
+                                                <form method="post" action="{{ path('_billing_templates_activate', {id: template.id}) }}" class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('billing_template_activate_' ~ template.id) }}">
+                                                    <button type="submit" class="btn btn-sm btn-success">{{ icon('check') }} {{ 'billing_templates.action.activate'|trans }}</button>
+                                                </form>
+                                            {% endif %}
+
+                                            {% if not template.system and not template.active %}
+                                                <form method="post" action="{{ path('_billing_templates_delete', {id: template.id}) }}" class="d-inline" data-confirm="{{ 'billing_templates.action.delete_confirm'|trans }}">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('billing_template_delete_' ~ template.id) }}">
+                                                    <button type="submit" class="btn btn-sm btn-danger">{{ icon('trash') }} {{ 'billing_templates.action.delete'|trans }}</button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

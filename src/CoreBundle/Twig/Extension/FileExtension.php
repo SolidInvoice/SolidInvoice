@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use const DIRECTORY_SEPARATOR;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use function file_get_contents;
@@ -20,7 +21,6 @@ use function ltrim;
 use function realpath;
 use function rtrim;
 use function str_starts_with;
-use const DIRECTORY_SEPARATOR;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\FileExtensionTest
@@ -47,7 +47,7 @@ final class FileExtension extends AbstractExtension
             return '';
         }
 
-        $relative = ltrim($file, "\\/");
+        $relative = ltrim($file, '\\/');
         $candidate = $publicDir . DIRECTORY_SEPARATOR . $relative;
         $resolved = realpath($candidate);
 

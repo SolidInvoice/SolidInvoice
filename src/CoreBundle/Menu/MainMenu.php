@@ -46,6 +46,7 @@ class MainMenu
         self::api($section);
         self::users($section);
         self::settings($section);
+        self::billingTemplates($section);
         $this->addCustomFields($section);
     }
 
@@ -116,6 +117,17 @@ class MainMenu
             [
                 'route' => '_settings',
                 'extras' => ['icon' => 'settings'],
+            ],
+        );
+    }
+
+    public static function billingTemplates(ItemInterface $item): ItemInterface
+    {
+        return $item->addChild(
+            'menu.top.billing_templates',
+            [
+                'route' => '_billing_templates',
+                'extras' => ['icon' => 'file-code'],
             ],
         );
     }

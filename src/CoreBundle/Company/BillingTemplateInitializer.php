@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Config\LoadsBundleViewTemplate;
 use SolidInvoice\CoreBundle\Entity\BillingTemplate;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\BillingTemplateRepository;
-use function dirname;
 
 /**
  * Backfills the seeded "Default" billing templates on first login for a company.
@@ -31,7 +30,7 @@ use function dirname;
  *
  * @see \SolidInvoice\CoreBundle\Tests\Company\BillingTemplateInitializerTest
  */
-final class BillingTemplateInitializer
+class BillingTemplateInitializer
 {
     use LoadsBundleViewTemplate;
 

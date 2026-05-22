@@ -1,0 +1,63 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}
+    {% if is_new %}
+        {{ 'billing_templates.form.title_new'|trans }}
+    {% else %}
+        {{ 'billing_templates.form.title_edit'|trans({'%name%': template.name}) }}
+    {% endif %}
+{% endblock %}
+
+{% block heading %}
+    <h1>{{ block('title') }}</h1>
+    <p class="text-muted">
+        {{ 'billing_templates.form.subtitle'|trans({
+            '%type%': template.type|title,
+            '%variant%': template.variant|upper,
+        }) }}
+    </p>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form, {attr: {class: 'billing-template-form', 'data-controller': 'billing-template-preview', 'data-billing-template-preview-type-value': template.type, 'data-billing-template-preview-variant-value': template.variant, 'data-billing-template-preview-token-value': csrf_token('billing_template_preview')}}) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.content, {attr: {'data-billing-template-preview-target': 'content'}}) }}
+
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{{ path('_billing_templates') }}" class="btn btn-secondary">{{ 'billing_templates.form.cancel'|trans }}</a>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info" data-action="billing-template-preview#preview">
+                        {{ icon('eye') }} {{ 'billing_templates.form.preview'|trans }}
+                    </button>
+                    {% if template.variant == 'pdf' and can_print_pdf() %}
+                        <button type="button" class="btn btn-info" data-action="billing-template-preview#previewPdf">
+                            {{ icon('file-pdf-o') }} {{ 'billing_templates.form.preview_pdf'|trans }}
+                        </button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">{{ icon('save') }} {{ 'billing_templates.form.save'|trans }}</button>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+            <div class="mt-4" data-billing-template-preview-target="preview" hidden>
+                <h4>{{ 'billing_templates.form.preview_title'|trans }}</h4>
+                <div class="alert alert-danger" data-billing-template-preview-target="error" hidden></div>
+                <iframe data-billing-template-preview-target="iframe" sandbox="allow-same-origin" style="width: 100%; min-height: 600px; border: 1px solid #ced4da; border-radius: 0.25rem;"></iframe>
+            </div>
+        </div>
+    </div>
+{% endblock %}

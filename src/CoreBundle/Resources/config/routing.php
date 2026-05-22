@@ -11,6 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Activate;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Create as CreateBillingTemplate;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Delete;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Edit as EditBillingTemplate;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Index as BillingTemplateIndex;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\Preview;
+use SolidInvoice\CoreBundle\Action\BillingTemplate\PreviewPdf;
 use SolidInvoice\CoreBundle\Action\CreateCompany;
 use SolidInvoice\CoreBundle\Action\DeleteCompany;
 use SolidInvoice\CoreBundle\Action\Search;
@@ -88,4 +95,46 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_export_download', '/profile/exports/{id}/download')
         ->controller(DownloadExport::class)
         ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_billing_templates', '/settings/billing-templates')
+        ->controller(BillingTemplateIndex::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_billing_templates_new', '/settings/billing-templates/new/{type}/{variant}')
+        ->controller(CreateBillingTemplate::class)
+        ->requirements([
+            'type' => 'invoice|quote',
+            'variant' => 'html|pdf|email',
+        ])
+        ->methods(['GET', 'POST']);
+
+    $routingConfigurator
+        ->add('_billing_templates_edit', '/settings/billing-templates/{id}/edit')
+        ->controller(EditBillingTemplate::class)
+        ->requirements(['id' => '[0-9A-Z]{26}'])
+        ->methods(['GET', 'POST']);
+
+    $routingConfigurator
+        ->add('_billing_templates_activate', '/settings/billing-templates/{id}/activate')
+        ->controller(Activate::class)
+        ->requirements(['id' => '[0-9A-Z]{26}'])
+        ->methods(['POST']);
+
+    $routingConfigurator
+        ->add('_billing_templates_delete', '/settings/billing-templates/{id}/delete')
+        ->controller(Delete::class)
+        ->requirements(['id' => '[0-9A-Z]{26}'])
+        ->methods(['POST']);
+
+    $routingConfigurator
+        ->add('_billing_templates_preview', '/settings/billing-templates/preview')
+        ->controller(Preview::class)
+        ->methods(['POST']);
+
+    $routingConfigurator
+        ->add('_billing_templates_preview_pdf', '/settings/billing-templates/preview.pdf')
+        ->controller(PreviewPdf::class)
+        ->methods(['POST']);
 };

@@ -1,0 +1,36 @@
+.code-editor .cm-editor {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    background: #fffdf7;
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.9rem;
+}
+
+.code-editor .cm-content {
+    min-height: 360px;
+    padding: 0.75rem;
+}
+
+.code-editor .cm-scroller {
+    overflow: auto;
+}
+
+.code-editor .cm-gutters {
+    background: #f5f6f8;
+    color: #6c757d;
+    border-right: 1px solid #e0e3e7;
+}
+
+.code-editor .cm-activeLineGutter {
+    background: #eef2f6;
+}
+
+.code-editor .cm-focused {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.code-editor .cm-si-twig {
+    color: #b26a00;
+    font-weight: 600;
+}

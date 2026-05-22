@@ -12,6 +12,7 @@ menu:
         tax: 'Tax Rates'
         users: 'Users'
         custom_fields: 'Custom Fields'
+        billing_templates: 'Billing Templates'
 exception:
     error:
         text: 'The following error occurred:'
@@ -48,3 +49,45 @@ create_new: 'Create New'
 invoice: Invoice
 quote: Quote
 client: Client
+billing_templates:
+    title: 'Billing Templates'
+    subtitle: 'Manage the HTML, PDF and email templates used to render your invoices and quotes. Only one template per variant can be active at a time.'
+    type:
+        invoice: Invoices
+        quote: Quotes
+    variant:
+        html: 'In-App HTML'
+        pdf: PDF
+        email: Email
+    kind:
+        system: System
+        custom: Custom
+    status:
+        active: Active
+        inactive: Inactive
+    list:
+        name: Name
+        kind: Kind
+        status: Status
+        actions: Actions
+    action:
+        new: 'New Template'
+        edit: Edit
+        activate: Activate
+        delete: Delete
+        delete_confirm: 'Delete this template?'
+    form:
+        title_new: 'New Billing Template'
+        title_edit: 'Edit %name%'
+        subtitle: '%type% template for the %variant% variant.'
+        cancel: Cancel
+        save: Save
+        preview: 'Preview'
+        preview_pdf: 'Preview PDF'
+        preview_title: 'Preview'
+    flash:
+        created: 'Template created'
+        updated: 'Template updated'
+        deleted: 'Template deleted'
+        activated: 'Template activated'
+        delete_denied: 'System or active templates cannot be deleted'
