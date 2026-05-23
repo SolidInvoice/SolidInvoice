@@ -79,7 +79,6 @@ final class TwoFactorSettingsTest extends WebTestCase
     {
         $user = $this->createAuthenticatedUser();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -102,7 +101,6 @@ final class TwoFactorSettingsTest extends WebTestCase
     {
         $user = $this->createAuthenticatedUser();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -132,7 +130,6 @@ final class TwoFactorSettingsTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -166,7 +163,6 @@ final class TwoFactorSettingsTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -198,7 +194,6 @@ final class TwoFactorSettingsTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -267,7 +262,6 @@ final class TwoFactorSettingsTest extends WebTestCase
     {
         $user = $this->createAuthenticatedUser();
 
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
@@ -295,13 +289,11 @@ final class TwoFactorSettingsTest extends WebTestCase
             ->assertSuccessful();
 
         // Enable email 2FA
-        // @phpstan-ignore-next-line
         $browser
             ->click('Enable')
             ->wait(1000);
 
         // Close modal
-        // @phpstan-ignore-next-line
         $browser
             ->click('Close')
             ->wait(500);
@@ -339,7 +331,6 @@ final class TwoFactorSettingsTest extends WebTestCase
         self::assertTrue($user->isTotpAuthenticationEnabled());
 
         // Disable email - backup codes should remain (TOTP still enabled)
-        // @phpstan-ignore-next-line
         $this->browser()
             ->actingAs($user)
             ->visit('/profile/2fa')
