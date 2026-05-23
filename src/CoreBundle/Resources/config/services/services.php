@@ -141,16 +141,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // the global `serializer.normalizer.object` would cause Symfony's Serializer
     // constructor to call setSerializer() on the shared instance and silently
     // replace the API Platform serializer reference — breaking JSON-LD output.
-    $services->set('solidinvoice.core.export.serializer', SymfonySerializer::class)
-        ->args([
-            [],
-            [
-                inline_service(JsonEncoder::class),
-                inline_service(CsvEncoder::class),
-                inline_service(XmlEncoder::class),
-            ],
-        ]);
+    $services->set('solidinvoice.core.export.serializer', SymfonySerializer::class)->arg('$normalizers', [])->arg('$encoders', [
+        inline_service(JsonEncoder::class),
+        inline_service(CsvEncoder::class),
+        inline_service(XmlEncoder::class),
+    ]);
 
-    $services->set(ExportSerializer::class)
-        ->args([service('solidinvoice.core.export.serializer')]);
+    $services->set(ExportSerializer::class)->arg('$inner', service('solidinvoice.core.export.serializer'));
 };

@@ -204,6 +204,24 @@ class Company implements Stringable, SubscribableInterface
 
     public function __construct()
     {
+        $this->apiTokenHistories = new ArrayCollection();
+        $this->taxes = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->clients = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+        $this->credit = new ArrayCollection();
+        $this->userInvitations = new ArrayCollection();
+        $this->apiTokens = new ArrayCollection();
+        $this->settings = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
+        $this->quoteLines = new ArrayCollection();
+        $this->paymentMethods = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->userNotifications = new ArrayCollection();
+        $this->transportSettings = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
+        $this->recurringInvoices = new ArrayCollection();
+        $this->invoiceLines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->invoiceReminders = new ArrayCollection();
         $this->id = new Ulid();
@@ -242,7 +260,7 @@ class Company implements Stringable, SubscribableInterface
     public function addUser(User $user): self
     {
         if (! $this->users->contains($user)) {
-            $this->users[] = $user;
+            $this->users->add($user);
             $user->addCompany($this);
         }
 

@@ -20,6 +20,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
+    $services->defaults()->public();
 
     $services
         ->defaults()
@@ -43,6 +44,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$transports', tagged_iterator('solidinvoice_mailer.transport.configurator'));
 
     $services
-        ->get(SystemConfig::class)
-        ->public();
+        ->get(SystemConfig::class);
 };

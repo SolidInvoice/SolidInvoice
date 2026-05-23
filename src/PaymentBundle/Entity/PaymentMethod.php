@@ -190,7 +190,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
 
     public function addPayment(Payment $payment): self
     {
-        $this->payments[] = $payment;
+        $this->payments->add($payment);
 
         return $this;
     }

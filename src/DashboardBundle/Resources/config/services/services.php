@@ -26,6 +26,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
+    $services->defaults()->public();
 
     $services
         ->defaults()
@@ -50,7 +51,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Configure ChecklistManager with tagged items
     $services
         ->set(ChecklistManager::class)
-        ->public()
         ->arg('$items', tagged_iterator('dashboard.checklist_item'));
 
     // Top row - Onboarding Checklist (highest priority)

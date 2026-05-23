@@ -98,7 +98,7 @@ class UserNotification
     public function addTransport(TransportSetting $transport): self
     {
         if (! $this->transports->contains($transport)) {
-            $this->transports[] = $transport;
+            $this->transports->add($transport);
         }
 
         return $this;

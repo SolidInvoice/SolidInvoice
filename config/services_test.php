@@ -34,16 +34,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // Expose wiring-contract aliases publicly so functional smoke tests can
     // assert the correct concrete implementation is resolved.
-    $services->alias('test.' . FeatureGate::class, FeatureGate::class)->public();
-    $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class)->public();
-    $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class)->public();
+    $services->alias('test.' . FeatureGate::class, FeatureGate::class);
+    $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class);
+    $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when SOLIDINVOICE_PLATFORM=saas. Mirror the same gate from bundles.php so
     // the alias is only declared when the underlying service exists.
     if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
-        $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class)->public();
-        $services->alias('test.' . RequiredPlanLabelProvider::class, RequiredPlanLabelProvider::class)->public();
-        $services->alias('test.' . SaasFeatureRestrictedExtension::class, SaasFeatureRestrictedExtension::class)->public();
+        $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class);
+        $services->alias('test.' . RequiredPlanLabelProvider::class, RequiredPlanLabelProvider::class);
+        $services->alias('test.' . SaasFeatureRestrictedExtension::class, SaasFeatureRestrictedExtension::class);
     }
 };

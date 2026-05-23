@@ -147,7 +147,7 @@ class ApiToken
 
     public function addHistory(ApiTokenHistory $history): self
     {
-        $this->history[] = $history;
+        $this->history->add($history);
         $history->setToken($this)
             ->setCompany($this->getCompany());
 

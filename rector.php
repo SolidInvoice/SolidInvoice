@@ -80,6 +80,8 @@ use Rector\Symfony\CodeQuality\Rector\ClassMethod\ActionSuffixRemoverRector;
 use Rector\Symfony\CodeQuality\Rector\ClassMethod\RemoveUnusedRequestParamRector;
 use Rector\Symfony\CodeQuality\Rector\MethodCall\LiteralGetToRequestClassConstantRector;
 use Rector\Symfony\CodeQuality\Rector\MethodCall\ParameterBagTypedGetMethodCallRector;
+use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
+use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony43\Rector\MethodCall\WebTestCaseAssertResponseCodeRector;
@@ -98,6 +100,7 @@ return RectorConfig::configure()
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
     ->withPhpVersion(PhpVersion::PHP_85)
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
+    ->withAttributesSets(symfony: true, doctrine: true, gedmo: true, phpunit: true)
     ->withSets([
         // General
         SetList::CODE_QUALITY,
@@ -116,30 +119,17 @@ return RectorConfig::configure()
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
 
         // Doctrine
-        DoctrineSetList::DOCTRINE_COLLECTION_22,
-        DoctrineSetList::DOCTRINE_COMMON_20,
-        DoctrineSetList::DOCTRINE_DBAL_30,
-        DoctrineSetList::DOCTRINE_DBAL_40,
-        // DoctrineSetList::DOCTRINE_ORM_29,
-        DoctrineSetList::DOCTRINE_ORM_213,
-        DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
+        DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
         DoctrineSetList::DOCTRINE_CODE_QUALITY,
+        DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
+        DoctrineSetList::TYPED_COLLECTIONS,
+        DoctrineSetList::TYPED_COLLECTIONS_DOCBLOCKS,
+        DoctrineSetList::YAML_TO_ANNOTATIONS,
 
         // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
 
         // Symfony
-        SymfonySetList::SYMFONY_40,
-        SymfonySetList::SYMFONY_41,
-        SymfonySetList::SYMFONY_42,
-        SymfonySetList::SYMFONY_43,
-        SymfonySetList::SYMFONY_44,
-        SymfonySetList::SYMFONY_50,
-        SymfonySetList::SYMFONY_51,
-        SymfonySetList::SYMFONY_52,
-        SymfonySetList::SYMFONY_53,
-        SymfonySetList::SYMFONY_54,
-        SymfonySetList::SYMFONY_50_TYPES,
-        SymfonySetList::SYMFONY_52_VALIDATOR_ATTRIBUTES,
+        SymfonySetList::CONFIGS,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
@@ -147,6 +137,8 @@ return RectorConfig::configure()
         // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions
         // to twig attributes, but some twig extensions still extend the AbstractExtension which is prohibited
         GetFunctionsToAsTwigFunctionAttributeRector::class,
+        ServiceSetStringNameToClassNameRector::class,
+        ServiceSettersToSettersAutodiscoveryRector::class,
 
         // Skip for new can be added/adjusted later
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead

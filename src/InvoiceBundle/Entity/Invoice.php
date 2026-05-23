@@ -334,7 +334,7 @@ class Invoice extends BaseInvoice implements Stringable
     public function addLine(LineInterface $line): self
     {
         assert($line instanceof Line);
-        $this->lines[] = $line;
+        $this->lines->add($line);
         $line->setInvoice($this);
         if (isset($this->company)) {
             $line->setCompany($this->getCompany());
@@ -367,7 +367,7 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function addPayment(Payment $payment): self
     {
-        $this->payments[] = $payment;
+        $this->payments->add($payment);
         $payment->setInvoice($this);
         return $this;
     }
@@ -431,7 +431,6 @@ class Invoice extends BaseInvoice implements Stringable
     public function __clone()
     {
         $lines = $this->lines;
-        $this->lines = new ArrayCollection();
         foreach ($lines as $line) {
             $this->lines->add(clone $line);
         }

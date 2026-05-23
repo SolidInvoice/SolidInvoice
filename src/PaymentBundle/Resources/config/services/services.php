@@ -21,6 +21,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
+    $services->defaults()->public();
 
     $services
         ->defaults()
@@ -40,17 +41,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(PaymentDetailsStatusAction::class)
-        ->public()
         ->tag('payum.action', ['factory' => 'paypal_express_checkout', 'prepend' => true]);
 
     $services
         ->set(StatusAction::class)
-        ->public()
         ->tag('payum.action', ['factory' => 'offline']);
 
     $services
         ->set(UpdatePaymentDetailsExtension::class)
-        ->public()
         ->tag('payum.extension', ['all' => true]);
 
     $services->alias(RegistryInterface::class, 'payum');

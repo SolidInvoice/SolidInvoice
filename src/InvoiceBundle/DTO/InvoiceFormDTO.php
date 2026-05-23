@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\DTO;
 
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientName;
@@ -76,23 +77,23 @@ final class InvoiceFormDTO
     public ?string $tax = null;
 
     /**
-     * @var ArrayCollection<int, Line>
+     * @var Collection<int, Line>
      */
     #[Assert\Valid]
     #[Assert\Count(min: 1)]
-    public ArrayCollection $lines;
+    public Collection $lines;
 
     /**
-     * @var ArrayCollection<int, Contact>
+     * @var Collection<int, Contact>
      */
     #[Assert\Count(min: 1, groups: ['existing_client'])]
-    public ArrayCollection $users;
+    public Collection $users;
 
     /**
-     * @var ArrayCollection<int, InvoiceTax>
+     * @var Collection<int, InvoiceTax>
      */
     #[Assert\Valid]
-    public ArrayCollection $invoiceTaxes;
+    public Collection $invoiceTaxes;
 
     public function __construct()
     {

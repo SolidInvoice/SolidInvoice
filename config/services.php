@@ -73,11 +73,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(AppRequirements::class)
         ->autowire(true);
 
-    $services->set(DoctrineEventSubscriberDecorator::class)
-        ->args([
-            service('.inner'),
-            service('SolidWorx\Toggler\ToggleInterface'),
-        ])
+    $services->set(DoctrineEventSubscriberDecorator::class)->arg('$inner', service('.inner'))->arg('$toggle', service('SolidWorx\Toggler\ToggleInterface'))
         ->decorate('meilisearch.search_indexer_subscriber')
         ->tag('doctrine.event_listener', ['event' => 'postPersist'])
         ->tag('doctrine.event_listener', ['event' => 'postUpdate'])
