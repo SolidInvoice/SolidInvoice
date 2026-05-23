@@ -191,7 +191,7 @@ final class OnboardingFlowTest extends WebTestCase
         ;
 
         // Verify skip button is not present on company step
-        $browser->assertNotContains('I\'ll do this later');
+        $browser->assertNotSee('I\'ll do this later');
     }
 
     public function testInvitedUserDoesNotSeeOnboarding(): void

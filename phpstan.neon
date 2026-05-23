@@ -11,5 +11,5 @@ parameters:
     excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
-        container_xml_path: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
     treatPhpDocTypesAsCertain: false
