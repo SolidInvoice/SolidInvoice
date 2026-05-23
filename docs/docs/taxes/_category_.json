@@ -1,0 +1,9 @@
+{
+  "label": "💰 Taxes",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "title": "Taxes",
+    "description": "Configure tax rates, add tax identifiers for your business and clients, and apply taxes to invoices."
+  }
+}
