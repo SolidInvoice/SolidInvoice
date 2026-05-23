@@ -76,7 +76,7 @@ use function in_array;
 #[UniqueEntity(fields: ['company', 'target', 'fieldKey'], errorPath: 'label', message: 'A custom field with a similar label already exists for the selected target.')]
 class CustomField
 {
-    final public const TABLE_NAME = 'custom_field';
+    final public const string TABLE_NAME = 'custom_field';
 
     use TimeStampable;
     use CompanyAware;

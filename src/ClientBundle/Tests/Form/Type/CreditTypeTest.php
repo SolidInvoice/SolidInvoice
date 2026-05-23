@@ -44,6 +44,7 @@ class CreditTypeTest extends FormTestCase
     /**
      * @return list<FormTypeInterface>
      */
+    #[\Override]
     protected function getTypes(): array
     {
         return [

@@ -39,6 +39,7 @@ final class CompanyTaxIdentifiersFormType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'company_tax_identifiers';

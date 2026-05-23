@@ -116,7 +116,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Invoice extends BaseInvoice implements Stringable
 {
-    final public const TABLE_NAME = 'invoices';
+    final public const string TABLE_NAME = 'invoices';
     use Archivable;
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;

@@ -16,6 +16,7 @@ final class ViewAction extends Action
     /**
      * @param array<string, mixed> $parameters
      */
+    #[\Override]
     public static function new(string $route, array $parameters = []): static
     {
         return (new self())

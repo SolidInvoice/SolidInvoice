@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class NotificationSettingType extends AbstractType
 {
-    public const EMAIL_NOTIFICATION = 'fb4b16ae-6b76-4124-a706-0cb1419c780a';
+    public const string EMAIL_NOTIFICATION = 'fb4b16ae-6b76-4124-a706-0cb1419c780a';
 
     public function __construct(
         private readonly TransportSettingRepository $transportSettingRepository,

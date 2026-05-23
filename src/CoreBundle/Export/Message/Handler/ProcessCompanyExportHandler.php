@@ -52,7 +52,7 @@ final readonly class ProcessCompanyExportHandler
      * so the failure reason rendered in /profile/exports never leaks DB error text,
      * file paths, or other internals.
      */
-    private const FAILURE_REASON_USER_MESSAGE = 'Export failed. Please try again or contact support if the problem persists.';
+    private const string FAILURE_REASON_USER_MESSAGE = 'Export failed. Please try again or contact support if the problem persists.';
 
     public function __construct(
         private ManagerRegistry $registry,

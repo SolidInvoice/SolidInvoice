@@ -37,7 +37,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const SLUGS = [
+    private const array SLUGS = [
         'classic',
         'modern',
         'compact',
@@ -48,7 +48,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         'friendly',
     ];
 
-    private const CHANNELS = ['pdf', 'email', 'preview'];
+    private const array CHANNELS = ['pdf', 'email', 'preview'];
 
     /**
      * @return iterable<string, array{string, string}>

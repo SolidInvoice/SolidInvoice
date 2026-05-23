@@ -16,7 +16,7 @@ use Attribute;
 #[Attribute]
 final class AsDataGrid
 {
-    final public const DI_TAG = 'solidinvoice.data_grid.grid';
+    final public const string DI_TAG = 'solidinvoice.data_grid.grid';
 
     public function __construct(
         public string $name,

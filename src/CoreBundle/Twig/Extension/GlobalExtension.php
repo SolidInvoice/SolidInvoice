@@ -90,6 +90,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return $params;
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return [
@@ -103,6 +104,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

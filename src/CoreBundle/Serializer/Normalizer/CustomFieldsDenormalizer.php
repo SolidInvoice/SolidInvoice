@@ -39,7 +39,7 @@ use function method_exists;
 #[AutoconfigureTag('serializer.normalizer')]
 final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, DenormalizerInterface
 {
-    private const SKIP_KEY = self::class . '::skip';
+    private const string SKIP_KEY = self::class . '::skip';
 
     use DenormalizerAwareTrait;
 

@@ -142,7 +142,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact implements Serializable, Stringable
 {
-    final public const TABLE_NAME = 'contacts';
+    final public const string TABLE_NAME = 'contacts';
 
     use TimeStampable;
     use CompanyAware;

@@ -36,7 +36,7 @@ final class CreateApiToken extends AbstractController
     use ComponentToolsTrait;
     use ComponentWithFormTrait;
 
-    public const API_TOKEN_CREATED_EVENT = 'api.token.created';
+    public const string API_TOKEN_CREATED_EVENT = 'api.token.created';
 
     /**
      * Plaintext of the most recently created token, exposed to the template

@@ -15,5 +15,5 @@ namespace SolidInvoice\PaymentBundle\Event;
 
 final class PaymentEvents
 {
-    public const PAYMENT_COMPLETE = 'payment.complete';
+    public const string PAYMENT_COMPLETE = 'payment.complete';
 }

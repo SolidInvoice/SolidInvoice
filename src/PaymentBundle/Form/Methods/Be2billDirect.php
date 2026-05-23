@@ -50,6 +50,7 @@ class Be2billDirect extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'be2bill_direct';

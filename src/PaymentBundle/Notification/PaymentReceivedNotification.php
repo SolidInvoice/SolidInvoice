@@ -32,20 +32,22 @@ class PaymentReceivedNotification extends NotificationMessage
 {
     public const EVENT = 'payment_made';
 
-    final public const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
+    final public const string HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
 
-    final public const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
+    #[\Override]
     public function getSubject(): string
     {
         return 'A Payment has been received';
     }
 
+    #[\Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

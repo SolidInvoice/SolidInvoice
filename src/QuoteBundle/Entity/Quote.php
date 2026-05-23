@@ -135,7 +135,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Quote
 {
-    final public const TABLE_NAME = 'quotes';
+    final public const string TABLE_NAME = 'quotes';
     use Archivable;
     use QuoteStatusTrait {
         Archivable::isArchived insteadof QuoteStatusTrait;

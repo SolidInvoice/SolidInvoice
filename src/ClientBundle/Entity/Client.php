@@ -79,7 +79,7 @@ use function in_array;
 #[UniqueEntity('name')]
 class Client implements Stringable
 {
-    final public const TABLE_NAME = 'clients';
+    final public const string TABLE_NAME = 'clients';
     use Archivable;
     use TimeStampable;
     use CompanyAware;

@@ -15,19 +15,19 @@ namespace SolidInvoice\InvoiceBundle\Model;
 
 final class Graph
 {
-    public const TRANSITION_ACCEPT = 'accept';
+    public const string TRANSITION_ACCEPT = 'accept';
 
-    public const TRANSITION_ACTIVATE = 'activate';
+    public const string TRANSITION_ACTIVATE = 'activate';
 
-    public const TRANSITION_NEW = 'new';
+    public const string TRANSITION_NEW = 'new';
 
-    public const TRANSITION_CANCEL = 'cancel';
+    public const string TRANSITION_CANCEL = 'cancel';
 
-    public const TRANSITION_OVERDUE = 'overdue';
+    public const string TRANSITION_OVERDUE = 'overdue';
 
-    public const TRANSITION_PAY = 'pay';
+    public const string TRANSITION_PAY = 'pay';
 
-    public const TRANSITION_REOPEN = 'reopen';
+    public const string TRANSITION_REOPEN = 'reopen';
 
-    public const TRANSITION_ARCHIVE = 'archive';
+    public const string TRANSITION_ARCHIVE = 'archive';
 }

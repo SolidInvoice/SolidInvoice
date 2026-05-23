@@ -21,6 +21,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Query;
 #[AsDataGrid(name: 'archived_client_grid', title: 'Archived Clients')]
 final class ArchivedClientGrid extends BaseClientGrid
 {
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -33,6 +34,7 @@ final class ArchivedClientGrid extends BaseClientGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         return ArchivableFilter::disableForGrid($entityManager, $query);

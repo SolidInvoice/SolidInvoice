@@ -35,6 +35,7 @@ class MoneyFormatterExtension extends AbstractExtension
     ) {
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [
@@ -42,6 +43,7 @@ class MoneyFormatterExtension extends AbstractExtension
         ];
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return [

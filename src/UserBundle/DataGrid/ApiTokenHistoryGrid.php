@@ -34,6 +34,7 @@ final class ApiTokenHistoryGrid extends Grid
         return ApiTokenHistory::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -76,11 +77,13 @@ final class ApiTokenHistoryGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [];
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         // Filter by token ID if provided in context

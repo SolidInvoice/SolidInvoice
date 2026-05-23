@@ -37,6 +37,7 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
         return 40;
     }
 
+    #[\Override]
     protected function templateContext(OnboardingContext $context): array
     {
         return parent::templateContext($context) + [

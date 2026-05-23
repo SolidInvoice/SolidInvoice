@@ -22,7 +22,7 @@ use function get_class;
 
 final class BigIntegerType extends Type
 {
-    public const NAME = 'BigInteger';
+    public const string NAME = 'BigInteger';
 
     public function getName(): string
     {
@@ -34,6 +34,7 @@ final class BigIntegerType extends Type
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
+    #[\Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
@@ -47,6 +48,7 @@ final class BigIntegerType extends Type
         }
     }
 
+    #[\Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
     {
         if ($value === null) {
@@ -64,6 +66,7 @@ final class BigIntegerType extends Type
         throw ConversionException::conversionFailedFormat($value, $this->getName(), get_class($value));
     }
 
+    #[\Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

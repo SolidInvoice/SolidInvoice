@@ -28,7 +28,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: InvoiceReminderRepository::class)]
 class InvoiceReminder
 {
-    final public const TABLE_NAME = 'invoice_reminders';
+    final public const string TABLE_NAME = 'invoice_reminders';
 
     use CompanyAware;
     use TimeStampable;

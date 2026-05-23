@@ -35,11 +35,13 @@ final class InvoiceTaxCollectionType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return CollectionType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'invoice_tax_collection';

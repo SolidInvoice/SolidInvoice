@@ -39,6 +39,7 @@ class StripeCheckout extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'stripe_checkout';

@@ -24,6 +24,7 @@ use function array_key_exists;
 #[AsDataGrid(name: 'invoice_grid', title: 'Active Invoices')]
 final class InvoiceGrid extends BaseInvoiceGrid
 {
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -36,6 +37,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query = parent::query($entityManager, $query);
@@ -59,6 +61,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
         return '_invoices_create';
     }
 
+    #[\Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create Invoice');

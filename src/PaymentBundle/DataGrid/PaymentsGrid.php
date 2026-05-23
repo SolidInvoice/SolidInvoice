@@ -38,6 +38,7 @@ final class PaymentsGrid extends Grid
         return Payment::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -79,6 +80,7 @@ final class PaymentsGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query = parent::query($entityManager, $query);

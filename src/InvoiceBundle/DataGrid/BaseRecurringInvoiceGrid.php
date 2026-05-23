@@ -44,6 +44,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         return RecurringInvoice::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -106,6 +107,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [
@@ -114,6 +116,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')

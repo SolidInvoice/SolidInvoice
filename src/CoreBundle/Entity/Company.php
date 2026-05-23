@@ -61,7 +61,7 @@ use function trim;
 #[UniqueEntity(fields: ['customDomain'], ignoreNull: true)]
 class Company implements Stringable, SubscribableInterface
 {
-    final public const TABLE_NAME = 'companies';
+    final public const string TABLE_NAME = 'companies';
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

@@ -22,7 +22,7 @@ use Stringable;
 #[ORM\Entity(repositoryClass: VersionRepository::class)]
 class Version implements Stringable
 {
-    final public const TABLE_NAME = 'version';
+    final public const string TABLE_NAME = 'version';
 
     #[ORM\Column(name: 'version', type: Types::STRING, length: 125)]
     #[ORM\Id]

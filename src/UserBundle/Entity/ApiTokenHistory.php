@@ -28,7 +28,7 @@ use Symfony\Component\Uid\Ulid;
 #[ExportIgnore]
 class ApiTokenHistory
 {
-    final public const TABLE_NAME = 'api_token_history';
+    final public const string TABLE_NAME = 'api_token_history';
 
     use TimeStampable;
     use CompanyAware;

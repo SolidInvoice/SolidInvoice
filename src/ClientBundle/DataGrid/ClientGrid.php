@@ -19,6 +19,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[AsDataGrid(name: 'client_grid', title: 'Clients')]
 final class ClientGrid extends BaseClientGrid
 {
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -36,6 +37,7 @@ final class ClientGrid extends BaseClientGrid
         return '_clients_add';
     }
 
+    #[\Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create Client');

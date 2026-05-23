@@ -24,7 +24,7 @@ use function trim;
 
 final class CompanyDomainResolver implements ResetInterface
 {
-    private const LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];
+    private const array LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];
 
     /**
      * @var array<string, ResolvedHost>

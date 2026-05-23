@@ -24,6 +24,7 @@ use function array_values;
 
 final class InvoiceTemplateExtension extends AbstractExtension
 {
+    #[\Override]
     public function getFunctions(): array
     {
         return [

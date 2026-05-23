@@ -36,6 +36,7 @@ final class TurnInvoicesIntoPaymentsStep extends AbstractOnboardingEmailStep
         return 70;
     }
 
+    #[\Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         return $this->paymentRepository->count(['company' => $context->company]) === 0;

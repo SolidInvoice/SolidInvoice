@@ -45,6 +45,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         return 50;
     }
 
+    #[\Override]
     public function createEmail(OnboardingContext $context): TemplatedEmail
     {
         $email = parent::createEmail($context);
@@ -60,6 +61,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         return $email;
     }
 
+    #[\Override]
     protected function templateContext(OnboardingContext $context): array
     {
         $daysRemaining = $this->calculateDaysRemaining($context);

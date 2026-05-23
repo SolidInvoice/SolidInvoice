@@ -140,6 +140,7 @@ class InvoiceTypeTest extends FormTestCase
     /**
      * @return array<FormExtensionInterface>
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         $systemConfig = M::mock(SystemConfig::class);

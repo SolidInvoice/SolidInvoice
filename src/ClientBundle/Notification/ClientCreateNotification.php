@@ -39,20 +39,22 @@ class ClientCreateNotification extends NotificationMessage
 {
     public const EVENT = 'client_create';
 
-    final public const HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
+    final public const string HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
 
-    final public const TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
 
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
+    #[\Override]
     public function getSubject(): string
     {
         return 'A new client has been created';
     }
 
+    #[\Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);
@@ -68,6 +70,7 @@ class ClientCreateNotification extends NotificationMessage
         return $message;
     }
 
+    #[\Override]
     public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ChatMessage
     {
         return parent::asChatMessage($recipient, $transport)

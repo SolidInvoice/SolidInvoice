@@ -23,6 +23,7 @@ final class IncompatibleTaxConfiguration extends Constraint
 
     public string $flatRateCompoundMessage = 'A flat-rate tax cannot be compound.';
 
+    #[\Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

@@ -33,11 +33,13 @@ class HiddenMoneyType extends AbstractType
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return HiddenType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'hidden_money';

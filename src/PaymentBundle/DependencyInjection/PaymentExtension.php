@@ -45,6 +45,7 @@ class PaymentExtension extends Extension
         $container->setDefinition($definition->getClass(), $definition);
     }
 
+    #[\Override]
     public function getAlias(): string
     {
         return 'payment';

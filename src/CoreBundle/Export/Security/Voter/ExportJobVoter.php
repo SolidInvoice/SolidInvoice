@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class ExportJobVoter extends Voter
 {
-    public const DOWNLOAD = 'EXPORT_DOWNLOAD';
+    public const string DOWNLOAD = 'EXPORT_DOWNLOAD';
 
     public function __construct(
         private readonly CompanySelector $companySelector,

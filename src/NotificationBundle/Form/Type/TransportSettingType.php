@@ -64,6 +64,7 @@ final class TransportSettingType extends AbstractType
         });
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'notification_transport_setting';

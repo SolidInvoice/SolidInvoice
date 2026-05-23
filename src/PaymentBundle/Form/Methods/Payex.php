@@ -50,6 +50,7 @@ class Payex extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'payex';

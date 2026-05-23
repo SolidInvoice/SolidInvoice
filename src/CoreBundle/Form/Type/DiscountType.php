@@ -30,7 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DiscountType extends AbstractType
 {
-    private const DISCOUNT_TYPES = [
+    private const array DISCOUNT_TYPES = [
         'percentage' => [
             'symbol' => '%',
             'name' => 'percentage',
@@ -88,6 +88,7 @@ class DiscountType extends AbstractType
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'discount';

@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/.well-known/agent-skills/index.json', name: 'mcp_well_known_agent_skills_index', methods: ['GET'])]
 final class WellKnownAgentSkillsIndex
 {
-    private const SCHEMA_URL = 'https://raw.githubusercontent.com/cloudflare/agent-skills-discovery-rfc/main/schemas/v0.2.0/index.json';
+    private const string SCHEMA_URL = 'https://raw.githubusercontent.com/cloudflare/agent-skills-discovery-rfc/main/schemas/v0.2.0/index.json';
 
     public function __invoke(Request $request): JsonResponse
     {

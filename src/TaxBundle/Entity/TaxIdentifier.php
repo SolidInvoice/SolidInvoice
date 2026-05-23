@@ -58,7 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[SameCompanyAsClient]
 class TaxIdentifier implements Stringable
 {
-    final public const TABLE_NAME = 'tax_identifier';
+    final public const string TABLE_NAME = 'tax_identifier';
 
     use CompanyAware;
     use TimeStampable;

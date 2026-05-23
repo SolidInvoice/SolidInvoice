@@ -15,7 +15,7 @@ namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
 final class TimestampGenerator implements IdGeneratorInterface
 {
-    private const DEFAULT_FORMAT = 'YmdHis';
+    private const string DEFAULT_FORMAT = 'YmdHis';
 
     public static function getName(): string
     {

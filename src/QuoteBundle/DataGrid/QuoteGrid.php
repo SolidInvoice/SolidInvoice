@@ -24,6 +24,7 @@ use function array_key_exists;
 #[AsDataGrid(name: 'quote_grid', title: 'Active Quotes')]
 final class QuoteGrid extends BaseQuoteGrid
 {
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -36,6 +37,7 @@ final class QuoteGrid extends BaseQuoteGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query = parent::query($entityManager, $query);
@@ -59,6 +61,7 @@ final class QuoteGrid extends BaseQuoteGrid
         return '_quotes_create';
     }
 
+    #[\Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create Quote');

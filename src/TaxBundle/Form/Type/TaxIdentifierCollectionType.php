@@ -18,11 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 final class TaxIdentifierCollectionType extends AbstractType
 {
+    #[\Override]
     public function getParent(): string
     {
         return CollectionType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'tax_identifiers';

@@ -25,9 +25,9 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 #[ORM\Embeddable]
 class Discount
 {
-    final public const TYPE_PERCENTAGE = 'percentage';
+    final public const string TYPE_PERCENTAGE = 'percentage';
 
-    final public const TYPE_MONEY = 'money';
+    final public const string TYPE_MONEY = 'money';
 
     #[ORM\Column(name: 'valueMoney_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]

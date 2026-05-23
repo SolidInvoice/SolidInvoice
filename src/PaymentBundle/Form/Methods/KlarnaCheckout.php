@@ -39,6 +39,7 @@ class KlarnaCheckout extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'klarna_checkout';

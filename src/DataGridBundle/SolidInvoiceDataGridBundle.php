@@ -20,6 +20,7 @@ final class SolidInvoiceDataGridBundle extends Bundle
 {
     final public const NAMESPACE = __NAMESPACE__;
 
+    #[\Override]
     public function getContainerExtension(): SolidInvoiceDataGridExtension
     {
         return new SolidInvoiceDataGridExtension();

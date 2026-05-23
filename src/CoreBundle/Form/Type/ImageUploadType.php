@@ -103,11 +103,13 @@ class ImageUploadType extends AbstractType
         });
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return DropzoneType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'image_upload';

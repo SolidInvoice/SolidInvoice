@@ -36,6 +36,7 @@ final class CustomizeLogoStep extends AbstractOnboardingEmailStep
         return 60;
     }
 
+    #[\Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         $logo = $this->systemConfig->get('system/company/logo');

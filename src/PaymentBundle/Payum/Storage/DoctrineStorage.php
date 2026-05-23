@@ -28,6 +28,7 @@ use function count;
  */
 final class DoctrineStorage extends BaseDoctrineStorage
 {
+    #[\Override]
     protected function doGetIdentity($model): Identity
     {
         $modelMetadata = $this->objectManager->getClassMetadata($model::class);

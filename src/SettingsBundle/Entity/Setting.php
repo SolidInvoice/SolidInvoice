@@ -30,7 +30,7 @@ use Symfony\Component\Uid\Ulid;
 #[UniqueEntity(fields: ['company_id', 'key'])]
 class Setting implements Stringable, Serializable
 {
-    final public const TABLE_NAME = 'app_config';
+    final public const string TABLE_NAME = 'app_config';
 
     use CompanyAware;
 

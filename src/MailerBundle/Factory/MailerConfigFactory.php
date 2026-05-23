@@ -26,7 +26,7 @@ use function json_decode;
  */
 final readonly class MailerConfigFactory
 {
-    public const CONFIG_KEY = 'email/sending_options/provider';
+    public const string CONFIG_KEY = 'email/sending_options/provider';
 
     /**
      * @param iterable<ConfiguratorInterface> $transports

@@ -17,9 +17,9 @@ use Random\RandomException;
 
 final class RandomNumberGenerator implements IdGeneratorInterface
 {
-    public const MIN_VALUE = 100000;
+    public const int MIN_VALUE = 100000;
 
-    public const MAX_VALUE = 999999;
+    public const int MAX_VALUE = 999999;
 
     public static function getName(): string
     {

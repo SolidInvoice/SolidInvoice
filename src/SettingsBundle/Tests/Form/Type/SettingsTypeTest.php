@@ -73,6 +73,7 @@ class SettingsTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);
     }
 
+    #[\Override]
     protected function getTypes(): array
     {
         $extensions = parent::getTypes();

@@ -32,20 +32,22 @@ class QuoteStatusNotification extends NotificationMessage
 {
     public const EVENT = 'quote_status_update';
 
-    final public const HTML_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.html.twig';
+    final public const string HTML_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.html.twig';
 
-    final public const TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.text.twig';
 
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
+    #[\Override]
     public function getSubject(): string
     {
         return 'Quote Status Change';
     }
 
+    #[\Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

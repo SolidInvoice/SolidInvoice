@@ -44,6 +44,7 @@ final class TaxBreakdownExtension extends AbstractExtension
         $this->cache = new WeakMap();
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

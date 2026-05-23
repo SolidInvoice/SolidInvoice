@@ -30,7 +30,7 @@ class ApiTokenManagerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private const SECRET = 'unit-test-secret';
+    private const string SECRET = 'unit-test-secret';
 
     private function hasher(): ApiTokenHasher
     {

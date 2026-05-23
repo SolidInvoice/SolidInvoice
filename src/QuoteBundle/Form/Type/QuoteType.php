@@ -251,6 +251,7 @@ class QuoteType extends AbstractType
             ->setAllowedTypes('existing_target_id', [Ulid::class, 'null']);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'quote';

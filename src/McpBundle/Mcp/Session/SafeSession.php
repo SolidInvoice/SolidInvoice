@@ -28,6 +28,7 @@ use Mcp\Server\Session\Session;
  */
 final class SafeSession extends Session
 {
+    #[\Override]
     public function save(): bool
     {
         // Force the private `$data` property to materialise via the public

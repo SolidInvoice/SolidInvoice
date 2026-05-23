@@ -32,9 +32,9 @@ class InvoiceReminderNotification extends NotificationMessage
 {
     public const EVENT = 'invoice_reminder';
 
-    final public const HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.html.twig';
+    final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.html.twig';
 
-    final public const TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.text.twig';
 
     /**
      * Returns parameters with 'reminder_type' normalized to string value.
@@ -59,6 +59,7 @@ class InvoiceReminderNotification extends NotificationMessage
         return $twig->render(self::TEXT_TEMPLATE, $this->getNormalizedParameters());
     }
 
+    #[\Override]
     public function getSubject(): string
     {
         $parameters = $this->getNormalizedParameters();
@@ -74,6 +75,7 @@ class InvoiceReminderNotification extends NotificationMessage
         };
     }
 
+    #[\Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

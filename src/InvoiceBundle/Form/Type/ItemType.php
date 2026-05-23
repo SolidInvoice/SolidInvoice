@@ -89,6 +89,7 @@ class ItemType extends AbstractType
         }
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'invoice_item';

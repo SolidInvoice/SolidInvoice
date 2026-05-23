@@ -21,11 +21,13 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 #[AsDataGrid(name: 'archived_recurring_invoice_grid', title: 'Archived Recurring Invoices')]
 final class ArchivedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
 {
+    #[\Override]
     public function actions(): array
     {
         return [];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -38,11 +40,13 @@ final class ArchivedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         return ArchivableFilter::disableForGrid($entityManager, parent::query($entityManager, $query));
     }
 
+    #[\Override]
     public function getCreateRoute(): ?string
     {
         return null;

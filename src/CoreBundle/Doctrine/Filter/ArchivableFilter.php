@@ -22,7 +22,7 @@ use function sprintf;
 
 class ArchivableFilter extends SQLFilter
 {
-    private const ARCHIVABLE_CLASS = Archivable::class;
+    private const string ARCHIVABLE_CLASS = Archivable::class;
 
     public static function disableForGrid(EntityManagerInterface $entityManager, Query $query): Query
     {

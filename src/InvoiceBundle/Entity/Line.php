@@ -90,7 +90,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Line implements LineInterface, Stringable
 {
-    final public const TABLE_NAME = 'invoice_lines';
+    final public const string TABLE_NAME = 'invoice_lines';
 
     use TimeStampable;
     use CompanyAware;

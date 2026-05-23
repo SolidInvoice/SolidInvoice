@@ -69,6 +69,7 @@ class PaymentMethodSettingsType extends AbstractType
         $resolver->setRequired(['settings']);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'method_settings';

@@ -80,6 +80,7 @@ final class InstallFlowType extends AbstractButtonFlowType
         ]);
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return NextFlowType::class;

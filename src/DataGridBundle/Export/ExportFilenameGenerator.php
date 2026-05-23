@@ -25,7 +25,7 @@ use function substr;
 
 final class ExportFilenameGenerator
 {
-    private const MAX_FILTER_SUMMARY_LENGTH = 60;
+    private const int MAX_FILTER_SUMMARY_LENGTH = 60;
 
     /**
      * @param array<string, mixed> $gridFilters

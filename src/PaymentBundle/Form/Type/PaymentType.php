@@ -33,7 +33,7 @@ use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
  */
 class PaymentType extends AbstractType
 {
-    private const STIMULUS_CONTROLLER = 'capture_payment';
+    private const string STIMULUS_CONTROLLER = 'capture_payment';
 
     public function __construct(
         private readonly ManagerRegistry $registry,
@@ -103,6 +103,7 @@ class PaymentType extends AbstractType
         $resolver->setAllowedTypes('currency', ['null', Currency::class]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'payment';

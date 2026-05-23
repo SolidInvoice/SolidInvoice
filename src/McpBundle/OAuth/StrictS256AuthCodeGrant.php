@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class StrictS256AuthCodeGrant extends AuthCodeGrant
 {
+    #[\Override]
     public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequestInterface
     {
         $codeChallenge = $this->getQueryStringParameter('code_challenge', $request);

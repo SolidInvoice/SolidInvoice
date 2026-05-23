@@ -29,6 +29,7 @@ final class UserInvitationsGrid extends Grid
         return UserInvitation::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -46,6 +47,7 @@ final class UserInvitationsGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [

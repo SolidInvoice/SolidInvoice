@@ -26,6 +26,7 @@ final class SolidInvoiceMcpExtension extends Extension
         $loader->load('services.php');
     }
 
+    #[\Override]
     public function getAlias(): string
     {
         return 'solid_invoice_mcp';

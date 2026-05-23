@@ -70,6 +70,7 @@ class PaymentMethodType extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'payment_methods';
