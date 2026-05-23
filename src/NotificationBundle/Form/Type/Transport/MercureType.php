@@ -30,7 +30,7 @@ final class MercureType extends AbstractType
             'hub_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mercure']),
+                'constraints' => new NotBlank(groups: ['mercure']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MercureType extends AbstractType
             'topic',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mercure']),
+                'constraints' => new NotBlank(groups: ['mercure']),
             ]
         );
     }

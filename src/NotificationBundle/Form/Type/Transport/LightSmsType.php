@@ -30,7 +30,7 @@ final class LightSmsType extends AbstractType
             'login',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'lightsms']),
+                'constraints' => new NotBlank(groups: ['lightsms']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class LightSmsType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'lightsms']),
+                'constraints' => new NotBlank(groups: ['lightsms']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class LightSmsType extends AbstractType
             'phone',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'lightsms']),
+                'constraints' => new NotBlank(groups: ['lightsms']),
             ]
         );
     }

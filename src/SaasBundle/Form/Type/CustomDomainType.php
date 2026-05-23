@@ -26,7 +26,7 @@ final class CustomDomainType extends AbstractType
     {
         $resolver->setDefaults([
             'constraints' => [
-                new Hostname(['requireTld' => true]),
+                new Hostname(requireTld: true),
                 new NotApplicationUrlHost(),
             ],
         ]);

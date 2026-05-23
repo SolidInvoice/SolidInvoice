@@ -30,7 +30,7 @@ final class AllMySmsType extends AbstractType
             'login',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'allmysms']),
+                'constraints' => new NotBlank(groups: ['allmysms']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class AllMySmsType extends AbstractType
             'apikey',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'allmysms']),
+                'constraints' => new NotBlank(groups: ['allmysms']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class AllMySmsType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'allmysms']),
+                'constraints' => new NotBlank(groups: ['allmysms']),
             ]
         );
     }

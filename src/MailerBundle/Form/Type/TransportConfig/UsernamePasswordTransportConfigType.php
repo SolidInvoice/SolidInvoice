@@ -29,7 +29,7 @@ final class UsernamePasswordTransportConfigType extends AbstractType
             'username',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'userpass']),
+                'constraints' => new NotBlank(groups: ['userpass']),
             ]
         );
 
@@ -37,7 +37,7 @@ final class UsernamePasswordTransportConfigType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new NotBlank(['groups' => ['userpass']]),
+                'constraints' => new NotBlank(groups: ['userpass']),
             ]
         );
     }

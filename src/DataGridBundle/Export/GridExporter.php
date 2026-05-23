@@ -22,7 +22,7 @@ use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -42,7 +42,7 @@ final readonly class GridExporter
      * @param ServiceLocator<GridInterface> $gridLocator
      */
     public function __construct(
-        #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
+        #[AutowireLocator(AsDataGrid::DI_TAG, 'name')]
         private ServiceLocator $gridLocator,
         private SourceInterface $source,
         private GridQueryService $gridQueryService,

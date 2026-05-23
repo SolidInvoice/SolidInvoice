@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final readonly class BillingIdGenerator
@@ -28,7 +28,7 @@ final readonly class BillingIdGenerator
      * @param ServiceLocator<IdGeneratorInterface> $generators
      */
     public function __construct(
-        #[TaggedLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
         private ServiceLocator $generators,
         private SystemConfig $config,
     ) {

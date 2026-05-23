@@ -30,7 +30,7 @@ final class FirebaseType extends AbstractType
             'username',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'firebase']),
+                'constraints' => new NotBlank(groups: ['firebase']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class FirebaseType extends AbstractType
             'password',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'firebase']),
+                'constraints' => new NotBlank(groups: ['firebase']),
             ]
         );
     }

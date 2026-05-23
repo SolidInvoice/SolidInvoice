@@ -30,7 +30,7 @@ final class OvhCloudType extends AbstractType
             'application_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'ovhcloud']),
+                'constraints' => new NotBlank(groups: ['ovhcloud']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class OvhCloudType extends AbstractType
             'application_secret',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'ovhcloud']),
+                'constraints' => new NotBlank(groups: ['ovhcloud']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class OvhCloudType extends AbstractType
             'consumer_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'ovhcloud']),
+                'constraints' => new NotBlank(groups: ['ovhcloud']),
             ]
         );
 
@@ -54,7 +54,7 @@ final class OvhCloudType extends AbstractType
             'service_name',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'ovhcloud']),
+                'constraints' => new NotBlank(groups: ['ovhcloud']),
             ]
         );
     }

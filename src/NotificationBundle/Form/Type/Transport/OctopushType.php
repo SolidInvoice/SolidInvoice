@@ -30,7 +30,7 @@ final class OctopushType extends AbstractType
             'userlogin',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'octopush']),
+                'constraints' => new NotBlank(groups: ['octopush']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class OctopushType extends AbstractType
             'apikey',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'octopush']),
+                'constraints' => new NotBlank(groups: ['octopush']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class OctopushType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'octopush']),
+                'constraints' => new NotBlank(groups: ['octopush']),
             ]
         );
 
@@ -54,7 +54,7 @@ final class OctopushType extends AbstractType
             'type',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'octopush']),
+                'constraints' => new NotBlank(groups: ['octopush']),
             ]
         );
     }

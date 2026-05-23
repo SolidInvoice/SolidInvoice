@@ -13,7 +13,7 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 
 use Override;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -29,7 +29,7 @@ final class BillingIdConfigurationType extends AbstractType
      * @param ServiceLocator<IdGeneratorInterface> $generators
      */
     public function __construct(
-        #[TaggedLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $generators,
     ) {
     }

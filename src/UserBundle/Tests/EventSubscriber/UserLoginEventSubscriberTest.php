@@ -94,8 +94,7 @@ final class UserLoginEventSubscriberTest extends TestCase
             new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $domainCompany)
         );
 
-        $stack = new RequestStack();
-        $stack->push($request);
+        $stack = new RequestStack([$request]);
 
         $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
 
@@ -126,8 +125,7 @@ final class UserLoginEventSubscriberTest extends TestCase
             new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $domainCompany)
         );
 
-        $stack = new RequestStack();
-        $stack->push($request);
+        $stack = new RequestStack([$request]);
 
         $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
 
@@ -154,8 +152,7 @@ final class UserLoginEventSubscriberTest extends TestCase
             new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, null)
         );
 
-        $stack = new RequestStack();
-        $stack->push($request);
+        $stack = new RequestStack([$request]);
 
         $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
 

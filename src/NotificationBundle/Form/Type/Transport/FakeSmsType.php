@@ -30,7 +30,7 @@ final class FakeSmsType extends AbstractType
             'mailer_service_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'fakesms']),
+                'constraints' => new NotBlank(groups: ['fakesms']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class FakeSmsType extends AbstractType
             'to',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'fakesms']),
+                'constraints' => new NotBlank(groups: ['fakesms']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class FakeSmsType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'fakesms']),
+                'constraints' => new NotBlank(groups: ['fakesms']),
             ]
         );
     }

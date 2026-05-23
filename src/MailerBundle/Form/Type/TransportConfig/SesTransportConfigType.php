@@ -29,7 +29,7 @@ final class SesTransportConfigType extends AbstractType
             'accessKey',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'amazon_ses']),
+                'constraints' => new NotBlank(groups: ['amazon_ses']),
             ]
         );
 
@@ -37,7 +37,7 @@ final class SesTransportConfigType extends AbstractType
             'accessSecret',
             PasswordType::class,
             [
-                'constraints' => new NotBlank(['groups' => ['amazon_ses']]),
+                'constraints' => new NotBlank(groups: ['amazon_ses']),
             ]
         );
 

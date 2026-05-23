@@ -30,7 +30,7 @@ final class SmscType extends AbstractType
             'login',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smsc']),
+                'constraints' => new NotBlank(groups: ['smsc']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SmscType extends AbstractType
             'password',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smsc']),
+                'constraints' => new NotBlank(groups: ['smsc']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class SmscType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smsc']),
+                'constraints' => new NotBlank(groups: ['smsc']),
             ]
         );
     }

@@ -30,7 +30,7 @@ final class TelnyxType extends AbstractType
             'api_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'telnyx']),
+                'constraints' => new NotBlank(groups: ['telnyx']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class TelnyxType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'telnyx']),
+                'constraints' => new NotBlank(groups: ['telnyx']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class TelnyxType extends AbstractType
             'messaging_profile_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'telnyx']),
+                'constraints' => new NotBlank(groups: ['telnyx']),
             ]
         );
     }

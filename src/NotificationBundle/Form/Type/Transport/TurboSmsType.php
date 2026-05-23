@@ -30,7 +30,7 @@ final class TurboSmsType extends AbstractType
             'auth_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'turbosms']),
+                'constraints' => new NotBlank(groups: ['turbosms']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class TurboSmsType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'turbosms']),
+                'constraints' => new NotBlank(groups: ['turbosms']),
             ]
         );
     }

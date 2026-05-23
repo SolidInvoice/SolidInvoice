@@ -25,7 +25,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\NotificationSettingType;
 use SolidInvoice\UserBundle\Form\Type\NotificationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +56,7 @@ final class UserNotification extends AbstractController
     public function __construct(
         private readonly UserNotificationRepository $userNotificationRepository,
         private readonly TransportSettingRepository $transportSettingRepository,
-        #[TaggedLocator('solid_invoice_notification.notification', 'name')]
+        #[AutowireLocator('solid_invoice_notification.notification', 'name')]
         private readonly ServiceLocator $notificationLocator,
     ) {
         $this->notificationList = array_keys($notificationLocator->getProvidedServices());

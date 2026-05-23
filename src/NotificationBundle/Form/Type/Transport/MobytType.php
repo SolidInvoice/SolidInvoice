@@ -30,7 +30,7 @@ final class MobytType extends AbstractType
             'user_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mobyt']),
+                'constraints' => new NotBlank(groups: ['mobyt']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MobytType extends AbstractType
             'access_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mobyt']),
+                'constraints' => new NotBlank(groups: ['mobyt']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class MobytType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mobyt']),
+                'constraints' => new NotBlank(groups: ['mobyt']),
             ]
         );
     }

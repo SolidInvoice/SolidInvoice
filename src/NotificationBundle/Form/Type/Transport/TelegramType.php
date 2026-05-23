@@ -30,7 +30,7 @@ final class TelegramType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'telegram']),
+                'constraints' => new NotBlank(groups: ['telegram']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class TelegramType extends AbstractType
             'chat_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'telegram']),
+                'constraints' => new NotBlank(groups: ['telegram']),
             ]
         );
     }

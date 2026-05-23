@@ -30,7 +30,7 @@ final class TwilioType extends AbstractType
             'sid',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'twilio']),
+                'constraints' => new NotBlank(groups: ['twilio']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class TwilioType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'twilio']),
+                'constraints' => new NotBlank(groups: ['twilio']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class TwilioType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'twilio']),
+                'constraints' => new NotBlank(groups: ['twilio']),
             ]
         );
     }

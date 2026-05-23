@@ -28,7 +28,7 @@ final class KeyTransportConfigType extends AbstractType
             'key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'key']),
+                'constraints' => new NotBlank(groups: ['key']),
             ]
         );
     }

@@ -30,7 +30,7 @@ final class Sms77Type extends AbstractType
             'api_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sms77']),
+                'constraints' => new NotBlank(groups: ['sms77']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class Sms77Type extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sms77']),
+                'constraints' => new NotBlank(groups: ['sms77']),
             ]
         );
     }

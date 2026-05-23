@@ -30,7 +30,7 @@ final class SmsapiType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smsapi']),
+                'constraints' => new NotBlank(groups: ['smsapi']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SmsapiType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smsapi']),
+                'constraints' => new NotBlank(groups: ['smsapi']),
             ]
         );
     }

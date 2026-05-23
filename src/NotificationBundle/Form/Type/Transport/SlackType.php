@@ -30,7 +30,7 @@ final class SlackType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'slack']),
+                'constraints' => new NotBlank(groups: ['slack']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SlackType extends AbstractType
             'channel',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'slack']),
+                'constraints' => new NotBlank(groups: ['slack']),
             ]
         );
     }

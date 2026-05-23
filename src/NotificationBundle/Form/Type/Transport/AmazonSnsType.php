@@ -30,7 +30,7 @@ final class AmazonSnsType extends AbstractType
             'access_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'amazonsns']),
+                'constraints' => new NotBlank(groups: ['amazonsns']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class AmazonSnsType extends AbstractType
             'secret_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'amazonsns']),
+                'constraints' => new NotBlank(groups: ['amazonsns']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class AmazonSnsType extends AbstractType
             'region',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'amazonsns']),
+                'constraints' => new NotBlank(groups: ['amazonsns']),
             ]
         );
     }
