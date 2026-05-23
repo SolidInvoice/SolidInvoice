@@ -20,10 +20,10 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProviderInterface<Quote> */
-final class QuoteItemProvider implements ProviderInterface
+final readonly class QuoteItemProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly QuoteRepository $repository
+        private QuoteRepository $repository
     ) {
     }
 

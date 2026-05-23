@@ -20,13 +20,13 @@ use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 
-final class Users
+final readonly class Users
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly UserInvitationRepository $invitationRepository,
-        private readonly CompanySelector $companySelector,
-        private readonly CompanyRepository $companyRepository,
+        private UserRepository $userRepository,
+        private UserInvitationRepository $invitationRepository,
+        private CompanySelector $companySelector,
+        private CompanyRepository $companyRepository,
     ) {
     }
 

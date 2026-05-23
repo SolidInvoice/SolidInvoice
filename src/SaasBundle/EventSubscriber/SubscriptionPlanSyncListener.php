@@ -43,12 +43,12 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
  * through `SubscriptionManager::changeActivePlan()` which is already
  * LS-confirmed before the local update.
  */
-final class SubscriptionPlanSyncListener
+final readonly class SubscriptionPlanSyncListener
 {
     public function __construct(
-        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
-        private readonly PlanRepositoryInterface $planRepository,
-        private readonly LoggerInterface $logger,
+        private SubscriptionRepositoryInterface $subscriptionRepository,
+        private PlanRepositoryInterface $planRepository,
+        private LoggerInterface $logger,
     ) {
     }
 

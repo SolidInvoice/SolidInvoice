@@ -46,17 +46,17 @@ use function sys_get_temp_dir;
  * TODO(binary-attachments): include PDF invoices, uploaded receipts, and company
  *   logos under a `files/` subdirectory in the archive.
  */
-final class CompanyExporter
+final readonly class CompanyExporter
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly EntityDiscovery $discovery,
-        private readonly EntityRowNormalizer $rowNormalizer,
-        private readonly ExportSerializer $serializer,
-        private readonly ManifestGenerator $manifestGenerator,
-        private readonly Filesystem $filesystem,
-        private readonly CompanySelector $companySelector,
-        private readonly string $projectDir,
+        private ManagerRegistry $registry,
+        private EntityDiscovery $discovery,
+        private EntityRowNormalizer $rowNormalizer,
+        private ExportSerializer $serializer,
+        private ManifestGenerator $manifestGenerator,
+        private Filesystem $filesystem,
+        private CompanySelector $companySelector,
+        private string $projectDir,
     ) {
     }
 

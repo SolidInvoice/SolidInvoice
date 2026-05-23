@@ -24,12 +24,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
-final class AcceptInvitation
+final readonly class AcceptInvitation
 {
     public function __construct(
-        private readonly UserInvitationRepository $repository,
-        private readonly UserRepository $userRepository,
-        private readonly RouterInterface $router
+        private UserInvitationRepository $repository,
+        private UserRepository $userRepository,
+        private RouterInterface $router
     ) {
     }
 

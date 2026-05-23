@@ -31,12 +31,12 @@ use Symfony\Component\Uid\Ulid;
  * single-valued associations are emitted as base58 ULIDs (so the output stays
  * relational and never recurses into related entities).
  */
-final class EntityRowNormalizer
+final readonly class EntityRowNormalizer
 {
-    private readonly ISOCurrencies $currencies;
+    private ISOCurrencies $currencies;
 
     public function __construct(
-        private readonly PropertyAccessorInterface $propertyAccessor,
+        private PropertyAccessorInterface $propertyAccessor,
     ) {
         $this->currencies = new ISOCurrencies();
     }

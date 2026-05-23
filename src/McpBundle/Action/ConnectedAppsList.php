@@ -24,13 +24,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 #[Route(path: '/profile/connected-apps', name: 'mcp_connected_apps_list', methods: ['GET'])]
-final class ConnectedAppsList
+final readonly class ConnectedAppsList
 {
     public function __construct(
-        private readonly McpAccessTokenRepository $accessTokenRepository,
-        private readonly Security $security,
-        private readonly Environment $twig,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private McpAccessTokenRepository $accessTokenRepository,
+        private Security $security,
+        private Environment $twig,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

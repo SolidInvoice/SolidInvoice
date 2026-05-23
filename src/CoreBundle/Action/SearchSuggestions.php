@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class SearchSuggestions
+final readonly class SearchSuggestions
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly CompanySelector $companySelector,
+        private ClientRepository $clientRepository,
+        private CompanySelector $companySelector,
     ) {
     }
 

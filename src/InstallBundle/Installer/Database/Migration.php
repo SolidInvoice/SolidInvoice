@@ -20,11 +20,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class Migration
+final readonly class Migration
 {
     public function __construct(
-        private readonly DependencyFactory $migrationDependencyFactory,
-        private readonly ManagerRegistry $registry,
+        private DependencyFactory $migrationDependencyFactory,
+        private ManagerRegistry $registry,
     ) {
     }
 

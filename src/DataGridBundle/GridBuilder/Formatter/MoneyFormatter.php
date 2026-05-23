@@ -17,11 +17,11 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Translation\TranslatableMessage;
 
-final class MoneyFormatter implements FormatterInterface
+final readonly class MoneyFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly SystemConfig $config,
-        private readonly MoneyFormatterInterface $moneyFormatter
+        private SystemConfig $config,
+        private MoneyFormatterInterface $moneyFormatter
     ) {
     }
 

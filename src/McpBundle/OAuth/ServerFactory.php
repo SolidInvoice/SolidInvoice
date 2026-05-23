@@ -23,18 +23,18 @@ use SolidInvoice\McpBundle\Repository\McpScopeRepository;
 use SolidInvoice\McpBundle\Repository\OAuthAuthCodeRepository;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 
-final class ServerFactory implements ServerFactoryInterface
+final readonly class ServerFactory implements ServerFactoryInterface
 {
     public function __construct(
-        private readonly KeyManager $keyManager,
-        private readonly OAuthClientRepository $clientRepository,
-        private readonly McpAccessTokenRepository $accessTokenRepository,
-        private readonly McpRefreshTokenRepository $refreshTokenRepository,
-        private readonly OAuthAuthCodeRepository $authCodeRepository,
-        private readonly McpScopeRepository $scopeRepository,
-        private readonly string $accessTokenTtl = 'PT1H',
-        private readonly string $refreshTokenTtl = 'P30D',
-        private readonly string $authCodeTtl = 'PT10M',
+        private KeyManager $keyManager,
+        private OAuthClientRepository $clientRepository,
+        private McpAccessTokenRepository $accessTokenRepository,
+        private McpRefreshTokenRepository $refreshTokenRepository,
+        private OAuthAuthCodeRepository $authCodeRepository,
+        private McpScopeRepository $scopeRepository,
+        private string $accessTokenTtl = 'PT1H',
+        private string $refreshTokenTtl = 'P30D',
+        private string $authCodeTtl = 'PT10M',
     ) {
     }
 

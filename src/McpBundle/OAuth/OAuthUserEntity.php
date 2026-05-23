@@ -15,10 +15,10 @@ namespace SolidInvoice\McpBundle\OAuth;
 
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
-final class OAuthUserEntity implements UserEntityInterface
+final readonly class OAuthUserEntity implements UserEntityInterface
 {
     public function __construct(
-        private readonly string $identifier
+        private string $identifier
     ) {
     }
 

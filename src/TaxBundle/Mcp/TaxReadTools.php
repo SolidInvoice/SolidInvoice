@@ -20,12 +20,12 @@ use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
-final class TaxReadTools
+final readonly class TaxReadTools
 {
     public function __construct(
-        private readonly TaxRepository $repository,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private TaxRepository $repository,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

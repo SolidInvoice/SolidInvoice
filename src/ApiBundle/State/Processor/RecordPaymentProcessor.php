@@ -30,13 +30,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /** @implements ProcessorInterface<RecordPaymentInput, Payment> */
-final class RecordPaymentProcessor implements ProcessorInterface
+final readonly class RecordPaymentProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly PaymentMethodRepository $paymentMethodRepository,
-        private readonly ManagerRegistry $registry,
-        private readonly WorkflowInterface $invoiceStateMachine,
+        private InvoiceRepository $invoiceRepository,
+        private PaymentMethodRepository $paymentMethodRepository,
+        private ManagerRegistry $registry,
+        private WorkflowInterface $invoiceStateMachine,
     ) {
     }
 

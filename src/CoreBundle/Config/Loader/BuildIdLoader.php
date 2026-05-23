@@ -18,12 +18,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 use Symfony\Component\Uid\Uuid;
 
-final class BuildIdLoader implements EnvVarLoaderInterface
+final readonly class BuildIdLoader implements EnvVarLoaderInterface
 {
     public function __construct(
-        private readonly ConfigWriter $configWriter,
+        private ConfigWriter $configWriter,
         #[Autowire(env: 'default::SOLIDINVOICE_BUILD_ID')]
-        private readonly ?string $buildId,
+        private ?string $buildId,
     ) {
     }
 

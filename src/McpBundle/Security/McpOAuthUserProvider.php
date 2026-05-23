@@ -24,10 +24,10 @@ use Symfony\Component\Uid\Ulid;
 /**
  * @implements UserProviderInterface<User>
  */
-final class McpOAuthUserProvider implements UserProviderInterface
+final readonly class McpOAuthUserProvider implements UserProviderInterface
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private UserRepositoryInterface $userRepository,
     ) {
     }
 

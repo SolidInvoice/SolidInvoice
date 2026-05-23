@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * pepper keyed by the app secret is sufficient. A DB-only leak yields
  * no usable hashes without also having the secret.
  */
-final class ApiTokenHasher
+final readonly class ApiTokenHasher
 {
     public function __construct(
         #[Autowire('%kernel.secret%')]
-        private readonly string $appSecret,
+        private string $appSecret,
     ) {
     }
 

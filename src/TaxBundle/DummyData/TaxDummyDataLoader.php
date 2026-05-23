@@ -22,12 +22,12 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use function assert;
 
-final class TaxDummyDataLoader implements DummyDataLoaderInterface
+final readonly class TaxDummyDataLoader implements DummyDataLoaderInterface
 {
-    private readonly Generator $faker;
+    private Generator $faker;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private ManagerRegistry $registry
     ) {
         $this->faker = Factory::create();
     }

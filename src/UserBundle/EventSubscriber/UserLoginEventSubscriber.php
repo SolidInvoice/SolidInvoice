@@ -27,11 +27,11 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 /**
  * @see \SolidInvoice\UserBundle\Tests\EventSubscriber\UserLoginEventSubscriberTest
  */
-final class UserLoginEventSubscriber implements EventSubscriberInterface
+final readonly class UserLoginEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
     ) {
     }
 

@@ -17,11 +17,11 @@ use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use function str_replace;
 
-final class GenerateSecretStep implements InstallationStepInterface
+final readonly class GenerateSecretStep implements InstallationStepInterface
 {
     public function __construct(
-        private readonly AbstractVault $vault,
-        private readonly ConfigWriter $configWriter,
+        private AbstractVault $vault,
+        private ConfigWriter $configWriter,
     ) {
     }
 

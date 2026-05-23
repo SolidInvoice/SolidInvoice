@@ -21,11 +21,11 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProcessorInterface<Line, Line> */
-final class InvoiceLinePersistProcessor implements ProcessorInterface
+final readonly class InvoiceLinePersistProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly ManagerRegistry $registry,
+        private InvoiceRepository $invoiceRepository,
+        private ManagerRegistry $registry,
     ) {
     }
 

@@ -25,10 +25,10 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 /**
  * Manager for handling Quote form DTO transformations
  */
-final class QuoteFormManager
+final readonly class QuoteFormManager
 {
     public function __construct(
-        private readonly SystemConfig $systemConfig,
+        private SystemConfig $systemConfig,
     ) {
     }
 

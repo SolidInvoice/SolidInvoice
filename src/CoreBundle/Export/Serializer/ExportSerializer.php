@@ -25,10 +25,10 @@ use Symfony\Component\Serializer\SerializerInterface;
  * independent of API Platform's normalizer chain, so it produces raw,
  * predictable values suitable for user-facing data exports.
  */
-final class ExportSerializer
+final readonly class ExportSerializer
 {
     public function __construct(
-        private readonly SerializerInterface&NormalizerInterface&EncoderInterface $inner,
+        private SerializerInterface&NormalizerInterface&EncoderInterface $inner,
     ) {
     }
 

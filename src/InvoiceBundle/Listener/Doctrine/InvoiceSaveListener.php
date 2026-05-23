@@ -26,10 +26,10 @@ use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
  */
 #[AsDoctrineListener(Events::prePersist)]
 #[AsDoctrineListener(Events::preUpdate)]
-final class InvoiceSaveListener
+final readonly class InvoiceSaveListener
 {
     public function __construct(
-        private readonly TotalCalculator $totalCalculator
+        private TotalCalculator $totalCalculator
     ) {
     }
 

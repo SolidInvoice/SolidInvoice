@@ -30,11 +30,11 @@ use function count;
  * This listener runs only once per login, avoiding the performance overhead of checking
  * onboarding status on every request.
  */
-final class OnboardingLoginListener implements EventSubscriberInterface
+final readonly class OnboardingLoginListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly OnboardingManager $onboardingManager,
-        private readonly RouterInterface $router,
+        private OnboardingManager $onboardingManager,
+        private RouterInterface $router,
     ) {
     }
 

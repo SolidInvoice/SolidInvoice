@@ -20,10 +20,10 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProviderInterface<RecurringInvoice> */
-final class RecurringInvoiceItemProvider implements ProviderInterface
+final readonly class RecurringInvoiceItemProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly RecurringInvoiceRepository $repository
+        private RecurringInvoiceRepository $repository
     ) {
     }
 

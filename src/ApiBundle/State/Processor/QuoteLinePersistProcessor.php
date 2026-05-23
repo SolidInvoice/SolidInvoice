@@ -21,11 +21,11 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProcessorInterface<Line, Line> */
-final class QuoteLinePersistProcessor implements ProcessorInterface
+final readonly class QuoteLinePersistProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly QuoteRepository $quoteRepository,
-        private readonly ManagerRegistry $registry,
+        private QuoteRepository $quoteRepository,
+        private ManagerRegistry $registry,
     ) {
     }
 

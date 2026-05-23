@@ -35,16 +35,16 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
-final class Edit
+final readonly class Edit
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
-        private readonly RouterInterface $router,
-        private readonly WorkflowInterface $invoiceStateMachine,
-        private readonly ManagerRegistry $doctrine,
-        private readonly MailerInterface $mailer,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly InvoiceFormManager $formManager,
+        private FormFactoryInterface $formFactory,
+        private RouterInterface $router,
+        private WorkflowInterface $invoiceStateMachine,
+        private ManagerRegistry $doctrine,
+        private MailerInterface $mailer,
+        private TotalCalculator $totalCalculator,
+        private InvoiceFormManager $formManager,
     ) {
     }
 

@@ -22,15 +22,15 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProcessorInterface<Contact, Contact> */
-final class ContactPersistProcessor implements ProcessorInterface
+final readonly class ContactPersistProcessor implements ProcessorInterface
 {
     /**
      * @param ProcessorInterface<mixed, mixed> $decorated
      */
     public function __construct(
         #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
-        private readonly ProcessorInterface $decorated,
-        private readonly ClientRepository $clientRepository,
+        private ProcessorInterface $decorated,
+        private ClientRepository $clientRepository,
     ) {
     }
 

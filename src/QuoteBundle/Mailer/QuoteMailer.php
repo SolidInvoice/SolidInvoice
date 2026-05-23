@@ -25,12 +25,12 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class QuoteMailer
+final readonly class QuoteMailer
 {
     public function __construct(
-        private readonly WorkflowInterface $quoteStateMachine,
-        private readonly MailerInterface $mailer,
-        private readonly NotificationManager $notification
+        private WorkflowInterface $quoteStateMachine,
+        private MailerInterface $mailer,
+        private NotificationManager $notification
     ) {
     }
 

@@ -18,12 +18,12 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 
-final class SaasMenu
+final readonly class SaasMenu
 {
     public function __construct(
-        private readonly CompanySelector $companySelector,
-        private readonly CompanyRepository $companyRepository,
-        private readonly SubscriptionManager $subscriptionManager,
+        private CompanySelector $companySelector,
+        private CompanyRepository $companyRepository,
+        private SubscriptionManager $subscriptionManager,
     ) {
     }
 

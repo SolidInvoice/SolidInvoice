@@ -16,13 +16,13 @@ namespace SolidInvoice\DataGridBundle\Filter;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 
-final class SearchFilter implements FilterInterface
+final readonly class SearchFilter implements FilterInterface
 {
     /**
      * @param string[] $searchFields
      */
     public function __construct(
-        private readonly array $searchFields
+        private array $searchFields
     ) {
     }
 

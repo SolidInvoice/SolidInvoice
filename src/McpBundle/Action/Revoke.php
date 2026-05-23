@@ -28,12 +28,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/oauth/revoke', name: 'mcp_oauth_revoke', methods: ['POST'])]
-final class Revoke
+final readonly class Revoke
 {
     public function __construct(
-        private readonly McpAccessTokenRepository $accessTokenRepository,
-        private readonly McpRefreshTokenRepository $refreshTokenRepository,
-        private readonly KeyManager $keyManager,
+        private McpAccessTokenRepository $accessTokenRepository,
+        private McpRefreshTokenRepository $refreshTokenRepository,
+        private KeyManager $keyManager,
     ) {
     }
 

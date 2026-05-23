@@ -27,14 +27,14 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
 
-final class ClientWriteTools
+final readonly class ClientWriteTools
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly TaxIdentifierRepository $taxIdentifierRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private ClientRepository $clientRepository,
+        private TaxIdentifierRepository $taxIdentifierRepository,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

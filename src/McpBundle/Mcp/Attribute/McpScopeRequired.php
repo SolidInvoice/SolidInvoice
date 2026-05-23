@@ -21,10 +21,10 @@ use SolidInvoice\McpBundle\Security\McpScope;
  * {@see \SolidInvoice\McpBundle\Mcp\McpScopeGuard}.
  */
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS)]
-final class McpScopeRequired
+final readonly class McpScopeRequired
 {
     public function __construct(
-        public readonly McpScope $scope
+        public McpScope $scope
     ) {
     }
 }

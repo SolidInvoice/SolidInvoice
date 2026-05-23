@@ -22,10 +22,10 @@ use function str_replace;
 use function strtoupper;
 
 #[AsDecorator(decorates: 'api_platform.openapi.factory')]
-final class CustomFieldsSchemaDecorator implements OpenApiFactoryInterface
+final readonly class CustomFieldsSchemaDecorator implements OpenApiFactoryInterface
 {
     public function __construct(
-        private readonly OpenApiFactoryInterface $decorated
+        private OpenApiFactoryInterface $decorated
     ) {
     }
 

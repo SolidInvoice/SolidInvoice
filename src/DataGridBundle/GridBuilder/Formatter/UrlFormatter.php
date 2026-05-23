@@ -17,10 +17,10 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 
-final class UrlFormatter implements FormatterInterface
+final readonly class UrlFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly Environment $twig
+        private Environment $twig
     ) {
     }
 

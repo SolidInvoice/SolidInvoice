@@ -19,11 +19,11 @@ use SolidInvoice\UserBundle\Entity\ApiToken;
  * The plaintext token is only available at creation time — it is never
  * persisted nor recoverable from the database afterwards.
  */
-final class GeneratedApiToken
+final readonly class GeneratedApiToken
 {
     public function __construct(
-        public readonly ApiToken $token,
-        public readonly string $plaintext,
+        public ApiToken $token,
+        public string $plaintext,
     ) {
     }
 }

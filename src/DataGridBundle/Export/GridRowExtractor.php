@@ -46,13 +46,13 @@ use function strstr;
  *
  * All formats (CSV / JSON / XML) receive the same flat key shape for consistency.
  */
-final class GridRowExtractor
+final readonly class GridRowExtractor
 {
-    private readonly ISOCurrencies $currencies;
+    private ISOCurrencies $currencies;
 
     public function __construct(
-        private readonly PropertyAccessorInterface $propertyAccessor,
-        private readonly ManagerRegistry $registry,
+        private PropertyAccessorInterface $propertyAccessor,
+        private ManagerRegistry $registry,
     ) {
         $this->currencies = new ISOCurrencies();
     }

@@ -19,12 +19,12 @@ use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Delete implements AjaxResponse
+final readonly class Delete implements AjaxResponse
 {
     use JsonTrait;
 
     public function __construct(
-        private readonly TaxRepository $repository
+        private TaxRepository $repository
     ) {
     }
 

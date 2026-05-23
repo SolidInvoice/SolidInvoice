@@ -19,10 +19,10 @@ use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\ConsentGrantRepository;
 use SolidInvoice\UserBundle\Entity\User;
 
-final class ConsentService
+final readonly class ConsentService
 {
     public function __construct(
-        private readonly ConsentGrantRepository $repository,
+        private ConsentGrantRepository $repository,
     ) {
     }
 

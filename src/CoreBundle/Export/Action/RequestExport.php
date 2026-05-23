@@ -33,17 +33,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use ValueError;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class RequestExport
+final readonly class RequestExport
 {
     public const CSRF_TOKEN_ID = 'export.request';
 
     public function __construct(
-        private readonly ExportJobRepository $exportJobRepository,
-        private readonly CompanyRepository $companyRepository,
-        private readonly CompanySelector $companySelector,
-        private readonly MessageBusInterface $messageBus,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private ExportJobRepository $exportJobRepository,
+        private CompanyRepository $companyRepository,
+        private CompanySelector $companySelector,
+        private MessageBusInterface $messageBus,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

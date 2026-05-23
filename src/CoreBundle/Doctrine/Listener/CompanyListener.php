@@ -21,10 +21,10 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Component\Uid\Ulid;
 
 #[AsDoctrineListener(Events::prePersist)]
-final class CompanyListener
+final readonly class CompanyListener
 {
     public function __construct(
-        private readonly CompanySelector $companySelector,
+        private CompanySelector $companySelector,
     ) {
     }
 

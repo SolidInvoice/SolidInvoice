@@ -33,16 +33,16 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[Route(path: '/profile/connected-apps/{id}/revoke', name: 'mcp_connected_apps_revoke', methods: ['POST'])]
-final class ConnectedAppsRevoke
+final readonly class ConnectedAppsRevoke
 {
     public const string CSRF_TOKEN_ID = 'mcp_connected_apps_revoke';
 
     public function __construct(
-        private readonly OAuthClientRepository $clientRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly Security $security,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private OAuthClientRepository $clientRepository,
+        private EntityManagerInterface $entityManager,
+        private Security $security,
+        private UrlGeneratorInterface $urlGenerator,
+        private CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 

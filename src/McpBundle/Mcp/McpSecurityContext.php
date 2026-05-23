@@ -24,11 +24,11 @@ use Symfony\Component\Uid\Ulid;
  * The {@see McpOAuthAuthenticator} sets these attributes on the Request during
  * firewall authentication; tools read them via this service.
  */
-final class McpSecurityContext
+final readonly class McpSecurityContext
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly CompanySelector $companySelector,
+        private RequestStack $requestStack,
+        private CompanySelector $companySelector,
     ) {
     }
 

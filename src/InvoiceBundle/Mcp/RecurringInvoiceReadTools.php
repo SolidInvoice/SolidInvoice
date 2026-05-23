@@ -26,13 +26,13 @@ use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
-final class RecurringInvoiceReadTools
+final readonly class RecurringInvoiceReadTools
 {
     public function __construct(
-        private readonly RecurringInvoiceRepository $recurringInvoiceRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private RecurringInvoiceRepository $recurringInvoiceRepository,
+        private ClientRepository $clientRepository,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

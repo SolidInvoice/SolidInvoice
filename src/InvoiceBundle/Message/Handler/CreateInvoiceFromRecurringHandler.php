@@ -30,15 +30,15 @@ use Symfony\Component\Workflow\WorkflowInterface;
  * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
  */
 #[AsMessageHandler(fromTransport: 'sync')]
-final class CreateInvoiceFromRecurringHandler
+final readonly class CreateInvoiceFromRecurringHandler
 {
     public function __construct(
-        private readonly InvoiceManager $invoiceManager,
-        private readonly WorkflowInterface $invoiceStateMachine,
-        private readonly CompanySelector $companySelector,
-        private readonly LoggerInterface $logger,
-        private readonly ClockInterface $clock,
-        private readonly RecurringInvoiceRepository $recurringInvoiceRepository,
+        private InvoiceManager $invoiceManager,
+        private WorkflowInterface $invoiceStateMachine,
+        private CompanySelector $companySelector,
+        private LoggerInterface $logger,
+        private ClockInterface $clock,
+        private RecurringInvoiceRepository $recurringInvoiceRepository,
     ) {
     }
 

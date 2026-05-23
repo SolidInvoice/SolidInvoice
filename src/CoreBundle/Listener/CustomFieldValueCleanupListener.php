@@ -24,10 +24,10 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
 #[AsDoctrineListener(event: \Doctrine\ORM\Events::preRemove)]
-final class CustomFieldValueCleanupListener
+final readonly class CustomFieldValueCleanupListener
 {
     public function __construct(
-        private readonly CustomFieldValueRepository $values,
+        private CustomFieldValueRepository $values,
     ) {
     }
 

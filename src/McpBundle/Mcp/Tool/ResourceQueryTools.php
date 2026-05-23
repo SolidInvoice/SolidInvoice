@@ -27,13 +27,13 @@ use Symfony\Component\Uid\Ulid;
  * isolation is enforced by the active CompanyFilter — every query runs under
  * the token's bound company, set by {@see \SolidInvoice\McpBundle\Security\McpOAuthAuthenticator}.
  */
-final class ResourceQueryTools
+final readonly class ResourceQueryTools
 {
     public function __construct(
-        private readonly ResourceRegistry $registry,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private ResourceRegistry $registry,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

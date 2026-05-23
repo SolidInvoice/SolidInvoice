@@ -19,11 +19,11 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 
-final class View
+final readonly class View
 {
     public function __construct(
-        private readonly PaymentRepository $paymentRepository,
-        private readonly InvoiceRepository $invoiceRepository,
+        private PaymentRepository $paymentRepository,
+        private InvoiceRepository $invoiceRepository,
     ) {
     }
 

@@ -36,18 +36,18 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  *   this behind a Messenger job that writes chunks to disk and emails the user a
  *   download link, mirroring the full-company export flow.
  */
-final class GridExporter
+final readonly class GridExporter
 {
     /**
      * @param ServiceLocator<GridInterface> $gridLocator
      */
     public function __construct(
         #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
-        private readonly ServiceLocator $gridLocator,
-        private readonly SourceInterface $source,
-        private readonly GridQueryService $gridQueryService,
-        private readonly GridRowExtractor $rowExtractor,
-        private readonly ExportSerializer $serializer,
+        private ServiceLocator $gridLocator,
+        private SourceInterface $source,
+        private GridQueryService $gridQueryService,
+        private GridRowExtractor $rowExtractor,
+        private ExportSerializer $serializer,
     ) {
     }
 

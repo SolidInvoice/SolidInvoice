@@ -26,16 +26,16 @@ use Symfony\Component\Notifier\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final class NotificationTransportFactory
+final readonly class NotificationTransportFactory
 {
     /**
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        private readonly Transport $transport,
-        private readonly TransportSettingRepository $transportSettingRepository,
+        private Transport $transport,
+        private TransportSettingRepository $transportSettingRepository,
         #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
-        private readonly ServiceLocator $transportConfigurations,
+        private ServiceLocator $transportConfigurations,
     ) {
     }
 

@@ -36,13 +36,13 @@ use function array_rand;
 use function assert;
 use function random_int;
 
-final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
+final readonly class InvoiceDummyDataLoader implements DummyDataLoaderInterface
 {
-    private readonly Generator $faker;
+    private Generator $faker;
 
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly BillingIdGenerator $billingIdGenerator,
+        private ManagerRegistry $registry,
+        private BillingIdGenerator $billingIdGenerator,
     ) {
         $this->faker = Factory::create();
     }

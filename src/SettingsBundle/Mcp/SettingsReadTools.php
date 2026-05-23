@@ -22,12 +22,12 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Security\McpScope;
 
-final class SettingsReadTools
+final readonly class SettingsReadTools
 {
     public function __construct(
-        private readonly CompanyRepository $companyRepository,
-        private readonly CompanySelector $companySelector,
-        private readonly McpScopeGuard $scopeGuard,
+        private CompanyRepository $companyRepository,
+        private CompanySelector $companySelector,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

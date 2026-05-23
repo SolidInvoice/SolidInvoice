@@ -22,11 +22,11 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /** @implements ProviderInterface<ApiToken> */
-final class ApiTokenCollectionProvider implements ProviderInterface
+final readonly class ApiTokenCollectionProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly ApiTokenRepository $apiTokenRepository,
-        private readonly Security $security,
+        private ApiTokenRepository $apiTokenRepository,
+        private Security $security,
     ) {
     }
 

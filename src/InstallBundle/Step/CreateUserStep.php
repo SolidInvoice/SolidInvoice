@@ -17,11 +17,11 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
-final class CreateUserStep implements InstallationStepInterface
+final readonly class CreateUserStep implements InstallationStepInterface
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private UserRepository $userRepository,
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
     ) {
     }
 

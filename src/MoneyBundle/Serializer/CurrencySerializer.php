@@ -16,9 +16,9 @@ use Money\Currency;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class CurrencySerializer implements NormalizerInterface, DenormalizerInterface
+final readonly class CurrencySerializer implements NormalizerInterface, DenormalizerInterface
 {
-    private readonly DenormalizerInterface | NormalizerInterface $normalizer;
+    private DenormalizerInterface | NormalizerInterface $normalizer;
 
     public function __construct(NormalizerInterface $normalizer)
     {

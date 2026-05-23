@@ -32,12 +32,12 @@ use Traversable;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Cloner\InvoiceClonerTest
  */
-final class InvoiceCloner
+final readonly class InvoiceCloner
 {
     public function __construct(
-        private readonly InvoiceManager $invoiceManager,
-        private readonly BillingIdGenerator $billingIdGenerator,
-        private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
+        private InvoiceManager $invoiceManager,
+        private BillingIdGenerator $billingIdGenerator,
+        private TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
     }
 

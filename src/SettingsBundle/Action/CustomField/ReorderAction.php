@@ -28,14 +28,14 @@ use Symfony\Component\Uid\Ulid;
 use function is_array;
 use function json_decode;
 
-final class ReorderAction
+final readonly class ReorderAction
 {
     public const string CSRF_TOKEN_ID = 'custom_field_reorder';
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FeatureGate $featureGate,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private EntityManagerInterface $em,
+        private FeatureGate $featureGate,
+        private CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 

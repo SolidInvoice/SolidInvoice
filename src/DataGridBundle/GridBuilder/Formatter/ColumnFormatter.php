@@ -26,13 +26,13 @@ use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
+final readonly class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
 {
     /**
      * @param ServiceLocator<FormatterInterface> $locator
      */
     public function __construct(
-        private readonly ServiceProviderInterface $locator
+        private ServiceProviderInterface $locator
     ) {
     }
 

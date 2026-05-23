@@ -33,7 +33,7 @@ use function str_starts_with;
  *
  * @see \SolidInvoice\CoreBundle\Tests\Listener\HostRoutingListenerTest
  */
-final class HostRoutingListener implements EventSubscriberInterface
+final readonly class HostRoutingListener implements EventSubscriberInterface
 {
     public const REQUEST_ATTR = '_resolved_host';
 
@@ -47,10 +47,10 @@ final class HostRoutingListener implements EventSubscriberInterface
     ];
 
     public function __construct(
-        private readonly CompanyDomainResolver $resolver,
-        private readonly RouterInterface $router,
-        private readonly FeatureGate $featureGate,
-        private readonly ?string $installed = null,
+        private CompanyDomainResolver $resolver,
+        private RouterInterface $router,
+        private FeatureGate $featureGate,
+        private ?string $installed = null,
     ) {
     }
 

@@ -26,12 +26,12 @@ use Symfony\Component\Filesystem\Filesystem;
  * mcp:keys:generate` writes them; FrankenPHP's launcher calls that command on
  * first boot so deployments don't need a manual setup step.
  */
-final class KeyManager
+final readonly class KeyManager
 {
     public function __construct(
-        private readonly string $configDir,
-        private readonly ?string $encryptionKey,
-        private readonly Filesystem $filesystem = new Filesystem(),
+        private string $configDir,
+        private ?string $encryptionKey,
+        private Filesystem $filesystem = new Filesystem(),
     ) {
         if ($this->encryptionKey === null || $this->encryptionKey === '') {
             throw new RuntimeException('SOLIDINVOICE_APP_SECRET must be configured before using MCP (used as the OAuth auth-code encryption key).');

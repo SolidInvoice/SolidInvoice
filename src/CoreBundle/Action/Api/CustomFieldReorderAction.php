@@ -25,10 +25,10 @@ use Throwable;
 use function is_array;
 use function json_decode;
 
-final class CustomFieldReorderAction
+final readonly class CustomFieldReorderAction
 {
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private EntityManagerInterface $em
     ) {
     }
 

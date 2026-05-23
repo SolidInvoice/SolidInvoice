@@ -24,10 +24,10 @@ use SolidInvoice\TaxBundle\Enum\RoundingStrategy;
  * Defaults to {@see RoundingStrategy::HalfEven} ("banker's rounding"), which matches
  * the behaviour of the legacy {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator}.
  */
-final class Rounder
+final readonly class Rounder
 {
     public function __construct(
-        private readonly RoundingStrategy $strategy = RoundingStrategy::HalfEven,
+        private RoundingStrategy $strategy = RoundingStrategy::HalfEven,
     ) {
     }
 

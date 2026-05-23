@@ -38,17 +38,17 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
  * @implements ProcessorInterface<object, object>
  */
 #[AsDecorator(decorates: PersistProcessor::class)]
-final class CustomFieldsStateProcessor implements ProcessorInterface
+final readonly class CustomFieldsStateProcessor implements ProcessorInterface
 {
     /**
      * @param ProcessorInterface<object, object> $inner
      */
     public function __construct(
-        private readonly ProcessorInterface $inner,
-        private readonly EntityManagerInterface $em,
-        private readonly CustomFieldValueRepository $values,
-        private readonly FeatureGate $featureGate,
-        private readonly CustomFieldStagingStore $stagingStore,
+        private ProcessorInterface $inner,
+        private EntityManagerInterface $em,
+        private CustomFieldValueRepository $values,
+        private FeatureGate $featureGate,
+        private CustomFieldStagingStore $stagingStore,
     ) {
     }
 
