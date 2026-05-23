@@ -51,7 +51,7 @@ abstract class Grid implements GridInterface
     {
         $columns = [];
 
-        foreach ((new ReflectionClass($this->entityFQCN()))->getProperties() as $property) {
+        foreach (new ReflectionClass($this->entityFQCN())->getProperties() as $property) {
             $type = $property->hasType() ? $property->getType() : null;
 
             if ($type instanceof ReflectionNamedType) {

@@ -107,7 +107,7 @@ final class RecurringInvoiceFeatureActivateGateTest extends TestCase
 
     private function makeStateMachine(EventDispatcher $dispatcher): StateMachine
     {
-        $definition = (new DefinitionBuilder())
+        $definition = new DefinitionBuilder()
             ->addPlaces([
                 RecurringInvoiceStatus::New->value,
                 RecurringInvoiceStatus::Draft->value,

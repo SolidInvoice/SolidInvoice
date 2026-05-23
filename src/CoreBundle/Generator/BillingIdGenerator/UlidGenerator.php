@@ -29,6 +29,6 @@ final class UlidGenerator implements IdGeneratorInterface
 
     public function generate(object $entity, array $options): string
     {
-        return (new Ulid())->toBase32();
+        return new Ulid()->toBase32();
     }
 }

@@ -181,7 +181,7 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 

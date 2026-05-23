@@ -87,7 +87,7 @@ final readonly class CustomFieldFormWriter
                 continue;
             }
 
-            $value = (new CustomFieldValue())
+            $value = new CustomFieldValue()
                 ->setField($def)
                 ->setTarget($target)
                 ->setTargetId($targetId)

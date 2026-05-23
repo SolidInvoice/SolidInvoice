@@ -244,7 +244,7 @@ final readonly class Authorize
             $this->pendingAuthorization->clear();
         }
 
-        return (new HttpFoundationFactory())->createResponse($psrResponse);
+        return new HttpFoundationFactory()->createResponse($psrResponse);
     }
 
     /**

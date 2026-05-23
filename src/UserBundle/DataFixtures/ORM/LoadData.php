@@ -32,13 +32,13 @@ class LoadData extends Fixture
             throw new RuntimeException('No company found');
         }
 
-        $user1 = (new User())
+        $user1 = new User()
             ->setEmail('test1@test.com')
             ->setPassword('test1')
             ->addCompany($company)
         ;
 
-        $user2 = (new User())
+        $user2 = new User()
             ->setEmail('test2@test.com')
             ->setPassword('test2')
             ->setEnabled(true)

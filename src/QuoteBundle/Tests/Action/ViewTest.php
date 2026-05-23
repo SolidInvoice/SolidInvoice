@@ -78,7 +78,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
                         ->setQty(1)
@@ -149,7 +149,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
                         ->setQty(1)
@@ -204,7 +204,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Line with Tax')
                         ->setPrice('100.00')
                         ->setQty(1)
@@ -269,7 +269,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
                         ->setQty(1)
@@ -330,7 +330,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
                         ->setQty(1)

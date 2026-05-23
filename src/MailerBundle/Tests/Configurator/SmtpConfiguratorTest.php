@@ -22,16 +22,16 @@ class SmtpConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('SMTP', (new SmtpConfigurator())->getName());
+        self::assertSame('SMTP', new SmtpConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(SmtpTransportConfigType::class, (new SmtpConfigurator())->getForm());
+        self::assertSame(SmtpTransportConfigType::class, new SmtpConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('smtp://foo:bar@example.com:465'), (new SmtpConfigurator())->configure(['user' => 'foo', 'password' => 'bar', 'host' => 'example.com', 'port' => 465]));
+        self::assertEquals(Dsn::fromString('smtp://foo:bar@example.com:465'), new SmtpConfigurator()->configure(['user' => 'foo', 'password' => 'bar', 'host' => 'example.com', 'port' => 465]));
     }
 }

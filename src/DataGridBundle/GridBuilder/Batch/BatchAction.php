@@ -40,7 +40,7 @@ class BatchAction
 
     public static function new(string $label): static
     {
-        return (new static())
+        return new static()
             ->label($label);
     }
 

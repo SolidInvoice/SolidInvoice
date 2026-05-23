@@ -45,7 +45,7 @@ class Action
      */
     public static function new(string $route, array $parameters = []): static
     {
-        return (new static())
+        return new static()
             ->route($route, $parameters);
     }
 

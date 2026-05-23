@@ -78,7 +78,7 @@ final class WorkFlowSubscriberTest extends KernelTestCase
 
     public function testOnWorkflowTransitionApplied(): void
     {
-        $quote = (new Quote())
+        $quote = new Quote()
             ->setClient(ClientFactory::createOne()->_real())
             ->setStatus(QuoteStatus::Pending);
 

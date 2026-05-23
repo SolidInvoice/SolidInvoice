@@ -45,12 +45,12 @@ final class GridQueryService
         // already treats as a no-op. The early return keeps intent obvious and
         // avoids constructing a throw-away filter when sort is unset.
         if ($sort !== '') {
-            (new SortFilter(...explode(',', $sort, 2)))->filter($builder, null);
+            new SortFilter(...explode(',', $sort, 2))->filter($builder, null);
         }
 
         $searchFields = array_filter($grid->columns(), static fn (Column $column): bool => $column->isSearchable());
         $searchFields = array_map(static fn (Column $column): string => $column->getField(), $searchFields);
-        (new SearchFilter($searchFields))->filter($builder, $search);
+        new SearchFilter($searchFields)->filter($builder, $search);
 
         foreach ($grid->filters() as $column => $filter) {
             $filterValue = $gridFilters[$column] ?? '';

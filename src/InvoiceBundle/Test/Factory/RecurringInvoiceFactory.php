@@ -84,11 +84,11 @@ final class RecurringInvoiceFactory extends PersistentProxyObjectFactory
             'total' => BigInteger::of(self::faker()->randomNumber()),
             'baseTotal' => BigInteger::of(self::faker()->randomNumber()),
             'tax' => BigInteger::of(self::faker()->randomNumber()),
-            'discount' => (new Discount())
+            'discount' => new Discount()
                 ->setType(self::faker()->randomElement([Discount::TYPE_PERCENTAGE, Discount::TYPE_MONEY]))
                 ->setValueMoney(BigInteger::of(self::faker()->randomNumber()))
                 ->setValuePercentage(self::faker()->randomFloat()),
-            'recurringOptions' => (new RecurringOptions())
+            'recurringOptions' => new RecurringOptions()
                 ->setType(ScheduleRecurringType::WEEKLY)
                 ->setEndType(ScheduleEndType::AFTER)
                 ->setDays([1])

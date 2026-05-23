@@ -24,7 +24,7 @@ final class EmailVerificationExtensionTest extends TestCase
         $gate = $this->createMock(EmailVerificationGateInterface::class);
         $gate->expects(self::once())->method('isGated')->willReturn(true);
 
-        self::assertTrue((new EmailVerificationExtension($gate))->isEmailVerificationGated());
+        self::assertTrue(new EmailVerificationExtension($gate)->isEmailVerificationGated());
     }
 
     public function testMessageDelegatesToGate(): void
@@ -37,7 +37,7 @@ final class EmailVerificationExtensionTest extends TestCase
 
         self::assertSame(
             'Please verify your email address before sending this invoice.',
-            (new EmailVerificationExtension($gate))->emailVerificationMessage('sending this invoice'),
+            new EmailVerificationExtension($gate)->emailVerificationMessage('sending this invoice'),
         );
     }
 }

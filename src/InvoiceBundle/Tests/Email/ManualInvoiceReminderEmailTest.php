@@ -129,7 +129,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                 'invoiceDate' => new DateTimeImmutable('2024-01-15'),
                 'due' => new DateTimeImmutable('2024-02-15'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Monthly Subscription')
                         ->setPrice(25000)
                         ->setQty(1)
@@ -172,7 +172,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                 'invoiceDate' => new DateTimeImmutable('2024-01-15'),
                 'due' => new DateTimeImmutable('2024-02-15'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Monthly Subscription')
                         ->setPrice(25000)
                         ->setQty(1)

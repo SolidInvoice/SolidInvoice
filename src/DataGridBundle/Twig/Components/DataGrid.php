@@ -450,7 +450,7 @@ class DataGrid extends AbstractController
     {
         $grid = $this->getGrid();
 
-        $gridDefinition = (new ReflectionObject($grid))->getAttributes(AsDataGrid::class)[0] ?? null;
+        $gridDefinition = new ReflectionObject($grid)->getAttributes(AsDataGrid::class)[0] ?? null;
 
         return $gridDefinition?->getArguments()['title'] ?? null;
     }

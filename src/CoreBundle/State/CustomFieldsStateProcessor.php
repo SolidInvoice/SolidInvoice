@@ -100,7 +100,7 @@ final readonly class CustomFieldsStateProcessor implements ProcessorInterface
             }
 
             if ($existingValue === null) {
-                $newValue = (new CustomFieldValue())
+                $newValue = new CustomFieldValue()
                     ->setField($def)
                     ->setTarget($target)
                     ->setTargetId($data->getId())

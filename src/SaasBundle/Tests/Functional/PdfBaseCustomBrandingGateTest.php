@@ -210,9 +210,9 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
             'total' => BigInteger::of(150000),
             'baseTotal' => BigInteger::of(150000),
             'tax' => BigInteger::of(0),
-            'discount' => (new Discount())->setType(null),
+            'discount' => new Discount()->setType(null),
             'lines' => [
-                (new Line())
+                new Line()
                     ->setDescription('Sample line item')
                     ->setPrice(BigInteger::of(75000))
                     ->setQty(2.0)

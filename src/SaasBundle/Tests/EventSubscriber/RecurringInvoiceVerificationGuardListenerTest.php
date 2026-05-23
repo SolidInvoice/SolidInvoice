@@ -37,7 +37,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             $this->createMock(WorkflowInterface::class),
         );
 
-        (new RecurringInvoiceVerificationGuardListener($gate))->onGuardActivate($event);
+        new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);
 
         self::assertTrue($event->isBlocked());
         $blockers = iterator_to_array($event->getTransitionBlockerList());
@@ -60,7 +60,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             $this->createMock(WorkflowInterface::class),
         );
 
-        (new RecurringInvoiceVerificationGuardListener($gate))->onGuardActivate($event);
+        new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);
 
         self::assertFalse($event->isBlocked());
     }

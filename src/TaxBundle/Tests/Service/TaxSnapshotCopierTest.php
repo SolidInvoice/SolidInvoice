@@ -36,7 +36,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source->setSequence(1);
         $source->setAmount(BigInteger::of('500'));
 
-        $copy = (new TaxSnapshotCopier())->copyLineTax($source);
+        $copy = new TaxSnapshotCopier()->copyLineTax($source);
 
         self::assertNotSame($source, $copy);
         self::assertSame('GST', $copy->getNameSnapshot());
@@ -56,7 +56,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source->setRateSnapshot('20.0000');
 
         $stamp = new DateTimeImmutable('2026-05-13 10:00:00');
-        $copy = (new TaxSnapshotCopier())->copyLineTax($source, $stamp);
+        $copy = new TaxSnapshotCopier()->copyLineTax($source, $stamp);
 
         self::assertSame($stamp, $copy->getSnapshottedAt());
     }
@@ -69,7 +69,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $stamp = new DateTimeImmutable('2025-01-01 00:00:00');
         $source->freeze($stamp);
 
-        $copy = (new TaxSnapshotCopier())->copyLineTax($source);
+        $copy = new TaxSnapshotCopier()->copyLineTax($source);
 
         self::assertSame($stamp, $copy->getSnapshottedAt());
     }
@@ -85,7 +85,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source->setSequence(0);
         $source->setAmount(BigInteger::of('-1000'));
 
-        $copy = (new TaxSnapshotCopier())->copyInvoiceTax($source);
+        $copy = new TaxSnapshotCopier()->copyInvoiceTax($source);
 
         self::assertNotSame($source, $copy);
         self::assertSame('TDS', $copy->getNameSnapshot());

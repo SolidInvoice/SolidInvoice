@@ -125,14 +125,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
         $isQuote = $subject instanceof Quote;
         $draftPlaces = $isQuote ? self::QUOTE_DRAFT_PLACES : self::INVOICE_DRAFT_PLACES;
         $issuedPlaces = $isQuote ? self::QUOTE_ISSUED_PLACES : self::INVOICE_ISSUED_PLACES;
-
-        $fromDraft = false;
-        foreach ($transition->getFroms() as $from) {
-            if (in_array($from, $draftPlaces, true)) {
-                $fromDraft = true;
-                break;
-            }
-        }
+        $fromDraft = array_any($transition->getFroms(), fn ($from) => in_array($from, $draftPlaces, true));
 
         if (! $fromDraft) {
             return false;

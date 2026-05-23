@@ -47,7 +47,7 @@ class CurrencyType extends AbstractType
     {
         $currencyList = Currencies::getNames($this->locale);
 
-        $collection = (new ArrayCollection(iterator_to_array((new ISOCurrencies())->getIterator())))
+        $collection = new ArrayCollection(iterator_to_array(new ISOCurrencies()->getIterator()))
             ->filter(fn (Currency $currency): bool => array_key_exists($currency->getCode(), $currencyList));
 
         foreach ($collection as $currency) {

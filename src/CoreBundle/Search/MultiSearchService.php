@@ -76,7 +76,7 @@ final class MultiSearchService
                 continue;
             }
 
-            $q = (new SearchQuery())
+            $q = new SearchQuery()
                 ->setIndexUid($this->indexPrefix . $indexName)
                 ->setQuery($parsedQuery->fulltext)
                 ->setFilter($allFilters)

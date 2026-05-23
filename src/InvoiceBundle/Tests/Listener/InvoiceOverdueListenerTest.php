@@ -35,7 +35,7 @@ final class InvoiceOverdueListenerTest extends TestCase
 
     public function testListenerSendsNotificationToInternalUsers(): void
     {
-        $client = (new Client())->setName('Test Client')->setCurrencyCode('USD');
+        $client = new Client()->setName('Test Client')->setCurrencyCode('USD');
 
         $invoice = new Invoice();
         $invoice->setStatus(InvoiceStatus::Overdue);
@@ -62,7 +62,7 @@ final class InvoiceOverdueListenerTest extends TestCase
 
     public function testListenerHandlesNotificationFailure(): void
     {
-        $client = (new Client())->setName('Test Client')->setCurrencyCode('USD');
+        $client = new Client()->setName('Test Client')->setCurrencyCode('USD');
 
         $invoice = new Invoice();
         $invoice->setStatus(InvoiceStatus::Overdue);

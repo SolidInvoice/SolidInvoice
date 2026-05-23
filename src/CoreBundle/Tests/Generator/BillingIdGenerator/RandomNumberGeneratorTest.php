@@ -46,6 +46,6 @@ final class RandomNumberGeneratorTest extends TestCase
 
     public function testGetConfigurationFormType(): void
     {
-        self::assertNull((new RandomNumberGenerator())->getConfigurationFormType());
+        self::assertNull(new RandomNumberGenerator()->getConfigurationFormType());
     }
 }

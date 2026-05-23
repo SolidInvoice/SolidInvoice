@@ -28,7 +28,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
 {
     private function createZeroDiscount(): Discount
     {
-        return (new Discount())
+        return new Discount()
             ->setType('percentage')
             ->setValueMoney(BigInteger::zero())
             ->setValuePercentage(0);
@@ -77,7 +77,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'lines' => [
-                (new Line())
+                new Line()
                     ->setDescription('Test Item')
                     ->setQty(1)
                     ->setPrice(10000),
@@ -94,7 +94,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'lines' => [
-                (new Line())
+                new Line()
                     ->setDescription('Test Item')
                     ->setQty(1)
                     ->setPrice(5000),

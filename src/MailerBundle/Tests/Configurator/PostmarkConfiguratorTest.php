@@ -22,16 +22,16 @@ class PostmarkConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Postmark', (new PostmarkConfigurator())->getName());
+        self::assertSame('Postmark', new PostmarkConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(KeyTransportConfigType::class, (new PostmarkConfigurator())->getForm());
+        self::assertSame(KeyTransportConfigType::class, new PostmarkConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('postmark+api://foobar@default'), (new PostmarkConfigurator())->configure(['key' => 'foobar']));
+        self::assertEquals(Dsn::fromString('postmark+api://foobar@default'), new PostmarkConfigurator()->configure(['key' => 'foobar']));
     }
 }

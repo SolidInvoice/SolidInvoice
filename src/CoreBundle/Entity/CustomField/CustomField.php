@@ -164,7 +164,7 @@ class CustomField
     public function setLabel(string $label): self
     {
         $this->label = $label;
-        $this->fieldKey = (new AsciiSlugger())->slug($label, '_')->lower()->toString();
+        $this->fieldKey = new AsciiSlugger()->slug($label, '_')->lower()->toString();
 
         return $this;
     }

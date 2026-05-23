@@ -39,7 +39,7 @@ final class LoadPlans extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $free = (new Plan())
+        $free = new Plan()
             ->setName('Free')
             ->setPlanId('0')
             ->setPrice(0)
@@ -47,21 +47,21 @@ final class LoadPlans extends Fixture
             ->setDefault(true)
             ->setActive(true);
 
-        $solo = (new Plan())
+        $solo = new Plan()
             ->setName('Solo')
             ->setPlanId('solo-monthly')
             ->setPrice(900)
             ->setDescription('Single freelancer with active client billing.')
             ->setActive(true);
 
-        $business = (new Plan())
+        $business = new Plan()
             ->setName('Business')
             ->setPlanId('business-monthly')
             ->setPrice(1900)
             ->setDescription('Growing teams that need automation and branding.')
             ->setActive(true);
 
-        $agency = (new Plan())
+        $agency = new Plan()
             ->setName('Agency')
             ->setPlanId('agency-monthly')
             ->setPrice(3900)

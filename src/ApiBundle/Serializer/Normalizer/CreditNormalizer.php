@@ -44,7 +44,7 @@ final class CreditNormalizer implements NormalizerAwareInterface, NormalizerInte
                 return $existing->setValue($existing->getValue()->toBigDecimal()->plus($delta));
             }
 
-            return (new Credit())->setValue($delta);
+            return new Credit()->setValue($delta);
         }
 
         return $this->denormalizer->denormalize($data, $type, $format, $context);

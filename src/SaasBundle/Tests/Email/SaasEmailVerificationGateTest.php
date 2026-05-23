@@ -35,29 +35,29 @@ final class SaasEmailVerificationGateTest extends TestCase
 
     public function testNotGatedWhenUserVerified(): void
     {
-        $user = (new User())->setVerified(true);
+        $user = new User()->setVerified(true);
         $gate = $this->makeGate(user: $user);
         self::assertFalse($gate->isGated());
     }
 
     public function testNotGatedWhenNoSubscription(): void
     {
-        $user = (new User())->setVerified(false);
+        $user = new User()->setVerified(false);
         $gate = $this->makeGate(user: $user, subscription: null);
         self::assertFalse($gate->isGated());
     }
 
     public function testGatedWhenUnverifiedAndSubscribed(): void
     {
-        $user = (new User())->setVerified(false);
+        $user = new User()->setVerified(false);
         $gate = $this->makeGate(user: $user, subscription: $this->createStub(Subscription::class));
         self::assertTrue($gate->isGated());
     }
 
     public function testIsCompanyGatedFalseWhenAnyUserVerified(): void
     {
-        $verified = (new User())->setVerified(true);
-        $unverified = (new User())->setVerified(false);
+        $verified = new User()->setVerified(true);
+        $unverified = new User()->setVerified(false);
 
         $company = new Company();
         $company->addUser($verified);
@@ -69,7 +69,7 @@ final class SaasEmailVerificationGateTest extends TestCase
 
     public function testIsCompanyGatedTrueWhenAllUsersUnverifiedAndSubscribed(): void
     {
-        $unverified = (new User())->setVerified(false);
+        $unverified = new User()->setVerified(false);
 
         $company = new Company();
         $company->addUser($unverified);
@@ -80,7 +80,7 @@ final class SaasEmailVerificationGateTest extends TestCase
 
     public function testIsCompanyGatedFalseWithoutSubscription(): void
     {
-        $unverified = (new User())->setVerified(false);
+        $unverified = new User()->setVerified(false);
 
         $company = new Company();
         $company->addUser($unverified);
@@ -106,7 +106,7 @@ final class SaasEmailVerificationGateTest extends TestCase
 
     public function testIsGatedMemoizedPerInstance(): void
     {
-        $user = (new User())->setVerified(false);
+        $user = new User()->setVerified(false);
         $companyId = new Ulid();
         $company = new Company();
 
@@ -140,7 +140,7 @@ final class SaasEmailVerificationGateTest extends TestCase
 
     public function testResetClearsCachesSoStaleStateIsNotReturned(): void
     {
-        $user = (new User())->setVerified(false);
+        $user = new User()->setVerified(false);
         $companyId = new Ulid();
         $company = new Company();
 

@@ -95,13 +95,13 @@ return RectorConfig::configure()
     ])
     // ->withImportNames()
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
-    ->withPhpVersion(PhpVersion::PHP_83)
+    ->withPhpVersion(PhpVersion::PHP_84)
     ->withSets([
         // General
         SetList::CODE_QUALITY,
 
         // PHP
-        LevelSetList::UP_TO_PHP_83,
+        LevelSetList::UP_TO_PHP_84,
 
         // PHPUnit
         PHPUnitSetList::PHPUNIT_70,

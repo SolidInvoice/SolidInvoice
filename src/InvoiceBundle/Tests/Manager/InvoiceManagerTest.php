@@ -269,7 +269,7 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertSame('20.0000', $copiedLineTax->getRateSnapshot());
 
         // Editing the new LineTax with snapshotFrom() must be refused — frozen.
-        $newRate = (new Tax())
+        $newRate = new Tax()
             ->setName('VAT-updated')
             ->setRate(99.0)
             ->setType(Tax::TYPE_EXCLUSIVE);

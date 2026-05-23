@@ -111,7 +111,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         $lineTax->setRateSnapshot('10.0000');
         $lineTax->freeze(new DateTimeImmutable());
 
-        $tax = (new Tax())->setName('UpdatedAfterIssue');
+        $tax = new Tax()->setName('UpdatedAfterIssue');
         $tax->setRate(99.0)->setType(Tax::TYPE_EXCLUSIVE);
 
         $lineTax->snapshotFrom($tax);

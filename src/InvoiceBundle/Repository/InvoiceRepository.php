@@ -50,8 +50,8 @@ class InvoiceRepository extends EntityRepository
      * Get the total amount for paid invoices.
      *
      * @throws MathException
-     * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
+    #[\Deprecated(message: 'This function is deprecated, and the one in PaymentRepository should be used instead')]
     public function getTotalIncome(?Client $client = null): BigNumber
     {
         @trigger_error(

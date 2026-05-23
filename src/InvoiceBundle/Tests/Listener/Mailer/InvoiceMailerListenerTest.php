@@ -44,7 +44,7 @@ class InvoiceMailerListenerTest extends TestCase
 
         $listener = new InvoiceMailerListener($mailer, $logger, $requestStack);
 
-        $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onInvoiceAccepted(new InvoiceEvent($invoice));
 
         $mailer->shouldHaveReceived('send')
@@ -73,7 +73,7 @@ class InvoiceMailerListenerTest extends TestCase
 
         $listener = new InvoiceMailerListener($mailer, $logger, $requestStack);
 
-        $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
 
         // Should not throw - exception is caught and logged
         $listener->onInvoiceAccepted(new InvoiceEvent($invoice));

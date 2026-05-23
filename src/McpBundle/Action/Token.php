@@ -52,6 +52,6 @@ final readonly class Token
             $response = $exception->generateHttpResponse($psrResponse);
         }
 
-        return (new HttpFoundationFactory())->createResponse($response);
+        return new HttpFoundationFactory()->createResponse($response);
     }
 }

@@ -25,7 +25,7 @@ final class SearchFilterTest extends TestCase
     {
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $queryBuilder->expects($this->once())->method('expr')->willReturn(new Expr());
-        $queryBuilder->expects($this->once())->method('andWhere')->with((new Expr())->orX('d.field1 LIKE :q', 'd.field2 LIKE :q'));
+        $queryBuilder->expects($this->once())->method('andWhere')->with(new Expr()->orX('d.field1 LIKE :q', 'd.field2 LIKE :q'));
         $queryBuilder->expects($this->once())->method('setParameter')->with('q', '%query%');
 
         $filter = new SearchFilter(['field1', 'field2']);
@@ -46,7 +46,7 @@ final class SearchFilterTest extends TestCase
     {
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $queryBuilder->expects($this->once())->method('expr')->willReturn(new Expr());
-        $queryBuilder->expects($this->once())->method('andWhere')->with((new Expr())->orX('b.field1 LIKE :q', 'd.field2 LIKE :q'));
+        $queryBuilder->expects($this->once())->method('andWhere')->with(new Expr()->orX('b.field1 LIKE :q', 'd.field2 LIKE :q'));
         $queryBuilder->expects($this->once())->method('setParameter')->with('q', '%query%');
 
         $filter = new SearchFilter(['b.field1', 'field2']);

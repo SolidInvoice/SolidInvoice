@@ -32,7 +32,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testNonCompoundExclusivePasses(): void
     {
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setType(Tax::TYPE_EXCLUSIVE)
             ->setCompound(false);
 
@@ -43,7 +43,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testCompoundExclusivePasses(): void
     {
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setType(Tax::TYPE_EXCLUSIVE)
             ->setCompound(true);
 
@@ -54,7 +54,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testCompoundInclusiveOnTaxRaisesViolation(): void
     {
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setType(Tax::TYPE_INCLUSIVE)
             ->setCompound(true);
 
@@ -68,7 +68,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testCompoundFlatRateOnTaxRaisesViolation(): void
     {
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setType(Tax::TYPE_FLAT_RATE)
             ->setCompound(true);
 
@@ -82,7 +82,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testCompoundInclusiveOnLineTaxRaisesViolation(): void
     {
-        $lineTax = (new LineTax())
+        $lineTax = new LineTax()
             ->setNameSnapshot('VAT')
             ->setTypeSnapshot(TaxType::Inclusive)
             ->setCompound(true);
@@ -97,7 +97,7 @@ final class IncompatibleTaxConfigurationValidatorTest extends ConstraintValidato
 
     public function testCompoundFlatRateOnLineTaxRaisesViolation(): void
     {
-        $lineTax = (new LineTax())
+        $lineTax = new LineTax()
             ->setNameSnapshot('Stamp')
             ->setTypeSnapshot(TaxType::FlatRate)
             ->setCompound(true);

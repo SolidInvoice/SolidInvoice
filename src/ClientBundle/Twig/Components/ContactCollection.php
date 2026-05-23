@@ -45,7 +45,7 @@ final class ContactCollection extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(ContactType::class, (new Contact())->setClient($this->client));
+        return $this->createForm(ContactType::class, new Contact()->setClient($this->client));
     }
 
     #[LiveAction()]

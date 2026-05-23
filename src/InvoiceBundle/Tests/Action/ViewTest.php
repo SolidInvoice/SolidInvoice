@@ -85,7 +85,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -148,7 +148,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -166,7 +166,7 @@ final class ViewTest extends KernelTestCase
 
         $payment = new Payment();
         $payment->setTotalAmount(100);
-        $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
+        $payment->setMethod(new PaymentMethod()->setName('Credit Card'));
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
         $invoice->addPayment($payment);
@@ -233,7 +233,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -294,7 +294,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item with Tax')
                         ->setPrice(100)
                         ->setQty(1)
@@ -363,7 +363,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -441,7 +441,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -503,7 +503,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
-                    (new Line())
+                    new Line()
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1)
@@ -521,7 +521,7 @@ final class ViewTest extends KernelTestCase
 
         $payment = new Payment();
         $payment->setTotalAmount(50);
-        $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
+        $payment->setMethod(new PaymentMethod()->setName('Credit Card'));
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
         $invoice->addPayment($payment);

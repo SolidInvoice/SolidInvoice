@@ -164,18 +164,10 @@ final class TaxBreakdownExtension extends AbstractExtension
 
     private function isInvoiceLevelRow(\SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow $row, CalculationResult $result): bool
     {
-        foreach ($result->invoiceLevelBreakdown->taxRows as $candidate) {
-            if (
-                $candidate->name === $row->name
-                && $candidate->rate === $row->rate
-                && $candidate->direction === $row->direction
-                && ($candidate->note ?? '') === ($row->note ?? '')
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($result->invoiceLevelBreakdown->taxRows, fn ($candidate) => $candidate->name === $row->name
+        && $candidate->rate === $row->rate
+        && $candidate->direction === $row->direction
+        && ($candidate->note ?? '') === ($row->note ?? ''));
     }
 
     /**

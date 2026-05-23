@@ -22,21 +22,21 @@ class SesConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Amazon SES', (new SesConfigurator())->getName());
+        self::assertSame('Amazon SES', new SesConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(SesTransportConfigType::class, (new SesConfigurator())->getForm());
+        self::assertSame(SesTransportConfigType::class, new SesConfigurator()->getForm());
     }
 
     public function testConfigureWithoutRegion(): void
     {
-        self::assertEquals(Dsn::fromString('ses+api://foo:bar@default'), (new SesConfigurator())->configure(['accessKey' => 'foo', 'accessSecret' => 'bar']));
+        self::assertEquals(Dsn::fromString('ses+api://foo:bar@default'), new SesConfigurator()->configure(['accessKey' => 'foo', 'accessSecret' => 'bar']));
     }
 
     public function testConfigureWithRegion(): void
     {
-        self::assertEquals(Dsn::fromString('ses+api://foo:bar@default?region=eu-west-1'), (new SesConfigurator())->configure(['accessKey' => 'foo', 'accessSecret' => 'bar', 'region' => 'eu-west-1']));
+        self::assertEquals(Dsn::fromString('ses+api://foo:bar@default?region=eu-west-1'), new SesConfigurator()->configure(['accessKey' => 'foo', 'accessSecret' => 'bar', 'region' => 'eu-west-1']));
     }
 }

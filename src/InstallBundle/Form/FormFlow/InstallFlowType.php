@@ -50,7 +50,7 @@ final class InstallFlowType extends AbstractButtonFlowType
 
                 if ($formData->databaseConfig->driver === 'sqlite') {
                     try {
-                        (new Filesystem())->mkdir($this->configDir . '/db');
+                        new Filesystem()->mkdir($this->configDir . '/db');
                         $formData->databaseConfig->name = $this->configDir . '/db/solidinvoice.db';
                     } catch (IOException $e) {
                         $flow->addError(new FormError($e->getMessage()));

@@ -33,7 +33,7 @@ final class AllUserCompaniesTest extends TestCase
         $user->addCompany($companyA);
         $user->addCompany($companyB);
 
-        $companies = (new AllUserCompanies())->getFor($user);
+        $companies = new AllUserCompanies()->getFor($user);
 
         self::assertSame([$companyA, $companyB], $companies);
         self::assertSame([0, 1], array_keys($companies));
@@ -43,7 +43,7 @@ final class AllUserCompaniesTest extends TestCase
     {
         $user = new User();
 
-        self::assertSame([], (new AllUserCompanies())->getFor($user));
+        self::assertSame([], new AllUserCompanies()->getFor($user));
     }
 
     public function testReturnsListWhenBackingCollectionHasNonZeroIndexedKeys(): void
@@ -59,7 +59,7 @@ final class AllUserCompaniesTest extends TestCase
         $reflection = new \ReflectionProperty(User::class, 'companies');
         $reflection->setValue($user, new ArrayCollection([5 => $companyA, 9 => $companyB]));
 
-        $companies = (new AllUserCompanies())->getFor($user);
+        $companies = new AllUserCompanies()->getFor($user);
 
         self::assertSame([$companyA, $companyB], $companies);
         self::assertSame([0, 1], array_keys($companies));

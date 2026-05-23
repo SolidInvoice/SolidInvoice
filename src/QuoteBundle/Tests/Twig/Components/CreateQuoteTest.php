@@ -46,8 +46,8 @@ final class CreateQuoteTest extends LiveComponentTest
     public function testCreateQuoteWithMultipleLines(): void
     {
         $dto = new QuoteFormDTO();
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
@@ -64,7 +64,7 @@ final class CreateQuoteTest extends LiveComponentTest
     {
         $em = self::getContainer()->get('doctrine')->getManager();
 
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setName('VAT')
             ->setRate(20)
             ->setType(Tax::TYPE_INCLUSIVE);
@@ -79,7 +79,7 @@ final class CreateQuoteTest extends LiveComponentTest
         $em->flush();
 
         $dto = new QuoteFormDTO();
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
@@ -118,7 +118,7 @@ final class CreateQuoteTest extends LiveComponentTest
 
         $dto = new QuoteFormDTO();
         $dto->client = $client->_real();
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,

@@ -55,8 +55,8 @@ final class CreateInvoiceTest extends LiveComponentTest
     {
         $dto = new InvoiceFormDTO();
         $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
@@ -73,7 +73,7 @@ final class CreateInvoiceTest extends LiveComponentTest
     {
         $em = self::getContainer()->get('doctrine')->getManager();
 
-        $tax = (new Tax())
+        $tax = new Tax()
             ->setName('VAT')
             ->setRate(20)
             ->setType(Tax::TYPE_INCLUSIVE);
@@ -89,7 +89,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         $dto = new InvoiceFormDTO();
         $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
@@ -129,7 +129,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $dto = new InvoiceFormDTO();
         $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
         $dto->client = $client->_real();
-        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,

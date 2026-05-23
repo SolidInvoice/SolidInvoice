@@ -128,7 +128,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
-            (new DateTimeImmutable())->format('Y-m-d H:i:s')
+            new DateTimeImmutable()->format('Y-m-d H:i:s')
         );
 
         $this->entityManager->flush();
@@ -144,7 +144,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingStartedAt,
-            (new DateTimeImmutable())->format('Y-m-d H:i:s')
+            new DateTimeImmutable()->format('Y-m-d H:i:s')
         );
         $this->setCurrentStep($user, 'company');
     }
@@ -158,7 +158,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
-            (new DateTimeImmutable())->format('Y-m-d H:i:s')
+            new DateTimeImmutable()->format('Y-m-d H:i:s')
         );
         $this->entityManager->flush();
     }

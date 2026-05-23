@@ -36,6 +36,6 @@ final class UuidGeneratorTest extends TestCase
 
     public function testGetConfigurationFormType(): void
     {
-        self::assertNull((new UuidGenerator())->getConfigurationFormType());
+        self::assertNull(new UuidGenerator()->getConfigurationFormType());
     }
 }
