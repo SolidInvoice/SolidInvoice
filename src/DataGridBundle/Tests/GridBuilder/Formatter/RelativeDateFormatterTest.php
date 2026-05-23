@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -107,7 +108,7 @@ final class RelativeDateFormatterTest extends TestCase
     public function testFormatHandlesDateTimeInterface(): void
     {
         $column = RelativeDateColumn::new('created');
-        $date = new \DateTimeImmutable('2026-01-01 10:00:00');
+        $date = new DateTimeImmutable('2026-01-01 10:00:00');
 
         $result = $this->formatter->format($column, $date);
 

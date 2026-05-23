@@ -13,7 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
+use SolidInvoice\DashboardBundle\Mcp\AnalyticsTools;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
+use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
+use SolidInvoice\McpBundle\Mcp\Tool\WorkflowTools;
+use SolidInvoice\PaymentBundle\Mcp\PaymentMethodReadTools;
+use SolidInvoice\QuoteBundle\Mcp\QuoteReadTools;
+use SolidInvoice\SettingsBundle\Mcp\SettingsReadTools;
+use SolidInvoice\TaxBundle\Mcp\TaxReadTools;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -31,15 +40,15 @@ final class ToolRegistrationTest extends KernelTestCase
     public function testAllReadToolClassesAreResolvable(): void
     {
         $expected = [
-            \SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools::class,
-            \SolidInvoice\McpBundle\Mcp\Tool\WorkflowTools::class,
-            \SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools::class,
-            \SolidInvoice\QuoteBundle\Mcp\QuoteReadTools::class,
-            \SolidInvoice\ClientBundle\Mcp\ClientReadTools::class,
-            \SolidInvoice\PaymentBundle\Mcp\PaymentMethodReadTools::class,
-            \SolidInvoice\TaxBundle\Mcp\TaxReadTools::class,
-            \SolidInvoice\DashboardBundle\Mcp\AnalyticsTools::class,
-            \SolidInvoice\SettingsBundle\Mcp\SettingsReadTools::class,
+            ResourceQueryTools::class,
+            WorkflowTools::class,
+            InvoiceReadTools::class,
+            QuoteReadTools::class,
+            ClientReadTools::class,
+            PaymentMethodReadTools::class,
+            TaxReadTools::class,
+            AnalyticsTools::class,
+            SettingsReadTools::class,
         ];
 
         foreach ($expected as $class) {

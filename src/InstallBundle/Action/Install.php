@@ -15,6 +15,7 @@ namespace SolidInvoice\InstallBundle\Action;
 
 use const JSON_THROW_ON_ERROR;
 use DateTimeInterface;
+use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Form\Type\InstallationType;
@@ -115,9 +116,9 @@ final class Install extends AbstractController
 
         $step = $this->steps->get($action);
 
-        return new EventStreamResponse(function () use ($data, $step): \Generator {
+        return new EventStreamResponse(function () use ($data, $step): Generator {
             try {
-                yield from $step->execute($data, function (string $content): \Generator {
+                yield from $step->execute($data, function (string $content): Generator {
                     yield new ServerEvent($content);
                 });
 

@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SolidInvoice\SaasBundle\Feature\FeatureUsage;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
@@ -206,7 +207,7 @@ final class UpgradePromptRendererTest extends TestCase
         $plan->setPlanId('plan-' . strtolower($name));
 
         // Force a real ULID so toBase58() round-trips through Ulid::fromBase58().
-        $reflection = new \ReflectionProperty(Plan::class, 'id');
+        $reflection = new ReflectionProperty(Plan::class, 'id');
         $reflection->setValue($plan, new Ulid());
 
         return $plan;
@@ -220,7 +221,7 @@ final class UpgradePromptRendererTest extends TestCase
         $plan->setPrice(0);
         $plan->setPlanId('0');
 
-        $reflection = new \ReflectionProperty(Plan::class, 'id');
+        $reflection = new ReflectionProperty(Plan::class, 'id');
         $reflection->setValue($plan, new Ulid());
 
         return $plan;

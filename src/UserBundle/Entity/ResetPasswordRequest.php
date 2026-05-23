@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\UserBundle\Repository\ResetPasswordRequestRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -35,7 +36,7 @@ class ResetPasswordRequest implements ResetPasswordRequestInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    public function __construct(User $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    public function __construct(User $user, DateTimeInterface $expiresAt, string $selector, string $hashedToken)
     {
         $this->user = $user;
         $this->initialize($expiresAt, $selector, $hashedToken);

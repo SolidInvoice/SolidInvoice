@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Step;
 
+use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\Uid\Uuid;
@@ -29,7 +30,7 @@ final readonly class GenerateBuildIdStep implements InstallationStepInterface
         return 25;
     }
 
-    public function execute(Installation $installationData, ?callable $callback = null): \Generator
+    public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
         $this->configWriter->save(['BUILD_ID' => (string) Uuid::v7()]);
 

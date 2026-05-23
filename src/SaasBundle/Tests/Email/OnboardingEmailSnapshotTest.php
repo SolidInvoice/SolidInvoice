@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Email;
 
 use DateTimeImmutable;
+use Override;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -56,7 +57,7 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private TranslatorInterface $translator;
 
-    #[\Override]
+    #[Override]
     protected static function createKernel(array $options = []): SaasTestKernel
     {
         $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';

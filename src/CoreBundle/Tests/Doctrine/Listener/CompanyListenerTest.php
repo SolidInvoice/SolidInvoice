@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use stdClass;
 use Symfony\Component\Uid\Ulid;
 
 /**
@@ -81,7 +82,7 @@ final class CompanyListenerTest extends TestCase
 
     public function testNoOpWhenEntityHasNoCompanyAssociation(): void
     {
-        $entity = new \stdClass();
+        $entity = new stdClass();
 
         $listener = new CompanyListener($this->companySelectorWith(null));
 

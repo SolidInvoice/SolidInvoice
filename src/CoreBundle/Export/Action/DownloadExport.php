@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Export\Action;
 
+use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
 use SolidInvoice\CoreBundle\Export\Enum\ExportStatus;
 use SolidInvoice\CoreBundle\Export\Security\Voter\ExportJobVoter;
@@ -83,7 +84,7 @@ final readonly class DownloadExport
     {
         try {
             return Ulid::fromString($id);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             throw new NotFoundHttpException();
         }
     }

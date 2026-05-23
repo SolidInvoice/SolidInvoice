@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Api;
 
 use ApiPlatform\Metadata\IriConverterInterface;
+use ArrayObject;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -81,7 +82,7 @@ final class BillingUserNormalizer implements DenormalizerAwareInterface, Denorma
      * @param array<string, mixed> $context
      * @throws ExceptionInterface
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | \ArrayObject | null
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | ArrayObject | null
     {
         $users = $object['users'];
 

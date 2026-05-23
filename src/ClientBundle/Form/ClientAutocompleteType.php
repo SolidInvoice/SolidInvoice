@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\ClientBundle\Form;
 
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +30,7 @@ final class ClientAutocompleteType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return BaseEntityAutocompleteType::class;

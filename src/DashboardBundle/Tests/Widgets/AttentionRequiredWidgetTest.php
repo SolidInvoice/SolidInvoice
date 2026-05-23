@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
 use Brick\Math\BigInteger;
+use DateTime;
 use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -235,7 +236,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'quoteId' => 'QUO-001',
-            'created' => new \DateTime('2024-01-10'),
+            'created' => new DateTime('2024-01-10'),
         ]);
 
         // Create upcoming recurring

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Manager;
 
 use DateTimeImmutable;
-use Money\Currency;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 
 /**
  * Manager for handling Invoice form DTO transformations
@@ -123,7 +124,7 @@ final readonly class InvoiceFormManager
         }
     }
 
-    private function ensureInvoiceTaxSnapshot(\SolidInvoice\TaxBundle\Entity\InvoiceTax $invoiceTax): void
+    private function ensureInvoiceTaxSnapshot(InvoiceTax $invoiceTax): void
     {
         if ($invoiceTax->getNameSnapshot() !== null && $invoiceTax->getNameSnapshot() !== '') {
             return;
@@ -180,7 +181,7 @@ final readonly class InvoiceFormManager
     {
         if ($dto->clientMode === InvoiceClientMode::Existing) {
             if ($dto->client === null) {
-                throw new \InvalidArgumentException('Client is required when clientMode is Existing');
+                throw new InvalidArgumentException('Client is required when clientMode is Existing');
             }
 
             return $dto->client;
@@ -197,7 +198,7 @@ final readonly class InvoiceFormManager
     private function createClientFromDTO(InvoiceFormDTO $dto): Client
     {
         if (! $dto->hasInlineClientData()) {
-            throw new \InvalidArgumentException('Inline client data is incomplete');
+            throw new InvalidArgumentException('Inline client data is incomplete');
         }
 
         $client = new Client();

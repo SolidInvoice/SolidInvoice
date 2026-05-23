@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Form\Type;
 
 use Money\Currency;
+use Override;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Transformer\DiscountTransformer;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -88,7 +89,7 @@ class DiscountType extends AbstractType
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'discount';

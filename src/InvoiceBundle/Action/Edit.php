@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Action;
 
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -113,7 +114,7 @@ final readonly class Edit
                 $dto->total = (string) $tempInvoice->getTotal();
                 $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
                 $dto->tax = (string) $tempInvoice->getTax();
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
                 // Client data incomplete — keep DTO totals as-is
             }
         }

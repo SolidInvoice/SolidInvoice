@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Action;
 
+use DateTimeInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -56,7 +59,7 @@ final readonly class ConnectedAppsList
 
         // Group by (client, company) — the same OAuth client can be authorised
         // for multiple tenants, and each pair is revoked independently.
-        /** @var array<string, array{client: \SolidInvoice\McpBundle\Entity\OAuthClient, scopes: list<string>, company: \SolidInvoice\CoreBundle\Entity\Company, last_used: \DateTimeInterface|null, token_count: int}> $byClient */
+        /** @var array<string, array{client: OAuthClient, scopes: list<string>, company: Company, last_used: DateTimeInterface|null, token_count: int}> $byClient */
         $byClient = [];
 
         foreach ($tokens as $token) {

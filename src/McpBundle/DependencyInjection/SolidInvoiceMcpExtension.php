@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\DependencyInjection;
 
+use Override;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -26,7 +27,7 @@ final class SolidInvoiceMcpExtension extends Extension
         $loader->load('services.php');
     }
 
-    #[\Override]
+    #[Override]
     public function getAlias(): string
     {
         return 'solid_invoice_mcp';

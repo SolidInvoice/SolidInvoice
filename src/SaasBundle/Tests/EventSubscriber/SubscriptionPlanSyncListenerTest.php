@@ -16,6 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use ReflectionProperty;
 use SolidInvoice\SaasBundle\EventSubscriber\SubscriptionPlanSyncListener;
 use SolidWorx\Platform\SaasBundle\Dto\LemonSqueezy\Subscription as LemonSqueezySubscription;
 use SolidWorx\Platform\SaasBundle\Dto\LemonSqueezy\SubscriptionAttributes;
@@ -169,7 +170,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $plan->setPlanId($planId);
         $plan->setPrice($planId === '0' ? 0 : 900);
 
-        $reflection = new \ReflectionProperty(Plan::class, 'id');
+        $reflection = new ReflectionProperty(Plan::class, 'id');
         $reflection->setValue($plan, new Ulid());
 
         return $plan;
@@ -180,7 +181,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = new Subscription();
         $subscription->setPlan($plan);
 
-        $reflection = new \ReflectionProperty(Subscription::class, 'id');
+        $reflection = new ReflectionProperty(Subscription::class, 'id');
         $reflection->setValue($subscription, new Ulid());
 
         return $subscription;

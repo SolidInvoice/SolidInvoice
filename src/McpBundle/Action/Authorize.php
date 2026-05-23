@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Action;
 
+use InvalidArgumentException;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\UserEligibleCompanies;
@@ -317,7 +319,7 @@ final readonly class Authorize
     {
         try {
             $ulid = Ulid::fromString($companyId);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return null;
         }
 
@@ -330,7 +332,7 @@ final readonly class Authorize
         return null;
     }
 
-    private function toPsrRequest(Request $request): \Psr\Http\Message\ServerRequestInterface
+    private function toPsrRequest(Request $request): ServerRequestInterface
     {
         return $this->psrHttpFactory->createRequest($request);
     }

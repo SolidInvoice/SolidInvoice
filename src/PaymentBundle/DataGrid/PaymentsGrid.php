@@ -13,6 +13,7 @@ namespace SolidInvoice\PaymentBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
@@ -38,7 +39,7 @@ final class PaymentsGrid extends Grid
         return Payment::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -80,7 +81,7 @@ final class PaymentsGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query = parent::query($entityManager, $query);

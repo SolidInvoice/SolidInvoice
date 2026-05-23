@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Type;
 
+use Override;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -87,7 +88,7 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('subscription_in_trial', 'bool');
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'settings';

@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Form\Type;
 use Brick\Math\BigNumber;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use Override;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -103,7 +104,7 @@ class PaymentType extends AbstractType
         $resolver->setAllowedTypes('currency', ['null', Currency::class]);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'payment';

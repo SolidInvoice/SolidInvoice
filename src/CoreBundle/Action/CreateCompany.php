@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Action;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use NumberFormatter;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -81,7 +82,7 @@ final class CreateCompany extends AbstractController
                 $plan = $this->defaultPlanProvider?->get();
                 if ($plan instanceof Plan) {
                     $formatter = new IntlMoneyFormatter(
-                        new \NumberFormatter('en_US', \NumberFormatter::CURRENCY),
+                        new NumberFormatter('en_US', NumberFormatter::CURRENCY),
                         new ISOCurrencies()
                     );
                     $planPrice = $formatter->format(Money::USD($plan->getPrice()));

@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use LogicException;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
@@ -78,7 +79,7 @@ class OAuthClient implements ClientEntityInterface
         $id = $this->id?->toRfc4122();
 
         if ($id === null || $id === '') {
-            throw new \LogicException('Client identifier is not set.');
+            throw new LogicException('Client identifier is not set.');
         }
 
         return $id;

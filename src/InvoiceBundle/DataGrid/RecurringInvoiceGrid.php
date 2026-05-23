@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
@@ -23,7 +24,7 @@ class RecurringInvoiceGrid extends BaseRecurringInvoiceGrid
 {
     final public const string GRID_NAME = 'recurring_invoice_grid';
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $queryBuilder = $query->getQueryBuilder();

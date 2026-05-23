@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Manager;
 
-use Money\Currency;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
@@ -177,7 +177,7 @@ final readonly class QuoteFormManager
     {
         if ($dto->clientMode === QuoteClientMode::Existing) {
             if ($dto->client === null) {
-                throw new \InvalidArgumentException('Client is required when clientMode is Existing');
+                throw new InvalidArgumentException('Client is required when clientMode is Existing');
             }
 
             return $dto->client;
@@ -194,7 +194,7 @@ final readonly class QuoteFormManager
     private function createClientFromDTO(QuoteFormDTO $dto): Client
     {
         if (! $dto->hasInlineClientData()) {
-            throw new \InvalidArgumentException('Inline client data is incomplete');
+            throw new InvalidArgumentException('Inline client data is incomplete');
         }
 
         $client = new Client();

@@ -16,6 +16,8 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PostPersistEventArgs;
+use Error;
+use Override;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -97,7 +99,7 @@ final class CustomFieldValueCollectionType extends AbstractType
             if (method_exists($parent, 'getCompany')) {
                 try {
                     $parentCompany = $parent->getCompany();
-                } catch (\Error) {
+                } catch (Error) {
                     // Company not yet initialized on the parent (new record).
                     // CompanyListener (prePersist) will assign one when CustomFieldValue is persisted.
                 }
@@ -227,7 +229,7 @@ final class CustomFieldValueCollectionType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'custom_field_values';

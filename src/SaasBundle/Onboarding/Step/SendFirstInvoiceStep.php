@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,7 +37,7 @@ final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
         return 80;
     }
 
-    #[\Override]
+    #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         return $this->invoiceRepository->count(['company' => $context->company]) === 0;

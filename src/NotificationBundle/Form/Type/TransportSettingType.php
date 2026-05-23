@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\NotificationBundle\Form\Type;
 
+use Override;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
@@ -64,7 +65,7 @@ final class TransportSettingType extends AbstractType
         });
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'notification_transport_setting';

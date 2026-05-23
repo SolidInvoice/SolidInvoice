@@ -15,6 +15,7 @@ namespace SolidInvoice\PaymentBundle\Twig;
 
 use Brick\Math\BigInteger;
 use Doctrine\Persistence\ManagerRegistry;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -29,7 +30,7 @@ class PaymentExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

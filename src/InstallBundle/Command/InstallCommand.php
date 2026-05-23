@@ -22,6 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use InvalidArgumentException;
+use Override;
 use PDO;
 use RuntimeException;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -76,7 +77,7 @@ class InstallCommand extends Command
         parent::__construct();
     }
 
-    #[\Override]
+    #[Override]
     public function isEnabled(): bool
     {
         return null === $this->installed || '' === $this->installed;

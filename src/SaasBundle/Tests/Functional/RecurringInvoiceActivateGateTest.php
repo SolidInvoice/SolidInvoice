@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
@@ -30,7 +31,7 @@ use Symfony\Component\Workflow\Transition;
  *
  * @group functional
  */
-final class RecurringInvoiceActivateGateTest extends \PHPUnit\Framework\TestCase
+final class RecurringInvoiceActivateGateTest extends TestCase
 {
     public function testActivateIsBlockedWhenGated(): void
     {

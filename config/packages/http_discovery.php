@@ -11,6 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Http\Discovery\Psr17Factory;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UploadedFileFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerBuilder): void {
@@ -20,12 +27,12 @@ return static function (ContainerConfigurator $containerBuilder): void {
         ->autoconfigure()
         ->private();
 
-    $services->set(Http\Discovery\Psr17Factory::class);
+    $services->set(Psr17Factory::class);
 
-    $services->alias(Psr\Http\Message\RequestFactoryInterface::class, Http\Discovery\Psr17Factory::class);
-    $services->alias(Psr\Http\Message\ResponseFactoryInterface::class, Http\Discovery\Psr17Factory::class);
-    $services->alias(Psr\Http\Message\ServerRequestFactoryInterface::class, Http\Discovery\Psr17Factory::class);
-    $services->alias(Psr\Http\Message\StreamFactoryInterface::class, Http\Discovery\Psr17Factory::class);
-    $services->alias(Psr\Http\Message\UploadedFileFactoryInterface::class, Http\Discovery\Psr17Factory::class);
-    $services->alias(Psr\Http\Message\UriFactoryInterface::class, Http\Discovery\Psr17Factory::class);
+    $services->alias(RequestFactoryInterface::class, Psr17Factory::class);
+    $services->alias(ResponseFactoryInterface::class, Psr17Factory::class);
+    $services->alias(ServerRequestFactoryInterface::class, Psr17Factory::class);
+    $services->alias(StreamFactoryInterface::class, Psr17Factory::class);
+    $services->alias(UploadedFileFactoryInterface::class, Psr17Factory::class);
+    $services->alias(UriFactoryInterface::class, Psr17Factory::class);
 };

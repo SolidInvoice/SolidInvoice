@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
+use SolidInvoice\CoreBundle\Email\NullEmailVerificationGate;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
+use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\CoreBundle\Form\Extension\FeatureRestrictedExtension;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -71,8 +77,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // to FeatureRestrictedExtension: SaasBundle ships the real form-extension and
     // CoreBundle ships a no-op so the `feature_gated` form option remains valid.
     if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
-        $services->set(\SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension::class);
-        $services->set(\SolidInvoice\CoreBundle\Form\Extension\FeatureRestrictedExtension::class);
+        $services->set(FeatureExtension::class);
+        $services->set(FeatureRestrictedExtension::class);
     }
 
     $services
@@ -85,16 +91,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire(true)
         ->tag('controller.service_arguments');
 
-    $services->set(\SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class);
+    $services->set(NullEmailVerificationGate::class);
     $services->alias(
-        \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,
-        \SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class,
+        EmailVerificationGateInterface::class,
+        NullEmailVerificationGate::class,
     );
 
-    $services->set(\SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider::class);
+    $services->set(NullUpgradePromptProvider::class);
     $services->alias(
-        \SolidInvoice\CoreBundle\Feature\UpgradePromptProvider::class,
-        \SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider::class,
+        UpgradePromptProvider::class,
+        NullUpgradePromptProvider::class,
     );
 
     $services

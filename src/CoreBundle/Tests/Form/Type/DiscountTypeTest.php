@@ -17,6 +17,7 @@ use Brick\Math\BigDecimal;
 use Generator;
 use Mockery as M;
 use Money\Currency;
+use Override;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -29,7 +30,7 @@ class DiscountTypeTest extends FormTestCase
     /**
      * @return array<FormExtensionInterface>
      */
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         $systemConfig = M::mock(SystemConfig::class);

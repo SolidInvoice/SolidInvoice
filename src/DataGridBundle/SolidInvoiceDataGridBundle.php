@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use Override;
 use SolidInvoice\DataGridBundle\DependencyInjection\SolidInvoiceDataGridExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -20,7 +21,7 @@ final class SolidInvoiceDataGridBundle extends Bundle
 {
     final public const NAMESPACE = __NAMESPACE__;
 
-    #[\Override]
+    #[Override]
     public function getContainerExtension(): SolidInvoiceDataGridExtension
     {
         return new SolidInvoiceDataGridExtension();

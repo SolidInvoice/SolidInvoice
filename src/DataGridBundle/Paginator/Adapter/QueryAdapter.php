@@ -14,6 +14,7 @@ namespace SolidInvoice\DataGridBundle\Paginator\Adapter;
 use Closure;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Override;
 use Pagerfanta\Doctrine\ORM\QueryAdapter as BaseQueryAdapter;
 
 /**
@@ -34,7 +35,7 @@ final class QueryAdapter extends BaseQueryAdapter
     /**
      * @phpstan-return int<0, max>
      */
-    #[\Override]
+    #[Override]
     public function getNbResults(): int
     {
         try {
@@ -45,7 +46,7 @@ final class QueryAdapter extends BaseQueryAdapter
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getSlice(int $offset, int $length): iterable
     {
         try {

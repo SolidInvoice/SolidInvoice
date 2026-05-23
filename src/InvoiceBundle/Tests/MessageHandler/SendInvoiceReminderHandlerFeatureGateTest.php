@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
@@ -172,7 +173,7 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
         );
     }
 
-    private function createPendingInvoice(): \SolidInvoice\InvoiceBundle\Entity\Invoice
+    private function createPendingInvoice(): Invoice
     {
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
         $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company]);

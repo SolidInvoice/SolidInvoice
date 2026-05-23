@@ -19,6 +19,7 @@ use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
+use Deprecated;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -191,7 +192,7 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * @return array<array<int>>
      */
-    #[\Deprecated(message: 'Use getPaymentsByMonth instead')]
+    #[Deprecated(message: 'Use getPaymentsByMonth instead')]
     public function getPaymentsList(?DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');

@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\Transition\Send;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -101,7 +102,7 @@ final class InvoiceSendGateTest extends KernelTestCase
         return $action;
     }
 
-    private function createPendingInvoice(): \SolidInvoice\InvoiceBundle\Entity\Invoice
+    private function createPendingInvoice(): Invoice
     {
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
         $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company]);

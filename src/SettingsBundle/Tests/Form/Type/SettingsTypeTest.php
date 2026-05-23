@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests\Form\Type;
 
+use Override;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
@@ -73,7 +74,7 @@ class SettingsTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(SettingsType::class, null, $options), $formData, $object);
     }
 
-    #[\Override]
+    #[Override]
     protected function getTypes(): array
     {
         $extensions = parent::getTypes();

@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use JsonException;
 use Money\Currency;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -251,7 +252,7 @@ class QuoteType extends AbstractType
             ->setAllowedTypes('existing_target_id', [Ulid::class, 'null']);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'quote';

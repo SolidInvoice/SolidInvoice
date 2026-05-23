@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use JsonException;
 use Money\Currency;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -226,7 +227,7 @@ class InvoiceType extends AbstractType
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'invoice';

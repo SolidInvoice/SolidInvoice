@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Form\Type;
 
+use Override;
 use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHost;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,7 +32,7 @@ final class CustomDomainType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return TextType::class;

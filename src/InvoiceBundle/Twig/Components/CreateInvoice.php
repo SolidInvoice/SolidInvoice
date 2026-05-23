@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Twig\Components;
 
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
@@ -322,7 +323,7 @@ final class CreateInvoice extends AbstractController
         try {
             $tempInvoice = $this->formManager->createInvoiceFromDTO($this->dto);
             return (string) $this->calculator->calculateDiscount($tempInvoice);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             // Client data incomplete during mode switching
             return '0';
         }

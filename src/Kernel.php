@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice;
 
 use Doctrine\DBAL\Types\Type;
+use Override;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
@@ -25,7 +26,7 @@ use function preg_replace;
 
 class Kernel extends BaseKernel
 {
-    #[\Override]
+    #[Override]
     public function boot(): void
     {
         parent::boot();
@@ -36,13 +37,13 @@ class Kernel extends BaseKernel
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getProjectDir(): string
     {
         return \dirname(__DIR__);
     }
 
-    #[\Override]
+    #[Override]
     protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
     {
         parent::configureContainer($container, $loader, $builder);
@@ -55,7 +56,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    #[\Override]
+    #[Override]
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         parent::configureRoutes($routes);

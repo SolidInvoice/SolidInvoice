@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Form\FormFlow;
 
 use Doctrine\DBAL\DriverManager;
+use Override;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\Config\DatabaseConfig;
@@ -80,7 +81,7 @@ final class InstallFlowType extends AbstractButtonFlowType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return NextFlowType::class;

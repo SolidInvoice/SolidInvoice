@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Component\Uid\Ulid;
 
@@ -71,7 +72,7 @@ final class OAuthClientRepository extends EntityRepository implements ClientRepo
         return $secretHash !== null && password_verify($clientSecret, $secretHash);
     }
 
-    public function findByUser(\SolidInvoice\UserBundle\Entity\User $user): array
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.createdBy = :user')

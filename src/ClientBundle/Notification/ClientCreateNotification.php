@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Notification;
 
+use Override;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
@@ -48,13 +49,13 @@ class ClientCreateNotification extends NotificationMessage
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
-    #[\Override]
+    #[Override]
     public function getSubject(): string
     {
         return 'A new client has been created';
     }
 
-    #[\Override]
+    #[Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);
@@ -70,7 +71,7 @@ class ClientCreateNotification extends NotificationMessage
         return $message;
     }
 
-    #[\Override]
+    #[Override]
     public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ChatMessage
     {
         return parent::asChatMessage($recipient, $transport)

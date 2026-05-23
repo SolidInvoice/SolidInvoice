@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
+use DateTimeImmutable;
 use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use ReflectionClass;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
@@ -191,9 +193,9 @@ final class UserRepositoryTest extends KernelTestCase
         $em->flush();
 
         // Use reflection to set the created date to 40 days ago
-        $reflection = new \ReflectionClass($oldUser);
+        $reflection = new ReflectionClass($oldUser);
         $property = $reflection->getProperty('created');
-        $property->setValue($oldUser, new \DateTimeImmutable('-40 days'));
+        $property->setValue($oldUser, new DateTimeImmutable('-40 days'));
         $em->flush();
 
         // Should still count only the recent user (within 30 days)

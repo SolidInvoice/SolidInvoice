@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Tool;
 
+use BackedEnum;
+use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -28,7 +30,7 @@ final readonly class WorkflowTools
 {
     public function __construct(
         private ResourceRegistry $registry,
-        private \Doctrine\ORM\EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
         #[Autowire(service: 'state_machine.invoice')]
         private WorkflowInterface $invoiceWorkflow,
         #[Autowire(service: 'state_machine.quote')]
@@ -85,7 +87,7 @@ final readonly class WorkflowTools
 
         if (method_exists($entity, 'getStatus')) {
             $current = $entity->getStatus();
-            $status = $current instanceof \BackedEnum ? $current->value : (\is_string($current) ? $current : null);
+            $status = $current instanceof BackedEnum ? $current->value : (\is_string($current) ? $current : null);
         }
 
         return [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Type;
 
+use Override;
 use SolidInvoice\ClientBundle\Form\Type\AddressType as ParentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -43,13 +44,13 @@ class AddressType extends AbstractType
         });
     }
 
-    #[\Override]
+    #[Override]
     public function getParent()
     {
         return ParentType::class;
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix()
     {
         return 'settings_address';

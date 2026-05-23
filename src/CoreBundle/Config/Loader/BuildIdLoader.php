@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Config\Loader;
 
+use Exception;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
@@ -41,7 +42,7 @@ final readonly class BuildIdLoader implements EnvVarLoaderInterface
             $this->configWriter->save(['BUILD_ID' => $buildId]);
 
             return ['SOLIDINVOICE_BUILD_ID' => $buildId];
-        } catch (\Exception) {
+        } catch (Exception) {
             // Vault not yet initialized (app not installed) — skip silently
             return [];
         }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Entity;
 
 use Doctrine\Persistence\ManagerRegistry;
+use ReflectionProperty;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -25,6 +26,7 @@ use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocument;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -75,8 +77,8 @@ final class InvoiceTaxTest extends KernelTestCase
 
     private function assignId(InvoiceTax $invoiceTax): void
     {
-        $ref = new \ReflectionProperty(InvoiceTax::class, 'id');
-        $ref->setValue($invoiceTax, new \Symfony\Component\Uid\Ulid());
+        $ref = new ReflectionProperty(InvoiceTax::class, 'id');
+        $ref->setValue($invoiceTax, new Ulid());
     }
 
     public function testValidatorRejectsWithBothDocumentsSet(): void

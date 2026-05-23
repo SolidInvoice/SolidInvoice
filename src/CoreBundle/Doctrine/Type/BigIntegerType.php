@@ -18,6 +18,7 @@ use Brick\Math\RoundingMode;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use Override;
 use function get_class;
 
 final class BigIntegerType extends Type
@@ -34,7 +35,7 @@ final class BigIntegerType extends Type
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
-    #[\Override]
+    #[Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
@@ -48,7 +49,7 @@ final class BigIntegerType extends Type
         }
     }
 
-    #[\Override]
+    #[Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
     {
         if ($value === null) {
@@ -66,7 +67,7 @@ final class BigIntegerType extends Type
         throw ConversionException::conversionFailedFormat($value, $this->getName(), get_class($value));
     }
 
-    #[\Override]
+    #[Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

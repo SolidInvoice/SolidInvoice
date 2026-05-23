@@ -15,6 +15,7 @@ namespace SolidInvoice;
 
 use const PHP_VERSION;
 use const PHP_VERSION_ID;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Requirements\SymfonyRequirements;
 use function get_cfg_var;
@@ -89,7 +90,7 @@ class AppRequirements extends SymfonyRequirements
         return get_cfg_var('cfg_file_path');
     }
 
-    #[\Override]
+    #[Override]
     public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if ('PDO should be installed' === $testMessage || preg_match('#PDO should have some drivers installed#', $testMessage)) {

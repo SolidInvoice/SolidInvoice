@@ -12,6 +12,7 @@
 namespace SolidInvoice\InstallBundle\Step;
 
 use Defuse\Crypto\Key;
+use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
@@ -30,7 +31,7 @@ final readonly class GenerateSecretStep implements InstallationStepInterface
         return 30;
     }
 
-    public function execute(Installation $installationData, ?callable $callback = null): \Generator
+    public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
         $this->vault->generateKeys();
         $this->configWriter->save([

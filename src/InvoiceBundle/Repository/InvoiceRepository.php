@@ -17,7 +17,9 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
+use DateTimeImmutable;
 use DateTimeInterface;
+use Deprecated;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
@@ -51,7 +53,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @throws MathException
      */
-    #[\Deprecated(message: 'This function is deprecated, and the one in PaymentRepository should be used instead')]
+    #[Deprecated(message: 'This function is deprecated, and the one in PaymentRepository should be used instead')]
     public function getTotalIncome(?Client $client = null): BigNumber
     {
         @trigger_error(
@@ -131,7 +133,7 @@ class InvoiceRepository extends EntityRepository
      */
     public function countCreatedInMonth(DateTimeInterface $date): int
     {
-        $monthStart = (new \DateTimeImmutable($date->format('Y-m-01 00:00:00'), $date->getTimezone()));
+        $monthStart = (new DateTimeImmutable($date->format('Y-m-01 00:00:00'), $date->getTimezone()));
         $monthEnd = $monthStart->modify('+1 month');
 
         try {

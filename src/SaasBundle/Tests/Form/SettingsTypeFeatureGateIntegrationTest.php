@@ -25,6 +25,7 @@ use SolidInvoice\SettingsBundle\Form\Extension\TrialRestrictedExtension;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 /**
@@ -152,7 +153,7 @@ final class SettingsTypeFeatureGateIntegrationTest extends TestCase
         return $setting;
     }
 
-    private function createFormFactory(FeatureGate $gate, RequiredPlanLabelProvider $renderer): \Symfony\Component\Form\FormFactoryInterface
+    private function createFormFactory(FeatureGate $gate, RequiredPlanLabelProvider $renderer): FormFactoryInterface
     {
         return Forms::createFormFactoryBuilder()
             ->addTypeExtensions([

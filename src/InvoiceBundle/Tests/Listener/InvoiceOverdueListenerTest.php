@@ -17,12 +17,14 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\InvoiceOverdueListener;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use stdClass;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
@@ -72,7 +74,7 @@ final class InvoiceOverdueListenerTest extends TestCase
         $notificationManager = M::mock(NotificationManager::class);
         $notificationManager->shouldReceive('sendNotification')
             ->once()
-            ->andThrow(new \RuntimeException('Notification failed'));
+            ->andThrow(new RuntimeException('Notification failed'));
 
         $logger = M::mock(LoggerInterface::class);
         $logger->shouldReceive('error')
@@ -101,7 +103,7 @@ final class InvoiceOverdueListenerTest extends TestCase
         $listener = new InvoiceOverdueListener($notificationManager, $logger);
 
         $event = new Event(
-            new \stdClass(), // Not an Invoice
+            new stdClass(), // Not an Invoice
             new Marking([InvoiceStatus::Overdue->value => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, InvoiceStatus::Pending->value, InvoiceStatus::Overdue->value),
             M::mock(WorkflowInterface::class)

@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Throwable;
 
 /**
  * Converts the array shape tools receive for line items + discount into
@@ -92,7 +93,7 @@ final readonly class LineItemBuilder
 
             try {
                 $discount->setValueMoney(BigDecimal::of((string) $value));
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 throw new ToolCallException(sprintf('Invalid discount_value: %s', (string) $value));
             }
 
@@ -149,7 +150,7 @@ final readonly class LineItemBuilder
 
             try {
                 $line->setPrice(BigDecimal::of((string) $price));
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, (string) $price));
             }
 

@@ -17,6 +17,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
@@ -152,7 +153,7 @@ class RecurringInvoiceType extends AbstractType
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'recurring_invoice';

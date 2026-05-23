@@ -26,6 +26,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
+use SplObjectStorage;
 
 /**
  * @covers \SolidInvoice\SaasBundle\Company\SubscriptionAwareUserCompanies
@@ -40,7 +41,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
         $trial = new Company();
         $expiredPaused = new Company();
 
-        $subscriptions = new \SplObjectStorage();
+        $subscriptions = new SplObjectStorage();
         $subscriptions[$active] = $this->subscription(SubscriptionStatus::ACTIVE, '2099-12-31');
         $subscriptions[$trial] = $this->subscription(SubscriptionStatus::TRIAL, '2099-12-31');
         $subscriptions[$expiredPaused] = $this->subscription(SubscriptionStatus::PAUSED, '2099-12-31');
@@ -60,7 +61,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
         $eligible = new Company();
         $denied = new Company();
 
-        $subscriptions = new \SplObjectStorage();
+        $subscriptions = new SplObjectStorage();
         $subscriptions[$eligible] = $this->subscription(SubscriptionStatus::ACTIVE, '2099-12-31');
         $subscriptions[$denied] = $this->subscription(SubscriptionStatus::PAUSED, '2099-12-31');
 
@@ -78,7 +79,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
 
     public function testReturnsEmptyWhenInnerIsEmpty(): void
     {
-        $decorator = $this->buildDecorator(inner: [], subscriptions: new \SplObjectStorage());
+        $decorator = $this->buildDecorator(inner: [], subscriptions: new SplObjectStorage());
 
         self::assertSame([], $decorator->getFor(new User()));
     }
@@ -87,7 +88,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
     {
         $denied = new Company();
 
-        $subscriptions = new \SplObjectStorage();
+        $subscriptions = new SplObjectStorage();
         $subscriptions[$denied] = $this->subscription(SubscriptionStatus::PAUSED, '2099-12-31');
 
         $decorator = $this->buildDecorator(inner: [$denied], subscriptions: $subscriptions);
@@ -97,9 +98,9 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
 
     /**
      * @param list<Company>                    $inner
-     * @param \SplObjectStorage<Company, ?Subscription> $subscriptions
+     * @param SplObjectStorage<Company, ?Subscription> $subscriptions
      */
-    private function buildDecorator(array $inner, \SplObjectStorage $subscriptions): SubscriptionAwareUserCompanies
+    private function buildDecorator(array $inner, SplObjectStorage $subscriptions): SubscriptionAwareUserCompanies
     {
         $innerProvider = M::mock(UserEligibleCompanies::class);
         $innerProvider->shouldReceive('getFor')->andReturn($inner);

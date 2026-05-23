@@ -24,6 +24,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 use Zenstruck\Foundry\Test\Factories;
 
 /** @covers \SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService */
@@ -94,10 +95,10 @@ final class InvoiceStatusTransitionServiceTest extends KernelTestCase
         $invoice = new Invoice();
         $invoice->setStatus(InvoiceStatus::Pending);
 
-        $transition1 = M::mock(\Symfony\Component\Workflow\Transition::class);
+        $transition1 = M::mock(Transition::class);
         $transition1->shouldReceive('getName')->andReturn(Graph::TRANSITION_OVERDUE);
 
-        $transition2 = M::mock(\Symfony\Component\Workflow\Transition::class);
+        $transition2 = M::mock(Transition::class);
         $transition2->shouldReceive('getName')->andReturn(Graph::TRANSITION_PAY);
 
         $stateMachine = M::mock(StateMachine::class);

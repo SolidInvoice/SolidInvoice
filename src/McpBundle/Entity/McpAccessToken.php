@@ -16,11 +16,13 @@ namespace SolidInvoice\McpBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\OAuth2\Server\CryptKeyInterface;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
+use LogicException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\OAuth\ScopeEntity;
@@ -85,7 +87,7 @@ class McpAccessToken implements AccessTokenEntityInterface
     public function getIdentifier(): string
     {
         if (! isset($this->jti) || $this->jti === '') {
-            throw new \LogicException('Access token identifier is not set.');
+            throw new LogicException('Access token identifier is not set.');
         }
 
         return $this->jti;
@@ -99,7 +101,7 @@ class McpAccessToken implements AccessTokenEntityInterface
     public function getJti(): string
     {
         if (! isset($this->jti) || $this->jti === '') {
-            throw new \LogicException('Access token identifier is not set.');
+            throw new LogicException('Access token identifier is not set.');
         }
 
         return $this->jti;
@@ -125,7 +127,7 @@ class McpAccessToken implements AccessTokenEntityInterface
     public function setClient(ClientEntityInterface $client): void
     {
         if (! $client instanceof OAuthClient) {
-            throw new \InvalidArgumentException('Expected OAuthClient instance.');
+            throw new InvalidArgumentException('Expected OAuthClient instance.');
         }
 
         $this->oauthClient = $client;

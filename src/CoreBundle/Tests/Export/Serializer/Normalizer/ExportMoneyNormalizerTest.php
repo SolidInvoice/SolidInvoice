@@ -18,6 +18,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
+use stdClass;
 
 /** @covers \SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer */
 final class ExportMoneyNormalizerTest extends TestCase
@@ -61,6 +62,6 @@ final class ExportMoneyNormalizerTest extends TestCase
         self::assertTrue($this->normalizer->supportsNormalization(new Money(1, new Currency('USD'))));
         self::assertTrue($this->normalizer->supportsNormalization(BigInteger::of(1)));
         self::assertFalse($this->normalizer->supportsNormalization('string'));
-        self::assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
+        self::assertFalse($this->normalizer->supportsNormalization(new stdClass()));
     }
 }

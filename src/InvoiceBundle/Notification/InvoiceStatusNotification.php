@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Notification;
 
+use Override;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
@@ -41,13 +42,13 @@ class InvoiceStatusNotification extends NotificationMessage
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
-    #[\Override]
+    #[Override]
     public function getSubject(): string
     {
         return 'Invoice Status Change';
     }
 
-    #[\Override]
+    #[Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

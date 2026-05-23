@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Generator;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Intl\Currencies;
@@ -34,7 +35,7 @@ class CurrencyType extends AbstractType
         $resolver->setDefault('choices', iterator_to_array($this->getCurrencyChoices()));
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return ChoiceType::class;

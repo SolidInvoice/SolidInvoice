@@ -15,12 +15,12 @@ namespace SolidInvoice\QuoteBundle\Action;
 
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
@@ -123,7 +123,7 @@ final class Create extends AbstractController
                 $dto->total = (string) $tempQuote->getTotal();
                 $dto->baseTotal = (string) $tempQuote->getBaseTotal();
                 $dto->tax = (string) $tempQuote->getTax();
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
                 // Client data incomplete — keep DTO totals as-is
             }
         }

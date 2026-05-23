@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\InvoiceBundle\Twig\Extension;
 
+use Override;
 use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
@@ -25,7 +26,7 @@ final class RecurringOptionsExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Security;
 
+use InvalidArgumentException;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -46,7 +47,7 @@ final readonly class McpOAuthUserProvider implements UserProviderInterface
     {
         try {
             $ulid = Ulid::fromString($identifier);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             throw new UserNotFoundException();
         }
 

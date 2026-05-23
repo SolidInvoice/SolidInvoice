@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\DependencyInjection;
 
+use Reflector;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\FileLocator;
@@ -37,7 +38,7 @@ class SolidInvoiceDataGridExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
 
-        $container->registerAttributeForAutoconfiguration(AsDataGrid::class, static function (ChildDefinition $definition, AsDataGrid $grid, \Reflector $reflector): void {
+        $container->registerAttributeForAutoconfiguration(AsDataGrid::class, static function (ChildDefinition $definition, AsDataGrid $grid, Reflector $reflector): void {
             $definition->addTag(AsDataGrid::DI_TAG, ['name' => $grid->name]);
         });
     }

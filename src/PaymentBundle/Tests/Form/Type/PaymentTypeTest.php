@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Money\Currency;
+use Override;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
@@ -42,7 +43,7 @@ class PaymentTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => new Currency('USD'), 'preferred_choices' => [], 'user' => null]), $formData, $object);
     }
 
-    #[\Override]
+    #[Override]
     protected function getTypes(): array
     {
         $types = parent::getTypes();

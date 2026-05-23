@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
@@ -66,7 +67,7 @@ final class GenerateSecretStepTest extends TestCase
         $installation = new Installation();
 
         $callbackMessages = [];
-        $callback = static function (string $message) use (&$callbackMessages): \Generator {
+        $callback = static function (string $message) use (&$callbackMessages): Generator {
             $callbackMessages[] = $message;
             yield;
         };

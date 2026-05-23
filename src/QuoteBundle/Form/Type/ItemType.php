@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use Override;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
@@ -86,7 +87,7 @@ class ItemType extends AbstractType
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'quote_item';

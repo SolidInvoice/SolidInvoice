@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Mcp;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -102,14 +103,14 @@ final readonly class RecurringInvoiceWriteTools
 
         try {
             $invoice->setDateStart(new DateTimeImmutable($date_start));
-        } catch (\Exception) {
+        } catch (Exception) {
             throw new ToolCallException(sprintf('Invalid date_start "%s". Use ISO-8601.', $date_start));
         }
 
         if ($date_end !== null) {
             try {
                 $invoice->setDateEnd(new DateTimeImmutable($date_end));
-            } catch (\Exception) {
+            } catch (Exception) {
                 throw new ToolCallException(sprintf('Invalid date_end "%s". Use ISO-8601.', $date_end));
             }
         }
@@ -229,7 +230,7 @@ final readonly class RecurringInvoiceWriteTools
 
             try {
                 $options->setEndDate(new DateTimeImmutable($endDate));
-            } catch (\Exception) {
+            } catch (Exception) {
                 throw new ToolCallException(sprintf('Invalid schedule.end_date "%s". Use ISO-8601.', $endDate));
             }
         }

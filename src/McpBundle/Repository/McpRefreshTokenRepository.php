@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
@@ -38,7 +39,7 @@ final class McpRefreshTokenRepository extends EntityRepository implements Refres
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         if (! $refreshTokenEntity instanceof McpRefreshToken) {
-            throw new \InvalidArgumentException('Expected McpRefreshToken instance.');
+            throw new InvalidArgumentException('Expected McpRefreshToken instance.');
         }
 
         if ($this->findOneBy(['identifier' => $refreshTokenEntity->getIdentifier()]) !== null) {

@@ -15,12 +15,14 @@ namespace SolidInvoice\TaxBundle\Twig\Extension;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Calculator\Result\CalculationResult;
+use SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
@@ -44,7 +46,7 @@ final class TaxBreakdownExtension extends AbstractExtension
         $this->cache = new WeakMap();
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [
@@ -162,7 +164,7 @@ final class TaxBreakdownExtension extends AbstractExtension
         return BigDecimal::of($document->getTotal())->minus(BigDecimal::of($document->getWithholdingAmount()));
     }
 
-    private function isInvoiceLevelRow(\SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow $row, CalculationResult $result): bool
+    private function isInvoiceLevelRow(TaxSummaryRow $row, CalculationResult $result): bool
     {
         return array_any($result->invoiceLevelBreakdown->taxRows, fn ($candidate) => $candidate->name === $row->name
         && $candidate->rate === $row->rate

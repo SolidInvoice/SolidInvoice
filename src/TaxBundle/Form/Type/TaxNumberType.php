@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TaxNumberType extends AbstractType
 {
-    #[\Override]
+    #[Override]
     public function getParent()
     {
         return TextType::class;
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix()
     {
         return 'tax_number';

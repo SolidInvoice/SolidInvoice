@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,13 +41,13 @@ final class LineTaxCollectionType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return CollectionType::class;
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'line_tax_collection';

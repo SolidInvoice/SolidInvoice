@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Service\CustomField;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -61,7 +62,7 @@ final readonly class CustomFieldFormWriter
         if ($companySource !== null && method_exists($companySource, 'getCompany')) {
             try {
                 $company = $companySource->getCompany();
-            } catch (\Error) {
+            } catch (Error) {
                 $company = null;
             }
         }

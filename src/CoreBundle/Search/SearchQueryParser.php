@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Search;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Throwable;
 use function array_filter;
 use function array_keys;
 use function array_map;
@@ -212,7 +213,7 @@ final class SearchQueryParser
                 try {
                     $fromTs = $this->parseDate($from);
                     $toTs = $this->parseDate($to, endOfDay: true);
-                } catch (\Throwable) {
+                } catch (Throwable) {
                     return '';
                 }
 
@@ -236,7 +237,7 @@ final class SearchQueryParser
                 if ($attribute === 'created') {
                     try {
                         $ts = $this->parseDate($operand);
-                    } catch (\Throwable) {
+                    } catch (Throwable) {
                         return '';
                     }
 

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Mcp\Tool;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
@@ -120,7 +122,7 @@ final readonly class ResourceQueryTools
 
         try {
             $ulid = Ulid::fromString($id);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             throw new ToolCallException(sprintf('Invalid ULID: %s.', $id));
         }
 
@@ -134,10 +136,10 @@ final readonly class ResourceQueryTools
     }
 
     /**
-     * @param \Doctrine\ORM\Mapping\ClassMetadata<object> $metadata
+     * @param ClassMetadata<object> $metadata
      * @param array<string, mixed>                        $filters
      */
-    private function applyFilters(QueryBuilder $qb, \Doctrine\ORM\Mapping\ClassMetadata $metadata, array $filters): void
+    private function applyFilters(QueryBuilder $qb, ClassMetadata $metadata, array $filters): void
     {
         if ($filters === []) {
             return;
@@ -181,7 +183,7 @@ final readonly class ResourceQueryTools
                         ->setParameter($paramName, Ulid::fromString($value));
 
                     continue;
-                } catch (\InvalidArgumentException) {
+                } catch (InvalidArgumentException) {
                     throw new ToolCallException(sprintf('Filter "%s" must be a valid ULID.', $field));
                 }
             }
@@ -200,9 +202,9 @@ final readonly class ResourceQueryTools
     /**
      * @param list<string>                                                              $fieldNames
      * @param list<string>                                                              $associationNames
-     * @param \Doctrine\ORM\Mapping\ClassMetadata<object>                               $metadata
+     * @param ClassMetadata<object> $metadata
      */
-    private function normaliseField(string $input, array $fieldNames, array $associationNames, \Doctrine\ORM\Mapping\ClassMetadata $metadata): ?string
+    private function normaliseField(string $input, array $fieldNames, array $associationNames, ClassMetadata $metadata): ?string
     {
         if (\in_array($input, $fieldNames, true)) {
             return $input;

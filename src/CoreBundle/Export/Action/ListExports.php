@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Export\Action;
 
+use SolidInvoice\CoreBundle\Entity\ExportJob;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\CoreBundle\Repository\ExportJobRepository;
 use SolidInvoice\UserBundle\Entity\User;
@@ -30,7 +31,7 @@ final readonly class ListExports
     }
 
     /**
-     * @return array{jobs: list<\SolidInvoice\CoreBundle\Entity\ExportJob>, formats: list<ExportFormat>}
+     * @return array{jobs: list<ExportJob>, formats: list<ExportFormat>}
      */
     #[Template('@SolidInvoiceCore/Export/list.html.twig')]
     public function __invoke(?UserInterface $user): array

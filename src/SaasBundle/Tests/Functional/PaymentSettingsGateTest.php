@@ -16,7 +16,6 @@ namespace SolidInvoice\SaasBundle\Tests\Functional;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\PaymentBundle\Action\Settings;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;

@@ -22,8 +22,10 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\ReminderReceiverListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 /** @covers \SolidInvoice\InvoiceBundle\Listener\Mailer\ReminderReceiverListener */
 final class ReminderReceiverListenerTest extends TestCase
@@ -57,7 +59,7 @@ final class ReminderReceiverListenerTest extends TestCase
 
         $listener = new ReminderReceiverListener($config);
 
-        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+        $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
         $listener($event);
 
@@ -90,7 +92,7 @@ final class ReminderReceiverListenerTest extends TestCase
 
         $listener = new ReminderReceiverListener($config);
 
-        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+        $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
         $listener($event);
 
@@ -112,7 +114,7 @@ final class ReminderReceiverListenerTest extends TestCase
 
         $listener = new ReminderReceiverListener($config);
 
-        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+        $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
         $listener($event);
 
@@ -124,14 +126,14 @@ final class ReminderReceiverListenerTest extends TestCase
 
     public function testListenerIgnoresNonReminderEmails(): void
     {
-        $email = M::mock(\Symfony\Component\Mime\Email::class);
+        $email = M::mock(Email::class);
 
         $config = M::mock(SystemConfig::class);
         $config->shouldNotReceive('get');
 
         $listener = new ReminderReceiverListener($config);
 
-        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+        $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
         $listener($event);
     }

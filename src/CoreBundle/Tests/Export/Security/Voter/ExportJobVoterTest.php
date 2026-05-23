@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Entity\ExportJob;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\CoreBundle\Export\Security\Voter\ExportJobVoter;
 use SolidInvoice\UserBundle\Entity\User;
+use stdClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Uid\Ulid;
 
@@ -108,7 +109,7 @@ final class ExportJobVoterTest extends TestCase
 
         self::assertSame(
             ExportJobVoter::ACCESS_ABSTAIN,
-            $voter->vote($token, new \stdClass(), [ExportJobVoter::DOWNLOAD]),
+            $voter->vote($token, new stdClass(), [ExportJobVoter::DOWNLOAD]),
         );
     }
 

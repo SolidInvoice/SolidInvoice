@@ -11,12 +11,14 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Action;
 
+use Override;
+
 final class ViewAction extends Action
 {
     /**
      * @param array<string, mixed> $parameters
      */
-    #[\Override]
+    #[Override]
     public static function new(string $route, array $parameters = []): static
     {
         return new self()

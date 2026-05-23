@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,7 +37,7 @@ final class CustomizeLogoStep extends AbstractOnboardingEmailStep
         return 60;
     }
 
-    #[\Override]
+    #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         $logo = $this->systemConfig->get('system/company/logo');

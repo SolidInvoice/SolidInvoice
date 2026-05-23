@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -45,7 +46,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         return 50;
     }
 
-    #[\Override]
+    #[Override]
     public function createEmail(OnboardingContext $context): TemplatedEmail
     {
         $email = parent::createEmail($context);
@@ -61,7 +62,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         return $email;
     }
 
-    #[\Override]
+    #[Override]
     protected function templateContext(OnboardingContext $context): array
     {
         $daysRemaining = $this->calculateDaysRemaining($context);
