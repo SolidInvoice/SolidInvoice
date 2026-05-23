@@ -52,6 +52,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
     protected Company $company;
 
+    #[\Override]
     protected static ?bool $alwaysBootKernel = false;
 
     /**

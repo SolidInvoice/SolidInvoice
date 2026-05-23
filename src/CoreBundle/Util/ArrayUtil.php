@@ -25,7 +25,7 @@ class ArrayUtil
      */
     public static function column(iterable $array, string $column): array
     {
-        if (is_array($array[array_key_first($array)])) {
+        if (is_array(array_first($array))) {
             return array_column($array, $column);
         }
 

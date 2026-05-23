@@ -61,12 +61,6 @@ parameters:
 			path: src/ApiBundle/Tests/ApiTokenManagerTest.php
 
 		-
-			message: '#^Comparison operation "\>\=" between int\<80400, 80599\> and 80400 is always true\.$#'
-			identifier: greaterOrEqual.alwaysTrue
-			count: 1
-			path: src/AppRequirements.php
-
-		-
 			message: '#^Method SolidInvoice\\ClientBundle\\DataGrid\\ClientGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1

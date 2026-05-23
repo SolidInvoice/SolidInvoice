@@ -52,7 +52,7 @@ final class Drivers
         $choices = [];
 
         foreach ($installedDrivers as $driver) {
-            if (array_key_exists($driver, self::$driverMap)) {
+            if (array_key_exists((string) $driver, self::$driverMap)) {
                 $choices[self::$driverMap[$driver]] = $driver;
                 if ('mysql' === $driver) {
                     $choices['MariaDB'] = 'mariadb';

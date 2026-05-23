@@ -145,7 +145,6 @@ final class ImageUploadTypeTest extends TestCase
 
         $path = $this->tempFile('png');
         imagepng($image, $path);
-        imagedestroy($image);
 
         return new UploadedFile($path, $name, 'image/png', null, true);
     }
@@ -157,7 +156,6 @@ final class ImageUploadTypeTest extends TestCase
 
         $path = $this->tempFile('jpg');
         imagejpeg($image, $path);
-        imagedestroy($image);
 
         return new UploadedFile($path, $name, 'image/jpeg', null, true);
     }
