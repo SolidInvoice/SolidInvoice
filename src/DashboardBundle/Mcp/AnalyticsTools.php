@@ -28,13 +28,13 @@ use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
-final class AnalyticsTools
+final readonly class AnalyticsTools
 {
     public function __construct(
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly PaymentRepository $paymentRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly McpScopeGuard $scopeGuard,
+        private InvoiceRepository $invoiceRepository,
+        private PaymentRepository $paymentRepository,
+        private ClientRepository $clientRepository,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

@@ -33,14 +33,14 @@ use SolidInvoice\UserBundle\Repository\UserSettingRepository;
 use function json_decode;
 use function json_encode;
 
-final class OnboardingManager
+final readonly class OnboardingManager
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly CompanyRepository $companyRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly UserSettingRepository $userSettingRepository,
+        private EntityManagerInterface $entityManager,
+        private CompanyRepository $companyRepository,
+        private ClientRepository $clientRepository,
+        private InvoiceRepository $invoiceRepository,
+        private UserSettingRepository $userSettingRepository,
     ) {
     }
 

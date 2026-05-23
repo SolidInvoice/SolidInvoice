@@ -27,11 +27,11 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 #[AsDoctrineListener(Events::prePersist)]
 #[AsDoctrineListener(Events::postPersist)]
 #[AsDoctrineListener(Events::postLoad)]
-final class ClientListener
+final readonly class ClientListener
 {
     public function __construct(
-        private readonly NotificationManager $notification,
-        private readonly SystemConfig $config,
+        private NotificationManager $notification,
+        private SystemConfig $config,
     ) {
     }
 

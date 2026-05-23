@@ -24,11 +24,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/oauth/token', name: 'mcp_oauth_token', methods: ['POST'])]
-final class Token
+final readonly class Token
 {
     public function __construct(
-        private readonly ServerFactory $serverFactory,
-        private readonly LoggerInterface $logger,
+        private ServerFactory $serverFactory,
+        private LoggerInterface $logger,
     ) {
     }
 

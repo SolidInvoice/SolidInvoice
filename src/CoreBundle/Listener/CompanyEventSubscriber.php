@@ -32,13 +32,13 @@ use function in_array;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\CompanyEventSubscriberTest
  */
-final class CompanyEventSubscriber implements EventSubscriberInterface
+final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly RouterInterface $router,
-        private readonly CompanySelector $companySelector,
-        private readonly Security $security,
-        private readonly ?string $installed = null,
+        private RouterInterface $router,
+        private CompanySelector $companySelector,
+        private Security $security,
+        private ?string $installed = null,
     ) {
     }
 

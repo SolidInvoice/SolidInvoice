@@ -26,10 +26,10 @@ use function method_exists;
 use function spl_object_hash;
 use function sprintf;
 
-final class StringFormatter implements FormatterInterface
+final readonly class StringFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly Environment $twig
+        private Environment $twig
     ) {
     }
 

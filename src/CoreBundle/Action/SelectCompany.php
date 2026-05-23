@@ -25,11 +25,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
-final class SelectCompany
+final readonly class SelectCompany
 {
     public function __construct(
-        private readonly Security $security,
-        private readonly RouterInterface $router
+        private Security $security,
+        private RouterInterface $router
     ) {
     }
 

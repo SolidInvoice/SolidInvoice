@@ -15,14 +15,14 @@ namespace SolidInvoice\CoreBundle\Company;
 
 use SolidInvoice\CoreBundle\Entity\Company;
 
-final class ResolvedHost
+final readonly class ResolvedHost
 {
     public function __construct(
-        public readonly HostType $type,
-        public readonly string $host,
-        public readonly string $scheme,
-        public readonly int $port,
-        public readonly ?Company $company = null,
+        public HostType $type,
+        public string $host,
+        public string $scheme,
+        public int $port,
+        public ?Company $company = null,
     ) {
     }
 

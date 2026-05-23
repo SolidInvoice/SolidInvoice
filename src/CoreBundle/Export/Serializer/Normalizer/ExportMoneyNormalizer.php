@@ -28,11 +28,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * the project's default 2-decimal subunit — this matches how the rest of the app
  * stores amounts as integer cents.
  */
-final class ExportMoneyNormalizer implements NormalizerInterface
+final readonly class ExportMoneyNormalizer implements NormalizerInterface
 {
     private const DEFAULT_SUBUNIT_EXPONENT = 2;
 
-    private readonly ISOCurrencies $currencies;
+    private ISOCurrencies $currencies;
 
     public function __construct()
     {

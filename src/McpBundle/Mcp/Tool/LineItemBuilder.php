@@ -27,10 +27,10 @@ use SolidInvoice\TaxBundle\Entity\Tax;
  * Converts the array shape tools receive for line items + discount into
  * domain objects that Invoice / Quote / RecurringInvoice can consume.
  */
-final class LineItemBuilder
+final readonly class LineItemBuilder
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

@@ -25,11 +25,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\EmailFromListenerTest
  */
-final class EmailFromListener implements EventSubscriberInterface
+final readonly class EmailFromListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly SystemConfig $config,
-        private readonly TokenStorageInterface $tokenStorage
+        private SystemConfig $config,
+        private TokenStorageInterface $tokenStorage
     ) {
     }
 

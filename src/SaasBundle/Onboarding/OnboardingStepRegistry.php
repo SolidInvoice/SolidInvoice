@@ -18,12 +18,12 @@ use function array_values;
 use function count;
 use function iterator_to_array;
 
-final class OnboardingStepRegistry
+final readonly class OnboardingStepRegistry
 {
     /**
      * @var list<OnboardingEmailStepInterface>
      */
-    private readonly array $steps;
+    private array $steps;
 
     /**
      * @param iterable<OnboardingEmailStepInterface> $steps

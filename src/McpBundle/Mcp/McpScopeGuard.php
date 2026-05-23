@@ -20,10 +20,10 @@ use SolidInvoice\McpBundle\Security\McpScope;
  * Enforces that the current MCP request carries the required OAuth scope.
  * Tools call {@see require()} at the top of every handler method.
  */
-final class McpScopeGuard
+final readonly class McpScopeGuard
 {
     public function __construct(
-        private readonly McpSecurityContext $context,
+        private McpSecurityContext $context,
     ) {
     }
 

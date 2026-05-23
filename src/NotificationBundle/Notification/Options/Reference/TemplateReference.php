@@ -11,14 +11,14 @@
 
 namespace SolidInvoice\NotificationBundle\Notification\Options\Reference;
 
-final class TemplateReference
+final readonly class TemplateReference
 {
     /**
      * @param array<string, mixed> $parameters
      */
     public function __construct(
-        public readonly string $template,
-        public readonly array $parameters = [],
+        public string $template,
+        public array $parameters = [],
     ) {
     }
 }

@@ -43,10 +43,10 @@ use function usort;
  *
  * The discovery list is stable (sorted by filename) so exports are reproducible.
  */
-final class EntityDiscovery
+final readonly class EntityDiscovery
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
+        private ManagerRegistry $registry,
     ) {
     }
 

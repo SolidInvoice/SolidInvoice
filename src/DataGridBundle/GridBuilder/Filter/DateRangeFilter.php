@@ -22,10 +22,10 @@ use function is_array;
 use function sprintf;
 use function Symfony\Component\String\u;
 
-final class DateRangeFilter implements ColumnFilterInterface
+final readonly class DateRangeFilter implements ColumnFilterInterface
 {
     public function __construct(
-        private readonly string $field,
+        private string $field,
     ) {
     }
 

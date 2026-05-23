@@ -17,10 +17,10 @@ use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ClientResultFormatter implements QualifiedResultFormatterInterface
+final readonly class ClientResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
-        private readonly RouterInterface $router,
+        private RouterInterface $router,
     ) {
     }
 

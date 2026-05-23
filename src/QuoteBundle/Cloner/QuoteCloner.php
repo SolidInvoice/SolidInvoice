@@ -27,12 +27,12 @@ use Traversable;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Cloner\QuoteClonerTest
  */
-final class QuoteCloner
+final readonly class QuoteCloner
 {
     public function __construct(
-        private readonly WorkflowInterface $quoteStateMachine,
-        private readonly BillingIdGenerator $billingIdGenerator,
-        private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
+        private WorkflowInterface $quoteStateMachine,
+        private BillingIdGenerator $billingIdGenerator,
+        private TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
     }
 

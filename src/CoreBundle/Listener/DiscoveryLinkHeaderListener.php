@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsEventListener(event: KernelEvents::RESPONSE)]
-final class DiscoveryLinkHeaderListener
+final readonly class DiscoveryLinkHeaderListener
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

@@ -27,12 +27,12 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use function assert;
 
-final class PaymentDummyDataLoader implements DummyDataLoaderInterface
+final readonly class PaymentDummyDataLoader implements DummyDataLoaderInterface
 {
-    private readonly Generator $faker;
+    private Generator $faker;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private ManagerRegistry $registry
     ) {
         $this->faker = Factory::create();
     }

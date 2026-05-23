@@ -17,10 +17,10 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\Uid\Uuid;
 
-final class GenerateBuildIdStep implements InstallationStepInterface
+final readonly class GenerateBuildIdStep implements InstallationStepInterface
 {
     public function __construct(
-        private readonly ConfigWriter $configWriter,
+        private ConfigWriter $configWriter,
     ) {
     }
 

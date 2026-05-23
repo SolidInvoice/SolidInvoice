@@ -24,11 +24,11 @@ use function strlen;
 use function trim;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class Search
+final readonly class Search
 {
     public function __construct(
-        private readonly MultiSearchService $searchService,
-        private readonly SearchQueryParser $queryParser,
+        private MultiSearchService $searchService,
+        private SearchQueryParser $queryParser,
     ) {
     }
 

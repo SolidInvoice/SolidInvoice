@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-final class CloneInvoice
+final readonly class CloneInvoice
 {
     public function __construct(
-        private readonly RouterInterface $router,
-        private readonly InvoiceCloner $cloner
+        private RouterInterface $router,
+        private InvoiceCloner $cloner
     ) {
     }
 

@@ -42,27 +42,27 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class InvoiceWriteTools
+final readonly class InvoiceWriteTools
 {
     public function __construct(
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly RecurringInvoiceRepository $recurringInvoiceRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly InvoiceCloner $cloner,
-        private readonly InvoiceManager $invoiceManager,
-        private readonly LineItemBuilder $lineItemBuilder,
-        private readonly InvoiceTaxBuilder $invoiceTaxBuilder,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly BillingIdGenerator $billingIdGenerator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
+        private InvoiceRepository $invoiceRepository,
+        private RecurringInvoiceRepository $recurringInvoiceRepository,
+        private ClientRepository $clientRepository,
+        private InvoiceCloner $cloner,
+        private InvoiceManager $invoiceManager,
+        private LineItemBuilder $lineItemBuilder,
+        private InvoiceTaxBuilder $invoiceTaxBuilder,
+        private TotalCalculator $totalCalculator,
+        private BillingIdGenerator $billingIdGenerator,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
         #[Autowire(service: 'state_machine.invoice')]
-        private readonly WorkflowInterface $invoiceWorkflow,
+        private WorkflowInterface $invoiceWorkflow,
         #[Autowire(service: 'state_machine.recurring_invoice')]
-        private readonly WorkflowInterface $recurringInvoiceWorkflow,
-        private readonly MailerInterface $mailer,
-        private readonly LoggerInterface $logger,
-        private readonly McpScopeGuard $scopeGuard,
+        private WorkflowInterface $recurringInvoiceWorkflow,
+        private MailerInterface $mailer,
+        private LoggerInterface $logger,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

@@ -23,11 +23,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProviderInterface<ApiToken> */
-final class ApiTokenItemProvider implements ProviderInterface
+final readonly class ApiTokenItemProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly ApiTokenRepository $apiTokenRepository,
-        private readonly Security $security,
+        private ApiTokenRepository $apiTokenRepository,
+        private Security $security,
     ) {
     }
 

@@ -36,17 +36,17 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class RecurringInvoiceWriteTools
+final readonly class RecurringInvoiceWriteTools
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly LineItemBuilder $lineItemBuilder,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
+        private ClientRepository $clientRepository,
+        private LineItemBuilder $lineItemBuilder,
+        private TotalCalculator $totalCalculator,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
         #[Autowire(service: 'state_machine.recurring_invoice')]
-        private readonly WorkflowInterface $recurringWorkflow,
-        private readonly McpScopeGuard $scopeGuard,
+        private WorkflowInterface $recurringWorkflow,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

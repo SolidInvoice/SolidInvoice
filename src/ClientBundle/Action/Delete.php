@@ -24,13 +24,13 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class Delete
+final readonly class Delete
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly TranslatorInterface $translator,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly RouterInterface $router
+        private ClientRepository $clientRepository,
+        private TranslatorInterface $translator,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private RouterInterface $router
     ) {
     }
 

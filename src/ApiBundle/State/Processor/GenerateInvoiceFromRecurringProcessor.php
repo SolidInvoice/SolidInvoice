@@ -22,10 +22,10 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /** @implements ProcessorInterface<RecurringInvoice, Invoice> */
-final class GenerateInvoiceFromRecurringProcessor implements ProcessorInterface
+final readonly class GenerateInvoiceFromRecurringProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly InvoiceManager $invoiceManager
+        private InvoiceManager $invoiceManager
     ) {
     }
 

@@ -26,12 +26,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use function assert;
 
-final class Add
+final readonly class Add
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
-        private readonly RouterInterface $router,
-        private readonly ManagerRegistry $doctrine
+        private FormFactoryInterface $formFactory,
+        private RouterInterface $router,
+        private ManagerRegistry $doctrine
     ) {
     }
 

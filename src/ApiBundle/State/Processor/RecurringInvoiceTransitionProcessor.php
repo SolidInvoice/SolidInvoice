@@ -21,11 +21,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /** @implements ProcessorInterface<RecurringInvoice, RecurringInvoice> */
-final class RecurringInvoiceTransitionProcessor implements ProcessorInterface
+final readonly class RecurringInvoiceTransitionProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly WorkflowInterface $recurringInvoiceStateMachine,
-        private readonly ManagerRegistry $registry,
+        private WorkflowInterface $recurringInvoiceStateMachine,
+        private ManagerRegistry $registry,
     ) {
     }
 

@@ -24,11 +24,11 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-final class View
+final readonly class View
 {
     public function __construct(
-        private readonly Generator $pdfGenerator,
-        private readonly Environment $engine
+        private Generator $pdfGenerator,
+        private Environment $engine
     ) {
     }
 

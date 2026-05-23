@@ -28,13 +28,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-final class DownloadExport
+final readonly class DownloadExport
 {
     public function __construct(
-        private readonly ExportJobRepository $exportJobRepository,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $projectDir,
+        private ExportJobRepository $exportJobRepository,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $projectDir,
     ) {
     }
 

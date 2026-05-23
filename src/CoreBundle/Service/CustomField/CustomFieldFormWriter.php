@@ -28,13 +28,13 @@ use Symfony\Component\Uid\Ulid;
  *
  * Caller is responsible for flushing the EntityManager.
  */
-final class CustomFieldFormWriter
+final readonly class CustomFieldFormWriter
 {
     public function __construct(
-        private readonly CustomFieldRepository $fields,
-        private readonly CustomFieldValueRepository $values,
-        private readonly CustomFieldTypeResolver $resolver,
-        private readonly EntityManagerInterface $em,
+        private CustomFieldRepository $fields,
+        private CustomFieldValueRepository $values,
+        private CustomFieldTypeResolver $resolver,
+        private EntityManagerInterface $em,
     ) {
     }
 

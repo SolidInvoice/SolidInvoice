@@ -45,26 +45,26 @@ use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 
 #[Route(path: '/oauth/authorize', name: 'mcp_oauth_authorize', methods: ['GET', 'POST'])]
-final class Authorize
+final readonly class Authorize
 {
     private const string CONSENT_CSRF_TOKEN_ID = 'mcp_oauth_consent';
 
-    private readonly PsrHttpFactory $psrHttpFactory;
+    private PsrHttpFactory $psrHttpFactory;
 
     public function __construct(
-        private readonly ServerFactoryInterface $serverFactory,
-        private readonly ConsentService $consentService,
-        private readonly PendingAuthorization $pendingAuthorization,
-        private readonly Security $security,
-        private readonly CompanySelector $companySelector,
-        private readonly UserEligibleCompanies $eligibleCompanies,
-        private readonly Environment $twig,
-        private readonly LoggerInterface $logger,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
-        private readonly Psr17Factory $psr17Factory = new Psr17Factory(),
+        private ServerFactoryInterface $serverFactory,
+        private ConsentService $consentService,
+        private PendingAuthorization $pendingAuthorization,
+        private Security $security,
+        private CompanySelector $companySelector,
+        private UserEligibleCompanies $eligibleCompanies,
+        private Environment $twig,
+        private LoggerInterface $logger,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private UrlGeneratorInterface $urlGenerator,
+        private FeatureGate $featureGate,
+        private UpgradePromptProvider $upgradePromptProvider,
+        private Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
     }

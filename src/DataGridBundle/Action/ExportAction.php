@@ -34,11 +34,11 @@ use function json_decode;
 use function preg_match;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class ExportAction
+final readonly class ExportAction
 {
     public function __construct(
-        private readonly GridExporter $exporter,
-        private readonly ExportFilenameGenerator $filenameGenerator,
+        private GridExporter $exporter,
+        private ExportFilenameGenerator $filenameGenerator,
     ) {
     }
 

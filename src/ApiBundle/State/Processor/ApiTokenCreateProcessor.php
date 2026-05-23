@@ -23,12 +23,12 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /** @implements ProcessorInterface<ApiToken, ApiToken> */
-final class ApiTokenCreateProcessor implements ProcessorInterface
+final readonly class ApiTokenCreateProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager,
-        private readonly Security $security,
-        private readonly EntityManagerInterface $entityManager,
+        private ApiTokenManager $apiTokenManager,
+        private Security $security,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

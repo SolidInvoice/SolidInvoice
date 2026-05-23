@@ -20,11 +20,11 @@ use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 
-final class PaymentMenu
+final readonly class PaymentMenu
 {
     public function __construct(
-        private readonly FeatureGate $featureGate,
-        private readonly UpgradePromptProvider $upgradePromptProvider,
+        private FeatureGate $featureGate,
+        private UpgradePromptProvider $upgradePromptProvider,
     ) {
     }
 

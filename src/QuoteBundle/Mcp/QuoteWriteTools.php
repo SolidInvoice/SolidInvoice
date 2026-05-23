@@ -38,22 +38,22 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class QuoteWriteTools
+final readonly class QuoteWriteTools
 {
     public function __construct(
-        private readonly QuoteRepository $quoteRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly QuoteCloner $cloner,
-        private readonly InvoiceManager $invoiceManager,
-        private readonly LineItemBuilder $lineItemBuilder,
-        private readonly InvoiceTaxBuilder $invoiceTaxBuilder,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly BillingIdGenerator $billingIdGenerator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
+        private QuoteRepository $quoteRepository,
+        private ClientRepository $clientRepository,
+        private QuoteCloner $cloner,
+        private InvoiceManager $invoiceManager,
+        private LineItemBuilder $lineItemBuilder,
+        private InvoiceTaxBuilder $invoiceTaxBuilder,
+        private TotalCalculator $totalCalculator,
+        private BillingIdGenerator $billingIdGenerator,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
         #[Autowire(service: 'state_machine.quote')]
-        private readonly WorkflowInterface $quoteWorkflow,
-        private readonly McpScopeGuard $scopeGuard,
+        private WorkflowInterface $quoteWorkflow,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

@@ -27,12 +27,12 @@ use function assert;
 use function random_int;
 use function substr;
 
-final class ClientDummyDataLoader implements DummyDataLoaderInterface
+final readonly class ClientDummyDataLoader implements DummyDataLoaderInterface
 {
-    private readonly Generator $faker;
+    private Generator $faker;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private ManagerRegistry $registry
     ) {
         $this->faker = Factory::create();
     }

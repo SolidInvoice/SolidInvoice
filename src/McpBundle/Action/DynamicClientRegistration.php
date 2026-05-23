@@ -26,11 +26,11 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/oauth/register', name: 'mcp_oauth_register', methods: ['POST'])]
-final class DynamicClientRegistration
+final readonly class DynamicClientRegistration
 {
     public function __construct(
-        private readonly OAuthClientRepository $clientRepository,
-        private readonly ?RateLimiterFactory $mcpOauthRegisterLimiter = null,
+        private OAuthClientRepository $clientRepository,
+        private ?RateLimiterFactory $mcpOauthRegisterLimiter = null,
     ) {
     }
 

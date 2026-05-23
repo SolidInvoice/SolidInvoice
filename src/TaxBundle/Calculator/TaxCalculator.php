@@ -25,11 +25,11 @@ use SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow;
  * single {@see CalculationResult} that {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator}
  * uses to populate {@see BaseInvoice}/{@see Quote} totals.
  */
-final class TaxCalculator implements TaxCalculatorInterface
+final readonly class TaxCalculator implements TaxCalculatorInterface
 {
     public function __construct(
-        private readonly LineTaxCalculator $lineTaxCalculator,
-        private readonly InvoiceTaxCalculator $invoiceTaxCalculator,
+        private LineTaxCalculator $lineTaxCalculator,
+        private InvoiceTaxCalculator $invoiceTaxCalculator,
     ) {
     }
 

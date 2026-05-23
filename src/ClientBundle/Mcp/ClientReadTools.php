@@ -29,14 +29,14 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
-final class ClientReadTools
+final readonly class ClientReadTools
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly PaymentRepository $paymentRepository,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private ClientRepository $clientRepository,
+        private InvoiceRepository $invoiceRepository,
+        private PaymentRepository $paymentRepository,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

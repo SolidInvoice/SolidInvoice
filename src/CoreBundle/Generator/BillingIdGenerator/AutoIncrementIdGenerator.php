@@ -23,10 +23,10 @@ use function assert;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\AutoIncrementIdGeneratorTest
  */
-final class AutoIncrementIdGenerator implements IdGeneratorInterface
+final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
 {
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private ManagerRegistry $registry
     ) {
     }
 

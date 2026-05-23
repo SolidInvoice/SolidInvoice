@@ -20,10 +20,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/.well-known/mcp/server-card.json', name: 'mcp_well_known_server_card', methods: ['GET'])]
-final class WellKnownServerCard
+final readonly class WellKnownServerCard
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

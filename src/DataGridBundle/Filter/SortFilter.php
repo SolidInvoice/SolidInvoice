@@ -18,11 +18,11 @@ use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use function str_contains;
 
-final class SortFilter implements FilterInterface
+final readonly class SortFilter implements FilterInterface
 {
     public function __construct(
-        private readonly string $field,
-        private readonly string $direction = Criteria::ASC,
+        private string $field,
+        private string $direction = Criteria::ASC,
     ) {
     }
 

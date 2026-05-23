@@ -25,13 +25,13 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
-final class TaxWriteTools
+final readonly class TaxWriteTools
 {
     public function __construct(
-        private readonly TaxRepository $repository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private TaxRepository $repository,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

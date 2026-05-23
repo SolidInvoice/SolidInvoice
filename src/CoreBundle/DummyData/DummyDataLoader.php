@@ -15,13 +15,13 @@ namespace SolidInvoice\CoreBundle\DummyData;
 
 use SolidInvoice\CoreBundle\Entity\Company;
 
-final class DummyDataLoader
+final readonly class DummyDataLoader
 {
     /**
      * @param iterable<DummyDataLoaderInterface> $loaders
      */
     public function __construct(
-        private readonly iterable $loaders
+        private iterable $loaders
     ) {
     }
 

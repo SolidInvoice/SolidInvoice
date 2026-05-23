@@ -32,14 +32,14 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\WorkFlowSubscriberTest
  */
-final class WorkFlowSubscriber implements EventSubscriberInterface
+final readonly class WorkFlowSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly InvoiceManager $invoiceManager,
-        private readonly WorkflowInterface $invoiceStateMachine,
-        private readonly NotificationManager $notification,
-        private readonly QuoteMailer $quoteMailer
+        private ManagerRegistry $registry,
+        private InvoiceManager $invoiceManager,
+        private WorkflowInterface $invoiceStateMachine,
+        private NotificationManager $notification,
+        private QuoteMailer $quoteMailer
     ) {
     }
 

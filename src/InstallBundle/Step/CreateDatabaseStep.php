@@ -16,10 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use function in_array;
 
-final class CreateDatabaseStep implements InstallationStepInterface
+final readonly class CreateDatabaseStep implements InstallationStepInterface
 {
     public function __construct(
-        private readonly ManagerRegistry $doctrine
+        private ManagerRegistry $doctrine
     ) {
     }
 

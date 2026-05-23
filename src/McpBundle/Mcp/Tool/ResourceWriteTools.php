@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Company is always set server-side from the active company; any client-supplied
  * "company" field is ignored.
  */
-final class ResourceWriteTools
+final readonly class ResourceWriteTools
 {
     /**
      * @var array<string, class-string>
@@ -80,13 +80,13 @@ final class ResourceWriteTools
     ];
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ValidatorInterface $validator,
-        private readonly EntityNormalizer $normalizer,
-        private readonly CompanySelector $companySelector,
-        private readonly CompanyRepository $companyRepository,
-        private readonly McpScopeGuard $scopeGuard,
-        private readonly PropertyAccessorInterface $propertyAccessor,
+        private EntityManagerInterface $entityManager,
+        private ValidatorInterface $validator,
+        private EntityNormalizer $normalizer,
+        private CompanySelector $companySelector,
+        private CompanyRepository $companyRepository,
+        private McpScopeGuard $scopeGuard,
+        private PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 

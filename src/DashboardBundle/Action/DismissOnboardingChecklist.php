@@ -25,14 +25,14 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-final class DismissOnboardingChecklist
+final readonly class DismissOnboardingChecklist
 {
     public function __construct(
-        private readonly ChecklistManager $checklistManager,
-        private readonly Security $security,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly RequestStack $requestStack,
+        private ChecklistManager $checklistManager,
+        private Security $security,
+        private UrlGeneratorInterface $urlGenerator,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private RequestStack $requestStack,
     ) {
     }
 

@@ -20,12 +20,12 @@ use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 
-final class PaymentMethodReadTools
+final readonly class PaymentMethodReadTools
 {
     public function __construct(
-        private readonly PaymentMethodRepository $repository,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private PaymentMethodRepository $repository,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

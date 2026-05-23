@@ -23,11 +23,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class Transition
+final readonly class Transition
 {
     public function __construct(
-        private readonly WorkflowInterface $quoteStateMachine,
-        private readonly RouterInterface $router
+        private WorkflowInterface $quoteStateMachine,
+        private RouterInterface $router
     ) {
     }
 

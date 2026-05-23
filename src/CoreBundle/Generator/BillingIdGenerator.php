@@ -22,15 +22,15 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-final class BillingIdGenerator
+final readonly class BillingIdGenerator
 {
     /**
      * @param ServiceLocator<IdGeneratorInterface> $generators
      */
     public function __construct(
         #[TaggedLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
-        private readonly ServiceLocator $generators,
-        private readonly SystemConfig $config,
+        private ServiceLocator $generators,
+        private SystemConfig $config,
     ) {
     }
 

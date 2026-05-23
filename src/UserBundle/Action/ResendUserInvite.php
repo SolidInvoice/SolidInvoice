@@ -22,12 +22,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
-final class ResendUserInvite
+final readonly class ResendUserInvite
 {
     public function __construct(
-        private readonly UserInvitation $invitation,
-        private readonly UserInvitationRepository $invitationRepository,
-        private readonly RouterInterface $router
+        private UserInvitation $invitation,
+        private UserInvitationRepository $invitationRepository,
+        private RouterInterface $router
     ) {
     }
 

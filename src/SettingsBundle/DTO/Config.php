@@ -11,17 +11,17 @@
 
 namespace SolidInvoice\SettingsBundle\DTO;
 
-final class Config
+final readonly class Config
 {
     /**
      * @param array<string, mixed> $formOptions
      */
     public function __construct(
-        public readonly string $key,
-        public readonly mixed $value,
-        public readonly ?string $description,
-        public readonly ?string $formType,
-        public readonly array $formOptions = [],
+        public string $key,
+        public mixed $value,
+        public ?string $description,
+        public ?string $formType,
+        public array $formOptions = [],
     ) {
     }
 }

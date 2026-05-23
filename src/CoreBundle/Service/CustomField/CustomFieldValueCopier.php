@@ -28,12 +28,12 @@ use Symfony\Component\Uid\Ulid;
  *
  * Caller is responsible for flushing the EntityManager.
  */
-final class CustomFieldValueCopier
+final readonly class CustomFieldValueCopier
 {
     public function __construct(
-        private readonly CustomFieldRepository $fields,
-        private readonly CustomFieldValueRepository $values,
-        private readonly EntityManagerInterface $em,
+        private CustomFieldRepository $fields,
+        private CustomFieldValueRepository $values,
+        private EntityManagerInterface $em,
     ) {
     }
 

@@ -15,10 +15,10 @@ namespace SolidInvoice\InvoiceBundle\Message;
 
 use Symfony\Component\Uid\Ulid;
 
-final class CreateInvoiceFromRecurring
+final readonly class CreateInvoiceFromRecurring
 {
     public function __construct(
-        private readonly Ulid $recurringInvoiceId
+        private Ulid $recurringInvoiceId
     ) {
     }
 

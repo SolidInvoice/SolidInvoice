@@ -18,11 +18,11 @@ use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\EventListener\DoctrineEventSubscriber;
 use SolidWorx\Toggler\ToggleInterface;
 
-final class DoctrineEventSubscriberDecorator
+final readonly class DoctrineEventSubscriberDecorator
 {
     public function __construct(
-        private readonly DoctrineEventSubscriber $inner,
-        private readonly ToggleInterface $toggle,
+        private DoctrineEventSubscriber $inner,
+        private ToggleInterface $toggle,
     ) {
     }
 

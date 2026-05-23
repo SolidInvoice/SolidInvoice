@@ -32,15 +32,15 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
-final class Edit
+final readonly class Edit
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
-        private readonly RouterInterface $router,
-        private readonly WorkflowInterface $quoteStateMachine,
-        private readonly ManagerRegistry $doctrine,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly QuoteFormManager $formManager,
+        private FormFactoryInterface $formFactory,
+        private RouterInterface $router,
+        private WorkflowInterface $quoteStateMachine,
+        private ManagerRegistry $doctrine,
+        private TotalCalculator $totalCalculator,
+        private QuoteFormManager $formManager,
     ) {
     }
 

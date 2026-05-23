@@ -27,11 +27,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
     // before this one, we set a lower priority.
     priority: -1
 )]
-final class OpenApiFactory implements OpenApiFactoryInterface
+final readonly class OpenApiFactory implements OpenApiFactoryInterface
 {
     public function __construct(
-        private readonly OpenApiFactoryInterface $decorated,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private OpenApiFactoryInterface $decorated,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

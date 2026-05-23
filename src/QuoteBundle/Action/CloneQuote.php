@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-final class CloneQuote
+final readonly class CloneQuote
 {
     public function __construct(
-        private readonly QuoteCloner $cloner,
-        private readonly RouterInterface $router
+        private QuoteCloner $cloner,
+        private RouterInterface $router
     ) {
     }
 

@@ -11,14 +11,14 @@
 
 namespace SolidInvoice\NotificationBundle\Notification\Options\Reference;
 
-final class UrlRouteReference
+final readonly class UrlRouteReference
 {
     /**
      * @param array<string, mixed> $routeParameters
      */
     public function __construct(
-        public readonly string $routeName,
-        public readonly array $routeParameters = [],
+        public string $routeName,
+        public array $routeParameters = [],
     ) {
     }
 }

@@ -25,12 +25,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final class Send
+final readonly class Send
 {
     public function __construct(
-        private readonly QuoteMailer $mailer,
-        private readonly RouterInterface $router,
-        private readonly EmailVerificationGateInterface $emailVerificationGate,
+        private QuoteMailer $mailer,
+        private RouterInterface $router,
+        private EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 

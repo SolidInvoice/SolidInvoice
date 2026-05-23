@@ -25,10 +25,10 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 /**
  * Manager for handling Invoice form DTO transformations
  */
-final class InvoiceFormManager
+final readonly class InvoiceFormManager
 {
     public function __construct(
-        private readonly SystemConfig $systemConfig,
+        private SystemConfig $systemConfig,
     ) {
     }
 

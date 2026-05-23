@@ -22,10 +22,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
-final class ListExports
+final readonly class ListExports
 {
     public function __construct(
-        private readonly ExportJobRepository $exportJobRepository,
+        private ExportJobRepository $exportJobRepository,
     ) {
     }
 

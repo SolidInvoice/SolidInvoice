@@ -20,13 +20,13 @@ use function array_keys;
 use function implode;
 use function sprintf;
 
-final class Transports implements TransportInterface
+final readonly class Transports implements TransportInterface
 {
     /**
      * @param iterable<string, TransportInterface> $transports
      */
     public function __construct(
-        private readonly iterable $transports
+        private iterable $transports
     ) {
     }
 

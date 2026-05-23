@@ -24,18 +24,18 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class WorkflowTools
+final readonly class WorkflowTools
 {
     public function __construct(
-        private readonly ResourceRegistry $registry,
-        private readonly \Doctrine\ORM\EntityManagerInterface $entityManager,
+        private ResourceRegistry $registry,
+        private \Doctrine\ORM\EntityManagerInterface $entityManager,
         #[Autowire(service: 'state_machine.invoice')]
-        private readonly WorkflowInterface $invoiceWorkflow,
+        private WorkflowInterface $invoiceWorkflow,
         #[Autowire(service: 'state_machine.quote')]
-        private readonly WorkflowInterface $quoteWorkflow,
+        private WorkflowInterface $quoteWorkflow,
         #[Autowire(service: 'state_machine.recurring_invoice')]
-        private readonly WorkflowInterface $recurringInvoiceWorkflow,
-        private readonly McpScopeGuard $scopeGuard,
+        private WorkflowInterface $recurringInvoiceWorkflow,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

@@ -23,12 +23,12 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
-final class PaymentResultFormatter implements QualifiedResultFormatterInterface
+final readonly class PaymentResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
-        private readonly RouterInterface $router,
-        private readonly MoneyFormatterInterface $moneyFormatter,
-        private readonly SystemConfig $systemConfig,
+        private RouterInterface $router,
+        private MoneyFormatterInterface $moneyFormatter,
+        private SystemConfig $systemConfig,
     ) {
     }
 

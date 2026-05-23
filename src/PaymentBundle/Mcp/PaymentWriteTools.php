@@ -32,16 +32,16 @@ use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class PaymentWriteTools
+final readonly class PaymentWriteTools
 {
     public function __construct(
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly PaymentMethodRepository $paymentMethodRepository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly EntityNormalizer $normalizer,
+        private InvoiceRepository $invoiceRepository,
+        private PaymentMethodRepository $paymentMethodRepository,
+        private EntityManagerInterface $entityManager,
+        private EntityNormalizer $normalizer,
         #[Autowire(service: 'state_machine.invoice')]
-        private readonly WorkflowInterface $invoiceWorkflow,
-        private readonly McpScopeGuard $scopeGuard,
+        private WorkflowInterface $invoiceWorkflow,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

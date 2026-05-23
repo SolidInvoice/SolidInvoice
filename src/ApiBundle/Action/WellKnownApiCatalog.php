@@ -18,10 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/.well-known/api-catalog', name: 'api_well_known_catalog', methods: ['GET'])]
-final class WellKnownApiCatalog
+final readonly class WellKnownApiCatalog
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

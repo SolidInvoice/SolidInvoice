@@ -21,10 +21,10 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /** @implements ProcessorInterface<Quote, Invoice> */
-final class QuoteToInvoiceProcessor implements ProcessorInterface
+final readonly class QuoteToInvoiceProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly InvoiceManager $invoiceManager
+        private InvoiceManager $invoiceManager
     ) {
     }
 

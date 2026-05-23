@@ -25,10 +25,10 @@ use SolidInvoice\TaxBundle\Enum\TaxDirection;
  * Converts the array shape MCP tools receive for invoice-level taxes
  * (withholding/surcharge/informational rows) into {@see InvoiceTax} entities.
  */
-final class InvoiceTaxBuilder
+final readonly class InvoiceTaxBuilder
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

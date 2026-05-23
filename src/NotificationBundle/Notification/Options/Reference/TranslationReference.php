@@ -11,14 +11,14 @@
 
 namespace SolidInvoice\NotificationBundle\Notification\Options\Reference;
 
-final class TranslationReference
+final readonly class TranslationReference
 {
     /**
      * @param array<string, mixed> $parameters
      */
     public function __construct(
-        public readonly string $translationId,
-        public readonly array $parameters = [],
+        public string $translationId,
+        public array $parameters = [],
     ) {
     }
 }

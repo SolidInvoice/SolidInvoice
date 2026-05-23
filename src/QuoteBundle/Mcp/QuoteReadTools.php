@@ -26,13 +26,13 @@ use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
-final class QuoteReadTools
+final readonly class QuoteReadTools
 {
     public function __construct(
-        private readonly QuoteRepository $quoteRepository,
-        private readonly ClientRepository $clientRepository,
-        private readonly EntityNormalizer $normalizer,
-        private readonly McpScopeGuard $scopeGuard,
+        private QuoteRepository $quoteRepository,
+        private ClientRepository $clientRepository,
+        private EntityNormalizer $normalizer,
+        private McpScopeGuard $scopeGuard,
     ) {
     }
 

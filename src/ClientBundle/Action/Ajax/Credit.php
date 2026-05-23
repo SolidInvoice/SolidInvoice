@@ -24,12 +24,12 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Credit implements AjaxResponse
+final readonly class Credit implements AjaxResponse
 {
     use JsonTrait;
 
     public function __construct(
-        private readonly CreditRepository $repository,
+        private CreditRepository $repository,
     ) {
     }
 

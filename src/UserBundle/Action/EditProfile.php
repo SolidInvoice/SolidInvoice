@@ -28,13 +28,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use function assert;
 
-final class EditProfile
+final readonly class EditProfile
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly RouterInterface $router
+        private FormFactoryInterface $formFactory,
+        private UserRepositoryInterface $userRepository,
+        private TokenStorageInterface $tokenStorage,
+        private RouterInterface $router
     ) {
     }
 

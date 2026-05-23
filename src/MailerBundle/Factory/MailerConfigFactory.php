@@ -24,7 +24,7 @@ use function json_decode;
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Factory\MailerConfigFactoryTest
  */
-final class MailerConfigFactory
+final readonly class MailerConfigFactory
 {
     public const CONFIG_KEY = 'email/sending_options/provider';
 
@@ -32,9 +32,9 @@ final class MailerConfigFactory
      * @param iterable<ConfiguratorInterface> $transports
      */
     public function __construct(
-        private readonly Transport $inner,
-        private readonly SystemConfig $config,
-        private readonly iterable $transports
+        private Transport $inner,
+        private SystemConfig $config,
+        private iterable $transports
     ) {
     }
 

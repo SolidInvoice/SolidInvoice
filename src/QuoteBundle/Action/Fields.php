@@ -21,13 +21,13 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Fields
+final readonly class Fields
 {
     use JsonTrait;
 
     public function __construct(
-        private readonly FormFactoryInterface $factory,
-        private readonly FieldRenderer $renderer
+        private FormFactoryInterface $factory,
+        private FieldRenderer $renderer
     ) {
     }
 
