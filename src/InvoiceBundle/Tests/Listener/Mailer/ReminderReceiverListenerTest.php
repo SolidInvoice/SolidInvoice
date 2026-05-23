@@ -32,12 +32,12 @@ final class ReminderReceiverListenerTest extends TestCase
 
     public function testListenerAddsRecipientsFromInvoiceContacts(): void
     {
-        $contact1 = (new Contact())
+        $contact1 = new Contact()
             ->setEmail('contact1@example.com')
             ->setFirstName('John')
             ->setLastName('Doe');
 
-        $contact2 = (new Contact())
+        $contact2 = new Contact()
             ->setEmail('contact2@example.com')
             ->setFirstName('Jane')
             ->setLastName('Smith');
@@ -71,7 +71,7 @@ final class ReminderReceiverListenerTest extends TestCase
 
     public function testListenerAddsBccWhenConfigured(): void
     {
-        $contact = (new Contact())
+        $contact = new Contact()
             ->setEmail('contact@example.com')
             ->setFirstName('John')
             ->setLastName('Doe');

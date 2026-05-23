@@ -38,7 +38,7 @@ class ClientForm extends AbstractController
     {
         return $this->createForm(
             ClientType::class,
-            $this->client ?? (new Client())
+            $this->client ?? new Client()
                 ->addContact(new Contact())
                 ->addAddress(new Address()),
             ['validation_groups' => ['Default', 'form']]

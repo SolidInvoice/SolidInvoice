@@ -46,7 +46,7 @@ final class ResetPasswordTest extends WebTestCase
     public function testPasswordReset(): void
     {
         // Create a test user
-        $user = (new User())
+        $user = new User()
             ->setEmail('me@example.com')
             ->setPassword('a-test-password-that-will-be-changed-later');
         $this->em->persist($user);

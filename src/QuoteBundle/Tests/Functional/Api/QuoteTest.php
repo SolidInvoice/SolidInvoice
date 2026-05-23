@@ -49,7 +49,7 @@ final class QuoteTest extends ApiTestCase
         QuoteFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/quotes');
@@ -68,7 +68,7 @@ final class QuoteTest extends ApiTestCase
         QuoteFactory::createMany(2, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/quotes');
@@ -171,11 +171,11 @@ final class QuoteTest extends ApiTestCase
             'users' => $contacts,
             'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
-            'discount' => (new Discount())
+            'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
             'lines' => [
-                (new Line())
+                new Line()
                     ->setDescription('Test Item')
                     ->setQty(1)
                     ->setPrice(10000),
@@ -235,11 +235,11 @@ final class QuoteTest extends ApiTestCase
             'users' => $contacts,
             'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
-            'discount' => (new Discount())
+            'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
             'lines' => [
-                (new Line())
+                new Line()
                     ->setDescription('Test Item')
                     ->setQty(1)
                     ->setPrice(10000),

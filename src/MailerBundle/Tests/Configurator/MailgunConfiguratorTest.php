@@ -22,16 +22,16 @@ class MailgunConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Mailgun', (new MailgunConfigurator())->getName());
+        self::assertSame('Mailgun', new MailgunConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(MailgunApiTransportConfigType::class, (new MailgunConfigurator())->getForm());
+        self::assertSame(MailgunApiTransportConfigType::class, new MailgunConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('mailgun+api://foobar:baz@default'), (new MailgunConfigurator())->configure(['key' => 'foobar', 'domain' => 'baz']));
+        self::assertEquals(Dsn::fromString('mailgun+api://foobar:baz@default'), new MailgunConfigurator()->configure(['key' => 'foobar', 'domain' => 'baz']));
     }
 }

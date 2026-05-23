@@ -38,14 +38,14 @@ final class CustomFieldValueCleanupListenerTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $company])->_real();
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
-        $field = (new CustomField())
+        $field = new CustomField()
             ->setTarget(CustomFieldTarget::CLIENT)
             ->setLabel('Department')
             ->setFieldKey('department')
             ->setType(CustomFieldType::TEXT)
             ->setCompany($company->_real());
         $em->persist($field);
-        $value = (new CustomFieldValue())
+        $value = new CustomFieldValue()
             ->setField($field)
             ->setTarget(CustomFieldTarget::CLIENT)
             ->setTargetId($client->getId())

@@ -46,7 +46,7 @@ class NotificationManager
 
     public function sendNotification(NotificationMessage $message): void
     {
-        $attributes = (new ReflectionObject($message))->getAttributes(AsNotification::class);
+        $attributes = new ReflectionObject($message)->getAttributes(AsNotification::class);
 
         if ($attributes === []) {
             throw new InvalidNotificationMessageException(sprintf(

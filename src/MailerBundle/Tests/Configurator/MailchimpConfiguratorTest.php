@@ -22,16 +22,16 @@ class MailchimpConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Mailchimp Mandrill', (new MailchimpConfigurator())->getName());
+        self::assertSame('Mailchimp Mandrill', new MailchimpConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(KeyTransportConfigType::class, (new MailchimpConfigurator())->getForm());
+        self::assertSame(KeyTransportConfigType::class, new MailchimpConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('mandrill+api://foobar@default'), (new MailchimpConfigurator())->configure(['key' => 'foobar']));
+        self::assertEquals(Dsn::fromString('mandrill+api://foobar@default'), new MailchimpConfigurator()->configure(['key' => 'foobar']));
     }
 }

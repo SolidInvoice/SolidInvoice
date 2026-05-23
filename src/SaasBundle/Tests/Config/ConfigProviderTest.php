@@ -24,7 +24,7 @@ final class ConfigProviderTest extends TestCase
 {
     public function testHidePoweredByIsGatedByCustomBrandingFeature(): void
     {
-        $configs = (new ConfigProvider())->provide([]);
+        $configs = new ConfigProvider()->provide([]);
 
         $hidePoweredBy = $this->findConfigByKey($configs, 'system/general/hide_powered_by');
 
@@ -39,7 +39,7 @@ final class ConfigProviderTest extends TestCase
 
     public function testCustomDomainLivesUnderDomainSection(): void
     {
-        $configs = (new ConfigProvider())->provide([]);
+        $configs = new ConfigProvider()->provide([]);
 
         $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
 
@@ -52,7 +52,7 @@ final class ConfigProviderTest extends TestCase
 
     public function testCustomDomainIsFeatureGated(): void
     {
-        $configs = (new ConfigProvider())->provide([]);
+        $configs = new ConfigProvider()->provide([]);
 
         $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
 
@@ -62,7 +62,7 @@ final class ConfigProviderTest extends TestCase
 
     public function testCustomDomainRemainsTrialRestricted(): void
     {
-        $configs = (new ConfigProvider())->provide([]);
+        $configs = new ConfigProvider()->provide([]);
 
         $customDomain = $this->findConfigByKey($configs, 'system/domain/custom_domain');
 

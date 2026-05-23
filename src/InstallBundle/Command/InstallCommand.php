@@ -110,7 +110,7 @@ class InstallCommand extends Command
             ->saveConfig($input)
             ->install($input, $output);
 
-        $success = (new FormatterHelper())->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
+        $success = new FormatterHelper()->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
         $output->writeln('');
         $output->writeln($success);
         $output->writeln('');
@@ -295,7 +295,7 @@ class InstallCommand extends Command
             'database-name' => new Question('<question>please enter your database name:</question> '),
             'database-user' => new Question('<question>please enter your database username:</question> '),
             'database-password' => new Question('<question>please enter your database password:</question> '),
-            'locale' => (new Question('<question>Please enter a locale:</question> '))
+            'locale' => new Question('<question>Please enter a locale:</question> ')
                 ->setAutocompleterValues(array_keys(Locales::getNames())),
             'application-url' => new Question('<question>Please enter the application URL (including protocol, e.g. https://invoices.example.com):</question> '),
         ];

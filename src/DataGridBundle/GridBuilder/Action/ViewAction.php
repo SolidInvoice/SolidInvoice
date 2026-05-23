@@ -19,7 +19,7 @@ final class ViewAction extends Action
     #[\Override]
     public static function new(string $route, array $parameters = []): static
     {
-        return (new self())
+        return new self()
             ->route($route, $parameters)
             ->label('View')
             ->icon('eye');

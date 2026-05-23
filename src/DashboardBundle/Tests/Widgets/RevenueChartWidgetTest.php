@@ -29,7 +29,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
 {
     private function createZeroDiscount(): Discount
     {
-        return (new Discount())
+        return new Discount()
             ->setType('percentage')
             ->setValueMoney(BigInteger::zero())
             ->setValuePercentage(0);

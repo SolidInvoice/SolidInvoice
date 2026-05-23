@@ -102,7 +102,7 @@ final readonly class EntityDiscovery
             return true;
         }
 
-        if ((new ReflectionClass($metadata->getName()))->isAbstract()) {
+        if (new ReflectionClass($metadata->getName())->isAbstract()) {
             return true;
         }
 

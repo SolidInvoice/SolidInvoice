@@ -135,7 +135,7 @@ final class PaymentSettings extends AbstractController
 
         // Only set gateway name for new payment methods
         if ($paymentMethod->getId() === null) {
-            $gatewayName = (new AsciiSlugger())
+            $gatewayName = new AsciiSlugger()
                 ->slug($paymentMethod->getName())
                 ->lower()
                 ->toString();

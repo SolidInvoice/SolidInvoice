@@ -35,6 +35,6 @@ final class TimestampGeneratorTest extends TestCase
 
     public function testGetConfigurationFormType(): void
     {
-        self::assertNull((new TimestampGenerator())->getConfigurationFormType());
+        self::assertNull(new TimestampGenerator()->getConfigurationFormType());
     }
 }

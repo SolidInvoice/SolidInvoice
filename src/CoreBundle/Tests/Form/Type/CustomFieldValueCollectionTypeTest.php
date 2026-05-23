@@ -41,7 +41,7 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $company])->_real();
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
-        $field = (new CustomField())
+        $field = new CustomField()
             ->setTarget(CustomFieldTarget::CLIENT)
             ->setLabel('Department')
             ->setFieldKey('department')
@@ -76,7 +76,7 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
         $client->setName('Test')->setStatus(ClientStatus::Active)->setCompany($company->_real());
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
-        $field = (new CustomField())
+        $field = new CustomField()
             ->setTarget(CustomFieldTarget::CLIENT)
             ->setLabel('Department')
             ->setFieldKey('department')

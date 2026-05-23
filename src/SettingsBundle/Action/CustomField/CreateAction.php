@@ -33,7 +33,7 @@ final class CreateAction extends AbstractController
             return $this->render('@SolidInvoiceSettings/CustomField/gated.html.twig');
         }
 
-        $field = (new CustomField())->setType(CustomFieldType::TEXT);
+        $field = new CustomField()->setType(CustomFieldType::TEXT);
 
         return $this->render('@SolidInvoiceSettings/CustomField/edit.html.twig', [
             'field' => $field,

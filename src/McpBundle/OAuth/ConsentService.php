@@ -41,14 +41,7 @@ final readonly class ConsentService
         if (! $grant instanceof ConsentGrant || ! $grant->isRemember()) {
             return false;
         }
-
-        foreach ($requestedScopes as $scope) {
-            if (! \in_array($scope, $grant->getScopes(), true)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($requestedScopes, fn ($scope) => \in_array($scope, $grant->getScopes(), true));
     }
 
     /**

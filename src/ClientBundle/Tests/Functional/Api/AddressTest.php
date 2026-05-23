@@ -132,7 +132,7 @@ final class AddressTest extends ApiTestCase
     {
         $client = ClientFactory::createOne([
             'addresses' => [
-                $address = (new Address())
+                $address = new Address()
                     ->setStreet1('street 1')
                     ->setStreet2('street 2')
                     ->setCity('city')
@@ -171,7 +171,7 @@ final class AddressTest extends ApiTestCase
     {
         $client = ClientFactory::createOne([
             'addresses' => [
-                $address = (new Address())
+                $address = new Address()
                     ->setStreet1('street 1')
                     ->setStreet2('street 2')
                     ->setCity('city')

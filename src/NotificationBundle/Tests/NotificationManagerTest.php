@@ -89,11 +89,11 @@ final class NotificationManagerTest extends TestCase
 
         $email = $this->getFaker()->email();
 
-        $user = (new User())
+        $user = new User()
             ->setEmail($email)
             ->setPassword('password');
 
-        $userNotification = (new UserNotification())
+        $userNotification = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(true)
             ->setUser($user);
@@ -142,11 +142,11 @@ final class NotificationManagerTest extends TestCase
 
         $email = $this->getFaker()->email();
 
-        $user = (new User())
+        $user = new User()
             ->setEmail($email)
             ->setPassword('password');
 
-        $userNotification = (new UserNotification())
+        $userNotification = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(false)
             ->setUser($user);
@@ -176,16 +176,16 @@ final class NotificationManagerTest extends TestCase
 
         $email = $this->getFaker()->email();
 
-        $user = (new User())
+        $user = new User()
             ->setEmail($email)
             ->setPassword('password');
 
-        $transportSetting = (new TransportSetting())
+        $transportSetting = new TransportSetting()
             ->setName('Test Foo')
             ->setTransport('FooBar')
             ->setUser($user);
 
-        $userNotification = (new UserNotification())
+        $userNotification = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(false)
             ->setUser($user)
@@ -232,28 +232,28 @@ final class NotificationManagerTest extends TestCase
         $email1 = $this->getFaker()->email();
         $email2 = $this->getFaker()->email();
 
-        $user1 = (new User())
+        $user1 = new User()
             ->setEmail($email1)
             ->setPassword('password');
-        $user2 = (new User())
+        $user2 = new User()
             ->setEmail($email2)
             ->setPassword('password');
 
-        $transportSetting1 = (new TransportSetting())
+        $transportSetting1 = new TransportSetting()
             ->setName('Test Foo')
             ->setTransport('FooBar')
             ->setUser($user1);
-        $transportSetting2 = (new TransportSetting())
+        $transportSetting2 = new TransportSetting()
             ->setName('Test Foo')
             ->setTransport('FooBar')
             ->setUser($user2);
 
-        $userNotification1 = (new UserNotification())
+        $userNotification1 = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(false)
             ->setUser($user1)
             ->addTransport($transportSetting1);
-        $userNotification2 = (new UserNotification())
+        $userNotification2 = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(false)
             ->setUser($user2)
@@ -307,23 +307,23 @@ final class NotificationManagerTest extends TestCase
 
         $email = $this->getFaker()->email();
 
-        $user = (new User())
+        $user = new User()
             ->setEmail($email)
             ->setPassword('password');
 
-        $transportSetting = (new TransportSetting())
+        $transportSetting = new TransportSetting()
             ->setName('Test Foo')
             ->setTransport('FooBar')
             ->setUser($user)
         ;
 
-        $transportSetting2 = (new TransportSetting())
+        $transportSetting2 = new TransportSetting()
             ->setName('Test Foos')
             ->setTransport('FooBars')
             ->setUser($user)
         ;
 
-        $userNotification = (new UserNotification())
+        $userNotification = new UserNotification()
             ->setEvent('test_event')
             ->setEmail(true)
             ->setUser($user)

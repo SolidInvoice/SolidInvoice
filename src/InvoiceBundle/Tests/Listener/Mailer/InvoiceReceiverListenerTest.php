@@ -38,8 +38,8 @@ class InvoiceReceiverListenerTest extends TestCase
 
         $listener = new InvoiceReceiverListener($config);
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
-        $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
+        $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
@@ -56,8 +56,8 @@ class InvoiceReceiverListenerTest extends TestCase
 
         $listener = new InvoiceReceiverListener($config);
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
-        $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
+        $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 

@@ -44,7 +44,7 @@ class QuoteMailerListenerTest extends TestCase
 
         $listener = new QuoteMailerListener($mailer, $logger, $requestStack);
 
-        $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $quote->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onQuoteSend(new QuoteEvent($quote));
 
         $mailer->shouldHaveReceived('send')
@@ -73,7 +73,7 @@ class QuoteMailerListenerTest extends TestCase
 
         $listener = new QuoteMailerListener($mailer, $logger, $requestStack);
 
-        $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
+        $quote->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
 
         // Should not throw - exception is caught and logged
         $listener->onQuoteSend(new QuoteEvent($quote));

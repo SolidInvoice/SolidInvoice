@@ -38,7 +38,7 @@ final readonly class UserEntitySubscriber
             $this->emailVerifier->sendEmailConfirmation(
                 '_verify_email',
                 $user,
-                (new TemplatedEmail())
+                new TemplatedEmail()
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('@SolidInvoiceUser/Email/confirm_email.html.twig')

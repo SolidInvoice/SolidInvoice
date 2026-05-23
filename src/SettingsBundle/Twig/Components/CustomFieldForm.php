@@ -69,7 +69,7 @@ final class CustomFieldForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        $field = $this->field ?? (new CustomField())->setType(CustomFieldType::TEXT);
+        $field = $this->field ?? new CustomField()->setType(CustomFieldType::TEXT);
 
         return $this->createForm(CustomFieldDefinitionType::class, $field, [
             'lock_target' => $this->editing,

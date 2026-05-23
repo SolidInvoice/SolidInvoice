@@ -21,16 +21,16 @@ final class NullEmailVerificationGateTest extends TestCase
 {
     public function testIsGatedAlwaysFalse(): void
     {
-        self::assertFalse((new NullEmailVerificationGate())->isGated());
+        self::assertFalse(new NullEmailVerificationGate()->isGated());
     }
 
     public function testIsCompanyGatedAlwaysFalse(): void
     {
-        self::assertFalse((new NullEmailVerificationGate())->isCompanyGated(new Company()));
+        self::assertFalse(new NullEmailVerificationGate()->isCompanyGated(new Company()));
     }
 
     public function testReasonReturnsEmptyString(): void
     {
-        self::assertSame('', (new NullEmailVerificationGate())->reason('send invoice'));
+        self::assertSame('', new NullEmailVerificationGate()->reason('send invoice'));
     }
 }

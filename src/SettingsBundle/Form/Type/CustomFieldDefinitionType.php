@@ -125,7 +125,7 @@ final class CustomFieldDefinitionType extends AbstractType
                 return;
             }
 
-            $tempField = (new CustomField())->setType($type)->setOptions($validOptions);
+            $tempField = new CustomField()->setType($type)->setOptions($validOptions);
             [$class, $opts] = $this->resolver->formTypeAndOptions($tempField);
             $opts['label'] = 'Default value';
             $opts['help'] = 'Optional — pre-fills new records. Leave empty for no default.';

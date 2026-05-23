@@ -125,7 +125,7 @@ final class CustomFieldValueCollectionType extends AbstractType
                 }
 
                 if ($existing === null) {
-                    $value = (new CustomFieldValue())
+                    $value = new CustomFieldValue()
                         ->setField($def)
                         ->setTarget($target)
                         ->setValue($serialized);

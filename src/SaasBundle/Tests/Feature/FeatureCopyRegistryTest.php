@@ -32,7 +32,7 @@ final class FeatureCopyRegistryTest extends TestCase
     #[DataProvider('provideFeatures')]
     public function testEveryFeatureHasCopy(Feature $feature): void
     {
-        $copy = (new FeatureCopyRegistry())->get($feature->value);
+        $copy = new FeatureCopyRegistry()->get($feature->value);
 
         self::assertInstanceOf(FeatureCopy::class, $copy);
         self::assertNotSame('', $copy->icon, "Icon missing for {$feature->value}");
@@ -44,7 +44,7 @@ final class FeatureCopyRegistryTest extends TestCase
 
     public function testUnknownFeatureReturnsNull(): void
     {
-        self::assertNull((new FeatureCopyRegistry())->get('not_a_feature'));
+        self::assertNull(new FeatureCopyRegistry()->get('not_a_feature'));
     }
 
     /**

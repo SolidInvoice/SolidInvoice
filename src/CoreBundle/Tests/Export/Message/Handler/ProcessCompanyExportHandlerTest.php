@@ -47,7 +47,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
         ]);
 
         $repository = $this->exportJobRepository();
-        $job = (new ExportJob($user->getId(), ExportFormat::Json))->setCompany($this->company);
+        $job = new ExportJob($user->getId(), ExportFormat::Json)->setCompany($this->company);
         $repository->save($job);
 
         $handler = self::getContainer()->get(ProcessCompanyExportHandler::class);
@@ -69,7 +69,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
         $this->mailer()->sentEmails()->assertCount(1);
         $this->mailer()->sentEmails()->first()->assertTo('exporter@example.com');
 
-        (new Filesystem())->remove($absolutePath);
+        new Filesystem()->remove($absolutePath);
     }
 
     public function testSkipsWhenJobIsNotPending(): void
@@ -80,7 +80,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
         ]);
 
         $repository = $this->exportJobRepository();
-        $job = (new ExportJob($user->getId(), ExportFormat::Json))->setCompany($this->company);
+        $job = new ExportJob($user->getId(), ExportFormat::Json)->setCompany($this->company);
         $job->markFailed('pre-existing failure');
         $repository->save($job);
 

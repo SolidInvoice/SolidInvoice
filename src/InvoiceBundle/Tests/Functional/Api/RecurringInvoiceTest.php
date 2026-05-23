@@ -50,7 +50,7 @@ final class RecurringInvoiceTest extends ApiTestCase
         RecurringInvoiceFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/recurring-invoices');
@@ -176,18 +176,18 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
-            'recurringOptions' => (new RecurringOptions())
+            'recurringOptions' => new RecurringOptions()
                 ->setType(ScheduleRecurringType::WEEKLY)
                 ->setEndType(ScheduleEndType::AFTER)
                 ->setEndOccurrence(1),
             'users' => $contacts,
             'lines' => [
-                (new RecurringInvoiceLine())
+                new RecurringInvoiceLine()
                     ->setDescription('Test Line')
                     ->setPrice(100)
                     ->setQty(1)
             ],
-            'discount' => (new Discount())
+            'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
         ])->_real();
@@ -255,12 +255,12 @@ final class RecurringInvoiceTest extends ApiTestCase
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'users' => $contacts,
             'lines' => [
-                (new RecurringInvoiceLine())
+                new RecurringInvoiceLine()
                     ->setDescription('Test Line')
                     ->setPrice(100)
                     ->setQty(1)
             ],
-            'discount' => (new Discount())
+            'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
         ])->_real();

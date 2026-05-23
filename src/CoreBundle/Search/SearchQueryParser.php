@@ -148,13 +148,7 @@ final class SearchQueryParser
 
     private function isKnownQualifier(string $qualifier): bool
     {
-        foreach ($this->qualifierMap as $qualifiers) {
-            if (isset($qualifiers[$qualifier])) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->qualifierMap, fn ($qualifiers) => isset($qualifiers[$qualifier]));
     }
 
     /**

@@ -34,7 +34,7 @@ final class CustomFieldTypeResolverTest extends TestCase
     #[DataProvider('roundTripData')]
     public function testRoundTrip(CustomFieldType $type, mixed $input, ?string $stored, mixed $deserialized, ?array $options = null): void
     {
-        $field = (new CustomField())->setType($type)->setOptions($options);
+        $field = new CustomField()->setType($type)->setOptions($options);
         self::assertSame($stored, $this->resolver->serialize($field, $input));
         self::assertEquals($deserialized, $this->resolver->deserialize($field, $stored));
     }
@@ -60,14 +60,14 @@ final class CustomFieldTypeResolverTest extends TestCase
 
     public function testNullSerialize(): void
     {
-        $field = (new CustomField())->setType(CustomFieldType::TEXT);
+        $field = new CustomField()->setType(CustomFieldType::TEXT);
         self::assertNull($this->resolver->serialize($field, null));
         self::assertNull($this->resolver->serialize($field, ''));
     }
 
     public function testNullDeserialize(): void
     {
-        $field = (new CustomField())->setType(CustomFieldType::TEXT);
+        $field = new CustomField()->setType(CustomFieldType::TEXT);
         self::assertNull($this->resolver->deserialize($field, null));
     }
 }

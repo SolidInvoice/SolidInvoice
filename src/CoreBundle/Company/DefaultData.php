@@ -68,7 +68,7 @@ final readonly class DefaultData
         ];
 
         foreach ($defaults as [$key, $label, $type, $position]) {
-            $field = (new CustomField())
+            $field = new CustomField()
                 ->setTarget(CustomFieldTarget::CONTACT)
                 ->setLabel($label)
                 ->setFieldKey($key)

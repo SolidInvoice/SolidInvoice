@@ -70,7 +70,7 @@ final readonly class RequestExport
             throw new BadRequestHttpException('Active company not found.');
         }
 
-        $job = (new ExportJob($user->getId(), $format))->setCompany($company);
+        $job = new ExportJob($user->getId(), $format)->setCompany($company);
         $this->exportJobRepository->save($job);
 
         $this->messageBus->dispatch(new RequestCompanyExport(

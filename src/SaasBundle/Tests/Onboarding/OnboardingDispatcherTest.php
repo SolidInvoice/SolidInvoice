@@ -80,7 +80,7 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = (new UserSetting())->setValue('first');
+        $existing = new UserSetting()->setValue('first');
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
         $userSettingRepository
@@ -118,7 +118,7 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = (new UserSetting())->setValue('second');
+        $existing = new UserSetting()->setValue('second');
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
         $userSettingRepository
@@ -147,7 +147,7 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = (new UserSetting())->setValue('first');
+        $existing = new UserSetting()->setValue('first');
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
         $userSettingRepository

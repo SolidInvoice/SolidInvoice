@@ -67,7 +67,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 
@@ -85,7 +85,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertNull($reminders[0]->getFailureReason());
 
         // Step 2: Update invoice to 1 day overdue
-        $invoice->setDue((new DateTimeImmutable())->modify('-1 day'));
+        $invoice->setDue(new DateTimeImmutable()->modify('-1 day'));
         $invoice->_save();
 
         $this->runCommand();
@@ -95,7 +95,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertSame(ReminderType::Overdue1, $reminders[1]->getReminderType());
 
         // Step 3: Update invoice to 7 days overdue
-        $invoice->setDue((new DateTimeImmutable())->modify('-7 days'));
+        $invoice->setDue(new DateTimeImmutable()->modify('-7 days'));
         $invoice->_save();
 
         $this->runCommand();
@@ -105,7 +105,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertSame(ReminderType::Overdue7, $reminders[2]->getReminderType());
 
         // Step 4: Update invoice to 14 days overdue (final automated reminder)
-        $invoice->setDue((new DateTimeImmutable())->modify('-14 days'));
+        $invoice->setDue(new DateTimeImmutable()->modify('-14 days'));
         $invoice->_save();
 
         $this->runCommand();
@@ -115,7 +115,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertSame(ReminderType::Overdue14, $reminders[3]->getReminderType());
 
         // Step 5: Update invoice to 30 days overdue (no more automated reminders)
-        $invoice->setDue((new DateTimeImmutable())->modify('-30 days'));
+        $invoice->setDue(new DateTimeImmutable()->modify('-30 days'));
         $invoice->_save();
 
         $this->runCommand();
@@ -134,7 +134,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 
@@ -156,7 +156,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 
@@ -179,7 +179,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 
@@ -202,7 +202,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Paid,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 
@@ -222,7 +222,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [], // No contacts
         ]);
 
@@ -244,7 +244,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'due' => new DateTimeImmutable()->modify('+3 days'),
             'users' => [$contact],
         ]);
 

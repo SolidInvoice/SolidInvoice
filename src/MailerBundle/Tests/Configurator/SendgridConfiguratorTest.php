@@ -22,16 +22,16 @@ class SendgridConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Sendgrid', (new SendgridConfigurator())->getName());
+        self::assertSame('Sendgrid', new SendgridConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(KeyTransportConfigType::class, (new SendgridConfigurator())->getForm());
+        self::assertSame(KeyTransportConfigType::class, new SendgridConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('sendgrid+api://foobar@default'), (new SendgridConfigurator())->configure(['key' => 'foobar']));
+        self::assertEquals(Dsn::fromString('sendgrid+api://foobar@default'), new SendgridConfigurator()->configure(['key' => 'foobar']));
     }
 }

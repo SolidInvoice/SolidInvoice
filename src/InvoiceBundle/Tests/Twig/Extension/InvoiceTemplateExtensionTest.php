@@ -35,7 +35,7 @@ final class InvoiceTemplateExtensionTest extends TestCase
 
     public function testHasOutstandingBalanceIsFalseForFullyPaidInvoice(): void
     {
-        $invoice = (new Invoice())->setBalance(BigInteger::zero());
+        $invoice = new Invoice()->setBalance(BigInteger::zero());
         $invoice->addPayment($this->capturedPayment());
 
         self::assertFalse($this->extension->hasOutstandingBalance($invoice));
@@ -45,7 +45,7 @@ final class InvoiceTemplateExtensionTest extends TestCase
     {
         // Negative balance can occur when a payment exceeds the invoice total —
         // it is a credit, not money owed by the client.
-        $invoice = (new Invoice())->setBalance(BigInteger::of(-50000));
+        $invoice = new Invoice()->setBalance(BigInteger::of(-50000));
         $invoice->addPayment($this->capturedPayment());
 
         self::assertFalse($this->extension->hasOutstandingBalance($invoice));
@@ -55,7 +55,7 @@ final class InvoiceTemplateExtensionTest extends TestCase
     {
         // Brand-new invoice with no payments yet — the full balance is owed
         // but there is no captured payment to reconcile against.
-        $invoice = (new Invoice())->setBalance(BigInteger::of(150000));
+        $invoice = new Invoice()->setBalance(BigInteger::of(150000));
 
         self::assertFalse($this->extension->hasOutstandingBalance($invoice));
     }
@@ -64,7 +64,7 @@ final class InvoiceTemplateExtensionTest extends TestCase
     {
         // Pending/failed payments must not flag a "balance due" — only
         // captured payments count toward partial-payment reconciliation.
-        $invoice = (new Invoice())->setBalance(BigInteger::of(150000));
+        $invoice = new Invoice()->setBalance(BigInteger::of(150000));
         $invoice->addPayment($this->payment(PaymentStatus::New));
 
         self::assertFalse($this->extension->hasOutstandingBalance($invoice));
@@ -72,7 +72,7 @@ final class InvoiceTemplateExtensionTest extends TestCase
 
     public function testHasOutstandingBalanceIsTrueForPartiallyPaidInvoice(): void
     {
-        $invoice = (new Invoice())->setBalance(BigInteger::of(50000));
+        $invoice = new Invoice()->setBalance(BigInteger::of(50000));
         $invoice->addPayment($this->capturedPayment());
 
         self::assertTrue($this->extension->hasOutstandingBalance($invoice));
@@ -105,8 +105,8 @@ final class InvoiceTemplateExtensionTest extends TestCase
 
     public function testPrimaryContactReturnsFirstUser(): void
     {
-        $jane = (new Contact())->setFirstName('Jane');
-        $john = (new Contact())->setFirstName('John');
+        $jane = new Contact()->setFirstName('Jane');
+        $john = new Contact()->setFirstName('John');
 
         $invoice = new Invoice();
         $invoice->addUser($jane);
@@ -140,6 +140,6 @@ final class InvoiceTemplateExtensionTest extends TestCase
 
     private function payment(PaymentStatus $status): Payment
     {
-        return (new Payment())->setStatus($status);
+        return new Payment()->setStatus($status);
     }
 }

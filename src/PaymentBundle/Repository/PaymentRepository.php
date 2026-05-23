@@ -189,9 +189,9 @@ class PaymentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @deprecated Use getPaymentsByMonth instead
      * @return array<array<int>>
      */
+    #[\Deprecated(message: 'Use getPaymentsByMonth instead')]
     public function getPaymentsList(?DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');

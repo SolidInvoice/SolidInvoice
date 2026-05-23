@@ -37,7 +37,7 @@ final class QuickInvoiceQueryTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => (new DateTimeImmutable())->modify('+3 days')->setTime(0, 0)->modify('+6 hours'),
+            'due' => new DateTimeImmutable()->modify('+3 days')->setTime(0, 0)->modify('+6 hours'),
             'users' => [$contact],
         ]);
 

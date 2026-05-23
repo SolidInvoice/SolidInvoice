@@ -39,7 +39,7 @@ class AddressTypeTest extends FormTestCase
             'country' => $countryCode,
         ];
 
-        $entity = (new Address())
+        $entity = new Address()
             ->setStreet1($street1)
             ->setStreet2($street2)
             ->setCity($city)

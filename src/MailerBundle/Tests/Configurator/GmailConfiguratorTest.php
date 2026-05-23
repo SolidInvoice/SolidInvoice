@@ -22,16 +22,16 @@ class GmailConfiguratorTest extends TestCase
 {
     public function testName(): void
     {
-        self::assertSame('Gmail', (new GmailConfigurator())->getName());
+        self::assertSame('Gmail', new GmailConfigurator()->getName());
     }
 
     public function testForm(): void
     {
-        self::assertSame(UsernamePasswordTransportConfigType::class, (new GmailConfigurator())->getForm());
+        self::assertSame(UsernamePasswordTransportConfigType::class, new GmailConfigurator()->getForm());
     }
 
     public function testConfigure(): void
     {
-        self::assertEquals(Dsn::fromString('gmail+smtp://foo:bar@default'), (new GmailConfigurator())->configure(['username' => 'foo',  'password' => 'bar']));
+        self::assertEquals(Dsn::fromString('gmail+smtp://foo:bar@default'), new GmailConfigurator()->configure(['username' => 'foo',  'password' => 'bar']));
     }
 }

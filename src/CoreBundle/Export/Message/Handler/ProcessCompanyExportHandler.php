@@ -165,7 +165,7 @@ final readonly class ProcessCompanyExportHandler
             UrlGeneratorInterface::ABSOLUTE_URL,
         );
 
-        $email = (new ExportReadyEmail($job, $user, $downloadUrl))
+        $email = new ExportReadyEmail($job, $user, $downloadUrl)
             ->to($user->getEmail());
 
         $this->mailer->send($email);

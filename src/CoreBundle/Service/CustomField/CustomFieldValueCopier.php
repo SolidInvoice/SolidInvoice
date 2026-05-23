@@ -70,7 +70,7 @@ final readonly class CustomFieldValueCopier
                 }
             }
 
-            $copy = (new CustomFieldValue())
+            $copy = new CustomFieldValue()
                 ->setField($destField)
                 ->setTarget($destTarget)
                 ->setTargetId($destId)

@@ -66,7 +66,7 @@ final class RecurringInvoiceActivateGateTest extends \PHPUnit\Framework\TestCase
             $listener->onGuardActivate(...),
         );
 
-        $definition = (new DefinitionBuilder())
+        $definition = new DefinitionBuilder()
             ->addPlaces([
                 RecurringInvoiceStatus::New->value,
                 RecurringInvoiceStatus::Draft->value,
