@@ -2,6 +2,7 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
+    phpVersion: 80500
     level: 6
     paths:
         - migrations

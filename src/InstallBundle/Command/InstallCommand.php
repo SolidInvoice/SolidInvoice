@@ -139,7 +139,7 @@ class InstallCommand extends Command
                 throw new RuntimeException(sprintf('The --%s option needs to be specified', $option));
             }
         }
-        if (! array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
+        if (! array_key_exists((string) $locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
 
