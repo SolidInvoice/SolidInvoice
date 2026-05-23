@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Mcp\Session;
 
 use Mcp\Server\Session\Session;
+use Override;
 
 /**
  * Workaround for an upstream bug in mcp/sdk v0.4.0 where {@see Session::save()}
@@ -28,7 +29,7 @@ use Mcp\Server\Session\Session;
  */
 final class SafeSession extends Session
 {
-    #[\Override]
+    #[Override]
     public function save(): bool
     {
         // Force the private `$data` property to materialise via the public

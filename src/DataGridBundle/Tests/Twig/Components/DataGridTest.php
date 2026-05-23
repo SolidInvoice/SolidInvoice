@@ -11,7 +11,6 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\Twig\Components;
 
-use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;

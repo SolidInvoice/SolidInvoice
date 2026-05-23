@@ -13,6 +13,7 @@ namespace SolidInvoice\QuoteBundle\DataGrid;
 
 use Brick\Math\BigNumber;
 use Money\Money;
+use Override;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
@@ -39,7 +40,7 @@ abstract class BaseQuoteGrid extends Grid
         return Quote::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -70,7 +71,7 @@ abstract class BaseQuoteGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [
@@ -79,7 +80,7 @@ abstract class BaseQuoteGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')

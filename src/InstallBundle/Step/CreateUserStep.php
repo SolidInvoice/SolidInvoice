@@ -12,6 +12,7 @@
 namespace SolidInvoice\InstallBundle\Step;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -30,7 +31,7 @@ final readonly class CreateUserStep implements InstallationStepInterface
         return 5;
     }
 
-    public function execute(Installation $installationData, ?callable $callback = null): \Generator
+    public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
         $user = new User();
 

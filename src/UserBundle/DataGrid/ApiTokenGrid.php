@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
@@ -42,7 +43,7 @@ final class ApiTokenGrid extends Grid
         return ApiToken::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -74,7 +75,7 @@ final class ApiTokenGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [
@@ -85,7 +86,7 @@ final class ApiTokenGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Revoke')
@@ -111,7 +112,7 @@ final class ApiTokenGrid extends Grid
             });
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $user = $this->security->getUser();
@@ -128,7 +129,7 @@ final class ApiTokenGrid extends Grid
         return $query;
     }
 
-    #[\Override]
+    #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create API Token');

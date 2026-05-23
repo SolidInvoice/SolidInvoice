@@ -27,6 +27,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
+use Override;
 use Payum\Core\Model\Payment as BasePayment;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
 use SolidInvoice\ApiBundle\State\Processor\RecordPaymentProcessor;
@@ -195,7 +196,7 @@ class Payment extends BasePayment
      *
      * @throws UnexpectedTypeException
      */
-    #[\Override]
+    #[Override]
     public function setDetails($details): self
     {
         if ($details instanceof Traversable) {
@@ -235,7 +236,7 @@ class Payment extends BasePayment
         return $this;
     }
 
-    #[\Override]
+    #[Override]
     public function getClientId(): ?string
     {
         $client = $this->getClient();

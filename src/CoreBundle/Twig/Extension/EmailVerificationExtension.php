@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use Override;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -24,7 +25,7 @@ final class EmailVerificationExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

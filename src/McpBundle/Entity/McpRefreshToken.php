@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -77,7 +78,7 @@ class McpRefreshToken implements RefreshTokenEntityInterface
     public function setAccessToken(AccessTokenEntityInterface $accessToken): void
     {
         if (! $accessToken instanceof McpAccessToken) {
-            throw new \InvalidArgumentException('Expected McpAccessToken instance.');
+            throw new InvalidArgumentException('Expected McpAccessToken instance.');
         }
 
         $this->accessToken = $accessToken;

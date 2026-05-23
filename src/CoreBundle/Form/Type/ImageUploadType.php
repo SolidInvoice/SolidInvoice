@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
+use Override;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -103,13 +104,13 @@ class ImageUploadType extends AbstractType
         });
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return DropzoneType::class;
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'image_upload';

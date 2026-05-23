@@ -12,6 +12,7 @@
 namespace SolidInvoice\NotificationBundle\Command;
 
 use Composer\InstalledVersions;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,7 +45,7 @@ final class GenerateTransportConfigCommand extends Command
         parent::__construct();
     }
 
-    #[\Override]
+    #[Override]
     public function isEnabled(): bool
     {
         return $this->env === 'dev';

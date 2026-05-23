@@ -16,6 +16,7 @@ namespace SolidInvoice\SettingsBundle\Twig\Extension;
 use const JSON_THROW_ON_ERROR;
 use Doctrine\DBAL\Exception;
 use JsonException;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
@@ -32,7 +33,7 @@ class SettingsExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

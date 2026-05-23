@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\OAuth;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
+use Override;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -23,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class StrictS256AuthCodeGrant extends AuthCodeGrant
 {
-    #[\Override]
+    #[Override]
     public function validateAuthorizationRequest(ServerRequestInterface $request): AuthorizationRequestInterface
     {
         $codeChallenge = $this->getQueryStringParameter('code_challenge', $request);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,7 +40,7 @@ class AddressType extends AbstractType
         );
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'address';

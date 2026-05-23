@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -43,7 +43,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $registry = self::getContainer()->get('doctrine');
 
         // Create a frozen clock for consistent test execution with UTC timezone
-        $this->clock = new MockClock(new DateTimeImmutable('2024-02-01 10:00:00', new \DateTimeZone('UTC')));
+        $this->clock = new MockClock(new DateTimeImmutable('2024-02-01 10:00:00', new DateTimeZone('UTC')));
 
         // Create repository with the frozen clock
         $this->repository = new InvoiceRepository($registry, $this->clock);
@@ -219,26 +219,26 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
     public function testCountCreatedInMonthCountsInvoicesInTheCalendarMonth(): void
     {
-        $month = new DateTimeImmutable('2024-02-15 10:00:00', new \DateTimeZone('UTC'));
+        $month = new DateTimeImmutable('2024-02-15 10:00:00', new DateTimeZone('UTC'));
 
         InvoiceFactory::createMany(3, [
             'company' => $this->company,
-            'created' => new DateTimeImmutable('2024-02-10 10:00:00', new \DateTimeZone('UTC')),
+            'created' => new DateTimeImmutable('2024-02-10 10:00:00', new DateTimeZone('UTC')),
         ]);
 
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'created' => new DateTimeImmutable('2024-02-28 23:00:00', new \DateTimeZone('UTC')),
+            'created' => new DateTimeImmutable('2024-02-28 23:00:00', new DateTimeZone('UTC')),
         ]);
 
         // Outside the month (should be excluded)
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'created' => new DateTimeImmutable('2024-01-31 23:00:00', new \DateTimeZone('UTC')),
+            'created' => new DateTimeImmutable('2024-01-31 23:00:00', new DateTimeZone('UTC')),
         ]);
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'created' => new DateTimeImmutable('2024-03-01 00:00:00', new \DateTimeZone('UTC')),
+            'created' => new DateTimeImmutable('2024-03-01 00:00:00', new DateTimeZone('UTC')),
         ]);
 
         self::assertSame(4, $this->repository->countCreatedInMonth($month));
@@ -246,7 +246,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
     public function testCountCreatedInMonthReturnsZeroWhenNoInvoicesExist(): void
     {
-        $month = new DateTimeImmutable('2024-04-15 10:00:00', new \DateTimeZone('UTC'));
+        $month = new DateTimeImmutable('2024-04-15 10:00:00', new DateTimeZone('UTC'));
 
         self::assertSame(0, $this->repository->countCreatedInMonth($month));
     }

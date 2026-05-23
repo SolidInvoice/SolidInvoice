@@ -19,6 +19,7 @@ use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 
 final readonly class Migration
 {
@@ -40,7 +41,7 @@ final readonly class Migration
         return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
     }
 
-    public function migrate(?callable $callback = null): \Generator
+    public function migrate(?callable $callback = null): Generator
     {
         $metadataStorage = $this->migrationDependencyFactory->getMetadataStorage();
 

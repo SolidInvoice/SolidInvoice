@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
+use Doctrine\ORM\Events;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
@@ -23,7 +24,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
-#[AsDoctrineListener(event: \Doctrine\ORM\Events::preRemove)]
+#[AsDoctrineListener(event: Events::preRemove)]
 final readonly class CustomFieldValueCleanupListener
 {
     public function __construct(

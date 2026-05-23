@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\TaxBundle\DataGrid;
 
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
@@ -30,7 +31,7 @@ final class TaxGrid extends Grid
         return Tax::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -46,7 +47,7 @@ final class TaxGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         return [
@@ -63,7 +64,7 @@ MSG)
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [

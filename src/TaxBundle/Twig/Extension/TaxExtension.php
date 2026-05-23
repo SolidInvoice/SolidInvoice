@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Override;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -25,7 +26,7 @@ class TaxExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

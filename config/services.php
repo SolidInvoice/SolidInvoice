@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Monolog\Processor\PsrLogMessageProcessor;
 use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -64,7 +65,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services
-        ->set(Monolog\Processor\PsrLogMessageProcessor::class)
+        ->set(PsrLogMessageProcessor::class)
         ->tag('monolog.processor', ['handler' => 'sentry'])
         ->tag('monolog.processor', ['handler' => 'sentry_logs']);
 

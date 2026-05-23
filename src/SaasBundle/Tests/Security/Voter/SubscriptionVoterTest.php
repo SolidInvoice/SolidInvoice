@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Clock\ClockInterface;
+use RuntimeException;
 use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -195,7 +196,7 @@ final class SubscriptionVoterTest extends KernelTestCase
     {
         $provider = M::mock(SubscriptionProviderInterface::class);
         $provider->shouldReceive('getSubscriptionFor')
-            ->andThrow(new \RuntimeException('subscription table missing'));
+            ->andThrow(new RuntimeException('subscription table missing'));
 
         $container = self::getContainer();
 

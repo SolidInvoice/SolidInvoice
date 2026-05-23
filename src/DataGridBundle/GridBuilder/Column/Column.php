@@ -12,6 +12,7 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 use Closure;
+use InvalidArgumentException;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -99,7 +100,7 @@ abstract class Column
     public function linkTo(string $url): static
     {
         if ($this->linkRoute !== null && $this->linkRoute !== '') {
-            throw new \InvalidArgumentException(sprintf('Route link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
+            throw new InvalidArgumentException(sprintf('Route link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
         }
 
         $this->link = $url;
@@ -113,7 +114,7 @@ abstract class Column
     public function linkToRoute(string $routeName, array $parameters = []): static
     {
         if ($this->link !== null && $this->link !== '') {
-            throw new \InvalidArgumentException(sprintf('Link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
+            throw new InvalidArgumentException(sprintf('Link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
         }
 
         $this->linkRoute = $routeName;

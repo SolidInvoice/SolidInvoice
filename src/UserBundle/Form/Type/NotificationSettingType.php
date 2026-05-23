@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
-use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

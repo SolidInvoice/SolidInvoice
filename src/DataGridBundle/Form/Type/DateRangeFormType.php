@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\DataGridBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
@@ -58,7 +59,7 @@ final class DateRangeFormType extends AbstractType
         $resolver->setDefault('field_name', null);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'date_range';

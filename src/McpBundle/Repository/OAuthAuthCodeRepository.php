@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -42,7 +43,7 @@ final class OAuthAuthCodeRepository extends EntityRepository implements AuthCode
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
         if (! $authCodeEntity instanceof OAuthAuthCode) {
-            throw new \InvalidArgumentException('Expected OAuthAuthCode instance.');
+            throw new InvalidArgumentException('Expected OAuthAuthCode instance.');
         }
 
         $user = $this->pendingAuthorization->getUser();

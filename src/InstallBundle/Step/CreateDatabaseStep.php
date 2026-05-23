@@ -13,6 +13,7 @@ namespace SolidInvoice\InstallBundle\Step;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use function in_array;
 
@@ -28,7 +29,7 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         return 20;
     }
 
-    public function execute(Installation $installationData, ?callable $callback = null): \Generator
+    public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
         $connection = $this->doctrine->getConnection();
         $params = $connection->getParams();

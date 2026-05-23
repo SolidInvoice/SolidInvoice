@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Service\CustomField;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
@@ -48,7 +49,7 @@ final class CustomFieldTypeResolverTest extends TestCase
         yield 'textarea' => [CustomFieldType::TEXTAREA, "line1\nline2", "line1\nline2", "line1\nline2"];
         yield 'number int' => [CustomFieldType::NUMBER, 42, '42', 42];
         yield 'number float' => [CustomFieldType::NUMBER, 3.14, '3.14', 3.14];
-        yield 'date' => [CustomFieldType::DATE, new \DateTimeImmutable('2026-04-24'), '2026-04-24', new \DateTimeImmutable('2026-04-24')];
+        yield 'date' => [CustomFieldType::DATE, new DateTimeImmutable('2026-04-24'), '2026-04-24', new DateTimeImmutable('2026-04-24')];
         yield 'email' => [CustomFieldType::EMAIL, 'a@b.com', 'a@b.com', 'a@b.com'];
         yield 'url' => [CustomFieldType::URL, 'https://x.com', 'https://x.com', 'https://x.com'];
         yield 'checkbox true' => [CustomFieldType::CHECKBOX, true, '1', true];

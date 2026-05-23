@@ -13,6 +13,7 @@ namespace SolidInvoice\SettingsBundle\Twig\Components;
 
 use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\SaasBundle\Service\SubscriptionService;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
@@ -57,7 +58,7 @@ final class Settings extends AbstractController
     public function __construct(
         private readonly SettingsRepository $settingsRepository,
         private readonly PropertyAccessorInterface $propertyAccessor,
-        private readonly ?\SolidInvoice\SaasBundle\Service\SubscriptionService $subscriptionService = null,
+        private readonly ?SubscriptionService $subscriptionService = null,
         private readonly string $customDomainDnsRecord = '',
     ) {
     }

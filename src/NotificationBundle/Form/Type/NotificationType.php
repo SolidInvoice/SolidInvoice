@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,7 +39,7 @@ class NotificationType extends AbstractType
                 return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             }
 
-            public function reverseTransform(mixed $value): string | null | false
+            public function reverseTransform(mixed $value): string | null
             {
                 if (null === $value) {
                     return $value;
@@ -49,7 +50,7 @@ class NotificationType extends AbstractType
         });
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'notification';

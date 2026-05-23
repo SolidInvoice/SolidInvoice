@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\DataGrid;
 
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
@@ -29,7 +30,7 @@ final class UserInvitationsGrid extends Grid
         return UserInvitation::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -47,7 +48,7 @@ final class UserInvitationsGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [

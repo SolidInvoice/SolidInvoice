@@ -9,63 +9,126 @@
  * with this source code in the file LICENSE.
  */
 
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
+use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
+use Liip\TestFixturesBundle\LiipTestFixturesBundle;
+use Meilisearch\Bundle\MeilisearchBundle;
+use Payum\Bundle\PayumBundle\PayumBundle;
+use Sentry\SentryBundle\SentryBundle;
+use SolidInvoice\ApiBundle\SolidInvoiceApiBundle;
+use SolidInvoice\ClientBundle\SolidInvoiceClientBundle;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CronBundle\SolidInvoiceCronBundle;
+use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
+use SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle;
+use SolidInvoice\FormBundle\SolidInvoiceFormBundle;
+use SolidInvoice\InstallBundle\SolidInvoiceInstallBundle;
+use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
+use SolidInvoice\MailerBundle\SolidInvoiceMailerBundle;
+use SolidInvoice\McpBundle\SolidInvoiceMcpBundle;
+use SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle;
+use SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle;
+use SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle;
+use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
+use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
+use SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle;
+use SolidInvoice\TaxBundle\SolidInvoiceTaxBundle;
+use SolidInvoice\UserBundle\SolidInvoiceUserBundle;
+use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
+use SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle;
+use SolidWorx\Toggler\Symfony\TogglerBundle;
+use Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle;
+use Symfony\AI\McpBundle\McpBundle;
+use Symfony\Bundle\DebugBundle\DebugBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MakerBundle\MakerBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
+use Symfony\UX\Autocomplete\AutocompleteBundle;
+use Symfony\UX\Chartjs\ChartjsBundle;
+use Symfony\UX\Dropzone\DropzoneBundle;
+use Symfony\UX\LiveComponent\LiveComponentBundle;
+use Symfony\UX\StimulusBundle\StimulusBundle;
+use Symfony\UX\TogglePassword\TogglePasswordBundle;
+use Symfony\UX\TwigComponent\TwigComponentBundle;
+use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
+use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
+use SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle;
+use Zenstruck\Foundry\ZenstruckFoundryBundle;
+use Zenstruck\Mailer\Test\ZenstruckMailerTestBundle;
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 $bundles = [
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
-    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
-    Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
-    Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
-    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
-    Payum\Bundle\PayumBundle\PayumBundle::class => ['all' => true],
-    Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
-    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
-    SolidInvoice\ApiBundle\SolidInvoiceApiBundle::class => ['all' => true],
-    SolidInvoice\ClientBundle\SolidInvoiceClientBundle::class => ['all' => true],
-    SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::class => ['all' => true],
-    SolidInvoice\CronBundle\SolidInvoiceCronBundle::class => ['all' => true],
-    SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle::class => ['all' => true],
-    SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle::class => ['all' => true],
-    SolidInvoice\FormBundle\SolidInvoiceFormBundle::class => ['all' => true],
-    SolidInvoice\InstallBundle\SolidInvoiceInstallBundle::class => ['all' => true],
-    SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle::class => ['all' => true],
-    SolidInvoice\MailerBundle\SolidInvoiceMailerBundle::class => ['all' => true],
-    SolidInvoice\McpBundle\SolidInvoiceMcpBundle::class => ['all' => true],
-    SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle::class => ['all' => true],
-    SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle::class => ['all' => true],
-    SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle::class => ['all' => true],
-    SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle::class => ['all' => true],
-    SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle::class => ['all' => true],
-    SolidInvoice\TaxBundle\SolidInvoiceTaxBundle::class => ['all' => true],
-    SolidInvoice\UserBundle\SolidInvoiceUserBundle::class => ['all' => true],
-    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
-    Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
-    Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
-    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
-    Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    SolidWorx\Toggler\Symfony\TogglerBundle::class => ['all' => true],
-    Zenstruck\Foundry\ZenstruckFoundryBundle::class => ['dev' => true, 'test' => true],
-    Sentry\SentryBundle\SentryBundle::class => ['all' => true],
-    Symfony\UX\Dropzone\DropzoneBundle::class => ['all' => true],
-    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
-    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
-    Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
-    Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
-    BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
-    SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
-    KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
-    Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
-    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
-    Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
-    SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
-    Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
-    Meilisearch\Bundle\MeilisearchBundle::class => ['all' => true],
-    Symfony\AI\McpBundle\McpBundle::class => ['all' => true],
+    FrameworkBundle::class => ['all' => true],
+    SecurityBundle::class => ['all' => true],
+    TwigBundle::class => ['all' => true],
+    MonologBundle::class => ['all' => true],
+    DoctrineBundle::class => ['all' => true],
+    WebpackEncoreBundle::class => ['all' => true],
+    DoctrineMigrationsBundle::class => ['all' => true],
+    PayumBundle::class => ['all' => true],
+    StofDoctrineExtensionsBundle::class => ['all' => true],
+    ApiPlatformBundle::class => ['all' => true],
+    SolidInvoiceApiBundle::class => ['all' => true],
+    SolidInvoiceClientBundle::class => ['all' => true],
+    SolidInvoiceCoreBundle::class => ['all' => true],
+    SolidInvoiceCronBundle::class => ['all' => true],
+    SolidInvoiceDashboardBundle::class => ['all' => true],
+    SolidInvoiceDataGridBundle::class => ['all' => true],
+    SolidInvoiceFormBundle::class => ['all' => true],
+    SolidInvoiceInstallBundle::class => ['all' => true],
+    SolidInvoiceInvoiceBundle::class => ['all' => true],
+    SolidInvoiceMailerBundle::class => ['all' => true],
+    SolidInvoiceMcpBundle::class => ['all' => true],
+    SolidInvoiceMoneyBundle::class => ['all' => true],
+    SolidInvoiceNotificationBundle::class => ['all' => true],
+    SolidInvoicePaymentBundle::class => ['all' => true],
+    SolidInvoiceQuoteBundle::class => ['all' => true],
+    SolidInvoiceSettingsBundle::class => ['all' => true],
+    SolidInvoiceTaxBundle::class => ['all' => true],
+    SolidInvoiceUserBundle::class => ['all' => true],
+    DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
+    DebugBundle::class => ['dev' => true],
+    MakerBundle::class => ['dev' => true],
+    WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    TogglerBundle::class => ['all' => true],
+    ZenstruckFoundryBundle::class => ['dev' => true, 'test' => true],
+    SentryBundle::class => ['all' => true],
+    DropzoneBundle::class => ['all' => true],
+    StimulusBundle::class => ['all' => true],
+    TwigComponentBundle::class => ['all' => true],
+    LiveComponentBundle::class => ['all' => true],
+    AutocompleteBundle::class => ['all' => true],
+    BabDevPagerfantaBundle::class => ['all' => true],
+    SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+    KnpUOAuth2ClientBundle::class => ['all' => true],
+    TogglePasswordBundle::class => ['all' => true],
+    SymfonyCastsResetPasswordBundle::class => ['all' => true],
+    ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
+    SolidWorxPlatformUiBundle::class => ['all' => true],
+    ChartjsBundle::class => ['all' => true],
+    MeilisearchBundle::class => ['all' => true],
+    McpBundle::class => ['all' => true],
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
-    $bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
-    $bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
+    $bundles[SolidWorxPlatformSaasBundle::class] = ['all' => true];
+    $bundles[SolidInvoiceSaasBundle::class] = ['all' => true];
 }
 
 return $bundles;

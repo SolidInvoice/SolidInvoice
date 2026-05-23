@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
 use Attribute;
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -21,7 +22,7 @@ final class ExactlyOneLine extends Constraint
 {
     public string $message = 'Exactly one of invoiceLine or quoteLine must be set on a LineTax.';
 
-    #[\Override]
+    #[Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

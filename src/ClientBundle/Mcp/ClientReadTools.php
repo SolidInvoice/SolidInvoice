@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Mcp;
 
+use BackedEnum;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -71,7 +72,7 @@ final readonly class ClientReadTools
 
         foreach ($statusRows as $row) {
             $status = $row['status'];
-            $key = $status instanceof \BackedEnum ? $status->value : (string) $status;
+            $key = $status instanceof BackedEnum ? $status->value : (string) $status;
             $countByStatus[$key] = (int) $row['cnt'];
         }
 
@@ -104,7 +105,7 @@ final readonly class ClientReadTools
             'client' => [
                 'id' => $client->getId()?->toRfc4122(),
                 'name' => $client->getName(),
-                'status' => $clientStatus instanceof \BackedEnum ? $clientStatus->value : $clientStatus,
+                'status' => $clientStatus instanceof BackedEnum ? $clientStatus->value : $clientStatus,
                 'currency' => $client->getCurrencyCode(),
             ],
             'counts_by_status' => $countByStatus,

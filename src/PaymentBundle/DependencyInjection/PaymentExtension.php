@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\DependencyInjection;
 
+use Override;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -45,7 +46,7 @@ class PaymentExtension extends Extension
         $container->setDefinition($definition->getClass(), $definition);
     }
 
-    #[\Override]
+    #[Override]
     public function getAlias(): string
     {
         return 'payment';

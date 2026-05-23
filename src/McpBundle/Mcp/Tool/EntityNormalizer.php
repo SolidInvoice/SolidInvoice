@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Tool;
 
+use BackedEnum;
 use Brick\Math\BigNumber;
 use DateTimeInterface;
 use Mcp\Exception\ToolCallException;
@@ -250,7 +251,7 @@ final class EntityNormalizer
         return [
             'id' => $client->getId()?->toRfc4122(),
             'name' => $client->getName(),
-            'status' => $status instanceof \BackedEnum ? $status->value : $status,
+            'status' => $status instanceof BackedEnum ? $status->value : $status,
             'website' => $client->getWebsite(),
             'currency' => $client->getCurrencyCode(),
             'tax_identifiers' => array_values(array_map(
@@ -313,7 +314,7 @@ final class EntityNormalizer
 
         return [
             'id' => $payment->getId()?->toRfc4122(),
-            'status' => $status instanceof \BackedEnum ? $status->value : $status,
+            'status' => $status instanceof BackedEnum ? $status->value : $status,
             'method' => $payment->getMethod()?->getName(),
             'amount' => $this->money($payment->getAmount()),
             'invoice_id' => $payment->getInvoice()?->getId()?->toRfc4122(),

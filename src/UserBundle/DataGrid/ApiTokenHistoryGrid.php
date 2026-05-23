@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
@@ -34,7 +35,7 @@ final class ApiTokenHistoryGrid extends Grid
         return ApiTokenHistory::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -77,13 +78,13 @@ final class ApiTokenHistoryGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [];
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         // Filter by token ID if provided in context

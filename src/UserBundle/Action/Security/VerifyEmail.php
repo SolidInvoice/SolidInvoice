@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Security;
 
+use InvalidArgumentException;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Security\EmailVerifier;
@@ -40,7 +41,7 @@ final class VerifyEmail extends AbstractController
 
         try {
             $user = $this->userRepository->find(Ulid::fromString($id));
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return $this->invalid();
         }
 

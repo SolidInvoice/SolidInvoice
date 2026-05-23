@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Mcp;
 
 use DateTimeImmutable;
+use DateTimeInterface;
+use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -223,7 +225,7 @@ final readonly class AnalyticsTools
         foreach ($rows as $row) {
             $completed = $row['completed'];
 
-            if (! $completed instanceof \DateTimeInterface) {
+            if (! $completed instanceof DateTimeInterface) {
                 continue;
             }
 
@@ -283,7 +285,7 @@ final readonly class AnalyticsTools
     {
         try {
             return new DateTimeImmutable($value);
-        } catch (\Exception) {
+        } catch (Exception) {
             throw new ToolCallException(sprintf('Invalid date "%s". Use ISO-8601 format (YYYY-MM-DD).', $value));
         }
     }

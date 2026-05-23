@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use DateTime;
+use Override;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -90,7 +91,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return $params;
     }
 
-    #[\Override]
+    #[Override]
     public function getFilters(): array
     {
         return [
@@ -104,7 +105,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

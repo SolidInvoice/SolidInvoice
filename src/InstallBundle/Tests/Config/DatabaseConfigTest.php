@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\InstallBundle\Tests\Config;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Config\DatabaseConfig;
@@ -24,7 +25,7 @@ final class DatabaseConfigTest extends TestCase
     public function testParamsToDatabaseUrl(array $params, string $expected, string $expectedExceptionMessage = ''): void
     {
         if ($expectedExceptionMessage !== '') {
-            $this->expectException(\InvalidArgumentException::class);
+            $this->expectException(InvalidArgumentException::class);
             $this->expectExceptionMessage($expectedExceptionMessage);
         }
 

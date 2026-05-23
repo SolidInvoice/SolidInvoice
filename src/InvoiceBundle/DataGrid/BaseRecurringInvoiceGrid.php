@@ -15,7 +15,9 @@ namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Brick\Math\BigNumber;
 use DateTimeInterface;
+use InvalidArgumentException;
 use Money\Money;
+use Override;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
@@ -44,7 +46,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         return RecurringInvoice::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -71,7 +73,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
                     if ($client === null) {
-                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     return new Money((string) $value, $client->getCurrency());
                 }),
@@ -79,7 +81,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
                     if ($client === null) {
-                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     return new Money((string) $value, $client->getCurrency());
                 }),
@@ -89,7 +91,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->formatValue(function (BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
                     if ($client === null) {
-                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     $withholding = $invoice->getWithholdingAmount();
                     $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
@@ -107,7 +109,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [
@@ -116,7 +118,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')

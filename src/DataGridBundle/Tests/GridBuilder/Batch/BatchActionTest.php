@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Batch;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 
@@ -80,7 +81,7 @@ final class BatchActionTest extends TestCase
         $this->batchAction->action($action);
 
         $closure = $this->batchAction->getAction();
-        self::assertInstanceOf(\Closure::class, $closure);
+        self::assertInstanceOf(Closure::class, $closure);
         self::assertSame('result', $closure());
     }
 

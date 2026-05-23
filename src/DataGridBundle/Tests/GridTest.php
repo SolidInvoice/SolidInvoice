@@ -15,6 +15,7 @@ namespace SolidInvoice\DataGridBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Grid;
+use stdClass;
 
 final class GridTest extends TestCase
 {
@@ -37,7 +38,7 @@ final class GridTest extends TestCase
         $grid = new class() extends Grid {
             public function entityFQCN(): string
             {
-                return \stdClass::class;
+                return stdClass::class;
             }
 
             public function hasRowDetails(): bool
@@ -61,7 +62,7 @@ final class GridTest extends TestCase
 
             public function entityFQCN(): string
             {
-                return \stdClass::class;
+                return stdClass::class;
             }
 
             public function hasRowDetails(): bool
@@ -69,7 +70,7 @@ final class GridTest extends TestCase
                 return true;
             }
 
-            public function getRowDetailTemplate(): ?string
+            public function getRowDetailTemplate(): string
             {
                 return $this->template;
             }
@@ -83,7 +84,7 @@ final class GridTest extends TestCase
         return new class() extends Grid {
             public function entityFQCN(): string
             {
-                return \stdClass::class;
+                return stdClass::class;
             }
         };
     }

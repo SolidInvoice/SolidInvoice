@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
 use Attribute;
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -23,7 +24,7 @@ final class IncompatibleTaxConfiguration extends Constraint
 
     public string $flatRateCompoundMessage = 'A flat-rate tax cannot be compound.';
 
-    #[\Override]
+    #[Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

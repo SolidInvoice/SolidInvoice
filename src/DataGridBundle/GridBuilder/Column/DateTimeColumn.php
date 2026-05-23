@@ -11,9 +11,11 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
+use Override;
+
 class DateTimeColumn extends Column
 {
-    #[\Override]
+    #[Override]
     public static function new(string $field): static
     {
         return parent::new($field)

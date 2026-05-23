@@ -16,6 +16,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
@@ -91,7 +92,7 @@ class ClientTypeTest extends FormTestCase
     /**
      * @return PreloadedExtension[]
      */
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         $featureGate = M::mock(FeatureGate::class);

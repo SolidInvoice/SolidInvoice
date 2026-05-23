@@ -955,12 +955,6 @@ parameters:
 			path: src/DataGridBundle/Tests/GridBuilder/QueryTest.php
 
 		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Grid@anonymous/src/DataGridBundle/Tests/GridTest\.php\:56\:\:getRowDetailTemplate\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/DataGridBundle/Tests/GridTest.php
-
-		-
 			message: '#^Method SolidInvoice\\DataGridBundle\\Twig\\Components\\DataGrid\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -1713,12 +1707,6 @@ parameters:
 		-
 			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\NotificationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
 			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/NotificationType.php
-
-		-
-			message: '#^Method Symfony\\Component\\Form\\DataTransformerInterface@anonymous/src/NotificationBundle/Form/Type/NotificationType\.php\:31\:\:reverseTransform\(\) never returns false so it can be removed from the return type\.$#'
-			identifier: return.unusedType
 			count: 1
 			path: src/NotificationBundle/Form/Type/NotificationType.php
 

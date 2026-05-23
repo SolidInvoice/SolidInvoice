@@ -18,6 +18,7 @@ use SolidInvoice\SettingsBundle\Form\Extension\TrialRestrictedExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -177,7 +178,7 @@ final class TrialRestrictedExtensionTest extends TestCase
 
         $this->extension->configureOptions($resolver);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
 
         $resolver->resolve([
             'trial_restricted' => 'invalid',

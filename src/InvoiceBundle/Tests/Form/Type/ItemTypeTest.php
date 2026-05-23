@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Money\Currency;
+use Override;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
@@ -70,7 +71,7 @@ class ItemTypeTest extends FormTestCase
     /**
      * @return array<FormExtensionInterface>
      */
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         $itemType = new ItemType($this->registry);

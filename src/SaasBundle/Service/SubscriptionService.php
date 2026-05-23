@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Service;
 
+use Exception;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -51,7 +52,7 @@ final readonly class SubscriptionService
             $subscription = $this->subscriptionProvider->getSubscriptionFor($company);
 
             return $subscription?->getStatus() === SubscriptionStatus::TRIAL;
-        } catch (\Exception) {
+        } catch (Exception) {
             // Handle cases where subscription tables don't exist (self-hosted, dev environments)
             return false;
         }

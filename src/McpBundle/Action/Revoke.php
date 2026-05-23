@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Action;
 
+use InvalidArgumentException;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use RuntimeException;
 use SolidInvoice\McpBundle\OAuth\KeyManager;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\McpBundle\Repository\McpRefreshTokenRepository;
@@ -89,7 +91,7 @@ final readonly class Revoke
             $this->accessTokenRepository->revokeAccessToken($jti);
 
             return true;
-        } catch (RequiredConstraintsViolated | \InvalidArgumentException | \RuntimeException) {
+        } catch (RequiredConstraintsViolated | InvalidArgumentException | RuntimeException) {
             return false;
         }
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -135,7 +136,7 @@ class ApiTokenRepository extends EntityRepository
     {
         assert($user instanceof User);
 
-        $firstDayOfMonth = new \DateTimeImmutable('first day of this month 00:00:00');
+        $firstDayOfMonth = new DateTimeImmutable('first day of this month 00:00:00');
 
         try {
             return (int) $this->createQueryBuilder('t')

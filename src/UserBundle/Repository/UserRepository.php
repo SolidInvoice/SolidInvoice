@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -82,7 +83,7 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
     public function getRecentlyJoinedCount(int $days = 30): int
     {
         $qb = $this->createQueryBuilder('u');
-        $date = new \DateTimeImmutable("-{$days} days");
+        $date = new DateTimeImmutable("-{$days} days");
 
         $qb->select('COUNT(u.id)')
             ->where('u.created >= :date')

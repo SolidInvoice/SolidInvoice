@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Export\Serializer\Normalizer;
 
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer;
+use stdClass;
 use Symfony\Component\Uid\Ulid;
 
 /** @covers \SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer */
@@ -34,6 +35,6 @@ final class ExportUlidNormalizerTest extends TestCase
 
         self::assertTrue($normalizer->supportsNormalization(new Ulid()));
         self::assertFalse($normalizer->supportsNormalization('string'));
-        self::assertFalse($normalizer->supportsNormalization(new \stdClass()));
+        self::assertFalse($normalizer->supportsNormalization(new stdClass()));
     }
 }

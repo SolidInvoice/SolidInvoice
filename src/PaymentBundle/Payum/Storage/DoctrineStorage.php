@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Payum\Storage;
 
 use LogicException;
+use Override;
 use Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage as BaseDoctrineStorage;
 use Payum\Core\Model\Identity;
 use Symfony\Component\Uid\Ulid;
@@ -28,7 +29,7 @@ use function count;
  */
 final class DoctrineStorage extends BaseDoctrineStorage
 {
-    #[\Override]
+    #[Override]
     protected function doGetIdentity($model): Identity
     {
         $modelMetadata = $this->objectManager->getClassMetadata($model::class);

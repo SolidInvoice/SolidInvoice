@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Tool;
 
+use BackedEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use ReflectionClass;
+use ReflectionNamedType;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -322,7 +325,7 @@ final readonly class ResourceWriteTools
     {
         $camelProperty = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $field))));
 
-        $reflection = new \ReflectionClass($entity);
+        $reflection = new ReflectionClass($entity);
 
         if (! $reflection->hasProperty($camelProperty)) {
             return $value;
@@ -330,7 +333,7 @@ final readonly class ResourceWriteTools
 
         $type = $reflection->getProperty($camelProperty)->getType();
 
-        if (! $type instanceof \ReflectionNamedType) {
+        if (! $type instanceof ReflectionNamedType) {
             return $value;
         }
 
@@ -340,7 +343,7 @@ final readonly class ResourceWriteTools
             return null;
         }
 
-        if (enum_exists($typeName) && is_subclass_of($typeName, \BackedEnum::class) && \is_string($value)) {
+        if (enum_exists($typeName) && is_subclass_of($typeName, BackedEnum::class) && \is_string($value)) {
             $enumValue = $typeName::tryFrom($value);
 
             if ($enumValue === null) {

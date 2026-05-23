@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Repository;
 
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -23,6 +25,7 @@ use LogicException;
 use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Component\Uid\Ulid;
 
@@ -44,7 +47,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
         ?string $userIdentifier = null,
     ): AccessTokenEntityInterface {
         if (! $clientEntity instanceof OAuthClient) {
-            throw new \InvalidArgumentException('Expected OAuthClient instance.');
+            throw new InvalidArgumentException('Expected OAuthClient instance.');
         }
 
         $token = new McpAccessToken();
@@ -64,13 +67,13 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
         if ($userIdentifier !== null && $userIdentifier !== '') {
             try {
                 $userUlid = Ulid::fromString($userIdentifier);
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
                 $userUlid = null;
             }
 
             if ($userUlid !== null) {
                 $user = $this->getEntityManager()
-                    ->getReference(\SolidInvoice\UserBundle\Entity\User::class, $userUlid);
+                    ->getReference(User::class, $userUlid);
                 $token->setUser($user);
             }
         }
@@ -81,7 +84,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         if (! $accessTokenEntity instanceof McpAccessToken) {
-            throw new \InvalidArgumentException('Expected McpAccessToken instance.');
+            throw new InvalidArgumentException('Expected McpAccessToken instance.');
         }
 
         // Access tokens are minted either from an auth code (first issuance) or a refresh token.
@@ -131,7 +134,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
             ->update(McpAccessToken::class, 't')
             ->set('t.lastUsedAt', ':now')
             ->where('t.jti = :jti')
-            ->setParameter('now', new \DateTimeImmutable())
+            ->setParameter('now', new DateTimeImmutable())
             ->setParameter('jti', $token->getJti())
             ->getQuery()
             ->execute();

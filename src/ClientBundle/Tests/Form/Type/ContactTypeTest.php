@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
@@ -51,7 +52,7 @@ class ContactTypeTest extends FormTestCase
     /**
      * @return PreloadedExtension[]
      */
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         $fieldRepo = M::mock(CustomFieldRepository::class);

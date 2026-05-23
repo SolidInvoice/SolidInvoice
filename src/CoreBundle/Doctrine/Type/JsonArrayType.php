@@ -15,13 +15,14 @@ namespace SolidInvoice\CoreBundle\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
+use Override;
 
 /**
  * @deprecated Only here for backwards compatibility to ensure migrations work.
  */
 final class JsonArrayType extends JsonType
 {
-    #[\Override]
+    #[Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value === '') {
@@ -33,13 +34,13 @@ final class JsonArrayType extends JsonType
         return json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
     }
 
-    #[\Override]
+    #[Override]
     public function getName(): string
     {
         return 'json_array';
     }
 
-    #[\Override]
+    #[Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

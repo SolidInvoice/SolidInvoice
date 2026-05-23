@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\CronBundle\Form\Type;
 
 use Carbon\CarbonImmutable;
+use Locale;
+use NumberFormatter;
 use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
@@ -180,8 +182,8 @@ final class RecurringScheduleType extends AbstractType
 
     private function formatOrdinal(int $number): string
     {
-        if (class_exists(\NumberFormatter::class)) {
-            $formatter = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::ORDINAL);
+        if (class_exists(NumberFormatter::class)) {
+            $formatter = new NumberFormatter(Locale::getDefault(), NumberFormatter::ORDINAL);
             $formatted = $formatter->format($number);
 
             if (false !== $formatted) {

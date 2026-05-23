@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Attribute;
 
+use Attribute;
 use SolidInvoice\McpBundle\Security\McpScope;
 
 /**
@@ -20,7 +21,7 @@ use SolidInvoice\McpBundle\Security\McpScope;
  * documentation and discoverable by callers; actual enforcement happens via
  * {@see \SolidInvoice\McpBundle\Mcp\McpScopeGuard}.
  */
-#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 final readonly class McpScopeRequired
 {
     public function __construct(

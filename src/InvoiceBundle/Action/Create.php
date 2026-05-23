@@ -16,13 +16,13 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
@@ -138,7 +138,7 @@ final class Create extends AbstractController
                 $dto->total = (string) $tempInvoice->getTotal();
                 $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
                 $dto->tax = (string) $tempInvoice->getTax();
-            } catch (\InvalidArgumentException) {
+            } catch (InvalidArgumentException) {
                 // Client data incomplete — keep DTO totals as-is
             }
         }

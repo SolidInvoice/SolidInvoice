@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\DTO\UserAccount;
@@ -81,7 +82,7 @@ final class CreateUserStepTest extends TestCase
         );
 
         $callbackMessages = [];
-        $callback = static function (string $message) use (&$callbackMessages): \Generator {
+        $callback = static function (string $message) use (&$callbackMessages): Generator {
             $callbackMessages[] = $message;
             yield;
         };
@@ -125,7 +126,7 @@ final class CreateUserStepTest extends TestCase
         );
 
         $callbackMessages = [];
-        $callback = static function (string $message) use (&$callbackMessages): \Generator {
+        $callback = static function (string $message) use (&$callbackMessages): Generator {
             $callbackMessages[] = $message;
             yield;
         };

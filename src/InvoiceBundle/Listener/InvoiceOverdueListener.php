@@ -19,6 +19,7 @@ use SolidInvoice\InvoiceBundle\Notification\InvoiceOverdueNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Throwable;
 
 /**
  * Listens to invoice workflow transitions and sends notifications to internal users
@@ -59,7 +60,7 @@ final readonly class InvoiceOverdueListener implements EventSubscriberInterface
                     'client' => $invoice->getClient(),
                 ])
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error('Failed to send overdue notification to users', [
                 'invoice_id' => $invoice->getInvoiceId(),
                 'exception' => $e->getMessage(),

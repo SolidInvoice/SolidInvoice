@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Action\Transition\Send;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
@@ -105,7 +106,7 @@ final class QuoteSendGateTest extends KernelTestCase
         return new Send($quoteMailer, $router, $gate);
     }
 
-    private function createPendingQuote(): \SolidInvoice\QuoteBundle\Entity\Quote
+    private function createPendingQuote(): Quote
     {
         $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
         $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company]);

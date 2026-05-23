@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
+use Override;
+
 /**
  * RelativeDateColumn displays dates in relative format (e.g., "3 days ago").
  *
@@ -26,7 +28,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
  */
 final class RelativeDateColumn extends DateTimeColumn
 {
-    #[\Override]
+    #[Override]
     public static function new(string $field): static
     {
         return parent::new($field)

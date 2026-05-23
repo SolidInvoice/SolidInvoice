@@ -25,6 +25,7 @@ use SolidInvoice\CoreBundle\Export\Discovery\EntityDiscovery;
 use SolidInvoice\CoreBundle\Export\Discovery\EntityExportSpec;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
+use SplFileInfo;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Filesystem\Filesystem;
 use ZipArchive;
@@ -210,7 +211,7 @@ final readonly class CompanyExporter
         );
 
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             $relativePath = substr($file->getPathname(), strlen($sourceDir) + 1);
             $zip->addFile($file->getPathname(), $relativePath);
         }

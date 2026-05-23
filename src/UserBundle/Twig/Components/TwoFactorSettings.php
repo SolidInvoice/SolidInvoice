@@ -278,7 +278,7 @@ final class TwoFactorSettings extends AbstractController
         $this->tokenStorage->setToken($newToken);
     }
 
-    #[\Override]
+    #[Override]
     protected function getUser(): User
     {
         $user = parent::getUser();

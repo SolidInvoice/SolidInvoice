@@ -29,6 +29,7 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -72,7 +73,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertArrayHasKey('id', $result);
 
         // Round-trip via direct Doctrine read to verify company binding.
-        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(\Symfony\Component\Uid\Ulid::fromString($result['id']));
+        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Client::class, $client);
         self::assertSame($this->company->getId()->toRfc4122(), $client->getCompany()->getId()->toRfc4122());
     }
@@ -85,7 +86,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
 
         // Deliberately try to override company. Must be ignored.
-        $forgedCompanyId = (string) new \Symfony\Component\Uid\Ulid();
+        $forgedCompanyId = (string) new Ulid();
 
         $result = $tool->createResource('client', [
             'name' => 'Spoofy',
@@ -94,7 +95,7 @@ final class WriteToolFlowTest extends KernelTestCase
             'company_id' => $forgedCompanyId,
         ]);
 
-        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(\Symfony\Component\Uid\Ulid::fromString($result['id']));
+        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Client::class, $client);
         self::assertSame(
             $this->company->getId()->toRfc4122(),
@@ -151,7 +152,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertSame('Jane', $result['first_name']);
         self::assertSame('Doe', $result['last_name']);
 
-        $contact = self::getContainer()->get('doctrine')->getRepository(Contact::class)->find(\Symfony\Component\Uid\Ulid::fromString($result['id']));
+        $contact = self::getContainer()->get('doctrine')->getRepository(Contact::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Contact::class, $contact);
         self::assertSame($client->getId()->toRfc4122(), $contact->getClient()?->getId()?->toRfc4122());
     }
@@ -207,7 +208,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertTrue($result['deleted']);
         self::assertSame($clientId, $result['id']);
 
-        $reloaded = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(\Symfony\Component\Uid\Ulid::fromString($clientId));
+        $reloaded = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($clientId));
         self::assertNull($reloaded);
     }
 

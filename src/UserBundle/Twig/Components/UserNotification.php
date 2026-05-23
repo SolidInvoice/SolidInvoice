@@ -13,6 +13,7 @@ namespace SolidInvoice\UserBundle\Twig\Components;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use ReflectionClass;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification as UserNotificationEntity;
@@ -185,7 +186,7 @@ final class UserNotification extends AbstractController
         }
 
         $notification = $this->notificationLocator->get($eventName);
-        $reflection = new \ReflectionClass($notification);
+        $reflection = new ReflectionClass($notification);
 
         $attributes = $reflection->getAttributes(AsNotification::class);
 

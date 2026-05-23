@@ -32,6 +32,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
@@ -50,7 +51,7 @@ final class RequestListenerTest extends KernelTestCase
     {
         self::assertSame([
             RequestEvent::class => 'onRequest',
-            \Symfony\Component\HttpKernel\Event\ResponseEvent::class => 'onResponse',
+            ResponseEvent::class => 'onResponse',
         ], RequestListener::getSubscribedEvents());
     }
 

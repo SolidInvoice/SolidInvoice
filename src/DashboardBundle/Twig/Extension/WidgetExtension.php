@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Twig\Extension;
 
+use Override;
 use SolidInvoice\DashboardBundle\WidgetFactory;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use Twig\Environment;
@@ -29,7 +30,7 @@ class WidgetExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

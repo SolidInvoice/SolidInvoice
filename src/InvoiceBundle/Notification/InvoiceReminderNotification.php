@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Notification;
 
+use BackedEnum;
+use Override;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
@@ -47,7 +49,7 @@ class InvoiceReminderNotification extends NotificationMessage
         $parameters = $this->getParameters();
 
         // Convert reminder_type enum to string value if needed
-        if (isset($parameters['reminder_type']) && $parameters['reminder_type'] instanceof \BackedEnum) {
+        if (isset($parameters['reminder_type']) && $parameters['reminder_type'] instanceof BackedEnum) {
             $parameters['reminder_type'] = $parameters['reminder_type']->value;
         }
 
@@ -59,7 +61,7 @@ class InvoiceReminderNotification extends NotificationMessage
         return $twig->render(self::TEXT_TEMPLATE, $this->getNormalizedParameters());
     }
 
-    #[\Override]
+    #[Override]
     public function getSubject(): string
     {
         $parameters = $this->getNormalizedParameters();
@@ -75,7 +77,7 @@ class InvoiceReminderNotification extends NotificationMessage
         };
     }
 
-    #[\Override]
+    #[Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

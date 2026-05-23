@@ -12,6 +12,7 @@
 namespace SolidInvoice\InstallBundle\Step;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -31,7 +32,7 @@ final readonly class RunMigrationsStep implements InstallationStepInterface
         return 10;
     }
 
-    public function execute(Installation $installationData, ?callable $callback = null): \Generator
+    public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
         yield from $this->migration->migrate($callback);
 

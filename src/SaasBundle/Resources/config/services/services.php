@@ -11,7 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
+use SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate;
+use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -35,12 +39,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Message,Resources,Tests}');
 
     $services->alias(
-        \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,
-        \SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate::class,
+        EmailVerificationGateInterface::class,
+        SaasEmailVerificationGate::class,
     );
 
     $services->alias(
-        \SolidInvoice\CoreBundle\Feature\UpgradePromptProvider::class,
-        \SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer::class,
+        UpgradePromptProvider::class,
+        UpgradePromptRenderer::class,
     );
 };

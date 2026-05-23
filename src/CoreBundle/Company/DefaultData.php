@@ -17,6 +17,7 @@ use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use RuntimeException;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
@@ -88,7 +89,7 @@ final readonly class DefaultData
         foreach ($this->configProviders as $provider) {
             foreach ($provider->provide($data + ['company_name' => $company->getName()]) as $config) {
                 if (! $config instanceof Config) {
-                    throw new \RuntimeException(sprintf('Config provider %s did not return an instance of %s. %s returned.', $provider::class, Config::class, get_debug_type($config)));
+                    throw new RuntimeException(sprintf('Config provider %s did not return an instance of %s. %s returned.', $provider::class, Config::class, get_debug_type($config)));
                 }
 
                 $settingEntity = new Setting();

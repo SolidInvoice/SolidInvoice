@@ -15,6 +15,7 @@ namespace SolidInvoice\NotificationBundle\Tests\Notification;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -33,7 +34,7 @@ final class NotificationAttributesTest extends TestCase
     #[DataProvider('notificationClassProvider')]
     public function testNotificationHasAsNotificationAttribute(string $class): void
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
         $attributes = $reflection->getAttributes(AsNotification::class);
 
         self::assertCount(1, $attributes, sprintf('Class %s must have exactly one AsNotification attribute', $class));
@@ -141,7 +142,7 @@ final class NotificationAttributesTest extends TestCase
 
     private function getNotificationAttribute(string $class): AsNotification
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
         $attributes = $reflection->getAttributes(AsNotification::class);
 
         self::assertCount(1, $attributes);

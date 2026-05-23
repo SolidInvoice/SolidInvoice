@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -189,7 +190,7 @@ final class MultiTaxLineTest extends KernelTestCase
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
-        $this->expectException(\Mcp\Exception\ToolCallException::class);
+        $this->expectException(ToolCallException::class);
         $this->expectExceptionMessage('tax_id is required');
 
         $tool->createInvoice(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Search;
 
+use Error;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\SearchResult;
 
@@ -109,7 +110,7 @@ final class SearchResultTest extends TestCase
     {
         $result = new SearchResult('invoice', 'i1', 'INV-001', '', '/invoices/i1');
 
-        $this->expectException(\Error::class);
+        $this->expectException(Error::class);
 
         // @phpstan-ignore-next-line
         $result->type = 'client';

@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\ClientBundle\DataGrid;
 
+use Override;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
@@ -19,7 +20,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[AsDataGrid(name: 'client_grid', title: 'Clients')]
 final class ClientGrid extends BaseClientGrid
 {
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -37,7 +38,7 @@ final class ClientGrid extends BaseClientGrid
         return '_clients_add';
     }
 
-    #[\Override]
+    #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create Client');

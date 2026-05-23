@@ -16,9 +16,11 @@ namespace SolidInvoice\McpBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use LogicException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\OAuth\ScopeEntity;
@@ -82,7 +84,7 @@ class OAuthAuthCode implements AuthCodeEntityInterface
     public function getIdentifier(): string
     {
         if (! isset($this->identifier) || $this->identifier === '') {
-            throw new \LogicException('Auth code identifier not set.');
+            throw new LogicException('Auth code identifier not set.');
         }
 
         return $this->identifier;
@@ -113,7 +115,7 @@ class OAuthAuthCode implements AuthCodeEntityInterface
     public function setClient(ClientEntityInterface $client): void
     {
         if (! $client instanceof OAuthClient) {
-            throw new \InvalidArgumentException('Expected OAuthClient instance.');
+            throw new InvalidArgumentException('Expected OAuthClient instance.');
         }
 
         $this->oauthClient = $client;

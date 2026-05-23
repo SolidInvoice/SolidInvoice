@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
@@ -24,7 +25,7 @@ use function array_key_exists;
 #[AsDataGrid(name: 'invoice_grid', title: 'Active Invoices')]
 final class InvoiceGrid extends BaseInvoiceGrid
 {
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -37,7 +38,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
             });
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query = parent::query($entityManager, $query);
@@ -61,7 +62,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
         return '_invoices_create';
     }
 
-    #[\Override]
+    #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create Invoice');

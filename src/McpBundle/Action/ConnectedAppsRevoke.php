@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\McpRefreshToken;
@@ -62,7 +63,7 @@ final readonly class ConnectedAppsRevoke
 
         try {
             $ulid = Ulid::fromString($id);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return new RedirectResponse($this->urlGenerator->generate('mcp_connected_apps_list'));
         }
 

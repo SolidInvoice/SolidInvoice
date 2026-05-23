@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\OAuth;
 
 use League\OAuth2\Server\Entities\UserEntityInterface;
+use LogicException;
 
 final readonly class OAuthUserEntity implements UserEntityInterface
 {
@@ -25,7 +26,7 @@ final readonly class OAuthUserEntity implements UserEntityInterface
     public function getIdentifier(): string
     {
         if ($this->identifier === '') {
-            throw new \LogicException('User identifier cannot be empty.');
+            throw new LogicException('User identifier cannot be empty.');
         }
 
         return $this->identifier;

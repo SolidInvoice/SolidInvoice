@@ -27,6 +27,7 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Throwable;
 use function assert;
 use function function_exists;
+use function Sentry\captureException;
 use function sprintf;
 
 #[AsCommand(
@@ -92,7 +93,7 @@ final class DispatchOnboardingEmailsCommand extends Command
                     $this->dispatcher->tick($user, $subscription);
                 } catch (Throwable $e) {
                     if (function_exists('Sentry\\captureException')) {
-                        \Sentry\captureException($e);
+                        captureException($e);
                     }
                     $this->logger->error('Onboarding dispatcher failed for user', [
                         'user_id' => $user->getId()?->toString(),

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Form\Step;
 
+use Override;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\DTO\UserAccount;
 use SolidInvoice\InstallBundle\Form\Step\UserAccountStep;
@@ -161,7 +162,7 @@ final class SystemInformationFormTest extends FormTestCase
         self::assertSame('choice', $view->children['locale']->vars['block_prefixes'][1]);
     }
 
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         return [

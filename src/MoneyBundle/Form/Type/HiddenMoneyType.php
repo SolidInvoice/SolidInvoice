@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Form\Type;
 
 use Money\Currency;
+use Override;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -33,13 +34,13 @@ class HiddenMoneyType extends AbstractType
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return HiddenType::class;
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'hidden_money';

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
+use Carbon\CarbonInterface;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
@@ -26,7 +28,7 @@ final readonly class ViewRecurring
     }
 
     /**
-     * @return array{invoice: RecurringInvoice, nextOccurrences: array<\Carbon\CarbonInterface>, generatedInvoices: array<int, \SolidInvoice\InvoiceBundle\Entity\Invoice>, totalGenerated: int}
+     * @return array{invoice: RecurringInvoice, nextOccurrences: array<CarbonInterface>, generatedInvoices: array<int, Invoice>, totalGenerated: int}
      */
     #[Template('@SolidInvoiceInvoice/Default/view_recurring.html.twig')]
     public function __invoke(RecurringInvoice $invoice): array

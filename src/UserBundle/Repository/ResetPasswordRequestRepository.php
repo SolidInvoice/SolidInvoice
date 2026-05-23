@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ResetPasswordRequest;
@@ -43,7 +44,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
         ;
     }
 
-    public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
+    public function getMostRecentNonExpiredRequestDate(object $user): ?DateTimeInterface
     {
         // Normally there is only 1 max request per use, but written to be flexible
         /** @var ResetPasswordRequestInterface $resetPasswordRequest */
@@ -77,7 +78,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     /**
      * @param User $user
      */
-    public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
+    public function createResetPasswordRequest(object $user, DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
     {
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);
     }

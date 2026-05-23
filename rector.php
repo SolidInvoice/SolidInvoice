@@ -93,7 +93,7 @@ return RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/config',
     ])
-    // ->withImportNames()
+    ->withImportNames(removeUnusedImports: true)
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
     ->withPhpVersion(PhpVersion::PHP_85)
     ->withSets([

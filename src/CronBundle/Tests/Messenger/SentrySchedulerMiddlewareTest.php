@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\Tests\Messenger;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Sentry\CheckInStatus;
 use Sentry\ClientInterface;
 use Sentry\Event;
@@ -122,7 +124,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         // The global error handler is not guaranteed to run in scheduler/queue contexts,
         // so the middleware must explicitly call captureException() to ensure the error
         // appears in Sentry Issues and is not only visible via the cron monitor status.
-        $exception = new \RuntimeException('job failed');
+        $exception = new RuntimeException('job failed');
 
         // Use a fresh hub so we can assert captureException() is called exactly once.
         $client = $this->createMock(ClientInterface::class);
@@ -150,14 +152,14 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
         try {
             $this->middleware->handle($envelope, $next);
-        } catch (\RuntimeException) {
+        } catch (RuntimeException) {
         }
     }
 
     public function testCapturesErrorCheckInAndRethrowsOnException(): void
     {
         $envelope = $this->makeScheduledEnvelope('solidinvoice:invoices:mark-overdue');
-        $exception = new \RuntimeException('job failed');
+        $exception = new RuntimeException('job failed');
 
         $middleware = $this->createMock(MiddlewareInterface::class);
         $middleware->method('handle')->willThrowException($exception);
@@ -169,7 +171,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
         try {
             $this->middleware->handle($envelope, $next);
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             $thrownException = $e;
         }
 
@@ -336,7 +338,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
             name: $scheduleName,
             id: 'test-id-' . uniqid(),
             trigger: $trigger ?? CronExpressionTrigger::fromSpec('0 * * * *'),
-            triggeredAt: new \DateTimeImmutable(),
+            triggeredAt: new DateTimeImmutable(),
         );
 
         $stamps = [new ScheduledStamp($context)];

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Notification;
 
+use Override;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
@@ -41,7 +42,7 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
-    #[\Override]
+    #[Override]
     public function getSubject(): string
     {
         $parameters = $this->getParameters();
@@ -50,7 +51,7 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
         return "Final Reminder Sent for Invoice {$invoiceId} - Manual Follow-up Required";
     }
 
-    #[\Override]
+    #[Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

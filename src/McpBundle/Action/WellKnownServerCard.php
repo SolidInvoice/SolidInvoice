@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Action;
 
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\McpBundle\Security\McpScope;
+use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -44,7 +45,7 @@ final readonly class WellKnownServerCard
                 'scopes' => McpScope::values(),
             ],
             'capabilities' => [
-                'tools' => new \stdClass(),
+                'tools' => new stdClass(),
             ],
         ]);
     }

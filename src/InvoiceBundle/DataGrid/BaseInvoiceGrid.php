@@ -15,6 +15,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Money\Money;
+use Override;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
@@ -43,7 +44,7 @@ abstract class BaseInvoiceGrid extends Grid
         return Invoice::class;
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -95,7 +96,7 @@ abstract class BaseInvoiceGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [
@@ -104,7 +105,7 @@ abstract class BaseInvoiceGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')
@@ -115,7 +116,7 @@ abstract class BaseInvoiceGrid extends Grid
             });
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query->getQueryBuilder()->orderBy(ORMSource::ALIAS . '.invoiceDate', 'DESC');

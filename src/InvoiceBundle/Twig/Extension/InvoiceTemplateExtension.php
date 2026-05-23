@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Twig\Extension;
 
+use Override;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -24,7 +25,7 @@ use function array_values;
 
 final class InvoiceTemplateExtension extends AbstractExtension
 {
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

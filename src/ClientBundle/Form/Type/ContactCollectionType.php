@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ContactCollectionType extends AbstractType
 {
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return CollectionType::class;
@@ -27,7 +28,7 @@ class ContactCollectionType extends AbstractType
     /**
      * @return string
      */
-    #[\Override]
+    #[Override]
     public function getBlockPrefix()
     {
         return 'contacts';

@@ -18,6 +18,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
+use Override;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
@@ -140,7 +141,7 @@ class InvoiceTypeTest extends FormTestCase
     /**
      * @return array<FormExtensionInterface>
      */
-    #[\Override]
+    #[Override]
     protected function getExtensions(): array
     {
         $systemConfig = M::mock(SystemConfig::class);

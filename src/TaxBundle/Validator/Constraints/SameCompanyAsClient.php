@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
 use Attribute;
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute(Attribute::TARGET_CLASS)]
@@ -21,7 +22,7 @@ final class SameCompanyAsClient extends Constraint
 {
     public string $message = 'The tax identifier client must belong to the same company.';
 
-    #[\Override]
+    #[Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

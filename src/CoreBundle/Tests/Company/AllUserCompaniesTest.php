@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Company;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SolidInvoice\CoreBundle\Company\AllUserCompanies;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
@@ -56,7 +57,7 @@ final class AllUserCompaniesTest extends TestCase
         $user = new User();
         // Simulate a sparse collection by reflection — same shape as a removeCompany()
         // followed by an addCompany().
-        $reflection = new \ReflectionProperty(User::class, 'companies');
+        $reflection = new ReflectionProperty(User::class, 'companies');
         $reflection->setValue($user, new ArrayCollection([5 => $companyA, 9 => $companyB]));
 
         $companies = new AllUserCompanies()->getFor($user);

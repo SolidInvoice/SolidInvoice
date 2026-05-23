@@ -20,6 +20,7 @@ use Pagerfanta\Pagerfanta;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionObject;
+use RuntimeException;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
 use SolidInvoice\DataGridBundle\Export\GridQueryService;
@@ -237,7 +238,7 @@ class DataGrid extends AbstractController
         $manager = $this->registry->getManagerForClass($entity::class);
 
         if ($manager === null) {
-            throw new \RuntimeException(sprintf('No entity manager found for class "%s"', $entity::class));
+            throw new RuntimeException(sprintf('No entity manager found for class "%s"', $entity::class));
         }
 
         $metaData = $manager->getClassMetadata($entity::class);

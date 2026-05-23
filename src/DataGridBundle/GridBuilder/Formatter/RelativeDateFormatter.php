@@ -16,6 +16,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
+use Exception;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use function htmlspecialchars;
@@ -43,7 +44,7 @@ final class RelativeDateFormatter implements FormatterInterface
         if (! $value instanceof DateTimeInterface) {
             try {
                 $value = new CarbonImmutable((string) $value);
-            } catch (\Exception) {
+            } catch (Exception) {
                 return (string) $value;
             }
         }

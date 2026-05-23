@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use BackedEnum;
+use Override;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -25,7 +27,7 @@ use Twig\TwigFunction;
 
 class StatusExtension extends AbstractExtension
 {
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [
@@ -53,7 +55,7 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @template T of (HasStatusLabel&\BackedEnum)
+     * @template T of HasStatusLabel&BackedEnum
      * @param class-string<T> $enumClass
      *
      * @return string|array<string, string>
@@ -83,7 +85,7 @@ class StatusExtension extends AbstractExtension
     }
 
     /**
-     * @template T of (HasStatusLabel&\BackedEnum)
+     * @template T of HasStatusLabel&BackedEnum
      * @param class-string<T> $enumClass
      *
      * @return array<string, string>

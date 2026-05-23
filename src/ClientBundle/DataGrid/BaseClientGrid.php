@@ -13,6 +13,7 @@ namespace SolidInvoice\ClientBundle\DataGrid;
 
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Grid;
@@ -39,7 +40,7 @@ abstract class BaseClientGrid extends Grid
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function columns(): array
     {
         return [
@@ -86,7 +87,7 @@ abstract class BaseClientGrid extends Grid
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function actions(): array
     {
         return [
@@ -100,7 +101,7 @@ abstract class BaseClientGrid extends Grid
         return Client::class;
     }
 
-    #[\Override]
+    #[Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')
@@ -111,7 +112,7 @@ abstract class BaseClientGrid extends Grid
             });
     }
 
-    #[\Override]
+    #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query->getQueryBuilder()

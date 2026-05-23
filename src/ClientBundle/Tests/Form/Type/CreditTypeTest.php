@@ -16,6 +16,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Money\Currency;
+use Override;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Symfony\Component\Form\FormTypeInterface;
@@ -44,7 +45,7 @@ class CreditTypeTest extends FormTestCase
     /**
      * @return list<FormTypeInterface>
      */
-    #[\Override]
+    #[Override]
     protected function getTypes(): array
     {
         return [

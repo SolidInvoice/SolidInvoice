@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Type;
 
+use Override;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -53,7 +54,7 @@ final class TaxIdentifierType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getBlockPrefix(): string
     {
         return 'tax_identifier';

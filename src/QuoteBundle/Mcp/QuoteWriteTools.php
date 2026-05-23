@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Mcp;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -107,7 +108,7 @@ final readonly class QuoteWriteTools
         if ($due !== null) {
             try {
                 $quote->setDue(new DateTimeImmutable($due));
-            } catch (\Exception) {
+            } catch (Exception) {
                 throw new ToolCallException(sprintf('Invalid due date "%s". Use ISO-8601 format (YYYY-MM-DD).', $due));
             }
         }

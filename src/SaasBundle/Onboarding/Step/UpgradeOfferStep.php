@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -37,7 +38,7 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
         return 40;
     }
 
-    #[\Override]
+    #[Override]
     protected function templateContext(OnboardingContext $context): array
     {
         return parent::templateContext($context) + [

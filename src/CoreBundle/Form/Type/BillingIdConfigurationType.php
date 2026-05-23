@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
+use Override;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -48,7 +49,7 @@ final class BillingIdConfigurationType extends AbstractType
         ]);
     }
 
-    #[\Override]
+    #[Override]
     public function getParent(): string
     {
         return ChoiceType::class;

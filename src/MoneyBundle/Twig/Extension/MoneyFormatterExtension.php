@@ -17,6 +17,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
 use Money\Currency;
 use Money\Money;
+use Override;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
@@ -35,7 +36,7 @@ class MoneyFormatterExtension extends AbstractExtension
     ) {
     }
 
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [
@@ -43,7 +44,7 @@ class MoneyFormatterExtension extends AbstractExtension
         ];
     }
 
-    #[\Override]
+    #[Override]
     public function getFilters(): array
     {
         return [

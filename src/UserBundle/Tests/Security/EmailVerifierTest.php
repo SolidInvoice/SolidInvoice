@@ -13,6 +13,7 @@ namespace SolidInvoice\UserBundle\Tests\Security;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Security\EmailVerifier;
@@ -121,7 +122,7 @@ final class EmailVerifierTest extends TestCase
         $request->query->set('expires', time() + 3600); // Future expiration
 
         // Mock the UriSigner's checkRequest method to return true via reflection
-        $uriSignerReflection = new \ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
+        $uriSignerReflection = new ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
         $uriSignerMock = $this->createMock(UriSigner::class);
@@ -153,7 +154,7 @@ final class EmailVerifierTest extends TestCase
 
         // Mock the UriSigner's checkRequest method to return true via reflection
         // so we get past the signature check and hit the expiration check
-        $uriSignerReflection = new \ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
+        $uriSignerReflection = new ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
         $uriSignerMock = $this->createMock(UriSigner::class);
