@@ -26,6 +26,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
     // Completed invoices don't need the nextRunDate column
     // so we use the parent implementation which includes it
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -43,6 +44,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $queryBuilder = $query->getQueryBuilder();
@@ -52,6 +54,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
         return parent::query($entityManager, $query);
     }
 
+    #[\Override]
     public function getCreateRoute(): ?string
     {
         return null;

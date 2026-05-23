@@ -21,8 +21,9 @@ use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 #[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 class RecurringInvoiceGrid extends BaseRecurringInvoiceGrid
 {
-    final public const GRID_NAME = 'recurring_invoice_grid';
+    final public const string GRID_NAME = 'recurring_invoice_grid';
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $queryBuilder = $query->getQueryBuilder();

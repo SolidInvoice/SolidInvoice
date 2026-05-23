@@ -35,11 +35,11 @@ use function str_starts_with;
  */
 final readonly class HostRoutingListener implements EventSubscriberInterface
 {
-    public const REQUEST_ATTR = '_resolved_host';
+    public const string REQUEST_ATTR = '_resolved_host';
 
-    public const PRIORITY = 30;
+    public const int PRIORITY = 30;
 
-    private const SELECTOR_ROUTES = [
+    private const array SELECTOR_ROUTES = [
         '_select_company',
         '_switch_company',
         '_create_company',

@@ -43,9 +43,9 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
     use Factories;
     use MatchesSnapshots;
 
-    private const INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
+    private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
-    private const SLUGS = [
+    private const array SLUGS = [
         'classic',
         'modern',
         'compact',

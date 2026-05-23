@@ -90,6 +90,7 @@ final class LineTaxType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'line_tax';

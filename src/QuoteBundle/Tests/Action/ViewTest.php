@@ -43,9 +43,9 @@ final class ViewTest extends KernelTestCase
     use MatchesSnapshots;
     use Factories;
 
-    private const CLIENT_ID = '01JGXKV8QZ0000000000000001';
+    private const string CLIENT_ID = '01JGXKV8QZ0000000000000001';
 
-    private const QUOTE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
+    private const string QUOTE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
     #[DataProvider('quoteStatusProvider')]
     public function testView(QuoteStatus $status): void

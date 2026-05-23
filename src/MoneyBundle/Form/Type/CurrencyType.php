@@ -34,6 +34,7 @@ class CurrencyType extends AbstractType
         $resolver->setDefault('choices', iterator_to_array($this->getCurrencyChoices()));
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return ChoiceType::class;

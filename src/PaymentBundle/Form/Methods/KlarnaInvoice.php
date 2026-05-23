@@ -48,6 +48,7 @@ class KlarnaInvoice extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'klarna_invoice';

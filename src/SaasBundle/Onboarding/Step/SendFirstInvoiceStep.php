@@ -36,6 +36,7 @@ final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
         return 80;
     }
 
+    #[\Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         return $this->invoiceRepository->count(['company' => $context->company]) === 0;

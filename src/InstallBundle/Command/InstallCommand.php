@@ -76,6 +76,7 @@ class InstallCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     public function isEnabled(): bool
     {
         return null === $this->installed || '' === $this->installed;

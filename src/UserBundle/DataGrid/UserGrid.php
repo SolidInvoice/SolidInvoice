@@ -28,6 +28,7 @@ final class UserGrid extends Grid
         return User::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [

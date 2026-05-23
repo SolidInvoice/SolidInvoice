@@ -30,6 +30,7 @@ final class TaxGrid extends Grid
         return Tax::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -45,6 +46,7 @@ final class TaxGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         return [
@@ -61,6 +63,7 @@ MSG)
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [

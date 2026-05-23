@@ -87,6 +87,7 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('subscription_in_trial', 'bool');
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'settings';

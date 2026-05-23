@@ -37,24 +37,24 @@ use Symfony\Component\Workflow\Event\Event;
  */
 final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
 {
-    private const INVOICE_DRAFT_PLACES = [
+    private const array INVOICE_DRAFT_PLACES = [
         InvoiceStatus::Draft->value,
         InvoiceStatus::New->value,
     ];
 
-    private const INVOICE_ISSUED_PLACES = [
+    private const array INVOICE_ISSUED_PLACES = [
         InvoiceStatus::Pending->value,
         InvoiceStatus::Active->value,
         InvoiceStatus::Paid->value,
         InvoiceStatus::Overdue->value,
     ];
 
-    private const QUOTE_DRAFT_PLACES = [
+    private const array QUOTE_DRAFT_PLACES = [
         QuoteStatus::Draft->value,
         QuoteStatus::New->value,
     ];
 
-    private const QUOTE_ISSUED_PLACES = [
+    private const array QUOTE_ISSUED_PLACES = [
         QuoteStatus::Pending->value,
         QuoteStatus::Accepted->value,
         QuoteStatus::Declined->value,

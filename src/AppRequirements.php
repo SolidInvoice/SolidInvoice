@@ -89,6 +89,7 @@ class AppRequirements extends SymfonyRequirements
         return get_cfg_var('cfg_file_path');
     }
 
+    #[\Override]
     public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if ('PDO should be installed' === $testMessage || preg_match('#PDO should have some drivers installed#', $testMessage)) {

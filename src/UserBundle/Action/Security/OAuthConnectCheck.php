@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class OAuthConnectCheck extends AbstractController
 {
-    public const ROUTE = '_oauth_connect_check';
+    public const string ROUTE = '_oauth_connect_check';
 
     public function __invoke(): never
     {

@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ExactlyOneDocument]
 class InvoiceTax
 {
-    final public const TABLE_NAME = 'invoice_tax';
+    final public const string TABLE_NAME = 'invoice_tax';
 
     use CompanyAware;
     use TimeStampable;

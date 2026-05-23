@@ -13,6 +13,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 class DateTimeColumn extends Column
 {
+    #[\Override]
     public static function new(string $field): static
     {
         return parent::new($field)

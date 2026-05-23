@@ -51,6 +51,7 @@ class ContactType extends AbstractType
         $resolver->setDefault('data_class', Contact::class);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'contact';

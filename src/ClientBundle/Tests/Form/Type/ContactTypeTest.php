@@ -51,6 +51,7 @@ class ContactTypeTest extends FormTestCase
     /**
      * @return PreloadedExtension[]
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         $fieldRepo = M::mock(CustomFieldRepository::class);

@@ -91,6 +91,7 @@ class ClientTypeTest extends FormTestCase
     /**
      * @return PreloadedExtension[]
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         $featureGate = M::mock(FeatureGate::class);

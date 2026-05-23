@@ -26,6 +26,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
  */
 final class RelativeDateColumn extends DateTimeColumn
 {
+    #[\Override]
     public static function new(string $field): static
     {
         return parent::new($field)

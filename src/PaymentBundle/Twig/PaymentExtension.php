@@ -29,6 +29,7 @@ class PaymentExtension extends AbstractExtension
     ) {
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

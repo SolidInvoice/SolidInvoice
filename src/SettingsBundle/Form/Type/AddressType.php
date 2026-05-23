@@ -43,11 +43,13 @@ class AddressType extends AbstractType
         });
     }
 
+    #[\Override]
     public function getParent()
     {
         return ParentType::class;
     }
 
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'settings_address';

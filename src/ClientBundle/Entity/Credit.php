@@ -30,7 +30,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
 class Credit implements Stringable
 {
-    final public const TABLE_NAME = 'client_credit';
+    final public const string TABLE_NAME = 'client_credit';
 
     use TimeStampable;
     use CompanyAware;

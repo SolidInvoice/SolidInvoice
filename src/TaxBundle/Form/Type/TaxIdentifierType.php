@@ -26,7 +26,7 @@ final class TaxIdentifierType extends AbstractType
     /**
      * @var list<string>
      */
-    public const PRESET_LABELS = ['VAT', 'GSTIN', 'TIN', 'ABN', 'CNPJ', 'TRN', 'Other'];
+    public const array PRESET_LABELS = ['VAT', 'GSTIN', 'TIN', 'ABN', 'CNPJ', 'TRN', 'Other'];
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -53,6 +53,7 @@ final class TaxIdentifierType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'tax_identifier';

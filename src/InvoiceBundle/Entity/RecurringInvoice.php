@@ -116,7 +116,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class RecurringInvoice extends BaseInvoice
 {
-    final public const TABLE_NAME = 'recurring_invoices';
+    final public const string TABLE_NAME = 'recurring_invoices';
     use Archivable;
     use TimeStampable;
 

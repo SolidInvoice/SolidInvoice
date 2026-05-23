@@ -67,6 +67,7 @@ class PaypalProCheckout extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'paypal_pro_checkout';

@@ -34,6 +34,7 @@ final class QueryAdapter extends BaseQueryAdapter
     /**
      * @phpstan-return int<0, max>
      */
+    #[\Override]
     public function getNbResults(): int
     {
         try {
@@ -44,6 +45,7 @@ final class QueryAdapter extends BaseQueryAdapter
         }
     }
 
+    #[\Override]
     public function getSlice(int $offset, int $length): iterable
     {
         try {

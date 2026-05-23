@@ -58,6 +58,7 @@ class AuthorizeNetSim extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'authorizenet_sim';

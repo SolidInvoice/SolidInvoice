@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ContactCollectionType extends AbstractType
 {
+    #[\Override]
     public function getParent(): string
     {
         return CollectionType::class;
@@ -26,6 +27,7 @@ class ContactCollectionType extends AbstractType
     /**
      * @return string
      */
+    #[\Override]
     public function getBlockPrefix()
     {
         return 'contacts';

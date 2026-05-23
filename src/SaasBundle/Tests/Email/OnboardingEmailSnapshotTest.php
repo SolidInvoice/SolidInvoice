@@ -46,16 +46,17 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     use Factories;
     use MatchesSnapshots;
 
-    private const FROZEN_NOW = '2026-04-19 12:00:00';
+    private const string FROZEN_NOW = '2026-04-19 12:00:00';
 
-    private const TRIAL_START = '2026-04-01 00:00:00';
+    private const string TRIAL_START = '2026-04-01 00:00:00';
 
-    private const TRIAL_END = '2026-04-22 00:00:00';
+    private const string TRIAL_END = '2026-04-22 00:00:00';
 
     private Environment $twig;
 
     private TranslatorInterface $translator;
 
+    #[\Override]
     protected static function createKernel(array $options = []): SaasTestKernel
     {
         $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';

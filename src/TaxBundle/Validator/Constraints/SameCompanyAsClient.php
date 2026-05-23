@@ -21,6 +21,7 @@ final class SameCompanyAsClient extends Constraint
 {
     public string $message = 'The tax identifier client must belong to the same company.';
 
+    #[\Override]
     public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;

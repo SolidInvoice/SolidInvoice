@@ -36,9 +36,9 @@ use function array_key_exists;
 #[UniqueEntity('gatewayName')]
 class PaymentMethod implements GatewayConfigInterface, Stringable
 {
-    final public const TABLE_NAME = 'payment_methods';
+    final public const string TABLE_NAME = 'payment_methods';
 
-    final public const FACTORY_OFFLINE = 'offline';
+    final public const string FACTORY_OFFLINE = 'offline';
 
     use TimeStampable;
     use CompanyAware;

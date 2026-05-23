@@ -21,11 +21,13 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 #[AsDataGrid(name: 'archived_quote_grid', title: 'Archived Quotes')]
 final class ArchivedQuoteGrid extends BaseQuoteGrid
 {
+    #[\Override]
     public function actions(): array
     {
         return [];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -38,6 +40,7 @@ final class ArchivedQuoteGrid extends BaseQuoteGrid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         return ArchivableFilter::disableForGrid($entityManager, parent::query($entityManager, $query));

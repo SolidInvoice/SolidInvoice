@@ -54,6 +54,7 @@ class CreditType extends AbstractType
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'credit';

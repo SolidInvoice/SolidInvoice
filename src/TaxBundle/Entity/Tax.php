@@ -59,16 +59,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Tax implements Stringable
 {
-    final public const TABLE_NAME = 'tax_rates';
+    final public const string TABLE_NAME = 'tax_rates';
 
     use TimeStampable;
     use CompanyAware;
 
-    final public const TYPE_INCLUSIVE = 'Inclusive';
+    final public const string TYPE_INCLUSIVE = 'Inclusive';
 
-    final public const TYPE_EXCLUSIVE = 'Exclusive';
+    final public const string TYPE_EXCLUSIVE = 'Exclusive';
 
-    final public const TYPE_FLAT_RATE = 'Flat Rate';
+    final public const string TYPE_FLAT_RATE = 'Flat Rate';
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]

@@ -105,7 +105,7 @@ use Traversable;
 )]
 class Payment extends BasePayment
 {
-    final public const TABLE_NAME = 'payments';
+    final public const string TABLE_NAME = 'payments';
 
     use TimeStampable;
     use CompanyAware;
@@ -195,6 +195,7 @@ class Payment extends BasePayment
      *
      * @throws UnexpectedTypeException
      */
+    #[\Override]
     public function setDetails($details): self
     {
         if ($details instanceof Traversable) {
@@ -234,6 +235,7 @@ class Payment extends BasePayment
         return $this;
     }
 
+    #[\Override]
     public function getClientId(): ?string
     {
         $client = $this->getClient();

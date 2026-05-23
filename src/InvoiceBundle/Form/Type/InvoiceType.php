@@ -226,6 +226,7 @@ class InvoiceType extends AbstractType
         }
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'invoice';

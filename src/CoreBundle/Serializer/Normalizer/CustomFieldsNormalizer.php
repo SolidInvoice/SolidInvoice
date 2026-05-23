@@ -37,7 +37,7 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
 {
     use NormalizerAwareTrait;
 
-    private const SKIP_KEY = self::class . '::skip';
+    private const string SKIP_KEY = self::class . '::skip';
 
     /**
      * Per-request cache of field definitions keyed by target value. There are

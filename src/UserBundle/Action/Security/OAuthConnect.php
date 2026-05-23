@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class OAuthConnect extends AbstractController
 {
-    public const ROUTE = '_oauth_connect';
+    public const string ROUTE = '_oauth_connect';
 
     public function __construct(
         private readonly ClientRegistry $clientRegistry,

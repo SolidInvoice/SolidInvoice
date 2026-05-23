@@ -110,6 +110,7 @@ final class InvoiceTaxType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'invoice_tax';

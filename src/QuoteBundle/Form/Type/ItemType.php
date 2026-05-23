@@ -86,6 +86,7 @@ class ItemType extends AbstractType
         }
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'quote_item';

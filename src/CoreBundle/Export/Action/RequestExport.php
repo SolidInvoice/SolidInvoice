@@ -35,7 +35,7 @@ use ValueError;
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final readonly class RequestExport
 {
-    public const CSRF_TOKEN_ID = 'export.request';
+    public const string CSRF_TOKEN_ID = 'export.request';
 
     public function __construct(
         private ExportJobRepository $exportJobRepository,

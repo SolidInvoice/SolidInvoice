@@ -66,7 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class ApiToken
 {
-    final public const TABLE_NAME = 'api_tokens';
+    final public const string TABLE_NAME = 'api_tokens';
 
     use TimeStampable;
     use CompanyAware;

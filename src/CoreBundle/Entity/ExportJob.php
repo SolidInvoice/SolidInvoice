@@ -35,7 +35,7 @@ class ExportJob
 {
     use CompanyAware;
 
-    final public const TABLE_NAME = 'export_jobs';
+    final public const string TABLE_NAME = 'export_jobs';
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

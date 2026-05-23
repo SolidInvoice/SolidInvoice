@@ -25,6 +25,7 @@ use function preg_replace;
 
 class Kernel extends BaseKernel
 {
+    #[\Override]
     public function boot(): void
     {
         parent::boot();
@@ -35,11 +36,13 @@ class Kernel extends BaseKernel
         }
     }
 
+    #[\Override]
     public function getProjectDir(): string
     {
         return \dirname(__DIR__);
     }
 
+    #[\Override]
     protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
     {
         parent::configureContainer($container, $loader, $builder);
@@ -52,6 +55,7 @@ class Kernel extends BaseKernel
         }
     }
 
+    #[\Override]
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         parent::configureRoutes($routes);

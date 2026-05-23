@@ -36,6 +36,7 @@ final class AddFirstClientStep extends AbstractOnboardingEmailStep
         return 90;
     }
 
+    #[\Override]
     public function shouldSend(OnboardingContext $context): bool
     {
         return $this->clientRepository->count(['company' => $context->company]) === 0;

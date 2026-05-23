@@ -20,5 +20,5 @@ use Payum\Core\Model\Token;
 #[ORM\Entity]
 class SecurityToken extends Token
 {
-    final public const TABLE_NAME = 'security_token';
+    final public const string TABLE_NAME = 'security_token';
 }

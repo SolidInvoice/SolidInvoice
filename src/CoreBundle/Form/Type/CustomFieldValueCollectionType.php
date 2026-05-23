@@ -227,6 +227,7 @@ final class CustomFieldValueCollectionType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'custom_field_values';

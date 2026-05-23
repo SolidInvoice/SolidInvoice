@@ -77,7 +77,7 @@ use function array_filter;
 )]
 class Address implements Stringable
 {
-    final public const TABLE_NAME = 'addresses';
+    final public const string TABLE_NAME = 'addresses';
 
     use TimeStampable;
     use CompanyAware;

@@ -21,6 +21,7 @@ use Doctrine\DBAL\Types\JsonType;
  */
 final class JsonArrayType extends JsonType
 {
+    #[\Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value === '') {
@@ -32,11 +33,13 @@ final class JsonArrayType extends JsonType
         return json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
     }
 
+    #[\Override]
     public function getName(): string
     {
         return 'json_array';
     }
 
+    #[\Override]
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

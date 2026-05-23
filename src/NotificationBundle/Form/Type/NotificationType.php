@@ -49,6 +49,7 @@ class NotificationType extends AbstractType
         });
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'notification';

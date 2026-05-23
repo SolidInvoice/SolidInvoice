@@ -70,6 +70,7 @@ class ItemTypeTest extends FormTestCase
     /**
      * @return array<FormExtensionInterface>
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         $itemType = new ItemType($this->registry);

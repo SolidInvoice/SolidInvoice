@@ -30,7 +30,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: CustomFieldValueRepository::class)]
 class CustomFieldValue
 {
-    final public const TABLE_NAME = 'custom_field_value';
+    final public const string TABLE_NAME = 'custom_field_value';
 
     use TimeStampable;
     use CompanyAware;

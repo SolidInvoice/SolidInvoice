@@ -23,7 +23,7 @@ use SolidInvoice\DataGridBundle\GridInterface;
  */
 class ORMSource implements SourceInterface
 {
-    final public const ALIAS = 'd';
+    final public const string ALIAS = 'd';
 
     public function __construct(
         private readonly ManagerRegistry $registry,

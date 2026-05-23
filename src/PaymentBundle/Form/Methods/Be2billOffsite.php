@@ -50,6 +50,7 @@ class Be2billOffsite extends AbstractType
         );
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'be2bill_offsite';

@@ -16,9 +16,9 @@ use Doctrine\ORM\QueryBuilder;
 
 final class Query
 {
-    public const BEFORE_QUERY = 'beforeQuery';
+    public const string BEFORE_QUERY = 'beforeQuery';
 
-    public const AFTER_QUERY = 'afterQuery';
+    public const string AFTER_QUERY = 'afterQuery';
 
     /**
      * @var array<string, Closure>

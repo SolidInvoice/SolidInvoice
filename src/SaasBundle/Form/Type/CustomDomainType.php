@@ -31,6 +31,7 @@ final class CustomDomainType extends AbstractType
         ]);
     }
 
+    #[\Override]
     public function getParent(): string
     {
         return TextType::class;

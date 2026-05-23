@@ -39,6 +39,7 @@ abstract class BaseClientGrid extends Grid
     ) {
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -85,6 +86,7 @@ abstract class BaseClientGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [
@@ -98,6 +100,7 @@ abstract class BaseClientGrid extends Grid
         return Client::class;
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')
@@ -108,6 +111,7 @@ abstract class BaseClientGrid extends Grid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $query->getQueryBuilder()

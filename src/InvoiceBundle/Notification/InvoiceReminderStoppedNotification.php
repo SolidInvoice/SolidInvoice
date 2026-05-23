@@ -32,15 +32,16 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
 {
     public const EVENT = 'invoice_reminder_stopped';
 
-    final public const HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.html.twig';
+    final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.html.twig';
 
-    final public const TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.text.twig';
 
     public function getTextContent(Environment $twig): string
     {
         return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
     }
 
+    #[\Override]
     public function getSubject(): string
     {
         $parameters = $this->getParameters();
@@ -49,6 +50,7 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
         return "Final Reminder Sent for Invoice {$invoiceId} - Manual Follow-up Required";
     }
 
+    #[\Override]
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = parent::asEmailMessage($recipient, $transport);

@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[IncompatibleTaxConfiguration]
 class LineTax
 {
-    final public const TABLE_NAME = 'line_tax';
+    final public const string TABLE_NAME = 'line_tax';
 
     use CompanyAware;
     use TimeStampable;

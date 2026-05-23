@@ -44,6 +44,7 @@ final class GenerateTransportConfigCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     public function isEnabled(): bool
     {
         return $this->env === 'dev';

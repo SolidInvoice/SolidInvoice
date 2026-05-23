@@ -42,6 +42,7 @@ final class ApiTokenGrid extends Grid
         return ApiToken::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -73,6 +74,7 @@ final class ApiTokenGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [
@@ -83,6 +85,7 @@ final class ApiTokenGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Revoke')
@@ -108,6 +111,7 @@ final class ApiTokenGrid extends Grid
             });
     }
 
+    #[\Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
         $user = $this->security->getUser();
@@ -124,6 +128,7 @@ final class ApiTokenGrid extends Grid
         return $query;
     }
 
+    #[\Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
         return new TranslatableMessage('Create API Token');

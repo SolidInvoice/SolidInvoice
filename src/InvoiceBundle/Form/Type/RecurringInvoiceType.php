@@ -152,6 +152,7 @@ class RecurringInvoiceType extends AbstractType
         }
     }
 
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'recurring_invoice';

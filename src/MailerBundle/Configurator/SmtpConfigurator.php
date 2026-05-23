@@ -22,7 +22,7 @@ use function urlencode;
  */
 final class SmtpConfigurator implements ConfiguratorInterface
 {
-    private const DEFAULT_PORT = 25;
+    private const int DEFAULT_PORT = 25;
 
     public function getForm(): string
     {

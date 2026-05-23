@@ -15,19 +15,19 @@ namespace SolidInvoice\QuoteBundle\Model;
 
 final class Graph
 {
-    public const TRANSITION_NEW = 'new';
+    public const string TRANSITION_NEW = 'new';
 
-    public const TRANSITION_SEND = 'send';
+    public const string TRANSITION_SEND = 'send';
 
-    public const TRANSITION_PUBLISH = 'publish';
+    public const string TRANSITION_PUBLISH = 'publish';
 
-    public const TRANSITION_CANCEL = 'cancel';
+    public const string TRANSITION_CANCEL = 'cancel';
 
-    public const TRANSITION_DECLINE = 'decline';
+    public const string TRANSITION_DECLINE = 'decline';
 
-    public const TRANSITION_ACCEPT = 'accept';
+    public const string TRANSITION_ACCEPT = 'accept';
 
-    public const TRANSITION_REOPEN = 'reopen';
+    public const string TRANSITION_REOPEN = 'reopen';
 
-    public const TRANSITION_ARCHIVE = 'archive';
+    public const string TRANSITION_ARCHIVE = 'archive';
 }

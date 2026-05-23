@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final readonly class ExportMoneyNormalizer implements NormalizerInterface
 {
-    private const DEFAULT_SUBUNIT_EXPONENT = 2;
+    private const int DEFAULT_SUBUNIT_EXPONENT = 2;
 
     private ISOCurrencies $currencies;
 

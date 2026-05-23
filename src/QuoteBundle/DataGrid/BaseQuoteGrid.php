@@ -39,6 +39,7 @@ abstract class BaseQuoteGrid extends Grid
         return Quote::class;
     }
 
+    #[\Override]
     public function columns(): array
     {
         return [
@@ -69,6 +70,7 @@ abstract class BaseQuoteGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function actions(): array
     {
         return [
@@ -77,6 +79,7 @@ abstract class BaseQuoteGrid extends Grid
         ];
     }
 
+    #[\Override]
     public function batchActions(): iterable
     {
         yield BatchAction::new('Delete')

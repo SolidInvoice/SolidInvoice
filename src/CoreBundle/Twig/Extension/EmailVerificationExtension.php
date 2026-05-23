@@ -24,6 +24,7 @@ final class EmailVerificationExtension extends AbstractExtension
     ) {
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [
