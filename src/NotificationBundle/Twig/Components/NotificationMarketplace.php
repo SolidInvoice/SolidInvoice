@@ -19,7 +19,7 @@ use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -62,7 +62,7 @@ final class NotificationMarketplace extends AbstractController
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations,
         private readonly TransportSettingRepository $repository
     ) {

@@ -30,7 +30,7 @@ final class ClickatellType extends AbstractType
             'access_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'clickatell']),
+                'constraints' => new NotBlank(groups: ['clickatell']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class ClickatellType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'clickatell']),
+                'constraints' => new NotBlank(groups: ['clickatell']),
             ]
         );
     }

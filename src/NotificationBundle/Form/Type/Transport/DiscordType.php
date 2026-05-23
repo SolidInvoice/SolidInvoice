@@ -30,7 +30,7 @@ final class DiscordType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'discord']),
+                'constraints' => new NotBlank(groups: ['discord']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class DiscordType extends AbstractType
             'id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'discord']),
+                'constraints' => new NotBlank(groups: ['discord']),
             ]
         );
     }

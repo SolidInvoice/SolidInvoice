@@ -84,6 +84,7 @@ use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony43\Rector\MethodCall\WebTestCaseAssertResponseCodeRector;
 use Rector\Symfony\Symfony51\Rector\ClassMethod\CommandConstantReturnCodeRector;
+use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\SafeDeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
@@ -96,6 +97,7 @@ return RectorConfig::configure()
     ->withImportNames(removeUnusedImports: true)
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
     ->withPhpVersion(PhpVersion::PHP_85)
+    ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
     ->withSets([
         // General
         SetList::CODE_QUALITY,
@@ -142,6 +144,10 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
     ->withSkip([
+        // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions
+        // to twig attributes, but some twig extensions still extend the AbstractExtension which is prohibited
+        GetFunctionsToAsTwigFunctionAttributeRector::class,
+
         // Skip for new can be added/adjusted later
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
         ControllerMethodInjectionToConstructorRector::class,

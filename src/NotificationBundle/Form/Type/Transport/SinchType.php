@@ -30,7 +30,7 @@ final class SinchType extends AbstractType
             'account_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sinch']),
+                'constraints' => new NotBlank(groups: ['sinch']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SinchType extends AbstractType
             'auth_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sinch']),
+                'constraints' => new NotBlank(groups: ['sinch']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class SinchType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sinch']),
+                'constraints' => new NotBlank(groups: ['sinch']),
             ]
         );
     }

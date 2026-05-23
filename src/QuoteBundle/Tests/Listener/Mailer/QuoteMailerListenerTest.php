@@ -68,8 +68,7 @@ class QuoteMailerListenerTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $listener = new QuoteMailerListener($mailer, $logger, $requestStack);
 

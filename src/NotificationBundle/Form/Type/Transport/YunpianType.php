@@ -30,7 +30,7 @@ final class YunpianType extends AbstractType
             'apikey',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'yunpian']),
+                'constraints' => new NotBlank(groups: ['yunpian']),
             ]
         );
     }

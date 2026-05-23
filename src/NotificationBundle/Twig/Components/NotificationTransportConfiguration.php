@@ -22,7 +22,7 @@ use SolidInvoice\NotificationBundle\Form\Type\TransportSettingType;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -62,7 +62,7 @@ final class NotificationTransportConfiguration extends AbstractController
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations,
         private readonly TransportSettingRepository $repository
     ) {

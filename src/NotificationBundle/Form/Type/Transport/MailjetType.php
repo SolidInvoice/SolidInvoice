@@ -30,7 +30,7 @@ final class MailjetType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mailjet']),
+                'constraints' => new NotBlank(groups: ['mailjet']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MailjetType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mailjet']),
+                'constraints' => new NotBlank(groups: ['mailjet']),
             ]
         );
     }

@@ -20,7 +20,7 @@ use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
@@ -37,7 +37,7 @@ class NotificationManager
     public function __construct(
         private readonly NotifierInterface $notifier,
         private readonly UserNotificationRepository $userNotificationRepository,
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations,
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,

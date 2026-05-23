@@ -30,7 +30,7 @@ final class MessageMediaType extends AbstractType
             'api_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'messagemedia']),
+                'constraints' => new NotBlank(groups: ['messagemedia']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MessageMediaType extends AbstractType
             'api_secret',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'messagemedia']),
+                'constraints' => new NotBlank(groups: ['messagemedia']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class MessageMediaType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'messagemedia']),
+                'constraints' => new NotBlank(groups: ['messagemedia']),
             ]
         );
     }

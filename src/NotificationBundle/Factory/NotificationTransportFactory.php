@@ -17,7 +17,7 @@ use SensitiveParameter;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Notification\Transports;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Notifier\Exception\UnsupportedSchemeException;
 use Symfony\Component\Notifier\Transport;
@@ -34,7 +34,7 @@ final readonly class NotificationTransportFactory
     public function __construct(
         private Transport $transport,
         private TransportSettingRepository $transportSettingRepository,
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private ServiceLocator $transportConfigurations,
     ) {
     }

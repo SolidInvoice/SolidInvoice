@@ -30,7 +30,7 @@ final class GitterType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'gitter']),
+                'constraints' => new NotBlank(groups: ['gitter']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class GitterType extends AbstractType
             'room_id',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'gitter']),
+                'constraints' => new NotBlank(groups: ['gitter']),
             ]
         );
     }

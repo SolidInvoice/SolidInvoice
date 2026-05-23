@@ -14,7 +14,7 @@ namespace SolidInvoice\NotificationBundle\Form\Type;
 use Override;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -31,7 +31,7 @@ final class TransportSettingType extends AbstractType
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations
     ) {
     }

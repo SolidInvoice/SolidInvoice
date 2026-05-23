@@ -53,8 +53,7 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
         $request->setSession($session);
         $request->request->set('_token', 'valid_token');
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $action = new DismissOnboardingChecklist($manager, $security, $urlGenerator, $csrfTokenManager, $requestStack);
         $response = $action($request);
@@ -84,8 +83,7 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
         $request->setSession($session);
         $request->request->set('_token', 'valid_token');
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $action = new DismissOnboardingChecklist($manager, $security, $urlGenerator, $csrfTokenManager, $requestStack);
         $action($request);

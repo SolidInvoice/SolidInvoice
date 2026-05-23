@@ -30,7 +30,7 @@ final class FreeMobileType extends AbstractType
             'login',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'freemobile']),
+                'constraints' => new NotBlank(groups: ['freemobile']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class FreeMobileType extends AbstractType
             'api_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'freemobile']),
+                'constraints' => new NotBlank(groups: ['freemobile']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class FreeMobileType extends AbstractType
             'phone',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'freemobile']),
+                'constraints' => new NotBlank(groups: ['freemobile']),
             ]
         );
     }

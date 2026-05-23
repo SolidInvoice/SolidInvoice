@@ -30,7 +30,7 @@ final class SpotHitType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'spothit']),
+                'constraints' => new NotBlank(groups: ['spothit']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SpotHitType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'spothit']),
+                'constraints' => new NotBlank(groups: ['spothit']),
             ]
         );
     }

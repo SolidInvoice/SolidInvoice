@@ -28,7 +28,7 @@ final class MailgunApiTransportConfigType extends AbstractType
             'domain',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mailgun']),
+                'constraints' => new NotBlank(groups: ['mailgun']),
             ]
         );
 
@@ -36,7 +36,7 @@ final class MailgunApiTransportConfigType extends AbstractType
             'key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mailgun']),
+                'constraints' => new NotBlank(groups: ['mailgun']),
             ]
         );
     }

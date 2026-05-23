@@ -30,7 +30,7 @@ final class FakeChatType extends AbstractType
             'to',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'fakechat']),
+                'constraints' => new NotBlank(groups: ['fakechat']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class FakeChatType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'fakechat']),
+                'constraints' => new NotBlank(groups: ['fakechat']),
             ]
         );
     }

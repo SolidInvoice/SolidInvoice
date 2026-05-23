@@ -30,7 +30,7 @@ final class MessageBirdType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'messagebird']),
+                'constraints' => new NotBlank(groups: ['messagebird']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MessageBirdType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'messagebird']),
+                'constraints' => new NotBlank(groups: ['messagebird']),
             ]
         );
     }

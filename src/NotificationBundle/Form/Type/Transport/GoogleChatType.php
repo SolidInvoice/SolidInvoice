@@ -30,7 +30,7 @@ final class GoogleChatType extends AbstractType
             'access_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'googlechat']),
+                'constraints' => new NotBlank(groups: ['googlechat']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class GoogleChatType extends AbstractType
             'access_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'googlechat']),
+                'constraints' => new NotBlank(groups: ['googlechat']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class GoogleChatType extends AbstractType
             'space',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'googlechat']),
+                'constraints' => new NotBlank(groups: ['googlechat']),
             ]
         );
 
@@ -54,7 +54,7 @@ final class GoogleChatType extends AbstractType
             'thread_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'googlechat']),
+                'constraints' => new NotBlank(groups: ['googlechat']),
             ]
         );
     }

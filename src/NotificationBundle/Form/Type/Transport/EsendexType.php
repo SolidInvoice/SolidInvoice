@@ -30,7 +30,7 @@ final class EsendexType extends AbstractType
             'user_name',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'esendex']),
+                'constraints' => new NotBlank(groups: ['esendex']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class EsendexType extends AbstractType
             'password',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'esendex']),
+                'constraints' => new NotBlank(groups: ['esendex']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class EsendexType extends AbstractType
             'account_reference',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'esendex']),
+                'constraints' => new NotBlank(groups: ['esendex']),
             ]
         );
 
@@ -54,7 +54,7 @@ final class EsendexType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'esendex']),
+                'constraints' => new NotBlank(groups: ['esendex']),
             ]
         );
     }

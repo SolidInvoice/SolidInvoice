@@ -31,7 +31,7 @@ use SolidInvoice\DataGridBundle\Paginator\Adapter\QueryAdapter;
 use SolidInvoice\DataGridBundle\Render\GridFieldRenderer;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Uid\Ulid;
@@ -147,7 +147,7 @@ class DataGrid extends AbstractController
         private readonly ManagerRegistry $registry,
         private readonly GridFieldRenderer $fieldRenderer,
         private readonly SourceInterface $source,
-        #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
+        #[AutowireLocator(AsDataGrid::DI_TAG, 'name')]
         private readonly ServiceLocator $serviceLocator,
         private readonly GridQueryService $gridQueryService,
     ) {

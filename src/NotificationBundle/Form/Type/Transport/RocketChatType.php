@@ -30,7 +30,7 @@ final class RocketChatType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'rocketchat']),
+                'constraints' => new NotBlank(groups: ['rocketchat']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class RocketChatType extends AbstractType
             'endpoint',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'rocketchat']),
+                'constraints' => new NotBlank(groups: ['rocketchat']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class RocketChatType extends AbstractType
             'channel',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'rocketchat']),
+                'constraints' => new NotBlank(groups: ['rocketchat']),
             ]
         );
     }

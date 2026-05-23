@@ -30,7 +30,7 @@ final class MattermostType extends AbstractType
             'access_token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mattermost']),
+                'constraints' => new NotBlank(groups: ['mattermost']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class MattermostType extends AbstractType
             'host',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mattermost']),
+                'constraints' => new NotBlank(groups: ['mattermost']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class MattermostType extends AbstractType
             'path',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mattermost']),
+                'constraints' => new NotBlank(groups: ['mattermost']),
             ]
         );
 
@@ -54,7 +54,7 @@ final class MattermostType extends AbstractType
             'channel',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'mattermost']),
+                'constraints' => new NotBlank(groups: ['mattermost']),
             ]
         );
     }

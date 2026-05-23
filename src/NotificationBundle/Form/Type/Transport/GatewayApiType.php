@@ -30,7 +30,7 @@ final class GatewayApiType extends AbstractType
             'token',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'gatewayapi']),
+                'constraints' => new NotBlank(groups: ['gatewayapi']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class GatewayApiType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'gatewayapi']),
+                'constraints' => new NotBlank(groups: ['gatewayapi']),
             ]
         );
     }

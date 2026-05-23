@@ -30,7 +30,7 @@ final class MicrosoftTeamsType extends AbstractType
             'path',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'microsoftteams']),
+                'constraints' => new NotBlank(groups: ['microsoftteams']),
             ]
         );
     }

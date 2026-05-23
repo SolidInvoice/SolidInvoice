@@ -75,8 +75,7 @@ final class ScopeGuardTest extends TestCase
         $request = new Request();
         $request->attributes->set(McpOAuthAuthenticator::ATTR_SCOPES, $scopes);
 
-        $stack = new RequestStack();
-        $stack->push($request);
+        $stack = new RequestStack([$request]);
 
         $selector = new CompanySelector($this->createMock(ManagerRegistry::class));
 

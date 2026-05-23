@@ -30,7 +30,7 @@ final class VonageType extends AbstractType
             'key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'vonage']),
+                'constraints' => new NotBlank(groups: ['vonage']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class VonageType extends AbstractType
             'secret',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'vonage']),
+                'constraints' => new NotBlank(groups: ['vonage']),
             ]
         );
 
@@ -46,7 +46,7 @@ final class VonageType extends AbstractType
             'from',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'vonage']),
+                'constraints' => new NotBlank(groups: ['vonage']),
             ]
         );
     }
