@@ -86,7 +86,7 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
     public function addCompany(Company $company): static
     {
         if (! $this->companies->contains($company)) {
-            $this->companies[] = $company;
+            $this->companies->add($company);
         }
 
         return $this;

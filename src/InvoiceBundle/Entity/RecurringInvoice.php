@@ -270,7 +270,7 @@ class RecurringInvoice extends BaseInvoice
 
     public function addLine(RecurringInvoiceLine $line): self
     {
-        $this->lines[] = $line;
+        $this->lines->add($line);
         $line->setRecurringInvoice($this);
 
         return $this;

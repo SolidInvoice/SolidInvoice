@@ -279,7 +279,7 @@ class Client implements Stringable
 
     public function addContact(Contact $contact): self
     {
-        $this->contacts[] = $contact;
+        $this->contacts->add($contact);
         $contact->setClient($this);
 
         return $this;
@@ -302,7 +302,7 @@ class Client implements Stringable
 
     public function addQuote(Quote $quote): self
     {
-        $this->quotes[] = $quote;
+        $this->quotes->add($quote);
         $quote->setClient($this);
 
         return $this;
@@ -325,7 +325,7 @@ class Client implements Stringable
 
     public function addInvoice(Invoice $invoice): self
     {
-        $this->invoices[] = $invoice;
+        $this->invoices->add($invoice);
         $invoice->setClient($this);
 
         return $this;
@@ -348,7 +348,7 @@ class Client implements Stringable
 
     public function addRecurringInvoice(RecurringInvoice $invoice): self
     {
-        $this->recurringInvoices[] = $invoice;
+        $this->recurringInvoices->add($invoice);
         $invoice->setClient($this);
 
         return $this;
@@ -371,7 +371,7 @@ class Client implements Stringable
 
     public function addPayment(Payment $payment): self
     {
-        $this->payments[] = $payment;
+        $this->payments->add($payment);
         $payment->setClient($this);
 
         return $this;
@@ -395,7 +395,7 @@ class Client implements Stringable
     public function addAddress(?Address $address): self
     {
         if ($address instanceof Address) {
-            $this->addresses[] = $address;
+            $this->addresses->add($address);
             $address->setClient($this);
         }
 

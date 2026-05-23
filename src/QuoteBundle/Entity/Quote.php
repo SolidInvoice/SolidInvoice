@@ -476,7 +476,7 @@ class Quote
     public function addLine(LineInterface $line): self
     {
         assert($line instanceof Line);
-        $this->lines[] = $line;
+        $this->lines->add($line);
         $line->setQuote($this);
         return $this;
     }
