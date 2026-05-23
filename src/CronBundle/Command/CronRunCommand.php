@@ -26,7 +26,7 @@ class CronRunCommand extends Command
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        return $this->getApplication()
+        return (int) $this->getApplication()
             ?->find('schedule:run')
             ->run($input, $output);
     }

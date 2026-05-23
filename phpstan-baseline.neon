@@ -1,0 +1,3643 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method DoctrineMigrations\\Version20201\:\:getTableForeignKeys\(\) should return array\<array\<array\<string\>\|string\>\> but returns list\<array\<string, array\<string\>\|bool\|string\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: migrations/Version20201.php
+
+		-
+			message: '#^Access to constant NAME on an unknown class Ramsey\\Uuid\\Doctrine\\UuidBinaryOrderedTimeType\.$#'
+			identifier: class.notFound
+			count: 1
+			path: migrations/Version20300.php
+
+		-
+			message: '#^Class Ramsey\\Uuid\\Doctrine\\UuidBinaryOrderedTimeType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: migrations/Version20300.php
+
+		-
+			message: '#^Class SolidInvoice\\ApiBundle\\Security\\Voter\\ApiAccessVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ApiBundle/Security/Voter/ApiAccessVoter.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/ApiBundle/State/Processor/InvoiceTransitionProcessor.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/ApiBundle/State/Processor/QuoteTransitionProcessor.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/ApiBundle/State/Processor/RecordPaymentProcessor.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/ApiBundle/State/Processor/RecurringInvoiceTransitionProcessor.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\ApiBundle\\\\GeneratedApiToken'' and SolidInvoice\\ApiBundle\\GeneratedApiToken will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ApiBundle/Tests/ApiTokenManagerTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\UserBundle\\\\Entity\\\\ApiToken'' and SolidInvoice\\UserBundle\\Entity\\ApiToken will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ApiBundle/Tests/ApiTokenManagerTest.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<80400, 80599\> and 80400 is always true\.$#'
+			identifier: greaterOrEqual.alwaysTrue
+			count: 1
+			path: src/AppRequirements.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\DataGrid\\ClientGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/ClientBundle/DataGrid/ClientGrid.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\DataGrid\\ClientGrid\:\:getCreateRoute\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/ClientBundle/DataGrid/ClientGrid.php
+
+		-
+			message: '#^Call to an undefined method SolidInvoice\\ClientBundle\\Entity\\Client\:\:setVatNumber\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/ClientBundle/DummyData/ClientDummyDataLoader.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Address.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Address.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$name type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$status type mapping mismatch\: property can contain SolidInvoice\\ClientBundle\\Enum\\ClientStatus\|null but database expects SolidInvoice\\ClientBundle\\Enum\\ClientStatus\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$email type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$firstName type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Credit.php
+
+		-
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/ClientBundle/Entity/Credit.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\ClientAutocompleteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/ClientAutocompleteType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\AddressType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/Type/AddressType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ClientType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/Type/ClientType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ContactCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/Type/ContactCollectionType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ContactType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/Type/ContactType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\CreditType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Form/Type/CreditType.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/ClientFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\ContactFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/ContactFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\ClientBundle\\Test\\Factory\\CreditFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/ClientBundle/Test/Factory/CreditFactory.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Tests\\Form\\Type\\CreditTypeTest\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Tests/Form/Type/CreditTypeTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/ClientBundle/Tests/Search/ClientResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\ClientBundle\\Search\\ClientResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ClientBundle/Tests/Search/ClientResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\ClientBundle\\Search\\ClientResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ClientBundle/Tests/Search/ClientResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\ClientBundle\\Search\\ContactResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ClientBundle/Tests/Search/ContactResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\ClientBundle\\Search\\ContactResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/ClientBundle/Tests/Search/ContactResultFormatterTest.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\AddressCollection\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/AddressCollection.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\AddressInfo\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/AddressInfo.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ClientCredit\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/ClientCredit.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ClientForm\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/ClientForm.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ContactCollection\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/ContactCollection.php
+
+		-
+			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ContactInfo\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/ClientBundle/Twig/Components/ContactInfo.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$fieldKey type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$label type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$target type mapping mismatch\: property can contain SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget\|null but database expects SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$type type mapping mismatch\: property can contain SolidInvoice\\CoreBundle\\Enum\\CustomFieldType\|null but database expects SolidInvoice\\CoreBundle\\Enum\\CustomFieldType\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomField.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$field type mapping mismatch\: property can contain SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\|null but database expects SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$target type mapping mismatch\: property can contain SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget\|null but database expects SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\Version\:\:\$version type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Entity/Version.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<string, string\>\|false is not subtype of native type array\<string, class\-string\>\|false\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: src/CoreBundle/Export/Discovery/EntityDiscovery.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: src/CoreBundle/Export/Discovery/EntityDiscovery.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\BillingIdConfigurationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Form/Type/BillingIdConfigurationType.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\CompanyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Form/Type/CompanyType.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\CustomFieldValueCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Form/Type/CustomFieldValueCollectionType.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\DiscountType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Form/Type/DiscountType.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\ImageUploadType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Form/Type/ImageUploadType.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\AutoIncrementIdGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/AutoIncrementIdGenerator.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\IdGeneratorInterface\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/IdGeneratorInterface.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\RandomNumberGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/RandomNumberGenerator.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\TimestampGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/TimestampGenerator.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\UlidGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/UlidGenerator.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\UuidGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Generator/BillingIdGenerator/UuidGenerator.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/CoreBundle/Listener/CompanyEventSubscriber.php
+
+		-
+			message: '#^Instanceof between Symfony\\Component\\HttpFoundation\\Session\\SessionInterface and Symfony\\Component\\HttpFoundation\\Session\\SessionInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/CoreBundle/Listener/CompanyEventSubscriber.php
+
+		-
+			message: '#^Call to method getFieldKey\(\) on an unknown class SolidInvoice\\CoreBundle\\Serializer\\Normalizer\\CustomField\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
+
+		-
+			message: '#^Call to method getId\(\) on an unknown class SolidInvoice\\CoreBundle\\Serializer\\Normalizer\\CustomField\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Serializer\\Normalizer\\CustomFieldsNormalizer\:\:\$defsByTarget has unknown class SolidInvoice\\CoreBundle\\Serializer\\Normalizer\\CustomField as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldFormWriter\:\:write\(\) has parameter \$customFieldsForm with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Service/CustomField/CustomFieldFormWriter.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldStagingStore\:\:\$entries \(WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\) does not accept WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\.$#'
+			identifier: assign.propertyType
+			count: 3
+			path: src/CoreBundle/Service/CustomField/CustomFieldStagingStore.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\CoreBundle\\Test\\Factory\\CompanyFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/CoreBundle/Test/Factory/CompanyFactory.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Test\\LiveComponentTest\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/CoreBundle/Test/LiveComponentTest.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Tests\\Billing\\TotalCalculatorTest\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/CoreBundle/Tests/Doctrine/Listener/CompanyListenerTest.php
+
+		-
+			message: '#^Parameter \#1 \$submittedData of method Symfony\\Component\\Form\\FormInterface\<mixed\>\:\:submit\(\) expects array\|string\|null, Symfony\\Component\\HttpFoundation\\File\\UploadedFile given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/CoreBundle/Tests/Form/Type/ImageUploadTypeTest.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Tests\\FormTestCase\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Tests\\FormTestCase\:\:assertFormData\(\) has parameter \$form with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Tests\\FormTestCase\:\:getTypeExtensions\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeExtensionInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: '#^Method SolidInvoice\\CoreBundle\\Tests\\FormTestCase\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'', ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/CoreBundle/Tests/Search/QualifiedResultFormatterInterfaceTest.php
+
+		-
+			message: '#^Trait SolidInvoice\\CoreBundle\\Traits\\SerializeTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/CoreBundle/Traits/SerializeTrait.php
+
+		-
+			message: '#^Class SolidInvoice\\CronBundle\\Form\\Type\\RecurringScheduleType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/CronBundle/Form/Type/RecurringScheduleType.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/DashboardBundle/Tests/Action/DismissOnboardingChecklistTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplPriorityQueue'' and SplPriorityQueue will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 7
+			path: src/DashboardBundle/Tests/WidgetFactoryTest.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\DashboardBundle\\Tests\\Widgets\\WidgetTestCase\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/DashboardBundle/Tests/Widgets/WidgetTestCase.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<SolidInvoice\\DashboardBundle\\Widgets\\WidgetInterface\> is not subtype of native type SplPriorityQueue\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: src/DashboardBundle/Twig/Extension/WidgetExtension.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<string, mixed\> is not subtype of native type array\<string, bool\|float\|int\|string\|null\>\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: src/DataGridBundle/Action/ExportAction.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/DataGridBundle/Export/ExportFilenameGenerator.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:associationField\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Export/GridRowExtractor.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:extractColumn\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Export/GridRowExtractor.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:extractEntityId\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Export/GridRowExtractor.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:metadataFor\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Export/GridRowExtractor.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Filter\\ColumnFilterInterface\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Filter/ColumnFilterInterface.php
+
+		-
+			message: '#^Class SolidInvoice\\DataGridBundle\\Form\\Type\\DateRangeFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Form/Type/DateRangeFormType.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Filter\\ChoiceFilter\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Filter/ChoiceFilter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Filter\\DateRangeFilter\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Filter/DateRangeFilter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Filter\\EntityFilter\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Filter/EntityFilter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Formatter\\CurrencyFormatter\:\:format\(\) never returns Symfony\\Component\\Translation\\TranslatableMessage so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Formatter/CurrencyFormatter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Formatter\\MoneyFormatter\:\:format\(\) never returns Symfony\\Component\\Translation\\TranslatableMessage so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Formatter/MoneyFormatter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Formatter\\UrlFormatter\:\:format\(\) never returns Symfony\\Component\\Translation\\TranslatableMessage so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/DataGridBundle/GridBuilder/Formatter/UrlFormatter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Paginator\\Adapter\\QueryAdapter\:\:__construct\(\) has parameter \$query with generic class Doctrine\\ORM\\Query but does not specify its types\: TKey, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Paginator/Adapter/QueryAdapter.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Paginator\\Adapter\\QueryAdapter\:\:getSlice\(\) return type with generic class Doctrine\\ORM\\Query does not specify its types\: TKey, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Paginator/Adapter/QueryAdapter.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''afterQuery'' and ''afterQuery'' will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/DataGridBundle/Tests/GridBuilder/QueryTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''beforeQuery'' and ''beforeQuery'' will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/DataGridBundle/Tests/GridBuilder/QueryTest.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Grid@anonymous/src/DataGridBundle/Tests/GridTest\.php\:56\:\:getRowDetailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/DataGridBundle/Tests/GridTest.php
+
+		-
+			message: '#^Method SolidInvoice\\DataGridBundle\\Twig\\Components\\DataGrid\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/DataGridBundle/Twig/Components/DataGrid.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\FormFlow\\InstallNavigatorType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/FormFlow/InstallNavigatorType.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\DatabaseConfigStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/Step/DatabaseConfigStep.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\ReviewStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/Step/ReviewStep.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\StartStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/Step/StartStep.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\SystemRequirementsStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/Step/SystemRequirementsStep.php
+
+		-
+			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\UserAccountStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Form/Step/UserAccountStep.php
+
+		-
+			message: '#^Method SolidInvoice\\InstallBundle\\Tests\\Config\\DatabaseConfigTest\:\:paramsToDatabaseUrlProvider\(\) should return array\<string, array\<int, string\>\> but returns array\<string, list\<array\<string, int\|string\>\|string\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/InstallBundle/Tests/Config/DatabaseConfigTest.php
+
+		-
+			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\InstallBundle\\\\Step\\\\CreateDatabaseStep'', ''SolidInvoice\\\\InstallBundle\\\\Step\\\\InstallationStepInterface'' and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/InstallBundle/Tests/Step/CreateDatabaseStepTest.php
+
+		-
+			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\InstallBundle\\\\Step\\\\RunMigrationsStep'', ''SolidInvoice\\\\InstallBundle\\\\Step\\\\InstallationStepInterface'' and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/InstallBundle/Tests/Step/RunMigrationsStepTest.php
+
+		-
+			message: '#^Method SolidInvoice\\InstallBundle\\Twig\\Components\\SystemInstallation\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InstallBundle/Twig/Components/SystemInstallation.php
+
+		-
+			message: '#^Instanceof between SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions and SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: '#^Method SolidInvoice\\InvoiceBundle\\DataGrid\\InvoiceGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/InvoiceBundle/DataGrid/InvoiceGrid.php
+
+		-
+			message: '#^Method SolidInvoice\\InvoiceBundle\\DataGrid\\InvoiceGrid\:\:getCreateRoute\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/InvoiceBundle/DataGrid/InvoiceGrid.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$client type mapping mismatch\: property can contain SolidInvoice\\ClientBundle\\Entity\\Client\|null but database expects SolidInvoice\\ClientBundle\\Entity\\Client\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$due type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$invoiceDate type mapping mismatch\: property can contain DateTimeInterface but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$paidDate type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$status type mapping mismatch\: property can contain SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus\|null but database expects SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$uuid type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/InvoiceReminder.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$invoice type mapping mismatch\: property can contain SolidInvoice\\InvoiceBundle\\Entity\\Invoice\|null but database expects SolidInvoice\\InvoiceBundle\\Entity\\Invoice\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/InvoiceBundle/Entity/InvoiceReminder.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/InvoiceReminder.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$description type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$qty type mapping mismatch\: property can contain float\|null but database expects float\|int\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$dateEnd type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$dateStart type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$invoiceTaxes in isset\(\) is not nullable nor uninitialized\.$#'
+			identifier: isset.initializedProperty
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$recurringOptions type mapping mismatch\: database can contain SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions\|null but property expects SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$status type mapping mismatch\: property can contain SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus\|null but database expects SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\InvoiceType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Form/Type/InvoiceType.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\ItemType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Form/Type/ItemType.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\RecurringInvoiceLineType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Form/Type/RecurringInvoiceLineType.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\RecurringInvoiceType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Form/Type/RecurringInvoiceType.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/InvoiceBundle/Manager/InvoiceManager.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/InvoiceBundle/Manager/InvoiceManager.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/InvoiceBundle/Mcp/InvoiceWriteTools.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\InvoiceReminderFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/InvoiceReminderFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\InvoiceBundle\\Test\\Factory\\RecurringInvoiceFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/InvoiceBundle/Test/Factory/RecurringInvoiceFactory.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 6
+			path: src/InvoiceBundle/Tests/Action/SendManualReminderTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/InvoiceBundle/Tests/Action/ViewTest.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\InvoiceBundle\\Tests\\Listener\\WorkFlowSubscriberTest\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/InvoiceResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\InvoiceResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/InvoiceResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\InvoiceResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/InvoiceResultFormatterTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\RecurringInvoiceResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\RecurringInvoiceResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
+
+		-
+			message: '#^Method SolidInvoice\\InvoiceBundle\\Twig\\Components\\CreateInvoice\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Twig/Components/CreateInvoice.php
+
+		-
+			message: '#^Method SolidInvoice\\InvoiceBundle\\Twig\\Components\\CreateRecurringInvoice\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/InvoiceBundle/Twig/Components/CreateRecurringInvoice.php
+
+		-
+			message: '#^Method SolidInvoice\\MailerBundle\\Factory\\MailerConfigFactory\:\:fromStrings\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/MailerBundle/Factory/MailerConfigFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\KeyTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MailerBundle/Form/Type/TransportConfig/KeyTransportConfigType.php
+
+		-
+			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\MailgunApiTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MailerBundle/Form/Type/TransportConfig/MailgunApiTransportConfigType.php
+
+		-
+			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\SesTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MailerBundle/Form/Type/TransportConfig/SesTransportConfigType.php
+
+		-
+			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\SmtpTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MailerBundle/Form/Type/TransportConfig/SmtpTransportConfigType.php
+
+		-
+			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\UsernamePasswordTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MailerBundle/Form/Type/TransportConfig/UsernamePasswordTransportConfigType.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/ConsentGrant.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/ConsentGrant.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpAccessToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpAccessToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpRefreshToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpRefreshToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthAuthCode.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthAuthCode.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthClient.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthClient.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Symfony\\Component\\Uid\\Ulid\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/McpBundle/Mcp/Tool/EntityNormalizer.php
+
+		-
+			message: '#^Call to function is_string\(\) with null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/McpBundle/Mcp/Tool/WorkflowTools.php
+
+		-
+			message: '#^Call to function method_exists\(\) with SolidInvoice\\InvoiceBundle\\Entity\\Invoice\|SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\|SolidInvoice\\QuoteBundle\\Entity\\Quote and ''getStatus'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/McpBundle/Mcp/Tool/WorkflowTools.php
+
+		-
+			message: '#^Method SolidInvoice\\McpBundle\\Repository\\McpRefreshTokenRepository\:\:getNewRefreshToken\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/McpBundle/Repository/McpRefreshTokenRepository.php
+
+		-
+			message: '#^Method SolidInvoice\\McpBundle\\Repository\\OAuthClientRepository\:\:findByUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/McpBundle/Repository/OAuthClientRepository.php
+
+		-
+			message: '#^Method SolidInvoice\\McpBundle\\Security\\McpOAuthAuthenticator\:\:onAuthenticationFailure\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/McpBundle/Security/McpOAuthAuthenticator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Symfony\\Component\\Uid\\Ulid and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/McpBundle/Security/McpOAuthAuthenticator.php
+
+		-
+			message: '#^Parameter \#1 \$id of method SolidInvoice\\UserBundle\\Repository\\UserRepositoryInterface\:\:find\(\) expects int, Symfony\\Component\\Uid\\Ulid given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/McpBundle/Security/McpOAuthUserProvider.php
+
+		-
+			message: '#^Class SolidInvoice\\McpBundle\\Security\\Voter\\McpAccessVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/McpBundle/Security/Voter/McpAccessVoter.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/McpBundle/Tests/Action/AuthorizeUpgradeGateTest.php
+
+		-
+			message: '#^Class SolidInvoice\\MoneyBundle\\Form\\Type\\CurrencyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MoneyBundle/Form/Type/CurrencyType.php
+
+		-
+			message: '#^Class SolidInvoice\\MoneyBundle\\Form\\Type\\HiddenMoneyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/MoneyBundle/Form/Type/HiddenMoneyType.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between '''' and '''' will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: src/MoneyBundle/Twig/Extension/MoneyFormatterExtension.php
+
+		-
+			message: '#^Property SolidInvoice\\NotificationBundle\\Entity\\TransportSetting\:\:\$user type mapping mismatch\: database can contain SolidInvoice\\UserBundle\\Entity\\User\|null but property expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/NotificationBundle/Entity/TransportSetting.php
+
+		-
+			message: '#^Property SolidInvoice\\NotificationBundle\\Entity\\UserNotification\:\:\$user type mapping mismatch\: database can contain SolidInvoice\\UserBundle\\Entity\\User\|null but property expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/NotificationBundle/Entity/UserNotification.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\NotificationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/NotificationType.php
+
+		-
+			message: '#^Method Symfony\\Component\\Form\\DataTransformerInterface@anonymous/src/NotificationBundle/Form/Type/NotificationType\.php\:31\:\:reverseTransform\(\) never returns false so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/NotificationBundle/Form/Type/NotificationType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\AllMySmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/AllMySmsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\AmazonSnsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/AmazonSnsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\BrevoType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/BrevoType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\ClickatellType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/ClickatellType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\DiscordType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/DiscordType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\EsendexType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/EsendexType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FakeChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/FakeChatType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FakeSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/FakeSmsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FirebaseType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/FirebaseType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FreeMobileType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/FreeMobileType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GatewayApiType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/GatewayApiType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GitterType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/GitterType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GoogleChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/GoogleChatType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\InfobipType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/InfobipType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\IqsmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/IqsmsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\LightSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/LightSmsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\LinkedInType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/LinkedInType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MailjetType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MailjetType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MattermostType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MattermostType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MercureType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MercureType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MessageBirdType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MessageBirdType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MessageMediaType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MessageMediaType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MicrosoftTeamsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MicrosoftTeamsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MobytType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/MobytType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\OctopushType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/OctopushType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\OvhCloudType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/OvhCloudType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\RocketChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/RocketChatType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SinchType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SinchType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SlackType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SlackType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\Sms77Type extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/Sms77Type.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmsBiurasType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SmsBiurasType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmsapiType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SmsapiType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmscType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SmscType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SpotHitType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/SpotHitType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TelegramType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/TelegramType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TelnyxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/TelnyxType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TurboSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/TurboSmsType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TwilioType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/TwilioType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\VonageType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/VonageType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\YunpianType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/YunpianType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\ZulipType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/Transport/ZulipType.php
+
+		-
+			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\TransportSettingType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Form/Type/TransportSettingType.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotInstanceOf\(\) with ''Symfony\\\\Component\\\\Uid\\\\Ulid'' and null will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/NotificationBundle/Tests/Entity/TransportSettingTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotInstanceOf\(\) with ''Symfony\\\\Component\\\\Uid\\\\Ulid'' and null will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/NotificationBundle/Tests/Entity/UserNotificationTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with arguments ''SolidInvoice\\\\NotificationBundle\\\\Enum\\\\NotificationCategory'', SolidInvoice\\NotificationBundle\\Enum\\NotificationCategory and string will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/NotificationBundle/Tests/Notification/NotificationAttributesTest.php
+
+		-
+			message: '#^Method SolidInvoice\\NotificationBundle\\Twig\\Components\\NotificationTransportConfiguration\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/NotificationBundle/Twig/Components/NotificationTransportConfiguration.php
+
+		-
+			message: '#^Method SolidInvoice\\PaymentBundle\\Action\\Done\:\:__invoke\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/PaymentBundle/Action/Done.php
+
+		-
+			message: '#^Method SolidInvoice\\PaymentBundle\\Action\\Prepare\:\:__invoke\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/PaymentBundle/DependencyInjection/Configuration.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$status type mapping mismatch\: property can contain SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus\|null but database expects SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$config type mapping mismatch\: database can contain array\|null but property expects array\<string, string\>\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$enabled type mapping mismatch\: database can contain bool\|null but property expects bool\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$factoryName type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$gatewayName type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$internal type mapping mismatch\: database can contain bool\|null but property expects bool\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$name type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\AuthorizeNetAim extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/AuthorizeNetAim.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\AuthorizeNetSim extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/AuthorizeNetSim.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Be2billDirect extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/Be2billDirect.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Be2billOffsite extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/Be2billOffsite.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\KlarnaCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/KlarnaCheckout.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\KlarnaInvoice extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/KlarnaInvoice.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Payex extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/Payex.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\PaypalExpressCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/PaypalExpressCheckout.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\PaypalProCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/PaypalProCheckout.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\StripeCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/StripeCheckout.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\StripeJs extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Methods/StripeJs.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentMethodSettingsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentMethodType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodType.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentType.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/PaymentBundle/Listener/PaymentCompleteListener.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/PaymentBundle/Mcp/PaymentWriteTools.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
+
+		-
+			message: '#^Method SolidInvoice\\PaymentBundle\\Repository\\PaymentRepository\:\:formatDate\(\) has parameter \$query with generic class Doctrine\\ORM\\Query but does not specify its types\: TKey, TResult$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentMethodFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Test/Factory/PaymentMethodFactory.php
+
+		-
+			message: '#^Method SolidInvoice\\PaymentBundle\\Tests\\Form\\Type\\PaymentTypeTest\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Tests/Form/Type/PaymentTypeTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\PaymentBundle\\Search\\PaymentResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/PaymentBundle/Tests/Search/PaymentResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\PaymentBundle\\Search\\PaymentResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/PaymentBundle/Tests/Search/PaymentResultFormatterTest.php
+
+		-
+			message: '#^Parameter \#1 \$array of function usort contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Twig/Components/PaymentMarketplace.php
+
+		-
+			message: '#^Parameter \#2 \$callback of function usort contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: src/PaymentBundle/Twig/Components/PaymentMarketplace.php
+
+		-
+			message: '#^Method SolidInvoice\\PaymentBundle\\Twig\\Components\\PaymentSettings\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/PaymentBundle/Twig/Components/PaymentSettings.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Twig\\Components\\PaymentSettings\:\:\$method \(string\) on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.property
+			count: 1
+			path: src/PaymentBundle/Twig/Components/PaymentSettings.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/QuoteBundle/Cloner/QuoteCloner.php
+
+		-
+			message: '#^Method SolidInvoice\\QuoteBundle\\DataGrid\\QuoteGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/QuoteBundle/DataGrid/QuoteGrid.php
+
+		-
+			message: '#^Method SolidInvoice\\QuoteBundle\\DataGrid\\QuoteGrid\:\:getCreateRoute\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/QuoteBundle/DataGrid/QuoteGrid.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$description type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$qty type mapping mismatch\: property can contain float\|null but database expects float\|int\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Line.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$due type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$status type mapping mismatch\: property can contain SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus\|null but database expects SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$uuid type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Form\\Type\\ItemType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/QuoteBundle/Form/Type/ItemType.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Form\\Type\\QuoteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/QuoteBundle/Form/Type/QuoteType.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/QuoteBundle/Mcp/QuoteWriteTools.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory\:\:many\(\) return type contains unknown class SolidInvoice\\QuoteBundle\\Test\\Factory\\FactoryCollection\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\QuoteBundle\\Test\\Factory\\QuoteFactory\:\:sequence\(\) return type contains unknown class SolidInvoice\\QuoteBundle\\Test\\Factory\\FactoryCollection\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/QuoteBundle/Tests/Search/QuoteResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\QuoteBundle\\Search\\QuoteResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/QuoteBundle/Tests/Search/QuoteResultFormatterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and SolidInvoice\\QuoteBundle\\Search\\QuoteResultFormatter will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/QuoteBundle/Tests/Search/QuoteResultFormatterTest.php
+
+		-
+			message: '#^Method SolidInvoice\\QuoteBundle\\Twig\\Components\\CreateQuote\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/QuoteBundle/Twig/Components/CreateQuote.php
+
+		-
+			message: '#^Class SolidInvoice\\SaasBundle\\Form\\Type\\CustomDomainType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SaasBundle/Form/Type/CustomDomainType.php
+
+		-
+			message: '#^Class SolidInvoice\\SaasBundle\\Security\\Voter\\SubscriptionVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SaasBundle/Security/Voter/SubscriptionVoter.php
+
+		-
+			message: '#^Parameter \$subscriptions of method SolidInvoice\\SaasBundle\\Tests\\Company\\SubscriptionAwareUserCompaniesTest\:\:buildDecorator\(\) expects SplObjectStorage\<SolidInvoice\\CoreBundle\\Entity\\Company, SolidWorx\\Platform\\SaasBundle\\Entity\\Subscription\|null\>, SplObjectStorage\<object, mixed\> given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/SaasBundle/Tests/Company/SubscriptionAwareUserCompaniesTest.php
+
+		-
+			message: '#^Method SolidInvoice\\SaasBundle\\Tests\\Email\\OnboardingEmailSnapshotTest\:\:createKernel\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/SaasBundle/Tests/Email/SaasEmailVerificationGateTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/SaasBundle/Tests/EventSubscriber/SubscriptionPlanSyncListenerTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/SaasBundle/Tests/Functional/InvoiceReminderGateTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: src/SaasBundle/Tests/Functional/InvoiceReminderGateTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/SaasBundle/Tests/Functional/InvoiceSendGateTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: src/SaasBundle/Tests/Functional/InvoiceSendGateTest.php
+
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/SaasBundle/Tests/Functional/QuoteSendGateTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: src/SaasBundle/Tests/Functional/QuoteSendGateTest.php
+
+		-
+			message: '#^Property SolidInvoice\\SettingsBundle\\Entity\\Setting\:\:\$key type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/SettingsBundle/Entity/Setting.php
+
+		-
+			message: '#^Property SolidInvoice\\SettingsBundle\\Entity\\Setting\:\:\$type type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/SettingsBundle/Entity/Setting.php
+
+		-
+			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\AddressType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Form/Type/AddressType.php
+
+		-
+			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\CustomFieldDefinitionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Form/Type/CustomFieldDefinitionType.php
+
+		-
+			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\CustomFieldOptionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Form/Type/CustomFieldOptionType.php
+
+		-
+			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\MailTransportType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Form/Type/MailTransportType.php
+
+		-
+			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\SettingsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Form/Type/SettingsType.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''value'' and ''value'' will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/SettingsBundle/Tests/DTO/ConfigTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/SettingsBundle/Tests/DTO/ConfigTest.php
+
+		-
+			message: '#^Method SolidInvoice\\SettingsBundle\\Tests\\Form\\Type\\SettingsTypeTest\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Tests/Form/Type/SettingsTypeTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Money\\\\Currency'' and Money\\Currency will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/SettingsBundle/Tests/SystemConfigTest.php
+
+		-
+			message: '#^Cannot unset property SolidInvoice\\SettingsBundle\\Tests\\SystemConfigTest\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/SettingsBundle/Tests/SystemConfigTest.php
+
+		-
+			message: '#^Method SolidInvoice\\SettingsBundle\\Twig\\Components\\CustomFieldForm\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Twig/Components/CustomFieldForm.php
+
+		-
+			message: '#^Method SolidInvoice\\SettingsBundle\\Twig\\Components\\Settings\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/SettingsBundle/Twig/Components/Settings.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\DataGrid\\TaxGrid\:\:getCreateRoute\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/DataGrid/TaxGrid.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/InvoiceTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$nameSnapshot type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/InvoiceTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$snapshottedAt type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/InvoiceTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/InvoiceTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/LineTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$nameSnapshot type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/LineTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$snapshottedAt type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeImmutable\|null\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/LineTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/LineTax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$name type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$rate type mapping mismatch\: property can contain float\|null but database expects float\|int\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$type type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/TaxIdentifier.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$label type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/TaxIdentifier.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/TaxIdentifier.php
+
+		-
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$value type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/TaxBundle/Entity/TaxIdentifier.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\CompanyTaxIdentifiersFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/CompanyTaxIdentifiersFormType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\InvoiceTaxCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/InvoiceTaxCollectionType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\InvoiceTaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/InvoiceTaxType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\LineTaxCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/LineTaxCollectionType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\LineTaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/LineTaxType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxIdentifierCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/TaxIdentifierCollectionType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxIdentifierType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/TaxIdentifierType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxNumberType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/TaxNumberType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Form/Type/TaxType.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\TaxBundle\\\\Entity\\\\InvoiceTax'' and SolidInvoice\\TaxBundle\\Entity\\InvoiceTax will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/TaxBundle/Tests/Repository/InvoiceTaxRepositoryTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\TaxBundle\\\\Entity\\\\LineTax'' and SolidInvoice\\TaxBundle\\Entity\\LineTax will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/TaxBundle/Tests/Repository/LineTaxRepositoryTest.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Twig\\Components\\CompanyTaxIdentifiers\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Twig/Components/CompanyTaxIdentifiers.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\ExactlyOneDocument\:\:getTargets\(\) never returns ''property'' so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/ExactlyOneDocument.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\ExactlyOneDocument\:\:getTargets\(\) never returns array\<''class''\|''property''\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/ExactlyOneDocument.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\ExactlyOneLine\:\:getTargets\(\) never returns ''property'' so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/ExactlyOneLine.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\ExactlyOneLine\:\:getTargets\(\) never returns array\<''class''\|''property''\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/ExactlyOneLine.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\IncompatibleTaxConfiguration\:\:getTargets\(\) never returns ''property'' so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/IncompatibleTaxConfiguration.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\IncompatibleTaxConfiguration\:\:getTargets\(\) never returns array\<''class''\|''property''\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/IncompatibleTaxConfiguration.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\SameCompanyAsClient\:\:getTargets\(\) never returns ''property'' so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/SameCompanyAsClient.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\SameCompanyAsClient\:\:getTargets\(\) never returns array\<''class''\|''property''\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/TaxBundle/Validator/Constraints/SameCompanyAsClient.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\DataGrid\\ApiTokenGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/UserBundle/DataGrid/ApiTokenGrid.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiToken.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$name type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiToken.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$token type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiToken.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiToken.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$user type mapping mismatch\: property can contain Symfony\\Component\\Security\\Core\\User\\UserInterface\|null but database expects SolidInvoice\\UserBundle\\Entity\\User\|null\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/UserBundle/Entity/ApiToken.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$ip type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$method type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$resource type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$userAgent type mapping mismatch\: property can contain string\|null but database expects string\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ResetPasswordRequest\:\:\$user type mapping mismatch\: property can contain SolidInvoice\\UserBundle\\Entity\\User\|null but database expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/UserBundle/Entity/ResetPasswordRequest.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserInvitation\:\:\$created type mapping mismatch\: property can contain DateTimeInterface but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/UserInvitation.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserInvitation\:\:\$invitedBy type mapping mismatch\: property can contain SolidInvoice\\UserBundle\\Entity\\User\|null but database expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/UserBundle/Entity/UserInvitation.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/UserSetting.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/UserSetting.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ApiTokenType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/ApiTokenType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ChangePasswordFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/ChangePasswordFormType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ChangePasswordType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/ChangePasswordType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\NotificationSettingType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/NotificationSettingType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\NotificationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/NotificationType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ProfileType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/ProfileType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\RegisterType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/RegisterType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ResetPasswordRequestFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/ResetPasswordRequestFormType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\UserInviteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Form/Type/UserInviteType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\FormFlow\\OnboardingNavigatorType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Onboarding/Form/FormFlow/OnboardingNavigatorType.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\ClientSetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Onboarding/Form/Step/ClientSetupStep.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\CompanySetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Onboarding/Form/Step/CompanySetupStep.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\InvoiceSetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Onboarding/Form/Step/InvoiceSetupStep.php
+
+		-
+			message: '#^Interface SolidInvoice\\UserBundle\\Repository\\UserRepositoryInterface has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Repository/UserRepositoryInterface.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\Security\\OAuth\\OAuthAuthenticator\:\:onAuthenticationFailure\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/UserBundle/Security/OAuth/OAuthAuthenticator.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\Security\\OAuth\\OAuthAuthenticator\:\:onAuthenticationSuccess\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/UserBundle/Security/OAuth/OAuthAuthenticator.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method createMany\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method createOne\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method createSequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method findBy\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method findOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method random\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method randomOrCreate\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method randomRange\(\) parameter \#3 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method randomSet\(\) parameter \#2 \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Class SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory has PHPDoc tag @method for method sequence\(\) parameter \#1 \$sequence with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^PHPDoc tag @method for method SolidInvoice\\UserBundle\\Test\\Factory\\UserFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
+			count: 1
+			path: src/UserBundle/Test/Factory/UserFactory.php
+
+		-
+			message: '#^Call to an undefined method Zenstruck\\Browser\\KernelBrowser\:\:wait\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: src/UserBundle/Tests/Functional/TwoFactorSettingsTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Doctrine\\\\ORM\\\\QueryBuilder'' and Doctrine\\ORM\\QueryBuilder will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/UserBundle/Tests/Repository/UserInvitationRepositoryTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Doctrine\\\\ORM\\\\QueryBuilder'' and Doctrine\\ORM\\QueryBuilder will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\Twig\\Components\\CreateApiToken\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Twig/Components/CreateApiToken.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 5
+			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
+
+		-
+			message: '#^Instanceof between SolidInvoice\\UserBundle\\Entity\\User and SolidWorx\\Platform\\PlatformBundle\\Contracts\\Security\\TwoFactor\\UserTwoFactorInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 4
+			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
+
+		-
+			message: '#^Instanceof between SolidInvoice\\UserBundle\\Entity\\User and Symfony\\Component\\Security\\Core\\User\\UserInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\Twig\\Components\\TwoFactorSettings\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
+
+		-
+			message: '#^Method SolidInvoice\\UserBundle\\Twig\\Components\\UserNotification\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/UserBundle/Twig/Components/UserNotification.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>description" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/UserBundle/Twig/Components/UserNotification.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>icon" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/UserBundle/Twig/Components/UserNotification.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>title" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/UserBundle/Twig/Components/UserNotification.php
