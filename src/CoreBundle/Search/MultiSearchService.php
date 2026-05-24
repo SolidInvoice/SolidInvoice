@@ -110,7 +110,7 @@ final class MultiSearchService
             }
 
             $grouped[$logicalIndex] = array_map(
-                static fn (array $hit) => $formatter->format($hit),
+                $formatter->format(...),
                 $hits,
             );
         }
