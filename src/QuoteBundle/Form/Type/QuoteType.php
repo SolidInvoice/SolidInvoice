@@ -209,11 +209,9 @@ class QuoteType extends AbstractType
                     'class' => Contact::class,
                     'expanded' => true,
                     'multiple' => true,
-                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
-                        return $repo->createQueryBuilder('c')
-                            ->where('c.client = :client')
-                            ->setParameter('client', $clientId, UlidType::NAME);
-                    },
+                    'query_builder' => fn (EntityRepository $repo) => $repo->createQueryBuilder('c')
+                        ->where('c.client = :client')
+                        ->setParameter('client', $clientId, UlidType::NAME),
                 ]
             );
         });

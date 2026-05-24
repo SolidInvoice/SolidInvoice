@@ -19,7 +19,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Override;
-use function get_class;
 
 final class BigIntegerType extends Type
 {
@@ -64,7 +63,7 @@ final class BigIntegerType extends Type
             }
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), get_class($value));
+        throw ConversionException::conversionFailedFormat($value, $this->getName(), $value::class);
     }
 
     #[Override]

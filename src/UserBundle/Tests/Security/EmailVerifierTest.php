@@ -79,10 +79,10 @@ final class EmailVerifierTest extends TestCase
             ->method('generate')
             ->with(
                 $routeName,
-                $this->callback(function ($params) use ($user) {
+                $this->callback(
                     // Verify that the parameters contain token, expires, and id
-                    return isset($params['token'], $params['expires']) && $params['id'] === $user->getId()?->toBase58();
-                }),
+                    fn ($params) => isset($params['token'], $params['expires']) && $params['id'] === $user->getId()?->toBase58()
+                ),
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn($generatedUrl);
@@ -93,10 +93,10 @@ final class EmailVerifierTest extends TestCase
 
         $email->expects($this->once())
             ->method('context')
-            ->with($this->callback(function ($context) {
+            ->with($this->callback(
                 // Verify that the context contains the required keys
-                return isset($context['signedUrl'], $context['expiresAtMessageKey'], $context['expiresAtMessageData']);
-            }))
+                fn ($context) => isset($context['signedUrl'], $context['expiresAtMessageKey'], $context['expiresAtMessageData'])
+            ))
             ->willReturnSelf();
 
         $this->mailer->expects($this->once())

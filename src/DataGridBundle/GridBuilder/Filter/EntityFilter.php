@@ -83,9 +83,7 @@ final class EntityFilter implements ColumnFilterInterface
                 $type = Type::getType(UlidType::NAME);
                 $parameterType = ArrayParameterType::STRING;
 
-                $values = array_map(static function ($value) use ($type, $platform) {
-                    return $type->convertToDatabaseValue($value, $platform);
-                }, array_values(array_filter($value, static fn ($v) => '' !== (string) $v)));
+                $values = array_map(static fn ($value) => $type->convertToDatabaseValue($value, $platform), array_values(array_filter($value, static fn ($v) => '' !== (string) $v)));
 
                 $queryBuilder->join(ORMSource::ALIAS . '.' . $this->alias, $hash)
                     ->andWhere(sprintf('%1$s.id IN (:%1$s)', $hash))

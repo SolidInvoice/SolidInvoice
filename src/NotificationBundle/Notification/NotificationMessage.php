@@ -26,17 +26,13 @@ use Twig\Environment;
 abstract class NotificationMessage extends Notification implements EmailNotificationInterface, ChatNotificationInterface
 {
     /**
-     * @var array<string, mixed>
-     */
-    private array $parameters;
-
-    /**
      * @param array<string, mixed> $parameters
      */
-    public function __construct(array $parameters = [], string $subject = '', array $channels = [])
-    {
-        $this->parameters = $parameters;
-
+    public function __construct(
+        private array $parameters = [],
+        string $subject = '',
+        array $channels = []
+    ) {
         parent::__construct($subject, $channels);
     }
 

@@ -65,7 +65,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         self::assertSame('monthly', $result['schedule']['type']);
         self::assertSame('after', $result['schedule']['end_type']);
         self::assertSame(12, $result['schedule']['end_occurrence']);
-        self::assertSame('2026-05-01', substr($result['date_start'], 0, 10));
+        self::assertSame('2026-05-01', substr((string) $result['date_start'], 0, 10));
 
         $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(RecurringInvoice::class, $recurring);

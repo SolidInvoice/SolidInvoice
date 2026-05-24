@@ -110,8 +110,8 @@ final class PaymentMarketplace extends AbstractController
 
         return array_values(array_filter(
             $this->availableGateways(),
-            static fn ($gateway) => str_contains(strtolower($gateway['displayName']), $query) ||
-                           str_contains(strtolower($gateway['description']), $query)
+            static fn ($gateway) => str_contains(strtolower((string) $gateway['displayName']), $query) ||
+                           str_contains(strtolower((string) $gateway['description']), $query)
         ));
     }
 

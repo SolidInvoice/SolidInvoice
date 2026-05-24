@@ -71,10 +71,8 @@ final class MoneyFormatterTest extends TestCase
         $this->moneyFormatter
             ->expects('format')
             ->once()
-            ->with(M::on(function (Money $money) use ($currency) {
-                return $money->getAmount() === '5000'
-                    && $money->getCurrency()->equals($currency);
-            }))
+            ->with(M::on(fn (Money $money) => $money->getAmount() === '5000'
+                && $money->getCurrency()->equals($currency)))
             ->andReturn('€50.00');
 
         $column = MoneyColumn::new('amount');
@@ -115,9 +113,7 @@ final class MoneyFormatterTest extends TestCase
         $this->moneyFormatter
             ->expects('format')
             ->once()
-            ->with(M::on(function (Money $money) {
-                return $money->getCurrency()->getCode() === 'JPY';
-            }))
+            ->with(M::on(fn (Money $money) => $money->getCurrency()->getCode() === 'JPY'))
             ->andReturn('¥1,000');
 
         $column = MoneyColumn::new('amount');

@@ -60,9 +60,7 @@ final class TransportSettingType extends AbstractType
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedValues('type', ['texter', 'chatter']);
 
-        $resolver->setDefault('validation_groups', static function (FormInterface $form) {
-            return ['Default', strtolower($form->get('transport')->getData())];
-        });
+        $resolver->setDefault('validation_groups', static fn (FormInterface $form) => ['Default', strtolower((string) $form->get('transport')->getData())]);
     }
 
     #[Override]

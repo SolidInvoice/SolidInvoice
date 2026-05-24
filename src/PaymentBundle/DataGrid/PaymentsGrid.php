@@ -49,7 +49,7 @@ final class PaymentsGrid extends Grid
                 ->formatValue(static function (Invoice $invoice) {
                     try {
                         return $invoice->getInvoiceId();
-                    } catch (EntityNotFoundException $e) {
+                    } catch (EntityNotFoundException) {
                         return null;
                     }
                 })

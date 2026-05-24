@@ -101,7 +101,7 @@ final class MultiSearchService
 
         $grouped = [];
         foreach ($multiSearchResult['results'] as $result) {
-            $logicalIndex = substr($result['indexUid'], strlen($this->indexPrefix));
+            $logicalIndex = substr((string) $result['indexUid'], strlen($this->indexPrefix));
             $formatter = $formatterMap[$logicalIndex] ?? null;
             $hits = $result['hits'] ?? [];
 

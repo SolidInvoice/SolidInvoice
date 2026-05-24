@@ -58,9 +58,7 @@ final class OnboardingDispatcherTest extends TestCase
         $messageBus
             ->shouldReceive('dispatch')
             ->once()
-            ->withArgs(static function (SendOnboardingEmailMessage $message): bool {
-                return $message->stepKey === 'first';
-            })
+            ->withArgs(static fn (SendOnboardingEmailMessage $message): bool => $message->stepKey === 'first')
             ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'first')));
 
         $dispatcher = new OnboardingDispatcher(
@@ -96,9 +94,7 @@ final class OnboardingDispatcherTest extends TestCase
         $messageBus
             ->shouldReceive('dispatch')
             ->once()
-            ->withArgs(static function (SendOnboardingEmailMessage $message): bool {
-                return $message->stepKey === 'second';
-            })
+            ->withArgs(static fn (SendOnboardingEmailMessage $message): bool => $message->stepKey === 'second')
             ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'second')));
 
         $dispatcher = new OnboardingDispatcher(

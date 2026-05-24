@@ -319,9 +319,7 @@ final class OAuthAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('setValue')
             ->with(
-                $this->callback(function ($user) {
-                    return $user instanceof User && $user->getEmail() === 'test@example.com';
-                }),
+                $this->callback(fn ($user) => $user instanceof User && $user->getEmail() === 'test@example.com'),
                 'googleId',
                 '123456789'
             );
@@ -330,9 +328,7 @@ final class OAuthAuthenticatorTest extends TestCase
         $this->entityManager
             ->expects($this->once())
             ->method('persist')
-            ->with($this->callback(function ($user) {
-                return $user instanceof User && $user->getEmail() === 'test@example.com';
-            }));
+            ->with($this->callback(fn ($user) => $user instanceof User && $user->getEmail() === 'test@example.com'));
         $this->entityManager
             ->expects($this->once())
             ->method('flush');

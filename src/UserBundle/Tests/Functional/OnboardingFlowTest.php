@@ -132,7 +132,7 @@ final class OnboardingFlowTest extends WebTestCase
             'key' => UserSettingType::OnboardingSkipped,
         ]);
         self::assertNotNull($setting);
-        $skipped = json_decode($setting->getValue(), true);
+        $skipped = json_decode((string) $setting->getValue(), true);
         self::assertContains('client', $skipped);
         self::assertContains('invoice', $skipped);
     }
@@ -174,7 +174,7 @@ final class OnboardingFlowTest extends WebTestCase
             'key' => UserSettingType::OnboardingSkipped,
         ]);
         self::assertNotNull($setting);
-        $skipped = json_decode($setting->getValue(), true);
+        $skipped = json_decode((string) $setting->getValue(), true);
         self::assertContains('invoice', $skipped);
         self::assertNotContains('client', $skipped);
     }

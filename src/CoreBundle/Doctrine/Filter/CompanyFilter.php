@@ -25,9 +25,7 @@ class CompanyFilter extends SQLFilter
     {
         $isSqlite = $this->getConnection()->getDatabasePlatform() instanceof SqlitePlatform;
 
-        $encode = static function (string $value) use ($isSqlite): string {
-            return $isSqlite ? sprintf('HEX(%s)', $value) : $value;
-        };
+        $encode = (static fn (string $value): string => $isSqlite ? sprintf('HEX(%s)', $value) : $value);
 
         if (User::class === $targetEntity->getName() && $this->hasParameter('companyId')) {
             $query = $this

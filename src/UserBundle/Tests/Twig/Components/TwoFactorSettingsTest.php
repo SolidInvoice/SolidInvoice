@@ -482,7 +482,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         return preg_replace(
             '/\d{4}-\d{2}-\d{2}/',
             'YYYY-MM-DD',
-            preg_replace(
+            (string) preg_replace(
                 '/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/',
                 'YYYY-MM-DD HH:MM:SS',
                 $replaceQrCodeDataUri

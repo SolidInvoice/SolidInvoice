@@ -54,7 +54,7 @@ final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
             $field = 'e.' . $options['field'];
             $prefix = $options['prefix'] ?? '';
             $suffix = $options['suffix'] ?? '';
-            $prefixLength = strlen($prefix);
+            $prefixLength = strlen((string) $prefix);
             $suffixLength = strlen($suffix);
 
             if ($prefixLength > 0 || $suffixLength > 0) {

@@ -57,7 +57,7 @@ abstract class WidgetTestCase extends KernelTestCase
         );
 
         // Replace ULIDs
-        $html = preg_replace('#[0-9A-Za-z]{26}#', '01JBYEQCR7DJ2YW4EXP6FYJZCR', $html);
+        $html = preg_replace('#[0-9A-Za-z]{26}#', '01JBYEQCR7DJ2YW4EXP6FYJZCR', (string) $html);
 
         // Replace month-year labels (e.g. "May 2025") with stable placeholders so
         // the chart snapshot does not need to be regenerated every month. Chart
@@ -67,9 +67,9 @@ abstract class WidgetTestCase extends KernelTestCase
         $html = preg_replace(
             '#(?<q>"|&quot;)(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}(?P=q)#',
             '$1MONTH YEAR$1',
-            $html
+            (string) $html
         );
 
-        return trim($html);
+        return trim((string) $html);
     }
 }

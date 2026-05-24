@@ -24,7 +24,7 @@ class TaxTypeTest extends FormTestCase
     {
         $name = $this->faker->name;
         $rate = $this->faker->randomFloat(2, 0, 100);
-        $type = ucwords($this->faker->randomKey(Tax::getTypes()));
+        $type = ucwords((string) $this->faker->randomKey(Tax::getTypes()));
         $category = $this->faker->randomElement(TaxCategory::cases());
         $compound = $this->faker->boolean();
 

@@ -43,19 +43,6 @@ class ExportJob
     #[ORM\Column(type: UlidType::NAME, unique: true)]
     private Ulid $id;
 
-    /**
-     * Stored as a bare ULID rather than an `#[ORM\ManyToOne]` to `User` on purpose.
-     * The export feature lives in CoreBundle, and depending on UserBundle from here
-     * would invert the dependency direction used elsewhere in the codebase. The
-     * `requested_by` FK constraint in the migration (`ON DELETE CASCADE`) still
-     * guarantees orphan cleanup at the database level.
-     */
-    #[ORM\Column(name: 'requested_by', type: UlidType::NAME)]
-    private Ulid $requestedBy;
-
-    #[ORM\Column(name: 'format', type: Types::STRING, length: 10, enumType: ExportFormat::class)]
-    private ExportFormat $format;
-
     #[ORM\Column(name: 'status', type: Types::STRING, length: 20, enumType: ExportStatus::class)]
     private ExportStatus $status;
 
@@ -84,11 +71,20 @@ class ExportJob
     #[ORM\Column(name: 'failure_reason', type: Types::TEXT, nullable: true)]
     private ?string $failureReason = null;
 
-    public function __construct(Ulid $requestedBy, ExportFormat $format)
-    {
+    public function __construct(
+        /**
+         * Stored as a bare ULID rather than an `#[ORM\ManyToOne]` to `User` on purpose.
+         * The export feature lives in CoreBundle, and depending on UserBundle from here
+         * would invert the dependency direction used elsewhere in the codebase. The
+         * `requested_by` FK constraint in the migration (`ON DELETE CASCADE`) still
+         * guarantees orphan cleanup at the database level.
+         */
+        #[ORM\Column(name: 'requested_by', type: UlidType::NAME)]
+        private Ulid $requestedBy,
+        #[ORM\Column(name: 'format', type: Types::STRING, length: 10, enumType: ExportFormat::class)]
+        private ExportFormat $format
+    ) {
         $this->id = new Ulid();
-        $this->requestedBy = $requestedBy;
-        $this->format = $format;
         $this->status = ExportStatus::Pending;
         $this->createdAt = new DateTimeImmutable();
     }
