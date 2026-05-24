@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\Functional;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -33,7 +34,7 @@ final class LoginTest extends WebTestCase
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->followRedirects();
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request(Request::METHOD_GET, '/');
         self::assertStringContainsString('/login', $crawler->getUri());
     }
 }

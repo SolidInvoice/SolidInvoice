@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Twig\Components;
 
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -88,6 +89,7 @@ final class UserNotificationTest extends TestCase
             $this->userNotificationRepository,
             $this->transportSettingRepository,
             $this->notificationLocator,
+            $this->createStub(ManagerRegistry::class),
         );
     }
 
@@ -122,6 +124,7 @@ final class UserNotificationTest extends TestCase
             $this->userNotificationRepository,
             $this->transportSettingRepository,
             $locator,
+            $this->createStub(ManagerRegistry::class),
         );
 
         self::assertSame('Unknown Event', $component->getEventTitle('unknown_event'));
@@ -142,6 +145,7 @@ final class UserNotificationTest extends TestCase
             $this->userNotificationRepository,
             $this->transportSettingRepository,
             $locator,
+            $this->createStub(ManagerRegistry::class),
         );
 
         self::assertSame('', $component->getEventDescription('unknown_event'));
@@ -162,6 +166,7 @@ final class UserNotificationTest extends TestCase
             $this->userNotificationRepository,
             $this->transportSettingRepository,
             $locator,
+            $this->createStub(ManagerRegistry::class),
         );
 
         self::assertSame('tabler:bell', $component->getEventIcon('unknown_event'));

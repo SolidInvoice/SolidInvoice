@@ -21,6 +21,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -42,7 +43,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['rest_api_access' => false]));
 
-        $client->request('GET', '/profile/api');
+        $client->request(Request::METHOD_GET, '/profile/api');
 
         self::assertResponseIsSuccessful();
         $body = (string) $client->getResponse()->getContent();
@@ -55,7 +56,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['rest_api_access' => true]));
 
-        $client->request('GET', '/profile/api');
+        $client->request(Request::METHOD_GET, '/profile/api');
 
         self::assertResponseIsSuccessful();
         $body = (string) $client->getResponse()->getContent();
@@ -75,7 +76,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 
-        $client->request('GET', '/profile/api');
+        $client->request(Request::METHOD_GET, '/profile/api');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());

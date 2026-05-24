@@ -57,7 +57,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->grantingAuthorizationChecker());
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
+        $request = Request::create('/api/clients', Request::METHOD_GET, [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,
@@ -75,7 +75,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->denyingAuthorizationChecker($reason));
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
+        $request = Request::create('/api/clients', Request::METHOD_GET, [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,
@@ -97,7 +97,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($this->denyingAuthorizationChecker(null));
 
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
+        $request = Request::create('/api/clients', Request::METHOD_GET, [], [], [], ['HTTP_X-API-TOKEN' => $token->plaintext]);
 
         $response = $authenticator->onAuthenticationSuccess(
             $request,

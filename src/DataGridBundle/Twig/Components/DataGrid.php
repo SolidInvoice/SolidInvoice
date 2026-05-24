@@ -251,7 +251,7 @@ class DataGrid extends AbstractController
      * @throws InvalidGridException
      */
     #[LiveAction]
-    public function executeBatchAction(#[LiveArg('actionName')] string $actionName): void
+    public function executeBatch(#[LiveArg('actionName')] string $actionName): void
     {
         try {
             if ($this->selectedItems === []) {
@@ -293,7 +293,7 @@ class DataGrid extends AbstractController
      * @throws InvalidGridException
      */
     #[LiveAction]
-    public function executeSingleAction(
+    public function executeSingle(
         #[LiveArg('actionName')]
         string $actionName,
         #[LiveArg('entityId')]

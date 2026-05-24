@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\Action;
 
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 
 /**
@@ -41,7 +42,7 @@ final class AcceptInvitationTest extends WebTestCase
 
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/invite/accept/' . $invalidUlid);
+        $client->request(Request::METHOD_GET, '/invite/accept/' . $invalidUlid);
 
         self::assertResponseStatusCodeSame(404);
     }
@@ -52,7 +53,7 @@ final class AcceptInvitationTest extends WebTestCase
 
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/invite/accept/' . $validUlid);
+        $client->request(Request::METHOD_GET, '/invite/accept/' . $validUlid);
 
         self::assertResponseStatusCodeSame(404);
     }

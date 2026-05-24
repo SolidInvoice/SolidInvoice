@@ -43,7 +43,9 @@ final class PaymentSettings extends AbstractController
 
     public function __construct(
         private readonly PaymentFactories $factories,
-        private readonly PaymentMethodRepository $repository
+        private readonly PaymentMethodRepository $repository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack $requestStack
     ) {
     }
 
@@ -114,25 +116,21 @@ final class PaymentSettings extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager, RequestStack $requestStack): Response
+    public function save(): Response
     {
         $this->submitForm();
-
         $form = $this->getForm();
-
         // If form is not valid, redirect back to show validation errors
         if (! $form->isValid()) {
-            $session = $requestStack->getSession();
+            $session = $this->requestStack->getSession();
             assert($session instanceof Session);
 
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
 
             return $this->redirectToRoute('_payment_settings_index', ['selectedGateway' => $this->method]);
         }
-
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $form->getData();
-
         // Only set gateway name for new payment methods
         if ($paymentMethod->getId() === null) {
             $gatewayName = new AsciiSlugger()
@@ -142,7 +140,7 @@ final class PaymentSettings extends AbstractController
 
             // Validate gateway name to prevent XSS - only allow alphanumeric, hyphens, and underscores
             if (! preg_match('/^[a-z0-9_-]+$/', $gatewayName)) {
-                $session = $requestStack->getSession();
+                $session = $this->requestStack->getSession();
                 assert($session instanceof Session);
 
                 $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Invalid gateway name format');
@@ -152,15 +150,11 @@ final class PaymentSettings extends AbstractController
 
             $paymentMethod->setGatewayName($gatewayName);
         }
-
-        $entityManager->persist($paymentMethod);
-        $entityManager->flush();
-
-        $session = $requestStack->getSession();
+        $this->entityManager->persist($paymentMethod);
+        $this->entityManager->flush();
+        $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-
         $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
-
         return $this->redirectToRoute('_payment_settings_index');
     }
 
@@ -177,30 +171,24 @@ final class PaymentSettings extends AbstractController
     }
 
     #[LiveAction]
-    public function confirmDelete(RequestStack $requestStack): Response
+    public function confirmDelete(): Response
     {
-        $session = $requestStack->getSession();
+        $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-
         $paymentMethod = $this->paymentMethod();
-
         // Check if the payment method exists in the database
         if ($paymentMethod->getId() === null) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Payment method does not exist');
 
             return $this->redirectToRoute('_payment_settings_index');
         }
-
         if (count($paymentMethod->getPayments()) > 0) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Unable to delete payment method as there are payments associated with it');
 
             return $this->redirectToRoute('_payment_settings_index');
         }
-
         $this->repository->delete($paymentMethod);
-
         $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Payment method deleted');
-
         return $this->redirectToRoute('_payment_settings_index');
     }
 }

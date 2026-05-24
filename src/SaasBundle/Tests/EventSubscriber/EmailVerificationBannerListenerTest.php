@@ -63,7 +63,7 @@ final class EmailVerificationBannerListenerTest extends TestCase
 
         $listener = new EmailVerificationBannerListener($gate, $twig, $translator);
 
-        $request = Request::create('/dashboard', 'GET');
+        $request = Request::create('/dashboard', Request::METHOD_GET);
         $response = new Response('<html><body><div class="page-wrapper">content</div></body></html>');
 
         $event = new ResponseEvent(
@@ -92,7 +92,7 @@ final class EmailVerificationBannerListenerTest extends TestCase
 
         $listener = new EmailVerificationBannerListener($gate, $twig, $translator);
 
-        $request = Request::create('/dashboard', 'GET');
+        $request = Request::create('/dashboard', Request::METHOD_GET);
         $response = new Response('<html><body><div class="page-wrapper">content</div></body></html>');
 
         $event = new ResponseEvent(
@@ -120,7 +120,7 @@ final class EmailVerificationBannerListenerTest extends TestCase
 
         $listener = new EmailVerificationBannerListener($gate, $twig, $translator);
 
-        $request = Request::create('/dashboard', 'POST');
+        $request = Request::create('/dashboard', Request::METHOD_POST);
         $response = new Response('<html><body><div class="page-wrapper">content</div></body></html>');
 
         $event = new ResponseEvent(

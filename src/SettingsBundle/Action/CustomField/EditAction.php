@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Ulid;
@@ -31,7 +30,7 @@ final class EditAction extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $id): Response
+    public function __invoke(string $id): Response
     {
         if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
             return $this->render('@SolidInvoiceSettings/CustomField/gated.html.twig');

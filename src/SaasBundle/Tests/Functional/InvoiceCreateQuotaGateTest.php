@@ -21,6 +21,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -41,7 +42,7 @@ final class InvoiceCreateQuotaGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['invoices_per_month' => false]));
 
-        $client->request('GET', '/invoices/create');
+        $client->request(Request::METHOD_GET, '/invoices/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -51,7 +52,7 @@ final class InvoiceCreateQuotaGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['invoices_per_month' => true]));
 
-        $client->request('GET', '/invoices/create');
+        $client->request(Request::METHOD_GET, '/invoices/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -70,7 +71,7 @@ final class InvoiceCreateQuotaGateTest extends WebTestCase
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 
-        $client->request('GET', '/invoices/create');
+        $client->request(Request::METHOD_GET, '/invoices/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());

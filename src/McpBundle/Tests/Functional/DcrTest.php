@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
@@ -37,7 +38,7 @@ final class DcrTest extends WebTestCase
         $client = self::createClient();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             '/oauth/register',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
@@ -74,7 +75,7 @@ final class DcrTest extends WebTestCase
         $client = self::createClient();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             '/oauth/register',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
@@ -98,7 +99,7 @@ final class DcrTest extends WebTestCase
         $client = self::createClient();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             '/oauth/register',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode(['client_name' => 'Missing URIs'], JSON_THROW_ON_ERROR),
@@ -116,7 +117,7 @@ final class DcrTest extends WebTestCase
         $client = self::createClient();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             '/oauth/register',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
@@ -134,7 +135,7 @@ final class DcrTest extends WebTestCase
         $client = self::createClient();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             '/oauth/register',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([

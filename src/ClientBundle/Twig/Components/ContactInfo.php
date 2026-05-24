@@ -48,6 +48,11 @@ final class ContactInfo extends AbstractController
     #[LiveProp]
     private Contact $readonlyContact;
 
+    public function __construct(
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     public function setContact(Contact $contact): void
     {
         $this->contact = $contact;
@@ -78,26 +83,22 @@ final class ContactInfo extends AbstractController
     }
 
     #[LiveAction()]
-    public function delete(EntityManagerInterface $manager): void
+    public function delete(): void
     {
-        $manager->remove($this->contact);
-        $manager->flush();
-
+        $this->manager->remove($this->contact);
+        $this->manager->flush();
         $this->emit('contactDeleted');
         $this->dispatchBrowserEvent('modal:close');
     }
 
     #[LiveAction()]
-    public function save(EntityManagerInterface $manager): void
+    public function save(): void
     {
         $this->submitForm();
-
         /** @var Contact $contact */
         $contact = $this->getForm()->getData();
-
-        $manager->persist($contact);
-        $manager->flush();
-
+        $this->manager->persist($contact);
+        $this->manager->flush();
         $this->edit = false;
         $this->readonlyContact = clone $contact;
     }

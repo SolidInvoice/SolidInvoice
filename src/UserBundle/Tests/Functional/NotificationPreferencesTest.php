@@ -18,6 +18,7 @@ use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -39,7 +40,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h1', 'Notification Preferences');
@@ -56,7 +57,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         self::assertSelectorExists('.integration-management-card');
         self::assertSelectorTextContains('.integration-management-title', 'Notification Channels');
@@ -82,7 +83,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         self::assertSelectorExists('.integration-management-list');
         self::assertSelectorExists('.integration-badge', 'At least one integration badge should exist');
@@ -103,7 +104,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         self::assertSelectorExists('.notification-groups');
         self::assertSelectorExists('.notification-group');
@@ -121,7 +122,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         self::assertSelectorExists('.notification-card');
         self::assertSelectorExists('.notification-title');
@@ -148,7 +149,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         // Check that there are checkboxes for notifications
         self::assertSelectorExists('input[type="checkbox"]');
@@ -181,7 +182,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         // Check that channel checkboxes are present
         $channelCheckboxes = $crawler->filter('.notification-card-channels input[type="checkbox"]');
@@ -199,7 +200,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $client = self::createClient();
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/profile/notifications');
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
 
         // Check that there's a form with a submit button in the notifications actions
         self::assertSelectorExists('.form-page-actions button[type="submit"]');

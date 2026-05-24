@@ -295,7 +295,7 @@ final readonly class Authorize
             return $this->renderError('access_denied', 'Invalid company selected.', Response::HTTP_FORBIDDEN);
         }
 
-        $grantWrite = (bool) $request->request->get('grant_write', false);
+        $grantWrite = $request->request->getBoolean('grant_write');
 
         $grantedScopeValues = [McpScope::Read->value];
 

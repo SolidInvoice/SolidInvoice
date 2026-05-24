@@ -125,7 +125,7 @@ final class InvoiceReminderGateTest extends KernelTestCase
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $request = Request::create('/send-manual-reminder', 'POST');
+        $request = Request::create('/send-manual-reminder', Request::METHOD_POST);
         $request->setSession($session);
 
         $requestStack = self::getContainer()->get('request_stack');
