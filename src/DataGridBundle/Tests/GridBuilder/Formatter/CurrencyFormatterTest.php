@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,14 +15,13 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\CurrencyFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\CurrencyFormatter
- */
+#[CoversClass(CurrencyFormatter::class)]
 final class CurrencyFormatterTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

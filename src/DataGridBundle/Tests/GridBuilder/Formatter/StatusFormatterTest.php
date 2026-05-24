@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
@@ -20,9 +21,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\StatusFormatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\StatusFormatter
- */
+#[CoversClass(StatusFormatter::class)]
 final class StatusFormatterTest extends TestCase
 {
     private StatusFormatter $formatter;

@@ -205,7 +205,7 @@ final class InstallCommandTest extends TestCase
             $registry,
             $passwordHasher ?? M::mock(UserPasswordHasherInterface::class),
             new ServiceLocator([]),
-            $this->createMock(KernelInterface::class),
+            $this->createStub(KernelInterface::class),
             '/tmp/test',
             null
         );

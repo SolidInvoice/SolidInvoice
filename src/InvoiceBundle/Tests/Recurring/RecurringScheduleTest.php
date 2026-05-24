@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -29,7 +31,7 @@ final class RecurringScheduleTest extends TestCase
     #[DataProvider('getEndDateDataProvider')]
     public function testGetEndDate(RecurringOptions $options, ?string $expected): void
     {
-        $scheduleFormatter = new RecurringSchedule('en', $this->createMock(ClockInterface::class));
+        $scheduleFormatter = new RecurringSchedule('en', $this->createStub(ClockInterface::class));
 
         self::assertEquals($expected, $scheduleFormatter->getEndDate($options)?->format('Y-m-d'));
     }

@@ -997,12 +997,6 @@ parameters:
 			path: src/InstallBundle/Form/Step/UserAccountStep.php
 
 		-
-			message: '#^Method SolidInvoice\\InstallBundle\\Tests\\Config\\DatabaseConfigTest\:\:paramsToDatabaseUrlProvider\(\) should return array\<string, array\<int, string\>\> but returns array\<string, list\<array\<string, int\|string\>\|string\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/InstallBundle/Tests/Config/DatabaseConfigTest.php
-
-		-
 			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\InstallBundle\\\\Step\\\\CreateDatabaseStep'', ''SolidInvoice\\\\InstallBundle\\\\Step\\\\InstallationStepInterface'' and true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1

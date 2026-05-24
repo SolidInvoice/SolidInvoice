@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CronBundle\Tests\Messenger;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Sentry\CheckInStatus;
@@ -38,7 +39,7 @@ use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
 use Symfony\Component\Scheduler\Trigger\PeriodicalTrigger;
 use Symfony\Component\Scheduler\Trigger\TriggerInterface;
 
-/** @covers \SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware */
+#[CoversClass(SentrySchedulerMiddleware::class)]
 final class SentrySchedulerMiddlewareTest extends TestCase
 {
     private SentrySchedulerMiddleware $middleware;

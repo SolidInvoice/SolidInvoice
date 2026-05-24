@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\CoreBundle\Listener\DiscoveryLinkHeaderListener;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Listener\DiscoveryLinkHeaderListener
- *
- * @group functional
- */
+#[CoversClass(DiscoveryLinkHeaderListener::class)]
+#[Group('functional')]
 final class DiscoveryLinkHeaderTest extends WebTestCase
 {
     use EnsureApplicationInstalled;

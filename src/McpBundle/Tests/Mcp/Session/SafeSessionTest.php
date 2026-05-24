@@ -16,13 +16,12 @@ namespace SolidInvoice\McpBundle\Tests\Mcp\Session;
 use Mcp\Server\Session\SessionStoreInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\McpBundle\Mcp\Session\SafeSession;
 use Symfony\Component\Uid\UuidV4;
 
-/**
- * @covers \SolidInvoice\McpBundle\Mcp\Session\SafeSession
- */
+#[CoversClass(SafeSession::class)]
 final class SafeSessionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -18,6 +18,7 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
@@ -38,7 +39,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
-/** @covers \SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator */
+#[CoversClass(OAuthAuthenticator::class)]
 final class OAuthAuthenticatorTest extends TestCase
 {
     private OAuthAuthenticator $authenticator;
@@ -92,7 +93,7 @@ final class OAuthAuthenticatorTest extends TestCase
             ->with('google_oauth_login')
             ->willReturn(true);
 
-        $this->assertTrue($this->authenticator->supports($request));
+        self::assertTrue($this->authenticator->supports($request));
     }
 
     public function testSupportsWithInvalidRoute(): void
@@ -105,7 +106,7 @@ final class OAuthAuthenticatorTest extends TestCase
             ->expects($this->never())
             ->method('isActive');
 
-        $this->assertFalse($this->authenticator->supports($request));
+        self::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsWithDisabledOAuth(): void
@@ -120,7 +121,7 @@ final class OAuthAuthenticatorTest extends TestCase
             ->with('google_oauth_login')
             ->willReturn(false);
 
-        $this->assertFalse($this->authenticator->supports($request));
+        self::assertFalse($this->authenticator->supports($request));
     }
 
     public function testAuthenticateWithExistingUser(): void
@@ -171,10 +172,11 @@ final class OAuthAuthenticatorTest extends TestCase
 
         // Extract and execute the user loader
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
 
         $result = $userBadge->getUser();
 
-        $this->assertSame($user, $result);
+        self::assertSame($user, $result);
     }
 
     public function testAuthenticateWithExistingEmailButNoOAuthId(): void
@@ -248,9 +250,10 @@ final class OAuthAuthenticatorTest extends TestCase
 
         // Extract and execute the user loader
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $result = $userBadge->getUser();
 
-        $this->assertSame($user, $result);
+        self::assertSame($user, $result);
     }
 
     public function testAuthenticateWithNewUserAndRegistrationAllowed(): void
@@ -319,7 +322,11 @@ final class OAuthAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('setValue')
             ->with(
-                $this->callback(fn ($user) => $user instanceof User && $user->getEmail() === 'test@example.com'),
+                $this->callback(function ($user): bool {
+                    self::assertInstanceOf(User::class, $user);
+                    self::assertSame('test@example.com', $user->getEmail());
+                    return true;
+                }),
                 'googleId',
                 '123456789'
             );
@@ -328,7 +335,11 @@ final class OAuthAuthenticatorTest extends TestCase
         $this->entityManager
             ->expects($this->once())
             ->method('persist')
-            ->with($this->callback(fn ($user) => $user instanceof User && $user->getEmail() === 'test@example.com'));
+            ->with($this->callback(function ($user): bool {
+                self::assertInstanceOf(User::class, $user);
+                self::assertSame('test@example.com', $user->getEmail());
+                return true;
+            }));
         $this->entityManager
             ->expects($this->once())
             ->method('flush');
@@ -338,12 +349,13 @@ final class OAuthAuthenticatorTest extends TestCase
 
         // Extract and execute the user loader
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $result = $userBadge->getUser();
 
-        $this->assertInstanceOf(User::class, $result);
-        $this->assertEquals('test@example.com', $result->getEmail());
-        $this->assertTrue($result->isEnabled());
-        $this->assertTrue($result->isVerified());
+        self::assertInstanceOf(User::class, $result);
+        self::assertSame('test@example.com', $result->getEmail());
+        self::assertTrue($result->isEnabled());
+        self::assertTrue($result->isVerified());
     }
 
     public function testAuthenticateWithNewUserAndRegistrationNotAllowed(): void
@@ -412,6 +424,7 @@ final class OAuthAuthenticatorTest extends TestCase
         // Extract and execute the user loader
         $userBadge = $passport->getBadge(UserBadge::class);
         $this->expectException(UserNotFoundException::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $userBadge->getUser();
     }
 
@@ -491,15 +504,16 @@ final class OAuthAuthenticatorTest extends TestCase
 
         // Extract and execute the user loader
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $result = $userBadge->getUser();
 
-        $this->assertSame($currentUser, $result);
+        self::assertSame($currentUser, $result);
     }
 
     public function testOnAuthenticationSuccess(): void
     {
         $request = new Request();
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
 
         $this->router
             ->expects($this->once())
@@ -509,8 +523,8 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'main');
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('/select-company', $response->getTargetUrl());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/select-company', $response->getTargetUrl());
     }
 
     public function testOnAuthenticationFailure(): void
@@ -534,8 +548,8 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('/login', $response->getTargetUrl());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/login', $response->getTargetUrl());
     }
 
     public function testStart(): void
@@ -549,7 +563,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $response = $this->authenticator->start($request);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('/login', $response->getTargetUrl());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/login', $response->getTargetUrl());
     }
 }

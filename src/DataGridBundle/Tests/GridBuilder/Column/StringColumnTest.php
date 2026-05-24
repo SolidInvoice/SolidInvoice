@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,13 +13,12 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use function strtoupper;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn
- */
+#[CoversClass(StringColumn::class)]
 final class StringColumnTest extends TestCase
 {
     private StringColumn $column;
@@ -30,27 +31,27 @@ final class StringColumnTest extends TestCase
     public function testTemplateSetsAndGetsCorrectly(): void
     {
         $this->column->template('template', ['param' => 'value']);
-        $this->assertSame('template', $this->column->getTemplate());
-        $this->assertSame(['param' => 'value'], $this->column->getTemplateParams());
+        self::assertSame('template', $this->column->getTemplate());
+        self::assertSame(['param' => 'value'], $this->column->getTemplateParams());
     }
 
     public function testTemplateParamsWithCallback(): void
     {
         $this->column->template('template', static fn () => ['param' => 'value']);
-        $this->assertSame('template', $this->column->getTemplate());
-        $this->assertSame(['param' => 'value'], $this->column->getTemplateParams());
+        self::assertSame('template', $this->column->getTemplate());
+        self::assertSame(['param' => 'value'], $this->column->getTemplateParams());
     }
 
     public function testTwigFunctionSetsAndGetsCorrectly(): void
     {
         $this->column->twigFunction('upper');
-        $this->assertSame('upper', $this->column->getTwigFunction());
+        self::assertSame('upper', $this->column->getTwigFunction());
     }
 
     public function testFormatSetsAndGetsCorrectly(): void
     {
         $callback = static fn ($value) => strtoupper((string) $value);
         $this->column->formatValue($callback);
-        $this->assertSame($callback, $this->column->getFormatValue());
+        self::assertSame($callback, $this->column->getFormatValue());
     }
 }

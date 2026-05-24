@@ -171,7 +171,7 @@ class InvoiceTypeTest extends FormTestCase
             M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
             M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
             new CustomFieldTypeResolver(),
-            $this->createMock(EntityManagerInterface::class),
+            $this->createStub(EntityManagerInterface::class),
         );
 
         return [
@@ -181,7 +181,7 @@ class InvoiceTypeTest extends FormTestCase
                 $itemType,
                 new DiscountType($systemConfig),
                 $customFieldsType,
-                new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))
+                new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class))
             ], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),

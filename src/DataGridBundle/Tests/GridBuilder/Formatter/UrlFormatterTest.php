@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,15 +13,14 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\UrlFormatter;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\UrlFormatter
- */
+#[CoversClass(UrlFormatter::class)]
 final class UrlFormatterTest extends TestCase
 {
     private UrlFormatter $formatter;
@@ -34,13 +35,13 @@ final class UrlFormatterTest extends TestCase
     {
         $column = UrlColumn::new('url');
 
-        $this->assertSame('<a href="https://example.com" target="_blank">https://example.com</a>', $this->formatter->format($column, 'https://example.com'));
+        self::assertSame('<a href="https://example.com" target="_blank">https://example.com</a>', $this->formatter->format($column, 'https://example.com'));
     }
 
     public function testFormatReturnsEmptyUrlForNullValue(): void
     {
         $column = UrlColumn::new('url');
 
-        $this->assertSame('<a href="" target="_blank"></a>', $this->formatter->format($column, null));
+        self::assertSame('<a href="" target="_blank"></a>', $this->formatter->format($column, null));
     }
 }

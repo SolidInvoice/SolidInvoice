@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn
- */
+#[CoversClass(MoneyColumn::class)]
 final class MoneyColumnTest extends TestCase
 {
     private MoneyColumn $column;

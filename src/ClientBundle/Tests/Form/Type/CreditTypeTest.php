@@ -49,7 +49,7 @@ class CreditTypeTest extends FormTestCase
     protected function getTypes(): array
     {
         return [
-            new CreditType($this->createMock(TranslatorInterface::class)),
+            new CreditType($this->createStub(TranslatorInterface::class)),
         ];
     }
 }

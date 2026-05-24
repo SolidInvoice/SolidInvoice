@@ -164,7 +164,7 @@ class QuoteTypeTest extends FormTestCase
             M::mock(CustomFieldRepository::class, ['findByTargetOrdered' => []]),
             M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
             new CustomFieldTypeResolver(),
-            $this->createMock(EntityManagerInterface::class),
+            $this->createStub(EntityManagerInterface::class),
         );
 
         return [

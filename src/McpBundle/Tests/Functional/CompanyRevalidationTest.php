@@ -16,6 +16,8 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use League\OAuth2\Server\ResourceServer;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Http\Message\ServerRequestInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -39,11 +41,9 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies that a token bound to a company the user has since been removed from
  * is rejected at authentication time, even if the token is otherwise valid and
  * not revoked.
- *
- * @covers \SolidInvoice\McpBundle\Security\McpOAuthAuthenticator::authenticate
- *
- * @group functional
  */
+#[CoversMethod(McpOAuthAuthenticator::class, 'authenticate')]
+#[Group('functional')]
 final class CompanyRevalidationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -161,7 +161,7 @@ final class CompanyRevalidationTest extends KernelTestCase
     private function buildMockServerFactory(string $jti, string $userId): ServerFactoryInterface
     {
         $validatedRequest = $this->createMock(ServerRequestInterface::class);
-        $validatedRequest->method('getAttribute')->willReturnMap([
+        $validatedRequest->expects($this->exactly(3))->method('getAttribute')->willReturnMap([
             ['oauth_access_token_id', null, $jti],
             ['oauth_user_id', null, $userId],
             ['oauth_scopes', null, ['mcp:read']],

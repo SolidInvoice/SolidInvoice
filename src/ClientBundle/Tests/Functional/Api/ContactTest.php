@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -22,9 +23,7 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class ContactTest extends ApiTestCase
 {
     use Factories;

@@ -159,7 +159,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
 
         $user = $this->getUser();
         self::assertTrue($user->isEmailAuthEnabled());
-        self::assertEquals($existingCodes, $user->getBackupCodes());
+        self::assertSame($existingCodes, $user->getBackupCodes());
 
         $html = $this->component->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceQrCodeDataUri($this->replaceChecksum($this->replaceUuid($html))));
@@ -210,7 +210,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         $user = $this->getUser();
         self::assertFalse($user->isEmailAuthEnabled());
         self::assertTrue($user->isTotpAuthenticationEnabled());
-        self::assertEquals($codes, $user->getBackupCodes());
+        self::assertSame($codes, $user->getBackupCodes());
 
         $html = $this->component->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceQrCodeDataUri($this->replaceChecksum($this->replaceUuid($html))));
@@ -261,7 +261,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         $user = $this->getUser();
         self::assertFalse($user->isTotpAuthenticationEnabled());
         self::assertTrue($user->isEmailAuthEnabled());
-        self::assertEquals($codes, $user->getBackupCodes());
+        self::assertSame($codes, $user->getBackupCodes());
 
         $html = $this->component->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceQrCodeDataUri($this->replaceChecksum($this->replaceUuid($html))));

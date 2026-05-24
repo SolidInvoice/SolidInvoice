@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\DTO\DatabaseConfig;
 use SolidInvoice\InstallBundle\Form\Step\DatabaseConfigStep;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Form\Step\DatabaseConfigStep
- */
+#[CoversClass(DatabaseConfigStep::class)]
 final class DatabaseConfigTypeTest extends FormTestCase
 {
     public function testSubmit(): void

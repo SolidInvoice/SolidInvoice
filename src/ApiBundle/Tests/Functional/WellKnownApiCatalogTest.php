@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\ApiBundle\Action\WellKnownApiCatalog;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\ApiBundle\Action\WellKnownApiCatalog
- *
- * @group functional
- */
+#[CoversClass(WellKnownApiCatalog::class)]
+#[Group('functional')]
 final class WellKnownApiCatalogTest extends WebTestCase
 {
     use EnsureApplicationInstalled;

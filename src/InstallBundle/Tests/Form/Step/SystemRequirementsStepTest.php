@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Form\Step;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\Form\Step\SystemRequirementsStep;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Form\Step\SystemRequirementsStep
- */
+#[CoversClass(SystemRequirementsStep::class)]
 final class SystemRequirementsStepTest extends FormTestCase
 {
     public function testSubmit(): void

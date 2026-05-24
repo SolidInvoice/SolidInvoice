@@ -20,6 +20,7 @@ use Doctrine\DBAL\Driver\PDO\SQLite\Driver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -39,7 +40,7 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\StateMachine;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler */
+#[CoversClass(CreateInvoiceFromRecurringHandler::class)]
 final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -200,10 +201,10 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         $recurringInvoiceRepository = $this->createMock(RecurringInvoiceRepository::class);
-        $clock = $this->createMock(ClockInterface::class);
+        $clock = $this->createStub(ClockInterface::class);
         $invoiceManager = $this->createMock(InvoiceManager::class);
         $invoiceStateMachine = $this->createMock(StateMachine::class);
-        $registry = $this->createMock(Registry::class);
+        $registry = $this->createStub(Registry::class);
 
         $recurringInvoiceRepository->expects(self::once())
             ->method('find')

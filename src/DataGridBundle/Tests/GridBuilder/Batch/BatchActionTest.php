@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Batch;
 
 use Closure;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction
- */
+#[CoversClass(BatchAction::class)]
 final class BatchActionTest extends TestCase
 {
     private BatchAction $batchAction;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,9 +30,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class InvoiceCreateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

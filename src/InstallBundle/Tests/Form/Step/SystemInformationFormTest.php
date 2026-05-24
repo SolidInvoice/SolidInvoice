@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Form\Step;
 
 use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\DTO\UserAccount;
 use SolidInvoice\InstallBundle\Form\Step\UserAccountStep;
@@ -23,9 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Locales;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Form\Step\UserAccountStep
- */
+#[CoversClass(UserAccountStep::class)]
 final class SystemInformationFormTest extends FormTestCase
 {
     private RequestStack $requestStack;

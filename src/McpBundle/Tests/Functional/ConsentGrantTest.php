@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -22,11 +24,8 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\McpBundle\OAuth\ConsentService
- *
- * @group functional
- */
+#[CoversClass(ConsentService::class)]
+#[Group('functional')]
 final class ConsentGrantTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

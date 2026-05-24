@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendRecurringInvoicesCommand;
@@ -30,7 +31,7 @@ use function rewind;
 use function str_replace;
 use function stream_get_contents;
 
-/** @covers \SolidInvoice\InvoiceBundle\Command\SendRecurringInvoicesCommand */
+#[CoversClass(SendRecurringInvoicesCommand::class)]
 final class SendRecurringInvoicesCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

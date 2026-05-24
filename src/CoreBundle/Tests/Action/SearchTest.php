@@ -36,9 +36,7 @@ final class SearchTest extends TestCase
     protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
-
-        $registry = $this->createMock(ManagerRegistry::class);
-        $this->companySelector = new CompanySelector($registry);
+        $this->companySelector = new CompanySelector($this->createStub(ManagerRegistry::class));
     }
 
     private function setCompany(): Ulid

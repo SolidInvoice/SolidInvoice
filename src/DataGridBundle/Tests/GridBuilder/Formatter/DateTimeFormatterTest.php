@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -12,13 +14,12 @@
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use DateTime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\DateTimeFormatter;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\DateTimeFormatter
- */
+#[CoversClass(DateTimeFormatter::class)]
 final class DateTimeFormatterTest extends TestCase
 {
     public function testFormat(): void

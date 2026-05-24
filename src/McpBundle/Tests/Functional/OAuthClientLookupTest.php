@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
@@ -23,11 +25,9 @@ use Zenstruck\Foundry\Test\Factories;
  * Regression: league/oauth2-server passes the stored client_id back to the
  * repository. We store as ULID but `getIdentifier()` returns RFC 4122 UUID
  * form, so lookups must accept both.
- *
- * @covers \SolidInvoice\McpBundle\Repository\OAuthClientRepository::getClientEntity
- *
- * @group functional
  */
+#[CoversMethod(OAuthClientRepository::class, 'getClientEntity')]
+#[Group('functional')]
 final class OAuthClientLookupTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

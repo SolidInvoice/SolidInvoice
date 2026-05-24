@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
@@ -23,9 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use function sys_get_temp_dir;
 use function uniqid;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Step\GenerateSecretStep
- */
+#[CoversClass(GenerateSecretStep::class)]
 final class GenerateSecretStepTest extends TestCase
 {
     private string $tempDir;

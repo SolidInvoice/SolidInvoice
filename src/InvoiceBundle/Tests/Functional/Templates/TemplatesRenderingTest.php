@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Templates;
 
 use Brick\Math\BigInteger;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -25,13 +26,12 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension
- */
+#[CoversClass(InvoiceTemplateExtension::class)]
 final class TemplatesRenderingTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

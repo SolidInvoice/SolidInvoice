@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Company;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Company\AllUserCompanies;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Company\AllUserCompanies
- */
+#[CoversClass(AllUserCompanies::class)]
 final class AllUserCompaniesTest extends TestCase
 {
     public function testReturnsAllCompaniesAsList(): void

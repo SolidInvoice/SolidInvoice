@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\UserBundle\Entity\ApiToken;
@@ -21,9 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class ApiTokenTest extends ApiTestCase
 {
     use Factories;

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests\DTO;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-/**
- * @covers \SolidInvoice\SettingsBundle\DTO\Config
- */
+#[CoversClass(Config::class)]
 final class ConfigTest extends TestCase
 {
     public function testConfigWithoutFormOptions(): void

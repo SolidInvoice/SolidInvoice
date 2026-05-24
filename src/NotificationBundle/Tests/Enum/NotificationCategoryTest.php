@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Enum;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 
-/**
- * @covers \SolidInvoice\NotificationBundle\Enum\NotificationCategory
- */
+#[CoversClass(NotificationCategory::class)]
 final class NotificationCategoryTest extends TestCase
 {
     public function testGetLabel(): void

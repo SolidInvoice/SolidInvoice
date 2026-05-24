@@ -18,6 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use PHPUnit\Framework\Attributes\Group;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,9 +30,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class UserRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

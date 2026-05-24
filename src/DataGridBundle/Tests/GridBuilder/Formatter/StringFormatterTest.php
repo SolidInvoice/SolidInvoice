@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,6 +13,7 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\StringFormatter;
@@ -20,9 +23,7 @@ use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use function spl_object_hash;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\StringFormatter
- */
+#[CoversClass(StringFormatter::class)]
 final class StringFormatterTest extends TestCase
 {
     private StringFormatter $formatter;
@@ -37,7 +38,7 @@ final class StringFormatterTest extends TestCase
     {
         $column = StringColumn::new('column')->twigFunction('max');
 
-        $this->assertSame('20', $this->formatter->format($column, [10, 20]));
+        self::assertSame('20', $this->formatter->format($column, [10, 20]));
     }
 
     public function testFormatReturnsStringForStringableObject(): void
@@ -50,7 +51,7 @@ final class StringFormatterTest extends TestCase
             }
         };
 
-        $this->assertSame('value', $this->formatter->format($column, $object));
+        self::assertSame('value', $this->formatter->format($column, $object));
     }
 
     public function testFormatReturnsStringForClassImplementsStringableObject(): void
@@ -63,7 +64,7 @@ final class StringFormatterTest extends TestCase
             }
         };
 
-        $this->assertSame('value', $this->formatter->format($column, $object));
+        self::assertSame('value', $this->formatter->format($column, $object));
     }
 
     public function testFormatReturnsObjectHashForObjectWithoutToString(): void
@@ -71,28 +72,28 @@ final class StringFormatterTest extends TestCase
         $column = StringColumn::new('column');
         $object = new stdClass();
 
-        $this->assertSame(spl_object_hash($object), $this->formatter->format($column, $object));
+        self::assertSame(spl_object_hash($object), $this->formatter->format($column, $object));
     }
 
     public function testFormatReturnsStringForNumericValue(): void
     {
         $column = StringColumn::new('column');
 
-        $this->assertSame('123', $this->formatter->format($column, 123));
+        self::assertSame('123', $this->formatter->format($column, 123));
     }
 
     public function testFormatReturnsStringForBooleanValue(): void
     {
         $column = StringColumn::new('column');
 
-        $this->assertSame('true', $this->formatter->format($column, true));
-        $this->assertSame('false', $this->formatter->format($column, false));
+        self::assertSame('true', $this->formatter->format($column, true));
+        self::assertSame('false', $this->formatter->format($column, false));
     }
 
     public function testFormatReturnsEmptyStringForNullValue(): void
     {
         $column = StringColumn::new('column');
 
-        $this->assertSame('', $this->formatter->format($column, null));
+        self::assertSame('', $this->formatter->format($column, null));
     }
 }

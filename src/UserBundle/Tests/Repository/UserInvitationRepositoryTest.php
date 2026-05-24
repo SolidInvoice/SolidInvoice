@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -26,9 +27,7 @@ use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class UserInvitationRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

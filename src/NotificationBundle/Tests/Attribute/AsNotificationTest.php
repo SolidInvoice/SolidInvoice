@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Attribute;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 
-/**
- * @covers \SolidInvoice\NotificationBundle\Attribute\AsNotification
- */
+#[CoversClass(AsNotification::class)]
 final class AsNotificationTest extends TestCase
 {
     public function testAsNotificationWithAllParameters(): void

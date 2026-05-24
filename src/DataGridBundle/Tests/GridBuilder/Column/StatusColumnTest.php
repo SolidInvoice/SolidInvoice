@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn
- */
+#[CoversClass(StatusColumn::class)]
 final class StatusColumnTest extends TestCase
 {
     private StatusColumn $column;

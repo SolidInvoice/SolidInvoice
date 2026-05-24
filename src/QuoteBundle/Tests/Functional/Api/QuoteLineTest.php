@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class QuoteLineTest extends ApiTestCase
 {
     use Factories;

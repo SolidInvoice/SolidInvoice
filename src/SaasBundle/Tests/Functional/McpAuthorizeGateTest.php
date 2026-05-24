@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -32,9 +33,8 @@ use Zenstruck\Foundry\Test\Factories;
  * happy path (gate enabled, valid client, full consent flow) is covered by
  * `\SolidInvoice\McpBundle\Tests\Functional\ConsentGrantTest` and the broader
  * MCP suite — here we only assert the gating edge.
- *
- * @group functional
  */
+#[Group('functional')]
 final class McpAuthorizeGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
@@ -73,7 +73,7 @@ final class McpAuthorizeGateTest extends WebTestCase
     private function seedOAuthClient(): OAuthClient
     {
         $repo = self::getContainer()->get(OAuthClientRepository::class);
-        \assert($repo instanceof OAuthClientRepository);
+        self::assertInstanceOf(OAuthClientRepository::class, $repo);
 
         $client = new OAuthClient();
         $client->setName('Gate test agent');
@@ -101,7 +101,7 @@ final class McpAuthorizeGateTest extends WebTestCase
         }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
-        \assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         return $client;

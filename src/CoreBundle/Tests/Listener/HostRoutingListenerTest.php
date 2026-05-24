@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanyDomainResolver;
@@ -37,9 +38,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Listener\HostRoutingListener
- */
+#[CoversClass(HostRoutingListener::class)]
 final class HostRoutingListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

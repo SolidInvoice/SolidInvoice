@@ -16,6 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Service;
 use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
@@ -26,10 +27,8 @@ use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 
-/**
- * @covers \SolidInvoice\SaasBundle\Service\SubscriptionEligibility
- * @covers \SolidInvoice\SaasBundle\Service\EligibilityResult
- */
+#[CoversClass(SubscriptionEligibility::class)]
+#[CoversClass(EligibilityResult::class)]
 final class SubscriptionEligibilityTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,21 +13,20 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Action;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction
- */
+#[CoversClass(EditAction::class)]
 final class EditActionTest extends TestCase
 {
     public function testActionDefaults(): void
     {
         $action = EditAction::new('route', ['param' => 'value']);
 
-        $this->assertSame('pencil', $action->getIcon());
-        $this->assertSame('Edit', $action->getLabel());
-        $this->assertSame('route', $action->getRoute());
-        $this->assertSame(['param' => 'value'], $action->getParameters());
+        self::assertSame('pencil', $action->getIcon());
+        self::assertSame('Edit', $action->getLabel());
+        self::assertSame('route', $action->getRoute());
+        self::assertSame(['param' => 'value'], $action->getParameters());
     }
 }

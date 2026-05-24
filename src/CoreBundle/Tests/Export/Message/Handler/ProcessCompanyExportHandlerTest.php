@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Export\Message\Handler;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
+use SolidInvoice\CoreBundle\Export\CompanyExporter;
+use SolidInvoice\CoreBundle\Export\Discovery\EntityDiscovery;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\CoreBundle\Export\Enum\ExportStatus;
 use SolidInvoice\CoreBundle\Export\Message\Handler\ProcessCompanyExportHandler;
@@ -28,11 +31,9 @@ use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use ZipArchive;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Export\Message\Handler\ProcessCompanyExportHandler
- * @covers \SolidInvoice\CoreBundle\Export\CompanyExporter
- * @covers \SolidInvoice\CoreBundle\Export\Discovery\EntityDiscovery
- */
+#[CoversClass(ProcessCompanyExportHandler::class)]
+#[CoversClass(CompanyExporter::class)]
+#[CoversClass(EntityDiscovery::class)]
 final class ProcessCompanyExportHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -105,7 +106,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
     private function assertArchiveContainsManifest(string $archivePath): void
     {
         $zip = new ZipArchive();
-        self::assertTrue($zip->open($archivePath) === true);
+        self::assertTrue($zip->open($archivePath));
 
         $manifestContents = $zip->getFromName('manifest.json');
         $zip->close();

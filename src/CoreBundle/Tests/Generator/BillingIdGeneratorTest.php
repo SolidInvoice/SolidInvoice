@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -12,6 +14,7 @@
 namespace SolidInvoice\CoreBundle\Tests\Generator;
 
 use JsonException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,9 +24,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Generator\BillingIdGenerator
- */
+#[CoversClass(BillingIdGenerator::class)]
 final class BillingIdGeneratorTest extends TestCase
 {
     /**

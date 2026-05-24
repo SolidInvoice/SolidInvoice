@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,6 +15,7 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
@@ -35,9 +38,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter
- */
+#[CoversClass(ColumnFormatter::class)]
 final class ColumnFormatterTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -68,7 +69,7 @@ final class ColumnFormatterTest extends TestCase
         $this->locator->method('has')->willReturn(true);
         $this->locator->method('get')->willReturn($formatter);
 
-        $this->assertSame('US Dollar', $this->formatter->format($column, 'USD'));
+        self::assertSame('US Dollar', $this->formatter->format($column, 'USD'));
     }
 
     public function testFormatReturnsCorrectValueForUnsupportedColumn(): void
@@ -79,14 +80,14 @@ final class ColumnFormatterTest extends TestCase
         $this->locator->method('has')->willReturn(false);
         $this->locator->method('get')->willReturn($formatter);
 
-        $this->assertSame('value', $this->formatter->format($column, 'value'));
+        self::assertSame('value', $this->formatter->format($column, 'value'));
     }
 
     public function testGetSubscribedServicesReturnsCorrectServices(): void
     {
         $services = ColumnFormatter::getSubscribedServices();
 
-        $this->assertSame([
+        self::assertSame([
             CurrencyColumn::class => CurrencyFormatter::class,
             DateTimeColumn::class => DateTimeFormatter::class,
             MoneyColumn::class => MoneyFormatter::class,

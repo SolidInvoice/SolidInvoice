@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,12 +15,11 @@ namespace SolidInvoice\DataGridBundle\Tests\Filter;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Filter\SearchFilter;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\Filter\SearchFilter
- */
+#[CoversClass(SearchFilter::class)]
 final class SearchFilterTest extends TestCase
 {
     public function testFilterAddsCorrectConditionsWhenQueryIsNotEmpty(): void

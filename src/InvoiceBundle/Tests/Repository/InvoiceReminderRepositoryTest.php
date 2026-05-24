@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
@@ -24,7 +25,7 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository */
+#[CoversClass(InvoiceReminderRepository::class)]
 final class InvoiceReminderRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

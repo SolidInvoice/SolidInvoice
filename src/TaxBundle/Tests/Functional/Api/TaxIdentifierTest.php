@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Tests\Functional\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
@@ -21,9 +22,7 @@ use SolidInvoice\TaxBundle\Test\Factory\TaxIdentifierFactory;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class TaxIdentifierTest extends ApiTestCase
 {
     use Factories;

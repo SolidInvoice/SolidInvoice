@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Search;
 
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
@@ -297,14 +298,12 @@ final class SearchQueryParserTest extends TestCase
     }
 
     /**
-     * @return list<array{string, string}>
+     * @return Iterator<int<0, max>, array{string, string}>
      */
-    public static function whitespaceProvider(): array
+    public static function whitespaceProvider(): Iterator
     {
-        return [
-            ['  acme  ', 'acme'],
-            ['status:paid  acme  ', 'acme'],
-            ['  status:paid', ''],
-        ];
+        yield ['  acme  ', 'acme'];
+        yield ['status:paid  acme  ', 'acme'];
+        yield ['  status:paid', ''];
     }
 }

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\MessageHandler;
 
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -41,9 +42,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the SendInvoiceReminderHandler skips and logs (without throwing or
  * retrying) when the SaaS `automated_reminders` feature is disabled, and sends
  * normally when the feature is enabled / in self-hosted mode.
- *
- * @covers \SolidInvoice\InvoiceBundle\MessageHandler\SendInvoiceReminderHandler
  */
+#[CoversClass(SendInvoiceReminderHandler::class)]
 final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

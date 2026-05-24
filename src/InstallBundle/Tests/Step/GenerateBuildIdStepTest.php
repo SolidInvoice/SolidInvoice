@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
@@ -24,9 +25,7 @@ use Symfony\Component\Uid\Uuid;
 use function sys_get_temp_dir;
 use function uniqid;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Step\GenerateBuildIdStep
- */
+#[CoversClass(GenerateBuildIdStep::class)]
 final class GenerateBuildIdStepTest extends TestCase
 {
     private string $tempDir;
@@ -64,7 +63,7 @@ final class GenerateBuildIdStepTest extends TestCase
 
         self::assertFileExists($dotenvFile);
         $contents = file_get_contents($dotenvFile);
-        self::assertStringContainsString('SOLIDINVOICE_BUILD_ID=', $contents);
+        self::assertStringContainsString('SOLIDINVOICE_BUILD_ID=', (string) $contents);
 
         // Extract the stored UUID and validate it
         preg_match("/SOLIDINVOICE_BUILD_ID='([^']+)'/", $contents, $matches);

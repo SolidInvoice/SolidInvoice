@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
 use SolidInvoice\InstallBundle\Step\RunMigrationsStep;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Step\RunMigrationsStep
- */
+#[CoversClass(RunMigrationsStep::class)]
 final class RunMigrationsStepTest extends TestCase
 {
     public function testPriority(): void

@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\EventSubscriber;
 
 use DateTime;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\EventSubscriber\UserEntitySubscriber;
@@ -29,9 +30,8 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 /**
  * Test for UserEntitySubscriber.
- *
- * @covers \SolidInvoice\UserBundle\EventSubscriber\UserEntitySubscriber
  */
+#[CoversClass(UserEntitySubscriber::class)]
 final class UserEntitySubscriberTest extends TestCase
 {
     /**
@@ -45,7 +45,7 @@ final class UserEntitySubscriberTest extends TestCase
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();
@@ -79,7 +79,7 @@ final class UserEntitySubscriberTest extends TestCase
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();
@@ -101,9 +101,12 @@ final class UserEntitySubscriberTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->with($this->callback(fn (TemplatedEmail $email) => $email->getTo()[0]->getAddress() === $user->getEmail()
-                && $email->getSubject() === 'Please Confirm your Email'
-                && $email->getHtmlTemplate() === '@SolidInvoiceUser/Email/confirm_email.html.twig'));
+            ->with($this->callback(function (TemplatedEmail $email) use ($user): bool {
+                self::assertSame($user->getEmail(), $email->getTo()[0]->getAddress());
+                self::assertSame('Please Confirm your Email', $email->getSubject());
+                self::assertSame('@SolidInvoiceUser/Email/confirm_email.html.twig', $email->getHtmlTemplate());
+                return true;
+            }));
 
         $subscriber->postPersist($user);
     }
@@ -114,12 +117,12 @@ final class UserEntitySubscriberTest extends TestCase
     public function testPostPersistWithException(): void
     {
         $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
-        $mailer = $this->createMock(MailerInterface::class);
+        $mailer = $this->createStub(MailerInterface::class);
 
         $emailVerifier = new EmailVerifier(
             $verifyEmailHelper,
             $mailer,
-            $this->createMock(UserRepository::class)
+            $this->createStub(UserRepository::class)
         );
 
         $logger = new BufferingLogger();
@@ -154,8 +157,8 @@ final class UserEntitySubscriberTest extends TestCase
         $subscriber->postPersist($user);
 
         $logs = $logger->cleanLogs();
-        $this->assertCount(1, $logs);
-        $this->assertSame('Failed to send email confirmation', $logs[0][1]);
-        $this->assertSame(['exception' => $exception], $logs[0][2]);
+        self::assertCount(1, $logs);
+        self::assertSame('Failed to send email confirmation', $logs[0][1]);
+        self::assertSame(['exception' => $exception], $logs[0][2]);
     }
 }

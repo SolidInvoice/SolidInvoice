@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Twig\Extension;
 
 use Brick\Math\BigInteger;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -21,9 +22,7 @@ use SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 
-/**
- * @covers \SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension
- */
+#[CoversClass(InvoiceTemplateExtension::class)]
 final class InvoiceTemplateExtensionTest extends TestCase
 {
     private InvoiceTemplateExtension $extension;

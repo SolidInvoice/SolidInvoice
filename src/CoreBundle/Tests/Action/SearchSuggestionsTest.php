@@ -31,8 +31,7 @@ final class SearchSuggestionsTest extends TestCase
 
     protected function setUp(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
-        $this->companySelector = new CompanySelector($registry);
+        $this->companySelector = new CompanySelector($this->createStub(ManagerRegistry::class));
     }
 
     private function setCompany(): void
@@ -140,9 +139,7 @@ final class SearchSuggestionsTest extends TestCase
 
     public function testResponseContentTypeIsJson(): void
     {
-        $repository = $this->createMock(ClientRepository::class);
-
-        $action = $this->makeAction($repository);
+        $action = $this->makeAction($this->createMock(ClientRepository::class));
         $response = $action(new Request(['qualifier' => 'client', 'q' => '']));
 
         self::assertStringContainsString('application/json', (string) $response->headers->get('Content-Type'));

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Formatter;
 
+use Iterator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
@@ -80,107 +81,97 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return array<array<string>>
+     * @return Iterator<(int | string), array<string>>
      */
-    public static function localeProvider(): array
+    public static function localeProvider(): Iterator
     {
-        return [
-            [
-                'en_US', 'USD', '$12.00',
-            ],
-            [
-                'en_GB', 'GBP', '£12.00',
-            ],
-            [
-                'fr_FR', 'EUR', '12,00 €',
-            ],
-            [
-                'af_ZA', 'ZAR', 'R 12,00',
-            ],
+        yield [
+            'en_US', 'USD', '$12.00',
+        ];
+        yield [
+            'en_GB', 'GBP', '£12.00',
+        ];
+        yield [
+            'fr_FR', 'EUR', '12,00 €',
+        ];
+        yield [
+            'af_ZA', 'ZAR', 'R 12,00',
         ];
     }
 
     /**
-     * @return array<array<string>>
+     * @return Iterator<(int | string), array<string>>
      */
-    public static function symbolProvider(): array
+    public static function symbolProvider(): Iterator
     {
-        return [
-            [
-                'en_US', 'USD', '$',
-            ],
-            [
-                'en_GB', 'GBP', '£',
-            ],
-            [
-                'fr_FR', 'EUR', '€',
-            ],
-            [
-                'af_ZA', 'ZAR', 'R',
-            ],
+        yield [
+            'en_US', 'USD', '$',
+        ];
+        yield [
+            'en_GB', 'GBP', '£',
+        ];
+        yield [
+            'fr_FR', 'EUR', '€',
+        ];
+        yield [
+            'af_ZA', 'ZAR', 'R',
         ];
     }
 
     /**
-     * @return array<array<string>>
+     * @return Iterator<(int | string), array<string>>
      */
-    public static function thousandSeparatorProvider(): array
+    public static function thousandSeparatorProvider(): Iterator
     {
-        return [
-            [
-                'en_US', ',',
-            ],
-            [
-                'en_GB', ',',
-            ],
-            [
-                'fr_FR', ' ',
-            ],
-            [
-                'af_ZA', ' ',
-            ],
+        yield [
+            'en_US', ',',
+        ];
+        yield [
+            'en_GB', ',',
+        ];
+        yield [
+            'fr_FR', ' ',
+        ];
+        yield [
+            'af_ZA', ' ',
         ];
     }
 
     /**
-     * @return array<array<string>>
+     * @return Iterator<(int | string), array<string>>
      */
-    public static function decimalSeparatorProvider(): array
+    public static function decimalSeparatorProvider(): Iterator
     {
-        return [
-            [
-                'en_US', '.',
-            ],
-            [
-                'en_GB', '.',
-            ],
-            [
-                'fr_FR', ',',
-            ],
-            [
-                'af_ZA', ',',
-            ],
+        yield [
+            'en_US', '.',
+        ];
+        yield [
+            'en_GB', '.',
+        ];
+        yield [
+            'fr_FR', ',',
+        ];
+        yield [
+            'af_ZA', ',',
         ];
     }
 
     /**
-     * @return array<array<string>>
+     * @return Iterator<(int | string), array<string>>
      */
-    public static function patternProvider(): array
+    public static function patternProvider(): Iterator
     {
-        return [
-            [
-                'en_US', '%s%v',
-            ],
-            [
-                'en_GB', '%s%v',
-            ],
-            [
-                'fr_FR', '%v %s',
-            ],
-            [
-                'af_ZA', '%s%v',
-            ],
+        yield [
+            'en_US', '%s%v',
+        ];
+        yield [
+            'en_GB', '%s%v',
+        ];
+        yield [
+            'fr_FR', '%v %s',
+        ];
+        yield [
+            'af_ZA', '%s%v',
         ];
     }
 

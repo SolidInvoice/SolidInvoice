@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -17,13 +19,12 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 
-/**
- * @covers \SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer
- */
+#[CoversClass(ViewTransformer::class)]
 final class ViewTransformerTest extends TestCase
 {
     private ViewTransformer $viewTransformer;
@@ -76,7 +77,7 @@ final class ViewTransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<array<string|float|null>>
+     * @return iterable<array<string|float|BigDecimal|null>>
      * @throws MathException
      */
     public static function transformDataProvider(): iterable

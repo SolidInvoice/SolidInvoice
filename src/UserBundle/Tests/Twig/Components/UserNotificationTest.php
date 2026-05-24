@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Twig\Components;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -25,9 +26,7 @@ use SolidInvoice\UserBundle\Twig\Components\UserNotification;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Twig\Environment;
 
-/**
- * @covers \SolidInvoice\UserBundle\Twig\Components\UserNotification
- */
+#[CoversClass(UserNotification::class)]
 final class UserNotificationTest extends TestCase
 {
     use EnsureApplicationInstalled;
@@ -37,11 +36,6 @@ final class UserNotificationTest extends TestCase
     private UserNotificationRepository $userNotificationRepository;
 
     private TransportSettingRepository $transportSettingRepository;
-
-    /**
-     * @var ServiceLocator<NotificationMessage>
-     */
-    private ServiceLocator $notificationLocator;
 
     protected function setUp(): void
     {
@@ -78,7 +72,7 @@ final class UserNotificationTest extends TestCase
             }
         };
 
-        $this->notificationLocator = new ServiceLocator([
+        $notificationLocator = new ServiceLocator([
             'client_created' => static fn () => $clientNotification,
             'invoice_status_changed' => static fn () => $invoiceNotification,
             'payment_made' => static fn () => $paymentNotification,
@@ -88,7 +82,7 @@ final class UserNotificationTest extends TestCase
         $this->component = new UserNotification(
             $this->userNotificationRepository,
             $this->transportSettingRepository,
-            $this->notificationLocator,
+            $notificationLocator,
             $this->createStub(ManagerRegistry::class),
         );
     }

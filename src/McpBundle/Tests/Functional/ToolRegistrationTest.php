@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
 use SolidInvoice\DashboardBundle\Mcp\AnalyticsTools;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,9 +30,8 @@ use Zenstruck\Foundry\Test\Factories;
 /**
  * Asserts every Phase 2 tool class is registered with the `mcp.tool` tag in the
  * container. If one is missing, a business bundle is likely misconfigured.
- *
- * @group functional
  */
+#[Group('functional')]
 final class ToolRegistrationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

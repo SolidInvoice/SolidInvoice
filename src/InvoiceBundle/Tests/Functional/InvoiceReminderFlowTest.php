@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -21,7 +22,10 @@ use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
 use SolidInvoice\InvoiceBundle\Entity\ReminderStatus;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderNotification;
+use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
@@ -33,13 +37,11 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand
- * @covers \SolidInvoice\InvoiceBundle\Repository\InvoiceRepository
- * @covers \SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository
- * @covers \SolidInvoice\InvoiceBundle\Notification\InvoiceReminderNotification
- * @covers \SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification
- */
+#[CoversClass(SendInvoiceRemindersCommand::class)]
+#[CoversClass(InvoiceRepository::class)]
+#[CoversClass(InvoiceReminderRepository::class)]
+#[CoversClass(InvoiceReminderNotification::class)]
+#[CoversClass(InvoiceReminderStoppedNotification::class)]
 final class InvoiceReminderFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

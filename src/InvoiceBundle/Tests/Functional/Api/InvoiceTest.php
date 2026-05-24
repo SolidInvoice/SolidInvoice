@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -30,9 +31,7 @@ use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 use function date;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class InvoiceTest extends ApiTestCase
 {
     use Factories;
@@ -185,6 +184,9 @@ final class InvoiceTest extends ApiTestCase
             ],
         ])->_real();
 
+        self::getContainer()->get('doctrine')->getManager()->clear();
+        $invoice = self::getContainer()->get('doctrine')->getManager()->getRepository(Invoice::class)->find($invoice->getId());
+
         $data = $this->requestGet($this->getIriFromResource($invoice));
 
         self::assertEqualsCanonicalizing([
@@ -202,6 +204,16 @@ final class InvoiceTest extends ApiTestCase
             'payments' => [],
             'quote' => null,
             'lines' => [
+                [
+                    '@id' => $this->getIriFromResource($invoice->getLines()->first()),
+                    '@type' => 'InvoiceLine',
+                    'id' => $invoice->getLines()->first()->getId()->toString(),
+                    'description' => 'Test Item',
+                    'price' => 100,
+                    'qty' => 1,
+                    'total' => 100,
+                    'taxes' => [],
+                ],
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
                     '@type' => 'InvoiceLine',

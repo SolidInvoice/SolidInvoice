@@ -16,15 +16,14 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\MoneyFormatter
- */
+#[CoversClass(MoneyFormatter::class)]
 final class MoneyFormatterTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

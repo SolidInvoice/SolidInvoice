@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Tests\Export\Security\Voter;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -28,7 +29,7 @@ use stdClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Uid\Ulid;
 
-/** @covers \SolidInvoice\CoreBundle\Export\Security\Voter\ExportJobVoter */
+#[CoversClass(ExportJobVoter::class)]
 final class ExportJobVoterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

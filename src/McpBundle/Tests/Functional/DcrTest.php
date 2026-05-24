@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\McpBundle\Action\DynamicClientRegistration;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\McpBundle\Action\DynamicClientRegistration
- *
- * @group functional
- */
+#[CoversClass(DynamicClientRegistration::class)]
+#[Group('functional')]
 final class DcrTest extends WebTestCase
 {
     use EnsureApplicationInstalled;

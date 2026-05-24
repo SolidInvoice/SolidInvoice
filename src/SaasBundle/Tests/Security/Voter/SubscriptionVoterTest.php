@@ -15,7 +15,9 @@ namespace SolidInvoice\SaasBundle\Tests\Security\Voter;
 
 use DateTimeImmutable;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Clock\ClockInterface;
 use RuntimeException;
 use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
@@ -37,11 +39,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Uid\Ulid;
 
-/**
- * @covers \SolidInvoice\SaasBundle\Security\Voter\SubscriptionVoter
- *
- * @group functional
- */
+#[CoversClass(SubscriptionVoter::class)]
+#[Group('functional')]
 final class SubscriptionVoterTest extends KernelTestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

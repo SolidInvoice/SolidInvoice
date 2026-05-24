@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -40,9 +41,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies that a token bound to company A cannot read or write records
  * belonging to company B. The CompanyFilter and write-path company overrides
  * make this invariant hold.
- *
- * @group functional
  */
+#[Group('functional')]
 final class CrossTenantTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

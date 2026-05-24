@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Form\Step;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Form\Step\ReviewStep;
@@ -21,9 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Form\Step\ReviewStep
- */
+#[CoversClass(ReviewStep::class)]
 final class ReviewStepTest extends TestCase
 {
     public function testBuildForm(): void
@@ -54,7 +53,7 @@ final class ReviewStepTest extends TestCase
 
     public function testConfigureOptions(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $reviewStep = new ReviewStep($csrfTokenManager);
 
         $resolver = new OptionsResolver();

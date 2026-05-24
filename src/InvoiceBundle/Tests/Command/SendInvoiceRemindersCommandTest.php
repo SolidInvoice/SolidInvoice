@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
@@ -29,7 +30,7 @@ use function rewind;
 use function str_replace;
 use function stream_get_contents;
 
-/** @covers \SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand */
+#[CoversClass(SendInvoiceRemindersCommand::class)]
 final class SendInvoiceRemindersCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

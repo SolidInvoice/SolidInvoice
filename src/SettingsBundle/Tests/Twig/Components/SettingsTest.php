@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,6 +13,7 @@
 
 namespace SolidInvoice\SettingsBundle\Tests\Twig\Components;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Twig\Components\Settings;
@@ -18,9 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use function preg_replace;
 
-/**
- * @covers \SolidInvoice\SettingsBundle\Twig\Components\Settings
- */
+#[CoversClass(Settings::class)]
 final class SettingsTest extends LiveComponentTest
 {
     private TestLiveComponent $settingsComponent;

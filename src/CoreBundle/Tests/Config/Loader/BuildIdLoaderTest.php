@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Config\Loader;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Config\Loader\BuildIdLoader;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -22,9 +23,7 @@ use Symfony\Component\Uid\Uuid;
 use function sys_get_temp_dir;
 use function uniqid;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Config\Loader\BuildIdLoader
- */
+#[CoversClass(BuildIdLoader::class)]
 final class BuildIdLoaderTest extends TestCase
 {
     private string $tempDir;
@@ -75,8 +74,8 @@ final class BuildIdLoaderTest extends TestCase
 
         self::assertFileExists($dotenvFile);
         $contents = file_get_contents($dotenvFile);
-        self::assertStringContainsString('SOLIDINVOICE_BUILD_ID=', $contents);
-        self::assertStringContainsString($result['SOLIDINVOICE_BUILD_ID'], $contents);
+        self::assertStringContainsString('SOLIDINVOICE_BUILD_ID=', (string) $contents);
+        self::assertStringContainsString($result['SOLIDINVOICE_BUILD_ID'], (string) $contents);
     }
 
     public function testReturnsSameValueOnlyOnce(): void

@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\NotificationBundle\Twig\Components\NotificationTransportConfiguration;
+use Symfony\Component\Uid\Ulid;
 
 final class NotificationTransportConfigurationTest extends LiveComponentTest
 {
@@ -161,6 +162,7 @@ final class NotificationTransportConfigurationTest extends LiveComponentTest
         )->actingAs($user);
 
         $component->call('confirmDelete');
+        self::assertInstanceOf(Ulid::class, $settingId);
 
         // Verify the integration was deleted
         $deletedSetting = $this->repository->find($settingId);

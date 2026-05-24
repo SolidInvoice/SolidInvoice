@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests\Form\Extension;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\Form\Extension\TrialRestrictedExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -21,9 +22,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @covers \SolidInvoice\SettingsBundle\Form\Extension\TrialRestrictedExtension
- */
+#[CoversClass(TrialRestrictedExtension::class)]
 final class TrialRestrictedExtensionTest extends TestCase
 {
     private TrialRestrictedExtension $extension;
@@ -36,7 +35,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDisablesFieldWhenBothOptionsAreTrue(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -46,7 +45,7 @@ final class TrialRestrictedExtensionTest extends TestCase
 
         self::assertTrue($view->vars['disabled']);
         self::assertTrue($view->vars['trial_restricted_active']);
-        self::assertStringContainsString('trial-restricted', $view->vars['attr']['class'] ?? '');
+        self::assertStringContainsString('trial-restricted', (string) ($view->vars['attr']['class'] ?? ''));
     }
 
     public function testBuildViewForcesCheckboxUncheckedDuringTrial(): void
@@ -54,7 +53,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['checked'] = true; // Simulate checkbox that was checked
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -72,7 +71,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['attr']['class'] = 'existing-class';
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -80,14 +79,14 @@ final class TrialRestrictedExtensionTest extends TestCase
 
         $this->extension->buildView($view, $form, $options);
 
-        self::assertStringContainsString('existing-class', $view->vars['attr']['class']);
-        self::assertStringContainsString('trial-restricted', $view->vars['attr']['class']);
+        self::assertStringContainsString('existing-class', (string) $view->vars['attr']['class']);
+        self::assertStringContainsString('trial-restricted', (string) $view->vars['attr']['class']);
     }
 
     public function testBuildViewDoesNotDisableWhenTrialRestrictedIsFalse(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => true,
@@ -102,7 +101,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDoesNotDisableWhenSubscriptionNotInTrial(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => false,
@@ -117,7 +116,7 @@ final class TrialRestrictedExtensionTest extends TestCase
     public function testBuildViewDoesNotDisableWhenBothOptionsAreFalse(): void
     {
         $view = new FormView();
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => false,
@@ -134,7 +133,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         // No attr['class'] set initially
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => true,
             'subscription_in_trial' => true,
@@ -142,7 +141,7 @@ final class TrialRestrictedExtensionTest extends TestCase
 
         $this->extension->buildView($view, $form, $options);
 
-        self::assertStringContainsString('trial-restricted', $view->vars['attr']['class']);
+        self::assertStringContainsString('trial-restricted', (string) $view->vars['attr']['class']);
     }
 
     public function testConfigureOptionsSetCorrectDefaults(): void
@@ -198,7 +197,7 @@ final class TrialRestrictedExtensionTest extends TestCase
         $view = new FormView();
         $view->vars['disabled'] = true; // Already disabled
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $options = [
             'trial_restricted' => false,
             'subscription_in_trial' => false,

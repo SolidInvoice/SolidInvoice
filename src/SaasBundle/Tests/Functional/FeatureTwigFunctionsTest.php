@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use Override;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
@@ -30,9 +31,8 @@ use Twig\Environment;
  * (-1) and BOOLEAN flags default to true, so the helpers behave like the
  * NoopFeatureGate in this baseline state — but the gate concrete is the
  * real PlanFeatureGate, proving the wiring took effect.
- *
- * @group functional
  */
+#[Group('functional')]
 final class FeatureTwigFunctionsTest extends KernelTestCase
 {
     /**

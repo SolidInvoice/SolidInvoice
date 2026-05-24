@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -36,9 +37,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the SaaS email-verification gate short-circuits the manual
  * invoice reminder action with a flash error and skips the mailer when
  * the gate is engaged, and lets the reminder proceed when the gate is open.
- *
- * @group functional
  */
+#[Group('functional')]
 final class InvoiceReminderGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -94,12 +94,10 @@ final class InvoiceReminderGateTest extends KernelTestCase
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $logger = $this->createMock(LoggerInterface::class);
-
         $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn($gated);
 
-        $action = new SendManualReminder($mailer, $router, $logger, $gate);
+        $action = new SendManualReminder($mailer, $router, $this->createStub(LoggerInterface::class), $gate);
         $action->setContainer($container);
 
         return $action;

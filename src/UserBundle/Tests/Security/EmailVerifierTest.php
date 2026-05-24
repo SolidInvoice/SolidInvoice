@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -81,7 +83,12 @@ final class EmailVerifierTest extends TestCase
                 $routeName,
                 $this->callback(
                     // Verify that the parameters contain token, expires, and id
-                    fn ($params) => isset($params['token'], $params['expires']) && $params['id'] === $user->getId()?->toBase58()
+                    function ($params) use ($user): bool {
+                        self::assertArrayHasKey('expires', $params);
+                        self::assertArrayHasKey('token', $params);
+                        self::assertSame($user->getId()?->toBase58(), $params['id']);
+                        return true;
+                    }
                 ),
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
@@ -95,7 +102,12 @@ final class EmailVerifierTest extends TestCase
             ->method('context')
             ->with($this->callback(
                 // Verify that the context contains the required keys
-                fn ($context) => isset($context['signedUrl'], $context['expiresAtMessageKey'], $context['expiresAtMessageData'])
+                function ($context): bool {
+                    self::assertArrayHasKey('expiresAtMessageData', $context);
+                    self::assertArrayHasKey('expiresAtMessageKey', $context);
+                    self::assertArrayHasKey('signedUrl', $context);
+                    return true;
+                }
             ))
             ->willReturnSelf();
 
@@ -115,7 +127,7 @@ final class EmailVerifierTest extends TestCase
 
         // Create a token using the same algorithm as VerifyEmailTokenGenerator
         $tokenGenerator = new VerifyEmailTokenGenerator('test_signing_key');
-        $token = $tokenGenerator->createToken($user->getId(), $user->getEmail());
+        $token = $tokenGenerator->createToken($user->getId()->toString(), $user->getEmail());
 
         // Set the necessary query parameters
         $request->query->set('token', $token);
@@ -139,7 +151,7 @@ final class EmailVerifierTest extends TestCase
         // Restore the original UriSigner
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSigner);
 
-        $this->assertTrue($user->isVerified());
+        self::assertTrue($user->isVerified());
     }
 
     public function testHandleEmailConfirmationWithException(): void
@@ -170,7 +182,7 @@ final class EmailVerifierTest extends TestCase
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } finally {
-            $this->assertFalse($user->isVerified());
+            self::assertFalse($user->isVerified());
             // Restore the original UriSigner
             $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSigner);
         }

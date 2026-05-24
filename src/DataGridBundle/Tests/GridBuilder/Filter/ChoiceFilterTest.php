@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter
- */
+#[CoversClass(ChoiceFilter::class)]
 final class ChoiceFilterTest extends TestCase
 {
     private ChoiceFilter $filter;

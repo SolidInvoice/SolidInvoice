@@ -49,8 +49,7 @@ final class MultiSearchServiceTest extends TestCase
 
     private function makeCompanySelector(bool $hasCompany = true): CompanySelector
     {
-        $registry = $this->createMock(ManagerRegistry::class);
-        $selector = new CompanySelector($registry);
+        $selector = new CompanySelector($this->createStub(ManagerRegistry::class));
 
         if ($hasCompany) {
             $prop = new ReflectionProperty(CompanySelector::class, 'companyId');
@@ -226,7 +225,7 @@ final class MultiSearchServiceTest extends TestCase
 
         $client = $this->createMock(Client::class);
         $client->method('multiSearch')
-            ->willThrowException($this->createMock(CommunicationException::class));
+            ->willThrowException($this->createStub(CommunicationException::class));
 
         $service = $this->makeService($client, $this->makeCompanySelector(), [$formatter]);
 
@@ -239,7 +238,7 @@ final class MultiSearchServiceTest extends TestCase
 
         $client = $this->createMock(Client::class);
         $client->method('multiSearch')
-            ->willThrowException($this->createMock(ApiException::class));
+            ->willThrowException($this->createStub(ApiException::class));
 
         $service = $this->makeService($client, $this->makeCompanySelector(), [$formatter]);
 
@@ -265,7 +264,7 @@ final class MultiSearchServiceTest extends TestCase
         $service->search(new ParsedQuery('test', ['invoices']));
 
         self::assertCount(1, $capturedQueries);
-        self::assertStringContainsString('invoices', $capturedQueries[0]->toArray()['indexUid']);
+        self::assertStringContainsString('invoices', (string) $capturedQueries[0]->toArray()['indexUid']);
     }
 
     public function testAppliesSortDirectives(): void

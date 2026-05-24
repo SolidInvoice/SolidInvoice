@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -36,7 +37,7 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\InvoiceBundle\Message\Handler\MarkInvoiceOverdueHandler */
+#[CoversClass(MarkInvoiceOverdueHandler::class)]
 final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

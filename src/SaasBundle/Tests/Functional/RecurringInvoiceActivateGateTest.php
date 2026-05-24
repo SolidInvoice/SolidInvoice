@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -28,9 +29,8 @@ use Symfony\Component\Workflow\Transition;
  * Verifies the SaaS email-verification gate blocks the recurring invoice
  * `activate` workflow transition (causing workflow_can() to return false)
  * when the gate is engaged, and allows it through otherwise.
- *
- * @group functional
  */
+#[Group('functional')]
 final class RecurringInvoiceActivateGateTest extends TestCase
 {
     public function testActivateIsBlockedWhenGated(): void

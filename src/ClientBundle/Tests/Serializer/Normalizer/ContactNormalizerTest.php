@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -84,8 +86,8 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->denormalize($data, Contact::class, null, $context);
 
-        $this->assertSame($contact, $result);
-        $this->assertNull($result->getClient());
+        self::assertSame($contact, $result);
+        self::assertNull($result->getClient());
     }
 
     public function testSupportsDenormalizationForContact(): void
@@ -95,7 +97,7 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->supportsDenormalization($data, Contact::class, null, $context);
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     public function testDoesNotSupportDenormalizationForNonContact(): void
@@ -105,7 +107,7 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->supportsDenormalization($data, Client::class, null, $context);
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function testNormalizesContact(): void
@@ -121,7 +123,7 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->normalize($contact, null, $context);
 
-        $this->assertSame($normalizedData, $result);
+        self::assertSame($normalizedData, $result);
     }
 
     public function testSupportsNormalizationForContact(): void
@@ -131,7 +133,7 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->supportsNormalization($contact, null, $context);
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     public function testDoesNotSupportNormalizationForNonContact(): void
@@ -141,6 +143,6 @@ final class ContactNormalizerTest extends TestCase
 
         $result = $this->normalizer->supportsNormalization($client, null, $context);
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 }

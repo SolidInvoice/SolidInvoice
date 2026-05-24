@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Entity;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
-/** @covers \SolidInvoice\InvoiceBundle\Entity\RecurringInvoice */
+#[CoversClass(RecurringInvoice::class)]
 final class RecurringInvoiceTest extends TestCase
 {
     public function testHasInvoiceForDayReturnsTrueWhenInvoiceExistsForDate(): void

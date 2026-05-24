@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
@@ -35,9 +36,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the public invoice/quote view link returns 404 when the owning
  * company is gated by the SaaS email-verification gate, and serves the page
  * when the gate is open.
- *
- * @group functional
  */
+#[Group('functional')]
 final class PublicViewLinkGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -77,12 +77,10 @@ final class PublicViewLinkGateTest extends KernelTestCase
         $authChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authChecker->method('isGranted')->willReturn(false);
 
-        $router = $this->createMock(RouterInterface::class);
-
         return new ViewBilling(
             $container->get('doctrine'),
             $authChecker,
-            $router,
+            $this->createStub(RouterInterface::class),
             $container->get(CompanySelector::class),
             $container->get(Generator::class),
             $container->get(Environment::class),

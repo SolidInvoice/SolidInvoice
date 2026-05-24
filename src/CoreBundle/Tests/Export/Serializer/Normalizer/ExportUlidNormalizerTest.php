@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Export\Serializer\Normalizer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer;
 use stdClass;
 use Symfony\Component\Uid\Ulid;
 
-/** @covers \SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer */
+#[CoversClass(ExportUlidNormalizer::class)]
 final class ExportUlidNormalizerTest extends TestCase
 {
     public function testNormalizesUlidToBase58(): void

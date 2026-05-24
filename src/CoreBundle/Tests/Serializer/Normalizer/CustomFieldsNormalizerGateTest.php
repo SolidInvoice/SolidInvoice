@@ -40,11 +40,11 @@ final class CustomFieldsNormalizerGateTest extends TestCase
         $gate->method('isEnabled')->willReturnCallback(static fn (string $key): bool => $key !== 'custom_fields');
 
         $normalizer = new CustomFieldsNormalizer(
-            $this->createMock(CustomFieldRepository::class),
-            $this->createMock(CustomFieldValueRepository::class),
+            $this->createStub(CustomFieldRepository::class),
+            $this->createStub(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
-            $this->createMock(CompanySelectorInterface::class),
+            $this->createStub(CompanySelectorInterface::class),
         );
 
         self::assertFalse($normalizer->supportsNormalization(new Client()));
@@ -56,11 +56,11 @@ final class CustomFieldsNormalizerGateTest extends TestCase
         $gate->method('isEnabled')->willReturn(true);
 
         $normalizer = new CustomFieldsNormalizer(
-            $this->createMock(CustomFieldRepository::class),
-            $this->createMock(CustomFieldValueRepository::class),
+            $this->createStub(CustomFieldRepository::class),
+            $this->createStub(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
-            $this->createMock(CompanySelectorInterface::class),
+            $this->createStub(CompanySelectorInterface::class),
         );
 
         self::assertTrue($normalizer->supportsNormalization(new Client()));
@@ -71,9 +71,9 @@ final class CustomFieldsNormalizerGateTest extends TestCase
         $gate = $this->createMock(FeatureGate::class);
         $gate->method('isEnabled')->willReturn(false);
 
-        $inner = $this->createMock(DenormalizerInterface::class);
+        $inner = $this->createStub(DenormalizerInterface::class);
         $denormalizer = new CustomFieldsDenormalizer(
-            $this->createMock(CustomFieldRepository::class),
+            $this->createStub(CustomFieldRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
             new CustomFieldStagingStore(),
@@ -96,7 +96,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
         $inner->expects(self::once())->method('denormalize')->willReturn(new Client());
 
         $denormalizer = new CustomFieldsDenormalizer(
-            $this->createMock(CustomFieldRepository::class),
+            $this->createStub(CustomFieldRepository::class),
             new CustomFieldTypeResolver(),
             $gate,
             new CustomFieldStagingStore(),

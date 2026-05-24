@@ -36,26 +36,8 @@ use Rector\CodeQuality\Rector\NullsafeMethodCall\CleanupUnneededNullsafeOperator
 use Rector\CodeQuality\Rector\Ternary\UnnecessaryTernaryExpressionRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\NarrowUnusedSetUpDefinedPropertyRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
-use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\AddInstanceofAssertForNullableArgumentRector;
-use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\AddInstanceofAssertForNullableInstanceRector;
-use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\BareCreateMockAssignToDirectUseRector;
-use Rector\PHPUnit\CodeQuality\Rector\Expression\DecorateWillReturnMapWithExpectsMockRector;
-use Rector\PHPUnit\CodeQuality\Rector\FuncCall\AssertFuncCallToPHPUnitAssertRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertComparisonToSpecificMethodRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEmptyNullableObjectToAssertInstanceofRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertSameBoolNullToSpecificMethodRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\StringCastAssertStringContainsStringRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\WithCallbackIdenticalToStandaloneAssertsRector;
-use Rector\PHPUnit\CodeQuality\Rector\StmtsAwareInterface\DeclareStrictTypesTestsRector;
-use Rector\PHPUnit\PHPUnit120\Rector\CallLike\CreateStubOverCreateMockArgRector;
-use Rector\PHPUnit\PHPUnit120\Rector\Class_\PropertyCreateMockToCreateStubRector;
-use Rector\PHPUnit\PHPUnit120\Rector\ClassMethod\ExpressionCreateMockToCreateStubRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Privatization\Rector\Class_\FinalizeTestCaseClassRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
@@ -112,6 +94,9 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
+    ->withRules([
+        PreferPHPUnitSelfCallRector::class,
+    ])
     ->withSkip([
         // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions
         // to twig attributes, but some twig extensions still extend the AbstractExtension which is prohibited
@@ -125,33 +110,18 @@ return RectorConfig::configure()
 
         // This changes fetching string service names to the class names in the container in tests, while the service might not exist and breaking tests
         ContainerGetNameToTypeInTestsRector::class,
+        PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
 
         // Skip for new can be added/adjusted later
-        PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
-        AssertEmptyNullableObjectToAssertInstanceofRector::class,
-        AssertEqualsToSameRector::class,
-        CoversAnnotationWithValueToAttributeRector::class,
-        AddInstanceofAssertForNullableInstanceRector::class,
-        AssertEqualsToSameRector::class,
-        WithCallbackIdenticalToStandaloneAssertsRector::class,
-        CreateStubOverCreateMockArgRector::class,
-        FlipTypeControlToUseExclusiveTypeRector::class,
+        /*FlipTypeControlToUseExclusiveTypeRector::class,
         ExplicitBoolCompareRector::class,
         ConvertStaticToSelfRector::class,
-        NarrowUnusedSetUpDefinedPropertyRector::class,
-        ExpressionCreateMockToCreateStubRector::class,
-        DeclareStrictTypesTestsRector::class,
-        AnnotationWithValueToAttributeRector::class,
-        AssertFuncCallToPHPUnitAssertRector::class,
-        BareCreateMockAssignToDirectUseRector::class,
         FinalizeTestCaseClassRector::class,
-        StringCastAssertStringContainsStringRector::class,
         SafeDeclareStrictTypesRector::class,
         LocallyCalledStaticMethodToNonStaticRector::class,
         SortCallLikeNamedArgsRector::class,
         DisallowedEmptyRuleFixerRector::class,
         UnusedForeachValueToArrayKeysRector::class,
-        AddInstanceofAssertForNullableArgumentRector::class,
         AttributeKeyToClassConstFetchRector::class,
         InlineConstructorDefaultToPropertyRector::class,
         SortAttributeNamedArgsRector::class,
@@ -160,20 +130,15 @@ return RectorConfig::configure()
         SimplifyIfNullableReturnRector::class,
         CleanupUnneededNullsafeOperatorRector::class,
         UnnecessaryTernaryExpressionRector::class,
-        YieldDataProviderRector::class,
         SimplifyBoolIdenticalTrueRector::class,
         SimplifyIfReturnBoolRector::class,
         ThrowWithPreviousExceptionRector::class,
         InlineIfToExplicitIfRector::class,
-        PropertyCreateMockToCreateStubRector::class,
         RepeatedOrEqualToInArrayRector::class,
-        DecorateWillReturnMapWithExpectsMockRector::class,
         SingleInArrayToCompareRector::class,
         RenameClassRector::class,
-        AssertComparisonToSpecificMethodRector::class,
         SimplifyDeMorganBinaryRector::class,
         SimplifyRegexPatternRector::class,
         SimplifyEmptyCheckOnEmptyArrayRector::class,
-        AssertSameBoolNullToSpecificMethodRector::class,
-        SimplifyIfElseToTernaryRector::class,
+        SimplifyIfElseToTernaryRector::class,*/
     ]);

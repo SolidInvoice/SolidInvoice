@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Entity;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
@@ -24,15 +26,14 @@ use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxType;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLine;
+use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLineValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\TaxBundle\Entity\LineTax
- * @covers \SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLine
- * @covers \SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLineValidator
- */
+#[CoversClass(LineTax::class)]
+#[CoversClass(ExactlyOneLine::class)]
+#[CoversClass(ExactlyOneLineValidator::class)]
 final class LineTaxTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -110,6 +111,7 @@ final class LineTaxTest extends KernelTestCase
         $line->addTax($lineTax);
 
         $em = $this->registry->getManagerForClass(LineTax::class);
+        self::assertInstanceOf(ObjectManager::class, $em);
         $em->persist($line);
         $em->flush();
 
@@ -134,6 +136,7 @@ final class LineTaxTest extends KernelTestCase
         $line->addTax($lineTax);
 
         $em = $this->registry->getManagerForClass(LineTax::class);
+        self::assertInstanceOf(ObjectManager::class, $em);
         $em->persist($line);
         $em->flush();
 

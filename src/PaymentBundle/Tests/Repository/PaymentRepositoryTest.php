@@ -18,6 +18,7 @@ use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -25,6 +26,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -32,7 +34,7 @@ use Zenstruck\Foundry\Test\Factories;
 use function date;
 use function strtotime;
 
-/** @covers \SolidInvoice\PaymentBundle\Repository\PaymentRepository */
+#[CoversClass(PaymentRepository::class)]
 final class PaymentRepositoryTest extends KernelTestCase
 {
     use DoctrineTestTrait;
@@ -448,6 +450,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         $this->em->clear();
 
         $payment = $this->em->getRepository(Payment::class)->find($payment->getId());
+        self::assertInstanceOf(Payment::class, $payment);
 
         self::assertSame(PaymentStatus::Captured, $payment->getStatus());
     }
