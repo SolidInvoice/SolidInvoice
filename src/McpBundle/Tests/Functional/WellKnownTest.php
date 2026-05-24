@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -34,7 +35,7 @@ final class WellKnownTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/oauth-authorization-server');
+        $client->request(Request::METHOD_GET, '/.well-known/oauth-authorization-server');
 
         self::assertResponseIsSuccessful();
 
@@ -55,7 +56,7 @@ final class WellKnownTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/oauth-protected-resource');
+        $client->request(Request::METHOD_GET, '/.well-known/oauth-protected-resource');
 
         self::assertResponseIsSuccessful();
 
@@ -72,7 +73,7 @@ final class WellKnownTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/mcp/server-card.json');
+        $client->request(Request::METHOD_GET, '/.well-known/mcp/server-card.json');
 
         self::assertResponseIsSuccessful();
 
@@ -92,7 +93,7 @@ final class WellKnownTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/agent-skills/index.json');
+        $client->request(Request::METHOD_GET, '/.well-known/agent-skills/index.json');
 
         self::assertResponseIsSuccessful();
 

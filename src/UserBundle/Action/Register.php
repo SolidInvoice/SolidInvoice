@@ -35,10 +35,11 @@ final class Register extends AbstractController
         private readonly UserInvitationRepository $invitationRepository,
         private readonly UserRepository $userRepository,
         private readonly Security $security,
+        private readonly ToggleInterface $toggle,
     ) {
     }
 
-    public function __invoke(Request $request, ToggleInterface $toggle): Response
+    public function __invoke(Request $request): Response
     {
         $invitation = null;
 
@@ -56,7 +57,7 @@ final class Register extends AbstractController
             }
         }
 
-        if (! $request->query->has('invitation') && ! $toggle->isActive('allow_registration')) {
+        if (! $request->query->has('invitation') && ! $this->toggle->isActive('allow_registration')) {
             throw $this->createNotFoundException('Registration is disabled');
         }
 

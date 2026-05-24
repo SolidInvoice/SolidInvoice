@@ -15,7 +15,6 @@ namespace SolidInvoice\UserBundle\Action;
 
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ApiIndex extends AbstractController
@@ -25,12 +24,11 @@ final class ApiIndex extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
         if (! $this->featureGate->isEnabled('rest_api_access')) {
             return $this->render('@SolidInvoiceUser/Api/gated.html.twig');
         }
-
         return $this->render('@SolidInvoiceUser/Api/index.html.twig');
     }
 }

@@ -58,6 +58,7 @@ final class UserNotification extends AbstractController
         private readonly TransportSettingRepository $transportSettingRepository,
         #[AutowireLocator('solid_invoice_notification.notification', 'name')]
         private readonly ServiceLocator $notificationLocator,
+        private readonly ManagerRegistry $registry,
     ) {
         $this->notificationList = array_keys($notificationLocator->getProvidedServices());
     }
@@ -198,18 +199,14 @@ final class UserNotification extends AbstractController
     }
 
     #[LiveAction()]
-    public function save(ManagerRegistry $registry): Response
+    public function save(): Response
     {
         $this->submitForm();
-
         $submittedData = $this->form?->getData();
-
         $user = $this->getUser();
         assert($user instanceof User);
-
-        $em = $registry->getManagerForClass(UserNotificationEntity::class);
+        $em = $this->registry->getManagerForClass(UserNotificationEntity::class);
         assert($em instanceof EntityManagerInterface);
-
         foreach ($submittedData as $notification) {
             $userNotification = $this->userNotificationRepository->findOneBy(['event' => $notification['event'], 'user' => $user]);
 
@@ -244,11 +241,8 @@ final class UserNotification extends AbstractController
 
             $em->persist($userNotification);
         }
-
         $em->flush();
-
         $this->addFlash('success', 'Notification saved!');
-
         return $this->redirectToRoute('_profile_notifications');
     }
 }

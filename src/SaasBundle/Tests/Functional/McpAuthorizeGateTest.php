@@ -22,6 +22,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -56,7 +57,7 @@ final class McpAuthorizeGateTest extends WebTestCase
 
         $oauthClient = $this->seedOAuthClient();
 
-        $client->request('GET', '/oauth/authorize', [
+        $client->request(Request::METHOD_GET, '/oauth/authorize', [
             'response_type' => 'code',
             'client_id' => $oauthClient->getIdentifier(),
             'redirect_uri' => 'http://localhost/cb',

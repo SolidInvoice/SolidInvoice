@@ -62,12 +62,7 @@ use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
-use Rector\Symfony\CodeQuality\Rector\BinaryOp\ResponseStatusCodeRector;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
-use Rector\Symfony\CodeQuality\Rector\ClassMethod\ActionSuffixRemoverRector;
-use Rector\Symfony\CodeQuality\Rector\ClassMethod\RemoveUnusedRequestParamRector;
-use Rector\Symfony\CodeQuality\Rector\MethodCall\LiteralGetToRequestClassConstantRector;
-use Rector\Symfony\CodeQuality\Rector\MethodCall\ParameterBagTypedGetMethodCallRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
@@ -123,13 +118,18 @@ return RectorConfig::configure()
         GetFunctionsToAsTwigFunctionAttributeRector::class,
         ServiceSetStringNameToClassNameRector::class,
         ServiceSettersToSettersAutodiscoveryRector::class,
+        ControllerMethodInjectionToConstructorRector::class => [
+            // This rule moved the `Column` class from the `renderField` method to the constructor, which will break grid rendering
+            'src/DataGridBundle/Twig/Components/DataGrid.php',
+        ],
+
+        // This changes fetching string service names to the class names in the container in tests, while the service might not exist and breaking tests
+        ContainerGetNameToTypeInTestsRector::class,
 
         // Skip for new can be added/adjusted later
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
-        ControllerMethodInjectionToConstructorRector::class,
         AssertEmptyNullableObjectToAssertInstanceofRector::class,
         AssertEqualsToSameRector::class,
-        ContainerGetNameToTypeInTestsRector::class,
         CoversAnnotationWithValueToAttributeRector::class,
         AddInstanceofAssertForNullableInstanceRector::class,
         AssertEqualsToSameRector::class,
@@ -143,15 +143,12 @@ return RectorConfig::configure()
         DeclareStrictTypesTestsRector::class,
         AnnotationWithValueToAttributeRector::class,
         AssertFuncCallToPHPUnitAssertRector::class,
-        LiteralGetToRequestClassConstantRector::class,
         BareCreateMockAssignToDirectUseRector::class,
         FinalizeTestCaseClassRector::class,
         StringCastAssertStringContainsStringRector::class,
         SafeDeclareStrictTypesRector::class,
-        ResponseStatusCodeRector::class,
         LocallyCalledStaticMethodToNonStaticRector::class,
         SortCallLikeNamedArgsRector::class,
-        RemoveUnusedRequestParamRector::class,
         DisallowedEmptyRuleFixerRector::class,
         UnusedForeachValueToArrayKeysRector::class,
         AddInstanceofAssertForNullableArgumentRector::class,
@@ -168,7 +165,6 @@ return RectorConfig::configure()
         SimplifyIfReturnBoolRector::class,
         ThrowWithPreviousExceptionRector::class,
         InlineIfToExplicitIfRector::class,
-        ActionSuffixRemoverRector::class,
         PropertyCreateMockToCreateStubRector::class,
         RepeatedOrEqualToInArrayRector::class,
         DecorateWillReturnMapWithExpectsMockRector::class,
@@ -180,5 +176,4 @@ return RectorConfig::configure()
         SimplifyEmptyCheckOnEmptyArrayRector::class,
         AssertSameBoolNullToSpecificMethodRector::class,
         SimplifyIfElseToTernaryRector::class,
-        ParameterBagTypedGetMethodCallRector::class,
     ]);

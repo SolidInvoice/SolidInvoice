@@ -59,7 +59,7 @@ final class SendManualReminderTest extends KernelTestCase
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $request = Request::create('/send-manual-reminder', 'POST');
+        $request = Request::create('/send-manual-reminder', Request::METHOD_POST);
         $request->setSession($session);
 
         // Push the request onto the RequestStack so CSRF token manager can access it
@@ -78,7 +78,7 @@ final class SendManualReminderTest extends KernelTestCase
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $request = Request::create('/send-manual-reminder', 'POST');
+        $request = Request::create('/send-manual-reminder', Request::METHOD_POST);
         $request->setSession($session);
 
         $requestStack = self::getContainer()->get('request_stack');
@@ -273,7 +273,7 @@ final class SendManualReminderTest extends KernelTestCase
         $session = new Session(new MockArraySessionStorage());
         $session->start();
 
-        $request = Request::create('/send-manual-reminder', 'POST');
+        $request = Request::create('/send-manual-reminder', Request::METHOD_POST);
         $request->setSession($session);
 
         // Push the request onto the RequestStack so CSRF token manager can access it

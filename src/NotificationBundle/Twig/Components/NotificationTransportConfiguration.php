@@ -64,7 +64,9 @@ final class NotificationTransportConfiguration extends AbstractController
     public function __construct(
         #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations,
-        private readonly TransportSettingRepository $repository
+        private readonly TransportSettingRepository $repository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack $requestStack
     ) {
     }
 
@@ -146,47 +148,37 @@ final class NotificationTransportConfiguration extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager, RequestStack $requestStack): Response
+    public function save(): Response
     {
         if ($this->setting !== null && $this->setting->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }
-
         $this->submitForm();
-
         $form = $this->getForm();
-
         // If form is not valid, redirect back to show validation errors
         if (! $form->isValid()) {
-            $session = $requestStack->getSession();
+            $session = $this->requestStack->getSession();
             assert($session instanceof Session);
 
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
 
             return $this->redirectToRoute('_notification_integration');
         }
-
         /** @var TransportSetting $setting */
         $setting = $form->getData();
-
         // Check if it's a new integration before persisting (after persist, it will have an ID)
         $isNew = $this->isNewSetting();
-
         $user = $this->getUser();
         assert($user instanceof User);
         $setting->setUser($user);
-
-        $entityManager->persist($setting);
-        $entityManager->flush();
-
-        $session = $requestStack->getSession();
+        $this->entityManager->persist($setting);
+        $this->entityManager->flush();
+        $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-
         $session->getFlashBag()->add(
             FlashResponse::FLASH_SUCCESS,
             $isNew ? 'Integration added' : 'Integration updated'
         );
-
         return $this->redirectToRoute('_notification_integration');
     }
 
@@ -203,32 +195,26 @@ final class NotificationTransportConfiguration extends AbstractController
     }
 
     #[LiveAction]
-    public function confirmDelete(EntityManagerInterface $entityManager, RequestStack $requestStack): Response
+    public function confirmDelete(): Response
     {
-        $session = $requestStack->getSession();
+        $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-
         $setting = $this->transportSetting();
-
         // Check if the integration exists in the database (new entities don't have an ID)
         if ($this->isNewSetting()) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Integration does not exist');
 
             return $this->redirectToRoute('_notification_integration');
         }
-
         // Verify ownership before deleting
         if ($setting->getUser() !== $this->getUser()) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'You do not have permission to delete this integration');
 
             return $this->redirectToRoute('_notification_integration');
         }
-
-        $entityManager->remove($setting);
-        $entityManager->flush();
-
+        $this->entityManager->remove($setting);
+        $this->entityManager->flush();
         $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Integration deleted');
-
         return $this->redirectToRoute('_notification_integration');
     }
 }

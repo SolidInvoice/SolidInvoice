@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Functional;
 
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -31,7 +32,7 @@ final class DiscoveryLinkHeaderTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/');
+        $client->request(Request::METHOD_GET, '/');
 
         $links = (array) $client->getResponse()->headers->all('Link');
         $joined = implode("\n", $links);
@@ -47,7 +48,7 @@ final class DiscoveryLinkHeaderTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/api-catalog');
+        $client->request(Request::METHOD_GET, '/.well-known/api-catalog');
 
         self::assertEmpty($client->getResponse()->headers->all('Link'));
     }

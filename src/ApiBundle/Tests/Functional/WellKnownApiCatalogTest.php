@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Tests\Functional;
 
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -31,7 +32,7 @@ final class WellKnownApiCatalogTest extends WebTestCase
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
-        $client->request('GET', '/.well-known/api-catalog');
+        $client->request(Request::METHOD_GET, '/.well-known/api-catalog');
 
         self::assertResponseIsSuccessful();
         self::assertStringStartsWith('application/linkset+json', (string) $client->getResponse()->headers->get('Content-Type'));

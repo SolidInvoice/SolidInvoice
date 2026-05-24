@@ -48,6 +48,11 @@ final class AddressInfo extends AbstractController
     #[LiveProp]
     private Address $readonlyAddress;
 
+    public function __construct(
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     public function setAddress(Address $address): void
     {
         $this->address = $address;
@@ -78,26 +83,22 @@ final class AddressInfo extends AbstractController
     }
 
     #[LiveAction()]
-    public function delete(EntityManagerInterface $manager): void
+    public function delete(): void
     {
-        $manager->remove($this->address);
-        $manager->flush();
-
+        $this->manager->remove($this->address);
+        $this->manager->flush();
         $this->emit('addressDeleted');
         $this->dispatchBrowserEvent('modal:close');
     }
 
     #[LiveAction()]
-    public function save(EntityManagerInterface $manager): void
+    public function save(): void
     {
         $this->submitForm();
-
         /** @var Address $address */
         $address = $this->getForm()->getData();
-
-        $manager->persist($address);
-        $manager->flush();
-
+        $this->manager->persist($address);
+        $this->manager->flush();
         $this->edit = false;
         $this->readonlyAddress = clone $address;
     }

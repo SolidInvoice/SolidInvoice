@@ -61,7 +61,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($token, $this->grantingAuthorizationChecker());
 
-        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
         $authenticator->authenticate($request);
 
         $response = $authenticator->onAuthenticationSuccess(
@@ -80,7 +80,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($token, $this->denyingAuthorizationChecker($reason));
 
-        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
         $authenticator->authenticate($request);
 
         $response = $authenticator->onAuthenticationSuccess(
@@ -109,7 +109,7 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $authenticator = $this->buildAuthenticator($token, $this->denyingAuthorizationChecker(null));
 
-        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
         $authenticator->authenticate($request);
 
         $response = $authenticator->onAuthenticationSuccess(

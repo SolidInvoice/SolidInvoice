@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Action;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class Settings extends AbstractController
@@ -26,12 +25,11 @@ final class Settings extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
         if (! $this->featureGate->isEnabled(Feature::OnlinePayments->value)) {
             return $this->render('@SolidInvoicePayment/Settings/gated.html.twig');
         }
-
         return $this->render('@SolidInvoicePayment/Settings/index.html.twig');
     }
 }

@@ -34,6 +34,11 @@ class ClientForm extends AbstractController
     #[LiveProp(fieldName: 'formData')]
     public ?Client $client = null;
 
+    public function __construct(
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(
@@ -46,24 +51,19 @@ class ClientForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $manager): RedirectResponse
+    public function save(): RedirectResponse
     {
         $this->submitForm();
-
         /** @var Client $client */
         $client = $this->getForm()->getData();
-
         foreach ($client->getAddresses() as $address) {
             if ($address->isEmpty()) {
                 $client->removeAddress($address);
             }
         }
-
-        $manager->persist($client);
-        $manager->flush();
-
+        $this->manager->persist($client);
+        $this->manager->flush();
         $this->addFlash('success', 'client.create.success');
-
         return $this->redirectToRoute('_clients_view', [
             'id' => $client->getId(),
         ]);

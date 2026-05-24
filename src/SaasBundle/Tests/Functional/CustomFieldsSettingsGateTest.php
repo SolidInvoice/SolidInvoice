@@ -19,6 +19,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -39,7 +40,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
-        $client->request('GET', '/settings/custom-fields');
+        $client->request(Request::METHOD_GET, '/settings/custom-fields');
 
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -49,7 +50,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
-        $client->request('GET', '/settings/custom-fields/new');
+        $client->request(Request::METHOD_GET, '/settings/custom-fields/new');
 
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -59,7 +60,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => false]));
 
-        $client->request('POST', '/settings/custom-fields/reorder', content: '[]');
+        $client->request(Request::METHOD_POST, '/settings/custom-fields/reorder', content: '[]');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -68,7 +69,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['custom_fields' => true]));
 
-        $client->request('GET', '/settings/custom-fields');
+        $client->request(Request::METHOD_GET, '/settings/custom-fields');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());

@@ -37,6 +37,11 @@ final class ContactCollection extends AbstractController
 
     public int $count = 0;
 
+    public function __construct(
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     #[LiveListener('contactDeleted')]
     public function setContactCount(): void
     {
@@ -49,20 +54,16 @@ final class ContactCollection extends AbstractController
     }
 
     #[LiveAction()]
-    public function save(EntityManagerInterface $manager): void
+    public function save(): void
     {
         $this->submitForm();
-
         /** @var Contact $contact */
         $contact = $this->getForm()->getData();
         $this->client->addContact($contact);
-
-        $manager->persist($contact);
-        $manager->flush();
-
+        $this->manager->persist($contact);
+        $this->manager->flush();
         $this->setContactCount();
         $this->dispatchBrowserEvent('modal:close');
-
         $this->resetForm();
     }
 }

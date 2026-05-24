@@ -21,6 +21,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -41,7 +42,7 @@ final class PaymentSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['online_payments' => false]));
 
-        $client->request('GET', '/payments/methods');
+        $client->request(Request::METHOD_GET, '/payments/methods');
 
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -51,7 +52,7 @@ final class PaymentSettingsGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['online_payments' => true]));
 
-        $client->request('GET', '/payments/methods');
+        $client->request(Request::METHOD_GET, '/payments/methods');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -70,7 +71,7 @@ final class PaymentSettingsGateTest extends WebTestCase
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 
-        $client->request('GET', '/payments/methods');
+        $client->request(Request::METHOD_GET, '/payments/methods');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());

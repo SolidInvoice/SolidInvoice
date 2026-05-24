@@ -37,6 +37,11 @@ final class AddressCollection extends AbstractController
 
     public int $count = 0;
 
+    public function __construct(
+        private readonly EntityManagerInterface $manager
+    ) {
+    }
+
     #[LiveListener('addressDeleted')]
     public function setAddressCount(): void
     {
@@ -49,20 +54,16 @@ final class AddressCollection extends AbstractController
     }
 
     #[LiveAction()]
-    public function save(EntityManagerInterface $manager): void
+    public function save(): void
     {
         $this->submitForm();
-
         /** @var Address $address */
         $address = $this->getForm()->getData();
         $this->client->addAddress($address);
-
-        $manager->persist($address);
-        $manager->flush();
-
+        $this->manager->persist($address);
+        $this->manager->flush();
         $this->setAddressCount();
         $this->dispatchBrowserEvent('modal:close');
-
         $this->resetForm();
     }
 }

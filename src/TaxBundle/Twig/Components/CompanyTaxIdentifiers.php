@@ -35,6 +35,7 @@ final class CompanyTaxIdentifiers extends AbstractController
     public function __construct(
         private readonly TaxIdentifierRepository $repository,
         private readonly CompanySelector $companySelector,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
@@ -51,37 +52,30 @@ final class CompanyTaxIdentifiers extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $em): RedirectResponse
+    public function save(): RedirectResponse
     {
         $this->submitForm();
-
         /** @var array{identifiers: list<TaxIdentifier>} $data */
         $data = $this->getForm()->getData();
         $submitted = $data['identifiers'] ?? [];
-
         $companyId = $this->companySelector->getCompany();
         $existing = $companyId !== null ? $this->repository->findCompanyIdentifiers($companyId) : [];
-
         $submittedIds = [];
         foreach ($submitted as $identifier) {
             $identifier->setClient(null);
-            $em->persist($identifier);
+            $this->em->persist($identifier);
 
             if ($identifier->getId() !== null) {
                 $submittedIds[(string) $identifier->getId()] = true;
             }
         }
-
         foreach ($existing as $identifier) {
             if (! isset($submittedIds[(string) $identifier->getId()])) {
-                $em->remove($identifier);
+                $this->em->remove($identifier);
             }
         }
-
-        $em->flush();
-
+        $this->em->flush();
         $this->addFlash('success', 'settings.saved.success');
-
         return $this->redirectToRoute('_settings', ['section' => 'system']);
     }
 }

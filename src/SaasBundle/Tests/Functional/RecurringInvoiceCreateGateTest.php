@@ -21,6 +21,7 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -42,7 +43,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['recurring_invoices' => false]));
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request(Request::METHOD_GET, '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -52,7 +53,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
     {
         $client = $this->bootClient($this->buildFeatureGate(['recurring_invoices' => true]));
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request(Request::METHOD_GET, '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());
@@ -71,7 +72,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 
-        $client->request('GET', '/invoices/recurring/create');
+        $client->request(Request::METHOD_GET, '/invoices/recurring/create');
 
         self::assertResponseIsSuccessful();
         self::assertStringNotContainsString(self::GATED_HEADLINE, (string) $client->getResponse()->getContent());

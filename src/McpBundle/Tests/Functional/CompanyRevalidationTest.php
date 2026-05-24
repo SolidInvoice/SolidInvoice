@@ -97,7 +97,7 @@ final class CompanyRevalidationTest extends KernelTestCase
             $container->get(AuthorizationCheckerInterface::class),
         );
 
-        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('no longer has access to the company');
@@ -144,7 +144,7 @@ final class CompanyRevalidationTest extends KernelTestCase
             $container->get(AuthorizationCheckerInterface::class),
         );
 
-        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
 
         // No exception: the user still belongs to the company the token was issued for.
         $passport = $authenticator->authenticate($request);

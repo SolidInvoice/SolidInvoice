@@ -37,23 +37,23 @@ final readonly class CustomFieldReorderAction
         try {
             $payload = json_decode($request->getContent(), true, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
-            return new JsonResponse(['error' => 'Invalid JSON'], 400);
+            return new JsonResponse(['error' => 'Invalid JSON'], Response::HTTP_BAD_REQUEST);
         }
 
         if (! is_array($payload)) {
-            return new JsonResponse(['error' => 'Expected array'], 400);
+            return new JsonResponse(['error' => 'Expected array'], Response::HTTP_BAD_REQUEST);
         }
 
         $repo = $this->em->getRepository(CustomField::class);
         foreach ($payload as $row) {
             if (! is_array($row) || ! isset($row['id'], $row['position'])) {
-                return new JsonResponse(['error' => 'Each row must contain "id" and "position".'], 400);
+                return new JsonResponse(['error' => 'Each row must contain "id" and "position".'], Response::HTTP_BAD_REQUEST);
             }
 
             try {
                 $id = Ulid::fromString((string) $row['id']);
             } catch (Throwable) {
-                return new JsonResponse(['error' => 'Invalid custom field id.'], 400);
+                return new JsonResponse(['error' => 'Invalid custom field id.'], Response::HTTP_BAD_REQUEST);
             }
 
             // CompanyFilter is global, so find() will return null for any ULID
@@ -61,13 +61,13 @@ final readonly class CustomFieldReorderAction
             // silently skipping, to avoid leaking the existence of foreign IDs.
             $field = $repo->find($id);
             if ($field === null) {
-                return new JsonResponse(['error' => 'Custom field not found.'], 404);
+                return new JsonResponse(['error' => 'Custom field not found.'], Response::HTTP_NOT_FOUND);
             }
 
             $field->setPosition((int) $row['position']);
         }
         $this->em->flush();
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -130,7 +130,7 @@ final class Settings extends AbstractController
      * @throws Throwable
      */
     #[LiveAction]
-    public function save(SettingsRepository $settingsRepository, Request $request): RedirectResponse
+    public function save(Request $request): RedirectResponse
     {
         $files = $request->files->all();
 
@@ -140,7 +140,7 @@ final class Settings extends AbstractController
 
         $this->submitForm();
 
-        $settingsRepository->save([$this->section => $this->getForm()->getData()]);
+        $this->settingsRepository->save([$this->section => $this->getForm()->getData()]);
 
         $route = $this->generateUrl('_settings', ['section' => $this->section]);
 
