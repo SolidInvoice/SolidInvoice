@@ -15,6 +15,7 @@ use Monolog\Processor\PsrLogMessageProcessor;
 use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -73,7 +74,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(AppRequirements::class)
         ->autowire(true);
 
-    $services->set(DoctrineEventSubscriberDecorator::class)->arg('$inner', service('.inner'))->arg('$toggle', service('SolidWorx\Toggler\ToggleInterface'))
+    $services->set(DoctrineEventSubscriberDecorator::class)->arg('$inner', service('.inner'))->arg('$toggle', service(ToggleInterface::class))
         ->decorate('meilisearch.search_indexer_subscriber')
         ->tag('doctrine.event_listener', ['event' => 'postPersist'])
         ->tag('doctrine.event_listener', ['event' => 'postUpdate'])

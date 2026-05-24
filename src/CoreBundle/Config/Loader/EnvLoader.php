@@ -19,13 +19,13 @@ use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use function strtoupper;
 
-final class EnvLoader implements EnvVarLoaderInterface
+final readonly class EnvLoader implements EnvVarLoaderInterface
 {
     private Filesystem $fileSystem;
 
     public function __construct(
-        private readonly string $projectDir,
-        private readonly ConfigWriter $configWriter,
+        private string $projectDir,
+        private ConfigWriter $configWriter,
     ) {
         $this->fileSystem = new Filesystem();
     }

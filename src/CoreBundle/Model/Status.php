@@ -34,11 +34,7 @@ abstract class Status
      */
     public function getStatusLabel(string $status): string
     {
-        if (isset($this->statusLabels[$status])) {
-            return $this->statusLabels[$status];
-        }
-
-        return 'inverse';
+        return $this->statusLabels[$status] ?? 'inverse';
     }
 
     /**

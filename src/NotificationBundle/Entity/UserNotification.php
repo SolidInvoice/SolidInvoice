@@ -20,13 +20,14 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: UserNotification::TABLE_NAME)]
-class UserNotification
+class UserNotification implements Stringable
 {
     public const TABLE_NAME = 'notification_user_setting';
 

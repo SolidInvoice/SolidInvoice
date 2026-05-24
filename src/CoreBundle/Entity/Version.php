@@ -47,6 +47,6 @@ class Version implements Stringable
 
     public function __toString(): string
     {
-        return $this->version;
+        return (string) $this->version;
     }
 }

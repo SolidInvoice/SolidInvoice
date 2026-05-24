@@ -93,12 +93,10 @@ final class InstallCommandTest extends TestCase
         $entityManager = M::mock(ObjectManager::class);
         $entityManager->shouldReceive('persist')
             ->once()
-            ->with(M::on(function (User $user) use ($email, $hashedPassword): bool {
-                return $user->getEmail() === $email
-                    && $user->getPassword() === $hashedPassword
-                    && $user->isEnabled()
-                    && $user->isVerified();
-            }));
+            ->with(M::on(fn (User $user): bool => $user->getEmail() === $email
+                && $user->getPassword() === $hashedPassword
+                && $user->isEnabled()
+                && $user->isVerified()));
         $entityManager->shouldReceive('flush')
             ->once();
 

@@ -90,7 +90,7 @@ final readonly class OnboardingManager
             'key' => UserSettingType::OnboardingSkipped,
         ]);
 
-        $skipped = $setting ? json_decode($setting->getValue(), true, flags: JSON_THROW_ON_ERROR) : [];
+        $skipped = $setting ? json_decode((string) $setting->getValue(), true, flags: JSON_THROW_ON_ERROR) : [];
         $skipped[] = $step;
 
         $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardingSkipped, json_encode($skipped, JSON_THROW_ON_ERROR));

@@ -29,7 +29,7 @@ final class DateRangeFormType extends AbstractType
             [
                 'widget' => 'single_text',
                 'html5' => true,
-                'label' => $options['field_name'] ? ucfirst($options['field_name']) . ' Start' : 'Start Date',
+                'label' => $options['field_name'] ? ucfirst((string) $options['field_name']) . ' Start' : 'Start Date',
                 'required' => false,
             ]
         )
@@ -39,7 +39,7 @@ final class DateRangeFormType extends AbstractType
                 [
                     'widget' => 'single_text',
                     'html5' => true,
-                    'label' => $options['field_name'] ? ucfirst($options['field_name']) . ' End' : 'End Date',
+                    'label' => $options['field_name'] ? ucfirst((string) $options['field_name']) . ' End' : 'End Date',
                     'required' => false,
                 ]
             );

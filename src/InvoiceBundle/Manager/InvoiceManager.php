@@ -44,7 +44,7 @@ use function str_replace;
  */
 class InvoiceManager
 {
-    private ObjectManager $entityManager;
+    private readonly ObjectManager $entityManager;
 
     public function __construct(
         ManagerRegistry $doctrine,

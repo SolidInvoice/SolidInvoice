@@ -18,16 +18,11 @@ use Doctrine\ORM\QueryBuilder;
 final class ChainFilter implements FilterInterface
 {
     /**
-     * @var list<FilterInterface>
-     */
-    private array $filters = [];
-
-    /**
      * @param list<FilterInterface> $filters
      */
-    public function __construct(array $filters = [])
-    {
-        $this->filters = $filters;
+    public function __construct(
+        private array $filters = []
+    ) {
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void

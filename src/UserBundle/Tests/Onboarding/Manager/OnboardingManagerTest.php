@@ -132,7 +132,7 @@ final class OnboardingManagerTest extends KernelTestCase
         ]);
 
         self::assertNotNull($setting);
-        $skipped = json_decode($setting->getValue(), true);
+        $skipped = json_decode((string) $setting->getValue(), true);
         self::assertSame(['client'], $skipped);
     }
 
@@ -219,7 +219,7 @@ final class OnboardingManagerTest extends KernelTestCase
             'key' => UserSettingType::OnboardingSkipped,
         ]);
         self::assertNotNull($setting);
-        $skipped = json_decode($setting->getValue(), true);
+        $skipped = json_decode((string) $setting->getValue(), true);
         self::assertContains('client', $skipped);
         self::assertContains('invoice', $skipped);
     }
@@ -254,7 +254,7 @@ final class OnboardingManagerTest extends KernelTestCase
             'key' => UserSettingType::OnboardingSkipped,
         ]);
         self::assertNotNull($setting);
-        $skipped = json_decode($setting->getValue(), true);
+        $skipped = json_decode((string) $setting->getValue(), true);
         self::assertContains('invoice', $skipped);
         self::assertNotContains('client', $skipped);
     }

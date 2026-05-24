@@ -101,11 +101,9 @@ final class UserEntitySubscriberTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (TemplatedEmail $email) use ($user) {
-                return $email->getTo()[0]->getAddress() === $user->getEmail()
-                    && $email->getSubject() === 'Please Confirm your Email'
-                    && $email->getHtmlTemplate() === '@SolidInvoiceUser/Email/confirm_email.html.twig';
-            }));
+            ->with($this->callback(fn (TemplatedEmail $email) => $email->getTo()[0]->getAddress() === $user->getEmail()
+                && $email->getSubject() === 'Please Confirm your Email'
+                && $email->getHtmlTemplate() === '@SolidInvoiceUser/Email/confirm_email.html.twig'));
 
         $subscriber->postPersist($user);
     }

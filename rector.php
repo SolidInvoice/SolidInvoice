@@ -37,17 +37,7 @@ use Rector\CodeQuality\Rector\Ternary\UnnecessaryTernaryExpressionRector;
 use Rector\CodingStyle\Rector\ArrowFunction\ArrowFunctionDelegatingCallToFirstClassCallableRector;
 use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
 use Rector\Config\RectorConfig;
-use Rector\Doctrine\Collection22\Rector\CriteriaOrderingConstantsDeprecationRector;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\Php70\Rector\StmtsAwareInterface\IfIssetToCoalescingRector;
-use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
-use Rector\Php80\Rector\Catch_\RemoveUnusedVariableInCatchRector;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php80\Rector\Class_\StringableForToStringRector;
-use Rector\Php80\Rector\FuncCall\ClassOnObjectRector;
-use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
-use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\NarrowUnusedSetUpDefinedPropertyRector;
@@ -84,8 +74,6 @@ use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
-use Rector\Symfony\Symfony43\Rector\MethodCall\WebTestCaseAssertResponseCodeRector;
-use Rector\Symfony\Symfony51\Rector\ClassMethod\CommandConstantReturnCodeRector;
 use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\SafeDeclareStrictTypesRector;
@@ -126,8 +114,6 @@ return RectorConfig::configure()
         DoctrineSetList::TYPED_COLLECTIONS_DOCBLOCKS,
         DoctrineSetList::YAML_TO_ANNOTATIONS,
 
-        // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
-
         // Symfony
         SymfonySetList::CONFIGS,
         SymfonySetList::SYMFONY_CODE_QUALITY,
@@ -145,7 +131,6 @@ return RectorConfig::configure()
         ControllerMethodInjectionToConstructorRector::class,
         AssertEmptyNullableObjectToAssertInstanceofRector::class,
         AssertEqualsToSameRector::class,
-        NullToStrictStringFuncCallArgRector::class,
         ContainerGetNameToTypeInTestsRector::class,
         CoversAnnotationWithValueToAttributeRector::class,
         AddInstanceofAssertForNullableInstanceRector::class,
@@ -157,14 +142,11 @@ return RectorConfig::configure()
         ConvertStaticToSelfRector::class,
         NarrowUnusedSetUpDefinedPropertyRector::class,
         ExpressionCreateMockToCreateStubRector::class,
-        ClosureToArrowFunctionRector::class,
         DeclareStrictTypesTestsRector::class,
         AnnotationWithValueToAttributeRector::class,
         AssertFuncCallToPHPUnitAssertRector::class,
         LiteralGetToRequestClassConstantRector::class,
         BareCreateMockAssignToDirectUseRector::class,
-        ReadOnlyPropertyRector::class,
-        RemoveUnusedVariableInCatchRector::class,
         FinalizeTestCaseClassRector::class,
         StringCastAssertStringContainsStringRector::class,
         SafeDeclareStrictTypesRector::class,
@@ -175,26 +157,20 @@ return RectorConfig::configure()
         DisallowedEmptyRuleFixerRector::class,
         UnusedForeachValueToArrayKeysRector::class,
         AddInstanceofAssertForNullableArgumentRector::class,
-        ClassPropertyAssignToConstructorPromotionRector::class,
         AttributeKeyToClassConstFetchRector::class,
         InlineConstructorDefaultToPropertyRector::class,
         SortAttributeNamedArgsRector::class,
         FunctionFirstClassCallableRector::class,
-        WebTestCaseAssertResponseCodeRector::class,
         CombineIfRector::class,
         IssetOnPropertyObjectToPropertyExistsRector::class,
         ArrowFunctionDelegatingCallToFirstClassCallableRector::class,
-        CriteriaOrderingConstantsDeprecationRector::class,
         SimplifyIfNullableReturnRector::class,
-        StringableForToStringRector::class,
         CleanupUnneededNullsafeOperatorRector::class,
         UnnecessaryTernaryExpressionRector::class,
-        CommandConstantReturnCodeRector::class,
         YieldDataProviderRector::class,
         SimplifyBoolIdenticalTrueRector::class,
         SimplifyIfReturnBoolRector::class,
         ThrowWithPreviousExceptionRector::class,
-        StringClassNameToClassConstantRector::class,
         InlineIfToExplicitIfRector::class,
         ActionSuffixRemoverRector::class,
         PropertyCreateMockToCreateStubRector::class,
@@ -208,7 +184,5 @@ return RectorConfig::configure()
         SimplifyEmptyCheckOnEmptyArrayRector::class,
         AssertSameBoolNullToSpecificMethodRector::class,
         SimplifyIfElseToTernaryRector::class,
-        IfIssetToCoalescingRector::class,
         ParameterBagTypedGetMethodCallRector::class,
-        ClassOnObjectRector::class,
     ]);

@@ -133,9 +133,9 @@ final class NotificationMarketplace extends AbstractController
 
         return array_values(array_filter(
             $this->availableIntegrations(),
-            static fn ($integration) => str_contains(strtolower($integration['displayName']), $query) ||
-                           str_contains(strtolower($integration['description']), $query) ||
-                           str_contains(strtolower($integration['typeLabel']), $query)
+            static fn ($integration) => str_contains(strtolower((string) $integration['displayName']), $query) ||
+                           str_contains(strtolower((string) $integration['description']), $query) ||
+                           str_contains(strtolower((string) $integration['typeLabel']), $query)
         ));
     }
 

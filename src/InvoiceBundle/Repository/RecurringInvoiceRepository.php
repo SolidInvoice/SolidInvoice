@@ -25,6 +25,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
@@ -225,7 +226,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('COUNT(i)')
-            ->from('SolidInvoice\InvoiceBundle\Entity\Invoice', 'i')
+            ->from(Invoice::class, 'i')
             ->where('i.recurringInvoice IS NOT NULL');
 
         $query = $qb->getQuery();

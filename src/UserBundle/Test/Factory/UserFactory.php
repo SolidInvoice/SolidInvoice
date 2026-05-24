@@ -60,7 +60,7 @@ use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
  */
 final class UserFactory extends PersistentProxyObjectFactory
 {
-    private PasswordHasherInterface $passwordHasher;
+    private readonly PasswordHasherInterface $passwordHasher;
 
     public function __construct()
     {

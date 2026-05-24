@@ -54,13 +54,11 @@ final class EmailVerificationBannerListenerTest extends TestCase
         $twig = M::mock(Environment::class);
         $twig->shouldReceive('render')
             ->once()
-            ->with('@SolidInvoiceSaas/_alert_banner.html.twig', M::on(static function (array $context): bool {
-                return ($context['type'] ?? null) === 'warning'
-                    && ($context['title'] ?? null) === 'Verify your email'
-                    && ($context['message'] ?? null) === 'Some features are disabled.'
-                    && ! isset($context['cta_label'])
-                    && ! isset($context['cta_url']);
-            }))
+            ->with('@SolidInvoiceSaas/_alert_banner.html.twig', M::on(static fn (array $context): bool => ($context['type'] ?? null) === 'warning'
+                && ($context['title'] ?? null) === 'Verify your email'
+                && ($context['message'] ?? null) === 'Some features are disabled.'
+                && ! isset($context['cta_label'])
+                && ! isset($context['cta_url'])))
             ->andReturn('<div class="verification-banner">Verify your email</div>');
 
         $listener = new EmailVerificationBannerListener($gate, $twig, $translator);
