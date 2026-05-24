@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Step\CreateDatabaseStep;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Step\CreateDatabaseStep
- */
+#[CoversClass(CreateDatabaseStep::class)]
 final class CreateDatabaseStepTest extends TestCase
 {
     public function testPriority(): void

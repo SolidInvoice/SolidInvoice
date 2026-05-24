@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn
- */
+#[CoversClass(RelativeDateColumn::class)]
 final class RelativeDateColumnTest extends TestCase
 {
     private RelativeDateColumn $column;

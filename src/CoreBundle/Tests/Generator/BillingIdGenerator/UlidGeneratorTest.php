@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +13,13 @@
 
 namespace SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\UlidGenerator;
 use stdClass;
 use Symfony\Component\Uid\Ulid;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Generator\BillingIdGenerator\UlidGenerator
- */
+#[CoversClass(UlidGenerator::class)]
 final class UlidGeneratorTest extends TestCase
 {
     public function testGenerate(): void

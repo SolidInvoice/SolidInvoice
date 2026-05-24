@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
@@ -22,9 +23,7 @@ use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @covers \SolidInvoice\UserBundle\Repository\UserSettingRepository
- */
+#[CoversClass(UserSettingRepository::class)]
 final class UserSettingRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -42,10 +41,10 @@ final class UserSettingRepositoryTest extends KernelTestCase
 
         $registry = self::getContainer()->get('doctrine');
         $em = $registry->getManager();
-        assert($em instanceof EntityManagerInterface);
+        self::assertInstanceOf(EntityManagerInterface::class, $em);
         $this->em = $em;
         $repository = self::getContainer()->get(UserSettingRepository::class);
-        assert($repository instanceof UserSettingRepository);
+        self::assertInstanceOf(UserSettingRepository::class, $repository);
         $this->repository = $repository;
 
         // Create a test user

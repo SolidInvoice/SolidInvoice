@@ -15,6 +15,8 @@ namespace SolidInvoice\ApiBundle\Tests\Functional;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\GeneratedApiToken;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
@@ -40,11 +42,9 @@ use Zenstruck\Foundry\Test\Factories;
  * with a 403 carrying the voter's reason. This exercises the
  * authorization-checker relay in ApiTokenAuthenticator without coupling the
  * test to any specific voter implementation.
- *
- * @covers \SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator
- *
- * @group functional
  */
+#[CoversClass(ApiTokenAuthenticator::class)]
+#[Group('functional')]
 final class SubscriptionGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

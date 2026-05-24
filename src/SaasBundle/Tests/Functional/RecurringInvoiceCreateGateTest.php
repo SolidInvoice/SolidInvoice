@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,9 +30,8 @@ use Zenstruck\Foundry\Test\Factories;
  * action with the upgrade banner when the `recurring_invoices` feature is
  * disabled, and lets the form render normally when the feature is enabled or
  * in self-hosted mode.
- *
- * @group functional
  */
+#[Group('functional')]
 final class RecurringInvoiceCreateGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
@@ -103,7 +103,7 @@ final class RecurringInvoiceCreateGateTest extends WebTestCase
         }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
-        \assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         return $client;

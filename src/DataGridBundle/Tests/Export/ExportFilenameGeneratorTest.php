@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\Export;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\DataGridBundle\Export\ExportFilenameGenerator;
 
-/** @covers \SolidInvoice\DataGridBundle\Export\ExportFilenameGenerator */
+#[CoversClass(ExportFilenameGenerator::class)]
 final class ExportFilenameGeneratorTest extends TestCase
 {
     private ExportFilenameGenerator $generator;

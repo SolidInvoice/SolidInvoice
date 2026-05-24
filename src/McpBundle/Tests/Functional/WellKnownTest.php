@@ -13,19 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\McpBundle\Action\WellKnownAgentSkillsIndex;
+use SolidInvoice\McpBundle\Action\WellKnownAuthServer;
+use SolidInvoice\McpBundle\Action\WellKnownProtectedResource;
+use SolidInvoice\McpBundle\Action\WellKnownServerCard;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\McpBundle\Action\WellKnownAuthServer
- * @covers \SolidInvoice\McpBundle\Action\WellKnownProtectedResource
- * @covers \SolidInvoice\McpBundle\Action\WellKnownServerCard
- * @covers \SolidInvoice\McpBundle\Action\WellKnownAgentSkillsIndex
- *
- * @group functional
- */
+#[CoversClass(WellKnownAuthServer::class)]
+#[CoversClass(WellKnownProtectedResource::class)]
+#[CoversClass(WellKnownServerCard::class)]
+#[CoversClass(WellKnownAgentSkillsIndex::class)]
+#[Group('functional')]
 final class WellKnownTest extends WebTestCase
 {
     use EnsureApplicationInstalled;

@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Action;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class AcceptInvitationTest extends WebTestCase
 {
     use EnsureApplicationInstalled;

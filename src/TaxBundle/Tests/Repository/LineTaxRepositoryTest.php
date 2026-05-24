@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -23,9 +24,7 @@ use SolidInvoice\TaxBundle\Test\Factory\LineTaxFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\TaxBundle\Repository\LineTaxRepository
- */
+#[CoversClass(LineTaxRepository::class)]
 final class LineTaxRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

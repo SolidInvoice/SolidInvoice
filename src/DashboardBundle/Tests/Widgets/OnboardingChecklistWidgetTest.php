@@ -80,7 +80,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
 
     public function testGetTemplateReturnsCorrectTemplatePath(): void
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $manager = self::getContainer()->get(ChecklistManager::class);
 
         $widget = new OnboardingChecklistWidget($manager, $security);

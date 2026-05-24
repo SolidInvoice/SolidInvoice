@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
@@ -24,11 +25,9 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @covers \SolidInvoice\McpBundle\Mcp\McpScopeGuard
- * @covers \SolidInvoice\McpBundle\Mcp\McpSecurityContext
- * @covers \SolidInvoice\McpBundle\Security\McpScope
- */
+#[CoversClass(McpScopeGuard::class)]
+#[CoversClass(McpSecurityContext::class)]
+#[CoversClass(McpScope::class)]
 final class ScopeGuardTest extends TestCase
 {
     public function testReadScopeSatisfiesReadRequirement(): void
@@ -77,7 +76,7 @@ final class ScopeGuardTest extends TestCase
 
         $stack = new RequestStack([$request]);
 
-        $selector = new CompanySelector($this->createMock(ManagerRegistry::class));
+        $selector = new CompanySelector($this->createStub(ManagerRegistry::class));
 
         return new McpScopeGuard(new McpSecurityContext($stack, $selector));
     }

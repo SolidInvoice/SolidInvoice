@@ -16,6 +16,7 @@ namespace SolidInvoice\NotificationBundle\Tests;
 use Hamcrest\Core\IsEqual;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
@@ -35,9 +36,7 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Notifier\Transport\Dsn;
 use Twig\Environment;
 
-/**
- * @covers \SolidInvoice\NotificationBundle\Notification\NotificationManager
- */
+#[CoversClass(NotificationManager::class)]
 final class NotificationManagerTest extends TestCase
 {
     use EnsureApplicationInstalled;

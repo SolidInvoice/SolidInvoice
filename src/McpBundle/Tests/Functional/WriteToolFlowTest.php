@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Mcp\ClientWriteTools;
@@ -35,9 +36,8 @@ use Zenstruck\Foundry\Test\Factories;
 /**
  * Phase 3 write tool coverage — asserts scope enforcement, company binding,
  * and cross-tenant rejection for the write tools.
- *
- * @group functional
  */
+#[Group('functional')]
 final class WriteToolFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

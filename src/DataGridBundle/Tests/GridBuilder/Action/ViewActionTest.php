@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,12 +13,11 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Action;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction
- */
+#[CoversClass(ViewAction::class)]
 final class ViewActionTest extends TestCase
 {
     public function testActionDefaults(): void

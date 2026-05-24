@@ -110,7 +110,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscriptionRepository->expects(self::never())->method('findOneBy');
         $subscriptionRepository->expects(self::never())->method('save');
 
-        $planRepository = $this->createMock(PlanRepositoryInterface::class);
+        $planRepository = $this->createStub(PlanRepositoryInterface::class);
 
         $listener = new SubscriptionPlanSyncListener(
             $subscriptionRepository,

@@ -18,13 +18,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Export\GridRowExtractor;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Uid\Ulid;
 
-/** @covers \SolidInvoice\DataGridBundle\Export\GridRowExtractor */
+#[CoversClass(GridRowExtractor::class)]
 final class GridRowExtractorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

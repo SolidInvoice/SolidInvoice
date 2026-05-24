@@ -116,7 +116,7 @@ class InvoiceClonerTest extends TestCase
 
         self::assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
         self::assertNull($newInvoice->getId());
-        self::assertNotEquals($invoice->getInvoiceId(), $newInvoice->getInvoiceId());
+        self::assertNotSame($invoice->getInvoiceId(), $newInvoice->getInvoiceId());
 
         self::assertCount(1, $newInvoice->getLines());
 
@@ -175,7 +175,7 @@ class InvoiceClonerTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
 
-        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createMock(SystemConfig::class)));
+        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createStub(SystemConfig::class)));
 
         /** @var RecurringInvoice $newInvoice */
         $newInvoice = $invoiceCloner->clone($invoice);

@@ -15,22 +15,21 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder;
 
 use Closure;
 use Doctrine\ORM\QueryBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Query
- */
+#[CoversClass(Query::class)]
 final class QueryTest extends TestCase
 {
     private Query $query;
 
-    private QueryBuilder&MockObject $queryBuilder;
+    private QueryBuilder&Stub $queryBuilder;
 
     protected function setUp(): void
     {
-        $this->queryBuilder = $this->createMock(QueryBuilder::class);
+        $this->queryBuilder = $this->createStub(QueryBuilder::class);
         $this->query = new Query($this->queryBuilder, 'e');
     }
 

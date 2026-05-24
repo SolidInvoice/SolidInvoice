@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHost;
 use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHostValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @covers \SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHost
- * @covers \SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHostValidator
- *
  * @extends ConstraintValidatorTestCase<NotApplicationUrlHostValidator>
  */
+#[CoversClass(NotApplicationUrlHost::class)]
+#[CoversClass(NotApplicationUrlHostValidator::class)]
 final class NotApplicationUrlHostValidatorTest extends ConstraintValidatorTestCase
 {
     private string $applicationUrl = 'https://app.example.com';

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Onboarding\Manager;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -26,7 +27,7 @@ use SolidInvoice\UserBundle\Onboarding\Manager\OnboardingManager;
 use SolidInvoice\UserBundle\Repository\UserSettingRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/** @covers \SolidInvoice\UserBundle\Onboarding\Manager\OnboardingManager */
+#[CoversClass(OnboardingManager::class)]
 final class OnboardingManagerTest extends KernelTestCase
 {
     use DoctrineTestTrait;
@@ -35,8 +36,6 @@ final class OnboardingManagerTest extends KernelTestCase
     private OnboardingManager $manager;
 
     private UserSettingRepository $userSettingRepository;
-
-    private CompanyRepository $companyRepository;
 
     private ClientRepository $clientRepository;
 
@@ -47,14 +46,14 @@ final class OnboardingManagerTest extends KernelTestCase
         parent::setUp();
 
         $this->userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
-        $this->companyRepository = self::getContainer()->get(CompanyRepository::class);
+        $companyRepository = self::getContainer()->get(CompanyRepository::class);
         $this->clientRepository = self::getContainer()->get(ClientRepository::class);
         $this->invoiceRepository = self::getContainer()->get(InvoiceRepository::class);
 
         // Manually create OnboardingManager since it may not be public in test container
         $this->manager = new OnboardingManager(
             $this->em,
-            $this->companyRepository,
+            $companyRepository,
             $this->clientRepository,
             $this->invoiceRepository,
             $this->userSettingRepository

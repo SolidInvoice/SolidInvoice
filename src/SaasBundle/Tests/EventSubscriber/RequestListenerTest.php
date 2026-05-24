@@ -15,7 +15,9 @@ namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use DateTimeImmutable;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -38,10 +40,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 
-/**
- * @group functional
- * @covers \SolidInvoice\SaasBundle\EventSubscriber\RequestListener
- */
+#[CoversClass(RequestListener::class)]
+#[Group('functional')]
 final class RequestListenerTest extends KernelTestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -110,7 +110,7 @@ final class RequestListenerTest extends KernelTestCase
 
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
-        self::assertStringContainsString('Pending Page', $response->getContent());
+        self::assertStringContainsString('Pending Page', (string) $response->getContent());
     }
 
     public function testOnRequestWithPausedStatus(): void
@@ -131,7 +131,7 @@ final class RequestListenerTest extends KernelTestCase
 
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
-        self::assertStringContainsString('Paused Page', $response->getContent());
+        self::assertStringContainsString('Paused Page', (string) $response->getContent());
     }
 
     public function testOnRequestWithCancelledStatusAfterEndDate(): void
@@ -154,7 +154,7 @@ final class RequestListenerTest extends KernelTestCase
 
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
-        self::assertStringContainsString('Cancelled Page', $response->getContent());
+        self::assertStringContainsString('Cancelled Page', (string) $response->getContent());
     }
 
     public function testOnRequestWithCancelledStatusBeforeEndDate(): void
@@ -198,7 +198,7 @@ final class RequestListenerTest extends KernelTestCase
 
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
-        self::assertStringContainsString('Trial Expired Page', $response->getContent());
+        self::assertStringContainsString('Trial Expired Page', (string) $response->getContent());
     }
 
     public function testOnRequestWithExpiredTrialPassesCouponCodeToTemplate(): void

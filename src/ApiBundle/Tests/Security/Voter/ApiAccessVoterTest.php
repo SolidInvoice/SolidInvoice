@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\Security\Voter;
 
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Security\Attribute;
 use SolidInvoice\ApiBundle\Security\Voter\ApiAccessVoter;
@@ -24,9 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @covers \SolidInvoice\ApiBundle\Security\Voter\ApiAccessVoter
- */
+#[CoversClass(ApiAccessVoter::class)]
 final class ApiAccessVoterTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

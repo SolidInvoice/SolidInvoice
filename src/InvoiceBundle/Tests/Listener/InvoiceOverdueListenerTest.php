@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -30,7 +31,7 @@ use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-/** @covers \SolidInvoice\InvoiceBundle\Listener\InvoiceOverdueListener */
+#[CoversClass(InvoiceOverdueListener::class)]
 final class InvoiceOverdueListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -15,14 +15,13 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\RelativeDateFormatter;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Formatter\RelativeDateFormatter
- */
+#[CoversClass(RelativeDateFormatter::class)]
 final class RelativeDateFormatterTest extends TestCase
 {
     private RelativeDateFormatter $formatter;

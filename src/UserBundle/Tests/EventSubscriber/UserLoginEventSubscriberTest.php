@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\EventSubscriber;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Company\HostType;
@@ -33,7 +34,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 use Symfony\Component\Uid\Ulid;
 
-/** @covers \SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber */
+#[CoversClass(UserLoginEventSubscriber::class)]
 final class UserLoginEventSubscriberTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

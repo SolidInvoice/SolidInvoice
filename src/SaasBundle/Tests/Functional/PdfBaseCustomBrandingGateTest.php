@@ -16,6 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Functional;
 use Brick\Math\BigInteger;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -45,9 +46,8 @@ use Zenstruck\Foundry\Test\Factories;
  * The "Powered By" content lives in the `<pagefooter content-left=...>`
  * attribute of the rendered template (see `classic/pdf.html.twig` which
  * extends `_pdf_base.html.twig`).
- *
- * @group functional
  */
+#[Group('functional')]
 final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -131,9 +131,9 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
     private function reloadCompany(): void
     {
         $em = self::getContainer()->get(EntityManagerInterface::class);
-        \assert($em instanceof EntityManagerInterface);
+        self::assertInstanceOf(EntityManagerInterface::class, $em);
         $company = $em->find(Company::class, $this->company->getId());
-        \assert($company instanceof Company);
+        self::assertInstanceOf(Company::class, $company);
         $this->company = $company;
 
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
@@ -142,7 +142,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
     private function seedHidePoweredBy(string $value): void
     {
         $em = self::getContainer()->get(EntityManagerInterface::class);
-        \assert($em instanceof EntityManagerInterface);
+        self::assertInstanceOf(EntityManagerInterface::class, $em);
 
         // Try to update via the repository first; if the row doesn't exist yet
         // (self-hosted has no SaasBundle ConfigProvider seeding it), persist a
@@ -172,7 +172,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $invoice = $this->createFixtureInvoice();
 
         $twig = self::getContainer()->get('twig');
-        \assert($twig instanceof Environment);
+        self::assertInstanceOf(Environment::class, $twig);
 
         return $twig->render(
             '@SolidInvoiceInvoice/Templates/classic/pdf.html.twig',

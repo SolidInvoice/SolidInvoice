@@ -15,6 +15,7 @@ namespace SolidInvoice\InstallBundle\Tests\Step;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\DTO\UserAccount;
@@ -24,9 +25,7 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Step\CreateUserStep
- */
+#[CoversClass(CreateUserStep::class)]
 final class CreateUserStepTest extends TestCase
 {
     public function testPriority(): void
@@ -105,7 +104,7 @@ final class CreateUserStepTest extends TestCase
             ->method('getPasswordHasher')
             ->willReturn($hasher);
 
-        $exception = $this->createMock(UniqueConstraintViolationException::class);
+        $exception = $this->createStub(UniqueConstraintViolationException::class);
 
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository

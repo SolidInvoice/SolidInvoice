@@ -34,7 +34,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             new RecurringInvoice(),
             new Marking(),
             new Transition('activate', 'draft', 'active'),
-            $this->createMock(WorkflowInterface::class),
+            $this->createStub(WorkflowInterface::class),
         );
 
         new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);
@@ -57,7 +57,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             new RecurringInvoice(),
             new Marking(),
             new Transition('activate', 'draft', 'active'),
-            $this->createMock(WorkflowInterface::class),
+            $this->createStub(WorkflowInterface::class),
         );
 
         new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);

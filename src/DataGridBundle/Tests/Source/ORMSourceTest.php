@@ -17,15 +17,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\Source\ORMSource
- */
+#[CoversClass(ORMSource::class)]
 final class ORMSourceTest extends TestCase
 {
     private ORMSource $source;
@@ -45,7 +44,7 @@ final class ORMSourceTest extends TestCase
     {
         $em = $this->createMock(EntityManagerInterface::class);
         $repository = $this->createMock(EntityRepository::class);
-        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder = $this->createStub(QueryBuilder::class);
         $query = new Query($queryBuilder, 'c');
 
         $this->registry->method('getManagerForClass')->willReturn($em);
@@ -53,6 +52,6 @@ final class ORMSourceTest extends TestCase
         $repository->method('createQueryBuilder')->willReturn($queryBuilder);
         $this->grid->method('query')->willReturn($query);
 
-        $this->assertSame($query, $this->source->fetch($this->grid));
+        self::assertSame($query, $this->source->fetch($this->grid));
     }
 }

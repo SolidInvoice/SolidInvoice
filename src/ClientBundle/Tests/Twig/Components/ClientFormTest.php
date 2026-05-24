@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,6 +13,7 @@
 
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
@@ -18,9 +21,7 @@ use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\ClientBundle\Twig\Components\ClientForm
- */
+#[CoversClass(ClientForm::class)]
 final class ClientFormTest extends LiveComponentTest
 {
     use Factories;

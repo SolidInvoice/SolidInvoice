@@ -16,11 +16,12 @@ namespace SolidInvoice\CoreBundle\Tests\Export\Serializer\Normalizer;
 use Brick\Math\BigInteger;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
 use stdClass;
 
-/** @covers \SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer */
+#[CoversClass(ExportMoneyNormalizer::class)]
 final class ExportMoneyNormalizerTest extends TestCase
 {
     private ExportMoneyNormalizer $normalizer;

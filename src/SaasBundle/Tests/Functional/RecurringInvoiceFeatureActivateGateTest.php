@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
@@ -33,9 +34,8 @@ use Symfony\Component\Workflow\Transition;
  * invoice `activate` workflow transition (causing workflow_can() to return
  * false) and includes both the upgrade-prompt copy and the required plan
  * name in the transition-blocker reason.
- *
- * @group functional
  */
+#[Group('functional')]
 final class RecurringInvoiceFeatureActivateGateTest extends TestCase
 {
     public function testActivateIsBlockedWhenFeatureDisabled(): void

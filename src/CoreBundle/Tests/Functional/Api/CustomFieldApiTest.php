@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Functional\Api;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class CustomFieldApiTest extends ApiTestCase
 {
     use Factories;

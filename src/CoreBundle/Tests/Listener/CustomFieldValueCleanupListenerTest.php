@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
@@ -22,11 +23,10 @@ use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class CustomFieldValueCleanupListenerTest extends KernelTestCase
 {
     use Factories;
@@ -62,6 +62,7 @@ final class CustomFieldValueCleanupListenerTest extends KernelTestCase
 
         /** @var CustomFieldValueRepository $repo */
         $repo = self::getContainer()->get(CustomFieldValueRepository::class);
+        self::assertInstanceOf(Ulid::class, $clientId);
         self::assertSame([], $repo->findForRecord(CustomFieldTarget::CLIENT, $clientId));
     }
 }

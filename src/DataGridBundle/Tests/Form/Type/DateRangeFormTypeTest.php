@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,12 +13,11 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType
- */
+#[CoversClass(DateRangeFormType::class)]
 final class DateRangeFormTypeTest extends FormTestCase
 {
     public function testSubmit(): void

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Email\InvoiceReminderEmail;
@@ -27,7 +28,7 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-/** @covers \SolidInvoice\InvoiceBundle\Listener\Mailer\ReminderReceiverListener */
+#[CoversClass(ReminderReceiverListener::class)]
 final class ReminderReceiverListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

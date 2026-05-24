@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Company;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanyDomainResolver;
@@ -22,9 +23,7 @@ use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Company\CompanyDomainResolver
- */
+#[CoversClass(CompanyDomainResolver::class)]
 final class CompanyDomainResolverTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\EntityFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Filter\EntityFilter
- */
+#[CoversClass(EntityFilter::class)]
 final class EntityFilterTest extends TestCase
 {
     private EntityFilter $filter;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +13,13 @@
 
 namespace SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Random\RandomException;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator;
 use stdClass;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator
- */
+#[CoversClass(RandomNumberGenerator::class)]
 final class RandomNumberGeneratorTest extends TestCase
 {
     /**

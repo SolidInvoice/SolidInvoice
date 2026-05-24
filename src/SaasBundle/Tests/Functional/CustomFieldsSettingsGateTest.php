@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
@@ -26,9 +27,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Asserts that the SettingsBundle CustomField management UI is short-circuited
  * with the upgrade banner when the `custom_fields` feature is disabled, and
  * renders the real UI when the feature is enabled.
- *
- * @group functional
  */
+#[Group('functional')]
 final class CustomFieldsSettingsGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
@@ -100,7 +100,7 @@ final class CustomFieldsSettingsGateTest extends WebTestCase
         }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
-        \assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         return $client;

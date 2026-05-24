@@ -21,6 +21,7 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -43,9 +44,7 @@ use Symfony\Component\Uid\Ulid;
 use function date;
 use function strtoupper;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber
- */
+#[CoversClass(CompanyEventSubscriber::class)]
 final class CompanyEventSubscriberTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class LoginTest extends WebTestCase
 {
     use Factories;
@@ -35,6 +34,6 @@ final class LoginTest extends WebTestCase
         $client = self::createClient();
         $client->followRedirects();
         $crawler = $client->request(Request::METHOD_GET, '/');
-        self::assertStringContainsString('/login', $crawler->getUri());
+        self::assertStringContainsString('/login', (string) $crawler->getUri());
     }
 }

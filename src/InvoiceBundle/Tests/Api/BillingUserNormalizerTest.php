@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Api;
 
 use ApiPlatform\Metadata\IriConverterInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -25,9 +26,7 @@ use stdClass;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @coversDefaultClass \SolidInvoice\InvoiceBundle\Api\BillingUserNormalizer
- */
+#[CoversClass(BillingUserNormalizer::class)]
 final class BillingUserNormalizerTest extends TestCase
 {
     private BillingUserNormalizer $billingUserNormalizer;

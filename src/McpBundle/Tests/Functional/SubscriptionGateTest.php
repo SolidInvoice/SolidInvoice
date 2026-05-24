@@ -16,6 +16,8 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use DateTimeImmutable;
 use League\OAuth2\Server\ResourceServer;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Psr\Http\Message\ServerRequestInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -44,11 +46,9 @@ use Zenstruck\Foundry\Test\Factories;
  * exercises the authorization-checker relay in McpOAuthAuthenticator without
  * coupling the test to any specific voter implementation — exactly the
  * indirection SaasBundle's SubscriptionVoter relies on.
- *
- * @covers \SolidInvoice\McpBundle\Security\McpOAuthAuthenticator
- *
- * @group functional
  */
+#[CoversClass(McpOAuthAuthenticator::class)]
+#[Group('functional')]
 final class SubscriptionGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

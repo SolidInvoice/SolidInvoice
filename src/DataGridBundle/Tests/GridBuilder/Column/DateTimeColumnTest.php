@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,12 +13,11 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn
- */
+#[CoversClass(DateTimeColumn::class)]
 final class DateTimeColumnTest extends TestCase
 {
     public function testFormat(): void

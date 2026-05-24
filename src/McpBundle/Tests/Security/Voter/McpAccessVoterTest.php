@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Security\Voter;
 
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\McpBundle\Security\Attribute;
 use SolidInvoice\McpBundle\Security\Voter\McpAccessVoter;
@@ -24,9 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-/**
- * @covers \SolidInvoice\McpBundle\Security\Voter\McpAccessVoter
- */
+#[CoversClass(McpAccessVoter::class)]
 final class McpAccessVoterTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;

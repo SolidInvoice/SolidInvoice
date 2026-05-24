@@ -14,16 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Column;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * Tests for the Column base class functionality using StringColumn as concrete implementation.
- *
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Column\Column
  */
+#[CoversClass(Column::class)]
 final class ColumnTest extends TestCase
 {
     private StringColumn $column;

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
@@ -26,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Clock\MockClock;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\InvoiceBundle\Repository\InvoiceRepository */
+#[CoversClass(InvoiceRepository::class)]
 final class InvoiceRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -28,9 +29,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the SaaS feature-gate short-circuits the ClientBundle Add action
  * with the upgrade banner when the `total_clients` quota is exhausted, and lets
  * the form render normally when under quota or in self-hosted mode.
- *
- * @group functional
  */
+#[Group('functional')]
 final class ClientCreateQuotaGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
@@ -102,7 +102,7 @@ final class ClientCreateQuotaGateTest extends WebTestCase
         }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
-        \assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         return $client;

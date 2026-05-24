@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -29,9 +30,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use stdClass;
 use Symfony\Component\Uid\Ulid;
 
-/**
- * @covers \SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener
- */
+#[CoversClass(CompanyListener::class)]
 final class CompanyListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -34,7 +35,7 @@ use function rewind;
 use function str_replace;
 use function stream_get_contents;
 
-/** @covers \SolidInvoice\InvoiceBundle\Command\MarkOverdueInvoicesCommand */
+#[CoversClass(MarkOverdueInvoicesCommand::class)]
 final class MarkOverdueInvoicesCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

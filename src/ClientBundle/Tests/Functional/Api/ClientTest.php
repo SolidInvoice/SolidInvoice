@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
 use JsonException;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -30,11 +31,8 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
-use function assert;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class ClientTest extends ApiTestCase
 {
     use Factories;
@@ -167,7 +165,7 @@ final class ClientTest extends ApiTestCase
     public function testEdit(): void
     {
         $client = ClientFactory::createOne()->_real();
-        assert($client instanceof Client);
+        self::assertInstanceOf(Client::class, $client);
 
         $contacts = ContactFactory::new([
             'client' => $client,

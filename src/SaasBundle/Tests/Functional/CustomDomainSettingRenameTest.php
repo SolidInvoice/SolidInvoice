@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use Doctrine\DBAL\Connection;
 use Override;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidInvoice\SettingsBundle\Entity\Setting;
@@ -27,9 +28,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Asserts that a value stored under the legacy `system/company/custom_domain`
  * setting key resolves through {@see SystemConfig::get()} at the new
  * `system/domain/custom_domain` key after the rename migration runs.
- *
- * @group functional
  */
+#[Group('functional')]
 final class CustomDomainSettingRenameTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

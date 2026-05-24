@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Action;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\GridBuilder\Action\Action
- */
+#[CoversClass(Action::class)]
 final class ActionTest extends TestCase
 {
     private Action $action;

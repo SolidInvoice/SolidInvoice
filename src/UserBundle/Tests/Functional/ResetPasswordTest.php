@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,6 +13,7 @@
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -21,9 +24,7 @@ use Zenstruck\Mailer\Test\Bridge\Zenstruck\Browser\MailerComponent;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use Zenstruck\Mailer\Test\TestEmail;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class ResetPasswordTest extends WebTestCase
 {
     use HasBrowser;

@@ -37,7 +37,7 @@ final class ApiTokenHistoryGridTest extends TestCase
         $tokenId = Ulid::generate();
 
         $queryBuilder = $this->createMock(QueryBuilder::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
         $query = new Query($queryBuilder, ORMSource::ALIAS);
 
         $queryBuilder
@@ -75,7 +75,7 @@ final class ApiTokenHistoryGridTest extends TestCase
     public function testQueryDoesNotAddTokenFilterWhenTokenIdNotProvided(): void
     {
         $queryBuilder = $this->createMock(QueryBuilder::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
         $query = new Query($queryBuilder, ORMSource::ALIAS);
 
         $queryBuilder

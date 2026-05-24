@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -24,11 +26,8 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\McpBundle\Repository\McpAccessTokenRepository::touch
- *
- * @group functional
- */
+#[CoversMethod(McpAccessTokenRepository::class, 'touch')]
+#[Group('functional')]
 final class AccessTokenTouchTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Doctrine;
 
+use Iterator;
 use PDO;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Doctrine\Drivers;
 
-/**
- * @covers \SolidInvoice\InstallBundle\Doctrine\Drivers
- */
+#[CoversClass(Drivers::class)]
 final class DriversTest extends TestCase
 {
     public function testGetChoiceListReturnsOnlyInstalledDrivers(): void
@@ -88,20 +88,18 @@ final class DriversTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return Iterator<string, array{string, string}>
      */
-    public static function driverSchemeAliasProvider(): array
+    public static function driverSchemeAliasProvider(): Iterator
     {
-        return [
-            'mysql' => ['mysql', 'pdo_mysql'],
-            'mariadb' => ['mariadb', 'pdo_mysql'],
-            'postgres' => ['postgres', 'pdo_pgsql'],
-            'pgsql' => ['pgsql', 'pdo_pgsql'],
-            'sqlite' => ['sqlite', 'pdo_sqlite'],
-            'unknown driver returns as-is' => ['unknown', 'unknown'],
-            'pdo_mysql returns as-is' => ['pdo_mysql', 'pdo_mysql'],
-            'pdo_pgsql returns as-is' => ['pdo_pgsql', 'pdo_pgsql'],
-            'pdo_sqlite returns as-is' => ['pdo_sqlite', 'pdo_sqlite'],
-        ];
+        yield 'mysql' => ['mysql', 'pdo_mysql'];
+        yield 'mariadb' => ['mariadb', 'pdo_mysql'];
+        yield 'postgres' => ['postgres', 'pdo_pgsql'];
+        yield 'pgsql' => ['pgsql', 'pdo_pgsql'];
+        yield 'sqlite' => ['sqlite', 'pdo_sqlite'];
+        yield 'unknown driver returns as-is' => ['unknown', 'unknown'];
+        yield 'pdo_mysql returns as-is' => ['pdo_mysql', 'pdo_mysql'];
+        yield 'pdo_pgsql returns as-is' => ['pdo_pgsql', 'pdo_pgsql'];
+        yield 'pdo_sqlite returns as-is' => ['pdo_sqlite', 'pdo_sqlite'];
     }
 }

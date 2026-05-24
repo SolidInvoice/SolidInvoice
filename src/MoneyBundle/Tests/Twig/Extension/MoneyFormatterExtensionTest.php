@@ -28,7 +28,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFunctions(): void
     {
-        $systemConfig = $this->createMock(SystemConfig::class);
+        $systemConfig = $this->createStub(SystemConfig::class);
 
         $moneyFormatter = new MoneyFormatter('en_US', $systemConfig);
         $extension = new MoneyFormatterExtension($moneyFormatter, $systemConfig);

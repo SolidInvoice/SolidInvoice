@@ -37,7 +37,7 @@ final class CustomFieldsListGateTest extends TestCase
 
         $component = new CustomFieldsList(
             $fields,
-            $this->createMock(CustomFieldValueRepository::class),
+            $this->createStub(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $this->buildGate(false),
         );
@@ -55,7 +55,7 @@ final class CustomFieldsListGateTest extends TestCase
 
         $component = new CustomFieldsListPdf(
             $fields,
-            $this->createMock(CustomFieldValueRepository::class),
+            $this->createStub(CustomFieldValueRepository::class),
             new CustomFieldTypeResolver(),
             $this->buildGate(false),
         );

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Service;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -27,7 +28,7 @@ use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService */
+#[CoversClass(InvoiceStatusTransitionService::class)]
 final class InvoiceStatusTransitionServiceTest extends KernelTestCase
 {
     use DoctrineTestTrait;
@@ -110,6 +111,6 @@ final class InvoiceStatusTransitionServiceTest extends KernelTestCase
         $service = new InvoiceStatusTransitionService($stateMachine, $this->registry);
         $transitions = $service->getAvailableTransitions($invoice);
 
-        self::assertEquals([Graph::TRANSITION_OVERDUE, Graph::TRANSITION_PAY], $transitions);
+        self::assertSame([Graph::TRANSITION_OVERDUE, Graph::TRANSITION_PAY], $transitions);
     }
 }

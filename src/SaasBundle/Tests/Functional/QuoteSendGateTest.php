@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
@@ -36,9 +37,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the SaaS email-verification gate short-circuits the quote send
  * action with a flash error and skips the mailer when the gate is engaged,
  * and lets the send proceed when the gate is open.
- *
- * @group functional
  */
+#[Group('functional')]
 final class QuoteSendGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Entity;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Uid\Ulid;
 
-/**
- * @covers \SolidInvoice\NotificationBundle\Entity\TransportSetting
- */
+#[CoversClass(TransportSetting::class)]
 final class TransportSettingTest extends TestCase
 {
     public function testGetIdReturnsNullForNewEntity(): void

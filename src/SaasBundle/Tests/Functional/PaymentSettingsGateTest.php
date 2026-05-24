@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -28,9 +29,8 @@ use Zenstruck\Foundry\Test\Factories;
  * Verifies the SaaS feature-gate short-circuits the PaymentBundle Settings
  * action with the upgrade banner when `online_payments` is disabled, and
  * lets the page render normally when the feature is enabled or in self-hosted.
- *
- * @group functional
  */
+#[Group('functional')]
 final class PaymentSettingsGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
@@ -100,7 +100,7 @@ final class PaymentSettingsGateTest extends WebTestCase
         }
 
         $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
-        \assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         return $client;

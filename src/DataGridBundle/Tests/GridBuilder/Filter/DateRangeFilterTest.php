@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -34,7 +36,7 @@ final class DateRangeFilterTest extends TestCase
 
     public function formReturnsCorrectType(): void
     {
-        $this->assertSame(DateRangeFormType::class, $this->filter->form());
+        self::assertSame(DateRangeFormType::class, $this->filter->form());
     }
 
     public function testFilterAddsCorrectConditionsWhenStartAndEndArePresent(): void

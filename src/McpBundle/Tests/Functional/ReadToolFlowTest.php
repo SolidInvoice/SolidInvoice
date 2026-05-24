@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use DateTimeImmutable;
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -35,9 +36,8 @@ use Zenstruck\Foundry\Test\Factories;
 /**
  * Exercises the Phase 2 read tools end-to-end within the kernel, simulating
  * the scopes a real OAuth-authenticated request would carry.
- *
- * @group functional
  */
+#[Group('functional')]
 final class ReadToolFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

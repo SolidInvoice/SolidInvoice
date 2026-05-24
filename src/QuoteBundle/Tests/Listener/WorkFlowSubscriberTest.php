@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -33,9 +34,7 @@ use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber
- */
+#[CoversClass(WorkFlowSubscriber::class)]
 final class WorkFlowSubscriberTest extends KernelTestCase
 {
     use DoctrineTestTrait;

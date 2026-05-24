@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,9 +30,8 @@ use Zenstruck\Foundry\Test\Factories;
  * with the company default currency, and submission overwrites any submitted
  * value with the company default. When the feature is enabled (or in the
  * self-hosted NoopFeatureGate scenario), the field stays editable.
- *
- * @group functional
  */
+#[Group('functional')]
 final class ClientFormMultiCurrencyGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -136,7 +136,7 @@ final class ClientFormMultiCurrencyGateTest extends KernelTestCase
     private function factory(): FormFactoryInterface
     {
         $factory = self::getContainer()->get('form.factory');
-        \assert($factory instanceof FormFactoryInterface);
+        self::assertInstanceOf(FormFactoryInterface::class, $factory);
 
         return $factory;
     }

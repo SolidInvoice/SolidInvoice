@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use Override;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
@@ -28,9 +29,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * Drift between the enum and the config is the most likely silent failure
  * here — adding a Feature case without registering it (or vice versa) would
  * leak through unit tests because the registry is never consulted there.
- *
- * @group functional
  */
+#[Group('functional')]
 final class FeatureCatalogTest extends KernelTestCase
 {
     /**

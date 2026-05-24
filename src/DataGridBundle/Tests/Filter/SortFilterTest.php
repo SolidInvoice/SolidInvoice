@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,13 +15,12 @@ namespace SolidInvoice\DataGridBundle\Tests\Filter;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Filter\SortFilter;
 
-/**
- * @covers \SolidInvoice\DataGridBundle\Filter\SortFilter
- */
+#[CoversClass(SortFilter::class)]
 final class SortFilterTest extends TestCase
 {
     private SortFilter $filter;

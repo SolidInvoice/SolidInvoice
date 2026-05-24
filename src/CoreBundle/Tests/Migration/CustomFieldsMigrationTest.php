@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @group functional
- */
+#[Group('functional')]
 final class CustomFieldsMigrationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

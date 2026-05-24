@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\AutoIncrementIdGenerator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -22,7 +23,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\CoreBundle\Generator\BillingIdGenerator\AutoIncrementIdGenerator */
+#[CoversClass(AutoIncrementIdGenerator::class)]
 final class AutoIncrementIdGeneratorTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;

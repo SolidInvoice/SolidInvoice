@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Notification;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -23,12 +24,10 @@ use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 
-/**
- * @covers \SolidInvoice\ClientBundle\Notification\ClientCreateNotification
- * @covers \SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification
- * @covers \SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification
- * @covers \SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification
- */
+#[CoversClass(ClientCreateNotification::class)]
+#[CoversClass(InvoiceStatusNotification::class)]
+#[CoversClass(PaymentReceivedNotification::class)]
+#[CoversClass(QuoteStatusNotification::class)]
 final class NotificationAttributesTest extends TestCase
 {
     #[DataProvider('notificationClassProvider')]

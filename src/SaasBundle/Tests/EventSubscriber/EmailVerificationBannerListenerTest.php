@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\SaasBundle\EventSubscriber\EmailVerificationBannerListener;
@@ -24,9 +25,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-/**
- * @covers \SolidInvoice\SaasBundle\EventSubscriber\EmailVerificationBannerListener
- */
+#[CoversClass(EmailVerificationBannerListener::class)]
 final class EmailVerificationBannerListenerTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -104,7 +103,7 @@ final class EmailVerificationBannerListenerTest extends TestCase
 
         $listener->onResponse($event);
 
-        self::assertStringNotContainsString('verification-banner', $response->getContent());
+        self::assertStringNotContainsString('verification-banner', (string) $response->getContent());
     }
 
     public function testSkipsNonGetRequests(): void

@@ -16,6 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Company;
 use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\UserEligibleCompanies;
@@ -28,9 +29,7 @@ use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use SplObjectStorage;
 
-/**
- * @covers \SolidInvoice\SaasBundle\Company\SubscriptionAwareUserCompanies
- */
+#[CoversClass(SubscriptionAwareUserCompanies::class)]
 final class SubscriptionAwareUserCompaniesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

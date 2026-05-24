@@ -47,8 +47,8 @@ final class FeatureTwigFunctionsTest extends KernelTestCase
 
         // Vendor PlatformBundle wiring: every feature is treated as enabled
         // and unlimited because NoopFeatureGate has no opinion on keys.
-        self::assertTrue($twig->createTemplate("{{ feature_enabled('any_key') ? 'yes' : 'no' }}")->render() === 'yes');
-        self::assertTrue($twig->createTemplate("{{ feature_can_use('any_key', 9999) ? 'yes' : 'no' }}")->render() === 'yes');
+        self::assertSame('yes', $twig->createTemplate("{{ feature_enabled('any_key') ? 'yes' : 'no' }}")->render());
+        self::assertSame('yes', $twig->createTemplate("{{ feature_can_use('any_key', 9999) ? 'yes' : 'no' }}")->render());
         self::assertSame('', $twig->createTemplate("{{ feature_remaining('any_key') }}")->render());
     }
 

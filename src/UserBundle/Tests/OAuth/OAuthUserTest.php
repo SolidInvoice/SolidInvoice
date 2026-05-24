@@ -15,10 +15,11 @@ namespace SolidInvoice\UserBundle\Tests\OAuth;
 
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\OAuth\OAuthUser;
 
-/** @covers \SolidInvoice\UserBundle\OAuth\OAuthUser */
+#[CoversClass(OAuthUser::class)]
 final class OAuthUserTest extends TestCase
 {
     public function testGetEmailWithGoogleUser(): void
@@ -29,16 +30,16 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertEquals('test@example.com', $oauthUser->getEmail());
+        self::assertSame('test@example.com', $oauthUser->getEmail());
     }
 
     public function testGetEmailWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertNull($oauthUser->getEmail());
+        self::assertNull($oauthUser->getEmail());
     }
 
     public function testGetFirstNameWithGoogleUser(): void
@@ -49,16 +50,16 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertEquals('John', $oauthUser->getFirstName());
+        self::assertSame('John', $oauthUser->getFirstName());
     }
 
     public function testGetFirstNameWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertEquals('', $oauthUser->getFirstName());
+        self::assertSame('', $oauthUser->getFirstName());
     }
 
     public function testGetId(): void
@@ -70,7 +71,7 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertEquals('12345', $oauthUser->getId());
+        self::assertEquals('12345', $oauthUser->getId());
     }
 
     public function testGetLastNameWithGoogleUser(): void
@@ -81,16 +82,16 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertEquals('Doe', $oauthUser->getLastName());
+        self::assertSame('Doe', $oauthUser->getLastName());
     }
 
     public function testGetLastNameWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertEquals('', $oauthUser->getLastName());
+        self::assertSame('', $oauthUser->getLastName());
     }
 
     public function testGetPropertyMapWithGoogleUser(): void
@@ -99,16 +100,16 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertEquals('googleId', $oauthUser->getPropertyMap());
+        self::assertSame('googleId', $oauthUser->getPropertyMap());
     }
 
     public function testGetPropertyMapWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertEquals('', $oauthUser->getPropertyMap());
+        self::assertSame('', $oauthUser->getPropertyMap());
     }
 
     public function testGetEmailVerifiedWithGoogleUserVerified(): void
@@ -119,7 +120,7 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertTrue($oauthUser->getEmailVerified());
+        self::assertTrue($oauthUser->getEmailVerified());
     }
 
     public function testGetEmailVerifiedWithGoogleUserNotVerified(): void
@@ -130,7 +131,7 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertFalse($oauthUser->getEmailVerified());
+        self::assertFalse($oauthUser->getEmailVerified());
     }
 
     public function testGetEmailVerifiedWithGoogleUserNoVerificationInfo(): void
@@ -139,15 +140,15 @@ final class OAuthUserTest extends TestCase
 
         $oauthUser = new OAuthUser($googleUser);
 
-        $this->assertFalse($oauthUser->getEmailVerified());
+        self::assertFalse($oauthUser->getEmailVerified());
     }
 
     public function testGetEmailVerifiedWithNonGoogleUser(): void
     {
-        $resourceOwner = $this->createMock(ResourceOwnerInterface::class);
+        $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
 
-        $this->assertFalse($oauthUser->getEmailVerified());
+        self::assertFalse($oauthUser->getEmailVerified());
     }
 }

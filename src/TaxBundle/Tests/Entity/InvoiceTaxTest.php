@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Entity;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use PHPUnit\Framework\Attributes\CoversClass;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -25,16 +27,15 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocument;
+use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocumentValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zenstruck\Foundry\Test\Factories;
 
-/**
- * @covers \SolidInvoice\TaxBundle\Entity\InvoiceTax
- * @covers \SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocument
- * @covers \SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocumentValidator
- */
+#[CoversClass(InvoiceTax::class)]
+#[CoversClass(ExactlyOneDocument::class)]
+#[CoversClass(ExactlyOneDocumentValidator::class)]
 final class InvoiceTaxTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -118,6 +119,7 @@ final class InvoiceTaxTest extends KernelTestCase
         $invoice->addInvoiceTax($invoiceTax);
 
         $em = $this->registry->getManagerForClass(InvoiceTax::class);
+        self::assertInstanceOf(ObjectManager::class, $em);
         $em->persist($invoiceTax);
         $em->flush();
 
@@ -136,6 +138,7 @@ final class InvoiceTaxTest extends KernelTestCase
         $quote->addInvoiceTax($invoiceTax);
 
         $em = $this->registry->getManagerForClass(InvoiceTax::class);
+        self::assertInstanceOf(ObjectManager::class, $em);
         $em->persist($invoiceTax);
         $em->flush();
 

@@ -21,11 +21,12 @@ use Doctrine\ORM\QueryBuilder;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\PaymentBundle\Manager\PaymentStats;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
-/** @covers \SolidInvoice\PaymentBundle\Manager\PaymentStats */
+#[CoversClass(PaymentStats::class)]
 final class PaymentStatsTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
@@ -99,7 +100,7 @@ final class PaymentStatsTest extends TestCase
         self::assertInstanceOf(BigInteger::class, $result['total_income']['USD']['amount']);
         self::assertInstanceOf(Currency::class, $result['total_income']['USD']['currency']);
         self::assertTrue($result['total_income']['USD']['amount']->isEqualTo(100000));
-        self::assertEquals('USD', $result['total_income']['USD']['currency']->getCode());
+        self::assertSame('USD', $result['total_income']['USD']['currency']->getCode());
 
         self::assertArrayHasKey('USD', $result['this_month']);
         self::assertArrayHasKey('amount', $result['this_month']['USD']);
@@ -107,7 +108,7 @@ final class PaymentStatsTest extends TestCase
         self::assertInstanceOf(BigInteger::class, $result['this_month']['USD']['amount']);
         self::assertInstanceOf(Currency::class, $result['this_month']['USD']['currency']);
         self::assertTrue($result['this_month']['USD']['amount']->isEqualTo(25000));
-        self::assertEquals('USD', $result['this_month']['USD']['currency']->getCode());
+        self::assertSame('USD', $result['this_month']['USD']['currency']->getCode());
     }
 
     /**

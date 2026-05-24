@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\Config;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Config\UserConfig;
 use SolidInvoice\UserBundle\Entity\User;
@@ -23,9 +24,7 @@ use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
-/**
- * @covers \SolidInvoice\UserBundle\Config\UserConfig
- */
+#[CoversClass(UserConfig::class)]
 final class UserConfigTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

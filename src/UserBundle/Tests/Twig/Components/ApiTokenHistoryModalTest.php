@@ -25,8 +25,8 @@ final class ApiTokenHistoryModalTest extends TestCase
 {
     public function testGetTokenReturnsNullWhenTokenIdIsNull(): void
     {
-        $tokenRepository = $this->createMock(ApiTokenRepository::class);
-        $security = $this->createMock(Security::class);
+        $tokenRepository = $this->createStub(ApiTokenRepository::class);
+        $security = $this->createStub(Security::class);
 
         $component = new ApiTokenHistoryModal($tokenRepository, $security);
         $component->tokenId = null;
@@ -37,7 +37,7 @@ final class ApiTokenHistoryModalTest extends TestCase
     public function testGetTokenReturnsNullWhenTokenNotFound(): void
     {
         $tokenRepository = $this->createMock(ApiTokenRepository::class);
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
 
         $tokenId = Ulid::generate();
         $tokenIdString = (string) $tokenId;
@@ -132,7 +132,7 @@ final class ApiTokenHistoryModalTest extends TestCase
         $tokenId = Ulid::generate();
         $tokenIdString = (string) $tokenId;
 
-        $apiToken = $this->createMock(ApiToken::class);
+        $apiToken = $this->createStub(ApiToken::class);
 
         $tokenRepository
             ->expects(self::once())
@@ -154,8 +154,8 @@ final class ApiTokenHistoryModalTest extends TestCase
 
     public function testOpenActionSetsTokenId(): void
     {
-        $tokenRepository = $this->createMock(ApiTokenRepository::class);
-        $security = $this->createMock(Security::class);
+        $tokenRepository = $this->createStub(ApiTokenRepository::class);
+        $security = $this->createStub(Security::class);
 
         $tokenId = (string) Ulid::generate();
 
@@ -167,8 +167,8 @@ final class ApiTokenHistoryModalTest extends TestCase
 
     public function testCloseActionClearsTokenId(): void
     {
-        $tokenRepository = $this->createMock(ApiTokenRepository::class);
-        $security = $this->createMock(Security::class);
+        $tokenRepository = $this->createStub(ApiTokenRepository::class);
+        $security = $this->createStub(Security::class);
 
         $component = new ApiTokenHistoryModal($tokenRepository, $security);
         $component->tokenId = (string) Ulid::generate();

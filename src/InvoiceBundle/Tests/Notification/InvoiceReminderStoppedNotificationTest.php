@@ -15,12 +15,13 @@ namespace SolidInvoice\InvoiceBundle\Tests\Notification;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification;
 
-/** @covers \SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification */
+#[CoversClass(InvoiceReminderStoppedNotification::class)]
 final class InvoiceReminderStoppedNotificationTest extends TestCase
 {
     use MockeryPHPUnitIntegration;

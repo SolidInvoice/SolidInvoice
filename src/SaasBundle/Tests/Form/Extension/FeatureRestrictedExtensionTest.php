@@ -50,7 +50,7 @@ final class FeatureRestrictedExtensionTest extends TestCase
         self::assertTrue($view->vars['disabled']);
         self::assertTrue($view->vars['feature_gated_active']);
         self::assertSame('Solo', $view->vars['feature_gated_plan']);
-        self::assertStringContainsString('feature-gated', $view->vars['attr']['class']);
+        self::assertStringContainsString('feature-gated', (string) $view->vars['attr']['class']);
     }
 
     public function testBuildViewIsNoOpWhenFeatureIsEnabled(): void
@@ -147,8 +147,8 @@ final class FeatureRestrictedExtensionTest extends TestCase
             'feature_gated' => 'custom_branding',
         ]);
 
-        self::assertStringContainsString('existing-class', $view->vars['attr']['class']);
-        self::assertStringContainsString('feature-gated', $view->vars['attr']['class']);
+        self::assertStringContainsString('existing-class', (string) $view->vars['attr']['class']);
+        self::assertStringContainsString('feature-gated', (string) $view->vars['attr']['class']);
         self::assertNull($view->vars['feature_gated_plan']);
     }
 

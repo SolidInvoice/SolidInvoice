@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -50,6 +52,7 @@ final class PaymentSettingsTest extends LiveComponentTest
         )->actingAs($this->getUser());
 
         $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'cash']);
+        self::assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
         self::assertSame('Cash', $paymentMethod->getName());
         self::assertTrue($paymentMethod->isEnabled());
@@ -62,8 +65,10 @@ final class PaymentSettingsTest extends LiveComponentTest
 
         // Gateway name should NOT change for existing payment methods
         $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'cash']);
+        self::assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
         self::assertSame('Test Cash', $paymentMethod->getName());
+
         self::assertSame('cash', $paymentMethod->getGatewayName()); // Gateway name preserved
         self::assertFalse($paymentMethod->isEnabled());
 
@@ -106,6 +111,7 @@ final class PaymentSettingsTest extends LiveComponentTest
         ])->call('save');
 
         $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'payex-test']);
+        self::assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
         self::assertSame('Payex Test', $paymentMethod->getName());
         self::assertSame('payex', $paymentMethod->getFactoryName());
@@ -198,6 +204,7 @@ final class PaymentSettingsTest extends LiveComponentTest
         ])->call('save');
 
         $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'payex-test']);
+        self::assertInstanceOf(PaymentMethod::class, $paymentMethod);
         self::assertSame('secret-password-123', $paymentMethod->getConfig()['encryption_key']);
 
         // Update with a new password
@@ -218,6 +225,7 @@ final class PaymentSettingsTest extends LiveComponentTest
         ])->call('save');
 
         $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'payex-test']);
+        self::assertInstanceOf(PaymentMethod::class, $paymentMethod);
         self::assertSame('Payex Updated', $paymentMethod->getName());
         self::assertSame('54321', $paymentMethod->getConfig()['account_number']);
         // Password should be updated to the new value
