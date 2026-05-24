@@ -37,7 +37,7 @@ class TaxType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                'choices' => array_map('ucwords', Tax::getTypes()),
+                'choices' => array_map(ucwords(...), Tax::getTypes()),
                 'help' => 'tax.rates.explanation',
                 'help_html' => true,
                 'placeholder' => 'tax.rates.type.select',

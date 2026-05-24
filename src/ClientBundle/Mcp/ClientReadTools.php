@@ -27,7 +27,6 @@ use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final readonly class ClientReadTools
@@ -136,7 +135,7 @@ final readonly class ClientReadTools
         }
 
         return array_values(array_map(
-            fn (TaxIdentifier $identifier): array => $this->normalizer->normalize($identifier),
+            $this->normalizer->normalize(...),
             $client->getTaxIdentifiers()->toArray(),
         ));
     }

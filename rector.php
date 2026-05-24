@@ -34,8 +34,6 @@ use Rector\CodeQuality\Rector\If_\SimplifyIfReturnBoolRector;
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\CodeQuality\Rector\NullsafeMethodCall\CleanupUnneededNullsafeOperatorRector;
 use Rector\CodeQuality\Rector\Ternary\UnnecessaryTernaryExpressionRector;
-use Rector\CodingStyle\Rector\ArrowFunction\ArrowFunctionDelegatingCallToFirstClassCallableRector;
-use Rector\CodingStyle\Rector\FuncCall\FunctionFirstClassCallableRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
@@ -160,10 +158,8 @@ return RectorConfig::configure()
         AttributeKeyToClassConstFetchRector::class,
         InlineConstructorDefaultToPropertyRector::class,
         SortAttributeNamedArgsRector::class,
-        FunctionFirstClassCallableRector::class,
         CombineIfRector::class,
         IssetOnPropertyObjectToPropertyExistsRector::class,
-        ArrowFunctionDelegatingCallToFirstClassCallableRector::class,
         SimplifyIfNullableReturnRector::class,
         CleanupUnneededNullsafeOperatorRector::class,
         UnnecessaryTernaryExpressionRector::class,

@@ -65,7 +65,7 @@ final readonly class QuoteCloner
             $newQuote->setTax($quote->getTax());
         }
 
-        array_map(static fn (Line $line): Quote => $newQuote->addLine($line), iterator_to_array($this->addLines($quote, $now)));
+        array_map($newQuote->addLine(...), iterator_to_array($this->addLines($quote, $now)));
 
         foreach ($quote->getInvoiceTaxes() as $sourceInvoiceTax) {
             $newQuote->addInvoiceTax($this->taxSnapshotCopier->copyInvoiceTax($sourceInvoiceTax));

@@ -188,7 +188,7 @@ final class EntityNormalizer
                 'qty' => $line->getQty(),
                 'total' => $this->bigNumber($line->getTotal()),
                 'taxes' => array_values(array_map(
-                    fn (LineTax $lineTax): array => $this->lineTax($lineTax),
+                    $this->lineTax(...),
                     $line->getTaxes()->toArray(),
                 )),
             ];
@@ -255,7 +255,7 @@ final class EntityNormalizer
             'website' => $client->getWebsite(),
             'currency' => $client->getCurrencyCode(),
             'tax_identifiers' => array_values(array_map(
-                fn (TaxIdentifier $identifier): array => $this->taxIdentifier($identifier),
+                $this->taxIdentifier(...),
                 $client->getTaxIdentifiers()->toArray(),
             )),
             'created' => $this->date($client->getCreated()),

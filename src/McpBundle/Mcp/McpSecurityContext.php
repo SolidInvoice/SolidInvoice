@@ -45,7 +45,7 @@ final readonly class McpSecurityContext
 
         $scopes = $request->attributes->get(McpOAuthAuthenticator::ATTR_SCOPES, []);
 
-        return \is_array($scopes) ? array_values(array_filter($scopes, 'is_string')) : [];
+        return \is_array($scopes) ? array_values(array_filter($scopes, is_string(...))) : [];
     }
 
     public function getCompanyId(): ?Ulid
