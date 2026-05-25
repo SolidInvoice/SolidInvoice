@@ -90,6 +90,53 @@ class InvoiceTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
     }
 
+    public function testSubmitWithNewClient(): void
+    {
+        $notes = $this->faker->text;
+        $terms = $this->faker->text;
+        $discountValue = $this->faker->numberBetween(0, 100);
+
+        $formData = [
+            'clientMode' => 'new',
+            'newClientName' => 'New Client',
+            'newContactFirstName' => 'John',
+            'newContactLastName' => 'Doe',
+            'newContactEmail' => 'john@example.com',
+            'discount' => [
+                'value' => $discountValue,
+                'type' => Discount::TYPE_PERCENTAGE,
+            ],
+            'lines' => [],
+            'invoiceId' => '10',
+            'notes' => $notes,
+            'terms' => $terms,
+            'total' => '0',
+            'baseTotal' => '0',
+            'invoiceDate' => '2021-01-01',
+            'tax' => '0',
+        ];
+
+        $dto = new InvoiceFormDTO();
+        $dto->clientMode = InvoiceClientMode::NewClient;
+        $dto->newClientName = 'New Client';
+        $dto->newContactFirstName = 'John';
+        $dto->newContactLastName = 'Doe';
+        $dto->newContactEmail = 'john@example.com';
+        $dto->invoiceId = '10';
+        $dto->terms = $terms;
+        $dto->notes = $notes;
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+        $dto->discount = $discount;
+        $dto->total = '0';
+        $dto->baseTotal = '0';
+        $dto->tax = '0';
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+
+        $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
+    }
+
     /**
      * @return array<FormExtensionInterface>
      */
