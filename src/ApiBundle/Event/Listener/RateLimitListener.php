@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
+use Carbon\Carbon;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -58,7 +59,7 @@ final readonly class RateLimitListener
             return;
         }
 
-        $retryAfter = $limit->getRetryAfter()->getTimestamp() - time();
+        $retryAfter = $limit->getRetryAfter()->getTimestamp() - Carbon::now()->getTimestamp();
 
         $event->setResponse(
             new JsonResponse(

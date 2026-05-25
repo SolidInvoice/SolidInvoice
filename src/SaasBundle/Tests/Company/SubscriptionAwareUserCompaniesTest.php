@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Company;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -109,7 +110,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
             ->andReturnUsing(static fn (Company $c): ?Subscription => $subscriptions[$c] ?? null);
 
         $clock = M::mock(ClockInterface::class);
-        $clock->shouldReceive('now')->andReturn(new DateTimeImmutable('2026-06-01'));
+        $clock->shouldReceive('now')->andReturn(CarbonImmutable::parse('2026-06-01'));
 
         return new SubscriptionAwareUserCompanies(
             $innerProvider,
@@ -121,7 +122,7 @@ final class SubscriptionAwareUserCompaniesTest extends TestCase
     {
         $subscription = new Subscription();
         $subscription->setStatus($status);
-        $subscription->setStartDate(new DateTimeImmutable('2025-01-01'));
+        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
         $subscription->setEndDate(new DateTimeImmutable($endDate));
 
         return $subscription;

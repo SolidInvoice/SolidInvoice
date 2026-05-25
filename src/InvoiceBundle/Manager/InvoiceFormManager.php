@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Manager;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -49,7 +49,7 @@ final readonly class InvoiceFormManager
 
         // Map DTO fields to entity
         $invoice->setInvoiceId($dto->invoiceId);
-        $invoice->setInvoiceDate($dto->invoiceDate ?? new DateTimeImmutable());
+        $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
@@ -92,7 +92,7 @@ final readonly class InvoiceFormManager
     public function updateInvoiceFromDTO(Invoice $invoice, InvoiceFormDTO $dto): void
     {
         $invoice->setInvoiceId($dto->invoiceId);
-        $invoice->setInvoiceDate($dto->invoiceDate ?? new DateTimeImmutable());
+        $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);

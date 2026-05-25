@@ -15,7 +15,7 @@ namespace SolidInvoice\ApiBundle\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -33,7 +33,7 @@ final readonly class GenerateInvoiceFromRecurringProcessor implements ProcessorI
     {
         assert($data instanceof RecurringInvoice);
 
-        if ($data->hasInvoiceForDay(new DateTimeImmutable())) {
+        if ($data->hasInvoiceForDay(CarbonImmutable::now())) {
             throw new UnprocessableEntityHttpException('An invoice has already been generated for this recurring invoice today.');
         }
 

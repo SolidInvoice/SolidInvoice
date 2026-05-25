@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -136,8 +137,8 @@ final class RequestListenerTest extends KernelTestCase
 
     public function testOnRequestWithCancelledStatusAfterEndDate(): void
     {
-        $now = new DateTimeImmutable('2024-01-15');
-        $endDate = new DateTimeImmutable('2024-01-10');
+        $now = CarbonImmutable::parse('2024-01-15');
+        $endDate = CarbonImmutable::parse('2024-01-10');
         $subscription = $this->createSubscription(SubscriptionStatus::CANCELLED, $endDate);
         $listener = $this->createListener(new User(), $now, $subscription);
 
@@ -159,8 +160,8 @@ final class RequestListenerTest extends KernelTestCase
 
     public function testOnRequestWithCancelledStatusBeforeEndDate(): void
     {
-        $now = new DateTimeImmutable('2024-01-10');
-        $endDate = new DateTimeImmutable('2024-01-15');
+        $now = CarbonImmutable::parse('2024-01-10');
+        $endDate = CarbonImmutable::parse('2024-01-15');
         $subscription = $this->createSubscription(SubscriptionStatus::CANCELLED, $endDate);
         $listener = $this->createListener(new User(), $now, $subscription);
 
@@ -180,8 +181,8 @@ final class RequestListenerTest extends KernelTestCase
 
     public function testOnRequestWithTrialStatusAfterEndDate(): void
     {
-        $now = new DateTimeImmutable('2024-01-15');
-        $endDate = new DateTimeImmutable('2024-01-10');
+        $now = CarbonImmutable::parse('2024-01-15');
+        $endDate = CarbonImmutable::parse('2024-01-10');
         $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, $endDate);
         $listener = $this->createListener(new User(), $now, $subscription);
 
@@ -203,8 +204,8 @@ final class RequestListenerTest extends KernelTestCase
 
     public function testOnRequestWithExpiredTrialPassesCouponCodeToTemplate(): void
     {
-        $now = new DateTimeImmutable('2024-01-15');
-        $endDate = new DateTimeImmutable('2024-01-10');
+        $now = CarbonImmutable::parse('2024-01-15');
+        $endDate = CarbonImmutable::parse('2024-01-10');
         $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, $endDate);
 
         $capturedContext = null;
@@ -235,8 +236,8 @@ final class RequestListenerTest extends KernelTestCase
 
     public function testOnRequestWithTrialStatusBeforeEndDate(): void
     {
-        $now = new DateTimeImmutable('2024-01-10');
-        $endDate = new DateTimeImmutable('2024-01-15');
+        $now = CarbonImmutable::parse('2024-01-10');
+        $endDate = CarbonImmutable::parse('2024-01-15');
         $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, $endDate);
         $listener = $this->createListener(new User(), $now, $subscription);
 
@@ -341,7 +342,7 @@ final class RequestListenerTest extends KernelTestCase
 
         // Mock Clock to control time in tests
         $clock = M::mock(ClockInterface::class);
-        $clock->shouldReceive('now')->andReturn($now ?? new DateTimeImmutable());
+        $clock->shouldReceive('now')->andReturn($now ?? CarbonImmutable::now());
 
         return new RequestListener(
             $companySelector,
@@ -371,8 +372,8 @@ final class RequestListenerTest extends KernelTestCase
         $subscription->setSubscriber($this->company);
         $subscription->setPlan($plan);
         $subscription->setStatus($status);
-        $subscription->setStartDate(new DateTimeImmutable('2024-01-01'));
-        $subscription->setEndDate($endDate ?? new DateTimeImmutable('2024-12-31'));
+        $subscription->setStartDate(CarbonImmutable::parse('2024-01-01'));
+        $subscription->setEndDate($endDate ?? CarbonImmutable::parse('2024-12-31'));
 
         return $subscription;
     }

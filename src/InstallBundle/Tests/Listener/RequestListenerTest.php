@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Listener;
 
+use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -24,7 +25,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
-use function date;
 
 #[CoversClass(RequestListener::class)]
 final class RequestListenerTest extends TestCase
@@ -168,7 +168,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createStub(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
+            Carbon::now()->format('Y-m-d H:i:s'),
         );
 
         $request = Request::createFromGlobals();

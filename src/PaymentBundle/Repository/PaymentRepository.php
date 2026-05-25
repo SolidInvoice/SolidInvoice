@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
 use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
@@ -215,7 +216,7 @@ class PaymentRepository extends ServiceEntityRepository
         $results = [];
 
         foreach ($payments as $date => $amount) {
-            $results[] = [strtotime($date) * 1000, $amount];
+            $results[] = [Carbon::parse($date)->getTimestamp() * 1000, $amount];
         }
 
         return $results;
@@ -257,7 +258,7 @@ class PaymentRepository extends ServiceEntityRepository
             ]
         )
             ->where('p.created >= :date')
-            ->setParameter('date', new DateTime('-1 Year'))
+            ->setParameter('date', Carbon::parse('-1 Year'))
             ->groupBy('p.created, p.totalAmount')
             ->orderBy('p.created', Criteria::ASC);
 
@@ -378,8 +379,8 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function getPaymentsThisMonth(): array
     {
-        $startOfMonth = new DateTime('first day of this month midnight');
-        $endOfMonth = new DateTime('last day of this month 23:59:59');
+        $startOfMonth = Carbon::parse('first day of this month midnight');
+        $endOfMonth = Carbon::parse('last day of this month 23:59:59');
 
         $qb = $this->createQueryBuilder('p');
 

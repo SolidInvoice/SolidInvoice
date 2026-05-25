@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Export;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +30,7 @@ final class ExportFilenameGeneratorTest extends TestCase
     protected function setUp(): void
     {
         $this->generator = new ExportFilenameGenerator();
-        $this->date = new DateTimeImmutable('2026-04-24');
+        $this->date = CarbonImmutable::parse('2026-04-24');
     }
 
     public function testGeneratesBasicFilenameWithoutFilters(): void

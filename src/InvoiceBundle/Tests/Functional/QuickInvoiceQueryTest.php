@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -37,7 +37,7 @@ final class QuickInvoiceQueryTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable()->modify('+3 days')->setTime(0, 0)->modify('+6 hours'),
+            'due' => CarbonImmutable::now()->modify('+3 days')->setTime(0, 0)->modify('+6 hours'),
             'users' => [$contact],
         ]);
 

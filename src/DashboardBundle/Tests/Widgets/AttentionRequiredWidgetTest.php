@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
 use Brick\Math\BigInteger;
-use DateTime;
-use DateTimeImmutable;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\AttentionRequiredWidget;
@@ -77,7 +77,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
             'baseTotal' => BigInteger::of(10000),
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
-            'due' => new DateTimeImmutable('-5 days'),
+            'due' => CarbonImmutable::now()->subDays(5),
         ]);
 
         $widget = self::getContainer()->get(AttentionRequiredWidget::class);
@@ -142,7 +142,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         RecurringInvoiceFactory::createMany(2, [
             'client' => $client,
             'status' => RecurringInvoiceStatus::Active,
-            'dateStart' => new DateTimeImmutable('+3 days'),
+            'dateStart' => CarbonImmutable::now()->addDays(3),
             'total' => BigInteger::of(15000),
         ]);
 
@@ -212,7 +212,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-001',
-            'due' => new DateTimeImmutable('2024-01-15'),
+            'due' => CarbonImmutable::parse('2024-01-15'),
         ]);
 
         // Create draft invoice
@@ -236,14 +236,14 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'quoteId' => 'QUO-001',
-            'created' => new DateTime('2024-01-10'),
+            'created' => Carbon::parse('2024-01-10'),
         ]);
 
         // Create upcoming recurring
         RecurringInvoiceFactory::createOne([
             'client' => $client,
             'status' => RecurringInvoiceStatus::Active,
-            'dateStart' => new DateTimeImmutable('2024-01-20'),
+            'dateStart' => CarbonImmutable::parse('2024-01-20'),
             'total' => BigInteger::of(15000),
             'baseTotal' => BigInteger::of(15000),
             'tax' => BigInteger::zero(),

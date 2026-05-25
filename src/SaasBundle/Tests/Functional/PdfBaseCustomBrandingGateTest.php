@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use Brick\Math\BigInteger;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -202,7 +202,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
             'client' => $client,
             'status' => InvoiceStatus::Pending,
             'invoiceId' => 'INV-FIXTURE-001',
-            'due' => new DateTimeImmutable('+14 days'),
+            'due' => CarbonImmutable::now()->addDays(14),
             'paidDate' => null,
             'archived' => null,
             'terms' => 'Payment due within 30 days.',

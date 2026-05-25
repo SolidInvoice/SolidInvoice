@@ -29,6 +29,7 @@ use ApiPlatform\Metadata\Post;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -239,7 +240,7 @@ class Invoice extends BaseInvoice implements Stringable
         $this->users = new ArrayCollection();
         $this->invoiceTaxes = new ArrayCollection();
         $this->balance = BigInteger::zero();
-        $this->invoiceDate = new DateTimeImmutable();
+        $this->invoiceDate = CarbonImmutable::now();
         $this->setUuid(Uuid::v7());
     }
 

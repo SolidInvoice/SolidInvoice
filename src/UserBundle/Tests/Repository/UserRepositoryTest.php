@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -194,7 +194,7 @@ final class UserRepositoryTest extends KernelTestCase
         // Use reflection to set the created date to 40 days ago
         $reflection = new ReflectionClass($oldUser);
         $property = $reflection->getProperty('created');
-        $property->setValue($oldUser, new DateTimeImmutable('-40 days'));
+        $property->setValue($oldUser, CarbonImmutable::now()->subDays(40));
 
         $em->flush();
 

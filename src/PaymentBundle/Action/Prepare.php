@@ -16,7 +16,7 @@ namespace SolidInvoice\PaymentBundle\Action;
 use const FILTER_VALIDATE_BOOLEAN;
 use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
-use DateTime;
+use Carbon\Carbon;
 use Exception;
 use Generator;
 use Payum\Core\Payum;
@@ -214,7 +214,7 @@ final class Prepare
             }
 
             $payment->setStatus(PaymentStatus::Captured);
-            $payment->setCompleted(new DateTime('now'));
+            $payment->setCompleted(Carbon::now());
             $this->save($payment);
 
             $event = new PaymentCompleteEvent($payment);

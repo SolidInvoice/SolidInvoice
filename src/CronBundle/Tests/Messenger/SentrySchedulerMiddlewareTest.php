@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle\Tests\Messenger;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -339,7 +339,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
             name: $scheduleName,
             id: 'test-id-' . uniqid(),
             trigger: $trigger ?? CronExpressionTrigger::fromSpec('0 * * * *'),
-            triggeredAt: new DateTimeImmutable(),
+            triggeredAt: CarbonImmutable::now(),
         );
 
         $stamps = [new ScheduledStamp($context)];

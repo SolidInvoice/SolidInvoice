@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -59,7 +59,7 @@ class UserInvitation
 
     public function __construct()
     {
-        $this->created = new DateTimeImmutable();
+        $this->created = CarbonImmutable::now();
     }
 
     public function getId(): ?Ulid

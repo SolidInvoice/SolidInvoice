@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
+use Carbon\Carbon;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -198,7 +199,7 @@ final class TwoFactorSettings extends AbstractController
         $codes = $this->getUser()->getBackupCodes();
 
         $content = "SolidInvoice - Two-Factor Authentication Backup Codes\n";
-        $content .= 'Generated: ' . date('Y-m-d H:i:s') . "\n";
+        $content .= 'Generated: ' . Carbon::now()->format('Y-m-d H:i:s') . "\n";
         $content .= str_repeat('=', 50) . "\n\n";
 
         foreach ($codes as $i => $code) {
@@ -211,7 +212,7 @@ final class TwoFactorSettings extends AbstractController
 
         $this->dispatchBrowserEvent('download:file', [
             'content' => $content,
-            'filename' => 'solidinvoice-backup-codes-' . date('Y-m-d') . '.txt',
+            'filename' => 'solidinvoice-backup-codes-' . Carbon::now()->format('Y-m-d') . '.txt',
             'type' => 'text/plain',
         ]);
 

@@ -15,7 +15,7 @@ namespace SolidInvoice\ApiBundle\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -89,7 +89,7 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
         }
 
         $payment->setStatus(PaymentStatus::Captured);
-        $payment->setCompleted(new DateTimeImmutable());
+        $payment->setCompleted(CarbonImmutable::now());
         $payment->setCompany($invoice->getCompany());
 
         $em = $this->registry->getManager();

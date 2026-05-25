@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Mcp;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -117,10 +118,10 @@ final readonly class InvoiceWriteTools
 
         $invoice = new Invoice();
         $invoice->setClient($client);
-        $invoice->setInvoiceDate($this->parseDate($invoice_date, new DateTimeImmutable()));
+        $invoice->setInvoiceDate($this->parseDate($invoice_date, CarbonImmutable::now()));
 
         if ($due !== null) {
-            $invoice->setDue($this->parseDate($due, new DateTimeImmutable()));
+            $invoice->setDue($this->parseDate($due, CarbonImmutable::now()));
         }
 
         foreach ($this->lineItemBuilder->buildInvoiceLines($lines) as $line) {

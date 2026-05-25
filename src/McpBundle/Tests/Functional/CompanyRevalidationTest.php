@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use League\OAuth2\Server\ResourceServer;
 use PHPUnit\Framework\Attributes\CoversMethod;
@@ -83,7 +83,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $token->setCompany($this->company);
         $token->setIdentifier($jti);
         $token->setScopeValues(['mcp:read']);
-        $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+        $token->setExpiresAt(CarbonImmutable::now()->addHours(1));
 
         $accessTokenRepo->persistNewAccessToken($token);
 
@@ -137,7 +137,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $token->setCompany($this->company);
         $token->setIdentifier($jti);
         $token->setScopeValues(['mcp:read']);
-        $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+        $token->setExpiresAt(CarbonImmutable::now()->addHours(1));
 
         $accessTokenRepo->persistNewAccessToken($token);
 

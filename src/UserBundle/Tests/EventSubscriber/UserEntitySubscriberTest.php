@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\EventSubscriber;
 
-use DateTime;
+use Carbon\Carbon;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -95,7 +95,7 @@ final class UserEntitySubscriberTest extends TestCase
             ->expects($this->once())
             ->method('generateSignature')
             ->with('_verify_email', '00000000000000000000000000', 'test@example.com', ['id' => '1111111111111111111111'])
-            ->willReturn(new VerifyEmailSignatureComponents(new DateTime('NOW'), 'https://example.com', 0))
+            ->willReturn(new VerifyEmailSignatureComponents(Carbon::parse('NOW'), 'https://example.com', 0))
         ;
 
         $mailer

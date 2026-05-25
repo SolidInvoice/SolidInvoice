@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
 use DateTime;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -47,7 +48,7 @@ final class InvoiceClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('https://example.com');
-        $client->setCreated(new DateTime('NOW'));
+        $client->setCreated(Carbon::parse('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -60,7 +61,7 @@ final class InvoiceClonerTest extends TestCase
 
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
-        $line->setCreated(new DateTime('now'));
+        $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
         $line->setTotal(120 * 10);
@@ -136,12 +137,12 @@ final class InvoiceClonerTest extends TestCase
 
     public function testCloneWithRecurring(): void
     {
-        $date = new DateTime('now');
+        $date = Carbon::now();
 
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new DateTime('NOW'));
+        $client->setCreated(Carbon::parse('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -154,7 +155,7 @@ final class InvoiceClonerTest extends TestCase
 
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
-        $line->setCreated(new DateTime('now'));
+        $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
         $line->setTotal(120 * 10);

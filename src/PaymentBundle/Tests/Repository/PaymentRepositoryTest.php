@@ -15,8 +15,9 @@ namespace SolidInvoice\PaymentBundle\Tests\Repository;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -31,8 +32,6 @@ use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
-use function date;
-use function strtotime;
 
 #[CoversClass(PaymentRepository::class)]
 final class PaymentRepositoryTest extends KernelTestCase
@@ -231,8 +230,8 @@ final class PaymentRepositoryTest extends KernelTestCase
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
-        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
 
         $invoice = InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-FOO'])->_disableAutoRefresh();
         $payment = PaymentFactory::createOne([
@@ -355,8 +354,8 @@ final class PaymentRepositoryTest extends KernelTestCase
             ->create()
             ->_disableAutoRefresh();
 
-        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
 
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
@@ -394,7 +393,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetPaymentsList(): void
     {
-        $created = new DateTimeImmutable();
+        $created = CarbonImmutable::now();
 
         PaymentFactory::createOne([
             'created' => $created,
@@ -404,7 +403,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertSame(
             [
                 [
-                    strtotime($created->format('Y-m-d')) * 1000,
+                    Carbon::parse($created->format('Y-m-d'))->getTimestamp() * 1000,
                     500123,
                 ]
             ],
@@ -417,7 +416,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetPaymentsByMonth(): void
     {
-        $created = new DateTimeImmutable();
+        $created = CarbonImmutable::now();
 
         PaymentFactory::createOne([
             'totalAmount' => 500123,
@@ -465,8 +464,8 @@ final class PaymentRepositoryTest extends KernelTestCase
             ->create()
             ->_disableAutoRefresh();
 
-        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
 
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,

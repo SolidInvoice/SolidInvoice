@@ -15,8 +15,8 @@ namespace SolidInvoice\PaymentBundle\Manager;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
 use DateMalformedStringException;
-use DateTime;
 use Money\Currency;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
@@ -119,8 +119,8 @@ final readonly class PaymentStats
      */
     private function getThisMonthPaymentCount(): int
     {
-        $startOfMonth = new DateTime('first day of this month midnight');
-        $endOfMonth = new DateTime('last day of this month 23:59:59');
+        $startOfMonth = Carbon::parse('first day of this month midnight');
+        $endOfMonth = Carbon::parse('last day of this month 23:59:59');
 
         $qb = $this->paymentRepository->createQueryBuilder('p');
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Service;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -182,7 +183,7 @@ final class SubscriptionEligibilityTest extends TestCase
     {
         $subscription = new Subscription();
         $subscription->setStatus($status);
-        $subscription->setStartDate(new DateTimeImmutable('2025-01-01'));
+        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
         $subscription->setEndDate(new DateTimeImmutable($endDate));
 
         return $subscription;

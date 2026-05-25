@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Security;
 
+use Carbon\Carbon;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
@@ -131,7 +132,7 @@ final class EmailVerifierTest extends TestCase
 
         // Set the necessary query parameters
         $request->query->set('token', $token);
-        $request->query->set('expires', time() + 3600); // Future expiration
+        $request->query->set('expires', Carbon::now()->getTimestamp() + 3600); // Future expiration
 
         // Mock the UriSigner's checkRequest method to return true via reflection
         $uriSignerReflection = new ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
@@ -162,7 +163,7 @@ final class EmailVerifierTest extends TestCase
         // Set up the request with invalid query parameters to trigger an exception
         // Using an expired timestamp will cause an ExpiredSignatureException
         $request->query->set('token', 'invalid_token');
-        $request->query->set('expires', time() - 3600); // Expired timestamp
+        $request->query->set('expires', Carbon::now()->subHours(1)->getTimestamp()); // Expired timestamp
 
         // Mock the UriSigner's checkRequest method to return true via reflection
         // so we get past the signature check and hit the expiration check

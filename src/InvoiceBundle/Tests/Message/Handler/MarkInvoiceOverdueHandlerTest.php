@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -49,7 +49,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $company,
         ]);
 
@@ -101,7 +101,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Paid,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $company,
         ]);
 
@@ -169,7 +169,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $company,
         ]);
 

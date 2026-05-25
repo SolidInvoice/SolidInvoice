@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Brick\Math\Exception\MathException;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Psr\Clock\ClockInterface;
@@ -85,7 +85,7 @@ final class Create extends AbstractController
         $dto->client = $client;
 
         // Set default invoice date to today
-        $dto->invoiceDate = new DateTimeImmutable();
+        $dto->invoiceDate = CarbonImmutable::now();
 
         // Add one empty line item by default
         $dto->lines->add(new Line());

@@ -15,8 +15,8 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
+use Carbon\CarbonImmutable;
 use DateMalformedStringException;
-use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -50,7 +50,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         // Generate labels for the last 12 months
         $labels = [];
-        $now = new DateTimeImmutable();
+        $now = CarbonImmutable::now();
 
         for ($i = 11; $i >= 0; --$i) {
             $date = $now->modify(sprintf('-%d months', $i));

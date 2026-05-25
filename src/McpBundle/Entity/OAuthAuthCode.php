@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Entity;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -230,6 +231,6 @@ class OAuthAuthCode implements AuthCodeEntityInterface
 
     public function isExpired(): bool
     {
-        return $this->expiresAt < new DateTimeImmutable();
+        return $this->expiresAt < CarbonImmutable::now();
     }
 }

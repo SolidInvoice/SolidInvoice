@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -61,7 +61,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'invoiceId' => 'INV-TEST-001',
             'company' => $this->company,
             'client' => ClientFactory::createOne([
@@ -112,7 +112,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
 
         $invoice1 = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'invoiceId' => 'INV-COMPANY1-001',
             'company' => $company1,
             'client' => ClientFactory::createOne([
@@ -126,7 +126,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
 
         $invoice2 = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'invoiceId' => 'INV-COMPANY2-001',
             'company' => $company2,
             'client' => ClientFactory::createOne([
@@ -168,7 +168,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $this->company
         ]);
         $invoice->_real()->addUser($contact->_real());
@@ -196,34 +196,34 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         // Create various invoices
         $overdueInvoice1 = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('2 days ago'),
+            'due' => CarbonImmutable::parse('2 days ago'),
             'company' => $this->company,
         ]);
 
         $overdueInvoice2 = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $this->company,
         ]);
 
         // Not overdue - future due date
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('tomorrow'),
+            'due' => CarbonImmutable::tomorrow(),
             'company' => $this->company,
         ]);
 
         // Not overdue - already paid
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Paid,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $this->company,
         ]);
 
         // Not overdue - already overdue status
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Overdue,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $this->company,
         ]);
 

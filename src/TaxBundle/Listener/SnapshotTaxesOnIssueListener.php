@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Listener;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -85,7 +85,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
             return;
         }
 
-        $stamp = new DateTimeImmutable();
+        $stamp = CarbonImmutable::now();
 
         foreach ($subject->getLines() as $line) {
             foreach ($line->getTaxes() as $lineTax) {

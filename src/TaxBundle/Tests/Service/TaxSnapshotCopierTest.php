@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Service;
 
 use Brick\Math\BigInteger;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
@@ -55,7 +55,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source->setNameSnapshot('VAT');
         $source->setRateSnapshot('20.0000');
 
-        $stamp = new DateTimeImmutable('2026-05-13 10:00:00');
+        $stamp = CarbonImmutable::parse('2026-05-13 10:00:00');
         $copy = new TaxSnapshotCopier()->copyLineTax($source, $stamp);
 
         self::assertSame($stamp, $copy->getSnapshottedAt());
@@ -67,7 +67,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source->setNameSnapshot('VAT');
         $source->setRateSnapshot('20.0000');
 
-        $stamp = new DateTimeImmutable('2025-01-01 00:00:00');
+        $stamp = CarbonImmutable::parse('2025-01-01 00:00:00');
         $source->freeze($stamp);
 
         $copy = new TaxSnapshotCopier()->copyLineTax($source);

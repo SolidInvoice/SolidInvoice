@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mcp\Exception\ToolCallException;
@@ -169,7 +169,7 @@ final class CrossTenantTest extends KernelTestCase
         $invoice->setClient($client);
         $invoice->setStatus(InvoiceStatus::Pending);
         $invoice->setInvoiceId('FOREIGN-001');
-        $invoice->setInvoiceDate(new DateTimeImmutable());
+        $invoice->setInvoiceDate(CarbonImmutable::now());
         $invoice->setCompany($company);
 
         $em->persist($invoice);

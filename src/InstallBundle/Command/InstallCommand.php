@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Command;
 
-use DateTime;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
@@ -178,7 +178,7 @@ class InstallCommand extends Command
         $repository = $entityManager->getRepository(Version::class);
         $repository->updateVersion($version);
 
-        $time = new DateTime('NOW');
+        $time = Carbon::parse('NOW');
         $config = ['installed' => $time->format(DateTimeInterface::ATOM)];
         $this->configWriter->save($config);
     }

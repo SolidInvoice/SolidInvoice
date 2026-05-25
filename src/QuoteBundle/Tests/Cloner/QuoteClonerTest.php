@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -45,7 +46,7 @@ final class QuoteClonerTest extends TestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new DateTime('NOW'));
+        $client->setCreated(Carbon::parse('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -58,7 +59,7 @@ final class QuoteClonerTest extends TestCase
 
         $item->addTax($lineTax);
         $item->setDescription('Item Description');
-        $item->setCreated(new DateTime('now'));
+        $item->setCreated(Carbon::now());
         $item->setPrice(BigInteger::of(120));
         $item->setQty(10);
         $item->setTotal(BigInteger::of(120 * 10));

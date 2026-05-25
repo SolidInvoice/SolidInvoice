@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -85,7 +86,7 @@ class ExportJob
         private ExportFormat $format
     ) {
         $this->id = new Ulid();
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = CarbonImmutable::now();
     }
 
     public function getId(): Ulid
@@ -143,14 +144,14 @@ class ExportJob
         $this->status = ExportStatus::Completed;
         $this->archivePath = $archivePath;
         $this->fileSize = $fileSize;
-        $this->completedAt = new DateTimeImmutable();
+        $this->completedAt = CarbonImmutable::now();
     }
 
     public function markFailed(string $reason): void
     {
         $this->status = ExportStatus::Failed;
         $this->failureReason = $reason;
-        $this->completedAt = new DateTimeImmutable();
+        $this->completedAt = CarbonImmutable::now();
     }
 
     public function resolveAbsolutePath(string $projectDir): ?string

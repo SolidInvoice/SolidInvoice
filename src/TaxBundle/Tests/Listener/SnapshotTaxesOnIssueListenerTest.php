@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Tests\Listener;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
@@ -88,7 +89,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
     public function testAlreadyFrozenSnapshotIsNotOverwritten(): void
     {
         $invoice = $this->buildInvoiceWithTaxedLine();
-        $existingStamp = new DateTimeImmutable('2025-01-01 12:00:00');
+        $existingStamp = CarbonImmutable::parse('2025-01-01 12:00:00');
         $lineTax = $invoice->getLines()->first()->getTaxes()->first();
         $lineTax->freeze($existingStamp);
 
@@ -109,7 +110,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         $lineTax = new LineTax();
         $lineTax->setNameSnapshot('Initial');
         $lineTax->setRateSnapshot('10.0000');
-        $lineTax->freeze(new DateTimeImmutable());
+        $lineTax->freeze(CarbonImmutable::now());
 
         $tax = new Tax()->setName('UpdatedAfterIssue');
         $tax->setRate(99.0)->setType(Tax::TYPE_EXCLUSIVE);

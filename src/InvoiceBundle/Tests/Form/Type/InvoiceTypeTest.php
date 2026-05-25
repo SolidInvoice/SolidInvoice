@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
@@ -88,7 +88,7 @@ final class InvoiceTypeTest extends FormTestCase
         $dto->total = '0';
         $dto->baseTotal = '0';
         $dto->tax = '0';
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
 
         $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
     }

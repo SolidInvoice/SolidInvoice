@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
 use Brick\Math\BigInteger;
-use DateTime;
+use Carbon\Carbon;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\RecentActivityWidget;
@@ -88,7 +88,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -124,7 +124,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-002',
-            'updated' => new DateTime('now'),
+            'updated' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -159,7 +159,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'quoteId' => 'QUO-001',
-            'updated' => new DateTime('now'),
+            'updated' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -194,7 +194,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'quoteId' => 'QUO-002',
-            'updated' => new DateTime('now'),
+            'updated' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -237,7 +237,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-REC-001',
             'recurringInvoice' => $recurringInvoice,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -271,7 +271,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-OLD',
-            'updated' => new DateTime('-2 days'),
+            'updated' => Carbon::now()->subDays(2),
         ]);
 
         InvoiceFactory::createOne([
@@ -283,7 +283,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-NEW',
-            'updated' => new DateTime('now'),
+            'updated' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -366,7 +366,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('-1 hour'),
+            'created' => Carbon::now()->subHours(1),
         ]);
 
         // Sent invoice
@@ -379,7 +379,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'invoiceId' => 'INV-002',
-            'updated' => new DateTime('-2 hours'),
+            'updated' => Carbon::now()->subHours(2),
         ]);
 
         // Accepted quote
@@ -392,7 +392,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'tax' => BigInteger::zero(),
             'discount' => $this->createZeroDiscount(),
             'quoteId' => 'QUO-001',
-            'updated' => new DateTime('-3 hours'),
+            'updated' => Carbon::now()->subHours(3),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);

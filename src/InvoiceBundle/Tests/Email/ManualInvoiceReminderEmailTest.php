@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Email;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
@@ -125,9 +125,9 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                 'total' => 25000,
                 'balance' => 25000,
                 'baseTotal' => 25000,
-                'created' => new DateTimeImmutable('2024-01-15'),
-                'invoiceDate' => new DateTimeImmutable('2024-01-15'),
-                'due' => new DateTimeImmutable('2024-02-15'),
+                'created' => CarbonImmutable::parse('2024-01-15'),
+                'invoiceDate' => CarbonImmutable::parse('2024-01-15'),
+                'due' => CarbonImmutable::parse('2024-02-15'),
                 'lines' => [
                     new Line()
                         ->setDescription('Monthly Subscription')
@@ -168,9 +168,9 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                 'total' => 25000,
                 'balance' => 25000,
                 'baseTotal' => 25000,
-                'created' => new DateTimeImmutable('2024-01-15'),
-                'invoiceDate' => new DateTimeImmutable('2024-01-15'),
-                'due' => new DateTimeImmutable('2024-02-15'),
+                'created' => CarbonImmutable::parse('2024-01-15'),
+                'invoiceDate' => CarbonImmutable::parse('2024-01-15'),
+                'due' => CarbonImmutable::parse('2024-02-15'),
                 'lines' => [
                     new Line()
                         ->setDescription('Monthly Subscription')
