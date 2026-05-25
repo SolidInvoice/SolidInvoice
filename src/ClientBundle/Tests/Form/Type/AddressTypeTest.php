@@ -18,7 +18,7 @@ use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Form\Type\AddressType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
-class AddressTypeTest extends FormTestCase
+final class AddressTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

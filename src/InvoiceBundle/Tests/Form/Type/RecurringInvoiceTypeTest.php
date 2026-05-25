@@ -36,7 +36,7 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
-class RecurringInvoiceTypeTest extends FormTestCase
+final class RecurringInvoiceTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

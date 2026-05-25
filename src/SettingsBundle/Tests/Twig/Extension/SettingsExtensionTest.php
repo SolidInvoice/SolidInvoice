@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\SettingsBundle\Twig\Extension\SettingsExtension;
 
-class SettingsExtensionTest extends TestCase
+final class SettingsExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

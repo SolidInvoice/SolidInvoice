@@ -51,7 +51,7 @@ final class RecordPaymentTest extends ApiTestCase
             'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
         ]);
 
-        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        self::assertResponseStatusCodeSame(Response::HTTP_CREATED);
 
         $result = $response->toArray(false);
 
@@ -84,7 +84,7 @@ final class RecordPaymentTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testRecordPaymentForForeignCompanyInvoice(): void
@@ -113,6 +113,6 @@ final class RecordPaymentTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }

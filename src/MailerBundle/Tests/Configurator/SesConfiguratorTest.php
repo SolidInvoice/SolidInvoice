@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SesTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class SesConfiguratorTest extends TestCase
+final class SesConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

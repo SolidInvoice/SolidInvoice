@@ -106,7 +106,7 @@ final class ResetPasswordTest extends WebTestCase
         self::assertInstanceOf(User::class, $user);
 
         /** @var UserPasswordHasherInterface $passwordHasher */
-        $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
+        $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
         self::assertTrue($passwordHasher->isPasswordValid($user, 'newStrongPassword'));
     }
 }

@@ -35,7 +35,7 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-class TotalCalculatorTest extends KernelTestCase
+final class TotalCalculatorTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;

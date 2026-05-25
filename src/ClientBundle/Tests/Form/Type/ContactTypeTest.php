@@ -27,7 +27,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\PreloadedExtension;
 
-class ContactTypeTest extends FormTestCase
+final class ContactTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

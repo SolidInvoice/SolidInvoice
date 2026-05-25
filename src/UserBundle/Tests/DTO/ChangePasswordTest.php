@@ -18,7 +18,7 @@ use SolidInvoice\UserBundle\DTO\ChangePassword;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ChangePasswordTest extends KernelTestCase
+final class ChangePasswordTest extends KernelTestCase
 {
     use FakerTestTrait;
 

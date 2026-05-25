@@ -26,7 +26,7 @@ use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 
-class ApiTokenManagerTest extends TestCase
+final class ApiTokenManagerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

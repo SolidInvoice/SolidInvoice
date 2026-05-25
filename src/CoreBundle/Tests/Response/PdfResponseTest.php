@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class PdfResponseTest extends TestCase
+final class PdfResponseTest extends TestCase
 {
     public function testResponseInline(): void
     {

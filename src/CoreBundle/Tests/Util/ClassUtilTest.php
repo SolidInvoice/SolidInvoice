@@ -16,7 +16,7 @@ namespace SolidInvoice\CoreBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Util\ClassUtil;
 
-class ClassUtilTest extends TestCase
+final class ClassUtilTest extends TestCase
 {
     public function testFindClassInFile(): void
     {

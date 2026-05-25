@@ -26,7 +26,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
-class QuotePdfListenerTest extends TestCase
+final class QuotePdfListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

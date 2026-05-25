@@ -20,7 +20,7 @@ use SolidInvoice\DashboardBundle\WidgetFactory;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 
-class WidgetFactoryTest extends TestCase
+final class WidgetFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

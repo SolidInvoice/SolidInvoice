@@ -35,7 +35,7 @@ use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
-class QuoteClonerTest extends TestCase
+final class QuoteClonerTest extends TestCase
 {
     /**
      * @throws MathException

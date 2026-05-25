@@ -52,11 +52,11 @@ use function in_array;
         new Post(
             uriTemplate: '/custom-fields/reorder',
             controller: CustomFieldReorderAction::class,
-            name: 'custom_field_reorder',
             read: false,
             deserialize: false,
             validate: false,
             write: false,
+            name: 'custom_field_reorder',
         ),
     ],
     normalizationContext: [
@@ -69,11 +69,11 @@ use function in_array;
 )]
 #[ApiFilter(SearchFilter::class, properties: ['target' => 'exact'])]
 #[ORM\Table(name: CustomField::TABLE_NAME)]
-#[ORM\Index(name: 'idx_cf_company_target_pos', columns: ['company_id', 'target', 'position'])]
+#[ORM\Index(columns: ['company_id', 'target', 'position'], name: 'idx_cf_company_target_pos')]
 #[ORM\UniqueConstraint(name: 'uq_cf_company_target_key', columns: ['company_id', 'target', 'field_key'])]
 #[ORM\Entity(repositoryClass: CustomFieldRepository::class)]
-#[UniqueEntity(fields: ['company', 'target', 'label'], errorPath: 'label', message: 'A custom field with this label already exists for the selected target.')]
-#[UniqueEntity(fields: ['company', 'target', 'fieldKey'], errorPath: 'label', message: 'A custom field with a similar label already exists for the selected target.')]
+#[UniqueEntity(fields: ['company', 'target', 'label'], message: 'A custom field with this label already exists for the selected target.', errorPath: 'label')]
+#[UniqueEntity(fields: ['company', 'target', 'fieldKey'], message: 'A custom field with a similar label already exists for the selected target.', errorPath: 'label')]
 class CustomField
 {
     final public const string TABLE_NAME = 'custom_field';

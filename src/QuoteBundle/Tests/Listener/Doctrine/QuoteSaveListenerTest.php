@@ -24,7 +24,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener;
 
-class QuoteSaveListenerTest extends TestCase
+final class QuoteSaveListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

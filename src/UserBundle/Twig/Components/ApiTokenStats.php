@@ -17,6 +17,7 @@ use DateTimeInterface;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -43,7 +44,7 @@ final class ApiTokenStats extends AbstractController
     {
         $user = $this->security->getUser();
 
-        if (! $user) {
+        if (! $user instanceof UserInterface) {
             return [
                 'activeTokens' => 0,
                 'apiCallsThisMonth' => 0,

@@ -22,7 +22,7 @@ use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
-class ItemTypeTest extends FormTestCase
+final class ItemTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

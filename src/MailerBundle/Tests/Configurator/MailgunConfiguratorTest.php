@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\MailgunConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\MailgunApiTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class MailgunConfiguratorTest extends TestCase
+final class MailgunConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

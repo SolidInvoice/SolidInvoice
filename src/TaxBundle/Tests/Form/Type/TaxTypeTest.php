@@ -18,7 +18,7 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Form\Type\TaxType;
 
-class TaxTypeTest extends FormTestCase
+final class TaxTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

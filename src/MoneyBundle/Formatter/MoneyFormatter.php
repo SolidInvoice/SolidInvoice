@@ -69,7 +69,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
         try {
             return Currencies::getSymbol($this->getCurrency($currency), $this->locale);
         } catch (Throwable $e) {
-            if (true === $catch) {
+            if ($catch) {
                 return '';
             }
 

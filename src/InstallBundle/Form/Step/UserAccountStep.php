@@ -66,7 +66,7 @@ class UserAccountStep extends AbstractType
 
                 $root = $event->getForm()->getRoot()->getData();
 
-                if ($root instanceof Installation && isset($root->applicationUrl) && $root->applicationUrl !== '') {
+                if ($root instanceof Installation && $root->applicationUrl !== null && $root->applicationUrl !== '') {
                     $event->setData($root->applicationUrl);
                     return;
                 }

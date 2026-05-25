@@ -26,7 +26,7 @@ final class McpToolPublicPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        foreach ($container->findTaggedServiceIds('mcp.tool') as $id => $tags) {
+        foreach (array_keys($container->findTaggedServiceIds('mcp.tool')) as $id) {
             if ($container->hasDefinition($id)) {
                 $container->getDefinition($id)->setPublic(true);
             }

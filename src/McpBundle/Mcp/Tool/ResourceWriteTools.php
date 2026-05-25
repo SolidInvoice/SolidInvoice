@@ -312,7 +312,7 @@ final readonly class ResourceWriteTools
                     'Field "%s" is not settable on this resource: %s',
                     $field,
                     $exception->getMessage(),
-                ));
+                ), $exception->getCode(), $exception);
             }
         }
     }

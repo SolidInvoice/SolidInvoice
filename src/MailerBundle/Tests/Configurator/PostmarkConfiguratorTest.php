@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\PostmarkConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class PostmarkConfiguratorTest extends TestCase
+final class PostmarkConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

@@ -17,7 +17,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
 
-class ProfileTypeTest extends FormTestCase
+final class ProfileTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

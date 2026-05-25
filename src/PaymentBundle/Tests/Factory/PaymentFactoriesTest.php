@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 
-class PaymentFactoriesTest extends TestCase
+final class PaymentFactoriesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

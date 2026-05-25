@@ -102,7 +102,7 @@ final class CustomFieldTypeResolver
 
     public function serialize(CustomField $field, mixed $input): ?string
     {
-        if ($input === null || $input === '' || $input === []) {
+        if (in_array($input, [null, '', []], true)) {
             // Empty array for MULTI_SELECT serializes to '[]' so a deliberately empty selection is distinguishable from "not set".
             if ($field->getType() === CustomFieldType::MULTI_SELECT && is_array($input)) {
                 return '[]';

@@ -11,46 +11,19 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Rector\CodeQuality\Rector\Attribute\SortAttributeNamedArgsRector;
-use Rector\CodeQuality\Rector\BooleanNot\SimplifyDeMorganBinaryRector;
-use Rector\CodeQuality\Rector\BooleanOr\RepeatedOrEqualToInArrayRector;
-use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
-use Rector\CodeQuality\Rector\Class_\ConvertStaticToSelfRector;
-use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
-use Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRector;
-use Rector\CodeQuality\Rector\Empty_\SimplifyEmptyCheckOnEmptyArrayRector;
-use Rector\CodeQuality\Rector\Expression\InlineIfToExplicitIfRector;
-use Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector;
-use Rector\CodeQuality\Rector\FuncCall\SimplifyRegexPatternRector;
-use Rector\CodeQuality\Rector\FuncCall\SingleInArrayToCompareRector;
-use Rector\CodeQuality\Rector\FuncCall\SortCallLikeNamedArgsRector;
-use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
-use Rector\CodeQuality\Rector\If_\CombineIfRector;
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
-use Rector\CodeQuality\Rector\If_\SimplifyIfElseToTernaryRector;
-use Rector\CodeQuality\Rector\If_\SimplifyIfNullableReturnRector;
-use Rector\CodeQuality\Rector\If_\SimplifyIfReturnBoolRector;
-use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
-use Rector\CodeQuality\Rector\NullsafeMethodCall\CleanupUnneededNullsafeOperatorRector;
-use Rector\CodeQuality\Rector\Ternary\UnnecessaryTernaryExpressionRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Privatization\Rector\Class_\FinalizeTestCaseClassRector;
-use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
-use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
-use Rector\TypeDeclaration\Rector\StmtsAwareInterface\SafeDeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
@@ -110,33 +83,4 @@ return RectorConfig::configure()
         // This changes fetching string service names to the class names in the container in tests, while the service might not exist and breaking tests
         ContainerGetNameToTypeInTestsRector::class,
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
-
-        // Skip for new can be added/adjusted later
-        ExplicitBoolCompareRector::class,
-        ConvertStaticToSelfRector::class,
-        FinalizeTestCaseClassRector::class,
-        SafeDeclareStrictTypesRector::class,
-        LocallyCalledStaticMethodToNonStaticRector::class,
-        SortCallLikeNamedArgsRector::class,
-        DisallowedEmptyRuleFixerRector::class,
-        UnusedForeachValueToArrayKeysRector::class,
-        AttributeKeyToClassConstFetchRector::class,
-        InlineConstructorDefaultToPropertyRector::class,
-        SortAttributeNamedArgsRector::class,
-        CombineIfRector::class,
-        IssetOnPropertyObjectToPropertyExistsRector::class,
-        SimplifyIfNullableReturnRector::class,
-        CleanupUnneededNullsafeOperatorRector::class,
-        UnnecessaryTernaryExpressionRector::class,
-        SimplifyBoolIdenticalTrueRector::class,
-        SimplifyIfReturnBoolRector::class,
-        ThrowWithPreviousExceptionRector::class,
-        InlineIfToExplicitIfRector::class,
-        RepeatedOrEqualToInArrayRector::class,
-        SingleInArrayToCompareRector::class,
-        RenameClassRector::class,
-        SimplifyDeMorganBinaryRector::class,
-        SimplifyRegexPatternRector::class,
-        SimplifyEmptyCheckOnEmptyArrayRector::class,
-        SimplifyIfElseToTernaryRector::class,
     ]);

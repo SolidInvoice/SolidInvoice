@@ -41,7 +41,7 @@ use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Zenstruck\Foundry\Test\Factories;
 
-class QuoteTypeTest extends FormTestCase
+final class QuoteTypeTest extends FormTestCase
 {
     use Factories;
 

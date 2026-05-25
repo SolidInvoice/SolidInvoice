@@ -17,7 +17,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\UserBundle\DTO\ChangePassword;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 
-class ChangePasswordTypeTest extends FormTestCase
+final class ChangePasswordTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

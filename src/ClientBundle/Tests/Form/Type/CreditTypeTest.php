@@ -22,7 +22,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CreditTypeTest extends FormTestCase
+final class CreditTypeTest extends FormTestCase
 {
     /**
      * @throws MathException

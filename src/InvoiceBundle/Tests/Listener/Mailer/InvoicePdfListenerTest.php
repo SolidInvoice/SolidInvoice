@@ -26,7 +26,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Twig\Environment;
 
-class InvoicePdfListenerTest extends TestCase
+final class InvoicePdfListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

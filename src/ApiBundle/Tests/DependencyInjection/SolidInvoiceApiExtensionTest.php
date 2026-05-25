@@ -22,7 +22,7 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 
-class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
+final class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
     use MockeryPHPUnitIntegration;
 

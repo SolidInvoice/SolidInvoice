@@ -76,7 +76,7 @@ final class NotificationMarketplace extends AbstractController
     {
         $integrations = [];
 
-        foreach ($this->transportConfigurations->getProvidedServices() as $name => $class) {
+        foreach (array_keys($this->transportConfigurations->getProvidedServices()) as $name) {
             try {
                 /** @var ConfiguratorInterface $configurator */
                 $configurator = $this->transportConfigurations->get($name);

@@ -23,7 +23,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Bridge\Amazon\Transport\SesApiAsyncAwsTransport;
 use Symfony\Component\Mailer\Transport;
 
-class MailerConfigFactoryTest extends TestCase
+final class MailerConfigFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

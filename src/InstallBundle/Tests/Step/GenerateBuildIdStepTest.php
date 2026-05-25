@@ -39,7 +39,9 @@ final class GenerateBuildIdStepTest extends TestCase
     protected function tearDown(): void
     {
         $fs = new Filesystem();
-        $fs->exists($this->tempDir) && $fs->remove($this->tempDir);
+        if ($fs->exists($this->tempDir)) {
+            $fs->remove($this->tempDir);
+        }
     }
 
     public function testPriority(): void

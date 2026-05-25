@@ -16,7 +16,7 @@ namespace SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\UsernamePasswordTransportConfigType;
 
-class UsernamePasswordTransportConfigTypeTest extends FormTestCase
+final class UsernamePasswordTransportConfigTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

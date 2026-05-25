@@ -129,7 +129,7 @@ final readonly class ExportAction
         $raw = $request->query->all('gridFilters');
 
         foreach ($raw as $key => $value) {
-            if (! is_string($key) || ! preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+            if (! is_string($key) || ! preg_match('/^\w+$/', $key)) {
                 throw new BadRequestHttpException('Invalid grid filter key.');
             }
 
@@ -138,7 +138,7 @@ final readonly class ExportAction
             }
 
             if (is_array($value)) {
-                $allScalar = array_filter($value, static fn ($v): bool => ! (is_scalar($v) || $v === null)) === [];
+                $allScalar = array_filter($value, static fn ($v): bool => ! is_scalar($v) && $v !== null) === [];
                 if (! $allScalar) {
                     throw new BadRequestHttpException(sprintf('Filter "%s" has unsupported nested values.', $key));
                 }
@@ -181,7 +181,7 @@ final readonly class ExportAction
         // key whitelist used for `gridFilters` so a tampered context cannot smuggle
         // unexpected identifier shapes through.
         foreach ($decoded as $key => $value) {
-            if (! is_string($key) || ! preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+            if (! is_string($key) || ! preg_match('/^\w+$/', $key)) {
                 throw new BadRequestHttpException('Invalid context key.');
             }
 

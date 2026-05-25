@@ -58,9 +58,7 @@ abstract class BaseClientGrid extends Grid
 
                     foreach ($client->getInvoices() as $invoice) {
                         if (
-                            $invoice->getStatus() === InvoiceStatus::Paid ||
-                            $invoice->getStatus() === InvoiceStatus::Pending ||
-                            $invoice->getStatus() === InvoiceStatus::Overdue
+                            in_array($invoice->getStatus(), [InvoiceStatus::Paid, InvoiceStatus::Pending, InvoiceStatus::Overdue], true)
                         ) {
                             $total = $total->plus($invoice->getTotal());
                         }

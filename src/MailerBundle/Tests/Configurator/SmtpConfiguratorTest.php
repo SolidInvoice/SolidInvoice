@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\SmtpConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SmtpTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class SmtpConfiguratorTest extends TestCase
+final class SmtpConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

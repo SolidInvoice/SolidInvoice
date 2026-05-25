@@ -249,10 +249,8 @@ class Line implements LineInterface, Stringable
 
     public function removeTax(LineTax $lineTax): static
     {
-        if ($this->taxes->removeElement($lineTax)) {
-            if ($lineTax->getQuoteLine() === $this) {
-                $lineTax->setQuoteLine(null);
-            }
+        if ($this->taxes->removeElement($lineTax) && $lineTax->getQuoteLine() === $this) {
+            $lineTax->setQuoteLine(null);
         }
 
         return $this;

@@ -20,7 +20,7 @@ use SolidInvoice\ApiBundle\Serializer\Normalizer\DiscountNormalizer;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DiscountNormalizerTest extends TestCase
+final class DiscountNormalizerTest extends TestCase
 {
     private DiscountNormalizer $normalizer;
 

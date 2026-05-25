@@ -59,7 +59,7 @@ final class ContactTest extends ApiTestCase
             'json' => ['firstName' => 'Hacker', 'email' => 'x@y.com'],
             'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
         ]);
-        static::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void

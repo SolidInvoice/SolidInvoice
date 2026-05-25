@@ -167,7 +167,7 @@ final class Prepare
                     $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 
-                if (! empty($invalid)) {
+                if ($invalid !== '') {
                     $session = $request->getSession();
 
                     if ($session instanceof Session) {

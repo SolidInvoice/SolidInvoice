@@ -101,12 +101,7 @@ final readonly class EntityDiscovery
         if ($metadata->isMappedSuperclass) {
             return true;
         }
-
-        if (new ReflectionClass($metadata->getName())->isAbstract()) {
-            return true;
-        }
-
-        return false;
+        return new ReflectionClass($metadata->getName())->isAbstract();
     }
 
     /**

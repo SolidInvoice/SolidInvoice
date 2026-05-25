@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\GmailConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\UsernamePasswordTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class GmailConfiguratorTest extends TestCase
+final class GmailConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

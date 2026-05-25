@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\MessageHandler;
 
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
@@ -213,7 +214,7 @@ final readonly class SendInvoiceReminderHandler
 
     private function calculateDaysOverdue(Invoice $invoice): int
     {
-        if (! $invoice->getDue()) {
+        if (! $invoice->getDue() instanceof DateTimeInterface) {
             return 0;
         }
 

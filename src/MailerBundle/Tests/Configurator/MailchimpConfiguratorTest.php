@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\MailchimpConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class MailchimpConfiguratorTest extends TestCase
+final class MailchimpConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

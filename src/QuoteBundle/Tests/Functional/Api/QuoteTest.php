@@ -89,7 +89,7 @@ final class QuoteTest extends ApiTestCase
         $response = self::$client->request('GET', $this->getIriFromResource($foreignQuote), [
             'headers' => ['accept' => 'application/ld+json'],
         ]);
-        static::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void

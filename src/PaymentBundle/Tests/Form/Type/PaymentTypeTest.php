@@ -21,7 +21,7 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
-class PaymentTypeTest extends FormTestCase
+final class PaymentTypeTest extends FormTestCase
 {
     /**
      * @throws MathException
