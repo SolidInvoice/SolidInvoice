@@ -28,6 +28,9 @@ class SerializerExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @return TwigFilter[]
+     */
     #[Override]
     public function getFilters(): array
     {

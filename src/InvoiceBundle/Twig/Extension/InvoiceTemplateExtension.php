@@ -25,6 +25,9 @@ use function array_values;
 
 final class InvoiceTemplateExtension extends AbstractExtension
 {
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {

@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -41,6 +42,9 @@ final class PaymentsGrid extends Grid
         return Payment::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {

@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\DataGrid;
 use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -29,6 +30,9 @@ final class UserGrid extends Grid
         return User::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {

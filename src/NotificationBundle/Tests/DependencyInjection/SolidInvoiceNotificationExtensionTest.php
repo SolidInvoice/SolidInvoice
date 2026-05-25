@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 
 final class SolidInvoiceNotificationExtensionTest extends AbstractExtensionTestCase
 {
+    /**
+     * @return SolidInvoiceNotificationExtension[]
+     */
     protected function getContainerExtensions(): array
     {
         return [new SolidInvoiceNotificationExtension()];

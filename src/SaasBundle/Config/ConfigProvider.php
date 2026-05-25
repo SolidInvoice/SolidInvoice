@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 final class ConfigProvider implements ProviderInterface
 {
+    /**
+     * @return Config[]
+     */
     public function provide(array $data): array
     {
         return [

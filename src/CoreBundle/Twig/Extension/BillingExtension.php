@@ -29,6 +29,9 @@ class BillingExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {

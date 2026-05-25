@@ -19,6 +19,7 @@ use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
@@ -43,6 +44,9 @@ final class ApiTokenGrid extends Grid
         return ApiToken::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {
@@ -75,6 +79,9 @@ final class ApiTokenGrid extends Grid
         ];
     }
 
+    /**
+     * @return Action[]
+     */
     #[Override]
     public function actions(): array
     {

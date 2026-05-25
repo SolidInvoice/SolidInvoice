@@ -17,9 +17,11 @@ use Brick\Math\BigNumber;
 use Money\Money;
 use Override;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -42,6 +44,9 @@ abstract class BaseQuoteGrid extends Grid
         return Quote::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {
@@ -73,6 +78,9 @@ abstract class BaseQuoteGrid extends Grid
         ];
     }
 
+    /**
+     * @return Action[]
+     */
     #[Override]
     public function actions(): array
     {

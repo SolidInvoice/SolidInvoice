@@ -25,6 +25,7 @@ use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRe
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
@@ -43,9 +44,8 @@ return RectorConfig::configure()
         SetList::CODING_STYLE,
         // SetList::DEAD_CODE,
         SetList::RECTOR_PRESET,
-        // SetList::PHP_85,
         // SetList::TYPE_DECLARATION,
-        // SetList::TYPE_DECLARATION_DOCBLOCKS,
+        SetList::TYPE_DECLARATION_DOCBLOCKS,
         // SetList::EARLY_RETURN,
         // SetList::INSTANCEOF,
         // SetList::CARBON,
@@ -97,4 +97,9 @@ return RectorConfig::configure()
 
         // This makes the exception names too long and is not a meaningful changerector
         CatchExceptionNameMatchingTypeRector::class,
+
+        DeclareStrictTypesRector::class => [
+            // This file is auto-generated, which removes the strict types declare every time
+            'config/reference.php'
+        ],
     ]);

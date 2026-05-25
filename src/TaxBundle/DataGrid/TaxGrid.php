@@ -18,6 +18,7 @@ use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
@@ -33,6 +34,9 @@ final class TaxGrid extends Grid
         return Tax::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {
@@ -66,6 +70,9 @@ MSG)
         ];
     }
 
+    /**
+     * @return EditAction[]
+     */
     #[Override]
     public function actions(): array
     {

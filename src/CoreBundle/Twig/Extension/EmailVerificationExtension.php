@@ -25,6 +25,9 @@ final class EmailVerificationExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {
