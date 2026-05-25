@@ -44,6 +44,7 @@ final readonly class Index
         // Get archived clients count (need to temporarily disable the filter)
         $filters = $this->entityManager->getFilters();
         $filters->disable('archivable');
+
         $totalArchivedClients = $this->clientRepository->getTotalClients(ClientStatus::Archived);
         $totalClients = $this->clientRepository->getTotalClients();
         $filters->enable('archivable');

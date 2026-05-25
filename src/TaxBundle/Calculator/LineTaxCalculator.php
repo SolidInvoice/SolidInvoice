@@ -90,6 +90,7 @@ final class LineTaxCalculator
                     if (! $lineTax->isCompound()) {
                         $accumulatedNonCompound = $accumulatedNonCompound->plus($amount);
                     }
+
                     break;
 
                 case TaxType::FlatRate:
@@ -98,6 +99,7 @@ final class LineTaxCalculator
                     if (! $lineTax->isCompound()) {
                         $accumulatedNonCompound = $accumulatedNonCompound->plus($amount);
                     }
+
                     break;
             }
 

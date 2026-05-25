@@ -142,6 +142,7 @@ final readonly class ExportAction
                 if (! $allScalar) {
                     throw new BadRequestHttpException(sprintf('Filter "%s" has unsupported nested values.', $key));
                 }
+
                 continue;
             }
 

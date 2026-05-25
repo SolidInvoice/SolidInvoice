@@ -124,6 +124,7 @@ final class NotificationTransportConfigurationTest extends LiveComponentTest
 
         // First show the delete confirmation
         $component = $component->call('showDeleteConfirmation');
+
         $rendered = $component->render()->toString();
         self::assertStringContainsString('Are you sure you want to delete', $rendered);
 
@@ -260,7 +261,7 @@ final class NotificationTransportConfigurationTest extends LiveComponentTest
         $user = $this->getUser();
 
         $setting = new TransportSetting();
-        $setting->setName("{$transportName} Test");
+        $setting->setName($transportName . ' Test');
         $setting->setTransport($transportName);
         $setting->setSettings([]);
         $setting->setUser($user);
@@ -280,7 +281,7 @@ final class NotificationTransportConfigurationTest extends LiveComponentTest
 
         $rendered = $component->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($this->replaceUuid($rendered)));
-        self::assertStringContainsString("{$transportName} Test", $rendered);
+        self::assertStringContainsString($transportName . ' Test', $rendered);
     }
 
     /**

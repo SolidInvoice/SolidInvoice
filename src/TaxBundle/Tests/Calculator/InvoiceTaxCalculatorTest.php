@@ -112,6 +112,7 @@ final class InvoiceTaxCalculatorTest extends TestCase
             category: TaxCategory::ReverseCharge,
         );
         $invoiceTax->setNote('Customer accounts for VAT under reverse charge.');
+
         $invoice->addInvoiceTax($invoiceTax);
 
         $breakdown = $this->calculator->calculateInvoiceLevel(

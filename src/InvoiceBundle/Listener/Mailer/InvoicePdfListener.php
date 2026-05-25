@@ -47,7 +47,7 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
                 $this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $message->getInvoice()])
             );
 
-            $message->attach($content, "invoice_{$message->getInvoice()->getInvoiceId()}.pdf", 'application/pdf');
+            $message->attach($content, sprintf('invoice_%s.pdf', $message->getInvoice()->getInvoiceId()), 'application/pdf');
         }
     }
 

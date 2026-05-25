@@ -83,6 +83,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
         $repository = $this->exportJobRepository();
         $job = new ExportJob($user->getId(), ExportFormat::Json)->setCompany($this->company);
         $job->markFailed('pre-existing failure');
+
         $repository->save($job);
 
         $handler = self::getContainer()->get(ProcessCompanyExportHandler::class);

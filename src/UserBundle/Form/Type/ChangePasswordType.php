@@ -46,7 +46,7 @@ class ChangePasswordType extends AbstractType
             'second_options' => [
                 'label' => 'Confirm New Password',
             ],
-            'invalid_message' => 'The passwords doesn\'t match',
+            'invalid_message' => "The passwords doesn't match",
         ]);
     }
 

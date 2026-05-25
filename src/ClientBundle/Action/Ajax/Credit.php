@@ -46,6 +46,7 @@ final readonly class Credit implements AjaxResponse
     {
         $creditInput = (json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0);
         $creditInput = is_float($creditInput) ? (string) $creditInput : $creditInput;
+
         $value = BigNumber::of($creditInput)
             ->toBigDecimal()
             ->multipliedBy(100)

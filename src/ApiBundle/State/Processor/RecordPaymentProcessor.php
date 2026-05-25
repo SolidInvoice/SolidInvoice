@@ -87,6 +87,7 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
         if ($client !== null) {
             $payment->setClient($client);
         }
+
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCompleted(new DateTimeImmutable());
         $payment->setCompany($invoice->getCompany());

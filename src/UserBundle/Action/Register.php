@@ -81,6 +81,7 @@ final class Register extends AbstractController
                 $user->addCompany($invitation->getCompany());
                 $this->invitationRepository->delete($invitation);
             }
+
             // For regular users, company will be created during onboarding
 
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));

@@ -57,6 +57,7 @@ final class InvoiceClonerTest extends TestCase
         $line = new Line();
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
@@ -66,9 +67,11 @@ final class InvoiceClonerTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBaseTotal(123);
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
+
         $invoice->setDiscount($discount);
         $invoice->setNotes('Notes');
         $invoice->setTax(432);
@@ -148,6 +151,7 @@ final class InvoiceClonerTest extends TestCase
         $line = new RecurringInvoiceLine();
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
@@ -157,9 +161,11 @@ final class InvoiceClonerTest extends TestCase
 
         $invoice = new RecurringInvoice();
         $invoice->setBaseTotal(123);
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
+
         $invoice->setDiscount($discount);
         $invoice->setNotes('Notes');
         $invoice->setTax(432);

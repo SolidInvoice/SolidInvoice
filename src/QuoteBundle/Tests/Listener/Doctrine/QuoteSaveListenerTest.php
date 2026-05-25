@@ -45,6 +45,7 @@ final class QuoteSaveListenerTest extends TestCase
     {
         $entity = new Quote();
         $entity->setStatus(QuoteStatus::Draft);
+
         $calculator = M::mock(TotalCalculator::class);
         $calculator->shouldReceive('calculateTotals')
             ->once()

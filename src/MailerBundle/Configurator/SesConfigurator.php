@@ -38,7 +38,7 @@ final class SesConfigurator implements ConfiguratorInterface
     {
         $dsn = \sprintf('ses+api://%s:%s@default', $config['accessKey'], $config['accessSecret']);
         if (\array_key_exists('region', $config) && null !== $config['region']) {
-            $dsn .= "?region={$config['region']}";
+            $dsn .= '?region=' . $config['region'];
         }
 
         return Dsn::fromString($dsn);

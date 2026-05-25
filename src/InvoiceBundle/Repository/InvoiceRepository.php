@@ -515,7 +515,7 @@ class InvoiceRepository extends EntityRepository
      */
     public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
     {
-        $targetDate = $this->clock->now()->modify("+{$daysBeforeDue} days");
+        $targetDate = $this->clock->now()->modify(sprintf('+%d days', $daysBeforeDue));
 
         $qb = $this->createQueryBuilder('i');
 
@@ -538,7 +538,7 @@ class InvoiceRepository extends EntityRepository
      */
     public function getInvoicesNeedingOverdueReminders(int $daysOverdue, ReminderType $reminderType): iterable
     {
-        $targetDate = $this->clock->now()->modify("-{$daysOverdue} days");
+        $targetDate = $this->clock->now()->modify(sprintf('-%d days', $daysOverdue));
 
         $qb = $this->createQueryBuilder('i');
 

@@ -51,6 +51,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line->setPrice(100000);
         $line->setQty(1);
         $line->addTax($this->lineTax('VAT 18%', '18.0000', TaxType::Exclusive));
+
         $invoice->addLine($line);
 
         $invoice->addInvoiceTax($this->invoiceTax('TDS 10%', '10.0000', TaxDirection::Deductive));
@@ -80,6 +81,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line = new Line();
         $line->setPrice(10000);
         $line->setQty(1);
+
         $invoice->addLine($line);
 
         $invoice->addInvoiceTax($this->invoiceTax(
@@ -107,6 +109,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line = new Line();
         $line->setPrice(50000);
         $line->setQty(1);
+
         $invoice->addLine($line);
 
         $informational = $this->invoiceTax(
@@ -116,6 +119,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
             category: TaxCategory::ReverseCharge,
         );
         $informational->setNote('Customer accounts for VAT under reverse charge.');
+
         $invoice->addInvoiceTax($informational);
 
         $result = $this->calculator->calculate($invoice);

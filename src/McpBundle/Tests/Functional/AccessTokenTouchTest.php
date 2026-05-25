@@ -49,6 +49,7 @@ final class AccessTokenTouchTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $accessTokenRepo = $container->get(McpAccessTokenRepository::class);

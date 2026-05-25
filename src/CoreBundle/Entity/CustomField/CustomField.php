@@ -265,6 +265,7 @@ class CustomField
         if (! in_array($this->type, [CustomFieldType::SELECT, CustomFieldType::MULTI_SELECT], true)) {
             return;
         }
+
         if ($this->options === null || $this->options === []) {
             $context->buildViolation('At least one option is required for select fields.')
                 ->atPath('options')
@@ -285,6 +286,7 @@ class CustomField
                     ->atPath('visibility')
                     ->addViolation();
             }
+
             return;
         }
 

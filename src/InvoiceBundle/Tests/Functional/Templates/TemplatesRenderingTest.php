@@ -57,7 +57,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     {
         foreach (self::SLUGS as $slug) {
             foreach (self::CHANNELS as $channel) {
-                yield "{$slug}/{$channel}" => [$slug, $channel];
+                yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
         }
     }
@@ -75,7 +75,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             ['invoice' => $invoice]
         );
 
-        self::assertNotEmpty($output, "Template {$slug}/{$channel} produced empty output");
+        self::assertNotEmpty($output, sprintf('Template %s/%s produced empty output', $slug, $channel));
         self::assertStringContainsString($invoice->getInvoiceId(), $output);
         self::assertStringContainsString((string) $invoice->getClient(), $output);
 
@@ -88,7 +88,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             // Email is a summary (totals only, no per-line breakdown), so we
             // verify the schema.org payload + the displayed total instead.
             'email' => $this->assertChannelContains($output, ['schema.org', '$1,500.00']),
-            default => self::fail("Unknown channel: {$channel}"),
+            default => self::fail('Unknown channel: ' . $channel),
         };
     }
 

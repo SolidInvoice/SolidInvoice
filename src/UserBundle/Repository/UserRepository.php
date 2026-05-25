@@ -83,7 +83,7 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
     public function getRecentlyJoinedCount(int $days = 30): int
     {
         $qb = $this->createQueryBuilder('u');
-        $date = new DateTimeImmutable("-{$days} days");
+        $date = new DateTimeImmutable(sprintf('-%d days', $days));
 
         $qb->select('COUNT(u.id)')
             ->where('u.created >= :date')

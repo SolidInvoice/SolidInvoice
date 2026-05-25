@@ -33,6 +33,7 @@ final class MailerTransportConfigCompilerPass implements CompilerPassInterface
         $definition->addArgument(new Reference(MailerConfigFactory::class . '.inner'));
         $definition->setArgument('$transports', new TaggedIteratorArgument('solidinvoice_mailer.transport.configurator'));
         $definition->setAutowired(true);
+
         $container->setDefinition(MailerConfigFactory::class, $definition);
     }
 }

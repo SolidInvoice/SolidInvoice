@@ -192,6 +192,7 @@ final readonly class OnboardingManager
         $contact->setFirstName($data->clientName);
         $contact->setEmail($data->clientEmail);
         $contact->setClient($client);
+
         $client->addContact($contact);
 
         $this->clientRepository->save($client);

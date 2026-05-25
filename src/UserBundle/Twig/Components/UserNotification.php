@@ -191,7 +191,7 @@ final class UserNotification extends AbstractController
 
         $attributes = $reflection->getAttributes(AsNotification::class);
 
-        if (count($attributes) === 0) {
+        if ($attributes === []) {
             return null;
         }
 
@@ -241,6 +241,7 @@ final class UserNotification extends AbstractController
 
             $em->persist($userNotification);
         }
+
         $em->flush();
         $this->addFlash('success', 'Notification saved!');
         return $this->redirectToRoute('_profile_notifications');

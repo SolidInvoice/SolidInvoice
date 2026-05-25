@@ -248,6 +248,7 @@ class InvoiceType extends AbstractType
                             $groups[] = 'existing_client';
                         }
                     }
+
                     return $groups;
                 },
             ]

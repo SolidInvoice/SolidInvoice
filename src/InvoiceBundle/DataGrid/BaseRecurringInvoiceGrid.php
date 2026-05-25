@@ -76,6 +76,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
+
                     return new Money((string) $value, $client->getCurrency());
                 }),
             MoneyColumn::new('tax')
@@ -84,6 +85,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
+
                     return new Money((string) $value, $client->getCurrency());
                 }),
             MoneyColumn::new('payableAmount')
@@ -94,6 +96,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
+
                     $withholding = $invoice->getWithholdingAmount();
                     $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
 

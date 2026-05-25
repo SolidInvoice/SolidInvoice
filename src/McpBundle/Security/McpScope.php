@@ -36,6 +36,7 @@ enum McpScope: string
         if (\in_array($required->value, $grantedScopes, true)) {
             return true;
         }
+
         return $required === self::Read && \in_array(self::Write->value, $grantedScopes, true);
     }
 }

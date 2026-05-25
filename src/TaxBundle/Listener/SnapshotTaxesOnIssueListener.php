@@ -132,6 +132,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
         if (! $fromDraft) {
             return false;
         }
+
         return array_any($transition->getTos(), fn ($to) => in_array($to, $issuedPlaces, true));
     }
 }

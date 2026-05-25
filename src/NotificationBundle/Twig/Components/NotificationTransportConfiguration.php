@@ -153,6 +153,7 @@ final class NotificationTransportConfiguration extends AbstractController
         if ($this->setting !== null && $this->setting->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }
+
         $this->submitForm();
         $form = $this->getForm();
         // If form is not valid, redirect back to show validation errors
@@ -164,6 +165,7 @@ final class NotificationTransportConfiguration extends AbstractController
 
             return $this->redirectToRoute('_notification_integration');
         }
+
         /** @var TransportSetting $setting */
         $setting = $form->getData();
         // Check if it's a new integration before persisting (after persist, it will have an ID)
@@ -173,6 +175,7 @@ final class NotificationTransportConfiguration extends AbstractController
         $setting->setUser($user);
         $this->entityManager->persist($setting);
         $this->entityManager->flush();
+
         $session = $this->requestStack->getSession();
         assert($session instanceof Session);
         $session->getFlashBag()->add(
@@ -206,12 +209,14 @@ final class NotificationTransportConfiguration extends AbstractController
 
             return $this->redirectToRoute('_notification_integration');
         }
+
         // Verify ownership before deleting
         if ($setting->getUser() !== $this->getUser()) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'You do not have permission to delete this integration');
 
             return $this->redirectToRoute('_notification_integration');
         }
+
         $this->entityManager->remove($setting);
         $this->entityManager->flush();
         $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Integration deleted');

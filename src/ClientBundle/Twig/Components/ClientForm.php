@@ -61,6 +61,7 @@ class ClientForm extends AbstractController
                 $client->removeAddress($address);
             }
         }
+
         $this->manager->persist($client);
         $this->manager->flush();
         $this->addFlash('success', 'client.create.success');

@@ -37,6 +37,7 @@ final class QuoteSubjectDecoratorTest extends TestCase
         $listener = new QuoteSubjectListener($config);
         $quote = new Quote();
         $quote->setQuoteId('123');
+
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 

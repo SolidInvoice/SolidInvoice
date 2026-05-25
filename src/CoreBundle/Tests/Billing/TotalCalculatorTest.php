@@ -51,6 +51,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(1)
             ->setPrice(15000);
@@ -69,6 +70,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -87,6 +89,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -94,6 +97,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(15);
+
         $invoice->setDiscount($discount);
 
         $updater->calculateTotals($invoice);
@@ -109,6 +113,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne()->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -116,6 +121,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(80);
+
         $invoice->setDiscount($discount);
 
         $updater->calculateTotals($invoice);
@@ -135,11 +141,13 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
 
         $invoice->addLine($item);
@@ -162,11 +170,13 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
 
         $invoice->addLine($item);
@@ -189,11 +199,13 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
 
         $invoice->addLine($item);
@@ -216,16 +228,19 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
         $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(1500);
+
         $invoice->setDiscount($discount);
 
         $updater->calculateTotals($invoice);
@@ -246,16 +261,19 @@ final class TotalCalculatorTest extends KernelTestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
         $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(80);
+
         $invoice->setDiscount($discount);
 
         $updater->calculateTotals($invoice);
@@ -274,6 +292,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $invoice->setBaseTotal(30000);
         $invoice->setBalance(30000);
         $invoice->setStatus(InvoiceStatus::Pending);
+
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -314,11 +333,13 @@ final class TotalCalculatorTest extends KernelTestCase
         // Test case 1: 3.32 EUR with 21% tax (problematic case from issue)
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'EUR']));
+
         $item = new Line();
         $item->setQty(1)
             ->setPrice(332); // 3.32 EUR (stored as cents)
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
 
         $invoice->addLine($item);
@@ -333,11 +354,13 @@ final class TotalCalculatorTest extends KernelTestCase
         // Test case 2: 3.33 EUR with 21% tax (another problematic case)
         $invoice2 = new Invoice();
         $invoice2->setClient(ClientFactory::createOne(['currencyCode' => 'EUR']));
+
         $item2 = new Line();
         $item2->setQty(1)
             ->setPrice(333); // 3.33 EUR (stored as cents)
         $lineTax2 = new LineTax();
         $lineTax2->snapshotFrom($tax);
+
         $item2->addTax($lineTax2);
 
         $invoice2->addLine($item2);

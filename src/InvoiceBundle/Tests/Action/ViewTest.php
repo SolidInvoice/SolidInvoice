@@ -169,6 +169,7 @@ final class ViewTest extends KernelTestCase
         $payment->setMethod(new PaymentMethod()->setName('Credit Card'));
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
+
         $invoice->addPayment($payment);
 
         $uuid = Ulid::fromString(self::INVOICE_ID);
@@ -192,7 +193,7 @@ final class ViewTest extends KernelTestCase
     {
         foreach (InvoiceStatus::cases() as $status) {
             if ($status !== InvoiceStatus::New) {
-                yield "Status {$status->value}" => [$status];
+                yield 'Status ' . $status->value => [$status];
             }
         }
     }
@@ -407,6 +408,7 @@ final class ViewTest extends KernelTestCase
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
@@ -524,6 +526,7 @@ final class ViewTest extends KernelTestCase
         $payment->setMethod(new PaymentMethod()->setName('Credit Card'));
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
+
         $invoice->addPayment($payment);
 
         $uuid = Ulid::fromString(self::INVOICE_ID);

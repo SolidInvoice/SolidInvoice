@@ -88,7 +88,7 @@ class InstallCommand extends Command
         $this->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port')
-            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)')
+            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, "The name of the database to use (will be created if it doesn't exist)")
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
             ->addOption('skip-user', null, InputOption::VALUE_NONE, 'Skip creating the admin user')
@@ -140,6 +140,7 @@ class InstallCommand extends Command
                 throw new RuntimeException(sprintf('The --%s option needs to be specified', $option));
             }
         }
+
         if (! array_key_exists((string) $locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
         }
@@ -176,6 +177,7 @@ class InstallCommand extends Command
         /** @var VersionRepository $repository */
         $repository = $entityManager->getRepository(Version::class);
         $repository->updateVersion($version);
+
         $time = new DateTime('NOW');
         $config = ['installed' => $time->format(DateTimeInterface::ATOM)];
         $this->configWriter->save($config);
@@ -275,7 +277,7 @@ class InstallCommand extends Command
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $availablePdoDrivers = array_values(array_intersect(
-            array_map(static fn (string $driver) => "pdo_{$driver}", PDO::getAvailableDrivers()),
+            array_map(static fn (string $driver) => 'pdo_' . $driver, PDO::getAvailableDrivers()),
             DriverManager::getAvailableDrivers()
         ));
 

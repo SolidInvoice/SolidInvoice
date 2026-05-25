@@ -81,6 +81,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         $this->initOutput([]);
         $this->input = new ArrayInput([]);
         $this->input->setStream(self::createStream([]));
+
         $command->setIo(new IO($this->input, $this->output));
 
         $this->statusCode = $command->run($this->input, $this->output);

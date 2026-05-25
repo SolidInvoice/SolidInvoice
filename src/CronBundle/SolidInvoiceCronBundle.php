@@ -17,5 +17,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class SolidInvoiceCronBundle extends Bundle
 {
-    final public const NAMESPACE = __NAMESPACE__;
+    public const NAMESPACE = __NAMESPACE__;
 }

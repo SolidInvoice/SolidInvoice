@@ -195,6 +195,7 @@ final class UserRepositoryTest extends KernelTestCase
         $reflection = new ReflectionClass($oldUser);
         $property = $reflection->getProperty('created');
         $property->setValue($oldUser, new DateTimeImmutable('-40 days'));
+
         $em->flush();
 
         // Should still count only the recent user (within 30 days)
@@ -215,7 +216,7 @@ final class UserRepositoryTest extends KernelTestCase
         $queryBuilder = $this->repository->getGridQuery();
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         $alias = $queryBuilder->getRootAliases()[0];
-        $fields = implode(', ', ["{$alias}.id", "{$alias}.email", "{$alias}.mobile", "{$alias}.enabled", "{$alias}.created", "{$alias}.lastLogin"]);
+        $fields = implode(', ', [$alias . '.id', $alias . '.email', $alias . '.mobile', $alias . '.enabled', $alias . '.created', $alias . '.lastLogin']);
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
         self::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }

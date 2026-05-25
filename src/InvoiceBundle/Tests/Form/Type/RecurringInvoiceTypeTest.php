@@ -76,9 +76,11 @@ final class RecurringInvoiceTypeTest extends FormTestCase
 
         $object->setTerms($terms);
         $object->setNotes($notes);
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+
         $object->setDiscount($discount);
 
         $this->assertFormData($this->factory->create(RecurringInvoiceType::class, $data), $formData, $object);

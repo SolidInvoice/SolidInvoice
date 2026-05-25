@@ -49,11 +49,11 @@ final readonly class CreateUserStep implements InstallationStepInterface
         try {
             $this->userRepository->save($user);
 
-            if ($callback) {
+            if ($callback !== null) {
                 yield from $callback('Admin user created');
             }
         } catch (UniqueConstraintViolationException) {
-            if ($callback) {
+            if ($callback !== null) {
                 yield from $callback('Admin user already exists, skipping creation');
             }
         }

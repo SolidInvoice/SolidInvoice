@@ -65,11 +65,13 @@ final readonly class ReorderAction
             if (! is_array($row) || ! isset($row['id'], $row['position'])) {
                 continue;
             }
+
             $field = $repo->find(Ulid::fromString((string) $row['id']));
             if ($field !== null) {
                 $field->setPosition((int) $row['position']);
             }
         }
+
         $this->em->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

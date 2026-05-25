@@ -54,7 +54,7 @@ final class OnboardingFlowTest extends WebTestCase
             ->visit('/onboarding')
             ->assertSuccessful()
             ->assertOn('/onboarding')
-            ->assertSee('What we\'re setting up:')
+            ->assertSee("What we're setting up:")
             ->assertSee('Company Name')
             // Fill company step
             ->fillField('onboarding[company][companyName]', 'Acme Corporation')
@@ -117,7 +117,7 @@ final class OnboardingFlowTest extends WebTestCase
             ->click('#onboarding_navigator_skip')
             // Should go to complete step (invoice auto-skipped)
             ->assertSuccessful()
-            ->assertSee('You\'re all set!')
+            ->assertSee("You're all set!")
             ->interceptRedirects()
             ->click('Go to Dashboard')
             ->assertRedirectedTo('/dashboard')
@@ -156,10 +156,10 @@ final class OnboardingFlowTest extends WebTestCase
             // Skip invoice step
             ->assertSuccessful()
             ->assertSee('Create your first invoice')
-            ->click('I\'ll do this later')
+            ->click("I'll do this later")
             // Should go to complete step
             ->assertSuccessful()
-            ->assertSee('You\'re all set!')
+            ->assertSee("You're all set!")
             ->interceptRedirects()
             ->click('Go to Dashboard')
             ->assertRedirectedTo('/dashboard')
@@ -190,7 +190,7 @@ final class OnboardingFlowTest extends WebTestCase
         ;
 
         // Verify skip button is not present on company step
-        $browser->assertNotSee('I\'ll do this later');
+        $browser->assertNotSee("I'll do this later");
     }
 
     public function testInvitedUserDoesNotSeeOnboarding(): void
@@ -275,7 +275,7 @@ final class OnboardingFlowTest extends WebTestCase
             // Click back
             ->click('#onboarding_navigator_back')
             // Should be on client step again
-            ->assertSee('Let\'s get you set up')
+            ->assertSee("Let's get you set up")
             // Data should be preserved
             //->assertFieldEquals('onboarding[client][clientName]', 'Test Client')
         ;

@@ -95,6 +95,7 @@ final class DispatchOnboardingEmailsCommand extends Command
                     if (function_exists('Sentry\\captureException')) {
                         captureException($e);
                     }
+
                     $this->logger->error('Onboarding dispatcher failed for user', [
                         'user_id' => $user->getId()?->toString(),
                         'subscription_id' => $subscription->getId()->toBase58(),

@@ -35,7 +35,7 @@ final class DriversTest extends TestCase
         foreach ($choices as $driver) {
             // MariaDB uses the mysql driver
             $actualDriver = $driver === 'mariadb' ? 'mysql' : $driver;
-            self::assertContains($actualDriver, $availableDrivers, "Driver '{$driver}' should be available");
+            self::assertContains($actualDriver, $availableDrivers, sprintf("Driver '%s' should be available", $driver));
         }
     }
 

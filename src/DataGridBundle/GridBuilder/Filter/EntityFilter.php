@@ -65,6 +65,7 @@ final class EntityFilter implements ColumnFilterInterface
                 if (is_string($entity)) {
                     return $entity;
                 }
+
                 return (string) $entity->getId();
             },
             'class' => $this->class,

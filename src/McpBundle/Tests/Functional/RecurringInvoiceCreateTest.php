@@ -181,6 +181,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $request = new Request();
         $request->attributes->set(McpOAuthAuthenticator::ATTR_SCOPES, $scopes);
+
         $stack->push($request);
 
         $selector = $container->get(CompanySelector::class);

@@ -54,6 +54,7 @@ final readonly class ApiTokenCreateProcessor implements ProcessorInterface
         // for serialization (api_token:create_read group). Detach so any later
         // flush in the request lifecycle does not write the plaintext back.
         $entity->setToken($generated->plaintext);
+
         $this->entityManager->detach($entity);
 
         return $entity;

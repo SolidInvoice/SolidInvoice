@@ -89,6 +89,7 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
             $data['customFields'] = (object) [];
             return $data;
         }
+
         $cacheKey = $target->value . ':' . $companyId->toBase32();
         $defs = $this->defsByTarget[$cacheKey] ??= $this->fields->findByTargetAndCompany($target, $companyId);
 
@@ -107,6 +108,7 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
             $value = $byField[(string) $def->getId()] ?? null;
             $custom[$def->getFieldKey()] = $this->resolver->deserialize($def, $value?->getValue());
         }
+
         $data['customFields'] = $custom;
 
         return $data;
@@ -117,9 +119,11 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
         if ($context[self::SKIP_KEY] ?? false) {
             return false;
         }
+
         if (! $this->featureGate->isEnabled(Feature::CustomFields->value)) {
             return false;
         }
+
         return $data instanceof Client
             || $data instanceof Contact
             || $data instanceof Invoice

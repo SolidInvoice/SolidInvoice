@@ -113,6 +113,7 @@ final readonly class InvoiceFormManager
                 $invoice->removeInvoiceTax($existing);
             }
         }
+
         foreach ($dto->invoiceTaxes as $invoiceTax) {
             $this->ensureInvoiceTaxSnapshot($invoiceTax);
             $invoice->addInvoiceTax($invoiceTax);

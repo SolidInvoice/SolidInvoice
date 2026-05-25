@@ -43,6 +43,7 @@ final readonly class CustomFieldsSchemaDecorator implements OpenApiFactoryInterf
             if (! isset($schemas[$name])) {
                 continue;
             }
+
             $schema = $schemas[$name];
             if (! is_array($schema)) {
                 continue;

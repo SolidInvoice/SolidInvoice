@@ -96,6 +96,7 @@ final class CustomFieldForm extends AbstractController
             if (! $companyId instanceof Ulid) {
                 throw $this->createAccessDeniedException('No company in scope.');
             }
+
             $field->setCompany($this->em->getReference(Company::class, $companyId));
 
             $this->em->persist($field);

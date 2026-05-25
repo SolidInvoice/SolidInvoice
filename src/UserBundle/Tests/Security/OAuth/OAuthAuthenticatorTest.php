@@ -224,9 +224,11 @@ final class OAuthAuthenticatorTest extends TestCase
                 if (isset($criteria['googleId']) && $criteria['googleId'] === '123456789') {
                     return null;
                 }
+
                 if (isset($criteria['email']) && $criteria['email'] === 'test@example.com') {
                     return $user;
                 }
+
                 return null;
             });
 
@@ -301,6 +303,7 @@ final class OAuthAuthenticatorTest extends TestCase
                     (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
                     return null;
                 }
+
                 return null;
             });
 
@@ -403,6 +406,7 @@ final class OAuthAuthenticatorTest extends TestCase
                     (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
                     return null;
                 }
+
                 return null;
             });
 
@@ -475,6 +479,7 @@ final class OAuthAuthenticatorTest extends TestCase
                     (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
                     return null;
                 }
+
                 return null;
             });
 

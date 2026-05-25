@@ -192,16 +192,20 @@ final class CustomFieldDefinitionType extends AbstractType
             if (! is_array($opt)) {
                 continue;
             }
+
             $label = $opt['label'] ?? null;
             if (! is_string($label) || $label === '') {
                 continue;
             }
+
             $value = $opt['value'] ?? null;
             if (! is_string($value) || $value === '') {
                 $value = strtolower($this->slugger->slug($label, '_')->toString());
             }
+
             $out[] = ['label' => $label, 'value' => $value];
         }
+
         return $out;
     }
 }

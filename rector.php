@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
@@ -39,6 +40,16 @@ return RectorConfig::configure()
     ->withSets([
         // General
         SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
+        // SetList::DEAD_CODE,
+        // SetList::RECTOR_PRESET,
+        // SetList::PHP_85,
+        // SetList::TYPE_DECLARATION,
+        // SetList::TYPE_DECLARATION_DOCBLOCKS,
+        // SetList::EARLY_RETURN,
+        // SetList::INSTANCEOF,
+        // SetList::CARBON,
+        // SetList::ASSERT,
 
         // PHP
         LevelSetList::UP_TO_PHP_85,
@@ -83,4 +94,7 @@ return RectorConfig::configure()
         // This changes fetching string service names to the class names in the container in tests, while the service might not exist and breaking tests
         ContainerGetNameToTypeInTestsRector::class,
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
+
+        // This makes the exception names too long and is not a meaningful changerector
+        CatchExceptionNameMatchingTypeRector::class,
     ]);

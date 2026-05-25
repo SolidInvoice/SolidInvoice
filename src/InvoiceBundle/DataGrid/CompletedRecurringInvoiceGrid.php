@@ -41,6 +41,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
                     $invoice->setStatus(RecurringInvoiceStatus::Active);
                     $em->persist($invoice);
                 }
+
                 $em->flush();
             });
     }

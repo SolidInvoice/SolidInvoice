@@ -30,6 +30,7 @@ final class Settings extends AbstractController
         if (! $this->featureGate->isEnabled(Feature::OnlinePayments->value)) {
             return $this->render('@SolidInvoicePayment/Settings/gated.html.twig');
         }
+
         return $this->render('@SolidInvoicePayment/Settings/index.html.twig');
     }
 }

@@ -80,6 +80,7 @@ use function in_array;
 class Client implements Stringable
 {
     final public const string TABLE_NAME = 'clients';
+
     use Archivable;
     use TimeStampable;
     use CompanyAware;

@@ -194,6 +194,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         $user = $this->getUser();
         $user->enableEmailAuth(true);
         $user->setTotpSecret('TESTSECRET123456');
+
         $codes = ['CODE1', 'CODE2', 'CODE3', 'CODE4', 'CODE5', 'CODE6', 'CODE7', 'CODE8'];
         $user->setBackUpCodes($codes);
 
@@ -245,6 +246,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         $user = $this->getUser();
         $user->enableEmailAuth(true);
         $user->setTotpSecret('TESTSECRET123456');
+
         $codes = ['CODE1', 'CODE2', 'CODE3', 'CODE4', 'CODE5', 'CODE6', 'CODE7', 'CODE8'];
         $user->setBackUpCodes($codes);
 
@@ -271,6 +273,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
     {
         $user = $this->getUser();
         $user->enableEmailAuth(true);
+
         $oldCodes = ['OLD1', 'OLD2', 'OLD3', 'OLD4', 'OLD5', 'OLD6', 'OLD7', 'OLD8'];
         $user->setBackUpCodes($oldCodes);
 
@@ -305,6 +308,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
     {
         $user = $this->getUser();
         $user->enableEmailAuth(true);
+
         $codes = ['CODE1-ABC123', 'CODE2-DEF456', 'CODE3-GHI789', 'CODE4-JKL012', 'CODE5-MNO345', 'CODE6-PQR678', 'CODE7-STU901', 'CODE8-VWX234'];
         $user->setBackUpCodes($codes);
 

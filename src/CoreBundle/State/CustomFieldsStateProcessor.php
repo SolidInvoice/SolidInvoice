@@ -97,6 +97,7 @@ final readonly class CustomFieldsStateProcessor implements ProcessorInterface
                 if ($existingValue !== null) {
                     $this->em->remove($existingValue);
                 }
+
                 continue;
             }
 

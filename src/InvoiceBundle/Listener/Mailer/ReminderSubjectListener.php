@@ -31,10 +31,10 @@ class ReminderSubjectListener implements EventSubscriberInterface
             $reminderType = $message->getReminderType();
 
             $subject = match ($reminderType) {
-                ReminderType::PreDue => "Upcoming Payment Due: Invoice {$invoiceId}",
-                ReminderType::Overdue1 => "Payment Reminder: Invoice {$invoiceId}",
-                ReminderType::Overdue7 => "Payment Overdue: Invoice {$invoiceId}",
-                ReminderType::Overdue14 => "URGENT: Invoice {$invoiceId} - Immediate Action Required",
+                ReminderType::PreDue => 'Upcoming Payment Due: Invoice ' . $invoiceId,
+                ReminderType::Overdue1 => 'Payment Reminder: Invoice ' . $invoiceId,
+                ReminderType::Overdue7 => 'Payment Overdue: Invoice ' . $invoiceId,
+                ReminderType::Overdue14 => sprintf('URGENT: Invoice %s - Immediate Action Required', $invoiceId),
             };
 
             $message->subject($subject);

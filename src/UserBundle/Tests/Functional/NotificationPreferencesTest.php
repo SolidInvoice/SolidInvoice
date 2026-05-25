@@ -75,6 +75,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $transport->setName('Slack Integration');
         $transport->setTransport('slack');
         $transport->setUser($user);
+
         $em->persist($transport);
         $em->flush();
 
@@ -141,6 +142,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $userNotification->setEvent('payment_made');
         $userNotification->setUser($user);
         $userNotification->setEmail(false);
+
         $em->persist($userNotification);
         $em->flush();
 
@@ -168,12 +170,14 @@ final class NotificationPreferencesTest extends WebTestCase
         $transport->setName('Slack Integration');
         $transport->setTransport('slack');
         $transport->setUser($user);
+
         $em->persist($transport);
 
         $userNotification = new UserNotification();
         $userNotification->setEvent('payment_made');
         $userNotification->setUser($user);
         $userNotification->setEmail(false);
+
         $em->persist($userNotification);
         $em->flush();
 

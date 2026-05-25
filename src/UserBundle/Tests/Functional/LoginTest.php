@@ -33,6 +33,7 @@ final class LoginTest extends WebTestCase
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->followRedirects();
+
         $crawler = $client->request(Request::METHOD_GET, '/');
         self::assertStringContainsString('/login', (string) $crawler->getUri());
     }

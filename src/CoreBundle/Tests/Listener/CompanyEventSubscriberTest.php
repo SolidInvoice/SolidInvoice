@@ -197,6 +197,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('company', $company->getId());
+
         $request = new Request();
         $request->setSession($session);
 

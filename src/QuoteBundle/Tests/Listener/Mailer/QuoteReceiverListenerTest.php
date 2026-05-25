@@ -40,6 +40,7 @@ final class QuoteReceiverListenerTest extends TestCase
         $quote = new Quote();
         $quote->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $quote->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
+
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
@@ -58,6 +59,7 @@ final class QuoteReceiverListenerTest extends TestCase
         $quote = new Quote();
         $quote->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $quote->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
+
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 

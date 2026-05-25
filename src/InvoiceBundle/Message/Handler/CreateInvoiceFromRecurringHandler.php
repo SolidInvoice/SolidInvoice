@@ -57,6 +57,7 @@ final readonly class CreateInvoiceFromRecurringHandler
             if ($invoice->hasInvoiceForDay($this->clock->now())) {
                 return;
             }
+
             $newInvoice = $this->invoiceManager->createFromRecurring($invoice);
             $this->invoiceManager->create($newInvoice);
             $this->invoiceStateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);

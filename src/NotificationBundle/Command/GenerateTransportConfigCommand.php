@@ -119,7 +119,7 @@ final class GenerateTransportConfigCommand extends Command
 
         $io->success('Done');
 
-        if (count($requiredPackages) > 0) {
+        if ($requiredPackages !== []) {
             $io->warning('The following packages are missing:');
             $io->listing($requiredPackages);
 

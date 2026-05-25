@@ -99,6 +99,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
                 ];
                 continue;
             }
+
             if ($isNew && $def->getDefaultValue() !== null) {
                 $staged[(string) $def->getId()] = [
                     'field' => $def,
@@ -119,6 +120,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         if ($context[self::SKIP_KEY] ?? false) {
             return false;
         }
+
         return in_array($type, [Client::class, Contact::class, Invoice::class, RecurringInvoice::class, Quote::class], true);
     }
 

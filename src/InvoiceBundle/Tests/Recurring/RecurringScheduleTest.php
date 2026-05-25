@@ -59,6 +59,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -74,6 +75,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -89,6 +91,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -105,6 +108,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -120,6 +124,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -135,6 +140,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -151,6 +157,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -168,6 +175,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -183,6 +191,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -198,6 +207,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -214,6 +224,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -231,6 +242,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -246,6 +258,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -261,6 +274,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -277,6 +291,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -300,6 +315,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -326,6 +342,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -353,6 +370,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -380,6 +398,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -407,6 +426,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -429,6 +449,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -456,6 +477,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -482,6 +504,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -509,6 +532,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -531,6 +555,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -558,6 +583,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -579,6 +605,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -606,6 +633,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -628,6 +656,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
@@ -655,6 +684,7 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 

@@ -57,7 +57,7 @@ final class InvoicePdfListenerTest extends TestCase
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
         self::assertEquals(
-            [new DataPart('PDF: Invoice #1', "invoice_{$invoice->getId()}.pdf", 'application/pdf')],
+            [new DataPart('PDF: Invoice #1', sprintf('invoice_%s.pdf', $invoice->getId()), 'application/pdf')],
             $message->getAttachments()
         );
     }

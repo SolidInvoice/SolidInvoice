@@ -113,6 +113,7 @@ class QuoteRepository extends ServiceEntityRepository
             if (! $entity instanceof Quote) {
                 continue;
             }
+
             $em->remove($entity);
         }
 
