@@ -91,6 +91,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return $params;
     }
 
+    /**
+     * @return TwigFilter[]
+     */
     #[Override]
     public function getFilters(): array
     {
@@ -105,6 +108,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {

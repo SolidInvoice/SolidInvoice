@@ -26,6 +26,9 @@ final class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /**
+     * @return SolidInvoiceApiExtension[]
+     */
     protected function getContainerExtensions(): array
     {
         return [

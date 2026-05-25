@@ -161,6 +161,9 @@ final class SystemInformationFormTest extends FormTestCase
         self::assertSame('choice', $view->children['locale']->vars['block_prefixes'][1]);
     }
 
+    /**
+     * @return PreloadedExtension[]
+     */
     #[Override]
     protected function getExtensions(): array
     {

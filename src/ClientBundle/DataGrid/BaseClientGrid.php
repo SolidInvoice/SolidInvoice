@@ -19,9 +19,11 @@ use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
@@ -42,6 +44,9 @@ abstract class BaseClientGrid extends Grid
     ) {
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {
@@ -87,6 +92,9 @@ abstract class BaseClientGrid extends Grid
         ];
     }
 
+    /**
+     * @return Action[]
+     */
     #[Override]
     public function actions(): array
     {

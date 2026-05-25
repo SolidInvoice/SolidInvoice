@@ -36,6 +36,9 @@ class MoneyFormatterExtension extends AbstractExtension
     ) {
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {
@@ -44,6 +47,9 @@ class MoneyFormatterExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return TwigFilter[]
+     */
     #[Override]
     public function getFilters(): array
     {

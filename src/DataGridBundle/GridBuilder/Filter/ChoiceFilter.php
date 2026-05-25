@@ -63,6 +63,9 @@ final class ChoiceFilter implements ColumnFilterInterface
         return ChoiceType::class;
     }
 
+    /**
+     * @return array<string, bool|array<int|string, string>|string>
+     */
     public function formOptions(): array
     {
         $options = [

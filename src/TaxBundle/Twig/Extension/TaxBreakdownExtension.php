@@ -47,6 +47,9 @@ final class TaxBreakdownExtension extends AbstractExtension
         $this->cache = new WeakMap();
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {

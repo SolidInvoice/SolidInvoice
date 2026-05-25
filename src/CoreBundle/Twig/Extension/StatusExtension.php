@@ -27,6 +27,9 @@ use Twig\TwigFunction;
 
 class StatusExtension extends AbstractExtension
 {
+    /**
+     * @return TwigFunction[]
+     */
     #[Override]
     public function getFunctions(): array
     {

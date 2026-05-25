@@ -17,6 +17,7 @@ use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -30,6 +31,9 @@ final class UserInvitationsGrid extends Grid
         return UserInvitation::class;
     }
 
+    /**
+     * @return Column[]
+     */
     #[Override]
     public function columns(): array
     {
@@ -48,6 +52,9 @@ final class UserInvitationsGrid extends Grid
         ];
     }
 
+    /**
+     * @return Action[]
+     */
     #[Override]
     public function actions(): array
     {

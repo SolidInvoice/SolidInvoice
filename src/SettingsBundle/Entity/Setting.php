@@ -149,6 +149,9 @@ class Setting implements Stringable, Serializable
         return (string) $this->value;
     }
 
+    /**
+     * @return array<int, Ulid|string|array<string, mixed>|null>
+     */
     public function __serialize(): array
     {
         return [
