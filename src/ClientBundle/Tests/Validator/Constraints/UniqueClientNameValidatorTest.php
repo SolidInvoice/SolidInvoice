@@ -42,7 +42,7 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 
     public function testNullValuePassesValidation(): void
     {
-        $this->clientRepository->expects($this->never())->method('findOneBy');
+        $this->clientRepository->expects($this->never())->method('findOneByNameIncludingArchived');
 
         $this->validator->validate(null, new UniqueClientName());
 
@@ -51,7 +51,7 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 
     public function testEmptyStringPassesValidation(): void
     {
-        $this->clientRepository->expects($this->never())->method('findOneBy');
+        $this->clientRepository->expects($this->never())->method('findOneByNameIncludingArchived');
 
         $this->validator->validate('', new UniqueClientName());
 
@@ -62,8 +62,8 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
     {
         $this->clientRepository
             ->expects($this->once())
-            ->method('findOneBy')
-            ->with(['name' => 'Acme Corp'])
+            ->method('findOneByNameIncludingArchived')
+            ->with('Acme Corp')
             ->willReturn(null);
 
         $this->validator->validate('Acme Corp', new UniqueClientName());
@@ -77,8 +77,8 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 
         $this->clientRepository
             ->expects($this->once())
-            ->method('findOneBy')
-            ->with(['name' => 'Existing Client'])
+            ->method('findOneByNameIncludingArchived')
+            ->with('Existing Client')
             ->willReturn(new Client());
 
         $this->validator->validate('Existing Client', $constraint);
@@ -90,7 +90,7 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 
     public function testWrongConstraintTypeThrows(): void
     {
-        $this->clientRepository->expects($this->never())->method('findOneBy');
+        $this->clientRepository->expects($this->never())->method('findOneByNameIncludingArchived');
         $this->expectException(UnexpectedTypeException::class);
 
         $this->validator->validate('foo', $this->createStub(Constraint::class));
@@ -98,7 +98,7 @@ final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 
     public function testNonStringValueThrows(): void
     {
-        $this->clientRepository->expects($this->never())->method('findOneBy');
+        $this->clientRepository->expects($this->never())->method('findOneByNameIncludingArchived');
         $this->expectException(UnexpectedValueException::class);
 
         $this->validator->validate(42, new UniqueClientName());

@@ -41,7 +41,7 @@ final class UniqueClientNameValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if ($this->clientRepository->findOneBy(['name' => $value]) !== null) {
+        if ($this->clientRepository->findOneByNameIncludingArchived($value) !== null) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

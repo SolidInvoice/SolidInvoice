@@ -185,6 +185,18 @@ class ClientRepository extends EntityRepository
         $em->getFilters()->enable('archivable');
     }
 
+    public function findOneByNameIncludingArchived(string $name): ?Client
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        try {
+            return $this->findOneBy(['name' => $name]);
+        } finally {
+            $filters->enable('archivable');
+        }
+    }
+
     public function delete(Client $client): void
     {
         $this->getEntityManager()->remove($client);
