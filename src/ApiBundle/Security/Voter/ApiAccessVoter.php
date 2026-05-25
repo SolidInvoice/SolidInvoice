@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * the same denial path runs end-to-end. NoopFeatureGate always returns
  * true on self-hosted, preserving the historical "always granted" behaviour.
  * @see \SolidInvoice\ApiBundle\Tests\Security\Voter\ApiAccessVoterTest
+ * @extends Voter<string, mixed>
  */
 final class ApiAccessVoter extends Voter
 {

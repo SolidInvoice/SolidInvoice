@@ -32,6 +32,9 @@ final class TrialRestrictedExtension extends AbstractTypeExtension
         }
     }
 
+    /**
+     * @param FormInterface<mixed> $form
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         // If field is trial-restricted AND subscription is in trial, disable it

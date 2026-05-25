@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{sid: mixed, token: mixed, from: mixed}>
  */
 final class TwilioType extends AbstractType
 {

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<RecurringOptions>
+ * @extends EntityRepository<RecurringOptions>
  */
-class RecurringOptionsRepository extends ServiceEntityRepository
+class RecurringOptionsRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

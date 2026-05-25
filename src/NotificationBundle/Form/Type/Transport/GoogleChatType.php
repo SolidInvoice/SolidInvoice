@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{access_key: mixed, access_token: mixed, space: mixed, thread_key: mixed}>
  */
 final class GoogleChatType extends AbstractType
 {

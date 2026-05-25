@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\SmtpTransportConfigTypeTest
+ * @extends AbstractType<array{host: mixed, port: int, user: mixed, password: string}>
  */
 final class SmtpTransportConfigType extends AbstractType
 {

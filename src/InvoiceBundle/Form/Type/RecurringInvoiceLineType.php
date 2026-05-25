@@ -29,6 +29,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\ItemTypeTest
+ * @extends AbstractType<RecurringInvoiceLine>
  */
 class RecurringInvoiceLineType extends AbstractType
 {

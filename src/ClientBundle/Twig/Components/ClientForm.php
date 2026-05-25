@@ -44,6 +44,9 @@ class ClientForm extends AbstractController
     ) {
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(

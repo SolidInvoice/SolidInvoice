@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<array{event: string, transports: list<string>}>
+ */
 final class NotificationSettingType extends AbstractType
 {
     public const string EMAIL_NOTIFICATION = 'fb4b16ae-6b76-4124-a706-0cb1419c780a';

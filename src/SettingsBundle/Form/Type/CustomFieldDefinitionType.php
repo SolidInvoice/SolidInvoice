@@ -37,6 +37,9 @@ use function is_array;
 use function is_string;
 use function strtolower;
 
+/**
+ * @extends AbstractType<CustomField>
+ */
 final class CustomFieldDefinitionType extends AbstractType
 {
     public function __construct(

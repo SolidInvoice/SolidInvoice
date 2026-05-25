@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{login: mixed, apikey: mixed, from: mixed}>
  */
 final class AllMySmsType extends AbstractType
 {

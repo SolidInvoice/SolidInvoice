@@ -74,6 +74,9 @@ final class AddressInfo extends AbstractController
         // to ensure that we always only use a clone of the original object
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(AddressType::class, $this->address);

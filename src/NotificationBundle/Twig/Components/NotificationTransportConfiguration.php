@@ -126,6 +126,7 @@ final class NotificationTransportConfiguration extends AbstractController
 
     /**
      * @throws LogicException
+     * @return FormInterface<mixed>
      */
     protected function instantiateForm(): FormInterface
     {

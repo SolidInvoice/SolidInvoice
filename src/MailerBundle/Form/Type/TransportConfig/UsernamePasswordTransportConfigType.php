@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\UsernamePasswordTransportConfigTypeTest
+ * @extends AbstractType<array{username: mixed, password: string}>
  */
 final class UsernamePasswordTransportConfigType extends AbstractType
 {

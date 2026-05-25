@@ -24,6 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use function is_array;
 use function strtolower;
 
+/**
+ * @extends AbstractType<array{label: string}>
+ */
 final class CustomFieldOptionType extends AbstractType
 {
     public function __construct(

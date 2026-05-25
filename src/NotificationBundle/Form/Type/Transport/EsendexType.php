@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{user_name: mixed, password: mixed, account_reference: mixed, from: mixed}>
  */
 final class EsendexType extends AbstractType
 {

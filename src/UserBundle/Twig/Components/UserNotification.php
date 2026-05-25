@@ -68,6 +68,9 @@ final class UserNotification extends AbstractController
         $this->notificationList = array_keys($notificationLocator->getProvidedServices());
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $formData = [];

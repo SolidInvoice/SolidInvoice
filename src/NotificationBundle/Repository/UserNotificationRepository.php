@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\NotificationBundle\Entity\UserNotification;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<UserNotification>
+ * @extends EntityRepository<UserNotification>
  */
-final class UserNotificationRepository extends ServiceEntityRepository
+final class UserNotificationRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

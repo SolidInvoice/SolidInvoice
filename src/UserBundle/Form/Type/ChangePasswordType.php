@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Form\Type\ChangePasswordTypeTest
+ * @extends AbstractType<ChangePassword>
  */
 class ChangePasswordType extends AbstractType
 {

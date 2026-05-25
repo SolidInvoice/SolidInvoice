@@ -19,6 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<UserInvitation>
+ */
 final class UserInviteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

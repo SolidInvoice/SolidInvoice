@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\DataGridBundle\Tests\Form\Type\DateRangeFormTypeTest
+ * @extends AbstractType<array{end: mixed, start: mixed}>
  */
 final class DateRangeFormType extends AbstractType
 {

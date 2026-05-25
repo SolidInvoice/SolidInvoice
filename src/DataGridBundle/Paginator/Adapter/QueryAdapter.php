@@ -20,10 +20,13 @@ use Override;
 use Pagerfanta\Doctrine\ORM\QueryAdapter as BaseQueryAdapter;
 
 /**
- * @extends BaseQueryAdapter<QueryBuilder|Query>
+ * @extends BaseQueryAdapter<QueryBuilder|Query<mixed, mixed>>
  */
 final class QueryAdapter extends BaseQueryAdapter
 {
+    /**
+     * @param QueryBuilder|Query<mixed, mixed> $query
+     */
     public function __construct(
         Query|QueryBuilder $query,
         bool $fetchJoinCollection = true,

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{api_key: mixed, from: mixed}>
  */
 final class Sms77Type extends AbstractType
 {

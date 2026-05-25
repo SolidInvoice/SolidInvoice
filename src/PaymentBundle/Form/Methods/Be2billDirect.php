@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @extends AbstractType<array{identifier: string, password: string, sandbox: bool}>
+ */
 class Be2billDirect extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

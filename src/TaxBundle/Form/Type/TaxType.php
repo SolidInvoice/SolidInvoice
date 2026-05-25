@@ -25,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\TaxBundle\Tests\Form\Type\TaxTypeTest
+ * @extends AbstractType<Tax>
  */
 class TaxType extends AbstractType
 {

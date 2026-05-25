@@ -97,6 +97,7 @@ final class PaymentSettings extends AbstractController
 
     /**
      * @throws Exception
+     * @return FormInterface<mixed>
      */
     protected function instantiateForm(): FormInterface
     {

@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @extends AbstractType<array{login_id: string, transaction_key: string, sandbox: bool}>
+ */
 class AuthorizeNetAim extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

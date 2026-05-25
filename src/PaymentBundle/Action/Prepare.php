@@ -238,7 +238,7 @@ final class Prepare
         ];
     }
 
-    protected function getUser(): ?UserInterface
+    private function getUser(): ?UserInterface
     {
         if (! ($token = $this->tokenStorage->getToken()) instanceof TokenInterface) {
             return null;

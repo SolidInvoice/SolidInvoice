@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\SesTransportConfigTypeTest
+ * @extends AbstractType<array{accessKey: mixed, accessSecret: string, region: mixed}>
  */
 final class SesTransportConfigType extends AbstractType
 {

@@ -29,6 +29,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
+/**
+ * @extends AbstractType<RecurringOptions>
+ */
 final class RecurringScheduleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

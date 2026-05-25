@@ -28,6 +28,7 @@ use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
+use SolidWorx\Platform\Tools\Rector\Set\SolidWorxSetList;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -51,6 +52,7 @@ return RectorConfig::configure()
         SetList::TYPE_DECLARATION_DOCBLOCKS,
         SetList::INSTANCEOF,
         SetList::CARBON,
+        SetList::PRIVATIZATION,
         // SetList::ASSERT,
 
         // PHP
@@ -78,6 +80,9 @@ return RectorConfig::configure()
         SymfonySetList::CONFIGS,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+
+        // SolidWorx Platform
+        SolidWorxSetList::PLATFORM,
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,

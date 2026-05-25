@@ -50,6 +50,9 @@ final class ContactCollection extends AbstractController
         $this->count = count($this->client->getContacts());
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ContactType::class, new Contact()->setClient($this->client));

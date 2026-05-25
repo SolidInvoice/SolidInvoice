@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{path: mixed}>
  */
 final class MicrosoftTeamsType extends AbstractType
 {

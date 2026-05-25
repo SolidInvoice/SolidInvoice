@@ -21,6 +21,9 @@ use Symfony\Component\Form\Flow\Type\PreviousFlowType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<array{previous: mixed, next: mixed, install: mixed, finish: mixed}>
+ */
 final class InstallNavigatorType extends AbstractType
 {
     public function __construct(

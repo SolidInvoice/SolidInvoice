@@ -27,6 +27,7 @@ use Symfony\UX\Dropzone\Form\DropzoneType;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Form\Type\ImageUploadTypeTest
+ * @extends AbstractType<mixed>
  */
 class ImageUploadType extends AbstractType
 {

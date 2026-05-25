@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  * same denial path runs end-to-end. NoopFeatureGate always returns true
  * on self-hosted, preserving the historical "always granted" behaviour.
  * @see \SolidInvoice\McpBundle\Tests\Security\Voter\McpAccessVoterTest
+ * @extends Voter<string, mixed>
  */
 final class McpAccessVoter extends Voter
 {

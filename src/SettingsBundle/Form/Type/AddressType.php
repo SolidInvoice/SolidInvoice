@@ -19,6 +19,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

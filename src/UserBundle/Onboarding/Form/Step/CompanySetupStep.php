@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\CompanySetupStepTest
+ * @extends AbstractType<array{companyName: string, companyCurrency: mixed}>
  */
 final class CompanySetupStep extends AbstractType
 {

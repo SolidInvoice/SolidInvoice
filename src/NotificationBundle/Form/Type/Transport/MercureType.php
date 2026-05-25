@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{hub_id: mixed, topic: mixed}>
  */
 final class MercureType extends AbstractType
 {

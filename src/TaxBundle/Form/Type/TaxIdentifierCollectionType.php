@@ -17,6 +17,9 @@ use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class TaxIdentifierCollectionType extends AbstractType
 {
     #[Override]

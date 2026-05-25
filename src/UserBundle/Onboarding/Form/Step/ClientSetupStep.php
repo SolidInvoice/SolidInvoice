@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\ClientSetupStepTest
+ * @extends AbstractType<array{clientName: string, clientEmail: string}>
  */
 final class ClientSetupStep extends AbstractType
 {

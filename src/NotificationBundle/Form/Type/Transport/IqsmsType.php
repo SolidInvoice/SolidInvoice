@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{login: mixed, password: mixed, from: mixed}>
  */
 final class IqsmsType extends AbstractType
 {

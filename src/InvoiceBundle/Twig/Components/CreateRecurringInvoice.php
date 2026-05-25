@@ -57,6 +57,9 @@ final class CreateRecurringInvoice extends AbstractController
         $this->totalCalculator->calculateTotals($this->invoice);
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $options = [];

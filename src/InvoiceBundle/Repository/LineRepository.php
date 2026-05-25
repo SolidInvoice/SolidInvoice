@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Brick\Math\Exception\MathException;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
- * @extends ServiceEntityRepository<Line>
+ * @extends EntityRepository<Line>
  */
-class LineRepository extends ServiceEntityRepository
+class LineRepository extends EntityRepository
 {
     public function __construct(
         private readonly TotalCalculator $calculator,

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{user_key: mixed, access_token: mixed, from: mixed}>
  */
 final class MobytType extends AbstractType
 {

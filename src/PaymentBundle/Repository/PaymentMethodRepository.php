@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<PaymentMethod>
+ * @extends EntityRepository<PaymentMethod>
  */
-class PaymentMethodRepository extends ServiceEntityRepository
+class PaymentMethodRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

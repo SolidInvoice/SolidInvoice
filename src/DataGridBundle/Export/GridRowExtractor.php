@@ -79,6 +79,7 @@ final readonly class GridRowExtractor
     /**
      * Returns the entity's primary identifier as a string. ULIDs are encoded as
      * base58 for compactness and consistency with relation `_id` fields.
+     * @param ?ClassMetadata<object> $metadata
      */
     private function extractEntityId(object $entity, ?ClassMetadata $metadata): ?string
     {
@@ -113,6 +114,7 @@ final readonly class GridRowExtractor
 
     /**
      * @return array<string, scalar|null>
+     * @param ?ClassMetadata<object> $metadata
      */
     private function extractColumn(Column $column, object $entity, ?ClassMetadata $metadata): array
     {
@@ -190,6 +192,7 @@ final readonly class GridRowExtractor
     /**
      * Returns the association field name on the entity class, or null if the column
      * does not map to a Doctrine association.
+     * @param ?ClassMetadata<object> $metadata
      */
     private function associationField(string $field, ?ClassMetadata $metadata): ?string
     {
@@ -208,6 +211,7 @@ final readonly class GridRowExtractor
 
     /**
      * @param class-string $class
+     * @return ?ClassMetadata<object>
      */
     private function metadataFor(string $class): ?ClassMetadata
     {

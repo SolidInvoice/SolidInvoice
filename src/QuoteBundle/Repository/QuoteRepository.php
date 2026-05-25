@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -21,11 +20,12 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Quote>
+ * @extends EntityRepository<Quote>
  */
-class QuoteRepository extends ServiceEntityRepository
+class QuoteRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

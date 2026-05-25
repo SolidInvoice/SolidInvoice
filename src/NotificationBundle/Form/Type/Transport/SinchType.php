@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{account_id: mixed, auth_token: mixed, from: mixed}>
  */
 final class SinchType extends AbstractType
 {

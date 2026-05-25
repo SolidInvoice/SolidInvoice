@@ -21,6 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormHelpExtension extends AbstractTypeExtension
 {
+    /**
+     * @param FormInterface<mixed> $form
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['help'] = $options['help'];

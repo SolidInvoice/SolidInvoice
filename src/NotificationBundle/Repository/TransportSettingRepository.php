@@ -13,24 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<TransportSetting>
+ * @extends EntityRepository<TransportSetting>
  */
-final class TransportSettingRepository extends ServiceEntityRepository
+final class TransportSettingRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TransportSetting::class);
-    }
-
-    public function save(TransportSetting $setting): void
-    {
-        $this->_em->persist($setting);
-        $this->_em->flush();
     }
 
     public function delete(TransportSetting $setting): void

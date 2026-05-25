@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{username: mixed, password: mixed}>
  */
 final class FirebaseType extends AbstractType
 {

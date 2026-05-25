@@ -29,6 +29,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\ItemTypeTest
+ * @extends AbstractType<Line>
  */
 class ItemType extends AbstractType
 {

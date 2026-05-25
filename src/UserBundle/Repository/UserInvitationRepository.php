@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -23,13 +22,14 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
- * @extends ServiceEntityRepository<UserInvitation>
+ * @extends EntityRepository<UserInvitation>
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserInvitationRepositoryTest
  */
-final class UserInvitationRepository extends ServiceEntityRepository
+final class UserInvitationRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -68,12 +68,6 @@ final class UserInvitationRepository extends ServiceEntityRepository
     public function delete(UserInvitation $invitation): void
     {
         $this->_em->remove($invitation);
-        $this->_em->flush();
-    }
-
-    public function save(UserInvitation $data): void
-    {
-        $this->_em->persist($data);
         $this->_em->flush();
     }
 

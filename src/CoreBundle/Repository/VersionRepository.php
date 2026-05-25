@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Version>
+ * @extends EntityRepository<Version>
  */
-class VersionRepository extends ServiceEntityRepository
+class VersionRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

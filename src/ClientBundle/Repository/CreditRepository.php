@@ -17,16 +17,16 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use function assert;
 
 /**
- * @extends ServiceEntityRepository<Credit>
+ * @extends EntityRepository<Credit>
  */
-class CreditRepository extends ServiceEntityRepository
+class CreditRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -45,7 +45,9 @@ class CreditRepository extends ServiceEntityRepository
 
         $credit->setValue($value->plus($amount));
 
-        return $this->save($credit);
+        $this->save($credit);
+
+        return $credit;
     }
 
     /**
@@ -60,14 +62,7 @@ class CreditRepository extends ServiceEntityRepository
 
         $credit->setValue($value->minus($amount));
 
-        return $this->save($credit);
-    }
-
-    private function save(Credit $credit): Credit
-    {
-        $entityManager = $this->getEntityManager();
-        $entityManager->persist($credit);
-        $entityManager->flush();
+        $this->save($credit);
 
         return $credit;
     }

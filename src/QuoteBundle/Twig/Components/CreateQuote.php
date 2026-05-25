@@ -144,6 +144,9 @@ final class CreateQuote extends AbstractController
         $this->dto->tax = (string) $tempQuote->getTax();
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $options = [];

@@ -24,6 +24,9 @@ use Symfony\Component\Form\Flow\Type\PreviousFlowType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<array{back: mixed, next: mixed, skip: mixed, finish: mixed}>
+ */
 final class OnboardingNavigatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

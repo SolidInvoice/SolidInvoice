@@ -42,6 +42,7 @@ use Throwable;
  * for MCP) so plan-level downgrades immediately deny access even when the
  * subscription itself is still active.
  * @see \SolidInvoice\SaasBundle\Tests\Security\Voter\SubscriptionVoterTest
+ * @extends Voter<string, mixed>
  */
 final class SubscriptionVoter extends Voter
 {

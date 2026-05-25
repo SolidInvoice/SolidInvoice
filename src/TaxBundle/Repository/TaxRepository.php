@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Tax>
+ * @extends EntityRepository<Tax>
  */
-class TaxRepository extends ServiceEntityRepository
+class TaxRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

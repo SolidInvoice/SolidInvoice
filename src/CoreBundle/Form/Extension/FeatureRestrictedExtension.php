@@ -31,6 +31,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class FeatureRestrictedExtension extends AbstractTypeExtension
 {
+    /**
+     * @param FormInterface<mixed> $form
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['feature_gated_active'] = false;

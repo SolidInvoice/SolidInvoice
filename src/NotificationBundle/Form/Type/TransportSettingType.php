@@ -27,6 +27,9 @@ use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 use function strtolower;
 
+/**
+ * @extends AbstractType<TransportSetting>
+ */
 final class TransportSettingType extends AbstractType
 {
     /**

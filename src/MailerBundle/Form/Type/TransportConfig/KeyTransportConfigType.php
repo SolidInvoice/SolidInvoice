@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\KeyTransportConfigTypeTest
+ * @extends AbstractType<array{key: mixed}>
  */
 final class KeyTransportConfigType extends AbstractType
 {

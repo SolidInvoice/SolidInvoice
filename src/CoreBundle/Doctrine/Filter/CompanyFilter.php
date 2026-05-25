@@ -21,6 +21,9 @@ use function sprintf;
 
 class CompanyFilter extends SQLFilter
 {
+    /**
+     * @param ClassMetadata<object> $targetEntity
+     */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         $isSqlite = $this->getConnection()->getDatabasePlatform() instanceof SqlitePlatform;
