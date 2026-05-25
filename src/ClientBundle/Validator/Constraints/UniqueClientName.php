@@ -16,8 +16,8 @@ namespace SolidInvoice\ClientBundle\Validator\Constraints;
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class UniqueClientName extends Constraint
 {
-    public string $message = 'A client with this name already exists.';
+    public string $message = 'A client with the name "{{ value }}" already exists.';
 }
