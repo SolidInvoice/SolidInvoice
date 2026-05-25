@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
+use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
@@ -66,7 +67,7 @@ final class CompanyEventSubscriber
 
             $plan = $this->subscription->getPlan();
 
-            if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() !== null) {
+            if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() instanceof DateInterval) {
                 try {
                     // User is new and plan has a trial configured, start the trial atomically
                     $this->entityManager->wrapInTransaction(function () use ($user): void {

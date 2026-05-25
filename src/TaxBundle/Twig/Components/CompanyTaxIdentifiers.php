@@ -21,6 +21,7 @@ use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -42,7 +43,7 @@ final class CompanyTaxIdentifiers extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $companyId = $this->companySelector->getCompany();
-        $identifiers = $companyId !== null
+        $identifiers = $companyId instanceof Ulid
             ? $this->repository->findCompanyIdentifiers($companyId)
             : [];
 
@@ -59,7 +60,7 @@ final class CompanyTaxIdentifiers extends AbstractController
         $data = $this->getForm()->getData();
         $submitted = $data['identifiers'] ?? [];
         $companyId = $this->companySelector->getCompany();
-        $existing = $companyId !== null ? $this->repository->findCompanyIdentifiers($companyId) : [];
+        $existing = $companyId instanceof Ulid ? $this->repository->findCompanyIdentifiers($companyId) : [];
         $submittedIds = [];
         foreach ($submitted as $identifier) {
             $identifier->setClient(null);

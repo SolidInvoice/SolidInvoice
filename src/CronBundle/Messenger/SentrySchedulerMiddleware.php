@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CronBundle\Messenger;
 
 use Sentry\CheckInStatus;
+use Sentry\ClientInterface;
 use Sentry\MonitorConfig;
 use Sentry\MonitorSchedule;
 use Sentry\SentrySdk;
@@ -25,6 +26,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 use Symfony\Component\Scheduler\Messenger\ScheduledStamp;
 use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
 use Throwable;
@@ -39,7 +41,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
     {
         $scheduledStamp = $envelope->last(ScheduledStamp::class);
 
-        if ($scheduledStamp === null || $envelope->last(ReceivedStamp::class) === null || SentrySdk::getCurrentHub()->getClient() === null) {
+        if (! $scheduledStamp instanceof StampInterface || ! $envelope->last(ReceivedStamp::class) instanceof StampInterface || ! SentrySdk::getCurrentHub()->getClient() instanceof ClientInterface) {
             return $stack->next()->handle($envelope, $stack);
         }
 
@@ -67,7 +69,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             // Only emit check-ins when we have a monitor config (i.e. a known schedule).
             // Without one, Sentry would create orphaned unmanaged check-ins with no
             // associated schedule — useless noise. Tracing still runs in all cases.
-            $checkInId = $monitorConfig !== null ? captureCheckIn(
+            $checkInId = $monitorConfig instanceof MonitorConfig ? captureCheckIn(
                 slug: $slug,
                 status: CheckInStatus::inProgress(),
                 monitorConfig: $monitorConfig,
@@ -80,7 +82,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
 
                 $transaction->setStatus(SpanStatus::ok());
 
-                if ($monitorConfig !== null) {
+                if ($monitorConfig instanceof MonitorConfig) {
                     captureCheckIn(
                         slug: $slug,
                         status: CheckInStatus::ok(),
@@ -98,7 +100,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
                 // contexts, so without this the cron monitor turns red but no Issue is filed.
                 captureException($e);
 
-                if ($monitorConfig !== null) {
+                if ($monitorConfig instanceof MonitorConfig) {
                     captureCheckIn(
                         slug: $slug,
                         status: CheckInStatus::error(),

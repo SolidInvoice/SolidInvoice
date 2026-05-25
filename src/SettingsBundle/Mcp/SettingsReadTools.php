@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Security\McpScope;
+use Symfony\Component\Uid\Ulid;
 
 final readonly class SettingsReadTools
 {
@@ -44,7 +45,7 @@ final readonly class SettingsReadTools
 
         $companyId = $this->companySelector->getCompany();
 
-        if ($companyId === null) {
+        if (! $companyId instanceof Ulid) {
             throw new ToolCallException('No active company on this request.');
         }
 

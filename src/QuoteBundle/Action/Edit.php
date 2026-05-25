@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -54,7 +55,7 @@ final readonly class Edit
     {
         $client = $quote->getClient();
         $formOptions = [];
-        if (null !== $client) {
+        if ($client instanceof Client) {
             $formOptions['currency'] = $client->getCurrency();
         }
 

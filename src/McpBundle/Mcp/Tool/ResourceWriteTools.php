@@ -30,6 +30,7 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -360,7 +361,7 @@ final readonly class ResourceWriteTools
     {
         $companyId = $this->companySelector->getCompany();
 
-        if ($companyId === null) {
+        if (! $companyId instanceof Ulid) {
             throw new ToolCallException('No active company on this request.');
         }
 

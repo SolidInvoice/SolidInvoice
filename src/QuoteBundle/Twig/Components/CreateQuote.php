@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -307,7 +308,7 @@ final class CreateQuote extends AbstractController
     #[ExposeInTemplate]
     public function getDiscountAmount(): string
     {
-        if ($this->dto->discount === null) {
+        if (! $this->dto->discount instanceof Discount) {
             return '0';
         }
 

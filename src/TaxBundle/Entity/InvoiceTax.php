@@ -295,7 +295,7 @@ class InvoiceTax
      */
     public function snapshotFrom(Tax $tax): self
     {
-        if ($this->snapshottedAt !== null) {
+        if ($this->snapshottedAt instanceof DateTimeInterface) {
             return $this;
         }
 

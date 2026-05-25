@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
+use SolidInvoice\TaxBundle\Entity\Tax;
 
 /**
  * Manager for handling Invoice form DTO transformations
@@ -131,7 +132,7 @@ final readonly class InvoiceFormManager
         }
 
         $tax = $invoiceTax->getTax();
-        if ($tax !== null) {
+        if ($tax instanceof Tax) {
             $invoiceTax->snapshotFrom($tax);
         }
     }
@@ -180,7 +181,7 @@ final readonly class InvoiceFormManager
     private function resolveClient(InvoiceFormDTO $dto): Client
     {
         if ($dto->clientMode === InvoiceClientMode::Existing) {
-            if ($dto->client === null) {
+            if (! $dto->client instanceof Client) {
                 throw new InvalidArgumentException('Client is required when clientMode is Existing');
             }
 

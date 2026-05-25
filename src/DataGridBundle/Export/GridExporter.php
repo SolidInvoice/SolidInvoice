@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Export;
 
+use Closure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
@@ -75,7 +76,7 @@ final readonly class GridExporter
         $this->gridQueryService->applyFilters($grid, $builder, $sort, $search, $gridFilters);
 
         $beforeQuery = $query->getCallback(Query::BEFORE_QUERY);
-        if ($beforeQuery !== null) {
+        if ($beforeQuery instanceof Closure) {
             $beforeQuery($builder);
         }
 
@@ -83,7 +84,7 @@ final readonly class GridExporter
         $results = $builder->getQuery()->getResult();
 
         $afterQuery = $query->getCallback(Query::AFTER_QUERY);
-        if ($afterQuery !== null) {
+        if ($afterQuery instanceof Closure) {
             $afterQuery($results);
         }
 

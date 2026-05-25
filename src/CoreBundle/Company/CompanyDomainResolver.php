@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Company;
 
 use League\Uri\Uri;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
@@ -66,7 +67,7 @@ final class CompanyDomainResolver implements ResetInterface
 
         $company = $host === '' ? null : $this->companyRepository->findOneByCustomDomain($host);
 
-        if ($company !== null) {
+        if ($company instanceof Company) {
             return $this->cache[$host] = new ResolvedHost(
                 HostType::CustomDomain,
                 $host,

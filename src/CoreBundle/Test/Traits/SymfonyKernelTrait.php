@@ -122,7 +122,7 @@ trait SymfonyKernelTrait
      */
     protected static function ensureKernelShutdown(): void
     {
-        if (null !== static::$kernel) {
+        if (static::$kernel instanceof KernelInterface) {
             static::$kernel->boot();
             $container = static::$kernel->getContainer();
 

@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 use function assert;
 use function count;
 use function in_array;
@@ -57,7 +59,7 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->companySelector->getCompany() !== null) {
+        if ($this->companySelector->getCompany() instanceof Ulid) {
             return;
         }
 
@@ -66,7 +68,7 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 
         $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
-        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company !== null) {
+        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company instanceof Company) {
             $companyId = $resolved->company->getId();
             $this->companySelector->switchCompany($companyId);
             $session->set('company', $companyId);

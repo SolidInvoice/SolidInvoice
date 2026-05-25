@@ -31,6 +31,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -265,7 +266,7 @@ final class TwoFactorSettings extends AbstractController
     {
         $token = $this->tokenStorage->getToken();
 
-        if ($token === null) {
+        if (! $token instanceof TokenInterface) {
             return;
         }
 

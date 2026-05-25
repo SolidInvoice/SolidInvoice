@@ -19,8 +19,10 @@ use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use LogicException;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\McpBundle\Entity\OAuthAuthCode;
 use SolidInvoice\McpBundle\OAuth\PendingAuthorization;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
@@ -49,7 +51,7 @@ final class OAuthAuthCodeRepository extends EntityRepository implements AuthCode
         $user = $this->pendingAuthorization->getUser();
         $company = $this->pendingAuthorization->getCompany();
 
-        if ($user === null || $company === null) {
+        if (! $user instanceof User || ! $company instanceof Company) {
             throw new LogicException('Cannot persist auth code without pending user/company binding.');
         }
 

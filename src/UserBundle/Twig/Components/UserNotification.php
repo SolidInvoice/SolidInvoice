@@ -115,7 +115,7 @@ final class UserNotification extends AbstractController
 
         foreach ($this->notificationList as $event) {
             $attribute = $this->getNotificationAttribute($event);
-            if ($attribute === null) {
+            if (! $attribute instanceof AsNotification) {
                 continue;
             }
 

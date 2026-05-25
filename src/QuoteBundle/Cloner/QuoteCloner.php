@@ -61,9 +61,7 @@ final readonly class QuoteCloner
             $newQuote->addUser($user);
         }
 
-        if (null !== $quote->getTax()) {
-            $newQuote->setTax($quote->getTax());
-        }
+        $newQuote->setTax($quote->getTax());
 
         array_map($newQuote->addLine(...), iterator_to_array($this->addLines($quote, $now)));
 

@@ -21,6 +21,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
+use SolidInvoice\TaxBundle\Entity\Tax;
 
 /**
  * Manager for handling Quote form DTO transformations
@@ -128,7 +129,7 @@ final readonly class QuoteFormManager
         }
 
         $tax = $invoiceTax->getTax();
-        if ($tax !== null) {
+        if ($tax instanceof Tax) {
             $invoiceTax->snapshotFrom($tax);
         }
     }
@@ -176,7 +177,7 @@ final readonly class QuoteFormManager
     private function resolveClient(QuoteFormDTO $dto): Client
     {
         if ($dto->clientMode === QuoteClientMode::Existing) {
-            if ($dto->client === null) {
+            if (! $dto->client instanceof Client) {
                 throw new InvalidArgumentException('Client is required when clientMode is Existing');
             }
 

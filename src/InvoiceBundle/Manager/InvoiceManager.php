@@ -131,9 +131,7 @@ class InvoiceManager
             $invoice->addUser($user);
         }
 
-        if (null !== $object->getTax()) {
-            $invoice->setTax($object->getTax());
-        }
+        $invoice->setTax($object->getTax());
 
         /** @var \SolidInvoice\QuoteBundle\Entity\Line $item */
         foreach ($object->getLines() as $item) {
@@ -192,7 +190,7 @@ class InvoiceManager
         }
 
         $quote = $invoice->getQuote();
-        if ($quote !== null && $quote->getId() instanceof Ulid) {
+        if ($quote instanceof Quote && $quote->getId() instanceof Ulid) {
             $this->customFieldValueCopier->copy(
                 CustomFieldTarget::QUOTE,
                 $quote->getId(),
@@ -204,7 +202,7 @@ class InvoiceManager
         }
 
         $recurring = $invoice->getRecurringInvoice();
-        if ($recurring !== null && $recurring->getId() instanceof Ulid) {
+        if ($recurring instanceof RecurringInvoice && $recurring->getId() instanceof Ulid) {
             $this->customFieldValueCopier->copy(
                 CustomFieldTarget::INVOICE,
                 $recurring->getId(),

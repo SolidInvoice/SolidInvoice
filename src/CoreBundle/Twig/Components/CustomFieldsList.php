@@ -51,7 +51,7 @@ final class CustomFieldsList
         }
 
         $defs = $this->fields->findByTargetOrdered($this->target);
-        if ($this->visibility !== null) {
+        if ($this->visibility instanceof CustomFieldVisibility) {
             $defs = array_values(array_filter(
                 $defs,
                 fn (CustomField $f): bool => $f->getVisibility() === $this->visibility,

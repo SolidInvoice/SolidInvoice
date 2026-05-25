@@ -36,7 +36,7 @@ final readonly class DynamicClientRegistration
 
     public function __invoke(Request $request): JsonResponse
     {
-        if ($this->mcpOauthRegisterLimiter !== null) {
+        if ($this->mcpOauthRegisterLimiter instanceof RateLimiterFactory) {
             $limiter = $this->mcpOauthRegisterLimiter->create($request->getClientIp() ?? 'unknown');
             $limit = $limiter->consume();
 

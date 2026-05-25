@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
+use DateInterval;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
@@ -88,7 +89,7 @@ final class CreateCompany extends AbstractController
                     $planPrice = $formatter->format(Money::USD($plan->getPrice()));
 
                     $trialDuration = $plan->getTrialDuration();
-                    $planHasTrial = $trialDuration !== null;
+                    $planHasTrial = $trialDuration instanceof DateInterval;
                 }
             }
         }

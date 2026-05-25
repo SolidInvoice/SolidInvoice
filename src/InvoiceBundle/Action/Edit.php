@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -65,7 +66,7 @@ final readonly class Edit
         }
 
         $client = $invoice->getClient();
-        if (null === $client) {
+        if (! $client instanceof Client) {
             $session = $request->getSession();
             assert($session instanceof Session);
             $session->getFlashBag()->add('danger', 'invoice.edit.no_client');

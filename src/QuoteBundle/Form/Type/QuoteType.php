@@ -198,7 +198,7 @@ class QuoteType extends AbstractType
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
         $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
-            if (! $client instanceof Client || $client->getId() === null) {
+            if (! $client instanceof Client || ! $client->getId() instanceof Ulid) {
                 return;
             }
 

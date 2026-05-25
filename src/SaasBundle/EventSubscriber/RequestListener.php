@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 use function in_array;
@@ -206,7 +207,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             return null;
         }
 
-        if (null === $this->security->getUser()) {
+        if (! $this->security->getUser() instanceof UserInterface) {
             return null;
         }
 

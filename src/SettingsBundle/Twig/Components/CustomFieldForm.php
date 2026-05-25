@@ -26,6 +26,7 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -60,7 +61,7 @@ final class CustomFieldForm extends AbstractController
 
     public function usageCount(): int
     {
-        if (! $this->editing || $this->field === null) {
+        if (! $this->editing || ! $this->field instanceof CustomField) {
             return 0;
         }
 
@@ -92,7 +93,7 @@ final class CustomFieldForm extends AbstractController
             $field->setPosition($this->fields->nextPosition($field->getTarget()));
 
             $companyId = $this->companies->getCompany();
-            if ($companyId === null) {
+            if (! $companyId instanceof Ulid) {
                 throw $this->createAccessDeniedException('No company in scope.');
             }
             $field->setCompany($this->em->getReference(Company::class, $companyId));

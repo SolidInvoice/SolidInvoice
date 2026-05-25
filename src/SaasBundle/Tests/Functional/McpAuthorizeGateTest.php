@@ -92,11 +92,11 @@ final class McpAuthorizeGateTest extends WebTestCase
         $client = self::createClient();
         $client->disableReboot();
 
-        if ($featureGate !== null) {
+        if ($featureGate instanceof FeatureGate) {
             self::getContainer()->set(FeatureGate::class, $featureGate);
         }
 
-        if ($upgradeProvider !== null) {
+        if ($upgradeProvider instanceof UpgradePromptProvider) {
             self::getContainer()->set(UpgradePromptProvider::class, $upgradeProvider);
         }
 

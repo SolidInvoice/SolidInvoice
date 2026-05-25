@@ -23,6 +23,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
@@ -250,7 +251,7 @@ final readonly class QuoteWriteTools
             throw new ToolCallException(sprintf('Quote %s not found.', $quote_id));
         }
 
-        if ($quote->getInvoice() !== null) {
+        if ($quote->getInvoice() instanceof Invoice) {
             throw new ToolCallException('This quote has already been converted to an invoice.');
         }
 

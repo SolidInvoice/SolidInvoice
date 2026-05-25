@@ -27,6 +27,7 @@ use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
@@ -71,7 +72,7 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
         /** @var Quote $quote */
         $quote = $event->getSubject();
 
-        if (null !== ($transition = $event->getTransition()) && QuoteGraph::TRANSITION_ARCHIVE === $transition->getName()) {
+        if (($transition = $event->getTransition()) instanceof Transition && QuoteGraph::TRANSITION_ARCHIVE === $transition->getName()) {
             $quote->archive();
         }
 
@@ -80,7 +81,7 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
         $em->persist($quote);
         $em->flush();
 
-        if (null !== ($transition = $event->getTransition()) && QuoteGraph::TRANSITION_SEND === $transition->getName()) {
+        if (($transition = $event->getTransition()) instanceof Transition && QuoteGraph::TRANSITION_SEND === $transition->getName()) {
             $this->quoteMailer->send($quote);
         }
 

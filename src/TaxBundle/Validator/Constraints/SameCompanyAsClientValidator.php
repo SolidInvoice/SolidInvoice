@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,7 +38,7 @@ final class SameCompanyAsClientValidator extends ConstraintValidator
 
         $client = $value->getClient();
 
-        if ($client === null) {
+        if (! $client instanceof Client) {
             return;
         }
 

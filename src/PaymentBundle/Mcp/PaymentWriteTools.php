@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -126,7 +127,7 @@ final readonly class PaymentWriteTools
         $payment->setMethod($offlineMethod);
         $payment->setInvoice($invoice);
 
-        if ($client !== null) {
+        if ($client instanceof Client) {
             $payment->setClient($client);
         }
 

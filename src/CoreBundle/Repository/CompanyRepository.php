@@ -97,7 +97,7 @@ class CompanyRepository extends ServiceEntityRepository
 
     public function deleteCompany(?Ulid $companyId): void
     {
-        if (null === $companyId) {
+        if (! $companyId instanceof Ulid) {
             return;
         }
 

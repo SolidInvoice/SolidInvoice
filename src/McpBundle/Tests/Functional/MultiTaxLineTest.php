@@ -210,7 +210,7 @@ final class MultiTaxLineTest extends KernelTestCase
         $stack = $container->get(RequestStack::class);
         self::assertInstanceOf(RequestStack::class, $stack);
 
-        while ($stack->getMainRequest() !== null) {
+        while ($stack->getMainRequest() instanceof Request) {
             $stack->pop();
         }
 

@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use function assert;
 
@@ -53,7 +54,7 @@ final readonly class ChangePassword
 
         if ($form->isSubmitted() && $form->isValid()) {
             $token = $this->tokenStorage->getToken();
-            if (null === $token) {
+            if (! $token instanceof TokenInterface) {
                 throw new AccessDeniedException('User must be authenticated to change password.');
             }
 

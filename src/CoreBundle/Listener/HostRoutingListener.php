@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Listener;
 use SolidInvoice\CoreBundle\Company\CompanyDomainResolver;
 use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +87,7 @@ final readonly class HostRoutingListener implements EventSubscriberInterface
         // without forcing the downgraded tenant into the user's session, so
         // they can still reach the canonical app via the standard selector.
         if ($resolved->isCustomDomain()
-            && $resolved->company !== null
+            && $resolved->company instanceof Company
             && ! $this->featureGate->isEnabled('custom_domain', $resolved->company)
         ) {
             $resolved = new ResolvedHost(

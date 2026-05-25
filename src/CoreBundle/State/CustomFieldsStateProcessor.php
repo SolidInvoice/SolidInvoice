@@ -30,6 +30,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * Persists the custom-field values staged in {@see CustomFieldStagingStore} by
@@ -71,7 +72,7 @@ final readonly class CustomFieldsStateProcessor implements ProcessorInterface
         }
 
         $staged = $this->stagingStore->pull($data);
-        if ($staged === null || $data->getId() === null) {
+        if ($staged === null || ! $data->getId() instanceof Ulid) {
             return $result;
         }
 

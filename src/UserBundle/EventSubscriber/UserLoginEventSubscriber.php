@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\EventSubscriber;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,7 +56,7 @@ final readonly class UserLoginEventSubscriber implements EventSubscriberInterfac
         $resolved = $request?->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
         if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain()) {
-            if ($resolved->company === null) {
+            if (! $resolved->company instanceof Company) {
                 throw new BadCredentialsException();
             }
 

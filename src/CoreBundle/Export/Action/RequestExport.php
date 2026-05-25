@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Ulid;
 use ValueError;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
@@ -61,7 +62,7 @@ final readonly class RequestExport
         $format = $this->resolveFormat((string) $request->request->get('format', ''));
 
         $activeCompanyId = $this->companySelector->getCompany();
-        if ($activeCompanyId === null) {
+        if (! $activeCompanyId instanceof Ulid) {
             throw new BadRequestHttpException('No active company context.');
         }
 

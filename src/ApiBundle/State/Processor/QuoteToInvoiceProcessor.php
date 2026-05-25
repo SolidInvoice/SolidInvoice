@@ -32,7 +32,7 @@ final readonly class QuoteToInvoiceProcessor implements ProcessorInterface
     {
         assert($data instanceof Quote);
 
-        if ($data->getInvoice() !== null) {
+        if ($data->getInvoice() instanceof Invoice) {
             throw new UnprocessableEntityHttpException('This quote has already been converted to an invoice.');
         }
 

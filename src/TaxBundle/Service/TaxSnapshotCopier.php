@@ -42,9 +42,9 @@ final class TaxSnapshotCopier
         $copy->setSequence($source->getSequence());
         $copy->setAmount($source->getAmount());
 
-        if ($freezeAt !== null) {
+        if ($freezeAt instanceof DateTimeInterface) {
             $copy->freeze($freezeAt);
-        } elseif ($source->getSnapshottedAt() !== null) {
+        } elseif ($source->getSnapshottedAt() instanceof DateTimeInterface) {
             $copy->setSnapshottedAt($source->getSnapshottedAt());
         }
 
@@ -66,9 +66,9 @@ final class TaxSnapshotCopier
         $copy->setNote($source->getNote());
         $copy->setSequence($source->getSequence());
 
-        if ($freezeAt !== null) {
+        if ($freezeAt instanceof DateTimeInterface) {
             $copy->freeze($freezeAt);
-        } elseif ($source->getSnapshottedAt() !== null) {
+        } elseif ($source->getSnapshottedAt() instanceof DateTimeInterface) {
             $copy->setSnapshottedAt($source->getSnapshottedAt());
         }
 

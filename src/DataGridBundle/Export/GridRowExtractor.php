@@ -81,7 +81,7 @@ final readonly class GridRowExtractor
      */
     private function extractEntityId(object $entity, ?ClassMetadata $metadata): ?string
     {
-        if ($metadata !== null) {
+        if ($metadata instanceof ClassMetadata) {
             $values = $metadata->getIdentifierValues($entity);
             if ($values !== []) {
                 return $this->stringifyIdentifier(reset($values));
@@ -192,7 +192,7 @@ final readonly class GridRowExtractor
      */
     private function associationField(string $field, ?ClassMetadata $metadata): ?string
     {
-        if ($metadata === null) {
+        if (! $metadata instanceof ClassMetadata) {
             return null;
         }
 

@@ -174,7 +174,7 @@ final class ReadToolFlowTest extends KernelTestCase
         self::assertInstanceOf(RequestStack::class, $stack);
 
         // Clear any existing request to avoid leftover scope state
-        while ($stack->getMainRequest() !== null) {
+        while ($stack->getMainRequest() instanceof Request) {
             $stack->pop();
         }
 

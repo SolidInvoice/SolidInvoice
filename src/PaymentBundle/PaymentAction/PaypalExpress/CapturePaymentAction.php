@@ -89,7 +89,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;
         }
 
-        if (null !== $tax = $invoice->getTax()) {
+        if (($tax = $invoice->getTax())->isPositive()) {
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Tax Total';
             $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($tax), 2);
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;

@@ -113,9 +113,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
         $companyId = $accessToken->getCompany()->getId();
 
-        if ($companyId !== null) {
-            $this->companySelector->switchCompany($companyId);
-        }
+        $this->companySelector->switchCompany($companyId);
 
         $this->accessTokenRepository->touch($accessToken);
 
