@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +45,7 @@ class RecurringInvoiceCreateListener implements EventSubscriberInterface
         $recurringInvoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (! $recurringInvoice instanceof RecurringInvoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $recurringInvoice->getStatus()) {
+        if (! $recurringInvoice instanceof RecurringInvoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $recurringInvoice->getStatus() instanceof RecurringInvoiceStatus) {
             return;
         }
 

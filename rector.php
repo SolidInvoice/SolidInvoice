@@ -46,8 +46,7 @@ return RectorConfig::configure()
         SetList::RECTOR_PRESET,
         // SetList::TYPE_DECLARATION,
         SetList::TYPE_DECLARATION_DOCBLOCKS,
-        // SetList::EARLY_RETURN,
-        // SetList::INSTANCEOF,
+        SetList::INSTANCEOF,
         // SetList::CARBON,
         // SetList::ASSERT,
 
