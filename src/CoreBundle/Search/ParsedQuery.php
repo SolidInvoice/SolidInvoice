@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Search;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Search\ParsedQueryTest
+ */
 final readonly class ParsedQuery
 {
     /**

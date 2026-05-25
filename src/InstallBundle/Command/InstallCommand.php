@@ -58,6 +58,9 @@ use function assert;
 use function in_array;
 use function Symfony\Component\String\u;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Command\InstallCommandTest
+ */
 #[AsCommand(name: 'app:install', description: 'Installs the application')]
 class InstallCommand extends Command
 {

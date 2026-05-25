@@ -21,6 +21,9 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Step\RunMigrationsStepTest
+ */
 final readonly class RunMigrationsStep implements InstallationStepInterface
 {
     public function __construct(

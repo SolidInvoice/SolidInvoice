@@ -19,6 +19,9 @@ use SolidWorx\Platform\PlatformBundle\Feature\SubscribableInterface;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Company\CompanySubscriberResolverTest
+ */
 final readonly class CompanySubscriberResolver implements SubscriberResolver
 {
     public function __construct(

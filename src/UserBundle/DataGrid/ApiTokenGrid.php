@@ -31,6 +31,9 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\DataGrid\ApiTokenGridTest
+ */
 #[AsDataGrid(name: 'api_token_grid', title: 'API Tokens')]
 final class ApiTokenGrid extends Grid
 {

@@ -38,6 +38,9 @@ use function Sentry\captureException;
 use function Sentry\withMonitor;
 use function sprintf;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Command\SendInvoiceRemindersCommandTest
+ */
 #[AsCommand(
     name: 'solidinvoice:invoices:send-reminders',
     description: 'Send payment reminders for pending and overdue invoices',

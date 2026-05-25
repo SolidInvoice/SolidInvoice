@@ -17,6 +17,9 @@ use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Search\ClientResultFormatterTest
+ */
 final readonly class ClientResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(

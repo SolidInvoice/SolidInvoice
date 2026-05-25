@@ -28,6 +28,9 @@ use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\ColumnFormatterTest
+ */
 final readonly class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
 {
     /**

@@ -20,6 +20,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\ReviewStepTest
+ */
 final class ReviewStep extends AbstractType
 {
     public function __construct(

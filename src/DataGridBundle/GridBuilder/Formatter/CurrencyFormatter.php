@@ -19,6 +19,9 @@ use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Translation\TranslatableMessage;
 use function is_string;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\CurrencyFormatterTest
+ */
 final class CurrencyFormatter implements FormatterInterface
 {
     /**

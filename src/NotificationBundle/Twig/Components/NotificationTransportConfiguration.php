@@ -37,6 +37,9 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use function assert;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Twig\Components\NotificationTransportConfigurationTest
+ */
 #[AsLiveComponent]
 final class NotificationTransportConfiguration extends AbstractController
 {

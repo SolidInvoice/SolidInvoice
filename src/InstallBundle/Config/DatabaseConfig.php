@@ -17,6 +17,9 @@ use Webmozart\Assert\Assert;
 use function array_key_exists;
 use function sprintf;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Config\DatabaseConfigTest
+ */
 final class DatabaseConfig
 {
     /**

@@ -45,6 +45,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Entity\RecurringInvoiceTest
+ */
 #[ORM\Table(name: RecurringInvoice::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]

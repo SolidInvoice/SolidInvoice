@@ -19,6 +19,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 use Symfony\Component\Uid\Uuid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Config\Loader\BuildIdLoaderTest
+ */
 final readonly class BuildIdLoader implements EnvVarLoaderInterface
 {
     public function __construct(

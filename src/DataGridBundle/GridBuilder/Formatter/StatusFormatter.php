@@ -26,6 +26,7 @@ use function ucwords;
  *
  * Output:
  *   <span class="datagrid-status status-{variant}">{Label}</span>
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\StatusFormatterTest
  */
 final readonly class StatusFormatter implements FormatterInterface
 {

@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\DTO\ChangePasswordTest
+ */
 final class ChangePassword
 {
     #[NotBlank]

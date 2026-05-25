@@ -26,6 +26,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Entity\TransportSettingTest
+ */
 #[ORM\Entity(repositoryClass: TransportSettingRepository::class)]
 #[ORM\Table(name: TransportSetting::TABLE_NAME)]
 #[ORM\UniqueConstraint(name: 'unique_name_user', columns: ['name', 'company_id', 'user_id'])]

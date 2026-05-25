@@ -23,6 +23,9 @@ use function array_map;
 use function strlen;
 use function trim;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Action\SearchTest
+ */
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final readonly class Search
 {

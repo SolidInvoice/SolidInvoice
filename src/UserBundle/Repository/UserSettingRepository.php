@@ -21,6 +21,7 @@ use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
  * @extends EntityRepository<UserSetting>
+ * @see \SolidInvoice\UserBundle\Tests\Repository\UserSettingRepositoryTest
  */
 final class UserSettingRepository extends EntityRepository implements UserSettingRepositoryInterface
 {

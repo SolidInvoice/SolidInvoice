@@ -20,6 +20,7 @@ namespace SolidInvoice\SaasBundle\Feature;
  * of the quota remains, but never less than 1 remaining unit. Kept as a
  * stateless VO so banner partials, listeners, and onboarding emails can all
  * agree on when the warning should fire without each reinventing the maths.
+ * @see \SolidInvoice\SaasBundle\Tests\Feature\FeatureUsageTest
  */
 final readonly class FeatureUsage
 {

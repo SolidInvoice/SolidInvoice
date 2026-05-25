@@ -24,6 +24,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Action\AcceptInvitationTest
+ */
 final readonly class AcceptInvitation
 {
     public function __construct(

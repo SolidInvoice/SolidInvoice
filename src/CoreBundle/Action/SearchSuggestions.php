@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Action\SearchSuggestionsTest
+ */
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final readonly class SearchSuggestions
 {

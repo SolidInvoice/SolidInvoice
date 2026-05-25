@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\DTO;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\DTO\ConfigTest
+ */
 final readonly class Config
 {
     /**

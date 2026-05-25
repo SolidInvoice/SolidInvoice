@@ -27,6 +27,9 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Twig\Components\ClientFormTest
+ */
 #[AsLiveComponent]
 class ClientForm extends AbstractController
 {

@@ -28,6 +28,9 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use function array_slice;
 use function array_sum;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Recurring\RecurringScheduleTest
+ */
 readonly class RecurringSchedule
 {
     public function __construct(

@@ -19,6 +19,7 @@ use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
  * @extends EntityRepository<LineTax>
+ * @see \SolidInvoice\TaxBundle\Tests\Repository\LineTaxRepositoryTest
  */
 final class LineTaxRepository extends EntityRepository
 {

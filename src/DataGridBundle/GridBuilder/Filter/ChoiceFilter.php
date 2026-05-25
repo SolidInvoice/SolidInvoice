@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use function array_flip;
 use function is_string;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter\ChoiceFilterTest
+ */
 final class ChoiceFilter implements ColumnFilterInterface
 {
     private bool $multiple = false;

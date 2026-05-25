@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\QuickActionsWidgetTest
+ */
 final class QuickActionsWidget implements WidgetInterface
 {
     /**

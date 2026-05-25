@@ -21,6 +21,9 @@ use Money\Currency;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Manager\PaymentStatsTest
+ */
 final readonly class PaymentStats
 {
     public function __construct(

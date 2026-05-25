@@ -16,6 +16,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder;
 use Closure;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\QueryTest
+ */
 final class Query
 {
     public const string BEFORE_QUERY = 'beforeQuery';

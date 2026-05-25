@@ -38,6 +38,9 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Twig\Components\UserNotificationTest
+ */
 #[AsLiveComponent]
 final class UserNotification extends AbstractController
 {

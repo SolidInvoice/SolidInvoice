@@ -40,6 +40,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Entity\InvoiceTaxTest
+ */
 #[ORM\Table(name: InvoiceTax::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: InvoiceTaxRepository::class)]
 #[ORM\HasLifecycleCallbacks]

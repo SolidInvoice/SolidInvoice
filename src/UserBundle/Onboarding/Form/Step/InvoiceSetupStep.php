@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\InvoiceSetupStepTest
+ */
 final class InvoiceSetupStep extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

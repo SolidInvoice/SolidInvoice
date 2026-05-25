@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Checklist\DTO;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Checklist\DTO\ChecklistItemDTOTest
+ */
 final readonly class ChecklistItemDTO
 {
     public function __construct(

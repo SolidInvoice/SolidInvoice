@@ -23,6 +23,9 @@ use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 use Twig\Environment;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Notification\InvoiceReminderNotificationTest
+ */
 #[AsNotification(
     name: self::EVENT,
     title: 'Invoice Payment Reminder',

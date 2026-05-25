@@ -28,6 +28,9 @@ use function method_exists;
 use function spl_object_hash;
 use function sprintf;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\StringFormatterTest
+ */
 final readonly class StringFormatter implements FormatterInterface
 {
     public function __construct(

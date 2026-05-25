@@ -18,6 +18,9 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\Uid\Uuid;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Step\GenerateBuildIdStepTest
+ */
 final readonly class GenerateBuildIdStep implements InstallationStepInterface
 {
     public function __construct(

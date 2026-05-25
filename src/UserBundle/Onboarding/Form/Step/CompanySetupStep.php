@@ -18,6 +18,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\CompanySetupStepTest
+ */
 final class CompanySetupStep extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

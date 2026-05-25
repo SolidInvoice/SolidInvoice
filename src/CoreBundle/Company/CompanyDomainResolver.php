@@ -23,6 +23,9 @@ use function rtrim;
 use function strtolower;
 use function trim;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Company\CompanyDomainResolverTest
+ */
 final class CompanyDomainResolver implements ResetInterface
 {
     private const array LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];

@@ -24,6 +24,9 @@ use function parse_url;
 use function rtrim;
 use function strtolower;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Validator\Constraints\NotApplicationUrlHostValidatorTest
+ */
 final class NotApplicationUrlHostValidator extends ConstraintValidator
 {
     public function __construct(

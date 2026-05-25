@@ -20,6 +20,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Form\Extension\TrialRestrictedExtensionTest
+ */
 final class TrialRestrictedExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

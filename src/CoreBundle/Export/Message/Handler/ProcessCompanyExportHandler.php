@@ -42,6 +42,7 @@ use Throwable;
  *   Processing forever and the idempotency guard prevents recovery. Add a CronBundle
  *   command that finds jobs in Processing older than ~30 minutes, marks them Failed
  *   with reason "worker timed out" so the user can request a fresh export.
+ * @see \SolidInvoice\CoreBundle\Tests\Export\Message\Handler\ProcessCompanyExportHandlerTest
  */
 #[AsMessageHandler]
 final readonly class ProcessCompanyExportHandler

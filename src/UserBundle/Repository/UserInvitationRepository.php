@@ -27,6 +27,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends ServiceEntityRepository<UserInvitation>
+ * @see \SolidInvoice\UserBundle\Tests\Repository\UserInvitationRepositoryTest
  */
 final class UserInvitationRepository extends ServiceEntityRepository
 {

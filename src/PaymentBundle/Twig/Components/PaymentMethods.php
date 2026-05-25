@@ -24,6 +24,9 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use function array_keys;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Twig\Components\PaymentMethodsTest
+ */
 #[AsLiveComponent]
 final class PaymentMethods extends AbstractController
 {

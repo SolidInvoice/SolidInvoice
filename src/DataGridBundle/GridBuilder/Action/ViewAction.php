@@ -15,6 +15,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Action;
 
 use Override;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Action\ViewActionTest
+ */
 final class ViewAction extends Action
 {
     /**

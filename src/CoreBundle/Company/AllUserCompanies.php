@@ -16,6 +16,9 @@ namespace SolidInvoice\CoreBundle\Company;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Company\AllUserCompaniesTest
+ */
 #[AsAlias(id: UserEligibleCompanies::class)]
 final class AllUserCompanies implements UserEligibleCompanies
 {

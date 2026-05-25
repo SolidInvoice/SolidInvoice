@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Form\Type\DateRangeFormTypeTest
+ */
 final class DateRangeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

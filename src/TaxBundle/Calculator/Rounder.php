@@ -23,6 +23,7 @@ use SolidInvoice\TaxBundle\Enum\RoundingStrategy;
  *
  * Defaults to {@see RoundingStrategy::HalfEven} ("banker's rounding"), which matches
  * the behaviour of the legacy {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator}.
+ * @see \SolidInvoice\TaxBundle\Tests\Calculator\RounderTest
  */
 final readonly class Rounder
 {

@@ -20,6 +20,9 @@ use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use function str_replace;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Step\GenerateSecretStepTest
+ */
 final readonly class GenerateSecretStep implements InstallationStepInterface
 {
     public function __construct(

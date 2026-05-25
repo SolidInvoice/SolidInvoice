@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Action;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Action\ActionTest
+ */
 class Action
 {
     private string $route = '';

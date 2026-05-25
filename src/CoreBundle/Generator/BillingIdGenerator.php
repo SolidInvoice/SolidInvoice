@@ -22,6 +22,9 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGeneratorTest
+ */
 final readonly class BillingIdGenerator
 {
     /**

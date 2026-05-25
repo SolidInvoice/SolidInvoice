@@ -22,6 +22,9 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\AttentionRequiredWidgetTest
+ */
 final readonly class AttentionRequiredWidget implements WidgetInterface
 {
     private ObjectManager $manager;

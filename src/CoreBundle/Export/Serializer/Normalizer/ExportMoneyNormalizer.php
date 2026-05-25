@@ -27,6 +27,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * USD, /1 for JPY, /1000 for KWD). BigNumber values lack currency context and assume
  * the project's default 2-decimal subunit — this matches how the rest of the app
  * stores amounts as integer cents.
+ * @see \SolidInvoice\CoreBundle\Tests\Export\Serializer\Normalizer\ExportMoneyNormalizerTest
  */
 final readonly class ExportMoneyNormalizer implements NormalizerInterface
 {

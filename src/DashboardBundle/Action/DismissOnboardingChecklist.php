@@ -24,6 +24,9 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Action\DismissOnboardingChecklistTest
+ */
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 final readonly class DismissOnboardingChecklist
 {

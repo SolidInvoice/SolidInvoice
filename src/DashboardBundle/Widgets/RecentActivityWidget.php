@@ -23,6 +23,9 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\RecentActivityWidgetTest
+ */
 final readonly class RecentActivityWidget implements WidgetInterface
 {
     private ObjectManager $manager;

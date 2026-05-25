@@ -20,6 +20,9 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\EmailVerificationBannerListenerTest
+ */
 final readonly class EmailVerificationBannerListener implements EventSubscriberInterface
 {
     public function __construct(

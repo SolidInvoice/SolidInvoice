@@ -50,6 +50,9 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Twig\Components\CreateInvoiceTest
+ */
 #[AsLiveComponent]
 final class CreateInvoice extends AbstractController
 {

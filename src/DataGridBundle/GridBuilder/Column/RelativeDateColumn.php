@@ -25,6 +25,7 @@ use Override;
  *   RelativeDateColumn::new('created')
  *       ->threshold(7)  // Show relative for dates within 7 days
  *       ->absoluteFormat('d M Y')  // Format for absolute date tooltip
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Column\RelativeDateColumnTest
  */
 final class RelativeDateColumn extends DateTimeColumn
 {

@@ -15,6 +15,9 @@ namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
 use Random\RandomException;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\RandomNumberGeneratorTest
+ */
 final class RandomNumberGenerator implements IdGeneratorInterface
 {
     public const int MIN_VALUE = 100000;

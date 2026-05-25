@@ -24,6 +24,9 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Action\ViewTest
+ */
 final readonly class View
 {
     public function __construct(

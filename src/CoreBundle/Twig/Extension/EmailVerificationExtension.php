@@ -18,6 +18,9 @@ use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\EmailVerificationExtensionTest
+ */
 final class EmailVerificationExtension extends AbstractExtension
 {
     public function __construct(

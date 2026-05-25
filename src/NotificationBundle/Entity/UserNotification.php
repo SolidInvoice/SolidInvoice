@@ -25,6 +25,9 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Entity\UserNotificationTest
+ */
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: UserNotification::TABLE_NAME)]
 class UserNotification implements Stringable

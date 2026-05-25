@@ -41,6 +41,7 @@ use Throwable;
  * per-attribute feature gate (`rest_api_access` for the API, `mcp_access`
  * for MCP) so plan-level downgrades immediately deny access even when the
  * subscription itself is still active.
+ * @see \SolidInvoice\SaasBundle\Tests\Security\Voter\SubscriptionVoterTest
  */
 final class SubscriptionVoter extends Voter
 {

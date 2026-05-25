@@ -28,6 +28,9 @@ use function sprintf;
 use function strlen;
 use function substr;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Search\MultiSearchServiceTest
+ */
 final class MultiSearchService
 {
     /**

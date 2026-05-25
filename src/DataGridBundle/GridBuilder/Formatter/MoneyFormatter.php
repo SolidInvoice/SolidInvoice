@@ -19,6 +19,9 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\MoneyFormatterTest
+ */
 final readonly class MoneyFormatter implements FormatterInterface
 {
     public function __construct(

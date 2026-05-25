@@ -27,6 +27,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\ItemTypeTest
+ */
 class ItemType extends AbstractType
 {
     public function __construct(

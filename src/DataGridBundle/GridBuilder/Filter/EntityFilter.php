@@ -29,6 +29,9 @@ use function md5;
 use function sprintf;
 use function substr;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter\EntityFilterTest
+ */
 final class EntityFilter implements ColumnFilterInterface
 {
     private bool $multiple = false;

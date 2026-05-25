@@ -31,6 +31,9 @@ use function assert;
 use function Sentry\withMonitor;
 use function sprintf;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Command\SendRecurringInvoicesCommandTest
+ */
 #[AsCommand(
     name: 'solidinvoice:recurring:send-invoices',
     description: 'Send recurring invoices',

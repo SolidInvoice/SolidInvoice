@@ -25,6 +25,9 @@ use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Form\Type\ImageUploadTypeTest
+ */
 class ImageUploadType extends AbstractType
 {
     /**

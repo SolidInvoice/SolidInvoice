@@ -28,6 +28,9 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridTest
+ */
 abstract class Grid implements GridInterface
 {
     /**

@@ -27,6 +27,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
  *
  * Or use a single variant for all values:
  *   StatusColumn::new('status')->variant('success')
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Column\StatusColumnTest
  */
 final class StatusColumn extends Column
 {

@@ -24,6 +24,7 @@ namespace SolidInvoice\SaasBundle\Feature;
  *
  * Strings are stored in English and translated downstream by `|trans` in
  * the template — translators override via the standard message catalogue.
+ * @see \SolidInvoice\SaasBundle\Tests\Feature\FeatureCopyRegistryTest
  */
 final readonly class FeatureCopyRegistry
 {

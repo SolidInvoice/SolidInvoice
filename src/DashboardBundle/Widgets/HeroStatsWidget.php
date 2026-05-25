@@ -21,6 +21,9 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\HeroStatsWidgetTest
+ */
 final readonly class HeroStatsWidget implements WidgetInterface
 {
     private ObjectManager $manager;

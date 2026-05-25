@@ -19,6 +19,9 @@ use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use function in_array;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Step\CreateDatabaseStepTest
+ */
 final readonly class CreateDatabaseStep implements InstallationStepInterface
 {
     public function __construct(

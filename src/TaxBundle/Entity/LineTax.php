@@ -39,6 +39,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Entity\LineTaxTest
+ */
 #[ORM\Table(name: LineTax::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: LineTaxRepository::class)]
 #[ORM\HasLifecycleCallbacks]

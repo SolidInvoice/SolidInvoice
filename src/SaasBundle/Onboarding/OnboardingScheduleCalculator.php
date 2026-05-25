@@ -21,6 +21,7 @@ use function max;
 /**
  * Spreads onboarding emails proportionally across the trial window so the
  * cadence adapts to each Plan's trialDuration without hard-coded day offsets.
+ * @see \SolidInvoice\SaasBundle\Tests\Onboarding\OnboardingScheduleCalculatorTest
  */
 final class OnboardingScheduleCalculator
 {

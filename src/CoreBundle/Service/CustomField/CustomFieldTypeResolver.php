@@ -39,6 +39,9 @@ use function json_decode;
 use function json_encode;
 use function str_contains;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Service\CustomField\CustomFieldTypeResolverTest
+ */
 final class CustomFieldTypeResolver
 {
     /**

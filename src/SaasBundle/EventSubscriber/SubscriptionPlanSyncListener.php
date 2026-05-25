@@ -42,6 +42,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
  * — they never round-trip through LS — and active-billed plan changes go
  * through `SubscriptionManager::changeActivePlan()` which is already
  * LS-confirmed before the local update.
+ * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\SubscriptionPlanSyncListenerTest
  */
 final readonly class SubscriptionPlanSyncListener
 {

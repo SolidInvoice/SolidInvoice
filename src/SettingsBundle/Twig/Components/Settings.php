@@ -35,6 +35,9 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Throwable;
 use function str_replace;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Twig\Components\SettingsTest
+ */
 #[AsLiveComponent]
 final class Settings extends AbstractController
 {

@@ -23,6 +23,7 @@ use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends Voter<string, ExportJob>
+ * @see \SolidInvoice\CoreBundle\Tests\Export\Security\Voter\ExportJobVoterTest
  */
 final class ExportJobVoter extends Voter
 {

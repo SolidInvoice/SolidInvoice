@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Search;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Search\SearchResultTest
+ */
 final readonly class SearchResult
 {
     public function __construct(

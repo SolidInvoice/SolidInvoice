@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Doctrine\Listener\CompanyListenerTest
+ */
 #[AsDoctrineListener(Events::prePersist)]
 final readonly class CompanyListener
 {
