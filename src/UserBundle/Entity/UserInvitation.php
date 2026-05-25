@@ -51,7 +51,7 @@ class UserInvitation
     private readonly DateTimeInterface $created;
 
     #[ORM\Column(type: Types::STRING)]
-    private string $status;
+    private string $status = self::STATUS_PENDING;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'invited_by_id', nullable: false)]
@@ -60,7 +60,6 @@ class UserInvitation
     public function __construct()
     {
         $this->created = new DateTimeImmutable();
-        $this->status = self::STATUS_PENDING;
     }
 
     public function getId(): ?Ulid

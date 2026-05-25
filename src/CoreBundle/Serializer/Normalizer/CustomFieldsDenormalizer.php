@@ -119,11 +119,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
         if ($context[self::SKIP_KEY] ?? false) {
             return false;
         }
-        return $type === Client::class
-            || $type === Contact::class
-            || $type === Invoice::class
-            || $type === RecurringInvoice::class
-            || $type === Quote::class;
+        return in_array($type, [Client::class, Contact::class, Invoice::class, RecurringInvoice::class, Quote::class], true);
     }
 
     /**

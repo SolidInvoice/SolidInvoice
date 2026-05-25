@@ -25,7 +25,7 @@ use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\TwigFunction;
 
-class WidgetExtensionTest extends TestCase
+final class WidgetExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

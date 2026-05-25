@@ -44,7 +44,9 @@ final class InstallationTest extends PantherTestCase
         // Remove the config directory BEFORE parent::setUp() to ensure a clean state
         // when the kernel boots. This prevents any cached secrets from affecting the test.
         $fs = new Filesystem();
-        $fs->exists($configDir) && $fs->remove($configDir);
+        if ($fs->exists($configDir)) {
+            $fs->remove($configDir);
+        }
 
         parent::setUp();
 
@@ -74,7 +76,9 @@ final class InstallationTest extends PantherTestCase
         $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
         $fs = new Filesystem();
-        $fs->exists($configDir) && $fs->remove($configDir);
+        if ($fs->exists($configDir)) {
+            $fs->remove($configDir);
+        }
 
         unset($this->browser);
     }

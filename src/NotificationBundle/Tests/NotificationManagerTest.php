@@ -55,7 +55,7 @@ final class NotificationManagerTest extends TestCase
 
         $this->notificationManager = new NotificationManager(
             $this->notifier,
-            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator([]),
             new NullLogger(),
             new RequestStack(),
@@ -97,7 +97,7 @@ final class NotificationManagerTest extends TestCase
             ->setEmail(true)
             ->setUser($user);
 
-        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($userNotification);
         $em->persist($user);
         $em->flush();
@@ -150,7 +150,7 @@ final class NotificationManagerTest extends TestCase
             ->setEmail(false)
             ->setUser($user);
 
-        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($userNotification);
         $em->persist($user);
         $em->flush();
@@ -190,7 +190,7 @@ final class NotificationManagerTest extends TestCase
             ->setUser($user)
             ->addTransport($transportSetting);
 
-        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($user);
         $em->persist($transportSetting);
         $em->persist($userNotification);
@@ -209,7 +209,7 @@ final class NotificationManagerTest extends TestCase
 
         $notificationManager = new NotificationManager(
             $this->notifier,
-            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
@@ -258,7 +258,7 @@ final class NotificationManagerTest extends TestCase
             ->setUser($user2)
             ->addTransport($transportSetting2);
 
-        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($user1);
         $em->persist($user2);
         $em->persist($transportSetting1);
@@ -285,7 +285,7 @@ final class NotificationManagerTest extends TestCase
 
         $notificationManager = new NotificationManager(
             $this->notifier,
-            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
@@ -330,7 +330,7 @@ final class NotificationManagerTest extends TestCase
             ->addTransport($transportSetting2)
         ;
 
-        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $em->persist($user);
         $em->persist($transportSetting);
         $em->persist($transportSetting2);
@@ -388,7 +388,7 @@ final class NotificationManagerTest extends TestCase
 
         $notificationManager = new NotificationManager(
             $this->notifier,
-            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator, 'FooBars' => static fn () => $configurator2]),
             new NullLogger(),
             new RequestStack(),

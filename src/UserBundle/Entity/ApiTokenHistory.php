@@ -51,7 +51,7 @@ class ApiTokenHistory
     /**
      * @var array<string, mixed>
      */
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::ARRAY)]
     private array $requestData = [];
 
     #[ORM\Column(type: Types::STRING)]

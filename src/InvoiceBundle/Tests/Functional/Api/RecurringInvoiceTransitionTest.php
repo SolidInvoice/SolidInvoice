@@ -86,7 +86,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testGenerateInvoice(): void
@@ -131,7 +131,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 
     public function testGenerateForeignCompanyRecurringInvoice(): void
@@ -157,6 +157,6 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }

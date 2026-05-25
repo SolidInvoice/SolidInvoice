@@ -52,7 +52,7 @@ use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
-class InvoiceManagerTest extends KernelTestCase
+final class InvoiceManagerTest extends KernelTestCase
 {
     use MockeryPHPUnitIntegration;
 

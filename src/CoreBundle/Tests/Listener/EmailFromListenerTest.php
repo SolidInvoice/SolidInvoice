@@ -26,7 +26,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class EmailFromListenerTest extends TestCase
+final class EmailFromListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

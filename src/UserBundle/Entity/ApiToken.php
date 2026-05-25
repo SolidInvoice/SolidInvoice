@@ -47,8 +47,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(provider: ApiTokenCollectionProvider::class),
         new Post(
-            processor: ApiTokenCreateProcessor::class,
             normalizationContext: ['groups' => ['api_token:read', 'api_token:create_read']],
+            processor: ApiTokenCreateProcessor::class,
         ),
     ],
     normalizationContext: ['groups' => ['api_token:read']],

@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 
-class InvoiceMailerListenerTest extends TestCase
+final class InvoiceMailerListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

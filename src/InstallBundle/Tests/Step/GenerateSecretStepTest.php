@@ -39,7 +39,9 @@ final class GenerateSecretStepTest extends TestCase
     {
         $fs = new Filesystem();
 
-        $fs->exists($this->tempDir) && $fs->remove($this->tempDir);
+        if ($fs->exists($this->tempDir)) {
+            $fs->remove($this->tempDir);
+        }
     }
 
     public function testPriority(): void

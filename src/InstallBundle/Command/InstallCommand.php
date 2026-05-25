@@ -253,7 +253,7 @@ class InstallCommand extends Command
                 'driver' => $config['database_driver'] ?? null,
             ])->getNativeConnection();
         } catch (\Doctrine\DBAL\Exception $e) {
-            throw new RuntimeException($e->getMessage());
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
 
         assert($nativeConnection instanceof PDO);

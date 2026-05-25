@@ -18,7 +18,7 @@ use SolidInvoice\MailerBundle\Configurator\SendgridConfigurator;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
 
-class SendgridConfiguratorTest extends TestCase
+final class SendgridConfiguratorTest extends TestCase
 {
     public function testName(): void
     {

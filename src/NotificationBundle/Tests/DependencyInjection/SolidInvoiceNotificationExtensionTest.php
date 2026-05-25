@@ -17,7 +17,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use SolidInvoice\NotificationBundle\DependencyInjection\SolidInvoiceNotificationExtension;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 
-class SolidInvoiceNotificationExtensionTest extends AbstractExtensionTestCase
+final class SolidInvoiceNotificationExtensionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {

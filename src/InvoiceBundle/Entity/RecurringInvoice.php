@@ -82,11 +82,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/recurring-invoices/{id}/transitions/{transition}',
     operations: [
         new Post(
+            input: false,
+            output: RecurringInvoice::class,
             name: 'recurring_invoice_transition',
             provider: RecurringInvoiceItemProvider::class,
             processor: RecurringInvoiceTransitionProcessor::class,
-            input: false,
-            output: RecurringInvoice::class,
         ),
     ],
     uriVariables: [
@@ -101,11 +101,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/recurring-invoices/{id}/generate',
     operations: [
         new Post(
+            input: false,
+            output: Invoice::class,
             name: 'recurring_invoice_generate',
             provider: RecurringInvoiceItemProvider::class,
             processor: GenerateInvoiceFromRecurringProcessor::class,
-            input: false,
-            output: Invoice::class,
         ),
     ],
     uriVariables: ['id' => new Link(fromClass: RecurringInvoice::class)],
@@ -363,7 +363,7 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\SerializedName('created')]
     public function getCreatedTimestamp(): ?int
     {
-        return isset($this->created) ? $this->created->getTimestamp() : null;
+        return $this->created instanceof DateTimeInterface ? $this->created->getTimestamp() : null;
     }
 
     /**
@@ -409,10 +409,8 @@ class RecurringInvoice extends BaseInvoice
 
     public function removeInvoiceTax(InvoiceTax $invoiceTax): self
     {
-        if ($this->getInvoiceTaxes()->removeElement($invoiceTax)) {
-            if ($invoiceTax->getRecurringInvoice() === $this) {
-                $invoiceTax->setRecurringInvoice(null);
-            }
+        if ($this->getInvoiceTaxes()->removeElement($invoiceTax) && $invoiceTax->getRecurringInvoice() === $this) {
+            $invoiceTax->setRecurringInvoice(null);
         }
 
         return $this;

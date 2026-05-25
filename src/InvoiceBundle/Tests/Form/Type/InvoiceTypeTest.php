@@ -44,7 +44,7 @@ use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use Zenstruck\Foundry\Test\Factories;
 
-class InvoiceTypeTest extends FormTestCase
+final class InvoiceTypeTest extends FormTestCase
 {
     use Factories;
 

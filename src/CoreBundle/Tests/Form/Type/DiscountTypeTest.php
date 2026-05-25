@@ -25,7 +25,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
-class DiscountTypeTest extends FormTestCase
+final class DiscountTypeTest extends FormTestCase
 {
     /**
      * @return array<FormExtensionInterface>

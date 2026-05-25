@@ -16,7 +16,7 @@ namespace SolidInvoice\NotificationBundle\Tests\Form\Type;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 
-class NotificationTypeTest extends FormTestCase
+final class NotificationTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

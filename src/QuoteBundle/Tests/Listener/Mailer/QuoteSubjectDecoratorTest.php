@@ -23,7 +23,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
-class QuoteSubjectDecoratorTest extends TestCase
+final class QuoteSubjectDecoratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

@@ -44,7 +44,7 @@ class ExportJob
     private Ulid $id;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 20, enumType: ExportStatus::class)]
-    private ExportStatus $status;
+    private ExportStatus $status = ExportStatus::Pending;
 
     /**
      * Relative path from the project root, e.g. `var/exports/{companyId58}/{jobId58}.zip`.
@@ -85,7 +85,6 @@ class ExportJob
         private ExportFormat $format
     ) {
         $this->id = new Ulid();
-        $this->status = ExportStatus::Pending;
         $this->createdAt = new DateTimeImmutable();
     }
 

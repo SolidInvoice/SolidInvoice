@@ -763,12 +763,6 @@ parameters:
 			path: src/CoreBundle/Test/LiveComponentTest.php
 
 		-
-			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Tests\\Billing\\TotalCalculatorTest\:\:\$company because it might have hooks in a subclass\.$#'
-			identifier: unset.possiblyHookedProperty
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1447,12 +1441,6 @@ parameters:
 			path: src/InvoiceBundle/Tests/Action/ViewTest.php
 
 		-
-			message: '#^Cannot unset property SolidInvoice\\InvoiceBundle\\Tests\\Listener\\WorkFlowSubscriberTest\:\:\$company because it might have hooks in a subclass\.$#'
-			identifier: unset.possiblyHookedProperty
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
 			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1595,12 +1583,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/OAuthClient.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type Symfony\\Component\\Uid\\Ulid\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/McpBundle/Mcp/Tool/EntityNormalizer.php
 
 		-
 			message: '#^Call to function is_string\(\) with null will always evaluate to false\.$#'
@@ -2667,12 +2649,6 @@ parameters:
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Money\\\\Currency'' and Money\\Currency will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
-
-		-
-			message: '#^Cannot unset property SolidInvoice\\SettingsBundle\\Tests\\SystemConfigTest\:\:\$company because it might have hooks in a subclass\.$#'
-			identifier: unset.possiblyHookedProperty
 			count: 1
 			path: src/SettingsBundle/Tests/SystemConfigTest.php
 

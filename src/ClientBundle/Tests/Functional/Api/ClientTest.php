@@ -98,7 +98,7 @@ final class ClientTest extends ApiTestCase
         $response = self::$client->request('GET', $this->getIriFromResource($foreignClient), [
             'headers' => ['accept' => 'application/ld+json'],
         ]);
-        static::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(404);
     }
 
     /**

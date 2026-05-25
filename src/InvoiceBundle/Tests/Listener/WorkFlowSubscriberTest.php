@@ -27,7 +27,7 @@ use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class WorkFlowSubscriberTest extends TestCase
+final class WorkFlowSubscriberTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;

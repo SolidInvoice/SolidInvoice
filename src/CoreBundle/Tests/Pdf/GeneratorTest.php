@@ -20,7 +20,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

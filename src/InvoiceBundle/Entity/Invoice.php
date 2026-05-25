@@ -99,11 +99,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/invoices/{id}/transitions/{transition}',
     operations: [
         new Post(
+            input: false,
+            output: Invoice::class,
             name: 'invoice_transition',
             provider: InvoiceTransitionProvider::class,
             processor: InvoiceTransitionProcessor::class,
-            input: false,
-            output: Invoice::class,
         ),
     ],
     uriVariables: [
@@ -472,7 +472,7 @@ class Invoice extends BaseInvoice implements Stringable
     #[SerializedName('created')]
     public function getCreatedTimestamp(): ?int
     {
-        return isset($this->created) ? $this->created->getTimestamp() : null;
+        return $this->created instanceof DateTimeInterface ? $this->created->getTimestamp() : null;
     }
 
     /**
@@ -524,10 +524,8 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function removeInvoiceTax(InvoiceTax $invoiceTax): self
     {
-        if ($this->invoiceTaxes->removeElement($invoiceTax)) {
-            if ($invoiceTax->getInvoice() === $this) {
-                $invoiceTax->setInvoice(null);
-            }
+        if ($this->invoiceTaxes->removeElement($invoiceTax) && $invoiceTax->getInvoice() === $this) {
+            $invoiceTax->setInvoice(null);
         }
 
         return $this;

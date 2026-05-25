@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait Archivable
 {
     #[ApiProperty(iris: ['https://schema.org/Boolean'])]
-    #[ORM\Column(name: 'archived', type: 'boolean', nullable: true)]
+    #[ORM\Column(name: 'archived', type: Types::BOOLEAN, nullable: true)]
     protected ?bool $archived = null;
 
     public function isArchived(): bool

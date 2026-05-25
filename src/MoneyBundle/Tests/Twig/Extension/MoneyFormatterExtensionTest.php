@@ -22,7 +22,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class MoneyFormatterExtensionTest extends TestCase
+final class MoneyFormatterExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

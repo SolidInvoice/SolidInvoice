@@ -69,7 +69,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
             $rounder
         );
 
-        $summaryRows = self::mergeSummaryRows([...$perLineSummary, ...$invoiceLevel->taxRows]);
+        $summaryRows = $this->mergeSummaryRows([...$perLineSummary, ...$invoiceLevel->taxRows]);
 
         $total = $total->plus($invoiceLevel->totalInvoiceLevelTax);
 
@@ -92,7 +92,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
      *
      * @throws MathException
      */
-    private static function mergeSummaryRows(array $rows): array
+    private function mergeSummaryRows(array $rows): array
     {
         $merged = [];
 

@@ -85,7 +85,7 @@ final class InvoiceTransitionTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testTransitionOnForeignCompanyInvoice(): void
@@ -111,6 +111,6 @@ final class InvoiceTransitionTest extends ApiTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }

@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
-class SettingsTypeTest extends FormTestCase
+final class SettingsTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

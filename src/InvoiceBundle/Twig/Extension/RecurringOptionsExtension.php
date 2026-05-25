@@ -40,7 +40,7 @@ final class RecurringOptionsExtension extends AbstractExtension
     {
         $frequency = $this->schedule->getFrequency($recurringOptions);
 
-        if (! $frequency) {
+        if ($frequency === '' || $frequency === '0') {
             return '';
         }
 

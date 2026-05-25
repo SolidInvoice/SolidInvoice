@@ -83,7 +83,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PAUSED),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::NO_COMPANY_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::NO_COMPANY_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -91,7 +91,7 @@ final class SubscriptionVoterTest extends KernelTestCase
     {
         $voter = $this->createVoter(subscription: null);
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
@@ -101,73 +101,73 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::ACTIVE),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
     public function testGrantsTrialBeforeEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-10'),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
     public function testDeniesTrialAfterEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-20'),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::TRIAL_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::TRIAL_REASON);
     }
 
     #[DataProvider('provideAttributes')]
     public function testGrantsCancelledWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-10'),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
     public function testDeniesCancelledAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-20'),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
     public function testGrantsExpiredWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-10'),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
     public function testDeniesExpiredAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
+            now: new DateTimeImmutable('2026-01-20'),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -177,7 +177,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PAUSED),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::PAUSED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAUSED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -187,7 +187,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PENDING),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, self::PENDING_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PENDING_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -206,7 +206,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             new NoopFeatureGate(),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
@@ -216,7 +216,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PAST_DUE),
         );
 
-        self::assertDeniedWithReason($voter, $attribute, 'Your subscription is not currently active.');
+        $this->assertDeniedWithReason($voter, $attribute, 'Your subscription is not currently active.');
     }
 
     public function testDeniesWhenRestApiAccessFeatureIsDisabled(): void
@@ -226,11 +226,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             featureGate: $this->featureGateDenying('rest_api_access'),
         );
 
-        self::assertDeniedWithReason(
-            $voter,
-            ApiAttribute::ACCESS,
-            'REST API access is not available on the current plan.',
-        );
+        $this->assertDeniedWithReason($voter, ApiAttribute::ACCESS, 'REST API access is not available on the current plan.');
     }
 
     public function testDeniesWhenMcpAccessFeatureIsDisabled(): void
@@ -240,11 +236,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             featureGate: $this->featureGateDenying('mcp_access'),
         );
 
-        self::assertDeniedWithReason(
-            $voter,
-            McpAttribute::ACCESS,
-            'MCP access is not available on the current plan.',
-        );
+        $this->assertDeniedWithReason($voter, McpAttribute::ACCESS, 'MCP access is not available on the current plan.');
     }
 
     #[DataProvider('provideAttributes')]
@@ -255,7 +247,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             featureGate: new NoopFeatureGate(),
         );
 
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     private function featureGateDenying(string $disabledKey): FeatureGate
@@ -269,12 +261,12 @@ final class SubscriptionVoterTest extends KernelTestCase
         return $featureGate;
     }
 
-    private static function assertVoteResult(int $expected, SubscriptionVoter $voter, string $attribute): void
+    private function assertVoteResult(int $expected, SubscriptionVoter $voter, string $attribute): void
     {
         self::assertSame($expected, $voter->vote(M::mock(TokenInterface::class), null, [$attribute]));
     }
 
-    private static function assertDeniedWithReason(SubscriptionVoter $voter, string $attribute, string $reason): void
+    private function assertDeniedWithReason(SubscriptionVoter $voter, string $attribute, string $reason): void
     {
         $vote = new Vote();
         $result = $voter->vote(M::mock(TokenInterface::class), null, [$attribute], $vote);

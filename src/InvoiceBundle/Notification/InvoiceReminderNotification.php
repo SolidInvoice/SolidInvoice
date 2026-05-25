@@ -92,7 +92,7 @@ class InvoiceReminderNotification extends NotificationMessage
             $email->context($normalizedParameters);
 
             $reminderType = $normalizedParameters['reminder_type'] ?? '';
-            $importance = in_array($reminderType, ['overdue_14'])
+            $importance = $reminderType == 'overdue_14'
                 ? NotificationEmail::IMPORTANCE_URGENT
                 : NotificationEmail::IMPORTANCE_MEDIUM;
             $email->importance($importance);

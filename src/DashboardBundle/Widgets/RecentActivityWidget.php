@@ -138,7 +138,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
 
         return [
             'activities' => $activities,
-            'hasActivities' => ! empty($activities),
+            'hasActivities' => $activities !== [],
         ];
     }
 

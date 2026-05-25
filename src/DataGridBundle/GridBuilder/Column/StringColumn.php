@@ -29,11 +29,7 @@ final class StringColumn extends Column
     {
         $this->template = $template;
 
-        if (is_array($params)) {
-            $this->templateParams = static fn () => $params;
-        } else {
-            $this->templateParams = $params(...);
-        }
+        $this->templateParams = is_array($params) ? static fn () => $params : $params(...);
 
         return $this;
     }

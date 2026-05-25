@@ -55,7 +55,7 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
 
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')
-            ->willReturnCallback(static fn (string $key): bool => $key === 'automated_reminders' ? false : true);
+            ->willReturnCallback(static fn (string $key): bool => $key !== 'automated_reminders');
 
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::never())->method('send');

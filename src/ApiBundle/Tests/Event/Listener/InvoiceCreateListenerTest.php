@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class InvoiceCreateListenerTest extends TestCase
+final class InvoiceCreateListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

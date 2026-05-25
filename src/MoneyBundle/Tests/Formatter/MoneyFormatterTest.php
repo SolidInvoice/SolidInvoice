@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
-class MoneyFormatterTest extends TestCase
+final class MoneyFormatterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

@@ -41,8 +41,8 @@ final class UserNotificationTest extends TestCase
     {
         parent::setUp();
 
-        $this->userNotificationRepository = static::getContainer()->get(UserNotificationRepository::class);
-        $this->transportSettingRepository = static::getContainer()->get(TransportSettingRepository::class);
+        $this->userNotificationRepository = self::getContainer()->get(UserNotificationRepository::class);
+        $this->transportSettingRepository = self::getContainer()->get(TransportSettingRepository::class);
 
         $clientNotification = new #[AsNotification(name: 'client_created', title: 'Client Created', description: 'When a new client is added to your account', icon: 'tabler:user-plus', category: NotificationCategory::CLIENT, )] class extends NotificationMessage {
             public function getTextContent(Environment $twig): string

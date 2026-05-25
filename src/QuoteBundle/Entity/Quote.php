@@ -101,11 +101,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/quotes/{id}/transitions/{transition}',
     operations: [
         new Post(
+            input: false,
+            output: Quote::class,
             name: 'quote_transition',
             provider: QuoteItemProvider::class,
             processor: QuoteTransitionProcessor::class,
-            input: false,
-            output: Quote::class,
         ),
     ],
     uriVariables: [
@@ -120,11 +120,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/quotes/{id}/invoice',
     operations: [
         new Post(
+            input: false,
+            output: Invoice::class,
             name: 'quote_to_invoice',
             provider: QuoteItemProvider::class,
             processor: QuoteToInvoiceProcessor::class,
-            input: false,
-            output: Invoice::class,
         ),
     ],
     uriVariables: ['id' => new Link(fromClass: Quote::class)],
@@ -545,7 +545,7 @@ class Quote
     #[SerializedName('created')]
     public function getCreatedTimestamp(): ?int
     {
-        return isset($this->created) ? $this->created->getTimestamp() : null;
+        return $this->created instanceof DateTimeInterface ? $this->created->getTimestamp() : null;
     }
 
     /**
@@ -649,10 +649,8 @@ class Quote
 
     public function removeInvoiceTax(InvoiceTax $invoiceTax): self
     {
-        if ($this->invoiceTaxes->removeElement($invoiceTax)) {
-            if ($invoiceTax->getQuote() === $this) {
-                $invoiceTax->setQuote(null);
-            }
+        if ($this->invoiceTaxes->removeElement($invoiceTax) && $invoiceTax->getQuote() === $this) {
+            $invoiceTax->setQuote(null);
         }
 
         return $this;

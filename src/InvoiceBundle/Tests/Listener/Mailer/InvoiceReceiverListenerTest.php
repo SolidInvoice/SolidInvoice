@@ -25,7 +25,7 @@ use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 
-class InvoiceReceiverListenerTest extends TestCase
+final class InvoiceReceiverListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

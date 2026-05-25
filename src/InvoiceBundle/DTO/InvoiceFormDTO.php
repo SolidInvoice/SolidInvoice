@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class InvoiceFormDTO
 {
-    public InvoiceClientMode $clientMode;
+    public InvoiceClientMode $clientMode = InvoiceClientMode::Existing;
 
     // Existing client selection (mode=Existing)
     #[Assert\NotBlank(groups: ['existing_client'])]
@@ -70,11 +70,11 @@ final class InvoiceFormDTO
 
     public ?string $notes = null;
 
-    public ?string $total = null;
+    public ?string $total = '0';
 
-    public ?string $baseTotal = null;
+    public ?string $baseTotal = '0';
 
-    public ?string $tax = null;
+    public ?string $tax = '0';
 
     /**
      * @var Collection<int, Line>
@@ -97,13 +97,9 @@ final class InvoiceFormDTO
 
     public function __construct()
     {
-        $this->clientMode = InvoiceClientMode::Existing;
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->invoiceTaxes = new ArrayCollection();
-        $this->total = '0';
-        $this->baseTotal = '0';
-        $this->tax = '0';
     }
 
     /**

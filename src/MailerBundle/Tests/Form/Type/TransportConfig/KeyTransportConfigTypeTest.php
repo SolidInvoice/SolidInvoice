@@ -16,7 +16,7 @@ namespace SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\KeyTransportConfigType;
 
-class KeyTransportConfigTypeTest extends FormTestCase
+final class KeyTransportConfigTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

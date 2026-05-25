@@ -321,7 +321,7 @@ final readonly class InvoiceWriteTools
                 'exception' => $exception,
             ]);
 
-            throw new ToolCallException('Failed to send reminder. See server logs for details.');
+            throw new ToolCallException('Failed to send reminder. See server logs for details.', $exception->getCode(), $exception);
         }
 
         return [

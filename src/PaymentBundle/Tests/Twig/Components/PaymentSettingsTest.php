@@ -257,8 +257,8 @@ final class PaymentSettingsTest extends LiveComponentTest
      */
     public static function paymentMethodsProvider(): iterable
     {
-        static::bootKernel();
-        $paymentFactories = static::getContainer()->get(PaymentFactories::class);
+        self::bootKernel();
+        $paymentFactories = self::getContainer()->get(PaymentFactories::class);
 
         foreach ($paymentFactories->getFactories() as $method => $factory) {
             yield $method => [$method];

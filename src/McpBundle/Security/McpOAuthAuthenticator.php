@@ -70,7 +70,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
                 ->createResourceServer()
                 ->validateAuthenticatedRequest($psrRequest);
         } catch (OAuthServerException $exception) {
-            throw new CustomUserMessageAuthenticationException($exception->getMessage());
+            throw new CustomUserMessageAuthenticationException($exception->getMessage(), [], $exception->getCode(), $exception);
         }
 
         $jti = $validatedRequest->getAttribute('oauth_access_token_id');

@@ -28,7 +28,7 @@ final readonly class SortFilter implements FilterInterface
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
-        if ($this->field) {
+        if ($this->field !== '' && $this->field !== '0') {
             if (str_contains($this->field, '.')) {
                 $relation = explode('.', $this->field);
 

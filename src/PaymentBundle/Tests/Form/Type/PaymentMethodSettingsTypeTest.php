@@ -16,7 +16,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodSettingsType;
 
-class PaymentMethodSettingsTypeTest extends FormTestCase
+final class PaymentMethodSettingsTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

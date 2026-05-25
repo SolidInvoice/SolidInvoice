@@ -22,7 +22,7 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use function date;
 
-class SystemConfigTest extends TestCase
+final class SystemConfigTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
@@ -31,15 +31,15 @@ class SystemConfigTest extends TestCase
     {
         $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
-        static::assertSame('SolidInvoice', $config->get('email/from_name'));
+        self::assertSame('SolidInvoice', $config->get('email/from_name'));
     }
 
     public function testGetCurrency(): void
     {
         $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
-        static::assertInstanceOf(Currency::class, $config->getCurrency());
-        static::assertSame('USD', $config->getCurrency()->getCode());
+        self::assertInstanceOf(Currency::class, $config->getCurrency());
+        self::assertSame('USD', $config->getCurrency()->getCode());
     }
 
     public function testGetAll(): void

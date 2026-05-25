@@ -21,7 +21,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
 
-class CalculatorTest extends TestCase
+final class CalculatorTest extends TestCase
 {
     /**
      * @throws MathException

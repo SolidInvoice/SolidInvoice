@@ -16,7 +16,7 @@ namespace SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\MailgunApiTransportConfigType;
 
-class MailgunApiTransportConfigTypeTest extends FormTestCase
+final class MailgunApiTransportConfigTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {

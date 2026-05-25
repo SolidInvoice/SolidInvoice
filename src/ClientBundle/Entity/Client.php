@@ -108,7 +108,7 @@ class Client implements Stringable
     #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: ClientStatus::class)]
     #[Serialize\Groups(['client_api:read', 'searchable'])]
-    private ?ClientStatus $status = null;
+    private ?ClientStatus $status = ClientStatus::Active;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
@@ -224,7 +224,6 @@ class Client implements Stringable
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
         $this->taxIdentifiers = new ArrayCollection();
-        $this->status = ClientStatus::Active;
 
         $this->setCredit(new Credit());
     }
@@ -478,10 +477,8 @@ class Client implements Stringable
 
     public function removeTaxIdentifier(TaxIdentifier $taxIdentifier): self
     {
-        if ($this->taxIdentifiers->removeElement($taxIdentifier)) {
-            if ($taxIdentifier->getClient() === $this) {
-                $taxIdentifier->setClient(null);
-            }
+        if ($this->taxIdentifiers->removeElement($taxIdentifier) && $taxIdentifier->getClient() === $this) {
+            $taxIdentifier->setClient(null);
         }
 
         return $this;

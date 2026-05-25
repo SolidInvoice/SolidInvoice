@@ -35,7 +35,7 @@ use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-class InvoiceClonerTest extends TestCase
+final class InvoiceClonerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 

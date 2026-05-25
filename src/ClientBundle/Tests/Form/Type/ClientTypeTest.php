@@ -31,7 +31,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\PreloadedExtension;
 
-class ClientTypeTest extends FormTestCase
+final class ClientTypeTest extends FormTestCase
 {
     /**
      * Mutable list of feature keys that should report as DISABLED — every other key is enabled.

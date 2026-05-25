@@ -222,12 +222,6 @@ final readonly class RequestListener implements EventSubscriberInterface
         if (! $company) {
             return null;
         }
-
-        $subscription = $this->subscriptionManager->getSubscriptionFor($company);
-        if (! $subscription instanceof Subscription) {
-            return null;
-        }
-
-        return $subscription;
+        return $this->subscriptionManager->getSubscriptionFor($company);
     }
 }

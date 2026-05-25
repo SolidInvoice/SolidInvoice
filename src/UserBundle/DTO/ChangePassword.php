@@ -26,11 +26,7 @@ final class ChangePassword
     public ?string $currentPassword = null;
 
     #[NotBlank(message: 'Please enter a password')]
-    #[Length(
-        min: 8,
-        minMessage: 'Your password must be at least {{ limit }} characters long',
-        max: 4096
-    )]
+    #[Length(min: 8, max: 4096, minMessage: 'Your password must be at least {{ limit }} characters long')]
     #[PasswordStrength(
         minScore: PasswordStrength::STRENGTH_MEDIUM,
         message: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
