@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{access_key: mixed, secret_key: mixed, region: mixed}>
  */
 final class AmazonSnsType extends AbstractType
 {

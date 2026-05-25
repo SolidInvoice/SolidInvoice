@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{token: mixed, chat_id: mixed}>
  */
 final class TelegramType extends AbstractType
 {

@@ -24,6 +24,7 @@ use function ksort;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\Form\Type\SettingsTypeTest
+ * @extends AbstractType<mixed>
  */
 class SettingsType extends AbstractType
 {

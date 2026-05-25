@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @see \SolidInvoice\NotificationBundle\Tests\Form\Type\NotificationTypeTest
+ * @extends AbstractType<array{email: bool, sms: bool}>
  */
 class NotificationType extends AbstractType
 {

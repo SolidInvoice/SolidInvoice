@@ -41,6 +41,7 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\RecurringInvoiceTypeTest
+ * @extends AbstractType<RecurringInvoice>
  */
 class RecurringInvoiceType extends AbstractType
 {

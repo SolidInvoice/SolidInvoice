@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
  * ContactRepository.
  *
  * Custom Repository class for managing contacts
- * @extends ServiceEntityRepository<Contact>
+ * @extends EntityRepository<Contact>
  */
-class ContactRepository extends ServiceEntityRepository
+class ContactRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

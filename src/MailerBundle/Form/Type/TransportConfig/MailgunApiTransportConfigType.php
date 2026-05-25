@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\MailgunApiTransportConfigTypeTest
+ * @extends AbstractType<array{domain: mixed, key: mixed}>
  */
 final class MailgunApiTransportConfigType extends AbstractType
 {

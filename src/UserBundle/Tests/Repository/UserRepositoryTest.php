@@ -40,7 +40,7 @@ final class UserRepositoryTest extends KernelTestCase
 
     private UserRepository $repository;
 
-    protected AbstractDatabaseTool $databaseTool;
+    private AbstractDatabaseTool $databaseTool;
 
     protected function setUp(): void
     {

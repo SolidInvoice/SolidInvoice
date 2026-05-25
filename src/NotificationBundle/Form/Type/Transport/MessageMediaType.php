@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{api_key: mixed, api_secret: mixed, from: mixed}>
  */
 final class MessageMediaType extends AbstractType
 {

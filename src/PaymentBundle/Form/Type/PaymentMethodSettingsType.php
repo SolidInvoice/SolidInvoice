@@ -24,6 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentMethodSettingsTypeTest
+ * @extends AbstractType<mixed>
  */
 class PaymentMethodSettingsType extends AbstractType
 {

@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 #[AsEntityAutocompleteField]
 final class ClientAutocompleteType extends AbstractType
 {

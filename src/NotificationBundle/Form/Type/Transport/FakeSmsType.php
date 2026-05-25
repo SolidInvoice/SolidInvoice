@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{mailer_service_id: mixed, to: mixed, from: mixed}>
  */
 final class FakeSmsType extends AbstractType
 {

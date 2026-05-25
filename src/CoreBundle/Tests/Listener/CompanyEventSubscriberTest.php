@@ -299,6 +299,9 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection = M::mock(Connection::class);
 
         $filter = new class($em) extends SQLFilter {
+            /**
+             * @param ClassMetadata<object> $targetEntity
+             */
             public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
             {
                 return '';

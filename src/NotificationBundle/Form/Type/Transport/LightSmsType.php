@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{login: mixed, token: mixed, phone: mixed}>
  */
 final class LightSmsType extends AbstractType
 {

@@ -25,6 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactTypeTest
+ * @extends AbstractType<Contact>
  */
 class ContactType extends AbstractType
 {

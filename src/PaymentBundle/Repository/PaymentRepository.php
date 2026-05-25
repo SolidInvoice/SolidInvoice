@@ -21,7 +21,6 @@ use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
 use Deprecated;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
@@ -33,15 +32,16 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function array_map;
 
 /**
- * @extends ServiceEntityRepository<Payment>
+ * @extends EntityRepository<Payment>
  * @see \SolidInvoice\PaymentBundle\Tests\Repository\PaymentRepositoryTest
  */
-class PaymentRepository extends ServiceEntityRepository
+class PaymentRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -224,6 +224,7 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * @return array<string, int>
+     * @param Query<mixed, mixed> $query
      */
     private function formatDate(Query $query, string $dateFormat = 'Y-m-d'): array
     {

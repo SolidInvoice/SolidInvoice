@@ -54,6 +54,9 @@ class SystemInstallation extends AbstractController
     ) {
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $form = $this->createForm(InstallationType::class, new Installation());

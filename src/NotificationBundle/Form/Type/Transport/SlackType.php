@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{token: mixed, channel: mixed}>
  */
 final class SlackType extends AbstractType
 {

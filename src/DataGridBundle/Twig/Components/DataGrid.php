@@ -412,6 +412,7 @@ class DataGrid extends AbstractController
     /**
      * @throws ContainerExceptionInterface
      * @throws InvalidGridException
+     * @return FormInterface<mixed>
      */
     protected function instantiateForm(): FormInterface
     {

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{login: mixed, api_key: mixed, phone: mixed}>
  */
 final class FreeMobileType extends AbstractType
 {

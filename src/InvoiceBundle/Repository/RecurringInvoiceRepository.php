@@ -18,7 +18,6 @@ use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use DateTime;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -31,11 +30,12 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<RecurringInvoice>
+ * @extends EntityRepository<RecurringInvoice>
  */
-class RecurringInvoiceRepository extends ServiceEntityRepository
+class RecurringInvoiceRepository extends EntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,

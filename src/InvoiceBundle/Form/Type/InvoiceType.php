@@ -52,6 +52,7 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\InvoiceTypeTest
+ * @extends AbstractType<InvoiceFormDTO>
  */
 class InvoiceType extends AbstractType
 {

@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\AddressTypeTest
+ * @extends AbstractType<array{street1: mixed, street2: mixed, city: mixed, state: mixed, zip: mixed, country: mixed}>
  */
 class AddressType extends AbstractType
 {

@@ -29,6 +29,7 @@ use function strtolower;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Type\DatabaseConfigTypeTest
+ * @extends AbstractType<DatabaseConfig>
  */
 class DatabaseConfigStep extends AbstractType
 {

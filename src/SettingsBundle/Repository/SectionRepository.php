@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Setting>
+ * @extends EntityRepository<Setting>
  */
-class SectionRepository extends ServiceEntityRepository
+class SectionRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

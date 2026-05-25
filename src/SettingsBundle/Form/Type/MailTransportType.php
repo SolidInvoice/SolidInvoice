@@ -33,6 +33,9 @@ use function json_validate;
 use function str_replace;
 use function strtolower;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class MailTransportType extends AbstractType
 {
     /**

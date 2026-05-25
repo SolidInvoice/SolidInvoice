@@ -28,6 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Form\Type\DiscountTypeTest
+ * @extends AbstractType<Discount>
  */
 class DiscountType extends AbstractType
 {
@@ -47,6 +48,9 @@ class DiscountType extends AbstractType
     ) {
     }
 
+    /**
+     * @param FormInterface<mixed> $form
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['types'] = self::DISCOUNT_TYPES;

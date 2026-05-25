@@ -24,6 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\CreditTypeTest
+ * @extends AbstractType<array{amount: string}>
  */
 class CreditType extends AbstractType
 {

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{access_token: mixed, from: mixed}>
  */
 final class ClickatellType extends AbstractType
 {

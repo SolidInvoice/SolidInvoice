@@ -68,6 +68,9 @@ final class CustomFieldForm extends AbstractController
         return $this->values->countByField($this->field);
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $field = $this->field ?? new CustomField()->setType(CustomFieldType::TEXT);

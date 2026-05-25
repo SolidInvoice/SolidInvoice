@@ -25,6 +25,9 @@ use function array_keys;
 use function array_map;
 use function str_replace;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class BillingIdConfigurationType extends AbstractType
 {
     /**

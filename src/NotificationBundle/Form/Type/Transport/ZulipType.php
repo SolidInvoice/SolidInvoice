@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{email: mixed, token: mixed, host: mixed, channel: mixed}>
  */
 final class ZulipType extends AbstractType
 {

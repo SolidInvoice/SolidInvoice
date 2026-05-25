@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints\Url;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Step\SystemInformationFormTest
+ * @extends AbstractType<UserAccount>
  */
 class UserAccountStep extends AbstractType
 {

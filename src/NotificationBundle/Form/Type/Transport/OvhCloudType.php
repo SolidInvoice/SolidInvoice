@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{application_key: mixed, application_secret: mixed, consumer_key: mixed, service_name: mixed}>
  */
 final class OvhCloudType extends AbstractType
 {

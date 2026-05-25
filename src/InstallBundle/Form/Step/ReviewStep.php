@@ -22,6 +22,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Step\ReviewStepTest
+ * @extends AbstractType<Installation>
  */
 final class ReviewStep extends AbstractType
 {

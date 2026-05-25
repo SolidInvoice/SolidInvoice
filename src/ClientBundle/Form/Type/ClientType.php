@@ -34,6 +34,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ClientTypeTest
+ * @extends AbstractType<Client>
  */
 class ClientType extends AbstractType
 {

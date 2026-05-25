@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Form\Type\ProfileTypeTest
+ * @extends AbstractType<User>
  */
 class ProfileType extends AbstractType
 {

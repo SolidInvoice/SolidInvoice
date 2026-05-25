@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentMethodTypeTest
+ * @extends AbstractType<array{name: mixed, enabled: bool, internal: bool, config: mixed}>
  */
 class PaymentMethodType extends AbstractType
 {

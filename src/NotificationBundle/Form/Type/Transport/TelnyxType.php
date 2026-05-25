@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{api_key: mixed, from: mixed, messaging_profile_id: mixed}>
  */
 final class TelnyxType extends AbstractType
 {

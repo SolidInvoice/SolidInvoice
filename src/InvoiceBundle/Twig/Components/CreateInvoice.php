@@ -147,6 +147,9 @@ final class CreateInvoice extends AbstractController
         $this->dto->tax = (string) $tempInvoice->getTax();
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $options = [];

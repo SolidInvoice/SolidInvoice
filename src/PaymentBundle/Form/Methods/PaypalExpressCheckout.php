@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @extends AbstractType<array{username: string, password: string, signature: string, sandbox: bool}>
+ */
 class PaypalExpressCheckout extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

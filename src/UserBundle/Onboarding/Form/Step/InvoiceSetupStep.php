@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\InvoiceSetupStepTest
+ * @extends AbstractType<array{invoiceDescription: string, invoiceAmount: string}>
  */
 final class InvoiceSetupStep extends AbstractType
 {

@@ -31,6 +31,7 @@ use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentTypeTest
+ * @extends AbstractType<array{payment_method: mixed, amount: string, capture_online: bool, reference: mixed, notes: string}>
  */
 class PaymentType extends AbstractType
 {

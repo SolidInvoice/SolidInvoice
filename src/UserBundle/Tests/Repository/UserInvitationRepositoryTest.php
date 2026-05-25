@@ -37,7 +37,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
     private UserInvitationRepository $repository;
 
-    protected AbstractDatabaseTool $databaseTool;
+    private AbstractDatabaseTool $databaseTool;
 
     protected function setUp(): void
     {

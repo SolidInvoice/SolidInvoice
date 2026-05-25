@@ -50,6 +50,7 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\QuoteTypeTest
+ * @extends AbstractType<QuoteFormDTO>
  */
 class QuoteType extends AbstractType
 {

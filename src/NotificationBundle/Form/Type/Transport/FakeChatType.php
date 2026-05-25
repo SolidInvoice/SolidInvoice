@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{to: mixed, from: mixed}>
  */
 final class FakeChatType extends AbstractType
 {

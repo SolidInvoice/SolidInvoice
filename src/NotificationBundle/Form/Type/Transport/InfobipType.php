@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{auth_token: mixed, host: mixed, from: mixed}>
  */
 final class InfobipType extends AbstractType
 {

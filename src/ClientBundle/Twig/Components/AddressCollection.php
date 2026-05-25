@@ -50,6 +50,9 @@ final class AddressCollection extends AbstractController
         $this->count = count($this->client->getAddresses());
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(AddressType::class, new Address()->setClient($this->client), ['data_class' => Address::class, ]);

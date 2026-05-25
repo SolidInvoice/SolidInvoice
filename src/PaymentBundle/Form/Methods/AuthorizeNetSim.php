@@ -21,6 +21,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @extends AbstractType<array{login_id: string, transaction_key: string, hash_secret: string, test_mode: bool}>
+ */
 class AuthorizeNetSim extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

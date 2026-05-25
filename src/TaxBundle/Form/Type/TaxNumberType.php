@@ -17,6 +17,9 @@ use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 class TaxNumberType extends AbstractType
 {
     #[Override]

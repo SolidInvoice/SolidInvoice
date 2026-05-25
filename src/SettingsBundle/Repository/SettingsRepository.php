@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Throwable;
 use function assert;
 use function is_array;
 
 /**
- * @extends ServiceEntityRepository<Setting>
+ * @extends EntityRepository<Setting>
  */
-class SettingsRepository extends ServiceEntityRepository
+class SettingsRepository extends EntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -41,7 +41,7 @@ class SettingsRepository extends ServiceEntityRepository
      *
      * @throws InvalidArgumentException|Throwable
      */
-    public function save(array $settings): void
+    public function store(array $settings): void
     {
         $settings = $this->flatten($settings);
         $entityManager = $this->getEntityManager();
@@ -80,7 +80,7 @@ class SettingsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(string $key): void
+    public function delete(string $key): void
     {
         $this->_em->remove($this->findOneBy(['key' => $key]));
         $this->_em->flush();

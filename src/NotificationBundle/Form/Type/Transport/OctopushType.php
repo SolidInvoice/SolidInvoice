@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{userlogin: mixed, apikey: mixed, from: mixed, type: mixed}>
  */
 final class OctopushType extends AbstractType
 {

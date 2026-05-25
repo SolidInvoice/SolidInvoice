@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{access_token: mixed, host: mixed, path: mixed, channel: mixed}>
  */
 final class MattermostType extends AbstractType
 {

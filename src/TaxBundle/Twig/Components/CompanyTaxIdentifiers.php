@@ -40,6 +40,9 @@ final class CompanyTaxIdentifiers extends AbstractController
     ) {
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $companyId = $this->companySelector->getCompany();

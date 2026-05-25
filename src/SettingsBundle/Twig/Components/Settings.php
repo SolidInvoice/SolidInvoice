@@ -104,6 +104,9 @@ final class Settings extends AbstractController
         return $settings;
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         $isTrialSubscription = $this->subscriptionService?->isTrialSubscription() ?? false;
@@ -145,7 +148,7 @@ final class Settings extends AbstractController
 
         $this->submitForm();
 
-        $this->settingsRepository->save([$this->section => $this->getForm()->getData()]);
+        $this->settingsRepository->store([$this->section => $this->getForm()->getData()]);
 
         $route = $this->generateUrl('_settings', ['section' => $this->section]);
 

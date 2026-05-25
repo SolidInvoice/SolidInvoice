@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
+/**
+ * @extends AbstractType<array{identifiers: mixed}>
+ */
 final class CompanyTaxIdentifiersFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

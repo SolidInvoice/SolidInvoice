@@ -51,7 +51,7 @@ class SystemConfig
      */
     public function set(string $path, mixed $value): void
     {
-        $this->repository->save([$path => $value]);
+        $this->repository->store([$path => $value]);
         self::$settings = [];
     }
 
@@ -85,7 +85,7 @@ class SystemConfig
 
     public function remove(string $key): void
     {
-        $this->repository->remove($key);
+        $this->repository->delete($key);
         self::$settings = [];
     }
 

@@ -32,6 +32,7 @@ use Symfony\Component\Uid\Ulid;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Form\Type\CustomFieldValueCollectionTypeTest
+ * @extends AbstractType<mixed>
  */
 final class CustomFieldValueCollectionType extends AbstractType
 {

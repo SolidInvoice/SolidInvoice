@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
 use Payum\Core\Model\Identity;
@@ -21,13 +20,14 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * @extends ServiceEntityRepository<Company>
+ * @extends EntityRepository<Company>
  */
-class CompanyRepository extends ServiceEntityRepository
+class CompanyRepository extends EntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -71,12 +71,6 @@ class CompanyRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
 
         return $company->getCustomDomain();
-    }
-
-    public function save(Company $company): void
-    {
-        $this->getEntityManager()->persist($company);
-        $this->getEntityManager()->flush();
     }
 
     public function findOneByCustomDomain(string $host): ?Company

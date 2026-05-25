@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @codeCoverageIgnore
+ * @extends AbstractType<array{key: mixed, secret: mixed, from: mixed}>
  */
 final class VonageType extends AbstractType
 {

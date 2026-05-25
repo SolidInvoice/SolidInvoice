@@ -19,12 +19,6 @@ parameters:
 			path: migrations/Version20300.php
 
 		-
-			message: '#^Class SolidInvoice\\ApiBundle\\Security\\Voter\\ApiAccessVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ApiBundle/Security/Voter/ApiAccessVoter.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
@@ -149,42 +143,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Credit.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\ClientAutocompleteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/ClientAutocompleteType.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\AddressType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/Type/AddressType.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ClientType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/Type/ClientType.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ContactCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/Type/ContactCollectionType.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\ContactType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/Type/ContactType.php
-
-		-
-			message: '#^Class SolidInvoice\\ClientBundle\\Form\\Type\\CreditType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Form/Type/CreditType.php
 
 		-
 			message: '#^Class SolidInvoice\\ClientBundle\\Test\\Factory\\ClientFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
@@ -457,42 +415,6 @@ parameters:
 			path: src/ClientBundle/Tests/Search/ContactResultFormatterTest.php
 
 		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\AddressCollection\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/AddressCollection.php
-
-		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\AddressInfo\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/AddressInfo.php
-
-		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ClientCredit\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/ClientCredit.php
-
-		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ClientForm\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/ClientForm.php
-
-		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ContactCollection\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/ContactCollection.php
-
-		-
-			message: '#^Method SolidInvoice\\ClientBundle\\Twig\\Components\\ContactInfo\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/ClientBundle/Twig/Components/ContactInfo.php
-
-		-
 			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
 			identifier: doctrine.columnType
 			count: 1
@@ -571,36 +493,6 @@ parameters:
 			path: src/CoreBundle/Export/Discovery/EntityDiscovery.php
 
 		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\BillingIdConfigurationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Form/Type/BillingIdConfigurationType.php
-
-		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\CompanyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Form/Type/CompanyType.php
-
-		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\CustomFieldValueCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Form/Type/CustomFieldValueCollectionType.php
-
-		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\DiscountType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Form/Type/DiscountType.php
-
-		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Form\\Type\\ImageUploadType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Form/Type/ImageUploadType.php
-
-		-
 			message: '#^Method SolidInvoice\\CoreBundle\\Generator\\BillingIdGenerator\\AutoIncrementIdGenerator\:\:getConfigurationFormType\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -665,12 +557,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
-
-		-
-			message: '#^Method SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldFormWriter\:\:write\(\) has parameter \$customFieldsForm with generic interface Symfony\\Component\\Form\\FormInterface but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CoreBundle/Service/CustomField/CustomFieldFormWriter.php
 
 		-
 			message: '#^Property SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldStagingStore\:\:\$entries \(WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\) does not accept WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\.$#'
@@ -811,12 +697,6 @@ parameters:
 			path: src/CoreBundle/Traits/SerializeTrait.php
 
 		-
-			message: '#^Class SolidInvoice\\CronBundle\\Form\\Type\\RecurringScheduleType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/CronBundle/Form/Type/RecurringScheduleType.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -853,40 +733,10 @@ parameters:
 			path: src/DataGridBundle/Export/ExportFilenameGenerator.php
 
 		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:associationField\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Export/GridRowExtractor.php
-
-		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:extractColumn\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Export/GridRowExtractor.php
-
-		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:extractEntityId\(\) has parameter \$metadata with generic class Doctrine\\ORM\\Mapping\\ClassMetadata but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Export/GridRowExtractor.php
-
-		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Export\\GridRowExtractor\:\:metadataFor\(\) return type with generic class Doctrine\\ORM\\Mapping\\ClassMetadata does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Export/GridRowExtractor.php
-
-		-
 			message: '#^Method SolidInvoice\\DataGridBundle\\Filter\\ColumnFilterInterface\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/DataGridBundle/Filter/ColumnFilterInterface.php
-
-		-
-			message: '#^Class SolidInvoice\\DataGridBundle\\Form\\Type\\DateRangeFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Form/Type/DateRangeFormType.php
 
 		-
 			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Filter\\ChoiceFilter\:\:form\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
@@ -925,18 +775,6 @@ parameters:
 			path: src/DataGridBundle/GridBuilder/Formatter/UrlFormatter.php
 
 		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Paginator\\Adapter\\QueryAdapter\:\:__construct\(\) has parameter \$query with generic class Doctrine\\ORM\\Query but does not specify its types\: TKey, TResult$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Paginator/Adapter/QueryAdapter.php
-
-		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Paginator\\Adapter\\QueryAdapter\:\:getSlice\(\) return type with generic class Doctrine\\ORM\\Query does not specify its types\: TKey, TResult$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Paginator/Adapter/QueryAdapter.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''afterQuery'' and ''afterQuery'' will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -949,48 +787,6 @@ parameters:
 			path: src/DataGridBundle/Tests/GridBuilder/QueryTest.php
 
 		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\Twig\\Components\\DataGrid\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/DataGridBundle/Twig/Components/DataGrid.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\FormFlow\\InstallNavigatorType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/FormFlow/InstallNavigatorType.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\DatabaseConfigStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/Step/DatabaseConfigStep.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\ReviewStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/Step/ReviewStep.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\StartStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/Step/StartStep.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\SystemRequirementsStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/Step/SystemRequirementsStep.php
-
-		-
-			message: '#^Class SolidInvoice\\InstallBundle\\Form\\Step\\UserAccountStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Form/Step/UserAccountStep.php
-
-		-
 			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\InstallBundle\\\\Step\\\\CreateDatabaseStep'', ''SolidInvoice\\\\InstallBundle\\\\Step\\\\InstallationStepInterface'' and true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -1001,12 +797,6 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/InstallBundle/Tests/Step/RunMigrationsStepTest.php
-
-		-
-			message: '#^Method SolidInvoice\\InstallBundle\\Twig\\Components\\SystemInstallation\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InstallBundle/Twig/Components/SystemInstallation.php
 
 		-
 			message: '#^Instanceof between SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions and SolidInvoice\\InvoiceBundle\\Entity\\RecurringOptions will always evaluate to true\.$#'
@@ -1157,30 +947,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\InvoiceType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Form/Type/InvoiceType.php
-
-		-
-			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\ItemType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Form/Type/ItemType.php
-
-		-
-			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\RecurringInvoiceLineType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Form/Type/RecurringInvoiceLineType.php
-
-		-
-			message: '#^Class SolidInvoice\\InvoiceBundle\\Form\\Type\\RecurringInvoiceType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Form/Type/RecurringInvoiceType.php
 
 		-
 			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
@@ -1477,52 +1243,10 @@ parameters:
 			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
 
 		-
-			message: '#^Method SolidInvoice\\InvoiceBundle\\Twig\\Components\\CreateInvoice\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Twig/Components/CreateInvoice.php
-
-		-
-			message: '#^Method SolidInvoice\\InvoiceBundle\\Twig\\Components\\CreateRecurringInvoice\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/InvoiceBundle/Twig/Components/CreateRecurringInvoice.php
-
-		-
 			message: '#^Method SolidInvoice\\MailerBundle\\Factory\\MailerConfigFactory\:\:fromStrings\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
 			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
-			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\KeyTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MailerBundle/Form/Type/TransportConfig/KeyTransportConfigType.php
-
-		-
-			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\MailgunApiTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MailerBundle/Form/Type/TransportConfig/MailgunApiTransportConfigType.php
-
-		-
-			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\SesTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MailerBundle/Form/Type/TransportConfig/SesTransportConfigType.php
-
-		-
-			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\SmtpTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MailerBundle/Form/Type/TransportConfig/SmtpTransportConfigType.php
-
-		-
-			message: '#^Class SolidInvoice\\MailerBundle\\Form\\Type\\TransportConfig\\UsernamePasswordTransportConfigType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MailerBundle/Form/Type/TransportConfig/UsernamePasswordTransportConfigType.php
 
 		-
 			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
@@ -1621,28 +1345,10 @@ parameters:
 			path: src/McpBundle/Security/McpOAuthUserProvider.php
 
 		-
-			message: '#^Class SolidInvoice\\McpBundle\\Security\\Voter\\McpAccessVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/McpBundle/Security/Voter/McpAccessVoter.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: src/McpBundle/Tests/Action/AuthorizeUpgradeGateTest.php
-
-		-
-			message: '#^Class SolidInvoice\\MoneyBundle\\Form\\Type\\CurrencyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MoneyBundle/Form/Type/CurrencyType.php
-
-		-
-			message: '#^Class SolidInvoice\\MoneyBundle\\Form\\Type\\HiddenMoneyType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/MoneyBundle/Form/Type/HiddenMoneyType.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between '''' and '''' will always evaluate to true\.$#'
@@ -1663,264 +1369,6 @@ parameters:
 			path: src/NotificationBundle/Entity/UserNotification.php
 
 		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\NotificationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/NotificationType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\AllMySmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/AllMySmsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\AmazonSnsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/AmazonSnsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\BrevoType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/BrevoType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\ClickatellType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/ClickatellType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\DiscordType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/DiscordType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\EsendexType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/EsendexType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FakeChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/FakeChatType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FakeSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/FakeSmsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FirebaseType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/FirebaseType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\FreeMobileType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/FreeMobileType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GatewayApiType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/GatewayApiType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GitterType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/GitterType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\GoogleChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/GoogleChatType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\InfobipType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/InfobipType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\IqsmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/IqsmsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\LightSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/LightSmsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\LinkedInType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/LinkedInType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MailjetType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MailjetType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MattermostType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MattermostType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MercureType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MercureType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MessageBirdType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MessageBirdType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MessageMediaType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MessageMediaType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MicrosoftTeamsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MicrosoftTeamsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\MobytType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/MobytType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\OctopushType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/OctopushType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\OvhCloudType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/OvhCloudType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\RocketChatType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/RocketChatType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SinchType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SinchType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SlackType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SlackType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\Sms77Type extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/Sms77Type.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmsBiurasType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SmsBiurasType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmsapiType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SmsapiType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SmscType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SmscType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\SpotHitType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/SpotHitType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TelegramType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/TelegramType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TelnyxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/TelnyxType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TurboSmsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/TurboSmsType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\TwilioType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/TwilioType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\VonageType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/VonageType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\YunpianType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/YunpianType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\Transport\\ZulipType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/Transport/ZulipType.php
-
-		-
-			message: '#^Class SolidInvoice\\NotificationBundle\\Form\\Type\\TransportSettingType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Form/Type/TransportSettingType.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotInstanceOf\(\) with ''Symfony\\\\Component\\\\Uid\\\\Ulid'' and null will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1937,12 +1385,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: src/NotificationBundle/Tests/Notification/NotificationAttributesTest.php
-
-		-
-			message: '#^Method SolidInvoice\\NotificationBundle\\Twig\\Components\\NotificationTransportConfiguration\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/NotificationBundle/Twig/Components/NotificationTransportConfiguration.php
 
 		-
 			message: '#^Method SolidInvoice\\PaymentBundle\\Action\\Done\:\:__invoke\(\) never returns null so it can be removed from the return type\.$#'
@@ -2029,90 +1471,6 @@ parameters:
 			path: src/PaymentBundle/Entity/PaymentMethod.php
 
 		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\AuthorizeNetAim extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/AuthorizeNetAim.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\AuthorizeNetSim extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/AuthorizeNetSim.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Be2billDirect extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/Be2billDirect.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Be2billOffsite extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/Be2billOffsite.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\KlarnaCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/KlarnaCheckout.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\KlarnaInvoice extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/KlarnaInvoice.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\Payex extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/Payex.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\PaypalExpressCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/PaypalExpressCheckout.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\PaypalProCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/PaypalProCheckout.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\StripeCheckout extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/StripeCheckout.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Methods\\StripeJs extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Methods/StripeJs.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentMethodSettingsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentMethodType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Type/PaymentMethodType.php
-
-		-
-			message: '#^Class SolidInvoice\\PaymentBundle\\Form\\Type\\PaymentType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Form/Type/PaymentType.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
@@ -2123,12 +1481,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: src/PaymentBundle/Mcp/PaymentWriteTools.php
-
-		-
-			message: '#^Method SolidInvoice\\PaymentBundle\\Repository\\PaymentRepository\:\:formatDate\(\) has parameter \$query with generic class Doctrine\\ORM\\Query but does not specify its types\: TKey, TResult$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
 
 		-
 			message: '#^Class SolidInvoice\\PaymentBundle\\Test\\Factory\\PaymentFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
@@ -2317,12 +1669,6 @@ parameters:
 			path: src/PaymentBundle/Twig/Components/PaymentMarketplace.php
 
 		-
-			message: '#^Method SolidInvoice\\PaymentBundle\\Twig\\Components\\PaymentSettings\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/PaymentBundle/Twig/Components/PaymentSettings.php
-
-		-
 			message: '#^Property SolidInvoice\\PaymentBundle\\Twig\\Components\\PaymentSettings\:\:\$method \(string\) on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.property
 			count: 1
@@ -2393,18 +1739,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
-
-		-
-			message: '#^Class SolidInvoice\\QuoteBundle\\Form\\Type\\ItemType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/QuoteBundle/Form/Type/ItemType.php
-
-		-
-			message: '#^Class SolidInvoice\\QuoteBundle\\Form\\Type\\QuoteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/QuoteBundle/Form/Type/QuoteType.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -2509,24 +1843,6 @@ parameters:
 			path: src/QuoteBundle/Tests/Search/QuoteResultFormatterTest.php
 
 		-
-			message: '#^Method SolidInvoice\\QuoteBundle\\Twig\\Components\\CreateQuote\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/QuoteBundle/Twig/Components/CreateQuote.php
-
-		-
-			message: '#^Class SolidInvoice\\SaasBundle\\Form\\Type\\CustomDomainType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SaasBundle/Form/Type/CustomDomainType.php
-
-		-
-			message: '#^Class SolidInvoice\\SaasBundle\\Security\\Voter\\SubscriptionVoter extends generic class Symfony\\Component\\Security\\Core\\Authorization\\Voter\\Voter but does not specify its types\: TAttribute, TSubject$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SaasBundle/Security/Voter/SubscriptionVoter.php
-
-		-
 			message: '#^Parameter \$subscriptions of method SolidInvoice\\SaasBundle\\Tests\\Company\\SubscriptionAwareUserCompaniesTest\:\:buildDecorator\(\) expects SplObjectStorage\<SolidInvoice\\CoreBundle\\Entity\\Company, SolidWorx\\Platform\\SaasBundle\\Entity\\Subscription\|null\>, SplObjectStorage\<object, mixed\> given\.$#'
 			identifier: argument.type
 			count: 4
@@ -2599,36 +1915,6 @@ parameters:
 			path: src/SettingsBundle/Entity/Setting.php
 
 		-
-			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\AddressType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Form/Type/AddressType.php
-
-		-
-			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\CustomFieldDefinitionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Form/Type/CustomFieldDefinitionType.php
-
-		-
-			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\CustomFieldOptionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Form/Type/CustomFieldOptionType.php
-
-		-
-			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\MailTransportType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Form/Type/MailTransportType.php
-
-		-
-			message: '#^Class SolidInvoice\\SettingsBundle\\Form\\Type\\SettingsType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Form/Type/SettingsType.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''value'' and ''value'' will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -2651,18 +1937,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: src/SettingsBundle/Tests/SystemConfigTest.php
-
-		-
-			message: '#^Method SolidInvoice\\SettingsBundle\\Twig\\Components\\CustomFieldForm\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Twig/Components/CustomFieldForm.php
-
-		-
-			message: '#^Method SolidInvoice\\SettingsBundle\\Twig\\Components\\Settings\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/SettingsBundle/Twig/Components/Settings.php
 
 		-
 			message: '#^Method SolidInvoice\\TaxBundle\\DataGrid\\TaxGrid\:\:getCreateRoute\(\) never returns null so it can be removed from the return type\.$#'
@@ -2771,60 +2045,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/TaxIdentifier.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\CompanyTaxIdentifiersFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/CompanyTaxIdentifiersFormType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\InvoiceTaxCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/InvoiceTaxCollectionType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\InvoiceTaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/InvoiceTaxType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\LineTaxCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/LineTaxCollectionType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\LineTaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/LineTaxType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxIdentifierCollectionType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/TaxIdentifierCollectionType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxIdentifierType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/TaxIdentifierType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxNumberType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/TaxNumberType.php
-
-		-
-			message: '#^Class SolidInvoice\\TaxBundle\\Form\\Type\\TaxType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Form/Type/TaxType.php
 
 		-
 			message: '#^Class SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory has PHPDoc tag @method for method create\(\) parameter \#1 \$attributes with no value type specified in iterable type array\.$#'
@@ -3151,12 +2371,6 @@ parameters:
 			path: src/TaxBundle/Tests/Repository/LineTaxRepositoryTest.php
 
 		-
-			message: '#^Method SolidInvoice\\TaxBundle\\Twig\\Components\\CompanyTaxIdentifiers\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/TaxBundle/Twig/Components/CompanyTaxIdentifiers.php
-
-		-
 			message: '#^Method SolidInvoice\\TaxBundle\\Validator\\Constraints\\ExactlyOneDocument\:\:getTargets\(\) never returns ''property'' so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -3319,84 +2533,6 @@ parameters:
 			path: src/UserBundle/Entity/UserSetting.php
 
 		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ApiTokenType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/ApiTokenType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ChangePasswordFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/ChangePasswordFormType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ChangePasswordType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/ChangePasswordType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\NotificationSettingType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/NotificationSettingType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\NotificationType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/NotificationType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ProfileType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/ProfileType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\RegisterType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/RegisterType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\ResetPasswordRequestFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/ResetPasswordRequestFormType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Form\\Type\\UserInviteType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Form/Type/UserInviteType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\FormFlow\\OnboardingNavigatorType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Onboarding/Form/FormFlow/OnboardingNavigatorType.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\ClientSetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Onboarding/Form/Step/ClientSetupStep.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\CompanySetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Onboarding/Form/Step/CompanySetupStep.php
-
-		-
-			message: '#^Class SolidInvoice\\UserBundle\\Onboarding\\Form\\Step\\InvoiceSetupStep extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Onboarding/Form/Step/InvoiceSetupStep.php
-
-		-
 			message: '#^Interface SolidInvoice\\UserBundle\\Repository\\UserRepositoryInterface has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -3511,12 +2647,6 @@ parameters:
 			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
 
 		-
-			message: '#^Method SolidInvoice\\UserBundle\\Twig\\Components\\CreateApiToken\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Twig/Components/CreateApiToken.php
-
-		-
 			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 5
@@ -3539,12 +2669,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
-
-		-
-			message: '#^Method SolidInvoice\\UserBundle\\Twig\\Components\\UserNotification\:\:instantiateForm\(\) return type with generic interface Symfony\\Component\\Form\\FormInterface does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/UserBundle/Twig/Components/UserNotification.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>description" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'

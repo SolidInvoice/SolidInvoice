@@ -71,6 +71,9 @@ final class CreateApiToken extends AbstractController
         return (bool) $this->createdToken;
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ApiTokenType::class);

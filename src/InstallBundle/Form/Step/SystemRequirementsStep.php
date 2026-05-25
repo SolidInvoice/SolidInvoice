@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Step\SystemRequirementsStepTest
+ * @extends AbstractType<mixed>
  */
 final class SystemRequirementsStep extends AbstractType
 {

@@ -39,6 +39,9 @@ final readonly class CustomFieldFormWriter
     ) {
     }
 
+    /**
+     * @param FormInterface<mixed> $customFieldsForm
+     */
     public function write(
         FormInterface $customFieldsForm,
         CustomFieldTarget $target,
