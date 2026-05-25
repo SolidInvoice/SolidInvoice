@@ -64,7 +64,7 @@ final class RecurringScheduleType extends AbstractType
                     break;
                 case ScheduleRecurringType::MONTHLY:
                     $monthlyChoices = [];
-                    for ($day = 1; $day <= 31; $day++) {
+                    for ($day = 1; $day <= 31; ++$day) {
                         $monthlyChoices[$this->formatOrdinal($day)] = $day;
                     }
 
@@ -106,7 +106,7 @@ final class RecurringScheduleType extends AbstractType
         $builder->addDependent('dayOfTheMonth', ['recurringType'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
             if ($recurringType === ScheduleRecurringType::YEARLY) {
                 $yearlyDayChoices = [];
-                for ($day = 1; $day <= 31; $day++) {
+                for ($day = 1; $day <= 31; ++$day) {
                     $yearlyDayChoices[$this->formatOrdinal($day)] = $day;
                 }
 

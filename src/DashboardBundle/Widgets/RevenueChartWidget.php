@@ -52,7 +52,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
         $labels = [];
         $now = new DateTimeImmutable();
 
-        for ($i = 11; $i >= 0; $i--) {
+        for ($i = 11; $i >= 0; --$i) {
             $date = $now->modify(sprintf('-%d months', $i));
             $labels[] = $date->format('M Y');
         }
@@ -83,7 +83,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         foreach ($currencies as $index => $currency) {
             $data = [];
-            for ($i = 11; $i >= 0; $i--) {
+            for ($i = 11; $i >= 0; --$i) {
                 $date = $now->modify(sprintf('-%d months', $i));
                 $monthKey = $date->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
