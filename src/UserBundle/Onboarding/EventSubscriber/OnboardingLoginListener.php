@@ -62,6 +62,7 @@ final readonly class OnboardingLoginListener implements EventSubscriberInterface
             if (! $this->onboardingManager->isOnboardingComplete($user)) {
                 $this->onboardingManager->dismissOnboarding($user);
             }
+
             return;
         }
 

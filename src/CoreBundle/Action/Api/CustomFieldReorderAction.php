@@ -66,6 +66,7 @@ final readonly class CustomFieldReorderAction
 
             $field->setPosition((int) $row['position']);
         }
+
         $this->em->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

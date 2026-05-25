@@ -40,6 +40,7 @@ final class InvoiceReceiverListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
+
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
@@ -58,6 +59,7 @@ final class InvoiceReceiverListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->addUser(new Contact()->setEmail('test@example.com')->setFirstName('Test')->setLastName('User'));
         $invoice->addUser(new Contact()->setEmail('another@example.com')->setFirstName('Another'));
+
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 

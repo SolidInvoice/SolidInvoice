@@ -44,6 +44,7 @@ final class InvoiceSaveListenerTest extends TestCase
     {
         $entity = new Invoice();
         $entity->setStatus(InvoiceStatus::Draft);
+
         $calculator = M::mock(TotalCalculator::class);
         $calculator->shouldReceive('calculateTotals')
             ->once()

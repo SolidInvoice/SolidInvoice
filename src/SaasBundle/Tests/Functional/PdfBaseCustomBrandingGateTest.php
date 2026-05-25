@@ -163,6 +163,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $setting->setType(CheckboxType::class);
         $setting->setDefaultValue('0');
         $setting->setCompany($this->company);
+
         $em->persist($setting);
         $em->flush();
     }

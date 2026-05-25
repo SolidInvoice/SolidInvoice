@@ -117,6 +117,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Invoice extends BaseInvoice implements Stringable
 {
     final public const string TABLE_NAME = 'invoices';
+
     use Archivable;
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;
@@ -339,6 +340,7 @@ class Invoice extends BaseInvoice implements Stringable
         if (isset($this->company)) {
             $line->setCompany($this->getCompany());
         }
+
         return $this;
     }
 
@@ -434,6 +436,7 @@ class Invoice extends BaseInvoice implements Stringable
         foreach ($lines as $line) {
             $this->lines->add(clone $line);
         }
+
         $this->setUuid(Uuid::v7());
     }
 

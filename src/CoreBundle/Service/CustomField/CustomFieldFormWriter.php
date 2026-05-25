@@ -80,6 +80,7 @@ final readonly class CustomFieldFormWriter
                 if ($existing !== null) {
                     $this->em->remove($existing);
                 }
+
                 continue;
             }
 

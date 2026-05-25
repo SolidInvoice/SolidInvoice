@@ -44,7 +44,7 @@ final readonly class OnboardingChecklistWidget implements WidgetInterface
         try {
             $progress = $this->checklistManager->getProgress();
 
-            if (count($progress->items) === 0) {
+            if ($progress->items === []) {
                 return ['show' => false];
             }
         } catch (Throwable) {

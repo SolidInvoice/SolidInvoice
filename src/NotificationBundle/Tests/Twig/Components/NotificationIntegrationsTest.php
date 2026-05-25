@@ -438,7 +438,7 @@ final class NotificationIntegrationsTest extends LiveComponentTest
         $user = $this->getUser();
 
         $setting = new TransportSetting();
-        $setting->setName("{$transportName} Test");
+        $setting->setName($transportName . ' Test');
         $setting->setTransport($transportName);
         $setting->setSettings(['test' => 'value']);
         $setting->setUser($user);
@@ -457,7 +457,7 @@ final class NotificationIntegrationsTest extends LiveComponentTest
         $rendered = $component->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($this->replaceUuid($rendered)));
 
-        self::assertStringContainsString("{$transportName} Test", $rendered);
+        self::assertStringContainsString($transportName . ' Test', $rendered);
     }
 
     /**

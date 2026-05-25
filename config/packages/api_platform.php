@@ -107,7 +107,7 @@ return static function (ApiPlatformConfig $config): void {
             continue;
         }
 
-        $formatDesc .= "- `{$format}`: `" . implode('`, `', $formatConfig['mime_types']) . "`\n";
+        $formatDesc .= sprintf('- `%s`: `', $format) . implode('`, `', $formatConfig['mime_types']) . "`\n";
     }
 
     $config->description(

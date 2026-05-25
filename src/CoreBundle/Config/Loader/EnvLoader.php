@@ -36,8 +36,8 @@ final readonly class EnvLoader implements EnvVarLoaderInterface
 
         $newEnvPath = $this->projectDir . '/config/env';
 
-        if ($this->fileSystem->exists("{$newEnvPath}/{$fileName}")) {
-            return $this->migrateToSecrets("{$newEnvPath}/{$fileName}");
+        if ($this->fileSystem->exists(sprintf('%s/%s', $newEnvPath, $fileName))) {
+            return $this->migrateToSecrets(sprintf('%s/%s', $newEnvPath, $fileName));
         }
 
         $oldEnvFile = $this->projectDir . '/config/' . $fileName;

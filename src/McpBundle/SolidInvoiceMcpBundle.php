@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class SolidInvoiceMcpBundle extends Bundle
 {
-    final public const string NAMESPACE = __NAMESPACE__;
+    public const string NAMESPACE = __NAMESPACE__;
 
     public function build(ContainerBuilder $container): void
     {

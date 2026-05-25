@@ -110,6 +110,7 @@ final readonly class QuoteFormManager
                 $quote->removeInvoiceTax($existing);
             }
         }
+
         foreach ($dto->invoiceTaxes as $invoiceTax) {
             $this->ensureInvoiceTaxSnapshot($invoiceTax);
             $quote->addInvoiceTax($invoiceTax);

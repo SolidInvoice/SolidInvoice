@@ -69,7 +69,7 @@ final readonly class FeatureCopyRegistry
             Feature::Quotes => new FeatureCopy(
                 icon: 'tabler:file-text',
                 headline: 'Send professional quotes',
-                description: 'Win more work with polished, branded quotes that convert into invoices the moment they\'re accepted.',
+                description: "Win more work with polished, branded quotes that convert into invoices the moment they're accepted.",
                 bullets: [
                     'Custom-branded PDF quotes',
                     'One-click convert to invoice',

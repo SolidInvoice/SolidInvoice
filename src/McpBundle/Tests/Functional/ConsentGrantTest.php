@@ -46,6 +46,7 @@ final class ConsentGrantTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code', 'refresh_token']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $consent = $container->get(ConsentService::class);
@@ -81,6 +82,7 @@ final class ConsentGrantTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read', 'mcp:write']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $consent = $container->get(ConsentService::class);

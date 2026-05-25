@@ -130,6 +130,7 @@ final class PaymentSettings extends AbstractController
 
             return $this->redirectToRoute('_payment_settings_index', ['selectedGateway' => $this->method]);
         }
+
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $form->getData();
         // Only set gateway name for new payment methods
@@ -151,8 +152,10 @@ final class PaymentSettings extends AbstractController
 
             $paymentMethod->setGatewayName($gatewayName);
         }
+
         $this->entityManager->persist($paymentMethod);
         $this->entityManager->flush();
+
         $session = $this->requestStack->getSession();
         assert($session instanceof Session);
         $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
@@ -183,11 +186,13 @@ final class PaymentSettings extends AbstractController
 
             return $this->redirectToRoute('_payment_settings_index');
         }
+
         if (count($paymentMethod->getPayments()) > 0) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Unable to delete payment method as there are payments associated with it');
 
             return $this->redirectToRoute('_payment_settings_index');
         }
+
         $this->repository->delete($paymentMethod);
         $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Payment method deleted');
         return $this->redirectToRoute('_payment_settings_index');

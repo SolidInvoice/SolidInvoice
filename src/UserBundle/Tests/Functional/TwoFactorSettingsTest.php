@@ -126,6 +126,7 @@ final class TwoFactorSettingsTest extends WebTestCase
         // Enable 2FA and generate backup codes
         $user->enableEmailAuth(true);
         $user->setBackUpCodes(['TEST1-ABC123', 'TEST2-DEF456', 'TEST3-GHI789', 'TEST4-JKL012', 'TEST5-MNO345', 'TEST6-PQR678', 'TEST7-STU901', 'TEST8-VWX234']);
+
         $this->em->persist($user);
         $this->em->flush();
 
@@ -157,6 +158,7 @@ final class TwoFactorSettingsTest extends WebTestCase
 
         // Enable 2FA and generate backup codes
         $user->enableEmailAuth(true);
+
         $oldCodes = ['OLD1-ABC123', 'OLD2-DEF456', 'OLD3-GHI789', 'OLD4-JKL012', 'OLD5-MNO345', 'OLD6-PQR678', 'OLD7-STU901', 'OLD8-VWX234'];
         $user->setBackUpCodes($oldCodes);
         $this->em->persist($user);
@@ -190,6 +192,7 @@ final class TwoFactorSettingsTest extends WebTestCase
         // Enable email 2FA first
         $user->enableEmailAuth(true);
         $user->setBackUpCodes(['CODE1', 'CODE2', 'CODE3', 'CODE4', 'CODE5', 'CODE6', 'CODE7', 'CODE8']);
+
         $this->em->persist($user);
         $this->em->flush();
 
@@ -223,6 +226,7 @@ final class TwoFactorSettingsTest extends WebTestCase
         // Enable 2FA
         $user->enableEmailAuth(true);
         $user->setBackUpCodes(['CODE1', 'CODE2', 'CODE3', 'CODE4', 'CODE5', 'CODE6', 'CODE7', 'CODE8']);
+
         $this->em->persist($user);
         $this->em->flush();
 
@@ -242,6 +246,7 @@ final class TwoFactorSettingsTest extends WebTestCase
 
         // Enable 2FA
         $user->enableEmailAuth(true);
+
         $this->em->persist($user);
         $this->em->flush();
 
@@ -316,6 +321,7 @@ final class TwoFactorSettingsTest extends WebTestCase
         $user->enableEmailAuth(true);
         $user->setTotpSecret('TESTSECRET123456');
         $user->setBackUpCodes(['CODE1', 'CODE2', 'CODE3', 'CODE4', 'CODE5', 'CODE6', 'CODE7', 'CODE8']);
+
         $this->em->persist($user);
         $this->em->flush();
 

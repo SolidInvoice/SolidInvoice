@@ -96,6 +96,7 @@ final class CreateQuote extends AbstractController
             foreach ($client->getContacts() as $contact) {
                 $this->dto->users->add($contact);
             }
+
             // Track the client so we don't re-select on subsequent renders
             $this->previousClientId = (string) $client->getId();
         }

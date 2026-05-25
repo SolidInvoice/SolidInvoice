@@ -79,6 +79,7 @@ final class ChoosePlanAction extends AbstractController
             if ($subscription->getPlan()->getPlanId() !== $plan->getPlanId()) {
                 $this->subscriptionManager->changePlan($subscription, $plan);
             }
+
             $this->subscriptionManager->activate($subscription);
             $this->addFlash('success', 'Your free plan is now active.');
 

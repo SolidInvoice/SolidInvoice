@@ -57,6 +57,7 @@ final class CustomFieldsListPdf
                 fn (CustomField $f): bool => $f->getVisibility() === $this->visibility,
             ));
         }
+
         if ($defs === []) {
             return [];
         }

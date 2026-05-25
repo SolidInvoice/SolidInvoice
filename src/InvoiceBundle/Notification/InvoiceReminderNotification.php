@@ -69,11 +69,11 @@ class InvoiceReminderNotification extends NotificationMessage
         $invoiceId = $parameters['invoice']?->getInvoiceId() ?? '';
 
         return match ($reminderType) {
-            'pre_due' => "Upcoming Payment Due: Invoice {$invoiceId}",
-            'overdue_1' => "Payment Reminder: Invoice {$invoiceId}",
-            'overdue_7' => "Payment Overdue: Invoice {$invoiceId}",
-            'overdue_14' => "URGENT: Invoice {$invoiceId} - Immediate Action Required",
-            default => "Invoice Payment Reminder: {$invoiceId}",
+            'pre_due' => 'Upcoming Payment Due: Invoice ' . $invoiceId,
+            'overdue_1' => 'Payment Reminder: Invoice ' . $invoiceId,
+            'overdue_7' => 'Payment Overdue: Invoice ' . $invoiceId,
+            'overdue_14' => sprintf('URGENT: Invoice %s - Immediate Action Required', $invoiceId),
+            default => 'Invoice Payment Reminder: ' . $invoiceId,
         };
     }
 

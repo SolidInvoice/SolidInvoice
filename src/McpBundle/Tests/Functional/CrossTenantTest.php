@@ -153,6 +153,7 @@ final class CrossTenantTest extends KernelTestCase
         $company = new Company();
         $company->setName('Foreign Co');
         $company->currency = 'EUR';
+
         $em->persist($company);
         $em->flush();
 
@@ -161,6 +162,7 @@ final class CrossTenantTest extends KernelTestCase
         $client->setCurrencyCode('EUR');
         $client->setStatus(ClientStatus::Active);
         $client->setCompany($company);
+
         $em->persist($client);
 
         $invoice = new Invoice();
@@ -202,6 +204,7 @@ final class CrossTenantTest extends KernelTestCase
 
         $request = new Request();
         $request->attributes->set(McpOAuthAuthenticator::ATTR_SCOPES, [$scope->value]);
+
         $stack->push($request);
 
         $selector = $container->get(CompanySelector::class);

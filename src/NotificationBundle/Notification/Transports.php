@@ -59,6 +59,7 @@ final readonly class Transports implements TransportInterface
                     return $transport->send($message);
                 }
             }
+
             throw new LogicException(sprintf('None of the available transports support the given message (available transports: "%s").', implode('", "', array_keys($this->transports))));
         }
 

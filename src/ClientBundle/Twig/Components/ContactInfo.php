@@ -99,6 +99,7 @@ final class ContactInfo extends AbstractController
         $contact = $this->getForm()->getData();
         $this->manager->persist($contact);
         $this->manager->flush();
+
         $this->edit = false;
         $this->readonlyContact = clone $contact;
     }

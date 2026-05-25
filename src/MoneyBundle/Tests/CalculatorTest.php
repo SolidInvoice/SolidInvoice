@@ -33,6 +33,7 @@ final class CalculatorTest extends TestCase
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(10);
+
         $entity->setDiscount($discount);
         $entity->setBaseTotal(20000);
 
@@ -49,6 +50,7 @@ final class CalculatorTest extends TestCase
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(35);
+
         $entity->setDiscount($discount);
         $entity->setBaseTotal(200);
 

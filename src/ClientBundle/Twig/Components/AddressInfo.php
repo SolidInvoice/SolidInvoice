@@ -99,6 +99,7 @@ final class AddressInfo extends AbstractController
         $address = $this->getForm()->getData();
         $this->manager->persist($address);
         $this->manager->flush();
+
         $this->edit = false;
         $this->readonlyAddress = clone $address;
     }

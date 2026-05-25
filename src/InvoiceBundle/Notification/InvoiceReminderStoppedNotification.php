@@ -48,7 +48,7 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
         $parameters = $this->getParameters();
         $invoiceId = $parameters['invoice']?->getInvoiceId() ?? '';
 
-        return "Final Reminder Sent for Invoice {$invoiceId} - Manual Follow-up Required";
+        return sprintf('Final Reminder Sent for Invoice %s - Manual Follow-up Required', $invoiceId);
     }
 
     #[Override]

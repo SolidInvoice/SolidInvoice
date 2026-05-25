@@ -126,6 +126,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         $invoiceTax = new InvoiceTax();
         $invoiceTax->setNameSnapshot('TDS');
         $invoiceTax->setRateSnapshot('10.0000');
+
         $invoice->addInvoiceTax($invoiceTax);
 
         $listener = new SnapshotTaxesOnIssueListener();
@@ -151,6 +152,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         $lineTax = new LineTax();
         $lineTax->setNameSnapshot('VAT');
         $lineTax->setRateSnapshot('20.0000');
+
         $line->addTax($lineTax);
 
         $invoice->addLine($line);
@@ -169,6 +171,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         $lineTax = new LineTax();
         $lineTax->setNameSnapshot('VAT');
         $lineTax->setRateSnapshot('20.0000');
+
         $line->addTax($lineTax);
 
         $quote->addLine($line);

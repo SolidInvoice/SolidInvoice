@@ -110,7 +110,7 @@ final class ViewTest extends KernelTestCase
     {
         foreach (QuoteStatus::cases() as $status) {
             if ($status !== QuoteStatus::New) {
-                yield "Status {$status->value}" => [$status];
+                yield 'Status ' . $status->value => [$status];
             }
         }
     }

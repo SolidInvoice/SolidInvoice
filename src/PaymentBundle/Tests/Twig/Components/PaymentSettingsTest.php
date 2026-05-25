@@ -165,6 +165,7 @@ final class PaymentSettingsTest extends LiveComponentTest
 
         // First show the delete confirmation modal
         $component = $component->call('showDeleteConfirmation');
+
         $rendered = $component->render()->toString();
         self::assertStringContainsString('delete-confirmation-modal', $rendered);
 

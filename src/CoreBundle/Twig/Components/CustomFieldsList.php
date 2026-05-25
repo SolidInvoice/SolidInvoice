@@ -57,6 +57,7 @@ final class CustomFieldsList
                 fn (CustomField $f): bool => $f->getVisibility() === $this->visibility,
             ));
         }
+
         if ($defs === []) {
             return [];
         }

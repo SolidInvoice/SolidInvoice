@@ -70,6 +70,7 @@ final class CreateRecurring extends AbstractController
         if (0 === $totalClientsCount) {
             return $this->render('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
         }
+
         if (1 === $totalClientsCount && ! $client instanceof Client) {
             $client = $this->clientRepository->findOneBy([]);
         }

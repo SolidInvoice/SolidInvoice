@@ -57,14 +57,17 @@ final class RecurringInvoiceTest extends TestCase
 
         $invoice1 = new Invoice();
         $invoice1->setInvoiceDate(new DateTimeImmutable('2024-01-15 10:30:00'));
+
         $recurringInvoice->addInvoice($invoice1);
 
         $invoice2 = new Invoice();
         $invoice2->setInvoiceDate(new DateTimeImmutable('2024-01-16 14:00:00'));
+
         $recurringInvoice->addInvoice($invoice2);
 
         $invoice3 = new Invoice();
         $invoice3->setInvoiceDate(new DateTimeImmutable('2024-01-17 09:00:00'));
+
         $recurringInvoice->addInvoice($invoice3);
 
         self::assertTrue($recurringInvoice->hasInvoiceForDay(new DateTimeImmutable('2024-01-16 23:59:59')));

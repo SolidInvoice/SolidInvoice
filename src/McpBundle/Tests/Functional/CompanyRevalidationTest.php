@@ -69,6 +69,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $jti = 'jti-reval-' . bin2hex(random_bytes(8));
@@ -83,6 +84,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $token->setIdentifier($jti);
         $token->setScopeValues(['mcp:read']);
         $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+
         $accessTokenRepo->persistNewAccessToken($token);
 
         // Remove the user from the company — simulates an admin deprovisioning
@@ -121,6 +123,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $jti = 'jti-reval-ok-' . bin2hex(random_bytes(8));
@@ -135,6 +138,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $token->setIdentifier($jti);
         $token->setScopeValues(['mcp:read']);
         $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+
         $accessTokenRepo->persistNewAccessToken($token);
 
         $authenticator = new McpOAuthAuthenticator(

@@ -140,6 +140,7 @@ final class SubscriptionGateTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $clientRepo->save($client);
 
         $accessTokenRepo = $container->get(McpAccessTokenRepository::class);
@@ -152,6 +153,7 @@ final class SubscriptionGateTest extends KernelTestCase
         $token->setIdentifier('jti-gate-' . bin2hex(random_bytes(8)));
         $token->setScopeValues(['mcp:read']);
         $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+
         $accessTokenRepo->persistNewAccessToken($token);
 
         return $token;

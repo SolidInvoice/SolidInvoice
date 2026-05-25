@@ -81,6 +81,7 @@ final class McpAuthorizeGateTest extends WebTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $repo->save($client);
 
         return $client;

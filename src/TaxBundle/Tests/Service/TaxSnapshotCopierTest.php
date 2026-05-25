@@ -66,6 +66,7 @@ final class TaxSnapshotCopierTest extends TestCase
         $source = new LineTax();
         $source->setNameSnapshot('VAT');
         $source->setRateSnapshot('20.0000');
+
         $stamp = new DateTimeImmutable('2025-01-01 00:00:00');
         $source->freeze($stamp);
 

@@ -145,6 +145,7 @@ final readonly class QuoteDummyDataLoader implements DummyDataLoaderInterface
 
                 $em->persist($quote);
             }
+
             $em->flush();
         }
     }

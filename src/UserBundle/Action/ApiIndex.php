@@ -29,6 +29,7 @@ final class ApiIndex extends AbstractController
         if (! $this->featureGate->isEnabled('rest_api_access')) {
             return $this->render('@SolidInvoiceUser/Api/gated.html.twig');
         }
+
         return $this->render('@SolidInvoiceUser/Api/index.html.twig');
     }
 }

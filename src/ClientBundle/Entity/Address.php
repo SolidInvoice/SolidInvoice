@@ -273,6 +273,6 @@ class Address implements Stringable
             static fn ($value) => null !== $value && '' !== $value
         );
 
-        return 0 === count($info);
+        return [] === $info;
     }
 }

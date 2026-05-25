@@ -319,6 +319,7 @@ class InvoiceTax
         if ($this->nameSnapshot !== null && $this->nameSnapshot !== '') {
             return;
         }
+
         if ($this->tax instanceof Tax) {
             $this->snapshotFrom($this->tax);
         }

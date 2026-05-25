@@ -42,6 +42,7 @@ final readonly class ContactPersistProcessor implements ProcessorInterface
             if (! $client instanceof Client) {
                 throw new NotFoundHttpException(sprintf('Client "%s" not found.', $uriVariables['clientId']));
             }
+
             $data->setClient($client);
         }
 

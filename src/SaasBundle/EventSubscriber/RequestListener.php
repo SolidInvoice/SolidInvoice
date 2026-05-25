@@ -131,6 +131,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                         )
                     );
                 }
+
                 break;
         }
     }
@@ -222,6 +223,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         if (! $company) {
             return null;
         }
+
         return $this->subscriptionManager->getSubscriptionFor($company);
     }
 }

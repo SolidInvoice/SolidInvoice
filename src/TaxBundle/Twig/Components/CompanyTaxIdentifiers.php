@@ -70,11 +70,13 @@ final class CompanyTaxIdentifiers extends AbstractController
                 $submittedIds[(string) $identifier->getId()] = true;
             }
         }
+
         foreach ($existing as $identifier) {
             if (! isset($submittedIds[(string) $identifier->getId()])) {
                 $this->em->remove($identifier);
             }
         }
+
         $this->em->flush();
         $this->addFlash('success', 'settings.saved.success');
         return $this->redirectToRoute('_settings', ['section' => 'system']);

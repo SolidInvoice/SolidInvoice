@@ -55,6 +55,7 @@ final class QuoteClonerTest extends TestCase
         $item = new Line();
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $item->addTax($lineTax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
@@ -64,9 +65,11 @@ final class QuoteClonerTest extends TestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(BigInteger::of(123));
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
+
         $quote->setDiscount($discount);
         $quote->setNotes('Notes');
         $quote->setQuoteId('bar-baz-foo');

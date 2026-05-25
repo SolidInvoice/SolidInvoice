@@ -35,11 +35,11 @@ final class FeatureCopyRegistryTest extends TestCase
         $copy = new FeatureCopyRegistry()->get($feature->value);
 
         self::assertInstanceOf(FeatureCopy::class, $copy);
-        self::assertNotSame('', $copy->icon, "Icon missing for {$feature->value}");
-        self::assertNotSame('', $copy->headline, "Headline missing for {$feature->value}");
-        self::assertNotSame('', $copy->description, "Description missing for {$feature->value}");
-        self::assertNotEmpty($copy->bullets, "Bullets missing for {$feature->value}");
-        self::assertLessThanOrEqual(5, count($copy->bullets), "Too many bullets for {$feature->value}");
+        self::assertNotSame('', $copy->icon, 'Icon missing for ' . $feature->value);
+        self::assertNotSame('', $copy->headline, 'Headline missing for ' . $feature->value);
+        self::assertNotSame('', $copy->description, 'Description missing for ' . $feature->value);
+        self::assertNotEmpty($copy->bullets, 'Bullets missing for ' . $feature->value);
+        self::assertLessThanOrEqual(5, count($copy->bullets), 'Too many bullets for ' . $feature->value);
     }
 
     public function testUnknownFeatureReturnsNull(): void

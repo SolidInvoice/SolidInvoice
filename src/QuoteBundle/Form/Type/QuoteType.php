@@ -242,6 +242,7 @@ class QuoteType extends AbstractType
                             $groups[] = 'existing_client';
                         }
                     }
+
                     return $groups;
                 },
             ]

@@ -44,11 +44,13 @@ final class CustomFieldOptionType extends AbstractType
             if (! is_array($data)) {
                 return;
             }
+
             $label = $data['label'] ?? null;
             if (! is_string($label) || $label === '') {
                 $event->setData(null);
                 return;
             }
+
             $data['value'] = strtolower($this->slugger->slug($label, '_')->toString());
             $event->setData($data);
         });

@@ -37,6 +37,7 @@ final class InvoiceSubjectDecoratorTest extends TestCase
         $listener = new InvoiceSubjectListener($config);
         $invoice = new Invoice();
         $invoice->setInvoiceId('123');
+
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 

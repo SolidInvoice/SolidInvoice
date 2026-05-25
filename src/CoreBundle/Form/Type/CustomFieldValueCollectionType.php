@@ -89,6 +89,7 @@ final class CustomFieldValueCollectionType extends AbstractType
             if ($form->getConfig()->getOption('manage_persistence') === false) {
                 return;
             }
+
             $parent = $form->getConfig()->getOption('parent_record');
             if ($parent === null || ! method_exists($parent, 'getId')) {
                 return;
@@ -104,6 +105,7 @@ final class CustomFieldValueCollectionType extends AbstractType
                     // CompanyListener (prePersist) will assign one when CustomFieldValue is persisted.
                 }
             }
+
             // An entity is "persisted" (has a stable Doctrine-assigned ID) only when it
             // is already managed by the UnitOfWork. For new (unpersisted) entities,
             // Doctrine will overwrite any constructor-set ID on first persist, so we must

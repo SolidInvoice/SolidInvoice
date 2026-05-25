@@ -32,7 +32,7 @@ class ToNumberFunction extends FunctionNode
     public function getSql(SqlWalker $sqlWalker): string
     {
         if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            return 'TO_NUMBER(' . $this->field->dispatch($sqlWalker) . ', \'999999999999.99\')';
+            return 'TO_NUMBER(' . $this->field->dispatch($sqlWalker) . ", '999999999999.99')";
         }
 
         return $this->field->dispatch($sqlWalker);
@@ -45,6 +45,7 @@ class ToNumberFunction extends FunctionNode
     {
         $parser->match(TokenType::T_IDENTIFIER);
         $parser->match(TokenType::T_OPEN_PARENTHESIS);
+
         $this->field = $parser->StringPrimary();
         $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }

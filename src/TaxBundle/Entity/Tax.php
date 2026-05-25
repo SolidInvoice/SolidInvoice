@@ -221,6 +221,6 @@ class Tax implements Stringable
             default => [$this->rate, 'n/a'],
         };
 
-        return "{$rate} {$this->name} ({$type})";
+        return sprintf('%s %s (%s)', $rate, $this->name, $type);
     }
 }

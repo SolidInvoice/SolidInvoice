@@ -123,9 +123,11 @@ final readonly class RecentActivityWidget implements WidgetInterface
             if (! $dateOne instanceof DateTimeInterface && ! $dateTwo instanceof DateTimeInterface) {
                 return 0;
             }
+
             if (! $dateOne instanceof DateTimeInterface) {
                 return 1;
             }
+
             if (! $dateTwo instanceof DateTimeInterface) {
                 return -1;
             }

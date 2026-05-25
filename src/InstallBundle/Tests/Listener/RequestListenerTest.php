@@ -232,6 +232,7 @@ final class RequestListenerTest extends TestCase
 
         $session = new Session(new MockArraySessionStorage());
         $session->start();
+
         $sessionId = $session->getId();
 
         $request = Request::createFromGlobals();

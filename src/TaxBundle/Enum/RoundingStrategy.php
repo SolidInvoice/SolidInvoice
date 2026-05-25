@@ -37,7 +37,7 @@ enum RoundingStrategy: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::HalfEven => 'Half to Even (Banker\'s Rounding)',
+            self::HalfEven => "Half to Even (Banker's Rounding)",
             self::HalfUp => 'Half Up',
             self::HalfDown => 'Half Down',
             self::Up => 'Up (Away from Zero)',

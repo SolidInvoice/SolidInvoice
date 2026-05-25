@@ -44,6 +44,7 @@ final class OAuthClientLookupTest extends KernelTestCase
         $client->setGrantTypes(['authorization_code']);
         $client->setScopes(['mcp:read']);
         $client->setTokenEndpointAuthMethod('none');
+
         $repo->save($client);
 
         // Crockford base32 form (26 chars)

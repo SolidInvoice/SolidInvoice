@@ -61,6 +61,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     } else {
         $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/config/env');
     }
+
     $parameters->set('application_version', SolidInvoiceCoreBundle::VERSION);
 
     $services = $containerConfigurator->services();

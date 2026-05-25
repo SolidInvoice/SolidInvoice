@@ -69,6 +69,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
+
         $stateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],
@@ -126,6 +127,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $line = new Line();
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
@@ -135,9 +137,11 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $quote = new Quote();
         $quote->setBaseTotal(123);
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
+
         $quote->setDiscount($discount);
         $quote->setNotes('Notes');
         $quote->setTax(432);
@@ -206,6 +210,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $sourceInvoiceTax->setRateSnapshot('10.0000');
         $sourceInvoiceTax->setDirection(TaxDirection::Deductive);
         $sourceInvoiceTax->setNote('Withholding 10%');
+
         $quote->addInvoiceTax($sourceInvoiceTax);
 
         $invoice = $this->manager->createFromQuote($quote);
@@ -296,6 +301,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $line = new RecurringInvoiceLine();
         $lineTax = new LineTax();
         $lineTax->snapshotFrom($tax);
+
         $line->addTax($lineTax);
         $line->setDescription('Line Description {day} {day_name} {month} {year}');
         $line->setCreated(new DateTime('now'));
@@ -305,9 +311,11 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $recurringInvoice = new RecurringInvoice();
         $recurringInvoice->setBaseTotal(123);
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
+
         $recurringInvoice->setDiscount($discount);
         $recurringInvoice->setNotes('Notes');
         $recurringInvoice->setTax(432);
