@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Config;
 
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserSetting;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 readonly class UserConfig
 {
@@ -31,7 +33,7 @@ readonly class UserConfig
         $user ??= $this->security->getUser();
         /** @var User|null $user */
 
-        if (null === $user) {
+        if (! $user instanceof UserInterface) {
             return null;
         }
 
@@ -43,7 +45,7 @@ readonly class UserConfig
         $user ??= $this->security->getUser();
         /** @var User|null $user */
 
-        if (null === $user) {
+        if (! $user instanceof UserInterface) {
             return;
         }
 
@@ -55,11 +57,11 @@ readonly class UserConfig
         $user ??= $this->security->getUser();
         /** @var User|null $user */
 
-        if (null === $user) {
+        if (! $user instanceof UserInterface) {
             return false;
         }
 
-        return null !== $this->repository->getSetting($user, $key);
+        return $this->repository->getSetting($user, $key) instanceof UserSetting;
     }
 
     public function remove(UserSettingType $key, ?User $user = null): void
@@ -67,7 +69,7 @@ readonly class UserConfig
         $user ??= $this->security->getUser();
         /** @var User|null $user */
 
-        if (null === $user) {
+        if (! $user instanceof UserInterface) {
             return;
         }
 
@@ -82,7 +84,7 @@ readonly class UserConfig
         $user ??= $this->security->getUser();
         /** @var User|null $user */
 
-        if (null === $user) {
+        if (! $user instanceof UserInterface) {
             return [];
         }
 

@@ -29,6 +29,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Service\ResetInterface;
 
 #[AutoconfigureTag('serializer.normalizer')]
@@ -84,7 +85,7 @@ final class CustomFieldsNormalizer implements NormalizerAwareInterface, Normaliz
             default => CustomFieldTarget::CONTACT,
         };
         $companyId = $this->companySelector->getCompany();
-        if ($companyId === null) {
+        if (! $companyId instanceof Ulid) {
             $data['customFields'] = (object) [];
             return $data;
         }

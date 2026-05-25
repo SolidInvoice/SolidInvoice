@@ -41,7 +41,7 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
     {
         $setting = $this->getSetting($user, $key);
 
-        if (null === $setting) {
+        if (! $setting instanceof UserSetting) {
             $setting = new UserSetting();
             $setting->setUser($user);
             $setting->setKey($key);
@@ -57,7 +57,7 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
     {
         $setting = $this->getSetting($user, $key);
 
-        if (null !== $setting) {
+        if ($setting instanceof UserSetting) {
             $this->getEntityManager()->remove($setting);
             $this->getEntityManager()->flush();
         }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -38,8 +39,8 @@ final class ExactlyOneLineValidator extends ConstraintValidator
         $invoiceLine = $value->getInvoiceLine();
         $quoteLine = $value->getQuoteLine();
 
-        $hasInvoice = $invoiceLine !== null;
-        $hasQuote = $quoteLine !== null;
+        $hasInvoice = $invoiceLine instanceof Line;
+        $hasQuote = $quoteLine instanceof \SolidInvoice\QuoteBundle\Entity\Line;
 
         if ($hasInvoice === $hasQuote) {
             $this->context->buildViolation($constraint->message)

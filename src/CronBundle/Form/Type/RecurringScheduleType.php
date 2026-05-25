@@ -123,7 +123,7 @@ final class RecurringScheduleType extends AbstractType
         });
 
         $builder->addDependent('endOccurrence', ['endType'], function (DependentField $field, ?ScheduleEndType $endType): void {
-            if ($endType === null) {
+            if (! $endType instanceof ScheduleEndType) {
                 return;
             }
 
@@ -145,7 +145,7 @@ final class RecurringScheduleType extends AbstractType
         });
 
         $builder->addDependent('endDate', ['endType'], function (DependentField $field, ?ScheduleEndType $endType): void {
-            if ($endType === null) {
+            if (! $endType instanceof ScheduleEndType) {
                 return;
             }
 

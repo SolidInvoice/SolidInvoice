@@ -120,13 +120,13 @@ final readonly class RecentActivityWidget implements WidgetInterface
             $dateOne = $a['date'] instanceof DateTimeInterface ? $a['date'] : null;
             $dateTwo = $b['date'] instanceof DateTimeInterface ? $b['date'] : null;
 
-            if (null === $dateOne && null === $dateTwo) {
+            if (! $dateOne instanceof DateTimeInterface && ! $dateTwo instanceof DateTimeInterface) {
                 return 0;
             }
-            if (null === $dateOne) {
+            if (! $dateOne instanceof DateTimeInterface) {
                 return 1;
             }
-            if (null === $dateTwo) {
+            if (! $dateTwo instanceof DateTimeInterface) {
                 return -1;
             }
 

@@ -15,6 +15,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\Unit;
 use Carbon\WeekDay;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use Illuminate\Support\Arr;
@@ -107,7 +108,7 @@ readonly class RecurringSchedule
         }
 
         if ($scheduleEndType->isOn()) {
-            if (null === $options->getEndDate()) {
+            if (! $options->getEndDate() instanceof DateTimeImmutable) {
                 return null;
             }
 

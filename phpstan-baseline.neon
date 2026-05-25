@@ -1021,12 +1021,6 @@ parameters:
 			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
-
-		-
 			message: '#^Method SolidInvoice\\InvoiceBundle\\DataGrid\\InvoiceGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -1197,12 +1191,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/InvoiceBundle/Manager/InvoiceManager.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/InvoiceBundle/Manager/InvoiceManager.php
 
@@ -1641,12 +1629,6 @@ parameters:
 		-
 			message: '#^Method SolidInvoice\\McpBundle\\Security\\McpOAuthAuthenticator\:\:onAuthenticationFailure\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
-			count: 1
-			path: src/McpBundle/Security/McpOAuthAuthenticator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between Symfony\\Component\\Uid\\Ulid and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/McpBundle/Security/McpOAuthAuthenticator.php
 
@@ -2161,12 +2143,6 @@ parameters:
 			path: src/PaymentBundle/Mcp/PaymentWriteTools.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
-
-		-
 			message: '#^Method SolidInvoice\\PaymentBundle\\Repository\\PaymentRepository\:\:formatDate\(\) has parameter \$query with generic class Doctrine\\ORM\\Query but does not specify its types\: TKey, TResult$#'
 			identifier: missingType.generics
 			count: 1
@@ -2369,12 +2345,6 @@ parameters:
 			identifier: nullCoalesce.property
 			count: 1
 			path: src/PaymentBundle/Twig/Components/PaymentSettings.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between null and Brick\\Math\\BigNumber will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/QuoteBundle/Cloner/QuoteCloner.php
 
 		-
 			message: '#^Method SolidInvoice\\QuoteBundle\\DataGrid\\QuoteGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'

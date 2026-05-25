@@ -92,7 +92,7 @@ final class CompanySelector implements CompanySelectorInterface, ResetInterface
 
     private function applyCustomDomain(Ulid $companyId): void
     {
-        if ($this->requestContext === null) {
+        if (! $this->requestContext instanceof RequestContext) {
             return;
         }
 
@@ -119,7 +119,7 @@ final class CompanySelector implements CompanySelectorInterface, ResetInterface
 
     private function restoreRequestContext(): void
     {
-        if ($this->requestContext === null || $this->originalRequestContext === null) {
+        if (! $this->requestContext instanceof RequestContext || $this->originalRequestContext === null) {
             return;
         }
 

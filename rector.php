@@ -24,7 +24,6 @@ use Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector;
 use Rector\CodeQuality\Rector\FuncCall\SimplifyRegexPatternRector;
 use Rector\CodeQuality\Rector\FuncCall\SingleInArrayToCompareRector;
 use Rector\CodeQuality\Rector\FuncCall\SortCallLikeNamedArgsRector;
-use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector;
 use Rector\CodeQuality\Rector\If_\CombineIfRector;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
@@ -113,7 +112,6 @@ return RectorConfig::configure()
         PreferPHPUnitThisCallRector::class, // Use PreferPHPUnitSelfCallRector instead
 
         // Skip for new can be added/adjusted later
-        /*FlipTypeControlToUseExclusiveTypeRector::class,
         ExplicitBoolCompareRector::class,
         ConvertStaticToSelfRector::class,
         FinalizeTestCaseClassRector::class,
@@ -140,5 +138,5 @@ return RectorConfig::configure()
         SimplifyDeMorganBinaryRector::class,
         SimplifyRegexPatternRector::class,
         SimplifyEmptyCheckOnEmptyArrayRector::class,
-        SimplifyIfElseToTernaryRector::class,*/
+        SimplifyIfElseToTernaryRector::class,
     ]);

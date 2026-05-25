@@ -40,7 +40,7 @@ final class MultiSearchServiceTest extends TestCase
         $formatter = $this->createMock(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn($indexName);
 
-        if ($result !== null) {
+        if ($result instanceof SearchResult) {
             $formatter->method('format')->willReturn($result);
         }
 

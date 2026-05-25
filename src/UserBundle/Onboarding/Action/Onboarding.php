@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Onboarding\Action;
 
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Onboarding\DTO\OnboardingData;
 use SolidInvoice\UserBundle\Onboarding\Form\Type\OnboardingType;
@@ -67,7 +68,7 @@ final class Onboarding extends AbstractController
                     $invoice = $this->onboardingManager->completeOnboarding($user, $formData);
                     $form->reset();
 
-                    if ($invoice !== null) {
+                    if ($invoice instanceof Invoice) {
                         $this->addFlash('success', 'onboarding.flash.invoice_created');
                         return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
                     }
@@ -83,7 +84,7 @@ final class Onboarding extends AbstractController
                 $form->reset();
 
                 // If an invoice was created, redirect to invoice detail page
-                if ($invoice !== null) {
+                if ($invoice instanceof Invoice) {
                     $this->addFlash('success', 'onboarding.flash.invoice_created');
                     return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
                 }

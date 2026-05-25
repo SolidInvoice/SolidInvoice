@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Listener;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -23,6 +24,7 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 
 /**
  * Stamps `snapshotted_at` on every {@see LineTax} of an invoice or quote when the
@@ -91,7 +93,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
                     continue;
                 }
 
-                if ($lineTax->getSnapshottedAt() !== null) {
+                if ($lineTax->getSnapshottedAt() instanceof DateTimeInterface) {
                     continue;
                 }
 
@@ -105,7 +107,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
                     continue;
                 }
 
-                if ($invoiceTax->getSnapshottedAt() !== null) {
+                if ($invoiceTax->getSnapshottedAt() instanceof DateTimeInterface) {
                     continue;
                 }
 
@@ -118,7 +120,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
     {
         $transition = $event->getTransition();
 
-        if ($transition === null) {
+        if (! $transition instanceof Transition) {
             return false;
         }
 

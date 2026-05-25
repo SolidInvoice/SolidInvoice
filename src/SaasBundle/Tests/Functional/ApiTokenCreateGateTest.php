@@ -100,7 +100,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
         $client = self::createClient();
         $client->disableReboot();
 
-        if ($featureGate !== null) {
+        if ($featureGate instanceof FeatureGate) {
             self::getContainer()->set(FeatureGate::class, $featureGate);
         }
 

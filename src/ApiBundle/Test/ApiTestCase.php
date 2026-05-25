@@ -20,6 +20,7 @@ use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Faker\Factory;
 use Faker\Generator;
+use Override;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use SolidInvoice\ApiBundle\ApiTokenManager;
@@ -51,6 +52,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
     protected Company $company;
 
+    #[Override]
     protected static ?bool $alwaysBootKernel = false;
 
     /**

@@ -92,9 +92,7 @@ final readonly class InvoiceCloner
             $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice, ['field' => 'invoiceId']));
         }
 
-        if (null !== $tax = $invoice->getTax()) {
-            $newInvoice->setTax($tax);
-        }
+        $newInvoice->setTax($invoice->getTax());
 
         array_map(static fn (Line $item): Invoice|RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
 

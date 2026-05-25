@@ -280,7 +280,7 @@ final class EntityNormalizer
      */
     private function clientSummary(?Client $client): ?array
     {
-        if ($client === null) {
+        if (! $client instanceof Client) {
             return null;
         }
 
@@ -357,7 +357,7 @@ final class EntityNormalizer
      */
     private function money(?Money $money): ?array
     {
-        if ($money === null) {
+        if (! $money instanceof Money) {
             return null;
         }
 

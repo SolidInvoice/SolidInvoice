@@ -18,6 +18,7 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Money\Money;
 use Override;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
@@ -72,7 +73,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
             MoneyColumn::new('total')
                 ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
-                    if ($client === null) {
+                    if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     return new Money((string) $value, $client->getCurrency());
@@ -80,7 +81,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
             MoneyColumn::new('tax')
                 ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
-                    if ($client === null) {
+                    if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     return new Money((string) $value, $client->getCurrency());
@@ -90,7 +91,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->searchable(false)
                 ->formatValue(function (BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
-                    if ($client === null) {
+                    if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
                     }
                     $withholding = $invoice->getWithholdingAmount();

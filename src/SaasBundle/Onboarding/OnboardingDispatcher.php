@@ -58,7 +58,7 @@ final readonly class OnboardingDispatcher
 
         $next = $this->registry->nextAfter($lastKey);
 
-        if ($next === null) {
+        if (! $next instanceof OnboardingEmailStepInterface) {
             return;
         }
 

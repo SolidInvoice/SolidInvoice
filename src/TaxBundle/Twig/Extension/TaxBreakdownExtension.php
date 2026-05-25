@@ -27,6 +27,7 @@ use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
+use Symfony\Component\Uid\Ulid;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use WeakMap;
@@ -187,7 +188,7 @@ final class TaxBreakdownExtension extends AbstractExtension
     {
         $companyId = $company?->getId() ?? $this->companySelector->getCompany();
 
-        if ($companyId === null) {
+        if (! $companyId instanceof Ulid) {
             return [];
         }
 

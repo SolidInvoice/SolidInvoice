@@ -275,12 +275,12 @@ class CustomField
     #[Assert\Callback]
     public function validateVisibility(ExecutionContextInterface $context): void
     {
-        if ($this->target === null) {
+        if (! $this->target instanceof CustomFieldTarget) {
             return;
         }
 
         if ($this->target->supportsVisibility()) {
-            if ($this->visibility === null) {
+            if (! $this->visibility instanceof CustomFieldVisibility) {
                 $context->buildViolation('Visibility is required for invoice and quote custom fields.')
                     ->atPath('visibility')
                     ->addViolation();
@@ -288,7 +288,7 @@ class CustomField
             return;
         }
 
-        if ($this->visibility !== null) {
+        if ($this->visibility instanceof CustomFieldVisibility) {
             $context->buildViolation('Visibility only applies to invoice and quote custom fields.')
                 ->atPath('visibility')
                 ->addViolation();

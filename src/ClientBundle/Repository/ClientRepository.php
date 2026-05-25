@@ -40,7 +40,7 @@ class ClientRepository extends EntityRepository
 
         $qb->select('COUNT(c.id)');
 
-        if (null !== $status) {
+        if ($status instanceof ClientStatus) {
             $qb->where('c.status = :status')
                 ->setParameter('status', $status->value);
         }

@@ -305,7 +305,7 @@ final class RequestListenerTest extends KernelTestCase
 
         // Mock SubscriptionProviderInterface
         $subscriptionManager = M::mock(SubscriptionProviderInterface::class);
-        if ($subscription !== null) {
+        if ($subscription instanceof Subscription) {
             $subscriptionManager
                 ->shouldReceive('getSubscriptionFor')
                 ->andReturn($subscription);

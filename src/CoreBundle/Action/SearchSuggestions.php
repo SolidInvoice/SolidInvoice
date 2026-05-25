@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Ulid;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final readonly class SearchSuggestions
@@ -33,7 +34,7 @@ final readonly class SearchSuggestions
         $qualifier = (string) $request->query->get('qualifier', '');
         $partial = (string) $request->query->get('q', '');
 
-        if ($this->companySelector->getCompany() === null) {
+        if (! $this->companySelector->getCompany() instanceof Ulid) {
             return new JsonResponse([]);
         }
 

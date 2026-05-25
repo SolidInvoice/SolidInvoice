@@ -17,7 +17,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
+use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
@@ -71,11 +73,11 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
         $apiTokenEntity = $this->apiTokenRepository->findOneByPlaintext($apiToken);
 
-        if (null !== $apiTokenEntity) {
+        if ($apiTokenEntity instanceof ApiToken) {
             $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
             if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain()) {
-                if ($resolved->company === null
+                if (! $resolved->company instanceof Company
                     || ! $resolved->company->getId()->equals($apiTokenEntity->getCompany()->getId())
                 ) {
                     throw new CustomUserMessageAuthenticationException('Invalid API token');

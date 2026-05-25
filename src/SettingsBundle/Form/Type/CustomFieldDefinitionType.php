@@ -75,7 +75,7 @@ final class CustomFieldDefinitionType extends AbstractType
             ->add('required', CheckboxType::class, ['required' => false]);
 
         $builder->addDependent('visibility', ['target'], static function (DependentField $field, ?CustomFieldTarget $target): void {
-            if ($target === null || ! $target->supportsVisibility()) {
+            if (! $target instanceof CustomFieldTarget || ! $target->supportsVisibility()) {
                 return;
             }
 
@@ -114,7 +114,7 @@ final class CustomFieldDefinitionType extends AbstractType
         });
 
         $builder->addDependent('defaultValue', ['type'], function (DependentField $field, ?CFType $type) use (&$entity): void {
-            if ($type === null) {
+            if (! $type instanceof CFType) {
                 return;
             }
 

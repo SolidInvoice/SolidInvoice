@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -177,7 +178,7 @@ final class PaymentSettings extends AbstractController
         assert($session instanceof Session);
         $paymentMethod = $this->paymentMethod();
         // Check if the payment method exists in the database
-        if ($paymentMethod->getId() === null) {
+        if (! $paymentMethod->getId() instanceof Ulid) {
             $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Payment method does not exist');
 
             return $this->redirectToRoute('_payment_settings_index');

@@ -118,7 +118,7 @@ final class NotificationTransportConfiguration extends AbstractController
     #[ExposeInTemplate]
     public function isNewSetting(): bool
     {
-        return $this->transportSetting()->getId() === null;
+        return ! $this->transportSetting()->getId() instanceof Ulid;
     }
 
     /**

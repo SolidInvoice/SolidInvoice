@@ -18,6 +18,7 @@ use Meilisearch\Contracts\SearchQuery;
 use Meilisearch\Exceptions\ApiException;
 use Meilisearch\Exceptions\CommunicationException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use Symfony\Component\Uid\Ulid;
 use function array_filter;
 use function array_keys;
 use function array_map;
@@ -52,7 +53,7 @@ final class MultiSearchService
     {
         $companyId = $this->companySelector->getCompany();
 
-        if ($companyId === null) {
+        if (! $companyId instanceof Ulid) {
             return [];
         }
 

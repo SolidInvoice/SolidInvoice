@@ -28,6 +28,7 @@ use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
 use SplFileInfo;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Uid\Ulid;
 use ZipArchive;
 use function array_map;
 use function bin2hex;
@@ -71,7 +72,7 @@ final readonly class CompanyExporter
         // forgets to switch (tests, console commands) fails loudly rather than
         // silently exporting another tenant's rows for child entities that fall
         // back to repository->findAll().
-        if ($this->companySelector->getCompany() === null) {
+        if (! $this->companySelector->getCompany() instanceof Ulid) {
             throw new RuntimeException('CompanyExporter requires an active company context (CompanySelector::switchCompany).');
         }
 
@@ -167,7 +168,7 @@ final readonly class CompanyExporter
         }
 
         $activeCompanyId = $this->companySelector->getCompany();
-        if ($activeCompanyId === null) {
+        if (! $activeCompanyId instanceof Ulid) {
             return [];
         }
 

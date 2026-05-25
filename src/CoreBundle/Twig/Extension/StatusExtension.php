@@ -62,7 +62,7 @@ class StatusExtension extends AbstractExtension
      */
     private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass, ?string $tooltip = null): string|array
     {
-        if ($status === null) {
+        if (! $status instanceof HasStatusLabel) {
             return $this->getAllStatusLabels($environment, $enumClass);
         }
 

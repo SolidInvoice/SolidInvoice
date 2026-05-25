@@ -114,7 +114,7 @@ final class CompanyListenerTest extends TestCase
     {
         $selector = new CompanySelector(M::mock(ManagerRegistry::class));
 
-        if ($companyId !== null) {
+        if ($companyId instanceof Ulid) {
             $reflection = new ReflectionProperty(CompanySelector::class, 'companyId');
             $reflection->setValue($selector, $companyId);
         }

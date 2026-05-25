@@ -38,7 +38,7 @@ class QuoteRepository extends ServiceEntityRepository
 
         $qb->select('COUNT(q.id)');
 
-        if (null !== $status) {
+        if ($status instanceof QuoteStatus) {
             $qb->where('q.status = :status')
                 ->setParameter('status', $status);
         }

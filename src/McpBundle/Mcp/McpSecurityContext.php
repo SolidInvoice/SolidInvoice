@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Mcp;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
 
@@ -39,7 +40,7 @@ final readonly class McpSecurityContext
     {
         $request = $this->requestStack->getMainRequest();
 
-        if ($request === null) {
+        if (! $request instanceof Request) {
             return [];
         }
 

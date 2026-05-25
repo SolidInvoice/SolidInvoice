@@ -16,6 +16,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 
 final readonly class SaasMenu
@@ -40,7 +41,7 @@ final readonly class SaasMenu
             $this->companyRepository->find($this->companySelector->getCompany())
         );
 
-        if (null === $subscription) {
+        if (! $subscription instanceof Subscription) {
             return;
         }
 

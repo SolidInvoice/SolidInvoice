@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
@@ -93,7 +94,7 @@ final readonly class SendOnboardingEmailHandler
 
             $step = $this->stepRegistry->get($message->stepKey);
 
-            if ($step === null) {
+            if (! $step instanceof OnboardingEmailStepInterface) {
                 $this->logger->warning('Onboarding email skipped: unknown step', [
                     'user_id' => $message->userId->toString(),
                     'step_key' => $message->stepKey,

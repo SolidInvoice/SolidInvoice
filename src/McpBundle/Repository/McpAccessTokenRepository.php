@@ -71,7 +71,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
                 $userUlid = null;
             }
 
-            if ($userUlid !== null) {
+            if ($userUlid instanceof Ulid) {
                 $user = $this->getEntityManager()
                     ->getReference(User::class, $userUlid);
                 $token->setUser($user);

@@ -19,6 +19,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends Voter<string, ExportJob>
@@ -51,7 +52,7 @@ final class ExportJobVoter extends Voter
         }
 
         $activeCompanyId = $this->companySelector->getCompany();
-        if ($activeCompanyId === null) {
+        if (! $activeCompanyId instanceof Ulid) {
             return false;
         }
 

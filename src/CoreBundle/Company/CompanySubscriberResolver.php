@@ -17,6 +17,7 @@ use Override;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscribableInterface;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
+use Symfony\Component\Uid\Ulid;
 
 final readonly class CompanySubscriberResolver implements SubscriberResolver
 {
@@ -31,6 +32,6 @@ final readonly class CompanySubscriberResolver implements SubscriberResolver
     {
         $id = $this->selector->getCompany();
 
-        return $id === null ? null : $this->repository->find($id);
+        return $id instanceof Ulid ? $this->repository->find($id) : null;
     }
 }

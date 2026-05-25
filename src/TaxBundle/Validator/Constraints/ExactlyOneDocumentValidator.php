@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -36,9 +40,9 @@ final class ExactlyOneDocumentValidator extends ConstraintValidator
         }
 
         $owners = [
-            $value->getInvoice() !== null,
-            $value->getQuote() !== null,
-            $value->getRecurringInvoice() !== null,
+            $value->getInvoice() instanceof Invoice,
+            $value->getQuote() instanceof Quote,
+            $value->getRecurringInvoice() instanceof RecurringInvoice,
         ];
 
         $ownerCount = count(array_filter($owners));
@@ -47,7 +51,7 @@ final class ExactlyOneDocumentValidator extends ConstraintValidator
         // (InvoiceFormManager / QuoteFormManager) wires the back-reference
         // after form validation runs, so an in-flight InvoiceTax legitimately
         // has no side set during binding.
-        if ($value->getId() === null && $ownerCount === 0) {
+        if (! $value->getId() instanceof Ulid && $ownerCount === 0) {
             return;
         }
 
