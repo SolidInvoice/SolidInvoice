@@ -15,6 +15,9 @@ namespace SolidInvoice\InstallBundle\Form\Step;
 
 use Symfony\Component\Form\AbstractType;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\SystemRequirementsStepTest
+ */
 final class SystemRequirementsStep extends AbstractType
 {
 }

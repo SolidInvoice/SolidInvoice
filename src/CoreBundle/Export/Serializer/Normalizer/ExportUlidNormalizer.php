@@ -16,6 +16,9 @@ namespace SolidInvoice\CoreBundle\Export\Serializer\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Export\Serializer\Normalizer\ExportUlidNormalizerTest
+ */
 final class ExportUlidNormalizer implements NormalizerInterface
 {
     public function normalize(mixed $object, ?string $format = null, array $context = []): string

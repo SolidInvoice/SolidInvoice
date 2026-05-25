@@ -16,6 +16,9 @@ namespace SolidInvoice\UserBundle\OAuth;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\OAuth\OAuthUserTest
+ */
 final readonly class OAuthUser
 {
     public function __construct(

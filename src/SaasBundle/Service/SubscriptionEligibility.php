@@ -25,6 +25,7 @@ use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
  * Used by both {@see \SolidInvoice\SaasBundle\Security\Voter\SubscriptionVoter} (runtime
  * access on every request) and {@see \SolidInvoice\SaasBundle\Company\SubscriptionAwareUserCompanies}
  * (filtering company pickers before the user even gets to authorise).
+ * @see \SolidInvoice\SaasBundle\Tests\Service\SubscriptionEligibilityTest
  */
 final readonly class SubscriptionEligibility
 {

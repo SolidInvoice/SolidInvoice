@@ -27,6 +27,7 @@ use function sprintf;
  *
  * Output:
  *   <time class="datagrid-relative-date" datetime="2026-01-01T10:00:00Z" title="01 Jan 2026">3 days ago</time>
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\RelativeDateFormatterTest
  */
 final class RelativeDateFormatter implements FormatterInterface
 {

@@ -21,6 +21,7 @@ use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
  * @extends EntityRepository<InvoiceReminder>
+ * @see \SolidInvoice\InvoiceBundle\Tests\Repository\InvoiceReminderRepositoryTest
  */
 class InvoiceReminderRepository extends EntityRepository
 {

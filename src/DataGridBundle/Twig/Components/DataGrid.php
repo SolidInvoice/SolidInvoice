@@ -53,6 +53,7 @@ use function unserialize;
 
 /**
  * @template T of object
+ * @see \SolidInvoice\DataGridBundle\Tests\Twig\Components\DataGridTest
  */
 #[AsLiveComponent]
 class DataGrid extends AbstractController

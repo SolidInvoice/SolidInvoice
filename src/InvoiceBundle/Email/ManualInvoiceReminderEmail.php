@@ -18,6 +18,9 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Email\ManualInvoiceReminderEmailTest
+ */
 final class ManualInvoiceReminderEmail extends TemplatedEmail
 {
     public function __construct(

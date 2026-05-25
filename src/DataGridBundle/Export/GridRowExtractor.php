@@ -45,6 +45,7 @@ use function strstr;
  *   - `{field}_currency`  the ISO currency code
  *
  * All formats (CSV / JSON / XML) receive the same flat key shape for consistency.
+ * @see \SolidInvoice\DataGridBundle\Tests\Export\GridRowExtractorTest
  */
 final readonly class GridRowExtractor
 {

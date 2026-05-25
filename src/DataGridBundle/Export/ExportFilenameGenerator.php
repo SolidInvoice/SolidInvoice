@@ -24,6 +24,9 @@ use function preg_replace;
 use function strtolower;
 use function substr;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Export\ExportFilenameGeneratorTest
+ */
 final class ExportFilenameGenerator
 {
     private const int MAX_FILTER_SUMMARY_LENGTH = 60;

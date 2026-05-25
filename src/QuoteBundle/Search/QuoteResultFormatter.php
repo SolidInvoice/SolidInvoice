@@ -23,6 +23,9 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Search\QuoteResultFormatterTest
+ */
 final readonly class QuoteResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(

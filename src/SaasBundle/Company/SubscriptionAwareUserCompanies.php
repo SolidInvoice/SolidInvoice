@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
  * subscription. Only registered when the SaaS bundle is loaded
  * (`SOLIDINVOICE_PLATFORM=saas`); self-hosted installs continue to use the
  * default {@see \SolidInvoice\CoreBundle\Company\AllUserCompanies}.
+ * @see \SolidInvoice\SaasBundle\Tests\Company\SubscriptionAwareUserCompaniesTest
  */
 #[AsDecorator(decorates: UserEligibleCompanies::class)]
 final readonly class SubscriptionAwareUserCompanies implements UserEligibleCompanies

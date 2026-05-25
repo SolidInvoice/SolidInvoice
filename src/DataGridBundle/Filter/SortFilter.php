@@ -18,6 +18,9 @@ use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use function str_contains;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Filter\SortFilterTest
+ */
 final readonly class SortFilter implements FilterInterface
 {
     public function __construct(

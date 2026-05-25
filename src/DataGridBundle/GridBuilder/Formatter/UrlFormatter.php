@@ -19,6 +19,9 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\UrlFormatterTest
+ */
 final readonly class UrlFormatter implements FormatterInterface
 {
     public function __construct(

@@ -33,6 +33,9 @@ use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 use function in_array;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RequestListenerTest
+ */
 final readonly class RequestListener implements EventSubscriberInterface
 {
     private const array SKIPPED_ROUTES = [

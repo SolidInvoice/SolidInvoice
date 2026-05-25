@@ -28,6 +28,9 @@ use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\DataGrid\ApiTokenHistoryGridTest
+ */
 #[AsDataGrid(name: 'api_token_history_grid', title: 'Request History')]
 final class ApiTokenHistoryGrid extends Grid
 {

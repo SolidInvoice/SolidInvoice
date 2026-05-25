@@ -18,6 +18,9 @@ use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Throwable;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\OnboardingChecklistWidgetTest
+ */
 final readonly class OnboardingChecklistWidget implements WidgetInterface
 {
     public function __construct(

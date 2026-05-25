@@ -26,6 +26,9 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use function assert;
 use function sprintf;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Command\MarkOverdueInvoicesCommandTest
+ */
 #[AsCommand(
     name: 'solidinvoice:invoices:mark-overdue',
     description: 'Mark pending invoices as overdue when past due date',

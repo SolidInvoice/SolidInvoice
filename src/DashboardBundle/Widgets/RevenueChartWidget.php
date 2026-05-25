@@ -25,6 +25,9 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\RevenueChartWidgetTest
+ */
 final readonly class RevenueChartWidget implements WidgetInterface
 {
     private ObjectManager $manager;

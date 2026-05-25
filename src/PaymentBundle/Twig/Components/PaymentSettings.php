@@ -36,6 +36,9 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use function assert;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Twig\Components\PaymentSettingsTest
+ */
 #[AsLiveComponent]
 final class PaymentSettings extends AbstractController
 {

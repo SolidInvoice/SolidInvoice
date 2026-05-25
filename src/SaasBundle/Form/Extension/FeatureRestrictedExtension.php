@@ -31,6 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Independent of the `trial_restricted` mechanism: a single Config can carry
  * both keys. On self-hosted deployments this extension is shadowed by a no-op
  * declared in CoreBundle so the `feature_gated` option remains valid.
+ * @see \SolidInvoice\SaasBundle\Tests\Form\Extension\FeatureRestrictedExtensionTest
  */
 final class FeatureRestrictedExtension extends AbstractTypeExtension
 {

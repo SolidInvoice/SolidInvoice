@@ -34,6 +34,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Security\OAuth\OAuthAuthenticatorTest
+ */
 final class OAuthAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(

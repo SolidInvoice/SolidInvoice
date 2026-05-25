@@ -48,6 +48,9 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Twig\Components\CreateQuoteTest
+ */
 #[AsLiveComponent()]
 final class CreateQuote extends AbstractController
 {

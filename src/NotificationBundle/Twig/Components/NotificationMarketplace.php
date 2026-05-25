@@ -35,6 +35,9 @@ use function strtolower;
 use function ucwords;
 use function usort;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Twig\Components\NotificationMarketplaceTest
+ */
 #[AsLiveComponent]
 final class NotificationMarketplace extends AbstractController
 {

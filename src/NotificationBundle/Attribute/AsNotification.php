@@ -16,6 +16,9 @@ namespace SolidInvoice\NotificationBundle\Attribute;
 use Attribute;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Attribute\AsNotificationTest
+ */
 #[Attribute(Attribute::TARGET_CLASS)]
 final class AsNotification
 {

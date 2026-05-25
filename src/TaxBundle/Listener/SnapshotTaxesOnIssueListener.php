@@ -36,6 +36,7 @@ use Symfony\Component\Workflow\Transition;
  * {@see self::isLeavingDraft()} for the gating logic. Re-running the calculator on a
  * snapshotted document only updates the computed {@see LineTax::$amount}; it never
  * re-snapshots from the source {@see \SolidInvoice\TaxBundle\Entity\Tax}.
+ * @see \SolidInvoice\TaxBundle\Tests\Listener\SnapshotTaxesOnIssueListenerTest
  */
 final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
 {

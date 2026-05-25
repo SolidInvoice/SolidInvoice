@@ -18,6 +18,9 @@ use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\ReminderSubjectListenerTest
+ */
 class ReminderSubjectListener implements EventSubscriberInterface
 {
     public function __invoke(MessageEvent $event): void

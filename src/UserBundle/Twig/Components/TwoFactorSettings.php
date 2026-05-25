@@ -45,6 +45,9 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use function assert;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Twig\Components\TwoFactorSettingsTest
+ */
 #[AsLiveComponent(name: 'User:TwoFactorSettings', template: '@SolidInvoiceUser/Components/TwoFactorSettings.html.twig')]
 final class TwoFactorSettings extends AbstractController
 {

@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Form\Type\ChangePasswordTypeTest
+ */
 class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

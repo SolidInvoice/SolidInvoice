@@ -16,6 +16,9 @@ namespace SolidInvoice\InstallBundle\Doctrine;
 use PDO;
 use function array_key_exists;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Doctrine\DriversTest
+ */
 final class Drivers
 {
     /**

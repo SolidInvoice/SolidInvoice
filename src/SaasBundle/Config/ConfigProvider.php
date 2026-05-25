@@ -19,6 +19,9 @@ use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Config\ConfigProviderTest
+ */
 final class ConfigProvider implements ProviderInterface
 {
     /**

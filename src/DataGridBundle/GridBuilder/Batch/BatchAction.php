@@ -15,6 +15,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Batch;
 
 use Closure;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Batch\BatchActionTest
+ */
 class BatchAction
 {
     protected bool $confirm = true;

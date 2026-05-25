@@ -26,6 +26,7 @@ use Override;
  *
  * Tracked upstream; remove this class once mcp/sdk ships a fix and the
  * dependency constraint is bumped.
+ * @see \SolidInvoice\McpBundle\Tests\Mcp\Session\SafeSessionTest
  */
 final class SafeSession extends Session
 {

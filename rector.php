@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -37,7 +38,9 @@ return RectorConfig::configure()
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
     ->withPhpVersion(PhpVersion::PHP_85)
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
-    ->withAttributesSets(symfony: true, doctrine: true, gedmo: true, phpunit: true)
+    ->withAttributesSets()
+    ->withPhpSets()
+    ->withRootFiles()
     ->withSets([
         // General
         SetList::CODE_QUALITY,
@@ -78,6 +81,7 @@ return RectorConfig::configure()
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,
+        AddSeeTestAnnotationRector::class,
     ])
     ->withSkip([
         // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions

@@ -22,6 +22,9 @@ use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 use Twig\Environment;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Notification\InvoiceReminderStoppedNotificationTest
+ */
 #[AsNotification(
     name: self::EVENT,
     title: 'Invoice Requires Manual Follow-up',

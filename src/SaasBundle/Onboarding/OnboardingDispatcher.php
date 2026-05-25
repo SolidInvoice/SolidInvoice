@@ -35,6 +35,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * retries internally. Messenger's 3-retry exponential backoff covers
  * transient failures; truly permanent failures move to the failed queue and
  * the sequence moves on.
+ * @see \SolidInvoice\SaasBundle\Tests\Onboarding\OnboardingDispatcherTest
  */
 final readonly class OnboardingDispatcher
 {

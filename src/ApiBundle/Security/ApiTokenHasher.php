@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * table scan. Token entropy is already 256 bits of random_bytes, so a
  * pepper keyed by the app secret is sufficient. A DB-only leak yields
  * no usable hashes without also having the secret.
+ * @see \SolidInvoice\ApiBundle\Tests\Security\ApiTokenHasherTest
  */
 final readonly class ApiTokenHasher
 {

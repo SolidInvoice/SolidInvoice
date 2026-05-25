@@ -23,6 +23,9 @@ use Twig\TwigFunction;
 use function array_filter;
 use function array_values;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Twig\Extension\InvoiceTemplateExtensionTest
+ */
 final class InvoiceTemplateExtension extends AbstractExtension
 {
     /**

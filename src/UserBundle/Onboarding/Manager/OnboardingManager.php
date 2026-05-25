@@ -33,6 +33,9 @@ use SolidInvoice\UserBundle\Repository\UserSettingRepository;
 use function json_decode;
 use function json_encode;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Onboarding\Manager\OnboardingManagerTest
+ */
 final readonly class OnboardingManager
 {
     public function __construct(

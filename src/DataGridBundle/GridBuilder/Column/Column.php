@@ -23,6 +23,7 @@ use function Symfony\Component\String\u;
 
 /**
  * @phpstan-consistent-constructor
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Column\ColumnTest
  */
 abstract class Column
 {

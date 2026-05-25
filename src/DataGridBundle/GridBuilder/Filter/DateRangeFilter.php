@@ -24,6 +24,9 @@ use function is_array;
 use function sprintf;
 use function Symfony\Component\String\u;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter\DateRangeFilterTest
+ */
 final readonly class DateRangeFilter implements ColumnFilterInterface
 {
     public function __construct(

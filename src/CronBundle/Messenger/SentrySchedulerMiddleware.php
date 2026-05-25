@@ -35,6 +35,9 @@ use function Sentry\captureException;
 use function Sentry\startTransaction;
 use function Sentry\withScope;
 
+/**
+ * @see \SolidInvoice\CronBundle\Tests\Messenger\SentrySchedulerMiddlewareTest
+ */
 final class SentrySchedulerMiddleware implements MiddlewareInterface
 {
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

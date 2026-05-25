@@ -24,6 +24,9 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\CustomFieldValueCleanupListenerTest
+ */
 #[AsDoctrineListener(event: Events::preRemove)]
 final readonly class CustomFieldValueCleanupListener
 {

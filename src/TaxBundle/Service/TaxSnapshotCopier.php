@@ -24,6 +24,7 @@ use SolidInvoice\TaxBundle\Entity\LineTax;
  * Used by the quote→invoice converter and the recurring invoice generator to ensure
  * generated documents own independent snapshot rows (not shared references) and remain
  * immutable even when master Tax rates change later.
+ * @see \SolidInvoice\TaxBundle\Tests\Service\TaxSnapshotCopierTest
  */
 final class TaxSnapshotCopier
 {

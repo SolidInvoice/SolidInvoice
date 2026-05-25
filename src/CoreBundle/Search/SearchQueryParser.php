@@ -31,6 +31,9 @@ use function strlen;
 use function substr;
 use function trim;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Search\SearchQueryParserTest
+ */
 final class SearchQueryParser
 {
     /**

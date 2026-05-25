@@ -18,6 +18,9 @@ use function array_values;
 use function count;
 use function iterator_to_array;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Onboarding\OnboardingStepRegistryTest
+ */
 final readonly class OnboardingStepRegistry
 {
     /**

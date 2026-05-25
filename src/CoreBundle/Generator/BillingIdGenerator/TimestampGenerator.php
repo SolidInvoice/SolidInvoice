@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\TimestampGeneratorTest
+ */
 final class TimestampGenerator implements IdGeneratorInterface
 {
     private const string DEFAULT_FORMAT = 'YmdHis';

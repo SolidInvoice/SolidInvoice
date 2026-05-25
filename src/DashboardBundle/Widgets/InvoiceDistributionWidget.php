@@ -21,6 +21,9 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Widgets\InvoiceDistributionWidgetTest
+ */
 final readonly class InvoiceDistributionWidget implements WidgetInterface
 {
     private ObjectManager $manager;

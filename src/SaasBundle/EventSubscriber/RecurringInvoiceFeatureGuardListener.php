@@ -28,6 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Parallel to {@see RecurringInvoiceVerificationGuardListener}, which handles
  * email-verification gating; both guard listeners can fire for the same
  * transition without interfering with each other.
+ * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RecurringInvoiceFeatureGuardListenerTest
  */
 final readonly class RecurringInvoiceFeatureGuardListener
 {

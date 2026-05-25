@@ -21,6 +21,9 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
+/**
+ * @see \SolidInvoice\NotificationBundle\Tests\Twig\Components\NotificationIntegrationsTest
+ */
 #[AsLiveComponent]
 final class NotificationIntegrations extends AbstractController
 {

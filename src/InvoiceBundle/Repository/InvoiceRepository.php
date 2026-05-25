@@ -38,6 +38,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends EntityRepository<Invoice>
+ * @see \SolidInvoice\InvoiceBundle\Tests\Repository\InvoiceRepositoryTest
  */
 class InvoiceRepository extends EntityRepository
 {

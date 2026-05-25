@@ -25,6 +25,9 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Service\ResetInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Email\SaasEmailVerificationGateTest
+ */
 final class SaasEmailVerificationGate implements EmailVerificationGateInterface, ResetInterface
 {
     private ?bool $cachedIsGated = null;

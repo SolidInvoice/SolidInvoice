@@ -30,6 +30,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Form\Type\CustomFieldValueCollectionTypeTest
+ */
 final class CustomFieldValueCollectionType extends AbstractType
 {
     public function __construct(

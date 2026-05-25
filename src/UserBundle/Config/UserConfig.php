@@ -20,6 +20,9 @@ use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Config\UserConfigTest
+ */
 readonly class UserConfig
 {
     public function __construct(

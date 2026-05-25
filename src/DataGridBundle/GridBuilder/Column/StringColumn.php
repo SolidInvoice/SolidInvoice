@@ -16,6 +16,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 use Closure;
 use function is_array;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Column\StringColumnTest
+ */
 final class StringColumn extends Column
 {
     private ?string $template = null;

@@ -42,6 +42,7 @@ use SolidInvoice\TaxBundle\Enum\TaxType;
  * For percentage rates, the base is the document subtotal (line subtotals,
  * tax-exclusive). Flat-rate amounts are independent of base. Inclusive rates
  * extract from `subTotal + totalLineTax`.
+ * @see \SolidInvoice\TaxBundle\Tests\Calculator\InvoiceTaxCalculatorTest
  */
 final class InvoiceTaxCalculator
 {

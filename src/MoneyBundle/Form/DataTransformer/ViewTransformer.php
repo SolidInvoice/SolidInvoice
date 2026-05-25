@@ -24,6 +24,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @implements DataTransformerInterface<BigNumber, float>
+ * @see \SolidInvoice\MoneyBundle\Tests\Form\DataTransformer\ViewTransformerTest
  */
 class ViewTransformer implements DataTransformerInterface
 {

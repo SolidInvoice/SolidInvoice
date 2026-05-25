@@ -21,6 +21,7 @@ use SolidInvoice\UserBundle\Repository\UserSettingRepository;
 
 /**
  * Manages the onboarding checklist items and user progress.
+ * @see \SolidInvoice\DashboardBundle\Tests\Checklist\ChecklistManagerTest
  */
 final readonly class ChecklistManager
 {

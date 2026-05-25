@@ -21,6 +21,9 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Security\EmailVerifierTest
+ */
 final readonly class EmailVerifier
 {
     public function __construct(

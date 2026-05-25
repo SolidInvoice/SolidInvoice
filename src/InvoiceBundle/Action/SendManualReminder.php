@@ -26,6 +26,9 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\SendManualReminderTest
+ */
 final class SendManualReminder extends AbstractController
 {
     public function __construct(

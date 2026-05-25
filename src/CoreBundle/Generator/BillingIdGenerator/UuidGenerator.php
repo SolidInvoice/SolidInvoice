@@ -15,6 +15,9 @@ namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
 use Symfony\Component\Uid\UuidV7;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\UuidGeneratorTest
+ */
 final class UuidGenerator implements IdGeneratorInterface
 {
     public static function getName(): string

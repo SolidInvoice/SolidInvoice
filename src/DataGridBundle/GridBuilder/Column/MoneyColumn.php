@@ -15,6 +15,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 use Override;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Column\MoneyColumnTest
+ */
 final class MoneyColumn extends Column
 {
     #[Override]

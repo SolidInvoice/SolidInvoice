@@ -18,6 +18,9 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\TransitionBlocker;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RecurringInvoiceVerificationGuardListenerTest
+ */
 final readonly class RecurringInvoiceVerificationGuardListener
 {
     public function __construct(

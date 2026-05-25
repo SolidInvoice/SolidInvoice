@@ -16,6 +16,9 @@ namespace SolidInvoice\CoreBundle\Email;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Email\NullEmailVerificationGateTest
+ */
 final class NullEmailVerificationGate implements EmailVerificationGateInterface
 {
     public function isGated(): bool

@@ -16,6 +16,9 @@ namespace SolidInvoice\DataGridBundle\Filter;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Filter\SearchFilterTest
+ */
 final readonly class SearchFilter implements FilterInterface
 {
     /**

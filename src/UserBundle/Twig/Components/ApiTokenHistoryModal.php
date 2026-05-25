@@ -24,6 +24,9 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Twig\Components\ApiTokenHistoryModalTest
+ */
 #[AsLiveComponent]
 final class ApiTokenHistoryModal
 {
