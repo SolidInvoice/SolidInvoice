@@ -211,7 +211,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             $nextRunDate = $this->recurringSchedule->getNextRunDate($invoice->getRecurringOptions());
 
             if ($nextRunDate && $nextRunDate->isAfter($now) && $nextRunDate->diffInDays($now) <= $days) {
-                $count++;
+                ++$count;
             }
         }
 

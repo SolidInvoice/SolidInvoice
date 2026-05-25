@@ -42,7 +42,7 @@ return RectorConfig::configure()
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         // SetList::DEAD_CODE,
-        // SetList::RECTOR_PRESET,
+        SetList::RECTOR_PRESET,
         // SetList::PHP_85,
         // SetList::TYPE_DECLARATION,
         // SetList::TYPE_DECLARATION_DOCBLOCKS,
