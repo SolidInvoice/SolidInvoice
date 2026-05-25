@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,7 @@ class QuoteCreateListener implements EventSubscriberInterface
         $quote = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $quote->getStatus()) {
+        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $quote->getStatus() instanceof QuoteStatus) {
             return;
         }
 

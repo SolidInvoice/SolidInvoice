@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Carbon\CarbonInterface;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -210,7 +211,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         foreach ($activeInvoices as $invoice) {
             $nextRunDate = $this->recurringSchedule->getNextRunDate($invoice->getRecurringOptions());
 
-            if ($nextRunDate && $nextRunDate->isAfter($now) && $nextRunDate->diffInDays($now) <= $days) {
+            if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isAfter($now) && $nextRunDate->diffInDays($now) <= $days) {
                 ++$count;
             }
         }

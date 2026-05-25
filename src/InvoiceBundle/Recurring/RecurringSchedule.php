@@ -83,7 +83,7 @@ readonly class RecurringSchedule
                 break;
             }
 
-            if ($endDate && $date->greaterThanOrEqualTo($endDate) && $options->getEndType()->isOn()) {
+            if ($endDate instanceof CarbonInterface && $date->greaterThanOrEqualTo($endDate) && $options->getEndType()->isOn()) {
                 break;
             }
         }
