@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Onboarding;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -215,8 +215,8 @@ final class OnboardingDispatcherTest extends TestCase
     private function subscription(): Subscription
     {
         $subscription = new Subscription();
-        $subscription->setStartDate(new DateTimeImmutable('2025-01-01 00:00:00'));
-        $subscription->setEndDate(new DateTimeImmutable('2025-01-08 00:00:00'));
+        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01 00:00:00'));
+        $subscription->setEndDate(CarbonImmutable::parse('2025-01-08 00:00:00'));
 
         return $subscription;
     }

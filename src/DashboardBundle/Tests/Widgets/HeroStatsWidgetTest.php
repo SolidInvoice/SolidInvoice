@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
 use Brick\Math\BigInteger;
-use DateTime;
+use Carbon\Carbon;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\HeroStatsWidget;
@@ -140,7 +140,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'totalAmount' => 50000, // $500.00
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(HeroStatsWidget::class);
@@ -216,7 +216,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'totalAmount' => 25000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(HeroStatsWidget::class);

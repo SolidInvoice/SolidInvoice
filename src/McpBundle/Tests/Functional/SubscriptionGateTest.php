@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use League\OAuth2\Server\ResourceServer;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -152,7 +152,7 @@ final class SubscriptionGateTest extends KernelTestCase
         $token->setCompany($this->company);
         $token->setIdentifier('jti-gate-' . bin2hex(random_bytes(8)));
         $token->setScopeValues(['mcp:read']);
-        $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+        $token->setExpiresAt(CarbonImmutable::now()->addHours(1));
 
         $accessTokenRepo->persistNewAccessToken($token);
 

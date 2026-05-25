@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
+use Carbon\Carbon;
 use DateTimeInterface;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
@@ -123,7 +124,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             '@context' => '/api/contexts/RecurringInvoice',
             '@type' => 'RecurringInvoice',
             'client' => $this->getIriFromResource($client),
-            'dateStart' => date('Y-m-d\T00:00:00+02:00'),
+            'dateStart' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
             'lines' => [
                 [

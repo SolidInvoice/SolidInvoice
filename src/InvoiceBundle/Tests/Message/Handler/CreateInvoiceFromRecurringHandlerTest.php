@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
@@ -76,7 +77,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 
         $clock->expects(self::once())
             ->method('now')
-            ->willReturn(new DateTimeImmutable('2024-01-15'));
+            ->willReturn(CarbonImmutable::parse('2024-01-15'));
 
         $recurringInvoice->expects(self::once())
             ->method('hasInvoiceForDay')
@@ -151,7 +152,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 
         $clock->expects(self::once())
             ->method('now')
-            ->willReturn(new DateTimeImmutable('2024-01-15'));
+            ->willReturn(CarbonImmutable::parse('2024-01-15'));
 
         $recurringInvoice->expects(self::once())
             ->method('hasInvoiceForDay')

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Action;
 
+use Carbon\Carbon;
 use JsonException;
 use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
@@ -42,7 +43,7 @@ final readonly class DynamicClientRegistration
 
             if (! $limit->isAccepted()) {
                 $retryAfter = $limit->getRetryAfter();
-                $retryAfterSeconds = max(0, $retryAfter->getTimestamp() - time());
+                $retryAfterSeconds = max(0, $retryAfter->getTimestamp() - Carbon::now()->getTimestamp());
 
                 return new JsonResponse(
                     ['error' => 'rate_limited', 'error_description' => 'Too many registration attempts. Try again later.'],
@@ -143,7 +144,7 @@ final readonly class DynamicClientRegistration
 
         $response = [
             'client_id' => $client->getIdentifier(),
-            'client_id_issued_at' => $client->getCreated()?->getTimestamp() ?? time(),
+            'client_id_issued_at' => $client->getCreated()?->getTimestamp() ?? Carbon::now()->getTimestamp(),
             'client_name' => $client->getName(),
             'redirect_uris' => $client->getRedirectUris(),
             'grant_types' => $client->getGrantTypes(),

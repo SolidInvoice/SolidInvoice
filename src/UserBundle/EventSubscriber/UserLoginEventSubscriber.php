@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\EventSubscriber;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -76,7 +76,7 @@ final readonly class UserLoginEventSubscriber implements EventSubscriberInterfac
         $user = $event->getUser();
         assert($user instanceof User);
 
-        $user->setLastLogin(new DateTimeImmutable());
+        $user->setLastLogin(CarbonImmutable::now());
 
         $this->entityManager->getRepository(User::class)->save($user);
     }

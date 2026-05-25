@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
-use DateTime;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -86,7 +87,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $clock = $this->createMock(ClockInterface::class);
         $clock->method('now')
-            ->willReturn(new DateTimeImmutable('2024-01-15 10:30:00'));
+            ->willReturn(CarbonImmutable::parse('2024-01-15 10:30:00'));
 
         $this->manager = new InvoiceManager(
             $doctrine,
@@ -117,7 +118,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new DateTime('NOW'));
+        $client->setCreated(Carbon::parse('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -130,7 +131,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $line->addTax($lineTax);
         $line->setDescription('Line Description');
-        $line->setCreated(new DateTime('now'));
+        $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
         $line->setTotal(120 * 10);
@@ -291,7 +292,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
-        $client->setCreated(new DateTime('NOW'));
+        $client->setCreated(Carbon::parse('NOW'));
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -304,7 +305,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $line->addTax($lineTax);
         $line->setDescription('Line Description {day} {day_name} {month} {year}');
-        $line->setCreated(new DateTime('now'));
+        $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
         $line->setTotal(120 * 10);

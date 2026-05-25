@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Security\Voter;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -108,8 +109,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsTrialBeforeEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-10'),
+            subscription: $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-10'),
         );
 
         $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
@@ -119,8 +120,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesTrialAfterEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-20'),
+            subscription: $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-20'),
         );
 
         $this->assertDeniedWithReason($voter, $attribute, self::TRIAL_REASON);
@@ -130,8 +131,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsCancelledWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-10'),
+            subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-10'),
         );
 
         $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
@@ -141,8 +142,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesCancelledAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-20'),
+            subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-20'),
         );
 
         $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
@@ -152,8 +153,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsExpiredWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-10'),
+            subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-10'),
         );
 
         $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
@@ -163,8 +164,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesExpiredAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
-            now: new DateTimeImmutable('2026-01-20'),
+            subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, CarbonImmutable::parse('2026-01-15')),
+            now: CarbonImmutable::parse('2026-01-20'),
         );
 
         $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
@@ -286,7 +287,7 @@ final class SubscriptionVoterTest extends KernelTestCase
         $subscriptionProvider->shouldReceive('getSubscriptionFor')->andReturn($subscription);
 
         $clock = M::mock(ClockInterface::class);
-        $clock->shouldReceive('now')->andReturn($now ?? new DateTimeImmutable('2026-01-01'));
+        $clock->shouldReceive('now')->andReturn($now ?? CarbonImmutable::parse('2026-01-01'));
 
         return new SubscriptionVoter(
             new SubscriptionEligibility($subscriptionProvider, $clock),
@@ -309,8 +310,8 @@ final class SubscriptionVoterTest extends KernelTestCase
         $subscription->setSubscriber($this->company);
         $subscription->setPlan($plan);
         $subscription->setStatus($status);
-        $subscription->setStartDate(new DateTimeImmutable('2026-01-01'));
-        $subscription->setEndDate($endDate ?? new DateTimeImmutable('2026-12-31'));
+        $subscription->setStartDate(CarbonImmutable::parse('2026-01-01'));
+        $subscription->setEndDate($endDate ?? CarbonImmutable::parse('2026-12-31'));
 
         return $subscription;
     }

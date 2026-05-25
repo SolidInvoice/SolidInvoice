@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\MessageHandler;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Clock\ClockInterface;
@@ -182,7 +182,7 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable()->modify('+3 days'),
+            'due' => CarbonImmutable::now()->modify('+3 days'),
             'users' => [$contact],
         ]);
 

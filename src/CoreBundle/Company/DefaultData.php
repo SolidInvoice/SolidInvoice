@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Company;
 
-use DateTime;
+use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
@@ -143,8 +143,8 @@ final readonly class DefaultData
             $paymentMethodEntity->setInternal($paymentMethod['internal']);
             $paymentMethodEntity->setEnabled($paymentMethod['enabled']);
             $paymentMethodEntity->setFactoryName($paymentMethod['factory']);
-            $paymentMethodEntity->setCreated(new DateTime());
-            $paymentMethodEntity->setUpdated(new DateTime());
+            $paymentMethodEntity->setCreated(Carbon::now());
+            $paymentMethodEntity->setUpdated(Carbon::now());
 
             $this->em->persist($paymentMethodEntity);
         }

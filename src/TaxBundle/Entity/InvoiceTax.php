@@ -18,7 +18,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
@@ -349,7 +349,7 @@ class InvoiceTax
      */
     public function freeze(?DateTimeInterface $at = null): self
     {
-        $this->snapshottedAt = $at ?? new DateTimeImmutable();
+        $this->snapshottedAt = $at ?? CarbonImmutable::now();
 
         return $this;
     }

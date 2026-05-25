@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Recurring;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -58,7 +58,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'daily schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -74,14 +74,14 @@ final class RecurringScheduleTest extends TestCase
         yield 'daily schedule ending on specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::DAILY);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -90,7 +90,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'never ending daily schedule' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -107,7 +107,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -123,7 +123,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -139,7 +139,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -156,14 +156,14 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule running on specific days, ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::WEEKLY);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -174,7 +174,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -190,7 +190,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -206,7 +206,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -223,14 +223,14 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule running on specific days, ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::MONTHLY);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -241,7 +241,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -257,7 +257,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -273,7 +273,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -290,14 +290,14 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::YEARLY);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -314,7 +314,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'daily schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -341,14 +341,14 @@ final class RecurringScheduleTest extends TestCase
         yield 'daily schedule ending on specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::DAILY);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -369,7 +369,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'never ending daily schedule' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -397,7 +397,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -425,7 +425,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -448,7 +448,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -476,7 +476,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'weekly schedule running on specific days, ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -484,7 +484,7 @@ final class RecurringScheduleTest extends TestCase
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::WEEKLY);
                 $recurringOptions->setDays([1, 3, 5]);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -503,7 +503,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -531,7 +531,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -554,7 +554,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -582,7 +582,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'monthly schedule running on specific days, ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -590,7 +590,7 @@ final class RecurringScheduleTest extends TestCase
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::MONTHLY);
                 $recurringOptions->setDays([5, 15, 25]);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-01-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -604,7 +604,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -632,7 +632,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending after 5 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -655,7 +655,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule running on specific days after 10 occurrences' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -683,7 +683,7 @@ final class RecurringScheduleTest extends TestCase
         yield 'yearly schedule ending on a specific date' => [
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
-                $recurringInvoice->setDateStart(new DateTimeImmutable('2024-01-01'));
+                $recurringInvoice->setDateStart(CarbonImmutable::parse('2024-01-01'));
 
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
@@ -691,7 +691,7 @@ final class RecurringScheduleTest extends TestCase
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::YEARLY);
                 $recurringOptions->setDays([4]);
-                $recurringOptions->setEndDate(new DateTimeImmutable('2024-05-15'));
+                $recurringOptions->setEndDate(CarbonImmutable::parse('2024-05-15'));
 
                 return $recurringOptions;
             })(),

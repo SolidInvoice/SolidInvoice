@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Test\Factory;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
@@ -71,7 +71,7 @@ final class InvoiceReminderFactory extends PersistentProxyObjectFactory
             'invoice' => InvoiceFactory::new(),
             'company' => CompanyFactory::new(),
             'reminderType' => ReminderType::PreDue,
-            'sentAt' => new DateTimeImmutable(),
+            'sentAt' => CarbonImmutable::now(),
         ];
     }
 

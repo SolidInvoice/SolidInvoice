@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Action;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -76,7 +76,7 @@ final class ViewTest extends KernelTestCase
                 'status' => $status,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -147,7 +147,7 @@ final class ViewTest extends KernelTestCase
                 'status' => QuoteStatus::Pending,
                 'total' => '90.00',
                 'baseTotal' => '100.00',
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -202,7 +202,7 @@ final class ViewTest extends KernelTestCase
                 'status' => QuoteStatus::Pending,
                 'total' => '115.00',
                 'baseTotal' => '100.00',
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line with Tax')
@@ -267,7 +267,7 @@ final class ViewTest extends KernelTestCase
                 'status' => QuoteStatus::Accepted,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -328,7 +328,7 @@ final class ViewTest extends KernelTestCase
                 'status' => QuoteStatus::Pending,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')

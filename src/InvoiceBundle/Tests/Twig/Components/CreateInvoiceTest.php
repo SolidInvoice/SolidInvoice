@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
@@ -38,7 +38,7 @@ final class CreateInvoiceTest extends LiveComponentTest
     public function testCreateInvoice(): void
     {
         $dto = new InvoiceFormDTO();
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
@@ -54,7 +54,7 @@ final class CreateInvoiceTest extends LiveComponentTest
     public function testCreateInvoiceWithMultipleLines(): void
     {
         $dto = new InvoiceFormDTO();
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
@@ -88,7 +88,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $em->flush();
 
         $dto = new InvoiceFormDTO();
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
@@ -127,7 +127,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         ]);
 
         $dto = new InvoiceFormDTO();
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
         $dto->client = $client->_real();
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
@@ -243,7 +243,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         ]);
 
         $dto = new InvoiceFormDTO();
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
         $dto->client = $client->_real();
 
         $component = $this->createLiveComponent(

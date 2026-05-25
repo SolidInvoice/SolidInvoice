@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator;
 
+use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\TimestampGenerator;
@@ -25,8 +26,8 @@ final class TimestampGeneratorTest extends TestCase
     {
         $generator = new TimestampGenerator();
 
-        self::assertSame(date('YmdHis'), $generator->generate(new stdClass(), []));
-        self::assertSame(date('Y-m-d H:i:s'), $generator->generate(new stdClass(), ['format' => 'Y-m-d H:i:s']));
+        self::assertSame(Carbon::now()->format('YmdHis'), $generator->generate(new stdClass(), []));
+        self::assertSame(Carbon::now()->format('Y-m-d H:i:s'), $generator->generate(new stdClass(), ['format' => 'Y-m-d H:i:s']));
     }
 
     public function testGenerateWithLength(): void

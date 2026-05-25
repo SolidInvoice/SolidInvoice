@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
+use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +42,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
-use function date;
 use function strtoupper;
 
 #[CoversClass(CompanyEventSubscriber::class)]
@@ -75,7 +75,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -114,7 +114,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -143,7 +143,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request->setSession($session);
         $request->attributes->set('_route', $route);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -171,7 +171,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -201,7 +201,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -234,7 +234,7 @@ final class CompanyEventSubscriberTest extends TestCase
             new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $company)
         );
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -269,7 +269,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);

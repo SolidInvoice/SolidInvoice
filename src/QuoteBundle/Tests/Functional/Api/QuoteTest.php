@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -169,7 +169,7 @@ final class QuoteTest extends ApiTestCase
             'client' => $client,
             'users' => $contacts,
             'status' => QuoteStatus::Draft,
-            'due' => new DateTimeImmutable('2005-01-20'),
+            'due' => CarbonImmutable::parse('2005-01-20'),
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
@@ -233,7 +233,7 @@ final class QuoteTest extends ApiTestCase
             'client' => $client,
             'users' => $contacts,
             'status' => QuoteStatus::Draft,
-            'due' => new DateTimeImmutable('2005-01-20'),
+            'due' => CarbonImmutable::parse('2005-01-20'),
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),

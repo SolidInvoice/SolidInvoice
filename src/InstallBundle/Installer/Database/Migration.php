@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Installer\Database;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,7 +74,7 @@ final readonly class Migration
             yield from $callback('Database schema is already up to date.');
         }
 
-        $now = new DateTimeImmutable();
+        $now = CarbonImmutable::now();
 
         foreach ($plan->getItems() as $item) {
             $metadataStorage->complete(new ExecutionResult($item->getVersion(), $item->getDirection(), $now));

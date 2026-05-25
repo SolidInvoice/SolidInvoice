@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Mcp;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
@@ -132,7 +132,7 @@ final readonly class PaymentWriteTools
         }
 
         $payment->setStatus(PaymentStatus::Captured);
-        $payment->setCompleted(new DateTimeImmutable());
+        $payment->setCompleted(CarbonImmutable::now());
         // Company is bound from the invoice; never accept client-supplied company.
         $payment->setCompany($invoice->getCompany());
 

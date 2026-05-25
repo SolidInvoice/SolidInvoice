@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Export;
 
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use function array_filter;
@@ -36,7 +37,7 @@ final class ExportFilenameGenerator
         array $gridFilters = [],
         ?DateTimeImmutable $date = null,
     ): string {
-        $date ??= new DateTimeImmutable();
+        $date ??= CarbonImmutable::now();
 
         $summary = $this->buildFilterSummary($gridFilters);
 

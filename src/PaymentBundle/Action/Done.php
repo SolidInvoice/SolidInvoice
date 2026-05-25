@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use DateTime;
+use Carbon\Carbon;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -55,7 +55,7 @@ final class Done
         $payment = $status->getFirstModel();
 
         $payment->setStatus(PaymentStatus::from((string) $status->getValue()));
-        $payment->setCompleted(new DateTime('now'));
+        $payment->setCompleted(Carbon::now());
 
         $this->save($payment);
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
 use Brick\Math\BigInteger;
-use DateTime;
+use Carbon\Carbon;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\RevenueChartWidget;
@@ -84,7 +84,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RevenueChartWidget::class);
@@ -133,7 +133,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'totalAmount' => 25000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RevenueChartWidget::class);
@@ -194,7 +194,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'totalAmount' => 100000,
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
-            'created' => new DateTime('now'),
+            'created' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RevenueChartWidget::class);

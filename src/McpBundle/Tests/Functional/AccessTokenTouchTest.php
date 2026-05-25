@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -61,13 +61,13 @@ final class AccessTokenTouchTest extends KernelTestCase
         $token->setCompany($this->company);
         $token->setIdentifier('jti-test-' . bin2hex(random_bytes(8)));
         $token->setScopeValues(['mcp:read']);
-        $token->setExpiresAt(new DateTimeImmutable('+1 hour'));
+        $token->setExpiresAt(CarbonImmutable::now()->addHours(1));
 
         $accessTokenRepo->persistNewAccessToken($token);
 
         self::assertNull($token->getLastUsedAt());
 
-        $beforeTouch = new DateTimeImmutable('-1 second');
+        $beforeTouch = CarbonImmutable::now()->subSeconds(1);
         $accessTokenRepo->touch($token);
 
         // Round-trip: reload from DB to verify the UPDATE committed.
@@ -81,6 +81,6 @@ final class AccessTokenTouchTest extends KernelTestCase
         // Bound below by pre-touch time to catch silently-stale writes,
         // and above by now+1s to catch clock drift / future timestamps.
         self::assertGreaterThanOrEqual($beforeTouch, $lastUsedAt);
-        self::assertLessThanOrEqual(new DateTimeImmutable('+1 second'), $lastUsedAt);
+        self::assertLessThanOrEqual(CarbonImmutable::now()->addSeconds(1), $lastUsedAt);
     }
 }

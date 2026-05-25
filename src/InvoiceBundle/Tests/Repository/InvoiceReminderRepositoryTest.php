@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -131,14 +131,14 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'invoice' => $invoice,
             'company' => $company,
             'reminderType' => ReminderType::PreDue,
-            'sentAt' => new DateTimeImmutable('2024-01-15'),
+            'sentAt' => CarbonImmutable::parse('2024-01-15'),
         ]);
 
         $reminder2 = InvoiceReminderFactory::createOne([
             'invoice' => $invoice,
             'company' => $company,
             'reminderType' => ReminderType::Overdue1,
-            'sentAt' => new DateTimeImmutable('2024-01-10'),
+            'sentAt' => CarbonImmutable::parse('2024-01-10'),
         ]);
 
         $history = $this->repository->getReminderHistory($invoice->_real());

@@ -47,7 +47,7 @@ return RectorConfig::configure()
         // SetList::TYPE_DECLARATION,
         SetList::TYPE_DECLARATION_DOCBLOCKS,
         SetList::INSTANCEOF,
-        // SetList::CARBON,
+        SetList::CARBON,
         // SetList::ASSERT,
 
         // PHP

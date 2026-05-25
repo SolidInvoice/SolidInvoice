@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Onboarding\Manager;
 
 use Brick\Math\BigNumber;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -128,7 +128,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
-            new DateTimeImmutable()->format('Y-m-d H:i:s')
+            CarbonImmutable::now()->format('Y-m-d H:i:s')
         );
 
         $this->entityManager->flush();
@@ -144,7 +144,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingStartedAt,
-            new DateTimeImmutable()->format('Y-m-d H:i:s')
+            CarbonImmutable::now()->format('Y-m-d H:i:s')
         );
         $this->setCurrentStep($user, 'company');
     }
@@ -158,7 +158,7 @@ final readonly class OnboardingManager
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
-            new DateTimeImmutable()->format('Y-m-d H:i:s')
+            CarbonImmutable::now()->format('Y-m-d H:i:s')
         );
         $this->entityManager->flush();
     }

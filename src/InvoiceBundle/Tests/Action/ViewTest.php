@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -83,7 +83,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -94,8 +94,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
             ])
@@ -146,7 +146,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -157,8 +157,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
             ])
@@ -232,7 +232,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 90,
                 'balance' => 90,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -243,8 +243,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => $discount,
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
             ])
@@ -293,7 +293,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 115,
                 'balance' => 115,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item with Tax')
@@ -304,8 +304,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 15,
             ])
@@ -362,7 +362,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -373,8 +373,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
             ])
@@ -441,7 +441,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -452,8 +452,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
                 'users' => [$contact],
@@ -503,7 +503,7 @@ final class ViewTest extends KernelTestCase
                 'total' => 100,
                 'balance' => 50,
                 'baseTotal' => 100,
-                'created' => new DateTimeImmutable('2021-09-01'),
+                'created' => CarbonImmutable::parse('2021-09-01'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Item')
@@ -514,8 +514,8 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
-                'due' => new DateTimeImmutable('2021-09-30'),
-                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
                 'paidDate' => null,
                 'tax' => 0,
             ])

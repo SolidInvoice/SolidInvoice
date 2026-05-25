@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Repository;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -134,7 +134,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
             ->update(McpAccessToken::class, 't')
             ->set('t.lastUsedAt', ':now')
             ->where('t.jti = :jti')
-            ->setParameter('now', new DateTimeImmutable())
+            ->setParameter('now', CarbonImmutable::now())
             ->setParameter('jti', $token->getJti())
             ->getQuery()
             ->execute();

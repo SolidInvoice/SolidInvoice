@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
@@ -85,13 +85,13 @@ final class ReadToolFlowTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Overdue,
-            'due' => new DateTimeImmutable('-10 days'),
+            'due' => CarbonImmutable::now()->subDays(10),
         ]);
         InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('+10 days'),
+            'due' => CarbonImmutable::now()->addDays(10),
         ]);
 
         $tool = self::getContainer()->get(InvoiceReadTools::class);

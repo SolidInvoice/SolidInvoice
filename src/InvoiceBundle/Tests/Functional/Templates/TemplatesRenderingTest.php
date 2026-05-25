@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Templates;
 
 use Brick\Math\BigInteger;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -157,7 +157,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             'client' => $client,
             'status' => InvoiceStatus::Pending,
             'invoiceId' => 'INV-FIXTURE-001',
-            'due' => new DateTimeImmutable('+14 days'),
+            'due' => CarbonImmutable::now()->addDays(14),
             'paidDate' => null,
             'archived' => null,
             'terms' => 'Payment due within 30 days.',

@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -149,7 +150,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
      */
     public function getUpcomingRecurringInvoices(int $days = 7, int $limit = 3): array
     {
-        $now = new DateTime();
+        $now = Carbon::now();
         $futureDate = new DateTime(sprintf('+%d days', $days));
 
         $qb = $this->createQueryBuilder('ri');

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
-use DateTimeImmutable;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -29,7 +30,6 @@ use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
-use function date;
 
 #[Group('functional')]
 final class InvoiceTest extends ApiTestCase
@@ -129,7 +129,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => $this->getIriFromResource($client),
             'balance' => 90,
             'due' => null,
-            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
+            'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'lines' => [
                 [
@@ -171,7 +171,7 @@ final class InvoiceTest extends ApiTestCase
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
             'users' => $contacts,
-            'due' => new DateTimeImmutable('2005-01-20'),
+            'due' => CarbonImmutable::parse('2005-01-20'),
             'paidDate' => null,
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
@@ -199,7 +199,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => 100,
             'due' => '2005-01-20T00:00:00+02:00',
-            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
+            'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'payments' => [],
             'quote' => null,
@@ -251,7 +251,7 @@ final class InvoiceTest extends ApiTestCase
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'due' => new DateTimeImmutable('2005-01-20'),
+            'due' => CarbonImmutable::parse('2005-01-20'),
             'paidDate' => null,
             'users' => $contacts,
             'lines' => [
@@ -293,7 +293,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => $this->getIriFromResource($invoice->getClient()),
             'balance' => 9000,
             'due' => '2005-01-20T00:00:00+02:00',
-            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
+            'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'payments' => [],
             'quote' => null,
