@@ -38,10 +38,6 @@ class InvoiceReceiverListener implements EventSubscriberInterface
             $invoice = $message->getInvoice();
 
             foreach ($invoice->getUsers() as $user) {
-                if ($user->getEmail() === null || $user->getEmail() === '') {
-                    continue;
-                }
-
                 $message->addTo(new Address($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName()))));
             }
 

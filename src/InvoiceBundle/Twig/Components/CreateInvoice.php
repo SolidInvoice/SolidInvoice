@@ -357,13 +357,7 @@ final class CreateInvoice extends AbstractController
 
     private function hasEmailRecipients(Invoice $invoice): bool
     {
-        foreach ($invoice->getUsers() as $user) {
-            if ($user->getEmail() !== null && $user->getEmail() !== '') {
-                return true;
-            }
-        }
-
-        return false;
+        return ! $invoice->getUsers()->isEmpty();
     }
 
     /**

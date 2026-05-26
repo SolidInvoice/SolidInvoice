@@ -317,4 +317,4 @@ invoice:
 invoice_status_update: 'Invoice Status Update'
 
 invoice.email.send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'
-invoice.send.no_recipients: 'Cannot send invoice: no contacts with a valid email address are associated with this invoice.'
+invoice.send.no_recipients: 'Cannot send invoice: no contacts are associated with this invoice. Please add at least one contact before sending.'

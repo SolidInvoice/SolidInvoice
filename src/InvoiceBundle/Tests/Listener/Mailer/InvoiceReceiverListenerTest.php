@@ -65,42 +65,6 @@ class InvoiceReceiverListenerTest extends TestCase
         self::assertEquals([new Address('bcc@example.com')], $message->getBcc());
     }
 
-    public function testSkipsContactsWithNullEmail(): void
-    {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
-            ->with('invoice/bcc_address')
-            ->andReturnNull();
-
-        $listener = new InvoiceReceiverListener($config);
-        $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail(null)->setFirstName('No')->setLastName('Email'));
-        $invoice->addUser((new Contact())->setEmail('valid@example.com')->setFirstName('Valid')->setLastName('User'));
-        $message = new InvoiceEmail($invoice);
-        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
-
-        self::assertCount(1, $message->getTo());
-        self::assertEquals([new Address('valid@example.com', 'Valid User')], $message->getTo());
-    }
-
-    public function testNoRecipientsAddedWhenAllContactsHaveNullEmail(): void
-    {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
-            ->with('invoice/bcc_address')
-            ->andReturnNull();
-
-        $listener = new InvoiceReceiverListener($config);
-        $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail(null)->setFirstName('No')->setLastName('Email'));
-        $message = new InvoiceEmail($invoice);
-
-        // The listener should not crash and should leave To empty
-        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
-
-        self::assertSame([], $message->getTo());
-    }
-
     public function testNoRecipientsAddedWhenInvoiceHasNoContacts(): void
     {
         $config = M::mock(SystemConfig::class);
