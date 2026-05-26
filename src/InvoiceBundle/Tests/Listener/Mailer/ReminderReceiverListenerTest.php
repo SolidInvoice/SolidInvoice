@@ -122,6 +122,70 @@ final class ReminderReceiverListenerTest extends TestCase
         self::assertSame('existing@example.com', $recipients[0]->getAddress());
     }
 
+    public function testListenerSkipsContactsWithNullEmail(): void
+    {
+        $contactWithEmail = (new Contact())
+            ->setEmail('valid@example.com')
+            ->setFirstName('John')
+            ->setLastName('Doe');
+
+        $contactWithoutEmail = (new Contact())
+            ->setEmail(null)
+            ->setFirstName('No')
+            ->setLastName('Email');
+
+        $invoice = new Invoice();
+        $invoice->addUser($contactWithEmail);
+        $invoice->addUser($contactWithoutEmail);
+        $invoice->setInvoiceId('INV-001');
+
+        $email = new InvoiceReminderEmail($invoice, ReminderType::PreDue);
+
+        $config = M::mock(SystemConfig::class);
+        $config->shouldReceive('get')
+            ->with('invoice/bcc_address')
+            ->once()
+            ->andReturn('');
+
+        $listener = new ReminderReceiverListener($config);
+
+        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+
+        $listener($event);
+
+        $recipients = $email->getTo();
+        self::assertCount(1, $recipients);
+        self::assertSame('valid@example.com', $recipients[0]->getAddress());
+    }
+
+    public function testListenerAddsNoRecipientsWhenAllContactsHaveNullEmail(): void
+    {
+        $contact = (new Contact())
+            ->setEmail(null)
+            ->setFirstName('No')
+            ->setLastName('Email');
+
+        $invoice = new Invoice();
+        $invoice->addUser($contact);
+        $invoice->setInvoiceId('INV-001');
+
+        $email = new InvoiceReminderEmail($invoice, ReminderType::Overdue1);
+
+        $config = M::mock(SystemConfig::class);
+        $config->shouldReceive('get')
+            ->with('invoice/bcc_address')
+            ->once()
+            ->andReturn('');
+
+        $listener = new ReminderReceiverListener($config);
+
+        $event = new MessageEvent($email, M::mock(\Symfony\Component\Mailer\Envelope::class), 'smtp');
+
+        $listener($event);
+
+        self::assertSame([], $email->getTo());
+    }
+
     public function testListenerIgnoresNonReminderEmails(): void
     {
         $email = M::mock(\Symfony\Component\Mime\Email::class);
