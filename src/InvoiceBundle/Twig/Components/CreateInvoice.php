@@ -219,7 +219,7 @@ final class CreateInvoice extends AbstractController
 
             $this->formManager->updateInvoiceFromDTO($this->invoice, $dto);
 
-            if ('send' === $action || 'publish' === $action) {
+            if (('send' === $action || 'publish' === $action) && $this->invoiceStateMachine->can($this->invoice, Graph::TRANSITION_ACCEPT)) {
                 $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
             }
 
