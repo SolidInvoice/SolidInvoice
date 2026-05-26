@@ -1,0 +1,258 @@
+name: PHPStan Baseline Report
+
+on:
+  pull_request:
+    paths:
+      - 'phpstan-baseline.neon'
+  push:
+    branches:
+      - 3.0.x
+    paths:
+      - 'phpstan-baseline.neon'
+
+permissions:
+  pull-requests: write
+  actions: read
+
+jobs:
+  pr-report:
+    name: PHPStan Baseline PR Report
+    if: github.event_name == 'pull_request'
+
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
+        with:
+          egress-policy: audit
+
+      - name: Checkout PR branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          path: pr
+
+      - name: Checkout target branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          path: base
+
+      - name: Download baseline history
+        shell: bash
+        run: |
+          mkdir -p /tmp/history
+
+          ARTIFACT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=phpstan-baseline-history&per_page=1" \
+            --jq '.artifacts[0].id // empty' 2>/dev/null || true)
+
+          if [ -n "$ARTIFACT_ID" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > /tmp/history.zip 2>/dev/null \
+              && unzip -o /tmp/history.zip -d /tmp/history 2>/dev/null || true
+          fi
+
+          if [ ! -f /tmp/history/baseline-history.json ]; then
+            echo '[]' > /tmp/history/baseline-history.json
+          fi
+
+      - name: Generate baseline report
+        id: report
+        shell: bash
+        run: |
+          count_identifiers() {
+            local file="$1"
+            if [ -f "$file" ] && [ -s "$file" ]; then
+              grep 'identifier:' "$file" | awk '{print $2}' | sort | uniq -c | awk '{print $2, $1}'
+            fi
+          }
+
+          count_identifiers "pr/phpstan-baseline.neon" | sort > /tmp/pr_counts.txt
+          count_identifiers "base/phpstan-baseline.neon" | sort > /tmp/base_counts.txt
+
+          pr_total=$(awk '{s+=$2} END {print s+0}' /tmp/pr_counts.txt)
+
+          join -a1 -a2 -o '0,1.2,2.2' -e 0 /tmp/base_counts.txt /tmp/pr_counts.txt > /tmp/merged.txt
+
+          pip install asciichartpy
+
+          python3 - /tmp/history/baseline-history.json "$pr_total" << 'PYEOF'
+import json, sys
+import asciichartpy
+
+with open(sys.argv[1]) as f:
+    history = json.load(f)
+
+pr_total = int(sys.argv[2])
+totals = [h["total"] for h in history] + [pr_total]
+
+if len(totals) >= 2:
+    graph = asciichartpy.plot(totals, {"height": 10, "format": "{:>6.0f}"})
+    with open("/tmp/trend_graph.txt", "w") as f:
+        f.write(graph)
+PYEOF
+
+          {
+            echo 'REPORT<<REPORT_EOF'
+            echo "## PHPStan Baseline Report"
+            echo ""
+
+            awk '
+            BEGIN {
+              print "| | Target | PR | Change |"
+              print "|---|---|---|---|"
+              pr_total = 0
+              base_total = 0
+              n = 0
+            }
+            {
+              id = $1
+              base_val = $2 + 0
+              pr_val = $3 + 0
+              diff = pr_val - base_val
+              base_total += base_val
+              pr_total += pr_val
+
+              if (diff > 0) change = "🔴 +" diff
+              else if (diff < 0) change = "🟢 " diff
+              else change = "—"
+
+              rows[n++] = sprintf("| `%s` | %d | %d | %s |", id, base_val, pr_val, change)
+              sort_key[n-1] = -pr_val
+            }
+            END {
+              for (i = 0; i < n; i++) {
+                for (j = i + 1; j < n; j++) {
+                  if (sort_key[j] < sort_key[i]) {
+                    tmp = rows[i]; rows[i] = rows[j]; rows[j] = tmp
+                    tmpk = sort_key[i]; sort_key[i] = sort_key[j]; sort_key[j] = tmpk
+                  }
+                }
+              }
+              for (i = 0; i < n; i++) print rows[i]
+
+              total_diff = pr_total - base_total
+              if (total_diff > 0) badge = "📈 +" total_diff
+              else if (total_diff < 0) badge = "📉 " total_diff
+              else badge = "→ 0"
+
+              printf "| **Total** | **%d** | **%d** | **%s** |\n", base_total, pr_total, badge
+              print ""
+
+              if (total_diff < 0) {
+                printf "✅ **%d error(s) removed** — nice work!\n", -total_diff
+              } else if (total_diff > 0) {
+                printf "⚠️ **%d error(s) added** — consider fixing these before merging.\n", total_diff
+              } else {
+                print "No change in baseline error count."
+              }
+
+              if (pr_total == 0) {
+                print ""
+                print "🎉 **Baseline is empty — zero PHPStan errors!**"
+              }
+            }
+            ' /tmp/merged.txt
+
+            if [ -f /tmp/trend_graph.txt ]; then
+              echo ""
+              echo "<details>"
+              echo "<summary>📊 Baseline trend (last 15 merges)</summary>"
+              echo ""
+              echo '```'
+              cat /tmp/trend_graph.txt
+              echo '```'
+              echo ""
+              echo "</details>"
+            fi
+
+            echo 'REPORT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Find existing comment
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: PHPStan Baseline Report
+
+      - name: Post or update comment
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.report.outputs.REPORT }}
+          edit-mode: replace
+
+  update-history:
+    name: Update Baseline History
+    if: github.event_name == 'push'
+
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Download existing history
+        shell: bash
+        run: |
+          mkdir -p /tmp/history
+
+          ARTIFACT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=phpstan-baseline-history&per_page=1" \
+            --jq '.artifacts[0].id // empty' 2>/dev/null || true)
+
+          if [ -n "$ARTIFACT_ID" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > /tmp/history.zip 2>/dev/null \
+              && unzip -o /tmp/history.zip -d /tmp/history 2>/dev/null || true
+          fi
+
+          if [ ! -f /tmp/history/baseline-history.json ]; then
+            echo '[]' > /tmp/history/baseline-history.json
+          fi
+
+      - name: Update history
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          total=0
+          if [ -s phpstan-baseline.neon ]; then
+            total=$(grep 'identifier:' phpstan-baseline.neon | wc -l | tr -d ' ')
+          fi
+
+          CURRENT_DATE=$(date -u +%Y-%m-%d)
+
+          python3 - /tmp/history/baseline-history.json "$CURRENT_DATE" "$COMMIT_SHA" "$total" << 'PYEOF'
+import json, sys
+
+history_file, current_date, commit_sha, total = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
+
+with open(history_file) as f:
+    history = json.load(f)
+
+history.append({"date": current_date, "sha": commit_sha[:8], "total": total})
+history = history[-15:]
+
+with open(history_file, "w") as f:
+    json.dump(history, f)
+PYEOF
+
+      - name: Upload baseline history
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: phpstan-baseline-history
+          path: /tmp/history/baseline-history.json
+          retention-days: 90
+          overwrite: true
