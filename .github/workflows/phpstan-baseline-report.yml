@@ -73,6 +73,13 @@ jobs:
           count_identifiers "base/phpstan-baseline.neon" | sort > /tmp/base_counts.txt
 
           pr_total=$(awk '{s+=$2} END {print s+0}' /tmp/pr_counts.txt)
+          base_total=$(awk '{s+=$2} END {print s+0}' /tmp/base_counts.txt)
+
+          if [ "$pr_total" -eq 0 ] && [ "$base_total" -eq 0 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "skip=false" >> "$GITHUB_OUTPUT"
 
           join -a1 -a2 -o '0,1.2,2.2' -e 0 /tmp/base_counts.txt /tmp/pr_counts.txt > /tmp/merged.txt
 
@@ -172,6 +179,7 @@ PYEOF
           } >> "$GITHUB_OUTPUT"
 
       - name: Find existing comment
+        if: steps.report.outputs.skip != 'true'
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3
         id: find-comment
         with:
@@ -180,6 +188,7 @@ PYEOF
           body-includes: PHPStan Baseline Report
 
       - name: Post or update comment
+        if: steps.report.outputs.skip != 'true'
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
