@@ -104,13 +104,23 @@ class CompanyRepository extends ServiceEntityRepository
             return;
         }
 
-        // Delete Payum security tokens for this company's payments (no company_id FK, invisible to ORM cascade)
-        $this->getEntityManager()
-            ->getConnection()
-            ->executeStatement(
-                'DELETE FROM security_token WHERE details_id IN (SELECT id FROM payments WHERE company_id = ?)',
-                [$companyId->toBinary()]
+        $conn = $this->getEntityManager()->getConnection();
+
+        // Delete Payum security tokens for this company's payments.
+        // security_token.details stores a PHP-serialized Identity object (no FK to payments),
+        // so ORM cascade cannot reach these rows. We look up each payment ULID and delete
+        // any token whose serialized details blob contains that ULID string.
+        $paymentIds = $conn->fetchFirstColumn(
+            'SELECT id FROM payments WHERE company_id = ?',
+            [$companyId->toBinary()]
+        );
+
+        foreach ($paymentIds as $binary) {
+            $conn->executeStatement(
+                'DELETE FROM security_token WHERE details LIKE ?',
+                ['%"' . Ulid::fromBinary($binary)->toString() . '"%']
             );
+        }
 
         $this->getEntityManager()->remove($company);
         $this->getEntityManager()->flush();
