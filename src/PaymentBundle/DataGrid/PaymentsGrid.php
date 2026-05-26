@@ -43,6 +43,7 @@ final class PaymentsGrid extends Grid
         return [
             StringColumn::new('invoice')
                 ->label('Invoice #')
+                ->searchable(false)
                 ->formatValue(static function (Invoice $invoice) {
                     try {
                         return $invoice->getInvoiceId();
@@ -52,8 +53,10 @@ final class PaymentsGrid extends Grid
                 })
                 ->linkToRoute('_invoices_view', ['id' => 'invoice.id']),
             StringColumn::new('client')
+                ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             StringColumn::new('method')
+                ->searchable(false)
                 ->linkToRoute('_payment_settings_index', ['method' => 'method.gatewayName'])
                 ->filter(
                     EntityFilter::new(PaymentMethod::class, 'method', 'name')
@@ -68,6 +71,7 @@ final class PaymentsGrid extends Grid
                 ->filter(new DateRangeFilter('completed')),
             StringColumn::new('message'),
             MoneyColumn::new('amount')
+                ->searchable(false)
                 ->sortableField('totalAmount'),
             DateTimeColumn::new('created')
                 ->format('d F Y')
