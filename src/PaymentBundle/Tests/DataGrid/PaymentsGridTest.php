@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\DataGrid;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
@@ -20,9 +21,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\PaymentBundle\DataGrid\PaymentsGrid;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
-/**
- * @covers \SolidInvoice\PaymentBundle\DataGrid\PaymentsGrid
- */
+#[CoversClass(PaymentsGrid::class)]
 final class PaymentsGridTest extends TestCase
 {
     private PaymentsGrid $grid;

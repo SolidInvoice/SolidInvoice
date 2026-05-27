@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Repository;
 
 use Payum\Core\Model\Identity;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -23,7 +24,7 @@ use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
-/** @covers \SolidInvoice\CoreBundle\Repository\CompanyRepository */
+#[CoversClass(CompanyRepository::class)]
 final class CompanyRepositoryTest extends KernelTestCase
 {
     use DoctrineTestTrait;

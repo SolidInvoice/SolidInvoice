@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Validator\Constraints;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,6 +21,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use function is_string;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Validator\Constraints\UniqueClientNameValidatorTest
+ */
 final class UniqueClientNameValidator extends ConstraintValidator
 {
     public function __construct(
@@ -41,7 +45,7 @@ final class UniqueClientNameValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if ($this->clientRepository->findOneByNameIncludingArchived($value) !== null) {
+        if ($this->clientRepository->findOneByNameIncludingArchived($value) instanceof Client) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

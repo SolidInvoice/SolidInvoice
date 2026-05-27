@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
@@ -84,10 +86,17 @@ class CustomFieldValueRepository extends EntityRepository
             return [];
         }
 
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+        $ulidType = Type::getType(UlidType::NAME);
+        $convertedIds = array_map(
+            fn (Ulid $id) => $ulidType->convertToDatabaseValue($id, $platform),
+            $ids,
+        );
+
         $rows = $this->createQueryBuilder('v')
             ->select('IDENTITY(v.field) AS field_id, COUNT(v.id) AS total')
             ->andWhere('v.field IN (:fields)')
-            ->setParameter('fields', $ids)
+            ->setParameter('fields', $convertedIds, ArrayParameterType::STRING)
             ->groupBy('v.field')
             ->getQuery()
             ->getArrayResult();

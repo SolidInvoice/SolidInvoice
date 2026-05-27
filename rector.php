@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Doctrine\TypedCollections\Rector\ClassMethod\RemoveNewArrayCollectionOutsideConstructorRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
@@ -109,5 +110,10 @@ return RectorConfig::configure()
         DeclareStrictTypesRector::class => [
             // This file is auto-generated, which removes the strict types declare every time
             'config/reference.php'
+        ],
+
+        RemoveNewArrayCollectionOutsideConstructorRector::class => [
+            // This file uses __clone() which must use a new array collection
+            'src/InvoiceBundle/Entity/Invoice.php'
         ],
     ]);

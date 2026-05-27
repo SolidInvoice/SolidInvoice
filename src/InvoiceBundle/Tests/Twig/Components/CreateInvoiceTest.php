@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
@@ -174,7 +173,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         ])->_real();
 
         // Build a persisted Pending invoice (accept transition already applied).
-        $line = (new Line())
+        $line = new Line()
             ->setDescription('Consulting')
             ->setPrice(10000)
             ->setQty(1.0);
@@ -183,7 +182,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $invoice->setStatus(InvoiceStatus::Pending);
         $invoice->setClient($client);
         $invoice->setInvoiceId('INV-TEST-001');
-        $invoice->setInvoiceDate(new DateTimeImmutable('2024-01-15'));
+        $invoice->setInvoiceDate(CarbonImmutable::parse('2024-01-15'));
         $invoice->addUser($contact);
         $invoice->addLine($line);
 

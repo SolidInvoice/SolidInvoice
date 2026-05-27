@@ -20,6 +20,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zenstruck\Foundry\Test\Factories;
@@ -55,7 +56,7 @@ final class CustomDomainSettingRenameTest extends KernelTestCase
         /** @var Connection $connection */
         $connection = $container->get('doctrine')->getConnection();
 
-        $companyBinary = $this->company->getId()->toBinary();
+        $companyId = $this->company->getId();
 
         // Simulate pre-migration state: a row exists at the legacy key with a value.
         // (DefaultData seeded the row with NEW_KEY since the SaasBundle ConfigProvider
@@ -63,7 +64,8 @@ final class CustomDomainSettingRenameTest extends KernelTestCase
         $seeded = $connection->update(
             Setting::TABLE_NAME,
             ['setting_key' => self::OLD_KEY, 'setting_value' => 'invoices.example.com'],
-            ['setting_key' => self::NEW_KEY, 'company_id' => $companyBinary]
+            ['setting_key' => self::NEW_KEY, 'company_id' => $companyId],
+            ['company_id' => UlidType::NAME],
         );
         self::assertSame(1, (int) $seeded, 'DefaultData should have seeded exactly one row at the new key.');
 
@@ -71,7 +73,8 @@ final class CustomDomainSettingRenameTest extends KernelTestCase
         $renamed = $connection->update(
             Setting::TABLE_NAME,
             ['setting_key' => self::NEW_KEY],
-            ['setting_key' => self::OLD_KEY, 'company_id' => $companyBinary]
+            ['setting_key' => self::OLD_KEY, 'company_id' => $companyId],
+            ['company_id' => UlidType::NAME],
         );
         self::assertSame(1, (int) $renamed);
 
