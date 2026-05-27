@@ -184,6 +184,38 @@ final class RequestListenerTest extends TestCase
         self::assertFalse($event->isPropagationStopped());
     }
 
+    public function testItRedirectsToHomeWhenApplicationIsInstalledAndInstallerRouteIsAccessed(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects(self::once())
+            ->method('generate')
+            ->with('_home')
+            ->willReturn('/');
+
+        $listener = new RequestListener(
+            $router,
+            $this->createMock(ContainerInterface::class),
+            date('Y-m-d H:i:s'),
+        );
+
+        $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->attributes->set('_route', RequestListener::INSTALLER_ROUTE);
+
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+
+        self::assertNull($event->getResponse());
+
+        $listener->onKernelRequest($event);
+
+        $response = $event->getResponse();
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/', $response->getTargetUrl());
+        self::assertTrue($event->isPropagationStopped());
+    }
+
     public function testItSetsSessionIdAsAppSecretWhenNotInstalled(): void
     {
         $router = $this->createMock(RouterInterface::class);
