@@ -107,6 +107,8 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
                     $container->resetEnvCache();
                 }
             }
+        } elseif ($route === self::INSTALLER_ROUTE) {
+            $this->redirectToRoute($event, '_home');
         }
     }
 
