@@ -24,7 +24,6 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -43,14 +42,14 @@ final class SendTest extends TestCase
     public function testSendWithNoContactsReturnsErrorFlash(): void
     {
         $workflow = $this->createMock(WorkflowInterface::class);
-        $workflow->expects(self::never())->method('can');
-        $workflow->expects(self::never())->method('apply');
+        $workflow->expects($this->never())->method('can');
+        $workflow->expects($this->never())->method('apply');
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::never())->method('send');
+        $mailer->expects($this->never())->method('send');
 
         $router = $this->createMock(RouterInterface::class);
-        $router->expects(self::once())
+        $router->expects($this->once())
             ->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
@@ -62,7 +61,6 @@ final class SendTest extends TestCase
 
         $response = $action(new Request(), $invoice);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
 
@@ -74,14 +72,14 @@ final class SendTest extends TestCase
     public function testSendWithEmailGateBlockedReturnsErrorFlash(): void
     {
         $workflow = $this->createMock(WorkflowInterface::class);
-        $workflow->expects(self::never())->method('can');
-        $workflow->expects(self::never())->method('apply');
+        $workflow->expects($this->never())->method('can');
+        $workflow->expects($this->never())->method('apply');
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::never())->method('send');
+        $mailer->expects($this->never())->method('send');
 
         $router = $this->createMock(RouterInterface::class);
-        $router->expects(self::once())
+        $router->expects($this->once())
             ->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
@@ -89,11 +87,10 @@ final class SendTest extends TestCase
         $action = new Send($workflow, $mailer, $router, $this->createGate(true));
 
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
 
         $response = $action(new Request(), $invoice);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
 
         $flashes = iterator_to_array($response->getFlash());
@@ -104,36 +101,35 @@ final class SendTest extends TestCase
     public function testSendWithContactsAndPendingStatusDispatchesEmail(): void
     {
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
         $invoice->setStatus(InvoiceStatus::Pending);
 
         $workflow = $this->createMock(WorkflowInterface::class);
-        $workflow->expects(self::never())->method('apply');
+        $workflow->expects($this->never())->method('apply');
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::once())
+        $mailer->expects($this->once())
             ->method('send')
             ->with(self::isInstanceOf(InvoiceEmail::class));
 
         $router = $this->createMock(RouterInterface::class);
-        $router->expects(self::once())
+        $router->expects($this->once())
             ->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
         $em = $this->createMock(ObjectManager::class);
-        $em->expects(self::once())->method('persist')->with($invoice);
-        $em->expects(self::once())->method('flush');
+        $em->expects($this->once())->method('persist')->with($invoice);
+        $em->expects($this->once())->method('flush');
 
         $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
+        $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
         $action = new Send($workflow, $mailer, $router, $this->createGate(false));
         $action->setDoctrine($doctrine);
 
         $response = $action(new Request(), $invoice);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
 
@@ -145,25 +141,25 @@ final class SendTest extends TestCase
     public function testSendWithContactsAndNonPendingStatusAppliesTransition(): void
     {
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
         $invoice->setStatus(InvoiceStatus::Draft);
 
         $workflow = $this->createMock(WorkflowInterface::class);
-        $workflow->expects(self::once())
+        $workflow->expects($this->once())
             ->method('can')
             ->with($invoice, Graph::TRANSITION_ACCEPT)
             ->willReturn(true);
-        $workflow->expects(self::once())
+        $workflow->expects($this->once())
             ->method('apply')
             ->with($invoice, Graph::TRANSITION_ACCEPT);
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::once())
+        $mailer->expects($this->once())
             ->method('send')
             ->with(self::isInstanceOf(InvoiceEmail::class));
 
         $router = $this->createMock(RouterInterface::class);
-        $router->expects(self::once())
+        $router->expects($this->once())
             ->method('generate')
             ->willReturn('/invoices/view/123');
 
@@ -179,7 +175,6 @@ final class SendTest extends TestCase
 
         $response = $action(new Request(), $invoice);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
 
         $flashes = iterator_to_array($response->getFlash());

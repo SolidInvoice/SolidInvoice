@@ -27,6 +27,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\Transition\SendTest
+ */
 final class Send
 {
     use SaveableTrait;
