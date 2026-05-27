@@ -184,9 +184,6 @@ final class InvoiceTest extends ApiTestCase
             ],
         ])->_real();
 
-        self::getContainer()->get('doctrine')->getManager()->clear();
-        $invoice = self::getContainer()->get('doctrine')->getManager()->getRepository(Invoice::class)->find($invoice->getId());
-
         $data = $this->requestGet($this->getIriFromResource($invoice));
 
         self::assertEqualsCanonicalizing([
@@ -204,16 +201,6 @@ final class InvoiceTest extends ApiTestCase
             'payments' => [],
             'quote' => null,
             'lines' => [
-                [
-                    '@id' => $this->getIriFromResource($invoice->getLines()->first()),
-                    '@type' => 'InvoiceLine',
-                    'id' => $invoice->getLines()->first()->getId()->toString(),
-                    'description' => 'Test Item',
-                    'price' => 100,
-                    'qty' => 1,
-                    'total' => 100,
-                    'taxes' => [],
-                ],
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
                     '@type' => 'InvoiceLine',

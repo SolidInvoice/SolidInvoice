@@ -433,9 +433,10 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function __clone()
     {
-        $lines = $this->lines;
-        foreach ($lines as $line) {
-            $this->lines->add(clone $line);
+        $originalLines = $this->lines;
+        $this->lines = new ArrayCollection();
+        foreach ($originalLines as $line) {
+            $this->addLine(clone $line);
         }
 
         $this->setUuid(Uuid::v7());
