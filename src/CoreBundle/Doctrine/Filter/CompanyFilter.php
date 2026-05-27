@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
@@ -26,9 +26,11 @@ class CompanyFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
-        $isSqlite = $this->getConnection()->getDatabasePlatform() instanceof SqlitePlatform;
+        $isPostgres = $this->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
 
-        $encode = (static fn (string $value): string => $isSqlite ? sprintf('HEX(%s)', $value) : $value);
+        $encode = $isPostgres
+            ? (static fn (string $value): string => $value)
+            : (static fn (string $value): string => sprintf('HEX(%s)', $value));
 
         if (User::class === $targetEntity->getName() && $this->hasParameter('companyId')) {
             $query = $this

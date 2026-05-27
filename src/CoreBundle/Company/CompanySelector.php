@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Company;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Company;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Service\ResetInterface;
@@ -51,16 +50,16 @@ final class CompanySelector implements CompanySelectorInterface, ResetInterface
 
         assert($em instanceof EntityManagerInterface);
 
-        $isSqlite = $em->getConnection()->getDatabasePlatform() instanceof SqlitePlatform;
+        $isPostgres = $em->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
 
-        $parameters = $isSqlite ?
+        $parameters = $isPostgres ?
             [
-                strtoupper(substr($companyId->toHex(), 2)),
+                $companyId->toRfc4122(),
                 'string',
             ] :
             [
-                $companyId,
-                UlidType::NAME,
+                strtoupper(substr($companyId->toHex(), 2)),
+                'string',
             ];
 
         $em
