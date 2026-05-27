@@ -85,8 +85,11 @@ final class MarkOverdueInvoicesCommand extends Command
                     ));
                 }
 
-                // Detach entity to free memory
-                $entityManager->detach($invoice);
+                // Clear the entire identity map to prevent stale entity references.
+                // detach($invoice) only removes the invoice itself, leaving lazy-loaded
+                // associations (e.g. Lines) managed but pointing to a non-managed invoice,
+                // which causes ORMInvalidArgumentException on the next flush.
+                $entityManager->clear();
             }
         } finally {
             // Re-enable company filter if it was enabled
