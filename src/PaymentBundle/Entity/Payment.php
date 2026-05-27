@@ -87,7 +87,8 @@ use Traversable;
     ],
     denormalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
+    ],
+    graphQlOperations: [],
 )]
 #[ApiResource(
     operations: [
@@ -99,7 +100,8 @@ use Traversable;
     ],
     denormalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
+    ],
+    graphQlOperations: [],
 )]
 class Payment extends BasePayment
 {
