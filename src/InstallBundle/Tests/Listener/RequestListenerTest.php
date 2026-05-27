@@ -196,15 +196,15 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
+            $this->createStub(ContainerInterface::class),
+            Carbon::now()->format('Y-m-d H:i:s'),
         );
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
         $request->attributes->set('_route', RequestListener::INSTALLER_ROUTE);
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
         self::assertNull($event->getResponse());
 

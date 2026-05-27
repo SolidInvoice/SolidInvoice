@@ -34,6 +34,9 @@ use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function array_key_exists;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\DataGrid\PaymentsGridTest
+ */
 #[AsDataGrid(name: 'payments_grid', title: 'Payments')]
 final class PaymentsGrid extends Grid
 {

@@ -122,9 +122,11 @@ final class QuoteTypeTest extends FormTestCase
         $dto->quoteId = '10';
         $dto->terms = $terms;
         $dto->notes = $notes;
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+
         $dto->discount = $discount;
         $dto->total = '0';
         $dto->baseTotal = '0';

@@ -26,6 +26,7 @@ use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends EntityRepository<Company>
+ * @see \SolidInvoice\CoreBundle\Tests\Repository\CompanyRepositoryTest
  */
 class CompanyRepository extends EntityRepository
 {

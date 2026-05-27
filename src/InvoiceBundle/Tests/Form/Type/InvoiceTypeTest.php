@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use Money\Currency;
@@ -129,14 +128,16 @@ final class InvoiceTypeTest extends FormTestCase
         $dto->invoiceId = '10';
         $dto->terms = $terms;
         $dto->notes = $notes;
+
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+
         $dto->discount = $discount;
         $dto->total = '0';
         $dto->baseTotal = '0';
         $dto->tax = '0';
-        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
 
         $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
     }

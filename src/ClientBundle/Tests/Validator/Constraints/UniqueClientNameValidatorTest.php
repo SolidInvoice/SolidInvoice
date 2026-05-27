@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
@@ -24,11 +25,10 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
- * @covers \SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientName
- * @covers \SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientNameValidator
- *
  * @extends ConstraintValidatorTestCase<UniqueClientNameValidator>
  */
+#[CoversClass(UniqueClientName::class)]
+#[CoversClass(UniqueClientNameValidator::class)]
 final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 {
     private MockObject&ClientRepository $clientRepository;

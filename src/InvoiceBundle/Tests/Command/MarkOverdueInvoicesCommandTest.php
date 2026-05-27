@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -153,22 +152,22 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
 
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('2 days ago'),
+            'due' => CarbonImmutable::parse('2 days ago'),
             'company' => $company,
             'client' => $client,
             'lines' => [
-                (new Line())->setDescription('Service A')->setQty(1)->setPrice(5000),
-                (new Line())->setDescription('Service B')->setQty(2)->setPrice(2500),
+                new Line()->setDescription('Service A')->setQty(1)->setPrice(5000),
+                new Line()->setDescription('Service B')->setQty(2)->setPrice(2500),
             ],
         ]);
 
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
-            'due' => new DateTimeImmutable('yesterday'),
+            'due' => CarbonImmutable::yesterday(),
             'company' => $company,
             'client' => $client,
             'lines' => [
-                (new Line())->setDescription('Service C')->setQty(1)->setPrice(7500),
+                new Line()->setDescription('Service C')->setQty(1)->setPrice(7500),
             ],
         ]);
 
