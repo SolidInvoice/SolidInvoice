@@ -38,7 +38,7 @@ return RectorConfig::configure()
     ])
     ->withImportNames(removeUnusedImports: true)
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml')
-    ->withPhpVersion(PhpVersion::PHP_85)
+    ->withPhpVersion(PhpVersion::PHP_84)
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
     ->withAttributesSets()
     ->withPhpSets()
@@ -57,7 +57,7 @@ return RectorConfig::configure()
         // SetList::ASSERT,
 
         // PHP
-        LevelSetList::UP_TO_PHP_85,
+        LevelSetList::UP_TO_PHP_84,
 
         // PHPUnit
         PHPUnitSetList::PHPUNIT_70,
