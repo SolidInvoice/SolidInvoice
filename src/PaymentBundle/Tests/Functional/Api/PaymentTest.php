@@ -35,6 +35,26 @@ final class PaymentTest extends ApiTestCase
         return Payment::class;
     }
 
+    public function testGetPaymentsForInvoiceWithClient(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
+        $payment = PaymentFactory::createOne([
+            'invoice' => $invoice,
+            'client' => $client,
+            'status' => PaymentStatus::Captured,
+        ])->_real();
+
+        $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
+        unset($data['search'], $data['view']);
+
+        self::assertSame(1, $data['totalItems']);
+        self::assertCount(1, $data['member']);
+        self::assertSame($this->getIriFromResource($payment), $data['member'][0]['@id']);
+        self::assertSame($this->getIriFromResource($invoice), $data['member'][0]['invoice']);
+        self::assertSame($this->getIriFromResource($client), $data['member'][0]['client']);
+    }
+
     public function testGetPaymentsForInvoice(): void
     {
         $invoice = InvoiceFactory::createOne()->_real();
