@@ -69,12 +69,14 @@
 
     // Section blocks inside the card use lighter dividers so the page reads as
     // a single quiet surface, not five stacked cards.
+
     .card-body > .border-bottom {
         border-bottom-color: var(--swp-border-light) !important;
     }
 
     // Section heading: match the design system title scale and let the icon
     // be a slate accent rather than a fifth green element on the page.
+
     .card-body h3 {
         font-size: var(--swp-text-lg);
         font-weight: var(--swp-font-semibold);
@@ -87,6 +89,7 @@
     }
 
     // Helper paragraphs sit under headings; cap their reading width.
+
     .card-body h3 + p.text-muted {
         max-width: 65ch;
     }

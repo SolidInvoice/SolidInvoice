@@ -40,6 +40,7 @@
 
     // State carried by icon tint + value color; the surface stays calm.
     // Overdue gets a faint warm tint to draw the eye without a side stripe.
+
     &--danger {
         background: var(--swp-danger-lighter);
         border-color: var(--swp-danger-light);

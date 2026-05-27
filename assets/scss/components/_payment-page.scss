@@ -267,11 +267,13 @@
 }
 
 // A discount is a deduction, not an error. Stay neutral.
+
 .summary-totals .totals-row-discount .totals-value {
     color: var(--swp-text-muted);
 }
 
 // Payments already received are positive money in.
+
 .summary-totals .totals-row-payment .totals-value {
     color: var(--swp-success);
 }
@@ -290,6 +292,7 @@
     // The amount-to-pay is informational; green would imply "Paid", which it
     // isn't yet. The "Balance remaining" callout next to the amount field
     // already carries the attention.
+
     .totals-value {
         font-size: var(--swp-text-xl);
         font-weight: var(--swp-font-bold);

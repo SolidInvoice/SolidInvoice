@@ -725,6 +725,7 @@
 
     // Money columns: right-align both header and cell, tabular figures on system font.
     // Mono is reserved for identifiers per the design system; money reads as data, not code.
+
     .col-amount,
     .col-money {
         text-align: right;
@@ -738,6 +739,7 @@
     }
 
     // The sortable link inside a right-aligned header needs its content pushed right too
+
     th.col-amount .datagrid-sort-link,
     th.col-money .datagrid-sort-link {
         justify-content: flex-end;
@@ -754,6 +756,7 @@
     }
 
     // Tabler badges live inside status cells. The design system mandates pill chips.
+
     tbody .badge {
         border-radius: var(--swp-radius-full);
         padding: 2px 10px;
@@ -761,6 +764,7 @@
         letter-spacing: 0;
 
         // `text-gray-fg` is amber-bound; neutralise the Cancelled chip explicitly.
+
         &.bg-gray.text-gray-fg {
             background-color: var(--swp-gray-100);
             color: var(--swp-text-secondary);
