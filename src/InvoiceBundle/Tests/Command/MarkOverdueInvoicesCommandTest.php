@@ -19,6 +19,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\MarkOverdueInvoicesCommand;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidWorx\Platform\PlatformBundle\Console\IO;
@@ -130,6 +131,49 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
         $output = $this->runCommand();
 
         self::assertStringContainsString('Processed 3 overdue invoices', $output);
+    }
+
+    /**
+     * Regression test for https://github.com/SolidInvoice/SolidInvoice/issues/2380
+     *
+     * When invoice lines are lazy-loaded into the Doctrine identity map during a
+     * workflow transition flush (e.g. by a postUpdate listener), a subsequent
+     * detach($invoice) left the lines managed but pointing to the now-detached
+     * invoice entity. The next flush then threw ORMInvalidArgumentException
+     * ("A new entity was found through Line#invoice"). The fix is to call
+     * clear() instead of detach() to purge the entire identity map between
+     * iterations, preventing stale association references.
+     */
+    public function testCommandHandlesMultipleOverdueInvoicesWithLines(): void
+    {
+        $company = CompanyFactory::createOne();
+        $client = ClientFactory::createOne(['company' => $company]);
+
+        InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Pending,
+            'due' => new DateTimeImmutable('2 days ago'),
+            'company' => $company,
+            'client' => $client,
+            'lines' => [
+                (new Line())->setDescription('Service A')->setQty(1)->setPrice(5000),
+                (new Line())->setDescription('Service B')->setQty(2)->setPrice(2500),
+            ],
+        ]);
+
+        InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Pending,
+            'due' => new DateTimeImmutable('yesterday'),
+            'company' => $company,
+            'client' => $client,
+            'lines' => [
+                (new Line())->setDescription('Service C')->setQty(1)->setPrice(7500),
+            ],
+        ]);
+
+        $output = $this->runCommand();
+
+        self::assertStringContainsString('Processed 2 overdue invoices', $output);
+        self::assertStringContainsString('Errors: 0', $output);
     }
 
     private function runCommand(): string
