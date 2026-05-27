@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;

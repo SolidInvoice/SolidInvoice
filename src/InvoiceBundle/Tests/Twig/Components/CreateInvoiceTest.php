@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
