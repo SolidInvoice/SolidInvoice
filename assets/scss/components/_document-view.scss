@@ -208,6 +208,7 @@
 
 // Pill-shaped status chips wherever they appear inside the document view or its
 // sidebar, matching the design system spec (radius-full, weight 500, 2px x 10px).
+
 .doc-card .badge,
 .doc-page-header .badge,
 .doc-view-header .badge,
@@ -220,6 +221,7 @@
     // Tabler binds `text-gray-fg` to amber via --bs-secondary; this makes a
     // `Cancelled` chip read as a warning. Pin the neutral chip to slate so the
     // colour matches what the class name implies.
+
     &.bg-gray.text-gray-fg {
         background-color: var(--swp-gray-100);
         color: var(--swp-text-secondary);
@@ -504,11 +506,13 @@
 }
 
 // Payments received are money in; success green earns its place here.
+
 .totals-row-payment .totals-value {
     color: var(--swp-success);
 }
 
 // A discount is a deduction, not a success state. Stay neutral; quiet $0 cases.
+
 .totals-row-discount .totals-value {
     color: var(--swp-text-muted);
 }
@@ -526,6 +530,7 @@
 
     // Grand total is informational; green is reserved for actually-paid states
     // (handled by .summary-item-paid / .totals-row-payment).
+
     .totals-value {
         font-size: var(--swp-text-lg, 1.125rem);
         font-weight: var(--swp-font-bold, 700);
@@ -665,6 +670,7 @@
 
     // Amount field: total invoice value. Neutral by default; the status row carries
     // the "Paid / Overdue / Draft" meaning. Green here would double-encode.
+
     .summary-value-amount {
         font-size: var(--swp-text-base, 1rem);
         font-weight: var(--swp-font-bold, 700);
@@ -673,6 +679,7 @@
     }
 
     // Balance still owed: amber attention is appropriate.
+
     .summary-value-balance {
         font-weight: var(--swp-font-bold, 700);
         color: var(--swp-warning);

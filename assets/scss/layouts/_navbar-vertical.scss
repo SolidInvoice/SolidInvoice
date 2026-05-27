@@ -19,6 +19,7 @@
     box-shadow: none;
 
     // Brand: logo + product name at the top of the sidebar.
+
     .navbar-brand {
         color: var(--swp-gray-50);
         font-weight: var(--swp-font-semibold);
@@ -29,6 +30,7 @@
     }
 
     // Nav link default state.
+
     .nav-link {
         color: var(--swp-gray-300);
         border-radius: var(--swp-radius-md);
@@ -41,12 +43,14 @@
         }
 
         // Hover: lift to a slightly lighter slate, brighter text.
+
         &:hover {
             background-color: var(--swp-gray-600);
             color: var(--swp-gray-50);
         }
 
         // Keyboard focus halo, per The Focus Halo Rule.
+
         &:focus-visible {
             outline: none;
             box-shadow: var(--swp-ring-primary);
@@ -55,6 +59,7 @@
 
         // Active route: tinted background pulled from Trust Green family.
         // Looks like a soft "button" on the dark slate without any side stripe.
+
         &.active {
             background-color: var(--swp-primary-light);
             color: var(--swp-primary-dark);
@@ -73,6 +78,7 @@
     }
 
     // Section labels (if any) sit quietly.
+
     .nav-subtitle,
     .nav-header {
         color: var(--swp-gray-400);
@@ -83,6 +89,7 @@
     }
 
     // Dropdown chevrons match secondary text.
+
     .nav-link-toggle,
     .dropdown-toggle::after {
         color: var(--swp-gray-400);
@@ -90,6 +97,7 @@
 
     // Nested dropdown menus inside the sidebar lift onto a paper surface so
     // submenu content reads like content, not nav chrome.
+
     .navbar-nav .dropdown-menu {
         background-color: var(--swp-surface);
         border: 1px solid var(--swp-border-light);
@@ -113,6 +121,7 @@
     }
 
     // Collapsed expand toggle (hamburger on mobile).
+
     .navbar-toggler {
         color: var(--swp-gray-200);
         border-color: var(--swp-gray-600);
@@ -125,8 +134,8 @@
 }
 
 // Mobile horizontal navbar (rendered when the vertical drawer collapses).
-.navbar.navbar-vertical.navbar-expand-lg .navbar-collapse {
 
+.navbar.navbar-vertical.navbar-expand-lg .navbar-collapse {
     @media (width < 992px) {
         background-color: var(--swp-gray-700);
     }
