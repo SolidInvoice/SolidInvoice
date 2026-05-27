@@ -13,21 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Action;
 
-use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Uid\Ulid;
 
 final readonly class Index
 {
-    public function __construct(ClientRepository $clientRepository)
-    {
-        dd(
-            $clientRepository->find(Ulid::fromString('01KSFZJXVKRXXQE0DDRTXPKHE3')),
-            $clientRepository->find(Ulid::fromString('01KSFZG96P6AHPR78BGQV1ZR1S')),
-        );
-    }
-
     /**
      * @return array{}
      */
