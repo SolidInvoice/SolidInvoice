@@ -208,7 +208,7 @@ final class CreateInvoiceTest extends LiveComponentTest
             data: [
                 'dto' => $dto,
                 'isEdit' => true,
-                'invoiceEntity' => $invoice,
+                'invoice' => $invoice,
             ],
             client: $this->client,
         )->actingAs($this->getUser());
@@ -217,8 +217,10 @@ final class CreateInvoiceTest extends LiveComponentTest
         $component->call('saveSend');
 
         // The invoice status must remain Pending — no re-accept attempted.
-        $em->refresh($invoice);
-        self::assertSame(InvoiceStatus::Pending, $invoice->getStatus());
+        $em = self::getContainer()->get('doctrine')->getManager();
+        $refreshedInvoice = $em->find(Invoice::class, $invoice->getId());
+        self::assertNotNull($refreshedInvoice);
+        self::assertSame(InvoiceStatus::Pending, $refreshedInvoice->getStatus());
 
         // The action must have produced a redirect (not a 422 / exception page).
         $response = $this->client->getResponse();

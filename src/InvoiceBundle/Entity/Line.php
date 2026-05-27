@@ -47,6 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\MappedSuperclass]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string', enumType: InvoiceLineType::class)]
 #[ORM\DiscriminatorMap(['invoice' => Line::class, 'recurring_invoice' => RecurringInvoiceLine::class])]
