@@ -7,4 +7,4 @@ parameters:
     scanDirectories:
         - var/cache/test/Symfony/Config
     symfony:
-        container_xml_path: var/cache/test/SolidInvoice_KernelTestDebugContainer.xml
+        containerXmlPath: var/cache/test/SolidInvoice_KernelTestDebugContainer.xml
