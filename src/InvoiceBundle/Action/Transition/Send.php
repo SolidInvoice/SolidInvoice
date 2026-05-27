@@ -52,6 +52,15 @@ final class Send
             };
         }
 
+        if ($invoice->getUsers()->isEmpty()) {
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'invoice.send.no_recipients';
+                }
+            };
+        }
+
         if (InvoiceStatus::Pending !== $invoice->getStatus() && $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
