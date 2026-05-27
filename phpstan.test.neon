@@ -1,5 +1,6 @@
 includes:
     - phpstan.neon
+    - phpstan-test-baseline.neon
 
 parameters:
     scanFiles:
