@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use SolidInvoice\CoreBundle\Export\Message\RequestCompanyExport;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
+use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -40,6 +41,14 @@ return static function (FrameworkConfig $config): void {
     // scheduler returns quickly and Messenger's retry strategy handles
     // transient mailer failures.
     $messenger->routing(SendOnboardingEmailMessage::class)
+        ->senders(['async']);
+
+    // Route invoice reminder dispatch through the async transport for the same
+    // reason: the hourly cron command must return quickly (seconds), not block
+    // while sending one SMTP email per qualifying invoice.  Without this routing
+    // the handler runs synchronously and a slow/unreachable mail server causes
+    // the cron to exceed Sentry's max_runtime → perpetual "timeout" alerts.
+    $messenger->routing(SendInvoiceReminderMessage::class)
         ->senders(['async']);
 
     // Full company data exports are long-running and email the user on completion,
