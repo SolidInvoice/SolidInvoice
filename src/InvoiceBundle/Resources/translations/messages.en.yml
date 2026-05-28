@@ -200,6 +200,12 @@ invoice:
             message: 'This will send a payment reminder email for invoice %invoice_id% to the contacts listed below.'
             recipients: 'Email will be sent to:'
             confirm: 'Send Reminder'
+        send_paid:
+            title: 'Send Paid Invoice'
+            heading: 'Send invoice receipt?'
+            message: 'This will resend the invoice email for invoice %invoice_id% to the contacts listed below.'
+            recipients: 'Email will be sent to:'
+            confirm: 'Send Invoice'
     recurring:
         create:
             title: 'Create Recurring Invoice'
