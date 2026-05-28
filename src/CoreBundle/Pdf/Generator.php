@@ -45,6 +45,7 @@ class Generator
             'default_font' => 'helvetica',
         ]);
 
+        $mpdf->allow_charset_conversion = false;
         $mpdf->showWatermarkText = true;
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->SetProtection(['print']);
