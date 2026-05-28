@@ -138,6 +138,37 @@
                     </div>
                 {% endtoggle %}
 
+                {% toggle 'facebook_oauth_login' %}
+                    {# Facebook Account Linking #}
+                    <div class="security-item">
+                        <div class="security-item-info">
+                            <div class="security-item-icon {{ app.user.facebookId is not empty ? 'security-item-icon-success' : 'security-item-icon-warning' }}">
+                                {{ ux_icon(app.user.facebookId is not empty ? 'tabler:brand-facebook' : 'tabler:unlink', {width: 20, height: 20}) }}
+                            </div>
+                            <div class="security-item-content">
+                                <h4 class="security-item-title">{{ 'Facebook Account'|trans }}</h4>
+                                <p class="security-item-description">
+                                    {% if app.user.facebookId is not empty %}
+                                        {{ 'Your account is linked with Facebook'|trans }}
+                                    {% else %}
+                                        {{ 'Link your account with Facebook for easier sign-in'|trans }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="security-item-action">
+                            {% if app.user.facebookId is empty %}
+                                <a href="{{ path('_oauth_connect', {'service': 'facebook'}) }}" class="btn btn-sm btn-outline-primary facebook-signin-btn">
+                                    {{ ux_icon('tabler:brand-facebook', {width: 16, height: 16}) }}
+                                    {{ 'Sign in with Facebook'|trans }}
+                                </a>
+                            {% else %}
+                                <span class="badge bg-success-lt">{{ 'Linked'|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endtoggle %}
+
                 {# Password #}
                 <div class="security-item">
                     <div class="security-item-info">

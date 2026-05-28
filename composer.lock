@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43ec58a3b40c84f44bd78059226924a0",
+    "content-hash": "6c378953389378f918988425fb46c6f4",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -1789,16 +1789,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.18.2",
+            "version": "2.18.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "0ff098b29b8b3c68307c8987dcaed7fd829c6546"
+                "reference": "241d61f6bbc77275d5a9f95d514241c058bf2d0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/0ff098b29b8b3c68307c8987dcaed7fd829c6546",
-                "reference": "0ff098b29b8b3c68307c8987dcaed7fd829c6546",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/241d61f6bbc77275d5a9f95d514241c058bf2d0a",
+                "reference": "241d61f6bbc77275d5a9f95d514241c058bf2d0a",
                 "shasum": ""
             },
             "require": {
@@ -1835,6 +1835,7 @@
                 "psr/log": "^1.1.4 || ^2.0 || ^3.0",
                 "symfony/doctrine-messenger": "^6.4 || ^7.0",
                 "symfony/expression-language": "^6.4 || ^7.0",
+                "symfony/http-kernel": "^6.4 || ^7.0",
                 "symfony/messenger": "^6.4 || ^7.0",
                 "symfony/property-info": "^6.4 || ^7.0",
                 "symfony/security-bundle": "^6.4 || ^7.0",
@@ -1890,7 +1891,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.18.2"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.18.3"
             },
             "funding": [
                 {
@@ -1906,7 +1907,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-20T21:35:32+00:00"
+            "time": "2026-06-08T08:22:50+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -4706,6 +4707,62 @@
             "time": "2025-11-25T22:17:17+00:00"
         },
         {
+            "name": "league/oauth2-facebook",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-facebook.git",
+                "reference": "ec6d62a00b548c6cd56d7b734346b9e6befbfbbb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-facebook/zipball/ec6d62a00b548c6cd56d7b734346b9e6befbfbbb",
+                "reference": "ec6d62a00b548c6cd56d7b734346b9e6befbfbbb",
+                "shasum": ""
+            },
+            "require": {
+                "league/oauth2-client": "^2.0",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "mockery/mockery": "~1.3.0",
+                "phpunit/phpunit": "^9.4",
+                "squizlabs/php_codesniffer": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth2\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sammy Kaye Powers",
+                    "email": "me@sammyk.me",
+                    "homepage": "http://www.sammyk.me"
+                }
+            ],
+            "description": "Facebook OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
+            "keywords": [
+                "Authentication",
+                "authorization",
+                "client",
+                "facebook",
+                "oauth",
+                "oauth2"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/oauth2-facebook/issues",
+                "source": "https://github.com/thephpleague/oauth2-facebook/tree/2.2.0"
+            },
+            "time": "2022-02-24T18:45:07+00:00"
+        },
+        {
             "name": "league/oauth2-google",
             "version": "4.2.0",
             "source": {
@@ -6048,16 +6105,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.11.4",
+            "version": "3.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "e890471a3494740f7d9326d72ce6a8c559ffee60"
+                "reference": "5a09cc37e4349453c7777b102ce7648e9f36ba94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/e890471a3494740f7d9326d72ce6a8c559ffee60",
-                "reference": "e890471a3494740f7d9326d72ce6a8c559ffee60",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/5a09cc37e4349453c7777b102ce7648e9f36ba94",
+                "reference": "5a09cc37e4349453c7777b102ce7648e9f36ba94",
                 "shasum": ""
             },
             "require": {
@@ -6149,7 +6206,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-07T09:57:54+00:00"
+            "time": "2026-06-14T16:57:45+00:00"
         },
         {
             "name": "nette/schema",
@@ -9097,16 +9154,16 @@
         },
         {
             "name": "scheb/2fa-backup-code",
-            "version": "v7.13.1",
+            "version": "v7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-backup-code.git",
-                "reference": "35f1ace4be7be2c10158d2bb8284208499111db8"
+                "reference": "73946182322f43cf82c5ee8c5481481a570ade40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-backup-code/zipball/35f1ace4be7be2c10158d2bb8284208499111db8",
-                "reference": "35f1ace4be7be2c10158d2bb8284208499111db8",
+                "url": "https://api.github.com/repos/scheb/2fa-backup-code/zipball/73946182322f43cf82c5ee8c5481481a570ade40",
+                "reference": "73946182322f43cf82c5ee8c5481481a570ade40",
                 "shasum": ""
             },
             "require": {
@@ -9140,22 +9197,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-backup-code/tree/v7.13.1"
+                "source": "https://github.com/scheb/2fa-backup-code/tree/v7.14.0"
             },
-            "time": "2025-11-20T13:35:24+00:00"
+            "time": "2026-01-24T13:47:32+00:00"
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v7.13.1",
+            "version": "v7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "edcc14456b508aab37ec792cfc36793d04226784"
+                "reference": "65fa9eb61d1205f2024f14c8c38b53e7bb20927c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/edcc14456b508aab37ec792cfc36793d04226784",
-                "reference": "edcc14456b508aab37ec792cfc36793d04226784",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/65fa9eb61d1205f2024f14c8c38b53e7bb20927c",
+                "reference": "65fa9eb61d1205f2024f14c8c38b53e7bb20927c",
                 "shasum": ""
             },
             "require": {
@@ -9208,22 +9265,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v7.13.1"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v7.14.0"
             },
-            "time": "2025-12-18T15:29:07+00:00"
+            "time": "2026-06-12T18:31:07+00:00"
         },
         {
             "name": "scheb/2fa-email",
-            "version": "v7.13.1",
+            "version": "v7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-email.git",
-                "reference": "ee70a062dde6aa9d566f99d2b1ae40b544ddbcef"
+                "reference": "9e40b8e0420ca7ed491b983f79f867c5be3a7432"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-email/zipball/ee70a062dde6aa9d566f99d2b1ae40b544ddbcef",
-                "reference": "ee70a062dde6aa9d566f99d2b1ae40b544ddbcef",
+                "url": "https://api.github.com/repos/scheb/2fa-email/zipball/9e40b8e0420ca7ed491b983f79f867c5be3a7432",
+                "reference": "9e40b8e0420ca7ed491b983f79f867c5be3a7432",
                 "shasum": ""
             },
             "require": {
@@ -9260,22 +9317,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-email/tree/v7.13.1"
+                "source": "https://github.com/scheb/2fa-email/tree/v7.14.0"
             },
-            "time": "2025-11-20T13:35:24+00:00"
+            "time": "2026-06-08T19:34:00+00:00"
         },
         {
             "name": "scheb/2fa-totp",
-            "version": "v7.13.1",
+            "version": "v7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-totp.git",
-                "reference": "89a0557e191cc3b49d138452e095e8b5fb703f40"
+                "reference": "7bc9ab6f974d7c12bfe42c917c5ff0e805532c2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/89a0557e191cc3b49d138452e095e8b5fb703f40",
-                "reference": "89a0557e191cc3b49d138452e095e8b5fb703f40",
+                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/7bc9ab6f974d7c12bfe42c917c5ff0e805532c2e",
+                "reference": "7bc9ab6f974d7c12bfe42c917c5ff0e805532c2e",
                 "shasum": ""
             },
             "require": {
@@ -9313,22 +9370,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-totp/tree/v7.13.1"
+                "source": "https://github.com/scheb/2fa-totp/tree/v7.14.0"
             },
-            "time": "2025-12-04T15:55:14+00:00"
+            "time": "2026-01-24T13:53:55+00:00"
         },
         {
             "name": "scheb/2fa-trusted-device",
-            "version": "v7.13.1",
+            "version": "v7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-trusted-device.git",
-                "reference": "ae3a5819faccbf151af078f432e4e6c97bb44ebf"
+                "reference": "590f400bac58bff70af24adbc702e57a30e493a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-trusted-device/zipball/ae3a5819faccbf151af078f432e4e6c97bb44ebf",
-                "reference": "ae3a5819faccbf151af078f432e4e6c97bb44ebf",
+                "url": "https://api.github.com/repos/scheb/2fa-trusted-device/zipball/590f400bac58bff70af24adbc702e57a30e493a3",
+                "reference": "590f400bac58bff70af24adbc702e57a30e493a3",
                 "shasum": ""
             },
             "require": {
@@ -9364,9 +9421,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-trusted-device/tree/v7.13.1"
+                "source": "https://github.com/scheb/2fa-trusted-device/tree/v7.14.0"
             },
-            "time": "2025-12-01T15:40:59+00:00"
+            "time": "2026-01-24T13:47:32+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -15785,16 +15842,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.38.1",
+            "version": "v1.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92"
+                "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/14c5439eec4ccff081ac14eca2dc57feb2a66d92",
-                "reference": "14c5439eec4ccff081ac14eca2dc57feb2a66d92",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
+                "reference": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
                 "shasum": ""
             },
             "require": {
@@ -15846,7 +15903,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.2"
             },
             "funding": [
                 {
@@ -15866,20 +15923,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T12:51:13+00:00"
+            "time": "2026-05-27T06:59:30+00:00"
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.38.1",
+            "version": "v1.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "8339098cae28673c15cce00d80734af0453054e2"
+                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/8339098cae28673c15cce00d80734af0453054e2",
-                "reference": "8339098cae28673c15cce00d80734af0453054e2",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/796a26abb75ce49f3a84433cd81bf1009d73d5f8",
+                "reference": "796a26abb75ce49f3a84433cd81bf1009d73d5f8",
                 "shasum": ""
             },
             "require": {
@@ -15926,7 +15983,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.38.2"
             },
             "funding": [
                 {
@@ -15946,7 +16003,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T12:51:13+00:00"
+            "time": "2026-05-27T06:51:48+00:00"
         },
         {
             "name": "symfony/polyfill-php84",

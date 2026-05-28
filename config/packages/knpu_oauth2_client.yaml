@@ -9,3 +9,11 @@ knpu_oauth2_client:
             redirect_params:
                 service: google
             #scope: ['email', 'profile']
+        facebook:
+            type: facebook
+            client_id: '%env(SOLIDINVOICE_OAUTH_CLIENT_FACEBOOK_CLIENT_ID)%'
+            client_secret: '%env(SOLIDINVOICE_OAUTH_CLIENT_FACEBOOK_CLIENT_SECRET)%'
+            redirect_route: _oauth_connect_check
+            redirect_params:
+                service: facebook
+            graph_api_version: v18.0

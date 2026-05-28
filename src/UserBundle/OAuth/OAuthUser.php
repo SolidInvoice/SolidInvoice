@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\OAuth;
 
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
@@ -30,6 +31,7 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getEmail(),
+            $this->resourceOwner instanceof FacebookUser => $this->resourceOwner->getEmail(),
             default => null,
         };
     }
@@ -37,20 +39,22 @@ final readonly class OAuthUser
     public function getFirstName(): string
     {
         return match (true) {
-            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getFirstName(),
+            $this->resourceOwner instanceof GoogleUser => (string) $this->resourceOwner->getFirstName(),
+            $this->resourceOwner instanceof FacebookUser => (string) $this->resourceOwner->getFirstName(),
             default => '',
         };
     }
 
     public function getId(): string
     {
-        return $this->resourceOwner->getId();
+        return (string) $this->resourceOwner->getId();
     }
 
     public function getLastName(): string
     {
         return match (true) {
-            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getLastName(),
+            $this->resourceOwner instanceof GoogleUser => (string) $this->resourceOwner->getLastName(),
+            $this->resourceOwner instanceof FacebookUser => (string) $this->resourceOwner->getLastName(),
             default => '',
         };
     }
@@ -59,6 +63,7 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => 'googleId',
+            $this->resourceOwner instanceof FacebookUser => 'facebookId',
             default => '',
         };
     }
@@ -67,6 +72,7 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->toArray()['email_verified'] ?? false,
+            $this->resourceOwner instanceof FacebookUser => true,
             default => false,
         };
     }

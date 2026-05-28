@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\OAuth;
 
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -150,5 +151,68 @@ final class OAuthUserTest extends TestCase
         $oauthUser = new OAuthUser($resourceOwner);
 
         self::assertFalse($oauthUser->getEmailVerified());
+    }
+
+    public function testGetEmailWithFacebookUser(): void
+    {
+        $facebookUser = new FacebookUser([
+            'id' => '123',
+            'email' => 'fb@example.com',
+        ]);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertSame('fb@example.com', $oauthUser->getEmail());
+    }
+
+    public function testGetFirstNameWithFacebookUser(): void
+    {
+        $facebookUser = new FacebookUser([
+            'id' => '123',
+            'first_name' => 'Jane',
+        ]);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertSame('Jane', $oauthUser->getFirstName());
+    }
+
+    public function testGetLastNameWithFacebookUser(): void
+    {
+        $facebookUser = new FacebookUser([
+            'id' => '123',
+            'last_name' => 'Smith',
+        ]);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertSame('Smith', $oauthUser->getLastName());
+    }
+
+    public function testGetPropertyMapWithFacebookUser(): void
+    {
+        $facebookUser = new FacebookUser(['id' => '123']);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertSame('facebookId', $oauthUser->getPropertyMap());
+    }
+
+    public function testGetEmailVerifiedWithFacebookUserIsAlwaysTrue(): void
+    {
+        $facebookUser = new FacebookUser(['id' => '123']);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertTrue($oauthUser->getEmailVerified());
+    }
+
+    public function testGetIdWithFacebookUser(): void
+    {
+        $facebookUser = new FacebookUser(['id' => '987654321']);
+
+        $oauthUser = new OAuthUser($facebookUser);
+
+        self::assertSame('987654321', $oauthUser->getId());
     }
 }

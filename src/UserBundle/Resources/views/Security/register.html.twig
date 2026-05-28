@@ -92,17 +92,29 @@
 
                             {{ form_end(form) }}
                             
-                            {% toggle 'google_oauth_login' %}
+                            {% if toggle('google_oauth_login') or toggle('facebook_oauth_login') %}
                                 <div class="hr-text">{{ 'or'|trans }}</div>
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">
-                                            {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) }}
-                                            {{ 'security.register.links.google'|trans }}
-                                        </a>
+                                {% toggle 'google_oauth_login' %}
+                                    <div class="row mb-2">
+                                        <div class="col">
+                                            <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">
+                                                {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) }}
+                                                {{ 'security.register.links.google'|trans }}
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            {% endtoggle %}
+                                {% endtoggle %}
+                                {% toggle 'facebook_oauth_login' %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="{{ path('_oauth_connect', {'service': 'facebook' }) }}" class="btn btn-outline-secondary w-100">
+                                                {{ ux_icon('tabler:brand-facebook', {width: 24, height: 24}) }}
+                                                {{ 'security.register.links.facebook'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endtoggle %}
+                            {% endif %}
                         </div>
                     </div>
                     
