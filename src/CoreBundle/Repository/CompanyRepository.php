@@ -15,11 +15,8 @@ namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
-use Payum\Core\Model\Identity;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -103,39 +100,6 @@ class CompanyRepository extends EntityRepository
         }
 
         $em = $this->getEntityManager();
-
-        // Delete Payum security tokens for this company's payments.
-        // security_token.details stores a PHP-serialized Identity object (no FK to payments),
-        // so ORM cascade cannot reach these rows. Load the company's payments, then match
-        // SecurityToken records by their deserialized Identity rather than raw SQL.
-        $payments = $em->getRepository(Payment::class)->findBy(['company' => $companyId]);
-
-        if ($payments !== []) {
-            $paymentIds = [];
-            foreach ($payments as $payment) {
-                $paymentIds[(string) $payment->getId()] = true;
-            }
-
-            /** @var SecurityToken[] $tokens */
-            $tokens = $em->getRepository(SecurityToken::class)->findAll();
-            foreach ($tokens as $token) {
-                $details = $token->getDetails();
-
-                if (! $details instanceof Identity) {
-                    continue;
-                }
-
-                if ($details->getClass() !== Payment::class) {
-                    continue;
-                }
-
-                if (! isset($paymentIds[(string) $details->getId()])) {
-                    continue;
-                }
-
-                $em->remove($token);
-            }
-        }
 
         $em->remove($company);
         $em->flush();

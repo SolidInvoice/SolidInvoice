@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\PaymentBundle\Listener\Doctrine;
+
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
+use Payum\Core\Model\Identity;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\SecurityToken;
+use Symfony\Component\Uid\Ulid;
+
+#[AsDoctrineListener(Events::prePersist)]
+#[AsDoctrineListener(Events::preUpdate)]
+#[AsDoctrineListener(Events::preRemove)]
+final class SecurityTokenPaymentLinker
+{
+    public function prePersist(PrePersistEventArgs $args): void
+    {
+        $this->link($args->getObject(), $args);
+    }
+
+    public function preUpdate(PreUpdateEventArgs $args): void
+    {
+        $this->link($args->getObject(), $args);
+    }
+
+    public function preRemove(PreRemoveEventArgs $args): void
+    {
+        $object = $args->getObject();
+
+        if (! $object instanceof Payment) {
+            return;
+        }
+
+        $em = $args->getObjectManager();
+
+        foreach ($em->getRepository(SecurityToken::class)->findBy(['payment' => $object]) as $token) {
+            $em->remove($token);
+        }
+    }
+
+    private function link(object $object, PrePersistEventArgs|PreUpdateEventArgs $args): void
+    {
+        if (! $object instanceof SecurityToken) {
+            return;
+        }
+
+        $details = $object->getDetails();
+
+        if (! $details instanceof Identity || $details->getClass() !== Payment::class) {
+            return;
+        }
+
+        $id = $details->getId();
+
+        if (! $id instanceof Ulid) {
+            try {
+                $id = Ulid::fromString((string) $id);
+            } catch (\Throwable) {
+                return;
+            }
+        }
+
+        $em = $args->getObjectManager();
+        $payment = $em->getRepository(Payment::class)->find($id);
+        $object->setPayment($payment);
+
+        if ($args instanceof PreUpdateEventArgs) {
+            $em->getUnitOfWork()->recomputeSingleEntityChangeSet(
+                $em->getClassMetadata(SecurityToken::class),
+                $object,
+            );
+        }
+    }
+}
