@@ -17,6 +17,9 @@
                 "action": "bin/ecs check"
             },
             {
+                "action": "bin/rector --dry-run"
+            },
+            {
                 "action": "find ./src -type f -name \"*.yml\" | xargs bin/console lint:yaml"
             }
         ]
