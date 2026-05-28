@@ -17,6 +17,8 @@ use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use SolidInvoice\CoreBundle\Config\LoadsBundleViewTemplate;
+use SolidInvoice\CoreBundle\Entity\BillingTemplate;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
@@ -26,6 +28,7 @@ use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use function dirname;
 use function get_debug_type;
 
 /**
@@ -33,6 +36,8 @@ use function get_debug_type;
  */
 final readonly class DefaultData
 {
+    use LoadsBundleViewTemplate;
+
     private ObjectManager $em;
 
     /**
@@ -54,6 +59,7 @@ final readonly class DefaultData
     {
         $this->createAppConfig($company, $data);
         $this->createDefaultCustomFields($company);
+        $this->createBillingTemplates($company);
         $this->createPaymentMethods();
 
         $this->em->flush();
@@ -76,6 +82,42 @@ final readonly class DefaultData
                 ->setPosition($position)
                 ->setCompany($company);
             $this->em->persist($field);
+        }
+    }
+
+    private function createBillingTemplates(Company $company): void
+    {
+        $bundleDirs = [
+            BillingTemplate::TYPE_INVOICE => dirname(__DIR__, 2) . '/InvoiceBundle/Resources/views',
+            BillingTemplate::TYPE_QUOTE => dirname(__DIR__, 2) . '/QuoteBundle/Resources/views',
+        ];
+
+        $sources = [
+            BillingTemplate::TYPE_INVOICE => [
+                BillingTemplate::VARIANT_HTML => 'invoice_template.html.twig',
+                BillingTemplate::VARIANT_PDF => 'Pdf/invoice.html.twig',
+                BillingTemplate::VARIANT_EMAIL => 'Email/invoice.html.twig',
+            ],
+            BillingTemplate::TYPE_QUOTE => [
+                BillingTemplate::VARIANT_HTML => 'quote_template.html.twig',
+                BillingTemplate::VARIANT_PDF => 'Pdf/quote.html.twig',
+                BillingTemplate::VARIANT_EMAIL => 'Email/quote.html.twig',
+            ],
+        ];
+
+        foreach ($sources as $type => $variants) {
+            foreach ($variants as $variant => $relativePath) {
+                $template = new BillingTemplate();
+                $template->setType($type);
+                $template->setVariant($variant);
+                $template->setName(BillingTemplate::DEFAULT_NAME);
+                $template->setContent($this->loadBundleViewTemplate($bundleDirs[$type], $relativePath));
+                $template->setActive(true);
+                $template->setSystem(true);
+                $template->setCompany($company);
+
+                $this->em->persist($template);
+            }
         }
     }
 

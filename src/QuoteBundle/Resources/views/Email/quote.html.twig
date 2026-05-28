@@ -43,7 +43,7 @@
         <row>
             <columns>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
+                    {{ 'quote.info'|trans({'%company%': template_setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
                 </p>
             </columns>
         </row>

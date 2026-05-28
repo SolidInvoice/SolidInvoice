@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -47,6 +48,7 @@ class ViewBilling
         private readonly CompanySelector $companySelector,
         private readonly Generator $pdfGenerator,
         private readonly Environment $twig,
+        private readonly BillingTemplateResolver $templateResolver,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
@@ -131,7 +133,12 @@ class ViewBilling
 
         // Handle PDF format
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            $html = $this->twig->render($options['pdfTemplate'], [$options['entity'] => $entity]);
+            $html = $this->templateResolver->render(
+                $this->twig,
+                $options['entity'],
+                'pdf',
+                [$options['entity'] => $entity],
+            );
             $filename = sprintf('%s_%s.pdf', $options['entity'], $entityId);
 
             return new PdfResponse($this->pdfGenerator->generate($html), $filename);

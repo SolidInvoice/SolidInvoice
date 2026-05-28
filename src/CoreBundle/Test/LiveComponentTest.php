@@ -85,7 +85,8 @@ abstract class LiveComponentTest extends KernelTestCase
             $user = new User();
             $user->setEmail('test@example.com')
                 ->setEnabled(true)
-                ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
+                ->setPassword(password_hash('Password1', PASSWORD_DEFAULT))
+                ->addRole('ROLE_ADMIN');
 
             foreach ($companies as $company) {
                 $user->addCompany($company);

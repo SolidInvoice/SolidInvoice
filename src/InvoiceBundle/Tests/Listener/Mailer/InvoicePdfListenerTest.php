@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoicePdfListener;
@@ -38,9 +39,11 @@ class InvoicePdfListenerTest extends TestCase
         $mailer->shouldReceive('send');
 
         $twig = M::mock(Environment::class);
-        $twig->shouldReceive('render')
+
+        $resolver = M::mock(BillingTemplateResolver::class);
+        $resolver->shouldReceive('render')
             ->once()
-            ->with('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])
+            ->with($twig, 'invoice', 'pdf', ['invoice' => $invoice])
             ->andReturn('<p>Invoice #1</p>');
 
         $pdf = M::mock(Generator::class);
@@ -51,7 +54,7 @@ class InvoicePdfListenerTest extends TestCase
             ->with('<p>Invoice #1</p>')
             ->andReturn('PDF: Invoice #1');
 
-        $listener = new InvoicePdfListener($pdf, $twig);
+        $listener = new InvoicePdfListener($pdf, $resolver, $twig);
 
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));

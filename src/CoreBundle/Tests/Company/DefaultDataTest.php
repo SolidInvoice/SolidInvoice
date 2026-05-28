@@ -19,6 +19,7 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Config\SystemConfigProvider;
+use SolidInvoice\CoreBundle\Entity\BillingTemplate;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\InvoiceBundle\Config\ConfigProvider as InvoiceConfigProvider;
@@ -48,6 +49,11 @@ final class DefaultDataTest extends TestCase
         $entityManager->expects('persist')
             ->with(M::type(CustomField::class))
             ->times(3);
+
+        $entityManager
+            ->expects('persist')
+            ->with(M::type(BillingTemplate::class))
+            ->times(6);
 
         $entityManager->expects('persist')
             ->with(M::type(PaymentMethod::class))

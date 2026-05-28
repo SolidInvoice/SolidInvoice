@@ -19,7 +19,9 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Twig\Extension\SandboxExtension;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -147,4 +149,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ExportSerializer::class)
         ->args([service('solidinvoice.core.export.serializer')]);
+
+    // Register the Twig sandbox extension produced by BillingTemplateResolver so
+    // user-edited billing templates rendered through createTemplate() are forced
+    // through the strict whitelist policy.
+    $services
+        ->set(SandboxExtension::class)
+        ->factory([service(BillingTemplateResolver::class), 'createSandboxExtension'])
+        ->tag('twig.extension');
 };

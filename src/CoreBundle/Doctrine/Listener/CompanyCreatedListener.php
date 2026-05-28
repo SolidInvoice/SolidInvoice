@@ -42,6 +42,6 @@ final readonly class CompanyCreatedListener
         $this->companySelector->switchCompany($company->getId());
 
         /** @TODO: Need a different way to specify the currency and not add it to the company entity */
-        ($this->defaultData)($company, ['currency' => $company->currency]);
+        ($this->defaultData)($company, ['currency' => $company->getCurrency()]);
     }
 }

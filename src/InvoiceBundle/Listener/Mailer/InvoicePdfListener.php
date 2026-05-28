@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
@@ -26,10 +27,11 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoicePdfListenerTest
  */
-readonly class InvoicePdfListener implements EventSubscriberInterface
+final readonly class InvoicePdfListener implements EventSubscriberInterface
 {
     public function __construct(
         private Generator $generator,
+        private BillingTemplateResolver $templateResolver,
         private Environment $twig
     ) {
     }
@@ -43,9 +45,14 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if ($message instanceof InvoiceEmail && $this->generator->canPrintPdf()) {
-            $content = $this->generator->generate(
-                $this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $message->getInvoice()])
+            $html = $this->templateResolver->render(
+                $this->twig,
+                'invoice',
+                'pdf',
+                ['invoice' => $message->getInvoice()],
             );
+
+            $content = $this->generator->generate($html);
 
             $message->attach($content, "invoice_{$message->getInvoice()->getInvoiceId()}.pdf", 'application/pdf');
         }

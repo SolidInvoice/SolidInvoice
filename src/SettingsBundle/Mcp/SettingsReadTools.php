@@ -57,7 +57,7 @@ final class SettingsReadTools
         return [
             'id' => $company->getId()->toRfc4122(),
             'name' => $company->getName(),
-            'currency' => $company->currency,
+            'currency' => $company->getCurrency(),
         ];
     }
 }

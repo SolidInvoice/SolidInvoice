@@ -34,24 +34,43 @@ class Generator
      */
     public function generate(string $html): string
     {
-        $mpdf = new Mpdf([
-            'tempDir' => $this->cacheDir . '/pdf',
-            'margin_left' => 15,
-            'margin_right' => 15,
-            'margin_top' => 20,
-            'margin_bottom' => 25,
-            'margin_header' => 10,
-            'margin_footer' => 10,
-            'default_font' => 'helvetica',
-        ]);
+        // mPDF performs PCRE-heavy parsing on the input; a large HTML document
+        // can blow through the default pcre.backtrack_limit. Bump the limit
+        // for the duration of this call and restore the previous value when
+        // we're done so repeated renders don't leak an ever-growing limit.
+        $requiredBacktrackLimit = strlen($html) + 100000;
+        $previousBacktrackLimit = ini_get('pcre.backtrack_limit');
+        $limitChanged = false;
 
-        $mpdf->showWatermarkText = true;
-        $mpdf->SetDisplayMode('fullpage');
-        $mpdf->SetProtection(['print']);
-        $mpdf->setLogger($this->logger);
-        $mpdf->WriteHTML($html);
+        if (false !== $previousBacktrackLimit && (int) $previousBacktrackLimit < $requiredBacktrackLimit) {
+            ini_set('pcre.backtrack_limit', (string) $requiredBacktrackLimit);
+            $limitChanged = true;
+        }
 
-        return $mpdf->Output(null, Destination::STRING_RETURN);
+        try {
+            $mpdf = new Mpdf([
+                'tempDir' => $this->cacheDir . '/pdf',
+                'margin_left' => 15,
+                'margin_right' => 15,
+                'margin_top' => 20,
+                'margin_bottom' => 25,
+                'margin_header' => 10,
+                'margin_footer' => 10,
+                'default_font' => 'helvetica',
+            ]);
+
+            $mpdf->showWatermarkText = true;
+            $mpdf->SetDisplayMode('fullpage');
+            $mpdf->SetProtection(['print']);
+            $mpdf->setLogger($this->logger);
+            $mpdf->WriteHTML($html);
+
+            return $mpdf->Output(null, Destination::STRING_RETURN);
+        } finally {
+            if ($limitChanged && false !== $previousBacktrackLimit) {
+                ini_set('pcre.backtrack_limit', (string) $previousBacktrackLimit);
+            }
+        }
     }
 
     public function canPrintPdf(): bool

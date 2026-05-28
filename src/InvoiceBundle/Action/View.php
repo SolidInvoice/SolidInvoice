@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -31,6 +32,7 @@ final readonly class View
     public function __construct(
         private PaymentRepository $paymentRepository,
         private Generator $pdfGenerator,
+        private BillingTemplateResolver $templateResolver,
         private Environment $twig
     ) {
     }
@@ -46,7 +48,9 @@ final readonly class View
     public function __invoke(Request $request, Invoice $invoice): array | Response
     {
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            return new PdfResponse($this->pdfGenerator->generate($this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])), "invoice_{$invoice->getInvoiceId()}.pdf");
+            $html = $this->templateResolver->render($this->twig, 'invoice', 'pdf', ['invoice' => $invoice]);
+
+            return new PdfResponse($this->pdfGenerator->generate($html), "invoice_{$invoice->getInvoiceId()}.pdf");
         }
 
         return [

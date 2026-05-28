@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templating\BillingTemplateResolver;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
@@ -26,10 +27,11 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuotePdfListenerTest
  */
-readonly class QuotePdfListener implements EventSubscriberInterface
+final readonly class QuotePdfListener implements EventSubscriberInterface
 {
     public function __construct(
         private Generator $generator,
+        private BillingTemplateResolver $templateResolver,
         private Environment $twig
     ) {
     }
@@ -43,9 +45,14 @@ readonly class QuotePdfListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if ($message instanceof QuoteEmail && $this->generator->canPrintPdf()) {
-            $content = $this->generator->generate(
-                $this->twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $message->getQuote()])
+            $html = $this->templateResolver->render(
+                $this->twig,
+                'quote',
+                'pdf',
+                ['quote' => $message->getQuote()],
             );
+
+            $content = $this->generator->generate($html);
 
             $message->attach($content, "quote_{$message->getQuote()->getQuoteId()}.pdf", 'application/pdf');
         }

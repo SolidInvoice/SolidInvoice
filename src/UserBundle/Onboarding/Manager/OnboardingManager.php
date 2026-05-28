@@ -170,7 +170,7 @@ final class OnboardingManager
     {
         $company = new Company();
         $company->setName($data->companyName);
-        $company->currency = $data->companyCurrency ?? 'USD';
+        $company->setCurrency($data->companyCurrency ?? 'USD');
 
         $this->companyRepository->save($company);
 
@@ -185,7 +185,7 @@ final class OnboardingManager
         $client = new Client();
         $client->setName($data->clientName);
         $client->setCompany($company);
-        $client->setCurrencyCode($company->currency);
+        $client->setCurrencyCode($company->getCurrency());
 
         // Create a contact with the email
         $contact = new Contact();
