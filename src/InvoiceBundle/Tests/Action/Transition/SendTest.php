@@ -138,6 +138,51 @@ final class SendTest extends TestCase
         self::assertSame('invoice.transition.action.sent', $flashes[FlashResponse::FLASH_SUCCESS]);
     }
 
+    public function testSendWithPaidStatusSkipsTransitionAndDispatchesEmail(): void
+    {
+        $invoice = new Invoice();
+        $invoice->addUser((new Contact())->setEmail('test@example.com'));
+        $invoice->setStatus(InvoiceStatus::Paid);
+
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects(self::once())
+            ->method('can')
+            ->with($invoice, Graph::TRANSITION_ACCEPT)
+            ->willReturn(false);
+        $workflow->expects(self::never())->method('apply');
+
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects(self::once())
+            ->method('send')
+            ->with(self::isInstanceOf(InvoiceEmail::class));
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects(self::once())
+            ->method('generate')
+            ->with('_invoices_view', self::anything())
+            ->willReturn('/invoices/view/123');
+
+        $em = $this->createMock(ObjectManager::class);
+        $em->expects(self::once())->method('persist')->with($invoice);
+        $em->expects(self::once())->method('flush');
+
+        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
+
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false));
+        $action->setDoctrine($doctrine);
+
+        $response = $action(new Request(), $invoice);
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/invoices/view/123', $response->getTargetUrl());
+
+        $flashes = iterator_to_array($response->getFlash());
+        self::assertArrayHasKey(FlashResponse::FLASH_SUCCESS, $flashes);
+        self::assertSame('invoice.transition.action.sent', $flashes[FlashResponse::FLASH_SUCCESS]);
+    }
+
     public function testSendWithContactsAndNonPendingStatusAppliesTransition(): void
     {
         $invoice = new Invoice();

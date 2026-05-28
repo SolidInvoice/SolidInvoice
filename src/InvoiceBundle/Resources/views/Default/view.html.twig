@@ -80,6 +80,27 @@
                             </li>
                         {% endif %}
 
+                        {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid and invoice.users|length > 0 %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                {% if is_email_verification_gated() %}
+                                    <span class="d-block" tabindex="0"
+                                          data-bs-toggle="tooltip"
+                                          title="{{ email_verification_message('sending this invoice') }}">
+                                        <button type="button" class="dropdown-item disabled" disabled style="pointer-events: none;">
+                                            {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                            {{ "invoice.view.toolbar.send"|trans }}
+                                        </button>
+                                    </span>
+                                {% else %}
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#send-paid-invoice-modal">
+                                        {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                        {{ "invoice.view.toolbar.send"|trans }}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+
                         {% if workflow_can(invoice, 'edit') %}
                             <li>
                                 <a class="dropdown-item" href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
@@ -556,6 +577,38 @@
                         {{ 'invoice.modal.send_reminder.confirm'|trans }}
                     </button>
                 </form>
+            </twig:block>
+        </twig:Ui:Modal>
+    {% endif %}
+
+    {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid and invoice.users|length > 0 %}
+        <twig:Ui:Modal id="send-paid-invoice-modal" title="{{ 'invoice.modal.send_paid.title'|trans }}" :centered="true">
+            <div class="text-center py-3">
+                <div class="mb-3">
+                    {{ ux_icon('tabler:send', {width: 48, height: 48, class: 'text-primary'}) }}
+                </div>
+                <h3>{{ 'invoice.modal.send_paid.heading'|trans }}</h3>
+                <p class="text-muted">{{ 'invoice.modal.send_paid.message'|trans({'%invoice_id%': invoice.invoiceId}) }}</p>
+
+                <div class="mt-3">
+                    <p class="text-sm text-muted mb-2">{{ 'invoice.modal.send_paid.recipients'|trans }}</p>
+                    <div class="d-flex flex-column gap-1 align-items-center">
+                        {% for user in invoice.users %}
+                            <div class="text-sm">
+                                {{ ux_icon('tabler:mail', {width: 14, height: 14}) }}
+                                {{ user.email }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <twig:block name="footer">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'invoice.view.toolbar.cancel'|trans }}</button>
+                <a href="{{ path('_send_invoice', {'id': invoice.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                    {{ 'invoice.modal.send_paid.confirm'|trans }}
+                </a>
             </twig:block>
         </twig:Ui:Modal>
     {% endif %}
