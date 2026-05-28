@@ -88,18 +88,16 @@ jobs:
 
   rector:
     runs-on: ubuntu-latest
-      if: github.event.pull_request.head.repo.full_name == 'SolidInvoice/SolidInvoice'
-      steps:
+
+    if: github.event.pull_request.head.repo.full_name == 'SolidInvoice/SolidInvoice'
+
+    steps:
       - name: Harden Runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
         with:
           egress-policy: block
 
         - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-          if: github.event.pull_request.head.repo.full_name == github.repository
-          with:
-            # Must be used to trigger workflow after push
-            token: ${{ secrets.ACCESS_TOKEN }}
 
         - uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
           with:
@@ -107,7 +105,6 @@ jobs:
             coverage: none
 
         - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520
-        
         - run: vendor/bin/rector --ansi
         - run: vendor/bin/ecs --fix --ansi
 
