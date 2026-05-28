@@ -87,6 +87,7 @@ jobs:
         run: bin/phpstan analyse -c phpstan.test.neon
 
   rector:
+    name: Rector
     runs-on: ubuntu-latest
 
     steps:
@@ -95,16 +96,18 @@ jobs:
         with:
           egress-policy: block
 
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
-      - uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+      - name: Setup PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version-file: .php-version
           coverage: none
 
       - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520
-      - run: vendor/bin/rector --ansi
-      - run: vendor/bin/ecs --fix --ansi
+      - run: bin/rector --ansi
+      - run: bin/ecs --fix --ansi
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
