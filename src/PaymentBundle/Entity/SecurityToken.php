@@ -21,4 +21,20 @@ use Payum\Core\Model\Token;
 class SecurityToken extends Token
 {
     final public const string TABLE_NAME = 'security_token';
+
+    #[ORM\ManyToOne(targetEntity: Payment::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    private ?Payment $payment = null;
+
+    public function getPayment(): ?Payment
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?Payment $payment): self
+    {
+        $this->payment = $payment;
+
+        return $this;
+    }
 }
