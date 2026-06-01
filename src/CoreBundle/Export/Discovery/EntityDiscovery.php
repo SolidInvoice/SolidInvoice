@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Export\Discovery;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\AssociationMapping;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;
@@ -213,8 +214,9 @@ final readonly class EntityDiscovery
     }
 
     /**
-     * Doctrine ORM 3.x exposes association mappings as typed value objects with an
-     * `isOwningSide` property; older array-shaped mappings used the same key. This
+     * Doctrine ORM 3.x exposes association mappings as typed value objects whose
+     * owning side is reported by the `isOwningSide()` method; older array-shaped
+     * mappings carried the same information under the `isOwningSide` key. This
      * helper handles both representations.
      */
     private function isOwningSide(mixed $assocMapping): bool
@@ -223,8 +225,8 @@ final readonly class EntityDiscovery
             return (bool) ($assocMapping['isOwningSide'] ?? false);
         }
 
-        if (is_object($assocMapping) && property_exists($assocMapping, 'isOwningSide')) {
-            return (bool) $assocMapping->isOwningSide;
+        if ($assocMapping instanceof AssociationMapping) {
+            return $assocMapping->isOwningSide();
         }
 
         return false;

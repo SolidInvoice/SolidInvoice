@@ -59,7 +59,7 @@ final readonly class Migration
 
         $schemaTool = new SchemaTool($em);
 
-        $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables, true);
+        $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables);
         $conn = $em->getConnection();
 
         if (count($updateSchemaSql) > 0) {
