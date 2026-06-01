@@ -18,6 +18,15 @@ use Gedmo\Mapping\Event\AdapterInterface;
 use Gedmo\Mapping\MappedEventSubscriber;
 
 /**
+ * Legacy Gedmo extension scaffolding. The class still resolves against the
+ * installed Gedmo {@see MappedEventSubscriber} base under ORM 3, but it is
+ * intentionally NOT registered as a Doctrine listener: it has no Gedmo mapping
+ * driver under {@see __NAMESPACE__}\Mapping\Driver, so firing loadClassMetadata
+ * would throw a RuntimeException from Gedmo's ExtensionMetadataFactory. The
+ * archivable behaviour is provided entirely by the Archivable trait column
+ * mapping and the ArchivableFilter SQL filter, so this listener adds no
+ * behaviour and must remain unregistered.
+ *
  * @extends MappedEventSubscriber<array, AdapterInterface>
  */
 class ArchiveListener extends MappedEventSubscriber
