@@ -15,7 +15,6 @@ namespace SolidInvoice\PaymentBundle\Tests\Listener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
-use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork;
@@ -54,20 +53,9 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $args = new PrePersistEventArgs($token, $em);
 
         $listener = new SecurityTokenPaymentLinker();
-        $listener->prePersist($args);
+        $listener->prePersist($token, $args);
 
         self::assertSame($payment, $token->getPayment());
-    }
-
-    public function testPrePersistIgnoresNonSecurityToken(): void
-    {
-        $em = Mockery::mock(EntityManagerInterface::class);
-        $em->shouldNotReceive('getRepository');
-
-        $args = new PrePersistEventArgs(new Payment(), $em);
-
-        $listener = new SecurityTokenPaymentLinker();
-        $listener->prePersist($args);
     }
 
     public function testPrePersistIgnoresIdentityForNonPaymentClass(): void
@@ -81,7 +69,7 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $args = new PrePersistEventArgs($token, $em);
 
         $listener = new SecurityTokenPaymentLinker();
-        $listener->prePersist($args);
+        $listener->prePersist($token, $args);
 
         self::assertNull($token->getPayment());
     }
@@ -97,7 +85,7 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $args = new PrePersistEventArgs($token, $em);
 
         $listener = new SecurityTokenPaymentLinker();
-        $listener->prePersist($args);
+        $listener->prePersist($token, $args);
 
         self::assertNull($token->getPayment());
     }
@@ -105,7 +93,6 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
     public function testPrePersistSkipsInvalidUlidString(): void
     {
         $token = new SecurityToken();
-        // 'invalid' is 7 chars - too short for ULID, causes Ulid::fromString to throw
         $token->setDetails(new Identity('invalid', Payment::class));
 
         $em = Mockery::mock(EntityManagerInterface::class);
@@ -114,7 +101,7 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $args = new PrePersistEventArgs($token, $em);
 
         $listener = new SecurityTokenPaymentLinker();
-        $listener->prePersist($args);
+        $listener->prePersist($token, $args);
 
         self::assertNull($token->getPayment());
     }
@@ -144,67 +131,8 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $args = new PreUpdateEventArgs($token, $em, $changeSet);
 
         $listener = new SecurityTokenPaymentLinker();
-        $listener->preUpdate($args);
+        $listener->preUpdate($token, $args);
 
         self::assertSame($payment, $token->getPayment());
-    }
-
-    public function testPreUpdateIgnoresNonSecurityToken(): void
-    {
-        $em = Mockery::mock(EntityManagerInterface::class);
-        $em->shouldNotReceive('getRepository');
-        $em->shouldNotReceive('getUnitOfWork');
-
-        $changeSet = [];
-        $args = new PreUpdateEventArgs(new Payment(), $em, $changeSet);
-
-        $listener = new SecurityTokenPaymentLinker();
-        $listener->preUpdate($args);
-    }
-
-    public function testPreRemoveDeletesAssociatedTokensForPayment(): void
-    {
-        $payment = new Payment();
-        $token1 = new SecurityToken();
-        $token2 = new SecurityToken();
-
-        $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
-        $em->shouldReceive('getRepository')->with(SecurityToken::class)->andReturn($repo);
-        $repo->shouldReceive('findBy')->once()->with(['payment' => $payment])->andReturn([$token1, $token2]);
-        $em->shouldReceive('remove')->once()->with($token1);
-        $em->shouldReceive('remove')->once()->with($token2);
-
-        $args = new PreRemoveEventArgs($payment, $em);
-
-        $listener = new SecurityTokenPaymentLinker();
-        $listener->preRemove($args);
-    }
-
-    public function testPreRemoveIgnoresNonPaymentEntity(): void
-    {
-        $em = Mockery::mock(EntityManagerInterface::class);
-        $em->shouldNotReceive('getRepository');
-
-        $args = new PreRemoveEventArgs(new SecurityToken(), $em);
-
-        $listener = new SecurityTokenPaymentLinker();
-        $listener->preRemove($args);
-    }
-
-    public function testPreRemoveDoesNothingWhenNoTokensFound(): void
-    {
-        $payment = new Payment();
-
-        $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
-        $em->shouldReceive('getRepository')->with(SecurityToken::class)->andReturn($repo);
-        $repo->shouldReceive('findBy')->once()->with(['payment' => $payment])->andReturn([]);
-        $em->shouldNotReceive('remove');
-
-        $args = new PreRemoveEventArgs($payment, $em);
-
-        $listener = new SecurityTokenPaymentLinker();
-        $listener->preRemove($args);
     }
 }

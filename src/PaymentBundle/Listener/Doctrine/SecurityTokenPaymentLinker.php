@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Listener\Doctrine;
 
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
-use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Payum\Core\Model\Identity;
@@ -27,43 +26,23 @@ use Throwable;
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Listener\Doctrine\SecurityTokenPaymentLinkerTest
  */
-#[AsDoctrineListener(Events::prePersist)]
-#[AsDoctrineListener(Events::preUpdate)]
-#[AsDoctrineListener(Events::preRemove)]
+#[AsEntityListener(event: Events::prePersist, entity: SecurityToken::class)]
+#[AsEntityListener(event: Events::preUpdate, entity: SecurityToken::class)]
 final class SecurityTokenPaymentLinker
 {
-    public function prePersist(PrePersistEventArgs $args): void
+    public function prePersist(SecurityToken $token, PrePersistEventArgs $args): void
     {
-        $this->link($args->getObject(), $args);
+        $this->link($token, $args);
     }
 
-    public function preUpdate(PreUpdateEventArgs $args): void
+    public function preUpdate(SecurityToken $token, PreUpdateEventArgs $args): void
     {
-        $this->link($args->getObject(), $args);
+        $this->link($token, $args);
     }
 
-    public function preRemove(PreRemoveEventArgs $args): void
+    private function link(SecurityToken $token, PrePersistEventArgs|PreUpdateEventArgs $args): void
     {
-        $object = $args->getObject();
-
-        if (! $object instanceof Payment) {
-            return;
-        }
-
-        $em = $args->getObjectManager();
-
-        foreach ($em->getRepository(SecurityToken::class)->findBy(['payment' => $object]) as $token) {
-            $em->remove($token);
-        }
-    }
-
-    private function link(object $object, PrePersistEventArgs|PreUpdateEventArgs $args): void
-    {
-        if (! $object instanceof SecurityToken) {
-            return;
-        }
-
-        $details = $object->getDetails();
+        $details = $token->getDetails();
 
         if (! $details instanceof Identity || $details->getClass() !== Payment::class) {
             return;
@@ -81,12 +60,12 @@ final class SecurityTokenPaymentLinker
 
         $em = $args->getObjectManager();
         $payment = $em->getRepository(Payment::class)->find($id);
-        $object->setPayment($payment);
+        $token->setPayment($payment);
 
         if ($args instanceof PreUpdateEventArgs) {
             $em->getUnitOfWork()->recomputeSingleEntityChangeSet(
                 $em->getClassMetadata(SecurityToken::class),
-                $object,
+                $token,
             );
         }
     }
