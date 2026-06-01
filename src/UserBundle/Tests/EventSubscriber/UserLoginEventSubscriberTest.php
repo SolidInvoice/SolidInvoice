@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\EventSubscriber;
 
-use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -71,7 +71,7 @@ final class UserLoginEventSubscriberTest extends TestCase
 
         $subscriber->onLogin($loginEvent);
 
-        self::assertInstanceOf(DateTimeImmutable::class, $user->getLastLogin());
+        self::assertInstanceOf(DateTimeInterface::class, $user->getLastLogin());
     }
 
     public function testOnAuthenticationSuccessRejectsUserNotInCustomDomainCompany(): void

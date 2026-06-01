@@ -21,6 +21,7 @@ use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use function in_array;
 
 final class Version20305 extends AbstractMigration
 {
@@ -35,9 +36,31 @@ final class Version20305 extends AbstractMigration
         $this->setColumnType($schema, 'invoices', 'invoice_date', Types::DATETIME_IMMUTABLE);
         $this->setColumnType($schema, 'quotes', 'due', Types::DATETIME_IMMUTABLE);
 
-        $schema->getTable('invoice_contact')->dropColumn('company_id');
-        $schema->getTable('recurringinvoice_contact')->dropColumn('company_id');
-        $schema->getTable('quote_contact')->dropColumn('company_id');
+        $this->dropCompanyId($schema, 'invoice_contact');
+        $this->dropCompanyId($schema, 'recurringinvoice_contact');
+        $this->dropCompanyId($schema, 'quote_contact');
+    }
+
+    /**
+     * Drops the company_id column together with its foreign key.
+     *
+     * DBAL 4 removes the dependent index when the column is dropped but leaves the
+     * foreign key in place, which makes the index drop fail (it is still needed by
+     * the constraint). Removing the foreign key first keeps the generated SQL valid.
+     *
+     * @throws SchemaException
+     */
+    private function dropCompanyId(Schema $schema, string $tableName): void
+    {
+        $table = $schema->getTable($tableName);
+
+        foreach ($table->getForeignKeys() as $foreignKey) {
+            if (in_array('company_id', $foreignKey->getLocalColumns(), true)) {
+                $table->removeForeignKey($foreignKey->getName());
+            }
+        }
+
+        $table->dropColumn('company_id');
     }
 
     /**

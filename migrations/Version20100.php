@@ -208,7 +208,7 @@ final class Version20100 extends AbstractMigration
         $recurringInvoices->dropColumn('discount_type');
         $recurringInvoices->dropColumn('discount_valueMoney_amount');
         $recurringInvoices->dropColumn('discount_valueMoney_currency');
-        $recurringInvoices->addColumn('invoice_id', 'integer', ['integer', ['notnull' => false]]);
+        $recurringInvoices->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $recurringInvoices->addForeignKeyConstraint('invoices', ['invoice_id'], ['id'], ['onupdate' => 'NO ACTION', 'ondelete' => 'NO ACTION']);
         $recurringInvoices->addUniqueIndex(['invoice_id']);
     }

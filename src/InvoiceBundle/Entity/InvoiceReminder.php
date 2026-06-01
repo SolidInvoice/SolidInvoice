@@ -26,6 +26,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: InvoiceReminder::TABLE_NAME)]
 #[ORM\UniqueConstraint(columns: ['company_id', 'invoice_id', 'reminder_type'])]
 #[ORM\Entity(repositoryClass: InvoiceReminderRepository::class)]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'invoiceReminders')])]
 class InvoiceReminder
 {
     final public const string TABLE_NAME = 'invoice_reminders';

@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
-use DateTime;
+use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -130,7 +130,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
-        self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
+        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
     }
@@ -206,7 +206,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
-        self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
+        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
         self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());

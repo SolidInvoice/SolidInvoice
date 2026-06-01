@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Doctrine\Migrations\Version\Comparator;
+use SolidInvoice\CoreBundle\Doctrine\Migrations\NaturalVersionComparator;
+
 return App::config([
     'doctrine_migrations' => [
         'migrations_paths' => [
@@ -24,5 +27,10 @@ return App::config([
                 'table_name' => 'migration_versions',
             ],
         ],
+        // Order migrations naturally so multi-digit parts (e.g. Version30000_10)
+        // run after Version30000_9 rather than directly after Version30000_1.
+        'services' => [
+            Comparator::class => NaturalVersionComparator::class,
+        ]
     ],
 ]);

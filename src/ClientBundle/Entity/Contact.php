@@ -21,7 +21,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use DateTimeInterface;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -140,6 +140,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Contact::TABLE_NAME)]
 #[ORM\Index(columns: ['email'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'contacts')])]
 class Contact implements Serializable, Stringable
 {
     final public const string TABLE_NAME = 'contacts';
@@ -260,7 +261,7 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @return array<string, string|DateTimeInterface|Ulid|null>
+     * @return array{id: Ulid|null, firstName: string|null, lastName: string|null, email: string|null, created: DateTimeImmutable|null, updated: DateTimeImmutable|null}
      */
     public function __serialize(): array
     {
@@ -283,7 +284,7 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @param array<string, string|DateTimeInterface|Ulid|null> $data
+     * @param array{id: Ulid|null, firstName: string|null, lastName: string|null, email: string|null, created: DateTimeImmutable|null, updated: DateTimeImmutable|null} $data
      */
     public function __unserialize(array $data): void
     {

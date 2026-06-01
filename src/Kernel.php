@@ -15,7 +15,9 @@ namespace SolidInvoice;
 
 use Doctrine\DBAL\Types\Type;
 use Override;
+use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
+use SolidInvoice\CoreBundle\Doctrine\Type\ObjectType;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -34,6 +36,16 @@ class Kernel extends BaseKernel
         if (! Type::hasType('json_array')) {
             // Only here for BC to ensure migrations work. Remove in next minor release.
             Type::addType('json_array', JsonArrayType::class);
+        }
+
+        if (! Type::hasType(ArrayType::NAME)) {
+            // BC for the "array" type removed in DBAL 4 (used by historical migrations and entities).
+            Type::addType(ArrayType::NAME, ArrayType::class);
+        }
+
+        if (! Type::hasType(ObjectType::NAME)) {
+            // BC for the "object" type removed in DBAL 4 (used by historical migrations and Payum's Token mapping).
+            Type::addType(ObjectType::NAME, ObjectType::class);
         }
     }
 

@@ -53,7 +53,7 @@ final class UserInvitationRepository extends EntityRepository
      */
     public function deleteInvitations(array $ids): int
     {
-        $platform = $this->_em->getConnection()->getDatabasePlatform();
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
         $type = Type::getType(UlidType::NAME);
         $convertId = static fn (string $id) => $type->convertToDatabaseValue($id, $platform);
 
@@ -67,8 +67,8 @@ final class UserInvitationRepository extends EntityRepository
 
     public function delete(UserInvitation $invitation): void
     {
-        $this->_em->remove($invitation);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($invitation);
+        $this->getEntityManager()->flush();
     }
 
     public function countPendingInvitations(): int

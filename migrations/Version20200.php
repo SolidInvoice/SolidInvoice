@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -84,7 +84,7 @@ final class Version20200 extends AbstractMigration
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
 
-        if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform) {
             $this->connection->executeQuery('PRAGMA foreign_keys = OFF');
         }
     }
@@ -205,12 +205,12 @@ final class Version20200 extends AbstractMigration
         $userInvitationsTable->setPrimaryKey(['id', 'company_id']);
         $userInvitationsTable->addIndex(['company_id']);
         $userInvitationsTable->addForeignKeyConstraint(
-            $companiesTable,
+            'companies',
             ['company_id'],
             ['id'],
         );
         $userInvitationsTable->addForeignKeyConstraint(
-            $schema->getTable('users'),
+            'users',
             ['invited_by_id'],
             ['id'],
         );
@@ -261,7 +261,7 @@ final class Version20200 extends AbstractMigration
         }
 
         foreach ($this->tablesWithCompanyId as $tableName) {
-            $schema->getTable($tableName)->addForeignKeyConstraint($schema->getTable('companies'), ['company_id'], ['id']);
+            $schema->getTable($tableName)->addForeignKeyConstraint('companies', ['company_id'], ['id']);
         }
 
         foreach (
@@ -363,7 +363,7 @@ final class Version20200 extends AbstractMigration
         $table->dropPrimaryKey();
         $table->setPrimaryKey(['id', 'company_id']);
 
-        if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform) {
             $table->getColumn('company_id')->setNotnull(false);
         }
 

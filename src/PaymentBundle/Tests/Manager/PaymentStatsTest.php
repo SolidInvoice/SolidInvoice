@@ -16,7 +16,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Manager;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -239,7 +239,7 @@ final class PaymentStatsTest extends TestCase
     private function mockQueryBuilderForCount(int $count): void
     {
         $queryBuilder = M::mock(QueryBuilder::class);
-        $query = M::mock(AbstractQuery::class);
+        $query = M::mock(Query::class);
 
         $queryBuilder->shouldReceive('select')
             ->once()

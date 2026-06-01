@@ -117,6 +117,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'recurringInvoices')])]
 class RecurringInvoice extends BaseInvoice
 {
     final public const string TABLE_NAME = 'recurring_invoices';

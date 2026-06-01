@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\GatewayConfigInterface;
+use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -33,6 +34,7 @@ use function array_key_exists;
 #[ORM\Table(name: PaymentMethod::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
 #[UniqueEntity('gatewayName')]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'paymentMethods')])]
 class PaymentMethod implements GatewayConfigInterface, Stringable
 {
     final public const string TABLE_NAME = 'payment_methods';
@@ -62,7 +64,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     /**
      * @var array<string, string>
      */
-    #[ORM\Column(name: 'config', type: Types::ARRAY, nullable: true)]
+    #[ORM\Column(name: 'config', type: ArrayType::NAME, nullable: true)]
     #[ExportIgnore]
     private array $config = [];
 

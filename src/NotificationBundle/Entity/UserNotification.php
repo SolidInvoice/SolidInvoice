@@ -30,6 +30,7 @@ use Symfony\Component\Uid\Ulid;
  */
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: UserNotification::TABLE_NAME)]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'userNotifications')])]
 class UserNotification implements Stringable
 {
     public const TABLE_NAME = 'notification_user_setting';
