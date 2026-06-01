@@ -73,7 +73,7 @@ final class Version30000_11 extends AbstractMigration
             }
 
             try {
-                $binary = (new Ulid((string) $details->getId()))->toBinary();
+                $ulid = new Ulid((string) $details->getId());
             } catch (\Throwable) {
                 continue;
             }
@@ -83,7 +83,7 @@ final class Version30000_11 extends AbstractMigration
                 ->select('p.id')
                 ->from(Payment::TABLE_NAME, 'p')
                 ->where($existsQb->expr()->eq('p.id', ':id'))
-                ->setParameter('id', $binary)
+                ->setParameter('id', $ulid, UlidType::NAME)
                 ->executeQuery()
                 ->fetchOne();
 
@@ -96,7 +96,7 @@ final class Version30000_11 extends AbstractMigration
                 ->update(SecurityToken::TABLE_NAME)
                 ->set('payment_id', ':payment_id')
                 ->where($updateQb->expr()->eq('hash', ':hash'))
-                ->setParameter('payment_id', $binary)
+                ->setParameter('payment_id', $ulid, UlidType::NAME)
                 ->setParameter('hash', $row['hash'])
                 ->executeStatement();
         }
