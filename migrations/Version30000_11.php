@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Payum\Core\Model\Identity;
@@ -26,6 +28,11 @@ final class Version30000_11 extends AbstractMigration
     public function getDescription(): string
     {
         return 'Add payment_id FK to security_token so that deleting a payment automatically cascades to its tokens';
+    }
+
+    public function isTransactional(): bool
+    {
+        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void
@@ -46,9 +53,13 @@ final class Version30000_11 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $rows = $this->connection->fetchAllAssociative(
-            'SELECT hash, details FROM ' . SecurityToken::TABLE_NAME . ' WHERE details IS NOT NULL'
-        );
+        $qb = $this->connection->createQueryBuilder();
+        $rows = $qb
+            ->select('t.hash', 't.details')
+            ->from(SecurityToken::TABLE_NAME, 't')
+            ->where($qb->expr()->isNotNull('t.details'))
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         foreach ($rows as $row) {
             $details = @unserialize((string) $row['details']);
@@ -67,20 +78,27 @@ final class Version30000_11 extends AbstractMigration
                 continue;
             }
 
-            $paymentRow = $this->connection->fetchAssociative(
-                'SELECT id FROM ' . Payment::TABLE_NAME . ' WHERE id = ?',
-                [$binary],
-            );
+            $existsQb = $this->connection->createQueryBuilder();
+            $exists = $existsQb
+                ->select('p.id')
+                ->from(Payment::TABLE_NAME, 'p')
+                ->where($existsQb->expr()->eq('p.id', ':id'))
+                ->setParameter('id', $binary)
+                ->executeQuery()
+                ->fetchOne();
 
-            if ($paymentRow === false) {
+            if ($exists === false) {
                 continue;
             }
 
-            $this->connection->update(
-                SecurityToken::TABLE_NAME,
-                ['payment_id' => $binary],
-                ['hash' => $row['hash']],
-            );
+            $updateQb = $this->connection->createQueryBuilder();
+            $updateQb
+                ->update(SecurityToken::TABLE_NAME)
+                ->set('payment_id', ':payment_id')
+                ->where($updateQb->expr()->eq('hash', ':hash'))
+                ->setParameter('payment_id', $binary)
+                ->setParameter('hash', $row['hash'])
+                ->executeStatement();
         }
     }
 
