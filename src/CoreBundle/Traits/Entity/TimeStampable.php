@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,27 +25,29 @@ trait TimeStampable
 {
     #[Gedmo\Timestampable(on: 'create')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
-    #[ORM\Column(name: 'created', type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'created', type: Types::DATETIME_IMMUTABLE)]
     #[Ignore]
-    protected ?DateTimeInterface $created = null;
+    protected ?DateTimeImmutable $created = null;
 
     #[Gedmo\Timestampable(on: 'update')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
-    #[ORM\Column(name: 'updated', type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'updated', type: Types::DATETIME_IMMUTABLE)]
     #[Ignore]
-    protected ?DateTimeInterface $updated = null;
+    protected ?DateTimeImmutable $updated = null;
 
     /**
      * Returns created.
      */
-    public function getCreated(): ?DateTimeInterface
+    public function getCreated(): ?DateTimeImmutable
     {
         return $this->created;
     }
 
     public function setCreated(DateTimeInterface $created): self
     {
-        $this->created = $created;
+        // The column is immutable; DBAL 4 rejects mutable values, so normalise here
+        // to accept any DateTimeInterface from the callers.
+        $this->created = $created instanceof DateTimeImmutable ? $created : DateTimeImmutable::createFromInterface($created);
 
         return $this;
     }
@@ -52,14 +55,14 @@ trait TimeStampable
     /**
      * Returns updated.
      */
-    public function getUpdated(): ?DateTimeInterface
+    public function getUpdated(): ?DateTimeImmutable
     {
         return $this->updated;
     }
 
     public function setUpdated(DateTimeInterface $updated): self
     {
-        $this->updated = $updated;
+        $this->updated = $updated instanceof DateTimeImmutable ? $updated : DateTimeImmutable::createFromInterface($updated);
 
         return $this;
     }

@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -29,6 +30,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function array_flip;
 use function count;
+use function in_array;
 
 final class Version20201 extends AbstractMigration
 {
@@ -108,15 +110,15 @@ final class Version20201 extends AbstractMigration
         $this
             ->connection
             ->createQueryBuilder()
-            ->update('invoices', 'i')
-            ->set('i.invoice_id', 'i.id')
+            ->update('invoices')
+            ->set('invoice_id', 'id')
             ->executeQuery();
 
         $this
             ->connection
             ->createQueryBuilder()
-            ->update('quotes', 'q')
-            ->set('q.quote_id', 'q.id')
+            ->update('quotes')
+            ->set('quote_id', 'id')
             ->executeQuery();
 
         $this->schema
@@ -425,6 +427,16 @@ final class Version20201 extends AbstractMigration
             $table = $this->schema->getTable($fk['table']);
 
             $table->removeForeignKey($fk['name']);
+
+            // DBAL 4 no longer drops the primary key automatically when one of its
+            // columns is removed, so a column that is part of a composite primary key
+            // can't be dropped while the key still references it. Drop the primary key
+            // here; restoreConstraintsAndIndexes() re-adds it from $fk['primaryKey'].
+            $primaryKey = $table->getPrimaryKey();
+            if ($primaryKey instanceof Index && in_array($fk['key'], $primaryKey->getColumns(), true)) {
+                $table->dropPrimaryKey();
+            }
+
             $table->dropColumn($fk['key']);
 
             foreach ($table->getIndexes() as $index) {

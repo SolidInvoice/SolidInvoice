@@ -27,6 +27,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: Setting::TABLE_NAME)]
 #[ORM\UniqueConstraint(columns: ['setting_key', 'company_id'])]
 #[ORM\Entity(repositoryClass: SettingsRepository::class)]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'settings')])]
 #[UniqueEntity(fields: ['company_id', 'key'])]
 class Setting implements Stringable, Serializable
 {

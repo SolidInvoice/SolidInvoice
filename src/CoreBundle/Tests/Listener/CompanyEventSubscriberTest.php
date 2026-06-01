@@ -15,7 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Listener;
 
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -302,7 +302,7 @@ final class CompanyEventSubscriberTest extends TestCase
             /**
              * @param ClassMetadata<object> $targetEntity
              */
-            public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
+            public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
             {
                 return '';
             }
@@ -337,12 +337,12 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection
             ->shouldReceive('getDatabasePlatform')
             ->zeroOrMoreTimes()
-            ->andReturn(new SqlitePlatform());
+            ->andReturn(new SQLitePlatform());
 
         $connection
             ->shouldReceive('quote')
             ->once()
-            ->with(strtoupper(substr($company->getId()->toHex(), 2)), 'string')
+            ->with(strtoupper(substr($company->getId()->toHex(), 2)))
             ->andReturn($company->getId()->toHex());
 
         return $filter;

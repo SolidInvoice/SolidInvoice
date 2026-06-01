@@ -85,6 +85,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'quoteLines')])]
 class Line implements LineInterface, Stringable
 {
     final public const string TABLE_NAME = 'quote_lines';

@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: TransportSetting::TABLE_NAME)]
 #[ORM\UniqueConstraint(name: 'unique_name_user', columns: ['name', 'company_id', 'user_id'])]
 #[UniqueEntity(fields: ['name', 'company', 'user'], message: 'The name is already in use')]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'transportSettings')])]
 class TransportSetting implements Stringable
 {
     public const TABLE_NAME = 'notification_transport_setting';

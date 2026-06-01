@@ -18,7 +18,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
@@ -699,7 +699,7 @@ final class Version30000_9 extends AbstractMigration
     private function buildExactlyOneNullCheck(string $table, string $constraint, string ...$columns): ?string
     {
         // SQLite cannot ALTER TABLE ADD CONSTRAINT; application-level validators cover it.
-        if ($this->platform instanceof SqlitePlatform) {
+        if ($this->platform instanceof SQLitePlatform) {
             return null;
         }
 

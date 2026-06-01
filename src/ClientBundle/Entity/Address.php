@@ -75,6 +75,7 @@ use function array_filter;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'addresses')])]
 class Address implements Stringable
 {
     final public const string TABLE_NAME = 'addresses';

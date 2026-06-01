@@ -28,6 +28,7 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: Credit::TABLE_NAME, uniqueConstraints: [new ORM\UniqueConstraint(columns: ['client_id'])])]
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'credit')])]
 class Credit implements Stringable
 {
     final public const string TABLE_NAME = 'client_credit';

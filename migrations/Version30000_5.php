@@ -73,9 +73,9 @@ final class Version30000_5 extends AbstractMigration
         $this->updateForeignKey($schema->getTable('quote_contact'), 'quotes', ['quote_id'], ['id'], ['onDelete' => 'CASCADE']);
         $this->updateForeignKey($schema->getTable('quote_contact'), 'contacts', ['contact_id'], ['id'], ['onDelete' => 'CASCADE']);
 
-        // recurringinvoice_contacts join table (column is 'recurringinvoice_id', not 'recurring_invoice_id')
-        $this->updateForeignKey($schema->getTable('recurringinvoice_contacts'), 'recurring_invoices', ['recurringinvoice_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $this->updateForeignKey($schema->getTable('recurringinvoice_contacts'), 'contacts', ['contact_id'], ['id'], ['onDelete' => 'CASCADE']);
+        // recurringinvoice_contact join table (column is 'recurringinvoice_id', not 'recurring_invoice_id')
+        $this->updateForeignKey($schema->getTable('recurringinvoice_contact'), 'recurring_invoices', ['recurringinvoice_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $this->updateForeignKey($schema->getTable('recurringinvoice_contact'), 'contacts', ['contact_id'], ['id'], ['onDelete' => 'CASCADE']);
 
         // recurring_options: recurringInvoice_id → recurring_invoices.id CASCADE (column is camelCase)
         $this->updateForeignKey($schema->getTable('recurring_options'), 'recurring_invoices', ['recurringInvoice_id'], ['id'], ['onDelete' => 'CASCADE']);
@@ -150,8 +150,8 @@ final class Version30000_5 extends AbstractMigration
         $this->updateForeignKey($schema->getTable('quote_contact'), 'quotes', ['quote_id'], ['id'], []);
         $this->updateForeignKey($schema->getTable('quote_contact'), 'contacts', ['contact_id'], ['id'], []);
 
-        $this->updateForeignKey($schema->getTable('recurringinvoice_contacts'), 'recurring_invoices', ['recurringinvoice_id'], ['id'], []);
-        $this->updateForeignKey($schema->getTable('recurringinvoice_contacts'), 'contacts', ['contact_id'], ['id'], []);
+        $this->updateForeignKey($schema->getTable('recurringinvoice_contact'), 'recurring_invoices', ['recurringinvoice_id'], ['id'], []);
+        $this->updateForeignKey($schema->getTable('recurringinvoice_contact'), 'contacts', ['contact_id'], ['id'], []);
 
         $this->updateForeignKey($schema->getTable('recurring_options'), 'recurring_invoices', ['recurringInvoice_id'], ['id'], []);
 

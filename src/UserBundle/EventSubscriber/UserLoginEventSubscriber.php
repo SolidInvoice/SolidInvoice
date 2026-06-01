@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\EventSubscriber;
 
-use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -76,7 +76,9 @@ final readonly class UserLoginEventSubscriber implements EventSubscriberInterfac
         $user = $event->getUser();
         assert($user instanceof User);
 
-        $user->setLastLogin(CarbonImmutable::now());
+        // The last_login column is mapped as a mutable datetime, and DBAL 4 rejects
+        // immutable values for it, so use a mutable Carbon instance here.
+        $user->setLastLogin(Carbon::now());
 
         $this->entityManager->getRepository(User::class)->save($user);
     }

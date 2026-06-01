@@ -82,8 +82,8 @@ final class UserInvitationRepository extends EntityRepository
 
     public function delete(UserInvitation $invitation): void
     {
-        $this->_em->remove($invitation);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($invitation);
+        $this->getEntityManager()->flush();
     }
 
     /**

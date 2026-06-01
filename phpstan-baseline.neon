@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method DoctrineMigrations\\Version20201\:\:getTableForeignKeys\(\) should return array\<array\<array\<string\>\|string\>\> but returns list\<array\<string, array\<string\>\|bool\|string\>\>\.$#'
+			message: '#^Method DoctrineMigrations\\Version20201\:\:getTableForeignKeys\(\) should return array\<array\<array\<string\>\|string\>\> but returns list\<array\<string, bool\|list\<string\>\|string\>\>\.$#'
 			identifier: return.type
 			count: 1
 			path: migrations/Version20201.php
@@ -17,6 +17,12 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: migrations/Version20300.php
+
+		-
+			message: '#^Call to function is_array\(\) with bool\|float\|int\|string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 2
+			path: migrations/Version30000_10.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -67,19 +73,19 @@ parameters:
 			path: src/ClientBundle/DataGrid/ClientGrid.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Address.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Address.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Client.php
@@ -97,13 +103,13 @@ parameters:
 			path: src/ClientBundle/Entity/Client.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Client\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Client.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Contact.php
@@ -121,19 +127,19 @@ parameters:
 			path: src/ClientBundle/Entity/Contact.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Contact\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Contact.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Credit.php
 
 		-
-			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Credit\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/ClientBundle/Entity/Credit.php
@@ -403,7 +409,7 @@ parameters:
 			path: src/ClientBundle/Tests/Search/ContactResultFormatterTest.php
 
 		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/CoreBundle/Entity/CustomField/CustomField.php
@@ -433,13 +439,13 @@ parameters:
 			path: src/CoreBundle/Entity/CustomField/CustomField.php
 
 		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/CoreBundle/Entity/CustomField/CustomField.php
 
 		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
@@ -457,7 +463,7 @@ parameters:
 			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
 
 		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomFieldValue\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/CoreBundle/Entity/CustomField/CustomFieldValue.php
@@ -805,7 +811,7 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/Invoice.php
@@ -835,7 +841,7 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/Invoice.php
@@ -847,7 +853,7 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/InvoiceReminder.php
@@ -859,13 +865,13 @@ parameters:
 			path: src/InvoiceBundle/Entity/InvoiceReminder.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/InvoiceReminder.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/Line.php
@@ -883,13 +889,13 @@ parameters:
 			path: src/InvoiceBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
@@ -925,7 +931,7 @@ parameters:
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\RecurringInvoice\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
@@ -1213,61 +1219,61 @@ parameters:
 			path: src/MailerBundle/Factory/MailerConfigFactory.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/ConsentGrant.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/ConsentGrant.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/McpAccessToken.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/McpAccessToken.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/McpRefreshToken.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/McpRefreshToken.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/OAuthAuthCode.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/OAuthAuthCode.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/OAuthClient.php
 
 		-
-			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/McpBundle/Entity/OAuthClient.php
@@ -1369,7 +1375,7 @@ parameters:
 			path: src/PaymentBundle/DependencyInjection/Configuration.php
 
 		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/PaymentBundle/Entity/Payment.php
@@ -1381,19 +1387,13 @@ parameters:
 			path: src/PaymentBundle/Entity/Payment.php
 
 		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/PaymentBundle/Entity/Payment.php
 
 		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$config type mapping mismatch\: database can contain array\|null but property expects array\<string, string\>\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/PaymentBundle/Entity/PaymentMethod.php
-
-		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/PaymentBundle/Entity/PaymentMethod.php
@@ -1429,7 +1429,7 @@ parameters:
 			path: src/PaymentBundle/Entity/PaymentMethod.php
 
 		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/PaymentBundle/Entity/PaymentMethod.php
@@ -1651,7 +1651,7 @@ parameters:
 			path: src/QuoteBundle/DataGrid/QuoteGrid.php
 
 		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Line.php
@@ -1669,13 +1669,13 @@ parameters:
 			path: src/QuoteBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
@@ -1693,7 +1693,7 @@ parameters:
 			path: src/QuoteBundle/Entity/Quote.php
 
 		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Quote\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
@@ -1873,7 +1873,7 @@ parameters:
 			path: src/TaxBundle/DataGrid/TaxGrid.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/InvoiceTax.php
@@ -1891,13 +1891,13 @@ parameters:
 			path: src/TaxBundle/Entity/InvoiceTax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\InvoiceTax\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/InvoiceTax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/LineTax.php
@@ -1915,13 +1915,13 @@ parameters:
 			path: src/TaxBundle/Entity/LineTax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\LineTax\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/LineTax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/Tax.php
@@ -1945,13 +1945,13 @@ parameters:
 			path: src/TaxBundle/Entity/Tax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\Tax\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/Tax.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/TaxIdentifier.php
@@ -1963,7 +1963,7 @@ parameters:
 			path: src/TaxBundle/Entity/TaxIdentifier.php
 
 		-
-			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\TaxBundle\\Entity\\TaxIdentifier\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/TaxBundle/Entity/TaxIdentifier.php
@@ -2353,7 +2353,7 @@ parameters:
 			path: src/UserBundle/DataGrid/ApiTokenGrid.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/ApiToken.php
@@ -2371,7 +2371,7 @@ parameters:
 			path: src/UserBundle/Entity/ApiToken.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiToken\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/ApiToken.php
@@ -2383,7 +2383,7 @@ parameters:
 			path: src/UserBundle/Entity/ApiToken.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/ApiTokenHistory.php
@@ -2407,7 +2407,7 @@ parameters:
 			path: src/UserBundle/Entity/ApiTokenHistory.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ApiTokenHistory\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/ApiTokenHistory.php
@@ -2425,13 +2425,13 @@ parameters:
 			path: src/UserBundle/Entity/ResetPasswordRequest.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/User.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/User.php
@@ -2449,13 +2449,13 @@ parameters:
 			path: src/UserBundle/Entity/UserInvitation.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/UserSetting.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$updated type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserSetting\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/UserSetting.php

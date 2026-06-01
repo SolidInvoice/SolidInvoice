@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
-use DateTime;
+use DateTimeInterface;
 use Override;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
@@ -184,7 +184,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     /**
      * Returns a human-readable diff for dates.
      */
-    public function dateDiff(DateTime $date): string
+    public function dateDiff(DateTimeInterface $date): string
     {
         return Carbon::instance($date)->diffForHumans();
     }

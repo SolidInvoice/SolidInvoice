@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -26,6 +27,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: ApiTokenHistory::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenHistoryRepository::class)]
 #[ExportIgnore]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'apiTokenHistories')])]
 class ApiTokenHistory
 {
     final public const string TABLE_NAME = 'api_token_history';
@@ -51,7 +53,7 @@ class ApiTokenHistory
     /**
      * @var array<string, mixed>
      */
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: ArrayType::NAME)]
     private array $requestData = [];
 
     #[ORM\Column(type: Types::STRING)]

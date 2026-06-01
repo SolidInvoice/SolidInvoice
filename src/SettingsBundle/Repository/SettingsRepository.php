@@ -82,8 +82,8 @@ class SettingsRepository extends EntityRepository
 
     public function delete(string $key): void
     {
-        $this->_em->remove($this->findOneBy(['key' => $key]));
-        $this->_em->flush();
+        $this->getEntityManager()->remove($this->findOneBy(['key' => $key]));
+        $this->getEntityManager()->flush();
     }
 
     /**

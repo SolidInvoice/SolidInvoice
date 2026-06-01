@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;

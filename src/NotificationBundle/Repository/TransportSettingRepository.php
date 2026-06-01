@@ -29,7 +29,7 @@ final class TransportSettingRepository extends EntityRepository
 
     public function delete(TransportSetting $setting): void
     {
-        $this->_em->remove($setting);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($setting);
+        $this->getEntityManager()->flush();
     }
 }
