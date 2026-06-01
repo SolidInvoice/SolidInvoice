@@ -27,7 +27,6 @@ return App::config([
                     'url' => env('SOLIDINVOICE_DATABASE_URL')->resolve(),
                     'server_version' => '3',
                     'charset' => 'UTF8',
-                    'use_savepoints' => true,
                 ],
             ],
             'types' => [
@@ -37,15 +36,9 @@ return App::config([
             ],
         ],
         'orm' => [
-            'auto_generate_proxy_classes' => param('kernel.debug'),
-            'enable_lazy_ghost_objects' => true,
-            'controller_resolver' => [
-                'auto_mapping' => true,
-            ],
             'entity_managers' => [
                 'default' => [
                     'auto_mapping' => true,
-                    'report_fields_where_declared' => true,
                     'validate_xml_mapping' => true,
                     'identity_generation_preferences' => [
                         PostgreSQLPlatform::class => 'identity',
