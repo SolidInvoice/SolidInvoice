@@ -190,12 +190,12 @@ class Invoice extends BaseInvoice implements Stringable
     /**
      * @var Collection<int, Payment>
      */
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'invoice', cascade: ['persist'], orphanRemoval: true)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     #[ApiProperty(example: ['/api/payments/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $payments;
 
-    #[ORM\OneToOne(inversedBy: 'invoice', targetEntity: Quote::class)]
+    #[ORM\OneToOne(targetEntity: Quote::class, inversedBy: 'invoice')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Groups(['invoice_api:read'])]
     #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
@@ -208,7 +208,7 @@ class Invoice extends BaseInvoice implements Stringable
     /**
      * @var Collection<int, Line>
      */
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
@@ -230,7 +230,7 @@ class Invoice extends BaseInvoice implements Stringable
     /**
      * @var Collection<int, InvoiceTax>
      */
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoiceTax::class, mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $invoiceTaxes;
 

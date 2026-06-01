@@ -69,7 +69,7 @@ class RecurringOptions
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?int $endOccurrence = null;
 
-    #[ORM\OneToOne(inversedBy: 'recurringOptions', targetEntity: RecurringInvoice::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: RecurringInvoice::class, inversedBy: 'recurringOptions', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private RecurringInvoice $recurringInvoice;
 

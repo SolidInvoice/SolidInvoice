@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\GatewayConfigInterface;
-use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -64,7 +63,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     /**
      * @var array<string, string>
      */
-    #[ORM\Column(name: 'config', type: ArrayType::NAME, nullable: true)]
+    #[ORM\Column(name: 'config', type: Types::ARRAY, nullable: true)]
     #[ExportIgnore]
     private array $config = [];
 
@@ -77,7 +76,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     /**
      * @var Collection<int, Payment>
      */
-    #[ORM\OneToMany(mappedBy: 'method', targetEntity: Payment::class, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'method', cascade: ['persist'])]
     private Collection $payments;
 
     public function __construct()

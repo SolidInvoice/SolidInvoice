@@ -244,7 +244,7 @@ class InvoiceRepository extends EntityRepository
 
         array_walk($ids, function (string $id) use ($em): void {
             $entity = $this->find($id);
-            if ($entity) {
+            if ($entity instanceof Invoice) {
                 $em->remove($entity);
             }
         });

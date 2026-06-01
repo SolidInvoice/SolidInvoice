@@ -62,7 +62,7 @@ final readonly class Migration
         $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables);
         $conn = $em->getConnection();
 
-        if (count($updateSchemaSql) > 0) {
+        if ($updateSchemaSql !== []) {
             foreach ($updateSchemaSql as $sql) {
                 $conn->executeStatement($sql);
 

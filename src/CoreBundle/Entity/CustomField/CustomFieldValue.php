@@ -24,8 +24,8 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: CustomFieldValue::TABLE_NAME)]
-#[ORM\Index(columns: ['company_id', 'target', 'target_id'], name: 'idx_cfv_company_target_record')]
-#[ORM\Index(columns: ['field_id'], name: 'idx_cfv_field')]
+#[ORM\Index(name: 'idx_cfv_company_target_record', columns: ['company_id', 'target', 'target_id'])]
+#[ORM\Index(name: 'idx_cfv_field', columns: ['field_id'])]
 #[ORM\UniqueConstraint(name: 'uq_cfv_field_record', columns: ['field_id', 'target_id'])]
 #[ORM\Entity(repositoryClass: CustomFieldValueRepository::class)]
 class CustomFieldValue

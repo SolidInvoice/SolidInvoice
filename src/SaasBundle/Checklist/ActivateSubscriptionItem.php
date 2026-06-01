@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Checklist;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -70,7 +71,7 @@ final readonly class ActivateSubscriptionItem implements ChecklistItemInterface
 
         $company = $this->companyRepository->find($companyId);
 
-        if (! $company) {
+        if (! $company instanceof Company) {
             return false;
         }
 

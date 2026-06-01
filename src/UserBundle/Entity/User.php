@@ -36,7 +36,7 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
     /**
      * @var Collection<int, ApiToken>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiToken::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ApiToken::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $apiTokens;
 
     /**

@@ -296,7 +296,7 @@ class Quote
     /**
      * @var Collection<int, Line>
      */
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Quote')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -315,7 +315,7 @@ class Quote
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;
 
-    #[ORM\OneToOne(mappedBy: 'quote', targetEntity: Invoice::class)]
+    #[ORM\OneToOne(targetEntity: Invoice::class, mappedBy: 'quote')]
     #[Groups(['quote_api:read'])]
     #[ApiProperty(
         example: '/api/invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -325,7 +325,7 @@ class Quote
     /**
      * @var Collection<int, InvoiceTax>
      */
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoiceTax::class, mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $invoiceTaxes;
 

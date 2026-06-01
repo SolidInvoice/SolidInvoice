@@ -159,7 +159,7 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @var Collection<int, RecurringInvoiceLine>
      */
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceLine::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: RecurringInvoiceLine::class, mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -181,7 +181,7 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @var Collection<int, Invoice>
      */
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Invoice::class)]
+    #[ORM\OneToMany(targetEntity: Invoice::class, mappedBy: 'recurringInvoice')]
     #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $invoices;
 
@@ -193,7 +193,7 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @var Collection<int, InvoiceTax>
      */
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: InvoiceTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoiceTax::class, mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private Collection $invoiceTaxes;
