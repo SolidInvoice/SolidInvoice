@@ -31,7 +31,7 @@ use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidInvoice\PaymentBundle\Listener\Doctrine\SecurityTokenPaymentLinker;
 use Symfony\Component\Uid\Ulid;
 
-#[CoversClass(\SolidInvoice\PaymentBundle\Listener\Doctrine\SecurityTokenPaymentLinker::class)]
+#[CoversClass(SecurityTokenPaymentLinker::class)]
 final class SecurityTokenPaymentLinkerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
