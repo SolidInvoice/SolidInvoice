@@ -23,7 +23,7 @@ use Override;
 final class JsonArrayType extends JsonType
 {
     #[Override]
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null || $value === '') {
             return [];
@@ -32,17 +32,5 @@ final class JsonArrayType extends JsonType
         $value = is_resource($value) ? stream_get_contents($value) : $value;
 
         return json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
-    }
-
-    #[Override]
-    public function getName(): string
-    {
-        return 'json_array';
-    }
-
-    #[Override]
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
     }
 }

@@ -18,7 +18,9 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\SerializationFailed;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use Override;
 
@@ -26,18 +28,13 @@ final class BigIntegerType extends Type
 {
     public const string NAME = 'BigInteger';
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
     #[Override]
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return null;
@@ -46,12 +43,12 @@ final class BigIntegerType extends Type
         try {
             return BigInteger::of($value);
         } catch (MathException $e) {
-            throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
+            throw ValueNotConvertible::new($value, self::NAME, $e->getMessage(), $e);
         }
     }
 
     #[Override]
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?int
     {
         if ($value === null) {
             return null;
@@ -61,16 +58,10 @@ final class BigIntegerType extends Type
             try {
                 return $value->toScale(0, RoundingMode::HalfEven)->toInt();
             } catch (MathException $e) {
-                throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
+                throw SerializationFailed::new($value, self::NAME, $e->getMessage(), $e);
             }
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), $value::class);
-    }
-
-    #[Override]
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
+        throw InvalidType::new($value, self::NAME, [BigNumber::class]);
     }
 }
