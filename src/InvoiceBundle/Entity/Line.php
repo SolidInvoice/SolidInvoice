@@ -138,7 +138,7 @@ class Line implements LineInterface, Stringable
     /**
      * @var Collection<int, LineTax>
      */
-    #[ORM\OneToMany(mappedBy: 'invoiceLine', targetEntity: LineTax::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: LineTax::class, mappedBy: 'invoiceLine', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $taxes;
 

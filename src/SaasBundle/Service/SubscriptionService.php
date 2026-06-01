@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Service;
 
 use Exception;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
@@ -45,7 +46,7 @@ final readonly class SubscriptionService
             }
 
             $company = $this->companyRepository->find($companyId);
-            if (! $company) {
+            if (! $company instanceof Company) {
                 return false;
             }
 

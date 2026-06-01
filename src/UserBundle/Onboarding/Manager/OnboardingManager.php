@@ -27,6 +27,7 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserSetting;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Onboarding\DTO\OnboardingData;
 use SolidInvoice\UserBundle\Repository\UserSettingRepository;
@@ -93,7 +94,7 @@ final readonly class OnboardingManager
             'key' => UserSettingType::OnboardingSkipped,
         ]);
 
-        $skipped = $setting ? json_decode((string) $setting->getValue(), true, flags: JSON_THROW_ON_ERROR) : [];
+        $skipped = $setting instanceof UserSetting ? json_decode((string) $setting->getValue(), true, flags: JSON_THROW_ON_ERROR) : [];
         $skipped[] = $step;
 
         $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardingSkipped, json_encode($skipped, JSON_THROW_ON_ERROR));

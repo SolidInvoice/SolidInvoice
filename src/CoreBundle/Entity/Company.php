@@ -92,115 +92,115 @@ class Company implements Stringable, SubscribableInterface
     /**
      * @var Collection<int, ApiTokenHistory>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ApiTokenHistory::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ApiTokenHistory::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $apiTokenHistories;
 
     /**
      * @var Collection<int, Tax>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Tax::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Tax::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $taxes;
 
     /**
      * @var Collection<int, Address>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Address::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $addresses;
 
     /**
      * @var Collection<int, Client>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Client::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $clients;
 
     /**
      * @var Collection<int, Contact>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Contact::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $contacts;
 
     /**
      * @var Collection<int, Credit>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Credit::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $credit;
 
     /**
      * @var Collection<int, UserInvitation>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: UserInvitation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserInvitation::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $userInvitations;
 
     /**
      * @var Collection<int, ApiToken>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ApiToken::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ApiToken::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $apiTokens;
 
     /**
      * @var Collection<int, Setting>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Setting::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Setting::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $settings;
 
     /**
      * @var Collection<int, Quote>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Quote::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $quotes;
 
     /**
      * @var Collection<int, QuoteLine>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: QuoteLine::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: QuoteLine::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $quoteLines;
 
     /**
      * @var Collection<int, PaymentMethod>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: PaymentMethod::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PaymentMethod::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $paymentMethods;
 
     /**
      * @var Collection<int, Payment>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $payments;
 
     /**
      * @var Collection<int, UserNotification>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: UserNotification::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserNotification::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $userNotifications;
 
     /**
      * @var Collection<int, TransportSetting>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: TransportSetting::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TransportSetting::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $transportSettings;
 
     /**
      * @var Collection<int, Invoice>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Invoice::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Invoice::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $invoices;
 
     /**
      * @var Collection<int, RecurringInvoice>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: RecurringInvoice::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: RecurringInvoice::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $recurringInvoices;
 
     /**
      * @var Collection<int, InvoieLine>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: InvoieLine::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoieLine::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $invoiceLines;
 
     /**
      * @var Collection<int, InvoiceReminder>
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: InvoiceReminder::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InvoiceReminder::class, mappedBy: 'company', cascade: ['persist'], orphanRemoval: true)]
     public Collection $invoiceReminders;
 
     public function __construct()

@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
@@ -121,7 +122,7 @@ class SubscribeController extends AbstractController
 
         $company = $this->companyRepository->find($companyId);
 
-        if (! $company) {
+        if (! $company instanceof Company) {
             return null;
         }
 
