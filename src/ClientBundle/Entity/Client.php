@@ -78,6 +78,7 @@ use function in_array;
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('name')]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'clients')])]
 #[WithinPlanClientLimit]
 class Client implements Stringable
 {

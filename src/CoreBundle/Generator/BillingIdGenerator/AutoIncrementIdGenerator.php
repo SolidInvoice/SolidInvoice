@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use function assert;
 
@@ -46,7 +45,6 @@ final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
         assert($em instanceof EntityManager);
 
         $filters = $em->getFilters();
-        assert($filters instanceof FilterCollection);
 
         $filters->disable('archivable');
 

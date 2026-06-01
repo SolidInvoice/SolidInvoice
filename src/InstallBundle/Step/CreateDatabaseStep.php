@@ -52,7 +52,9 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         );
 
         if ($params['driver'] === 'pdo_sqlite') {
-            $tmpConnection->connect();
+            // Force the underlying connection to open, which creates the SQLite
+            // file (Connection::connect() is protected in DBAL 4).
+            $tmpConnection->getNativeConnection();
             $tmpConnection->close();
         } else {
             $schemaManager = $tmpConnection->createSchemaManager();

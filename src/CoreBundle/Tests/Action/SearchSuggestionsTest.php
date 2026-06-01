@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Action;
 
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
@@ -86,7 +86,7 @@ final class SearchSuggestionsTest extends TestCase
         $this->setCompany();
         $names = ['Acme Corp', 'Acme Ltd'];
 
-        $query = $this->createStub(AbstractQuery::class);
+        $query = $this->createStub(Query::class);
         $query->method('getSingleColumnResult')->willReturn($names);
 
         $qb = $this->createStub(QueryBuilder::class);
@@ -115,7 +115,7 @@ final class SearchSuggestionsTest extends TestCase
         $this->setCompany();
         $names = ['Alpha Corp', 'Beta Inc'];
 
-        $query = $this->createStub(AbstractQuery::class);
+        $query = $this->createStub(Query::class);
         $query->method('getSingleColumnResult')->willReturn($names);
 
         $qb = $this->createStub(QueryBuilder::class);
@@ -161,7 +161,7 @@ final class SearchSuggestionsTest extends TestCase
     {
         $this->setCompany();
 
-        $query = $this->createStub(AbstractQuery::class);
+        $query = $this->createStub(Query::class);
         $query->method('getSingleColumnResult')->willReturn([]);
 
         $qb = $this->createMock(QueryBuilder::class);
@@ -187,7 +187,7 @@ final class SearchSuggestionsTest extends TestCase
     {
         $this->setCompany();
 
-        $query = $this->createStub(AbstractQuery::class);
+        $query = $this->createStub(Query::class);
         $query->method('getSingleColumnResult')->willReturn([]);
 
         $qb = $this->createMock(QueryBuilder::class);

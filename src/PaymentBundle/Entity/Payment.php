@@ -22,6 +22,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -104,6 +105,7 @@ use Traversable;
     ],
     graphQlOperations: [],
 )]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'payments')])]
 class Payment extends BasePayment
 {
     final public const string TABLE_NAME = 'payments';
@@ -138,9 +140,9 @@ class Payment extends BasePayment
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
     private ?string $message = null;
 
-    #[ORM\Column(name: 'completed', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'completed', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Assert\DateTime]
-    private ?DateTimeInterface $completed = null;
+    private ?DateTimeImmutable $completed = null;
 
     #[ORM\Column(name: 'reference', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['searchable'])]
@@ -224,14 +226,15 @@ class Payment extends BasePayment
         return $this;
     }
 
-    public function getCompleted(): ?DateTimeInterface
+    public function getCompleted(): ?DateTimeImmutable
     {
         return $this->completed;
     }
 
     public function setCompleted(DateTimeInterface $completed): self
     {
-        $this->completed = $completed;
+        // The column is immutable; DBAL 4 rejects mutable values, so normalise here.
+        $this->completed = $completed instanceof DateTimeImmutable ? $completed : DateTimeImmutable::createFromInterface($completed);
 
         return $this;
     }

@@ -141,12 +141,21 @@ final class Version30000_10 extends AbstractMigration
                     $shaped = [];
 
                     foreach ($decoded as $k => $v) {
+                        // Legacy field_options may carry nested metadata (e.g. validation
+                        // constraints like ['constraints' => ['email']]); those are not
+                        // selectable options, so skip non-scalar values.
+                        if (! is_scalar($v)) {
+                            continue;
+                        }
+
                         $value = is_int($k) ? (is_array($v) ? implode(', ', $v) : (string) $v) : (string) $k;
                         $label = is_array($v) ? implode(', ', $v) : (string) $v;
                         $shaped[] = ['value' => $value, 'label' => $label];
                     }
 
-                    $optionsJson = json_encode($shaped, JSON_THROW_ON_ERROR);
+                    if ($shaped !== []) {
+                        $optionsJson = json_encode($shaped, JSON_THROW_ON_ERROR);
+                    }
                 }
             }
 

@@ -58,6 +58,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['api_token:read']],
     graphQlOperations: [],
 )]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'apiTokens')])]
 class ApiToken
 {
     final public const string TABLE_NAME = 'api_tokens';
