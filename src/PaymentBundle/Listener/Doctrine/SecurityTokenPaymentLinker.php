@@ -22,7 +22,11 @@ use Payum\Core\Model\Identity;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use Symfony\Component\Uid\Ulid;
+use Throwable;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Listener\Doctrine\SecurityTokenPaymentLinkerTest
+ */
 #[AsDoctrineListener(Events::prePersist)]
 #[AsDoctrineListener(Events::preUpdate)]
 #[AsDoctrineListener(Events::preRemove)]
@@ -70,7 +74,7 @@ final class SecurityTokenPaymentLinker
         if (! $id instanceof Ulid) {
             try {
                 $id = Ulid::fromString((string) $id);
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 return;
             }
         }

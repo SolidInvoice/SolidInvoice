@@ -23,6 +23,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Payum\Core\Model\Identity;
 use Payum\Core\Storage\IdentityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -30,7 +31,7 @@ use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidInvoice\PaymentBundle\Listener\Doctrine\SecurityTokenPaymentLinker;
 use Symfony\Component\Uid\Ulid;
 
-/** @covers \SolidInvoice\PaymentBundle\Listener\Doctrine\SecurityTokenPaymentLinker */
+#[CoversClass(\SolidInvoice\PaymentBundle\Listener\Doctrine\SecurityTokenPaymentLinker::class)]
 final class SecurityTokenPaymentLinkerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
