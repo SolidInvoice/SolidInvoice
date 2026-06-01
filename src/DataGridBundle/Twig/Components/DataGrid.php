@@ -16,6 +16,7 @@ namespace SolidInvoice\DataGridBundle\Twig\Components;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
@@ -240,7 +241,7 @@ class DataGrid extends AbstractController
     {
         $manager = $this->registry->getManagerForClass($entity::class);
 
-        if ($manager === null) {
+        if (! $manager instanceof ObjectManager) {
             throw new RuntimeException(sprintf('No entity manager found for class "%s"', $entity::class));
         }
 

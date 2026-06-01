@@ -69,7 +69,7 @@ use function in_array;
 )]
 #[ApiFilter(SearchFilter::class, properties: ['target' => 'exact'])]
 #[ORM\Table(name: CustomField::TABLE_NAME)]
-#[ORM\Index(columns: ['company_id', 'target', 'position'], name: 'idx_cf_company_target_pos')]
+#[ORM\Index(name: 'idx_cf_company_target_pos', columns: ['company_id', 'target', 'position'])]
 #[ORM\UniqueConstraint(name: 'uq_cf_company_target_key', columns: ['company_id', 'target', 'field_key'])]
 #[ORM\Entity(repositoryClass: CustomFieldRepository::class)]
 #[UniqueEntity(fields: ['company', 'target', 'label'], message: 'A custom field with this label already exists for the selected target.', errorPath: 'label')]

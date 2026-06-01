@@ -167,7 +167,7 @@ final readonly class EntityDiscovery
     ): EntityExportSpec {
         $included = [];
 
-        foreach ($metadata->fieldMappings as $fieldName => $mapping) {
+        foreach (array_keys($metadata->fieldMappings) as $fieldName) {
             if (! $reflection->hasProperty((string) $fieldName)) {
                 continue;
             }

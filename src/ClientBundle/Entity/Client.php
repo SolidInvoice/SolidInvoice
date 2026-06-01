@@ -144,7 +144,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, TaxIdentifier>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: TaxIdentifier::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TaxIdentifier::class, mappedBy: 'client', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private Collection $taxIdentifiers;
 
@@ -152,7 +152,7 @@ class Client implements Stringable
      * @var Collection<int, Contact>
      */
     #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'], iris: ['https://schema.org/Person'])]
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'client', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Assert\Count(
         min: 1,
         minMessage: 'You need to add at least one contact to this client',
@@ -169,7 +169,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, Quote>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Quote::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'client', cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
     #[ApiProperty(example: ['/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
@@ -178,7 +178,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, Invoice>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Invoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Invoice::class, mappedBy: 'client', cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
     #[ApiProperty(example: ['/api/invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
@@ -187,7 +187,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, RecurringInvoice>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: RecurringInvoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: RecurringInvoice::class, mappedBy: 'client', cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
     #[ApiProperty(example: ['/api/recurring-invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
@@ -196,7 +196,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, Payment>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Payment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'client', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read'])]
     #[ApiProperty(example: ['/api/payments/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $payments;
@@ -204,7 +204,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, Address>
      */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'client', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read'])]
     #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/address/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $addresses;
@@ -214,7 +214,7 @@ class Client implements Stringable
         jsonSchemaContext: ['type' => 'number'],
         iris: ['https://schema.org/MonetaryAmount'],
     )]
-    #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToOne(targetEntity: Credit::class, mappedBy: 'client', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?Credit $credit = null;
 

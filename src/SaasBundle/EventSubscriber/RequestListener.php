@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -225,7 +226,7 @@ final readonly class RequestListener implements EventSubscriberInterface
 
         $company = $this->companyRepository->find($companyId);
 
-        if (! $company) {
+        if (! $company instanceof Company) {
             return null;
         }
 

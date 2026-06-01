@@ -16,6 +16,7 @@ namespace SolidInvoice\DataGridBundle\Export;
 use Brick\Math\BigNumber;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Money\Currencies\ISOCurrencies;
 use Money\Money;
 use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
@@ -217,7 +218,7 @@ final readonly class GridRowExtractor
     {
         $manager = $this->registry->getManagerForClass($class);
 
-        if ($manager === null) {
+        if (! $manager instanceof ObjectManager) {
             return null;
         }
 

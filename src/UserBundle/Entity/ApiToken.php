@@ -90,7 +90,7 @@ class ApiToken
     /**
      * @var Collection<int, ApiTokenHistory>
      */
-    #[ORM\OneToMany(mappedBy: 'token', targetEntity: ApiTokenHistory::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ApiTokenHistory::class, mappedBy: 'token', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $history;
 
