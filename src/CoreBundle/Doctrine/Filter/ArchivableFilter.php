@@ -41,7 +41,7 @@ class ArchivableFilter extends SQLFilter
     /**
      * @param ClassMetadata<object> $targetEntity
      */
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
+    public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         if (! in_array(self::ARCHIVABLE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
             return '';
