@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * Bots and crawlers often send generic HTML Accept headers while targeting
  * typed URLs like /api/docs.json; the URL extension should take precedence.
+ * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\FormatNegotiationListenerTest
  */
 #[AsEventListener(event: KernelEvents::REQUEST, priority: 4)]
 final readonly class FormatNegotiationListener
@@ -60,7 +61,7 @@ final readonly class FormatNegotiationListener
         $expectedMime = self::FORMAT_MIME_MAP[$requestFormat];
         $accept = $request->headers->get('Accept', '');
 
-        if ($accept === '' || str_contains($accept, $expectedMime) || str_contains($accept, '*/*')) {
+        if ($accept === '' || str_contains((string) $accept, $expectedMime) || str_contains((string) $accept, '*/*')) {
             return;
         }
 
