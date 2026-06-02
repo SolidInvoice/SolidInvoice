@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Tests\Listener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -35,7 +36,7 @@ final class PaymentSecurityTokenRemoverTest extends TestCase
         $token2 = new SecurityToken();
 
         $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
+        $repo = Mockery::mock(EntityRepository::class);
         $em->shouldReceive('getRepository')->with(SecurityToken::class)->andReturn($repo);
         $repo->shouldReceive('findBy')->once()->with(['payment' => $payment])->andReturn([$token1, $token2]);
         $em->shouldReceive('remove')->once()->with($token1);
@@ -52,7 +53,7 @@ final class PaymentSecurityTokenRemoverTest extends TestCase
         $payment = new Payment();
 
         $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
+        $repo = Mockery::mock(EntityRepository::class);
         $em->shouldReceive('getRepository')->with(SecurityToken::class)->andReturn($repo);
         $repo->shouldReceive('findBy')->once()->with(['payment' => $payment])->andReturn([]);
         $em->shouldNotReceive('remove');
