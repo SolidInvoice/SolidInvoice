@@ -28,6 +28,7 @@ final class BigIntegerType extends Type
 {
     public const string NAME = 'BigInteger';
 
+    #[Override]
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getBigIntTypeDeclarationSQL($column);
