@@ -11,8 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\WebpackEncoreConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (WebpackEncoreConfig $config): void {
-    $config->strictMode(false);
-};
+return App::config([
+    'webpack_encore' => [
+        'strict_mode' => false,
+    ],
+]);

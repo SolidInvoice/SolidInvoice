@@ -11,10 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\MonologConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (MonologConfig $config): void {
-    $config->channels([
-        'mcp',
-    ]);
-};
+return App::config([
+    'monolog' => [
+        'channels' => [
+            'mcp',
+        ],
+    ],
+]);

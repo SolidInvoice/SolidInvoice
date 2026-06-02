@@ -11,12 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->profiler()
-        ->onlyExceptions(false)
-        ->collectSerializerData(true)
-    ;
-};
+return App::config([
+    'framework' => [
+        'profiler' => [
+            'only_exceptions' => false,
+            'collect_serializer_data' => true,
+        ],
+    ],
+]);

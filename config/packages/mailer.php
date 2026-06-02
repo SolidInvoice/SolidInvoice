@@ -11,13 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $frameworkConfig): void {
-    $frameworkConfig->mailer()
-        ->dsn(env('SOLIDINVOICE_MAILER_DSN'))
-        ->envelope()
-        ->sender(env('SOLIDINVOICE_MAILER_SENDER'))
-    ;
-};
+return App::config([
+    'framework' => [
+        'mailer' => [
+            'dsn' => env('SOLIDINVOICE_MAILER_DSN'),
+            'envelope' => [
+                'sender' => env('SOLIDINVOICE_MAILER_SENDER'),
+            ],
+        ],
+    ],
+]);

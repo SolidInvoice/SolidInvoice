@@ -11,12 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->validation()
-        ->enabled(true)
-        ->emailValidationMode(Email::VALIDATION_MODE_STRICT);
-};
+use Symfony\Component\Validator\Constraints\Email;
+
+return App::config([
+    'framework' => [
+        'validation' => [
+            'enabled' => true,
+            'email_validation_mode' => Email::VALIDATION_MODE_STRICT,
+        ],
+    ],
+]);

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\TwigConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (TwigConfig $config): void {
-    $config
-        ->debug(param('kernel.debug'))
-        ->strictVariables(param('kernel.debug'))
-        ->fileNamePattern('*.twig')
-        ->formThemes([
+return App::config([
+    'twig' => [
+        'debug' => param('kernel.debug'),
+        'strict_variables' => param('kernel.debug'),
+        'file_name_pattern' => '*.twig',
+        'form_themes' => [
             '@SolidInvoiceNotification/Form/fields.html.twig',
             '@SolidInvoiceCore/Form/fields.html.twig',
             '@SolidInvoiceDataGrid/Form/fields.html.twig',
-        ]);
-};
+        ],
+    ],
+]);

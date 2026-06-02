@@ -11,12 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->defaultLocale(env('SOLIDINVOICE_LOCALE'))
-        ->translator()
-        ->fallbacks(['en']);
-};
+return App::config([
+    'framework' => [
+        'default_locale' => env('SOLIDINVOICE_LOCALE'),
+        'translator' => [
+            'fallbacks' => ['en'],
+        ],
+    ],
+]);

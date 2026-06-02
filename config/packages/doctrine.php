@@ -11,64 +11,70 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Doctrine\Function\ToNumberFunction;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
-use Symfony\Config\DoctrineConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
-return static function (DoctrineConfig $config): void {
-    $dbalConfig = $config->dbal();
-
-    $ormConfig = $config->orm();
-
-    $dbalConfig
-        ->connection('default')
-        ->url(env('SOLIDINVOICE_DATABASE_URL')->resolve())
-        ->serverVersion('3')
-        ->charset('UTF8')
-        ->useSavepoints(true)
-    ;
-
-    $dbalConfig
-        ->type(BigIntegerType::NAME)
-        ->class(BigIntegerType::class);
-
-    $ormConfig
-        ->autoGenerateProxyClasses(param('kernel.debug'))
-        ->enableLazyGhostObjects(true)
-        ->controllerResolver()
-        ->autoMapping(true)
-    ;
-
-    $entityManagerConfig = $ormConfig->entityManager('default');
-
-    $entityManagerConfig
-        ->autoMapping(true)
-        ->reportFieldsWhereDeclared(true)
-        ->validateXmlMapping(true)
-        ->identityGenerationPreference(PostgreSQLPlatform::class, 'identity')
-    ;
-
-    $dql = $entityManagerConfig->dql();
-    $dql->stringFunction('to_number', ToNumberFunction::class);
-
-    $entityManagerConfig
-        ->filter('company')
-        ->enabled(true)
-        ->class(CompanyFilter::class);
-
-    $entityManagerConfig
-        ->filter('archivable')
-        ->enabled(true)
-        ->class(ArchivableFilter::class);
-
-    $entityManagerConfig->mapping('payum')
-        ->isBundle(false)
-        ->type('xml')
-        ->dir(param('kernel.project_dir') . '/vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping')
-        ->prefix('Payum\Core\Model');
-};
+return App::config([
+    'doctrine' => [
+        'dbal' => [
+            'connections' => [
+                'default' => [
+                    'url' => env('SOLIDINVOICE_DATABASE_URL')->resolve(),
+                    'server_version' => '3',
+                    'charset' => 'UTF8',
+                    'use_savepoints' => true,
+                ],
+            ],
+            'types' => [
+                BigIntegerType::NAME => [
+                    'class' => BigIntegerType::class,
+                ],
+            ],
+        ],
+        'orm' => [
+            'auto_generate_proxy_classes' => param('kernel.debug'),
+            'enable_lazy_ghost_objects' => true,
+            'controller_resolver' => [
+                'auto_mapping' => true,
+            ],
+            'entity_managers' => [
+                'default' => [
+                    'auto_mapping' => true,
+                    'report_fields_where_declared' => true,
+                    'validate_xml_mapping' => true,
+                    'identity_generation_preferences' => [
+                        PostgreSQLPlatform::class => 'identity',
+                    ],
+                    'dql' => [
+                        'string_functions' => [
+                            'to_number' => ToNumberFunction::class,
+                        ],
+                    ],
+                    'filters' => [
+                        'company' => [
+                            'class' => CompanyFilter::class,
+                            'enabled' => true,
+                        ],
+                        'archivable' => [
+                            'class' => ArchivableFilter::class,
+                            'enabled' => true,
+                        ],
+                    ],
+                    'mappings' => [
+                        'payum' => [
+                            'is_bundle' => false,
+                            'type' => 'xml',
+                            'dir' => param('kernel.project_dir') . '/vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping',
+                            'prefix' => 'Payum\Core\Model',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+]);

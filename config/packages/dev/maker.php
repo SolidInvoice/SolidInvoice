@@ -11,8 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\MakerConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (MakerConfig $config): void {
-    $config->rootNamespace('SolidInvoice');
-};
+return App::config([
+    'maker' => [
+        'root_namespace' => 'SolidInvoice',
+    ],
+]);

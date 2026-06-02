@@ -11,76 +11,80 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Config\MeilisearchConfig;
 
-return static function (MeilisearchConfig $config): void {
-    $config
-        ->url('%env(SOLIDINVOICE_MEILISEARCH_URL)%')
-        ->apiKey('%env(SOLIDINVOICE_MEILISEARCH_API_KEY)%')
-        ->prefix('%env(SOLIDINVOICE_MEILISEARCH_PREFIX)%');
-
-    $config->indices()
-        ->name('clients')
-        ->class(Client::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'status'],
-            'sortableAttributes' => ['name'],
-        ]);
-
-    $config->indices()
-        ->name('contacts')
-        ->class(Contact::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'clientId'],
-        ]);
-
-    $config->indices()
-        ->name('invoices')
-        ->class(Invoice::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
-            'sortableAttributes' => ['total', 'created'],
-        ]);
-
-    $config->indices()
-        ->name('recurring_invoices')
-        ->class(RecurringInvoice::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name'],
-            'sortableAttributes' => ['total', 'created'],
-        ]);
-
-    $config->indices()
-        ->name('quotes')
-        ->class(Quote::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
-            'sortableAttributes' => ['total', 'created'],
-        ]);
-
-    $config->indices()
-        ->name('payments')
-        ->class(Payment::class)
-        ->enableSerializerGroups(true)
-        ->serializerGroups(['searchable'])
-        ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'client.name', 'total'],
-            'sortableAttributes' => ['total'],
-        ]);
-};
+return App::config([
+    'meilisearch' => [
+        'url' => '%env(SOLIDINVOICE_MEILISEARCH_URL)%',
+        'api_key' => '%env(SOLIDINVOICE_MEILISEARCH_API_KEY)%',
+        'prefix' => '%env(SOLIDINVOICE_MEILISEARCH_PREFIX)%',
+        'indices' => [
+            [
+                'name' => 'clients',
+                'class' => Client::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'status'],
+                    'sortableAttributes' => ['name'],
+                ],
+            ],
+            [
+                'name' => 'contacts',
+                'class' => Contact::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'clientId'],
+                ],
+            ],
+            [
+                'name' => 'invoices',
+                'class' => Invoice::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
+                    'sortableAttributes' => ['total', 'created'],
+                ],
+            ],
+            [
+                'name' => 'recurring_invoices',
+                'class' => RecurringInvoice::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'status', 'total', 'client.name'],
+                    'sortableAttributes' => ['total', 'created'],
+                ],
+            ],
+            [
+                'name' => 'quotes',
+                'class' => Quote::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
+                    'sortableAttributes' => ['total', 'created'],
+                ],
+            ],
+            [
+                'name' => 'payments',
+                'class' => Payment::class,
+                'enable_serializer_groups' => true,
+                'serializer_groups' => ['searchable'],
+                'settings' => [
+                    'filterableAttributes' => ['companyId', 'status', 'client.name', 'total'],
+                    'sortableAttributes' => ['total'],
+                ],
+            ],
+        ],
+    ],
+]);
