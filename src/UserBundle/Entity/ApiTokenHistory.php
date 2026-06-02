@@ -15,7 +15,6 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -53,7 +52,7 @@ class ApiTokenHistory
     /**
      * @var array<string, mixed>
      */
-    #[ORM\Column(type: ArrayType::NAME)]
+    #[ORM\Column(type: Types::ARRAY)]
     private array $requestData = [];
 
     #[ORM\Column(type: Types::STRING)]
