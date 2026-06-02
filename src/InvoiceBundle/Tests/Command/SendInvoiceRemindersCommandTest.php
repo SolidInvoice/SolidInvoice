@@ -121,6 +121,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         // was queued in the async transport and the handler did not run inline.
         $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->clear();
+
         $reminderCount = $em->getRepository(InvoiceReminder::class)->count([]);
         self::assertSame(0, $reminderCount, 'SendInvoiceReminderMessage must be routed to the async transport, not handled inline during the cron run');
 
