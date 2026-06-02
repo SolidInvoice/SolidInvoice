@@ -11,21 +11,23 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\TwigComponentConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (TwigComponentConfig $config): void {
-    $config
-        ->anonymousTemplateDirectory('components/')
-        ->defaults('SolidInvoice\ClientBundle\Twig\Components\\', '@SolidInvoiceClient/Components')
-        ->defaults('SolidInvoice\CoreBundle\Twig\Components\\', '@SolidInvoiceCore/Components')
-        ->defaults('SolidInvoice\DataGridBundle\Twig\Components\\', '@SolidInvoiceDataGrid/Components')
-        ->defaults('SolidInvoice\InstallBundle\Twig\Components\\', '@SolidInvoiceInstall/Components')
-        ->defaults('SolidInvoice\InvoiceBundle\Twig\Components\\', '@SolidInvoiceInvoice/Components')
-        ->defaults('SolidInvoice\NotificationBundle\Twig\Components\\', '@SolidInvoiceNotification/Components')
-        ->defaults('SolidInvoice\QuoteBundle\Twig\Components\\', '@SolidInvoiceQuote/Components')
-        ->defaults('SolidInvoice\SettingsBundle\Twig\Components\\', '@SolidInvoiceSettings/Components')
-        ->defaults('SolidInvoice\TaxBundle\Twig\Components\\', '@SolidInvoiceTax/Components')
-        ->defaults('SolidInvoice\PaymentBundle\Twig\Components\\', '@SolidInvoicePayment/Components')
-        ->defaults('SolidInvoice\UserBundle\Twig\Components\\', '@SolidInvoiceUser/Components')
-    ;
-};
+return App::config([
+    'twig_component' => [
+        'anonymous_template_directory' => 'components/',
+        'defaults' => [
+            'SolidInvoice\\ClientBundle\\Twig\\Components\\' => '@SolidInvoiceClient/Components',
+            'SolidInvoice\\CoreBundle\\Twig\\Components\\' => '@SolidInvoiceCore/Components',
+            'SolidInvoice\\DataGridBundle\\Twig\\Components\\' => '@SolidInvoiceDataGrid/Components',
+            'SolidInvoice\\InstallBundle\\Twig\\Components\\' => '@SolidInvoiceInstall/Components',
+            'SolidInvoice\\InvoiceBundle\\Twig\\Components\\' => '@SolidInvoiceInvoice/Components',
+            'SolidInvoice\\NotificationBundle\\Twig\\Components\\' => '@SolidInvoiceNotification/Components',
+            'SolidInvoice\\QuoteBundle\\Twig\\Components\\' => '@SolidInvoiceQuote/Components',
+            'SolidInvoice\\SettingsBundle\\Twig\\Components\\' => '@SolidInvoiceSettings/Components',
+            'SolidInvoice\\TaxBundle\\Twig\\Components\\' => '@SolidInvoiceTax/Components',
+            'SolidInvoice\\PaymentBundle\\Twig\\Components\\' => '@SolidInvoicePayment/Components',
+            'SolidInvoice\\UserBundle\\Twig\\Components\\' => '@SolidInvoiceUser/Components',
+        ],
+    ],
+]);

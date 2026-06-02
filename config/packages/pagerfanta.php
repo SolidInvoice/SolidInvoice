@@ -11,9 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\BabdevPagerfantaConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (BabdevPagerfantaConfig $config): void {
-    $config->defaultView('twig');
-    $config->defaultTwigTemplate('@SolidInvoiceDataGrid/pagination.html.twig');
-};
+return App::config([
+    'babdev_pagerfanta' => [
+        'default_view' => 'twig',
+        'default_twig_template' => '@SolidInvoiceDataGrid/pagination.html.twig',
+    ],
+]);

@@ -11,16 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\TogglerConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (TogglerConfig $config): void {
-    $config
-        ->config()
-        ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'))
-        ->features('google_oauth_login', '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null')
-        ->features('turnstile_captcha', '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null')
-        ->features('saas_enabled', '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'')
-        ->features('meilisearch_search', '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""')
-    ;
-};
+return App::config([
+    'toggler' => [
+        'config' => [
+            'features' => [
+                'allow_registration' => env('SOLIDINVOICE_ALLOW_REGISTRATION'),
+                'google_oauth_login' => '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null',
+                'turnstile_captcha' => '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null',
+                'saas_enabled' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'',
+                'meilisearch_search' => '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""',
+            ],
+        ],
+    ],
+]);

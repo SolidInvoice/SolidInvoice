@@ -11,21 +11,24 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\MonologConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (MonologConfig $config): void {
-    $config
-        ->handler('main')
-        ->type('stream')
-        ->path(sprintf('%s/%s.log', param('kernel.logs_dir'), param('kernel.environment')))
-        ->level('debug')
-        ->channels('!event');
-
-    $config
-        ->handler('console')
-        ->type('console')
-        ->processPsr3Messages(false)
-        ->channels()
-        ->elements(['!event', '!doctrine', '!console']);
-};
+return App::config([
+    'monolog' => [
+        'handlers' => [
+            'main' => [
+                'type' => 'stream',
+                'path' => param('kernel.logs_dir') . '/' . param('kernel.environment') . '.log',
+                'level' => 'debug',
+                'channels' => '!event',
+            ],
+            'console' => [
+                'type' => 'console',
+                'process_psr_3_messages' => false,
+                'channels' => [
+                    'elements' => ['!event', '!doctrine', '!console'],
+                ],
+            ],
+        ],
+    ],
+]);

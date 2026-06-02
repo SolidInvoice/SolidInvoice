@@ -11,39 +11,31 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\MonologConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (MonologConfig $config): void {
-    $config
-        ->handler('main')
-        ->type('fingers_crossed')
-        ->actionLevel('error')
-        ->handler('nested')
-        ->bufferSize(50)
-        ->excludedHttpCode(404)
-        ->excludedHttpCode(405);
-
-    $config
-        ->handler('nested')
-        ->type('stream')
-        ->path('php://stderr')
-        ->level('debug')
-        ->formatter('monolog.formatter.json')
-    ;
-
-    $config
-        ->handler('console')
-        ->type('console')
-        ->processPsr3Messages(false)
-        ->channels()
-        ->elements(['!event', '!doctrine']);
-
-    /*
-     @TODO: Only enable deprecation logging for specific scenarios
-     $config
-        ->handler('deprecation')
-        ->type('stream')
-        ->path('php://stderr')
-        ->channels()
-        ->elements(['deprecation']);*/
-};
+return App::config([
+    'monolog' => [
+        'handlers' => [
+            'main' => [
+                'type' => 'fingers_crossed',
+                'action_level' => 'error',
+                'handler' => 'nested',
+                'buffer_size' => 50,
+                'excluded_http_codes' => [404, 405],
+            ],
+            'nested' => [
+                'type' => 'stream',
+                'path' => 'php://stderr',
+                'level' => 'debug',
+                'formatter' => 'monolog.formatter.json',
+            ],
+            'console' => [
+                'type' => 'console',
+                'process_psr_3_messages' => false,
+                'channels' => [
+                    'elements' => ['!event', '!doctrine'],
+                ],
+            ],
+        ],
+    ],
+]);

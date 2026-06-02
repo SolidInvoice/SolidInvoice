@@ -11,35 +11,30 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->secret(env('SOLIDINVOICE_APP_SECRET'))
-        ->phpErrors()
-        ->log(true)
-    ;
-
-    $config->trustedHeaders([
-        'x-forwarded-for',
-        'x-forwarded-proto',
-        'x-forwarded-port',
-        'x-forwarded-host',
-        'x-forwarded-prefix',
-    ]);
-
-    $config->session()
-        ->name('SOLIDINVOICE_APP');
-
-    $config
-        ->assets()
-        ->jsonManifestPath(param('kernel.project_dir') . '/public/static/manifest.json')
-    ;
-
-    $config->secrets()
-        ->enabled(true)
-        ->vaultDirectory(env('SOLIDINVOICE_CONFIG_DIR'))
-    ;
-};
+return App::config([
+    'framework' => [
+        'secret' => env('SOLIDINVOICE_APP_SECRET'),
+        'php_errors' => [
+            'log' => true,
+        ],
+        'trusted_headers' => [
+            'x-forwarded-for',
+            'x-forwarded-proto',
+            'x-forwarded-port',
+            'x-forwarded-host',
+            'x-forwarded-prefix',
+        ],
+        'session' => [
+            'name' => 'SOLIDINVOICE_APP',
+        ],
+        'assets' => [
+            'json_manifest_path' => param('kernel.project_dir') . '/public/static/manifest.json',
+        ],
+        'secrets' => [
+            'enabled' => true,
+            'vault_directory' => env('SOLIDINVOICE_CONFIG_DIR'),
+        ],
+    ],
+]);

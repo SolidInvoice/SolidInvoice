@@ -11,8 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\LiipTestFixturesConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (LiipTestFixturesConfig $config): void {
-    $config->keepDatabaseAndSchema(true);
-};
+return App::config([
+    'liip_test_fixtures' => [
+        'keep_database_and_schema' => true,
+    ],
+]);

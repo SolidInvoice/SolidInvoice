@@ -11,8 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\ApiPlatformConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (ApiPlatformConfig $config): void {
-    $config->enableProfiler(true);
-};
+return App::config([
+    'api_platform' => [
+        'enable_profiler' => true,
+    ],
+]);
