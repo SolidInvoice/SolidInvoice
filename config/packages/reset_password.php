@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -9,12 +11,13 @@
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\UserBundle\Repository\ResetPasswordRequestRepository;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Config\SymfonycastsResetPasswordConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (SymfonycastsResetPasswordConfig $config, ContainerConfigurator $configurator): void {
-    $config->requestPasswordRepository(ResetPasswordRequestRepository::class)
-        ->enableGarbageCollection(true)
-    ;
-};
+use SolidInvoice\UserBundle\Repository\ResetPasswordRequestRepository;
+
+return App::config([
+    'symfonycasts_reset_password' => [
+        'request_password_repository' => ResetPasswordRequestRepository::class,
+        'enable_garbage_collection' => true,
+    ],
+]);

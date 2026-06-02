@@ -11,19 +11,24 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Doctrine\Migrations\Version\Comparator;
 use SolidInvoice\CoreBundle\Doctrine\Migrations\NaturalVersionComparator;
-use Symfony\Config\DoctrineMigrationsConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
-return static function (DoctrineMigrationsConfig $config): void {
-    $config
-        ->migrationsPath('DoctrineMigrations', param('kernel.project_dir') . '/migrations')
-        ->enableProfiler(false)
-        ->storage()
-        ->tableStorage()
-        ->tableName('migration_versions')
-    ;
-
-    $config->services(Comparator::class, NaturalVersionComparator::class);
-};
+return App::config([
+    'doctrine_migrations' => [
+        'migrations_paths' => [
+            'DoctrineMigrations' => param('kernel.project_dir') . '/migrations',
+        ],
+        'enable_profiler' => false,
+        'storage' => [
+            'table_storage' => [
+                'table_name' => 'migration_versions',
+            ],
+        ],
+        'services' => [
+            Comparator::class => NaturalVersionComparator::class,
+        ],
+    ],
+]);

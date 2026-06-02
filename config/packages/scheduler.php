@@ -11,10 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->scheduler()
-        ->enabled(true);
-};
+return App::config([
+    'framework' => [
+        'scheduler' => [
+            'enabled' => true,
+        ],
+    ],
+]);

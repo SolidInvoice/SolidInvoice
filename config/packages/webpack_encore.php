@@ -11,13 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\WebpackEncoreConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (WebpackEncoreConfig $config): void {
-    $config
-        ->outputPath(param('kernel.project_dir') . '/public/static')
-        ->strictMode(param('kernel.debug'))
-        ->scriptAttributes('defer', true)
-    ;
-};
+return App::config([
+    'webpack_encore' => [
+        'output_path' => param('kernel.project_dir') . '/public/static',
+        'strict_mode' => param('kernel.debug'),
+        'script_attributes' => [
+            'defer' => true,
+        ],
+    ],
+]);

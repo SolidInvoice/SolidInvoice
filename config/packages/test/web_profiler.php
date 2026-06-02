@@ -11,12 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\WebProfilerConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (WebProfilerConfig $config): void {
-    $config
-        ->toolbar()
-        ->enabled(false)
-    ;
-    $config->interceptRedirects(false);
-};
+return App::config([
+    'web_profiler' => [
+        'toolbar' => [
+            'enabled' => false,
+        ],
+        'intercept_redirects' => false,
+    ],
+]);

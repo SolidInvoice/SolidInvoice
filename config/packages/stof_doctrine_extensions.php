@@ -11,12 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\StofDoctrineExtensionsConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (StofDoctrineExtensionsConfig $config): void {
-    $config->defaultLocale(env('SOLIDINVOICE_LOCALE'));
-
-    $config->orm('default')
-        ->timestampable(true);
-};
+return App::config([
+    'stof_doctrine_extensions' => [
+        'default_locale' => env('SOLIDINVOICE_LOCALE'),
+        'orm' => [
+            'default' => [
+                'timestampable' => true,
+            ],
+        ],
+    ],
+]);

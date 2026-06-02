@@ -11,19 +11,21 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $cache = $config
-        ->cache()
-        ->app('cache.adapter.filesystem')
-        ->system('cache.adapter.system');
-
-    $cache
-        ->pool('doctrine.result_cache_pool')
-        ->adapters(['cache.app']);
-
-    $cache
-        ->pool('doctrine.system_cache_pool')
-        ->adapters(['cache.system']);
-};
+return App::config([
+    'framework' => [
+        'cache' => [
+            'app' => 'cache.adapter.filesystem',
+            'system' => 'cache.adapter.system',
+            'pools' => [
+                'doctrine.result_cache_pool' => [
+                    'adapters' => ['cache.app'],
+                ],
+                'doctrine.system_cache_pool' => [
+                    'adapters' => ['cache.system'],
+                ],
+            ],
+        ],
+    ],
+]);

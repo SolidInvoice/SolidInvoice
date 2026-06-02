@@ -11,15 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->test(true)
-        ->session()
-        ->storageFactoryId('session.storage.factory.mock_file');
-
-    $config
-        ->profiler()
-        ->collect(false);
-};
+return App::config([
+    'framework' => [
+        'test' => true,
+        'session' => [
+            'storage_factory_id' => 'session.storage.factory.mock_file',
+        ],
+        'profiler' => [
+            'collect' => false,
+        ],
+    ],
+]);

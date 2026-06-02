@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -9,9 +11,12 @@
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config->notifier()
-        ->enabled(true);
-};
+return App::config([
+    'framework' => [
+        'notifier' => [
+            'enabled' => true,
+        ],
+    ],
+]);

@@ -11,16 +11,21 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $httpClient = $config->httpClient();
-
-    $httpClient->scopedClient('lemon_squeezy')
-        ->baseUri('https://api.lemonsqueezy.com/v1/')
-        ->authBearer(env('SOLIDINVOICE_LEMON_SQUEEZY_API_KEY'))
-        ->header('Content-Type', 'application/vnd.api+json')
-        ->header('Accept', 'application/vnd.api+json');
-
-};
+return App::config([
+    'framework' => [
+        'http_client' => [
+            'scoped_clients' => [
+                'lemon_squeezy' => [
+                    'base_uri' => 'https://api.lemonsqueezy.com/v1/',
+                    'auth_bearer' => env('SOLIDINVOICE_LEMON_SQUEEZY_API_KEY'),
+                    'headers' => [
+                        'Content-Type' => 'application/vnd.api+json',
+                        'Accept' => 'application/vnd.api+json',
+                    ],
+                ],
+            ],
+        ],
+    ],
+]);

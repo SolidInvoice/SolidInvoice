@@ -11,107 +11,85 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
-use Symfony\Config\ApiPlatformConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
-return static function (ApiPlatformConfig $config): void {
-    $config
-        ->title(SolidInvoiceCoreBundle::APP_NAME)
-        ->version(SolidInvoiceCoreBundle::VERSION)
-        ->showWebby(false)
-        ->enableProfiler(param('kernel.debug'))
-        ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash')
-    ;
+$formats = [
+    'jsonld' => ['mime_types' => ['application/ld+json']],
+    'json' => ['mime_types' => ['application/json']],
+    'hal' => ['mime_types' => ['application/hal+json']],
+    'jsonapi' => ['mime_types' => ['application/vnd.api+json']],
+    'xml' => ['mime_types' => ['application/xml', 'text/xml']],
+    'html' => ['mime_types' => ['text/html']],
+    'multipart' => ['mime_types' => ['multipart/form-data']],
+];
 
-    $config
-        ->formats('jsonld')
-        ->mimeTypes(['application/ld+json']);
-    $config
-        ->formats('json')
-        ->mimeTypes(['application/json']);
-    $config
-        ->formats('hal')
-        ->mimeTypes(['application/hal+json']);
-    $config
-        ->formats('jsonapi')
-        ->mimeTypes(['application/vnd.api+json']);
-    $config
-        ->formats('xml')
-        ->mimeTypes(['application/xml', 'text/xml']);
-    $config
-        ->formats('html')
-        ->mimeTypes(['text/html']);
-    $config
-        ->formats('multipart')
-        ->mimeTypes(['multipart/form-data']);
+$swaggerVersions = [3];
 
-    $config->docsFormats('json')
-        ->mimeTypes(['application/json']);
-    $config->docsFormats('jsonld')
-        ->mimeTypes(['application/ld+json']);
-    $config->docsFormats('jsonopenapi')
-        ->mimeTypes(['application/vnd.openapi+json']);
-    $config->docsFormats('html')
-        ->mimeTypes(['text/html']);
-    $config->docsFormats('xml')
-        ->mimeTypes(['application/xml', 'text/xml']);
+$versions = implode("\n* ", $swaggerVersions);
 
-    $config->patchFormats('json')
-        ->mimeTypes(['application/merge-patch+json', 'application/json']);
+$formatDesc = '';
 
-    $config->patchFormats('jsonapi')
-        ->mimeTypes(['application/vnd.api+json']);
-
-    $config->errorFormats('jsonld')
-        ->mimeTypes(['application/ld+json']); // Hydra error formats
-    $config->errorFormats('jsonproblem')
-        ->mimeTypes(['application/problem+json']);
-    $config->errorFormats('jsonapi')
-        ->mimeTypes(['application/vnd.api+json']);
-
-    $config->swagger()
-        ->versions([3])
-        ->swaggerUiExtraConfiguration([
-            'filter' => true,
-            'docExpansion' => 'none',
-            'defaultModelsExpandDepth' => 0,
-            'persistAuthorization' => true,
-            'tagsSorter' => 'alpha',
-        ])
-        ->apiKeys('bearer')
-        ->name('X-API-TOKEN')
-        ->type('header');
-
-    $config->defaults()
-        ->stateless(true)
-        ->extraProperties(['standard_put' => true, 'rfc_7807_compliant_errors' => true])
-        ->cacheHeaders([['Content-Type', 'Authorization', 'Origin']]);
-
-    $config->useSymfonyListeners(true);
-
-    $config->graphql()
-        ->enabled(true)
-        ->graphiql()->enabled(true);
-
-    $array = $config->toArray();
-
-    $versions = implode("\n* ", $array['swagger']['versions']);
-
-    $formats = $array['formats'];
-
-    $formatDesc = '';
-
-    foreach ($formats as $format => $formatConfig) {
-        if ($format === 'html') {
-            continue;
-        }
-
-        $formatDesc .= sprintf('- `%s`: `', $format) . implode('`, `', $formatConfig['mime_types']) . "`\n";
+foreach ($formats as $format => $formatConfig) {
+    if ($format === 'html') {
+        continue;
     }
 
-    $config->description(
-        <<<DESC
+    $formatDesc .= sprintf('- `%s`: `', $format) . implode('`, `', $formatConfig['mime_types']) . "`\n";
+}
+
+return App::config([
+    'api_platform' => [
+        'title' => SolidInvoiceCoreBundle::APP_NAME,
+        'version' => SolidInvoiceCoreBundle::VERSION,
+        'show_webby' => false,
+        'enable_profiler' => param('kernel.debug'),
+        'path_segment_name_generator' => 'api_platform.metadata.path_segment_name_generator.dash',
+        'formats' => $formats,
+        'docs_formats' => [
+            'json' => ['mime_types' => ['application/json']],
+            'jsonld' => ['mime_types' => ['application/ld+json']],
+            'jsonopenapi' => ['mime_types' => ['application/vnd.openapi+json']],
+            'html' => ['mime_types' => ['text/html']],
+            'xml' => ['mime_types' => ['application/xml', 'text/xml']],
+        ],
+        'patch_formats' => [
+            'json' => ['mime_types' => ['application/merge-patch+json', 'application/json']],
+            'jsonapi' => ['mime_types' => ['application/vnd.api+json']],
+        ],
+        'error_formats' => [
+            'jsonld' => ['mime_types' => ['application/ld+json']], // Hydra error formats
+            'jsonproblem' => ['mime_types' => ['application/problem+json']],
+            'jsonapi' => ['mime_types' => ['application/vnd.api+json']],
+        ],
+        'swagger' => [
+            'versions' => $swaggerVersions,
+            'swagger_ui_extra_configuration' => [
+                'filter' => true,
+                'docExpansion' => 'none',
+                'defaultModelsExpandDepth' => 0,
+                'persistAuthorization' => true,
+                'tagsSorter' => 'alpha',
+            ],
+            'api_keys' => [
+                'bearer' => [
+                    'name' => 'X-API-TOKEN',
+                    'type' => 'header',
+                ],
+            ],
+        ],
+        'defaults' => [
+            'stateless' => true,
+            'extra_properties' => ['standard_put' => true, 'rfc_7807_compliant_errors' => true],
+            'cache_headers' => [['Content-Type', 'Authorization', 'Origin']],
+        ],
+        'use_symfony_listeners' => true,
+        'graphql' => [
+            'enabled' => true,
+            'graphiql' => ['enabled' => true],
+        ],
+        'description' => <<<DESC
 SolidInvoice is a simple open source invoicing application aimed to help small businesses and freelancers manage their day-to-day billing.
 
 ### Authentication
@@ -193,7 +171,7 @@ SolidInvoice's API is compatible with popular automation platforms:
 - **Zapier**: Use the Webhooks by Zapier action with custom headers.
 
 All monetary amounts are represented as **integers in the smallest currency unit** (e.g., cents for USD/EUR).
-For example, `1000` represents `$10.00`.
-DESC
-    );
-};
+For example, `1000` represents `\$10.00`.
+DESC,
+    ],
+]);
