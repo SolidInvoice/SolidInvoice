@@ -19246,16 +19246,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.34.0",
+            "version": "v2.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "64983e630e687ae086e09d5fc0a7b5271a7747d7"
+                "reference": "f493ed0f7d4685febae7695cc137937f5f275c20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/64983e630e687ae086e09d5fc0a7b5271a7747d7",
-                "reference": "64983e630e687ae086e09d5fc0a7b5271a7747d7",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/f493ed0f7d4685febae7695cc137937f5f275c20",
+                "reference": "f493ed0f7d4685febae7695cc137937f5f275c20",
                 "shasum": ""
             },
             "require": {
@@ -19316,7 +19316,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.34.0"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.36.0"
             },
             "funding": [
                 {
@@ -19336,7 +19336,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-21T22:29:11+00:00"
+            "time": "2026-05-29T06:59:30+00:00"
         },
         {
             "name": "symfony/ux-chartjs",
