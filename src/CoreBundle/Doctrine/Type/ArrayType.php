@@ -48,8 +48,11 @@ final class ArrayType extends Type
         return serialize($value);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     #[Override]
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): array
     {
         if ($value === null) {
             return [];
@@ -60,9 +63,14 @@ final class ArrayType extends Type
         set_error_handler(static fn (): bool => true);
 
         try {
-            return unserialize((string) $value);
+            // This type only ever stores serialized arrays, so objects are never
+            // expected: disallow them to avoid PHP object-injection, and fall back
+            // to an empty array for corrupt/legacy values that fail to unserialize.
+            $value = unserialize((string) $value, ['allowed_classes' => false]);
         } finally {
             restore_error_handler();
         }
+
+        return is_array($value) ? $value : [];
     }
 }
