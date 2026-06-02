@@ -70,7 +70,7 @@ final class ApiTokenHistoryModalTest extends TestCase
         $currentUser = $this->createStub(User::class);
         $currentUser->method('getId')->willReturn(Ulid::fromString('01HN0000000000000000000002'));
 
-        $apiToken = $this->createMock(ApiToken::class);
+        $apiToken = $this->createStub(ApiToken::class);
         $apiToken->method('getUser')->willReturn($tokenOwner);
 
         $tokenRepository
@@ -104,7 +104,7 @@ final class ApiTokenHistoryModalTest extends TestCase
         $currentUser->method('getId')->willReturn($userId);
 
         // Create API token owned by current user
-        $apiToken = $this->createMock(ApiToken::class);
+        $apiToken = $this->createStub(ApiToken::class);
         $apiToken->method('getUser')->willReturn($currentUser);
 
         $tokenRepository

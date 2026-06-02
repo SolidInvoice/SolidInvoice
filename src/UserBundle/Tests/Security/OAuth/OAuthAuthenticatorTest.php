@@ -87,6 +87,14 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->attributes->set('_route', OAuthConnectCheck::ROUTE);
         $request->attributes->set('service', 'google');
 
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
+
         $this->toggle
             ->expects($this->once())
             ->method('isActive')
@@ -102,6 +110,14 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->attributes->set('_route', 'invalid_route');
         $request->attributes->set('service', 'google');
 
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
+
         $this->toggle
             ->expects($this->never())
             ->method('isActive');
@@ -114,6 +130,14 @@ final class OAuthAuthenticatorTest extends TestCase
         $request = new Request();
         $request->attributes->set('_route', OAuthConnectCheck::ROUTE);
         $request->attributes->set('service', 'google');
+
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
 
         $this->toggle
             ->expects($this->once())
@@ -137,6 +161,11 @@ final class OAuthAuthenticatorTest extends TestCase
             'email' => 'test@example.com',
             'email_verified' => true,
         ]);
+
+        $this->router->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
 
         $this->clientRegistry
             ->expects($this->once())
@@ -192,6 +221,10 @@ final class OAuthAuthenticatorTest extends TestCase
             'email' => 'test@example.com',
             'email_verified' => true,
         ]);
+
+        $this->router->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
 
         $this->clientRegistry
             ->expects($this->once())
@@ -270,6 +303,8 @@ final class OAuthAuthenticatorTest extends TestCase
             'email' => 'test@example.com',
             'email_verified' => true,
         ]);
+
+        $this->router->expects($this->never())->method($this->anything());
 
         $this->clientRegistry
             ->expects($this->once())
@@ -374,6 +409,9 @@ final class OAuthAuthenticatorTest extends TestCase
             'email_verified' => true,
         ]);
 
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+
         $this->clientRegistry
             ->expects($this->once())
             ->method('getClient')
@@ -446,6 +484,9 @@ final class OAuthAuthenticatorTest extends TestCase
             'email' => 'test@example.com',
             'email_verified' => true,
         ]);
+
+        $this->router->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
 
         $this->clientRegistry
             ->expects($this->once())
@@ -520,6 +561,14 @@ final class OAuthAuthenticatorTest extends TestCase
         $request = new Request();
         $token = $this->createStub(TokenInterface::class);
 
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
+
         $this->router
             ->expects($this->once())
             ->method('generate')
@@ -539,6 +588,14 @@ final class OAuthAuthenticatorTest extends TestCase
         $session = new Session(storage: new MockArraySessionStorage(), flashes: $flashBag);
         $request->setSession($session);
         $exception = new AuthenticationException('Authentication failed');
+
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
 
         $flashBag
             ->expects($this->once())
@@ -560,6 +617,14 @@ final class OAuthAuthenticatorTest extends TestCase
     public function testStart(): void
     {
         $request = new Request();
+
+        $this->clientRegistry->expects($this->never())->method($this->anything());
+        $this->entityManager->expects($this->never())->method($this->anything());
+        $this->toggle->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+        $this->security->expects($this->never())->method($this->anything());
+        $this->userRepository->expects($this->never())->method($this->anything());
+        $this->client->expects($this->never())->method($this->anything());
 
         $this->router->expects($this->once())
             ->method('generate')

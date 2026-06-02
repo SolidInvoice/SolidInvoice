@@ -68,7 +68,7 @@ final class CustomFieldsListGateTest extends TestCase
 
     private function buildGate(bool $enabled): FeatureGate
     {
-        $gate = $this->createMock(FeatureGate::class);
+        $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturn($enabled);
 
         return $gate;

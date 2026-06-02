@@ -29,7 +29,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
 
     public function testGetDataReturnsShowFalseWhenNoUserIsLoggedIn(): void
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn(null);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
@@ -49,7 +49,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
         $manager = self::getContainer()->get(ChecklistManager::class);
         $manager->dismiss($user);
 
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn($user);
 
         $widget = new OnboardingChecklistWidget($manager, $security);
@@ -64,7 +64,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $user = UserFactory::createOne(['companies' => [$company]])->_real();
 
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);

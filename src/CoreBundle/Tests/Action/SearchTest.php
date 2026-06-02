@@ -105,7 +105,7 @@ final class SearchTest extends TestCase
     {
         $this->setCompany();
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
 
         $this->client->expects(self::once())
@@ -132,11 +132,11 @@ final class SearchTest extends TestCase
             meta: '$1,500.00',
         );
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
         $formatter->method('format')->willReturn($expectedResult);
 
-        $this->client->method('multiSearch')->willReturn([
+        $this->client->expects(self::atLeastOnce())->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_invoices', 'hits' => [['id' => 'i1']]],
             ],
@@ -162,10 +162,10 @@ final class SearchTest extends TestCase
     {
         $this->setCompany();
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
 
-        $this->client->method('multiSearch')->willReturn(['results' => []]);
+        $this->client->expects(self::atLeastOnce())->method('multiSearch')->willReturn(['results' => []]);
 
         $action = $this->makeAction([$formatter]);
         $response = $action(new Request(['q' => 'acme']));
@@ -175,6 +175,8 @@ final class SearchTest extends TestCase
 
     public function testResponseContentTypeIsJson(): void
     {
+        $this->client->expects(self::never())->method('multiSearch');
+
         $action = $this->makeAction();
         $response = $action(new Request(['q' => 'a']));
 
@@ -188,15 +190,15 @@ final class SearchTest extends TestCase
         $invoiceResult = new SearchResult('invoice', 'i1', 'INV-001', '', '/invoices/i1');
         $quoteResult = new SearchResult('quote', 'q1', 'Q-001', '', '/quotes/q1');
 
-        $invoiceFormatter = $this->createMock(ResultFormatterInterface::class);
+        $invoiceFormatter = $this->createStub(ResultFormatterInterface::class);
         $invoiceFormatter->method('getIndexName')->willReturn('invoices');
         $invoiceFormatter->method('format')->willReturn($invoiceResult);
 
-        $quoteFormatter = $this->createMock(ResultFormatterInterface::class);
+        $quoteFormatter = $this->createStub(ResultFormatterInterface::class);
         $quoteFormatter->method('getIndexName')->willReturn('quotes');
         $quoteFormatter->method('format')->willReturn($quoteResult);
 
-        $this->client->method('multiSearch')->willReturn([
+        $this->client->expects(self::atLeastOnce())->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_invoices', 'hits' => [['id' => 'i1']]],
                 ['indexUid' => 'test_quotes', 'hits' => [['id' => 'q1']]],

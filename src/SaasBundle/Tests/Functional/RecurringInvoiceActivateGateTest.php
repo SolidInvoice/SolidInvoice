@@ -55,7 +55,7 @@ final class RecurringInvoiceActivateGateTest extends TestCase
 
     private function buildWorkflow(bool $gated): StateMachine
     {
-        $gate = $this->createMock(EmailVerificationGateInterface::class);
+        $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn($gated);
         $gate->method('reason')->willReturn('Please verify your email address before activating this recurring invoice.');
 

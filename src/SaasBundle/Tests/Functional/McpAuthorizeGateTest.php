@@ -42,11 +42,11 @@ final class McpAuthorizeGateTest extends WebTestCase
 
     public function testRendersUpgradePageWhenMcpAccessFeatureDeniedForAllCompanies(): void
     {
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $key !== 'mcp_access');
 
-        $upgradeProvider = $this->createMock(UpgradePromptProvider::class);
+        $upgradeProvider = $this->createStub(UpgradePromptProvider::class);
         $upgradeProvider->method('prompt')
             ->willReturnCallback(static fn (string $key): string => $key === 'mcp_access'
                 ? '<div class="alert alert-warning"><strong>MCP locked</strong></div>'

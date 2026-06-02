@@ -40,7 +40,7 @@ final class QueryTest extends TestCase
 
     public function testSetQueryBuilder(): void
     {
-        $newBuilder = $this->createMock(QueryBuilder::class);
+        $newBuilder = $this->createStub(QueryBuilder::class);
         $newBuilder->method('getRootAliases')->willReturn(['alias']);
 
         $result = $this->query->setQueryBuilder($newBuilder);

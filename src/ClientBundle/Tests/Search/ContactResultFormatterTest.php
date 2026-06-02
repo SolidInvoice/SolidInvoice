@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Search;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Search\ContactResultFormatter;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
@@ -22,13 +22,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ContactResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private Stub&RouterInterface $router;
 
     private ContactResultFormatter $formatter;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(RouterInterface::class);
+        $this->router = $this->createStub(RouterInterface::class);
         $this->formatter = new ContactResultFormatter($this->router);
     }
 
@@ -104,13 +104,15 @@ final class ContactResultFormatterTest extends TestCase
 
     public function testFormatGeneratesClientViewUrlWhenClientIdPresent(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_clients_view', ['id' => 'client-99'])
             ->willReturn('/clients/client-99');
 
-        $this->formatter->format([
+        $formatter = new ContactResultFormatter($router);
+        $formatter->format([
             'id' => 'contact-1',
             'firstName' => 'Jane',
             'lastName' => 'Smith',
@@ -121,13 +123,15 @@ final class ContactResultFormatterTest extends TestCase
 
     public function testFormatGeneratesClientsIndexUrlWhenClientIdMissing(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_clients_index')
             ->willReturn('/clients');
 
-        $this->formatter->format([
+        $formatter = new ContactResultFormatter($router);
+        $formatter->format([
             'id' => 'contact-1',
             'email' => 'jane@example.com',
         ]);

@@ -64,7 +64,7 @@ final class ContactTypeTest extends FormTestCase
         $em = M::mock(EntityManagerInterface::class);
         $em->shouldReceive('contains')->zeroOrMoreTimes()->andReturn(false);
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
 
         return [

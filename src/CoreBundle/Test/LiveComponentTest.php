@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Test;
 
 use const PASSWORD_DEFAULT;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
@@ -38,7 +38,7 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected KernelBrowser $client;
 
-    protected MockObject&CsrfTokenManagerInterface $csrfTokenManager;
+    protected Stub&CsrfTokenManagerInterface $csrfTokenManager;
 
     protected function setUp(): void
     {
@@ -46,7 +46,7 @@ abstract class LiveComponentTest extends KernelTestCase
 
         $this->ensureSessionIsSet();
 
-        $this->csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $this->csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
 
         self::getContainer()
             ->set('security.csrf.token_manager', $this->csrfTokenManager);

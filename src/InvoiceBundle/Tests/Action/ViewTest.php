@@ -402,6 +402,7 @@ final class ViewTest extends KernelTestCase
             ->set('security.csrf.token_manager', $csrfTokenManager);
 
         $csrfTokenManager
+            ->expects(self::atLeastOnce())
             ->method('getToken')
             ->with('send_manual_reminder')
             ->willReturn(new CsrfToken('send_manual_reminder', 'send_manual_reminder'));

@@ -116,6 +116,9 @@ final class EmailVerifierTest extends TestCase
             ->method('send')
             ->with($email);
 
+        $this->userRepository->expects($this->never())
+            ->method($this->anything());
+
         $this->emailVerifier->sendEmailConfirmation($routeName, $user, $email);
     }
 
@@ -138,9 +141,15 @@ final class EmailVerifierTest extends TestCase
         $uriSignerReflection = new ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
-        $uriSignerMock = $this->createMock(UriSigner::class);
+        $uriSignerMock = $this->createStub(UriSigner::class);
         $uriSignerMock->method('checkRequest')->willReturn(true);
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSignerMock);
+
+        $this->urlGenerator->expects($this->never())
+            ->method($this->anything());
+
+        $this->mailer->expects($this->never())
+            ->method($this->anything());
 
         // Expect the repository to save the user
         $this->userRepository->expects($this->once())
@@ -170,9 +179,15 @@ final class EmailVerifierTest extends TestCase
         $uriSignerReflection = new ReflectionProperty($this->verifyEmailHelper, 'uriSigner');
         $uriSigner = $uriSignerReflection->getValue($this->verifyEmailHelper);
 
-        $uriSignerMock = $this->createMock(UriSigner::class);
+        $uriSignerMock = $this->createStub(UriSigner::class);
         $uriSignerMock->method('checkRequest')->willReturn(true);
         $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSignerMock);
+
+        $this->urlGenerator->expects($this->never())
+            ->method($this->anything());
+
+        $this->mailer->expects($this->never())
+            ->method($this->anything());
 
         // Expect the repository to never save the user
         $this->userRepository->expects($this->never())

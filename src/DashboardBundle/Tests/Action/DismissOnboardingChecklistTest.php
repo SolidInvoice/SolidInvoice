@@ -39,13 +39,13 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $user = UserFactory::createOne(['companies' => [$company]])->_real();
 
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $csrfTokenManager->method('isTokenValid')->willReturn(true);
 
         $session = new Session(new MockArraySessionStorage());
@@ -67,13 +67,13 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $user = UserFactory::createOne(['companies' => [$company]])->_real();
 
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $csrfTokenManager->method('isTokenValid')->willReturn(true);
 
         self::assertFalse($manager->isDismissed($user));

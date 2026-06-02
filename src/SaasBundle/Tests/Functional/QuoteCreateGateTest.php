@@ -82,7 +82,7 @@ final class QuoteCreateGateTest extends WebTestCase
      */
     private function buildFeatureGate(array $overrides): FeatureGate
     {
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $overrides[$key] ?? true);
 

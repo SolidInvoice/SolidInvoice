@@ -26,11 +26,8 @@ final class ChoiceFilterTest extends TestCase
 {
     private ChoiceFilter $filter;
 
-    private QueryBuilder&MockObject $queryBuilder;
-
     protected function setUp(): void
     {
-        $this->queryBuilder = $this->createMock(QueryBuilder::class);
         $this->filter = ChoiceFilter::new('status', ['draft' => 'Draft', 'pending' => 'Pending', 'paid' => 'Paid']);
     }
 
@@ -66,31 +63,35 @@ final class ChoiceFilterTest extends TestCase
 
     public function testFilterWithSingleValue(): void
     {
-        $this->queryBuilder
+        /** @var QueryBuilder&MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder
             ->expects(self::once())
             ->method('andWhere')
             ->with(ORMSource::ALIAS . '.status = :status')
-            ->willReturn($this->queryBuilder);
+            ->willReturn($queryBuilder);
 
-        $this->queryBuilder
+        $queryBuilder
             ->expects(self::once())
             ->method('setParameter')
             ->with('status', 'draft');
 
-        $this->filter->filter($this->queryBuilder, 'draft');
+        $this->filter->filter($queryBuilder, 'draft');
     }
 
     public function testFilterWithEmptyValueDoesNothing(): void
     {
-        $this->queryBuilder
+        /** @var QueryBuilder&MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder
             ->expects(self::never())
             ->method('andWhere');
 
-        $this->queryBuilder
+        $queryBuilder
             ->expects(self::never())
             ->method('setParameter');
 
-        $this->filter->filter($this->queryBuilder, '');
+        $this->filter->filter($queryBuilder, '');
     }
 
     public function testFilterWithMultipleValues(): void
@@ -98,18 +99,20 @@ final class ChoiceFilterTest extends TestCase
         $filter = ChoiceFilter::new('status', ['draft' => 'Draft', 'pending' => 'Pending'])
             ->multiple();
 
-        $this->queryBuilder
+        /** @var QueryBuilder&MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder
             ->expects(self::once())
             ->method('andWhere')
             ->with(ORMSource::ALIAS . '.status IN (:status)')
-            ->willReturn($this->queryBuilder);
+            ->willReturn($queryBuilder);
 
-        $this->queryBuilder
+        $queryBuilder
             ->expects(self::once())
             ->method('setParameter')
             ->with('status', ['draft', 'pending']);
 
-        $filter->filter($this->queryBuilder, ['draft', 'pending']);
+        $filter->filter($queryBuilder, ['draft', 'pending']);
     }
 
     public function testFilterWithEmptyArrayDoesNothing(): void
@@ -117,15 +120,17 @@ final class ChoiceFilterTest extends TestCase
         $filter = ChoiceFilter::new('status', ['draft' => 'Draft'])
             ->multiple();
 
-        $this->queryBuilder
+        /** @var QueryBuilder&MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder
             ->expects(self::never())
             ->method('andWhere');
 
-        $this->queryBuilder
+        $queryBuilder
             ->expects(self::never())
             ->method('setParameter');
 
-        $filter->filter($this->queryBuilder, []);
+        $filter->filter($queryBuilder, []);
     }
 
     public function testChoicesCanBeSetAfterConstruction(): void

@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Tests\Search;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
@@ -30,7 +31,7 @@ final class PaymentResultFormatterTest extends TestCase
 
     private MockObject&MoneyFormatterInterface $moneyFormatter;
 
-    private MockObject&SystemConfig $systemConfig;
+    private Stub&SystemConfig $systemConfig;
 
     private PaymentResultFormatter $formatter;
 
@@ -38,27 +39,39 @@ final class PaymentResultFormatterTest extends TestCase
     {
         $this->router = $this->createMock(RouterInterface::class);
         $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
-        $this->systemConfig = $this->createMock(SystemConfig::class);
+        $this->systemConfig = $this->createStub(SystemConfig::class);
         $this->formatter = new PaymentResultFormatter($this->router, $this->moneyFormatter, $this->systemConfig);
     }
 
     public function testImplementsResultFormatterInterface(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertInstanceOf(ResultFormatterInterface::class, $this->formatter);
     }
 
     public function testImplementsQualifiedResultFormatterInterface(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertInstanceOf(QualifiedResultFormatterInterface::class, $this->formatter);
     }
 
     public function testGetIndexNameReturnsPayments(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertSame('payments', $this->formatter->getIndexName());
     }
 
     public function testGetSupportedQualifiersReturnsExpectedMapping(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertSame([
             'status' => 'status',
             'client' => 'client.name',
@@ -68,7 +81,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatWithReferenceUsesReferenceAsTitle(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/inv-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/inv-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $hit = [
             'id' => 'pay-1',
@@ -87,7 +101,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatWithoutReferenceUsesInvoiceRefAsTitle(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/inv-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/inv-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $hit = [
             'id' => 'pay-1',
@@ -103,7 +118,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatWithoutReferenceOrInvoiceRefUsesIdAsTitle(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'pay-1']);
 
@@ -112,7 +128,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatSubtitleShowsClientAndInvoiceRefWhenBothPresent(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/inv-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/inv-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $hit = [
             'id' => 'pay-1',
@@ -127,7 +144,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatSubtitleShowsOnlyClientWhenNoInvoice(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $hit = [
             'id' => 'pay-1',
@@ -141,7 +159,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatSubtitleShowsOnlyClientWhenInvoiceRefMissing(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $hit = ['id' => 'pay-1', 'client' => ['name' => 'Acme Corp']];
 
@@ -152,7 +171,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatSubtitleIsEmptyWhenNeitherClientNorInvoiceRefPresent(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'pay-1']);
 
@@ -161,6 +181,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatLinksToInvoiceViewWhenInvoiceIdPresent(): void
     {
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         $this->router
             ->expects(self::once())
             ->method('generate')
@@ -172,6 +194,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatLinksToPaymentsIndexWhenNoInvoiceId(): void
     {
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         $this->router
             ->expects(self::once())
             ->method('generate')
@@ -183,7 +207,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatWithStatus(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'pay-1', 'status' => 'refunded']);
 
@@ -192,7 +217,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatWithMissingStatusResultsInNull(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'pay-1']);
 
@@ -201,7 +227,7 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatMetaWithAmount(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
 
         $this->moneyFormatter
             ->expects(self::once())
@@ -218,7 +244,8 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatMetaIsNullWhenTotalMissing(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'pay-1']);
 
@@ -227,7 +254,7 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatFallsBackToSystemCurrencyWhenCurrencyCodeMissing(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
         $this->systemConfig->method('getCurrency')->willReturn(new Currency('EUR'));
 
         $this->moneyFormatter
@@ -245,7 +272,7 @@ final class PaymentResultFormatterTest extends TestCase
 
     public function testFormatConvertsAmountFromMajorToMinorUnits(): void
     {
-        $this->router->method('generate')->willReturn('/payments');
+        $this->router->expects(self::once())->method('generate')->willReturn('/payments');
 
         $this->moneyFormatter
             ->expects(self::once())

@@ -184,7 +184,7 @@ final class ChecklistManagerTest extends KernelTestCase
         int $priority,
         bool $isComplete
     ): ChecklistItemInterface {
-        $item = $this->createMock(ChecklistItemInterface::class);
+        $item = $this->createStub(ChecklistItemInterface::class);
         $item->method('getName')->willReturn($name);
         $item->method('getDescription')->willReturn($description);
         $item->method('getIcon')->willReturn($icon);

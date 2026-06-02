@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Search;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Search\ClientResultFormatter;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
@@ -22,13 +22,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ClientResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private Stub&RouterInterface $router;
 
     private ClientResultFormatter $formatter;
 
     protected function setUp(): void
     {
-        $this->router = $this->createMock(RouterInterface::class);
+        $this->router = $this->createStub(RouterInterface::class);
         $this->formatter = new ClientResultFormatter($this->router);
     }
 
@@ -54,10 +54,14 @@ final class ClientResultFormatterTest extends TestCase
 
     public function testFormatMapsHitToSearchResult(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects(self::once())
             ->method('generate')
             ->with('_clients_view', ['id' => 'client-id-1'])
             ->willReturn('/clients/client-id-1');
+
+        $formatter = new ClientResultFormatter($router);
 
         $hit = [
             'id' => 'client-id-1',
@@ -66,7 +70,7 @@ final class ClientResultFormatterTest extends TestCase
             'status' => 'active',
         ];
 
-        $result = $this->formatter->format($hit);
+        $result = $formatter->format($hit);
 
         self::assertSame('client', $result->type);
         self::assertSame('client-id-1', $result->id);
@@ -106,13 +110,15 @@ final class ClientResultFormatterTest extends TestCase
 
     public function testFormatGeneratesCorrectRouteWithClientId(): void
     {
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $router
             ->expects(self::once())
             ->method('generate')
             ->with('_clients_view', ['id' => 'abc-123'])
             ->willReturn('/clients/abc-123');
 
-        $this->formatter->format(['id' => 'abc-123']);
+        $formatter = new ClientResultFormatter($router);
+        $formatter->format(['id' => 'abc-123']);
     }
 
     public function testMetaIsAlwaysNull(): void

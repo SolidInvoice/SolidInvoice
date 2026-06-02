@@ -38,13 +38,13 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::atLeastOnce())->method('findOneBy')->willReturn($subscription);
         $subscriptionRepository->expects(self::once())
             ->method('save')
             ->with(self::callback(static fn (Subscription $s): bool => $s->getPlan() === $newPlan));
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->with('12345')->willReturn($newPlan);
+        $planRepository->expects(self::once())->method('find')->with('12345')->willReturn($newPlan);
 
         $listener = new SubscriptionPlanSyncListener(
             $subscriptionRepository,
@@ -64,11 +64,11 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::atLeastOnce())->method('findOneBy')->willReturn($subscription);
         $subscriptionRepository->expects(self::once())->method('save');
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->with('67890')->willReturn($newPlan);
+        $planRepository->expects(self::once())->method('find')->with('67890')->willReturn($newPlan);
 
         $listener = new SubscriptionPlanSyncListener(
             $subscriptionRepository,
@@ -87,7 +87,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::atLeastOnce())->method('findOneBy')->willReturn($subscription);
         $subscriptionRepository->expects(self::never())->method('save');
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
@@ -128,11 +128,11 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::atLeastOnce())->method('findOneBy')->willReturn($subscription);
         $subscriptionRepository->expects(self::never())->method('save');
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->with('99999')->willReturn(null);
+        $planRepository->expects(self::once())->method('find')->with('99999')->willReturn(null);
 
         $listener = new SubscriptionPlanSyncListener(
             $subscriptionRepository,
@@ -148,7 +148,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
     public function testIgnoresEventWhenLocalSubscriptionMissing(): void
     {
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn(null);
+        $subscriptionRepository->expects(self::atLeastOnce())->method('findOneBy')->willReturn(null);
         $subscriptionRepository->expects(self::never())->method('save');
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);

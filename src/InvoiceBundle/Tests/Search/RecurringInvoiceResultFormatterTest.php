@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Search;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
@@ -30,7 +31,7 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     private MockObject&MoneyFormatterInterface $moneyFormatter;
 
-    private MockObject&SystemConfig $systemConfig;
+    private Stub&SystemConfig $systemConfig;
 
     private RecurringInvoiceResultFormatter $formatter;
 
@@ -38,27 +39,39 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
     {
         $this->router = $this->createMock(RouterInterface::class);
         $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
-        $this->systemConfig = $this->createMock(SystemConfig::class);
+        $this->systemConfig = $this->createStub(SystemConfig::class);
         $this->formatter = new RecurringInvoiceResultFormatter($this->router, $this->moneyFormatter, $this->systemConfig);
     }
 
     public function testImplementsResultFormatterInterface(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertInstanceOf(ResultFormatterInterface::class, $this->formatter);
     }
 
     public function testImplementsQualifiedResultFormatterInterface(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertInstanceOf(QualifiedResultFormatterInterface::class, $this->formatter);
     }
 
     public function testGetIndexNameReturnsRecurringInvoices(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertSame('recurring_invoices', $this->formatter->getIndexName());
     }
 
     public function testGetSupportedQualifiersReturnsExpectedMapping(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertSame([
             'status' => 'status',
             'amount' => 'total',
@@ -68,17 +81,21 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testCreatedQualifierIsNotSupported(): void
     {
+        $this->router->expects(self::never())->method(self::anything());
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         self::assertArrayNotHasKey('created', $this->formatter->getSupportedQualifiers());
     }
 
     public function testFormatMapsHitToSearchResult(): void
     {
         $this->router
+            ->expects(self::once())
             ->method('generate')
             ->with('_invoices_view_recurring', ['id' => 'rec-1'])
             ->willReturn('/invoices/recurring/rec-1');
 
-        $this->moneyFormatter->method('format')->willReturn('$200.00');
+        $this->moneyFormatter->expects(self::once())->method('format')->willReturn('$200.00');
 
         $hit = [
             'id' => 'rec-1',
@@ -100,7 +117,8 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatUsesIdAsTitleWhenClientNameMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'rec-1', 'status' => 'active']);
 
@@ -109,7 +127,8 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatSubtitleIsStatusWhenPresent(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'rec-1', 'status' => 'paused']);
 
@@ -118,7 +137,8 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatSubtitleIsEmptyStringWhenStatusMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'rec-1']);
 
@@ -127,7 +147,8 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatMetaIsNullWhenTotalMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
 
         $result = $this->formatter->format(['id' => 'rec-1', 'status' => 'active']);
 
@@ -136,7 +157,7 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatConvertsAmountFromMajorToMinorUnits(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
 
         $this->moneyFormatter
             ->expects(self::once())
@@ -153,7 +174,7 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatFallsBackToSystemCurrencyWhenCurrencyCodeMissing(): void
     {
-        $this->router->method('generate')->willReturn('/invoices/recurring/rec-1');
+        $this->router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/rec-1');
         $this->systemConfig->method('getCurrency')->willReturn(new Currency('GBP'));
 
         $this->moneyFormatter
@@ -171,6 +192,8 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
     public function testFormatGeneratesCorrectRoute(): void
     {
+        $this->moneyFormatter->expects(self::never())->method(self::anything());
+
         $this->router
             ->expects(self::once())
             ->method('generate')

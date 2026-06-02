@@ -27,17 +27,17 @@ final class AddressNormalizerTest extends TestCase
 {
     private AddressNormalizer $normalizer;
 
-    private ManagerRegistry | MockObject $registry;
+    private ManagerRegistry $registry;
 
-    private DenormalizerInterface | MockObject $denormalizer;
+    private DenormalizerInterface $denormalizer;
 
-    private NormalizerInterface | MockObject $innerNormalizer;
+    private NormalizerInterface $innerNormalizer;
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->denormalizer = $this->createMock(DenormalizerInterface::class);
-        $this->innerNormalizer = $this->createMock(NormalizerInterface::class);
+        $this->registry = $this->createStub(ManagerRegistry::class);
+        $this->denormalizer = $this->createStub(DenormalizerInterface::class);
+        $this->innerNormalizer = $this->createStub(NormalizerInterface::class);
 
         $this->normalizer = new AddressNormalizer($this->registry);
         $this->normalizer->setDenormalizer($this->denormalizer);
@@ -57,17 +57,25 @@ final class AddressNormalizerTest extends TestCase
             ->with(1)
             ->willReturn($client);
 
-        $this->registry->expects($this->once())
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
+        $registry->expects($this->once())
             ->method('getRepository')
             ->with(Client::class)
             ->willReturn($clientRepository);
 
-        $this->denormalizer->expects($this->once())
+        /** @var DenormalizerInterface&MockObject $denormalizer */
+        $denormalizer = $this->createMock(DenormalizerInterface::class);
+        $denormalizer->expects($this->once())
             ->method('denormalize')
             ->with($data, Address::class, null, $context + [AddressNormalizer::class => true])
             ->willReturn($address);
 
-        $result = $this->normalizer->denormalize($data, Address::class, null, $context);
+        $normalizer = new AddressNormalizer($registry);
+        $normalizer->setDenormalizer($denormalizer);
+        $normalizer->setNormalizer($this->innerNormalizer);
+
+        $result = $normalizer->denormalize($data, Address::class, null, $context);
 
         self::assertSame($address, $result);
         self::assertSame($client, $result->getClient());
@@ -79,12 +87,18 @@ final class AddressNormalizerTest extends TestCase
         $context = [];
         $address = new Address();
 
-        $this->denormalizer->expects($this->once())
+        /** @var DenormalizerInterface&MockObject $denormalizer */
+        $denormalizer = $this->createMock(DenormalizerInterface::class);
+        $denormalizer->expects($this->once())
             ->method('denormalize')
             ->with($data, Address::class, null, $context + [AddressNormalizer::class => true])
             ->willReturn($address);
 
-        $result = $this->normalizer->denormalize($data, Address::class, null, $context);
+        $normalizer = new AddressNormalizer($this->registry);
+        $normalizer->setDenormalizer($denormalizer);
+        $normalizer->setNormalizer($this->innerNormalizer);
+
+        $result = $normalizer->denormalize($data, Address::class, null, $context);
 
         self::assertSame($address, $result);
         self::assertNull($result->getClient());
@@ -116,12 +130,18 @@ final class AddressNormalizerTest extends TestCase
         $context = [];
         $normalizedData = ['street' => '123 Main St'];
 
-        $this->innerNormalizer->expects($this->once())
+        /** @var NormalizerInterface&MockObject $innerNormalizer */
+        $innerNormalizer = $this->createMock(NormalizerInterface::class);
+        $innerNormalizer->expects($this->once())
             ->method('normalize')
             ->with($address, null, $context + [AddressNormalizer::class => true])
             ->willReturn($normalizedData);
 
-        $result = $this->normalizer->normalize($address, null, $context);
+        $normalizer = new AddressNormalizer($this->registry);
+        $normalizer->setDenormalizer($this->denormalizer);
+        $normalizer->setNormalizer($innerNormalizer);
+
+        $result = $normalizer->normalize($address, null, $context);
 
         self::assertSame($normalizedData, $result);
     }

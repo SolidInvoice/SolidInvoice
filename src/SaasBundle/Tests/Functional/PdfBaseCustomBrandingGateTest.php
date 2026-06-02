@@ -61,7 +61,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::bootKernel();
 
         // SaaS plan that does NOT include custom_branding: the gate is OFF.
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')
             ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
         self::getContainer()->set(FeatureGate::class, $featureGate);
@@ -82,7 +82,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::ensureKernelShutdown();
         self::bootKernel();
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
 
@@ -100,7 +100,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::ensureKernelShutdown();
         self::bootKernel();
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
 

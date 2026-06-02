@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
@@ -29,21 +29,21 @@ final class ORMSourceTest extends TestCase
 {
     private ORMSource $source;
 
-    private ManagerRegistry&MockObject $registry;
+    private ManagerRegistry&Stub $registry;
 
-    private GridInterface&MockObject $grid;
+    private GridInterface&Stub $grid;
 
     protected function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->grid = $this->createMock(GridInterface::class);
+        $this->registry = $this->createStub(ManagerRegistry::class);
+        $this->grid = $this->createStub(GridInterface::class);
         $this->source = new ORMSource($this->registry);
     }
 
     public function testFetchReturnsQueryBuilder(): void
     {
-        $em = $this->createMock(EntityManagerInterface::class);
-        $repository = $this->createMock(EntityRepository::class);
+        $em = $this->createStub(EntityManagerInterface::class);
+        $repository = $this->createStub(EntityRepository::class);
         $queryBuilder = $this->createStub(QueryBuilder::class);
         $query = new Query($queryBuilder, 'c');
 

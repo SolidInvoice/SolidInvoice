@@ -81,11 +81,11 @@ final class InvoiceManagerTest extends KernelTestCase
             'invoice'
         );
 
-        $config = $this->createMock(SystemConfig::class);
+        $config = $this->createStub(SystemConfig::class);
         $config->method('get')
             ->willReturn('generator');
 
-        $clock = $this->createMock(ClockInterface::class);
+        $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')
             ->willReturn(CarbonImmutable::parse('2024-01-15 10:30:00'));
 
@@ -95,7 +95,7 @@ final class InvoiceManagerTest extends KernelTestCase
             $stateMachine,
             $notification,
             new BillingIdGenerator(
-                new ServiceLocator(['generator' => fn () => $this->createMock(IdGeneratorInterface::class)]),
+                new ServiceLocator(['generator' => fn () => $this->createStub(IdGeneratorInterface::class)]),
                 $config
             ),
             $clock,

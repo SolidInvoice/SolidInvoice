@@ -54,7 +54,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $this->capturedEvents = [];
         $this->middleware = new SentrySchedulerMiddleware();
 
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->createStub(ClientInterface::class);
         $client->method('getOptions')->willReturn(new Options());
         $client->method('captureEvent')->willReturnCallback(
             function (Event $event, ?EventHint $hint, ?Scope $scope): EventId {
@@ -145,10 +145,10 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
         $envelope = $this->makeScheduledEnvelope('app:test');
 
-        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware = $this->createStub(MiddlewareInterface::class);
         $middleware->method('handle')->willThrowException($exception);
 
-        $next = $this->createMock(StackInterface::class);
+        $next = $this->createStub(StackInterface::class);
         $next->method('next')->willReturn($middleware);
 
         try {
@@ -162,10 +162,10 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $envelope = $this->makeScheduledEnvelope('solidinvoice:invoices:mark-overdue');
         $exception = new RuntimeException('job failed');
 
-        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware = $this->createStub(MiddlewareInterface::class);
         $middleware->method('handle')->willThrowException($exception);
 
-        $next = $this->createMock(StackInterface::class);
+        $next = $this->createStub(StackInterface::class);
         $next->method('next')->willReturn($middleware);
 
         $thrownException = null;
@@ -353,10 +353,10 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
     private function makeStack(Envelope $envelope): StackInterface
     {
-        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware = $this->createStub(MiddlewareInterface::class);
         $middleware->method('handle')->willReturn($envelope);
 
-        $stack = $this->createMock(StackInterface::class);
+        $stack = $this->createStub(StackInterface::class);
         $stack->method('next')->willReturn($middleware);
 
         return $stack;

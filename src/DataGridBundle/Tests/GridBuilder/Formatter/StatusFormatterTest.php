@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -26,11 +26,11 @@ final class StatusFormatterTest extends TestCase
 {
     private StatusFormatter $formatter;
 
-    private TranslatorInterface&MockObject $translator;
+    private TranslatorInterface&Stub $translator;
 
     protected function setUp(): void
     {
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
         $this->translator->method('trans')->willReturnArgument(0);
 
         $this->formatter = new StatusFormatter($this->translator);

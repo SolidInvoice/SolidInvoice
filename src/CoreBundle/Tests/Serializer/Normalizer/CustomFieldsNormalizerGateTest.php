@@ -36,7 +36,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
 {
     public function testNormalizerDoesNotSupportWhenFeatureDisabled(): void
     {
-        $gate = $this->createMock(FeatureGate::class);
+        $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturnCallback(static fn (string $key): bool => $key !== 'custom_fields');
 
         $normalizer = new CustomFieldsNormalizer(
@@ -52,7 +52,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
 
     public function testNormalizerSupportsWhenFeatureEnabled(): void
     {
-        $gate = $this->createMock(FeatureGate::class);
+        $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturn(true);
 
         $normalizer = new CustomFieldsNormalizer(
@@ -68,7 +68,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
 
     public function testDenormalizerRejectsCustomFieldsWriteWhenFeatureDisabled(): void
     {
-        $gate = $this->createMock(FeatureGate::class);
+        $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturn(false);
 
         $inner = $this->createStub(DenormalizerInterface::class);
@@ -89,7 +89,7 @@ final class CustomFieldsNormalizerGateTest extends TestCase
 
     public function testDenormalizerSilentlyDropsEmptyCustomFieldsWhenFeatureDisabled(): void
     {
-        $gate = $this->createMock(FeatureGate::class);
+        $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturn(false);
 
         $inner = $this->createMock(DenormalizerInterface::class);

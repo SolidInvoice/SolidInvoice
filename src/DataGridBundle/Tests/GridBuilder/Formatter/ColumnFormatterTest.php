@@ -16,7 +16,7 @@ namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 use Mockery as M;
 use Money\Currency;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
@@ -46,13 +46,13 @@ final class ColumnFormatterTest extends TestCase
     private ColumnFormatter $formatter;
 
     /**
-     * @var ServiceLocator<string>&MockObject
+     * @var ServiceLocator<string>&Stub
      */
-    private ServiceLocator&MockObject $locator;
+    private ServiceLocator&Stub $locator;
 
     protected function setUp(): void
     {
-        $this->locator = $this->createMock(ServiceLocator::class);
+        $this->locator = $this->createStub(ServiceLocator::class);
         $this->formatter = new ColumnFormatter($this->locator);
     }
 

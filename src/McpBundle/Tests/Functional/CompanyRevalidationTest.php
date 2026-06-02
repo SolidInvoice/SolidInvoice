@@ -171,10 +171,10 @@ final class CompanyRevalidationTest extends KernelTestCase
             ['oauth_scopes', null, ['mcp:read']],
         ]);
 
-        $resourceServer = $this->createMock(ResourceServer::class);
+        $resourceServer = $this->createStub(ResourceServer::class);
         $resourceServer->method('validateAuthenticatedRequest')->willReturn($validatedRequest);
 
-        $factory = $this->createMock(ServerFactoryInterface::class);
+        $factory = $this->createStub(ServerFactoryInterface::class);
         $factory->method('createResourceServer')->willReturn($resourceServer);
 
         return $factory;

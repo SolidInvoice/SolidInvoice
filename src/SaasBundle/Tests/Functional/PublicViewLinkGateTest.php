@@ -74,7 +74,7 @@ final class PublicViewLinkGateTest extends KernelTestCase
         $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isCompanyGated')->willReturn($gated);
 
-        $authChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $authChecker = $this->createStub(AuthorizationCheckerInterface::class);
         $authChecker->method('isGranted')->willReturn(false);
 
         return new ViewBilling(

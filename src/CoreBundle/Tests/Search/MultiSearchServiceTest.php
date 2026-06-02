@@ -37,7 +37,7 @@ final class MultiSearchServiceTest extends TestCase
 
     private function makeFormatter(string $indexName, SearchResult|null $result = null): ResultFormatterInterface
     {
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn($indexName);
 
         if ($result instanceof SearchResult) {
@@ -125,7 +125,7 @@ final class MultiSearchServiceTest extends TestCase
         $invoiceResult = $this->makeResult('invoice');
         $quoteResult = $this->makeResult('quote');
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_invoices', 'hits' => [['id' => 'i1']]],
@@ -151,7 +151,7 @@ final class MultiSearchServiceTest extends TestCase
         $formatter = $this->makeFormatter('invoices', $this->makeResult());
 
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -172,7 +172,7 @@ final class MultiSearchServiceTest extends TestCase
         $formatter = $this->makeFormatter('invoices', $this->makeResult());
 
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -191,7 +191,7 @@ final class MultiSearchServiceTest extends TestCase
     {
         $formatter = $this->makeFormatter('invoices');
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_invoices', 'hits' => []],
@@ -207,7 +207,7 @@ final class MultiSearchServiceTest extends TestCase
     {
         $formatter = $this->makeFormatter('invoices');
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_unknown_index', 'hits' => [['id' => 'x']]],
@@ -223,7 +223,7 @@ final class MultiSearchServiceTest extends TestCase
     {
         $formatter = $this->makeFormatter('invoices');
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willThrowException($this->createStub(CommunicationException::class));
 
@@ -236,7 +236,7 @@ final class MultiSearchServiceTest extends TestCase
     {
         $formatter = $this->makeFormatter('invoices');
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willThrowException($this->createStub(ApiException::class));
 
@@ -248,7 +248,7 @@ final class MultiSearchServiceTest extends TestCase
     public function testRestrictsToRequestedIndicesOnly(): void
     {
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -270,7 +270,7 @@ final class MultiSearchServiceTest extends TestCase
     public function testAppliesSortDirectives(): void
     {
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -289,7 +289,7 @@ final class MultiSearchServiceTest extends TestCase
     public function testNoSortDirectiveWhenSortIsEmpty(): void
     {
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -308,7 +308,7 @@ final class MultiSearchServiceTest extends TestCase
         $result = $this->makeResult();
         $formatter = $this->makeFormatter('invoices', $result);
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'myapp_invoices', 'hits' => [['id' => 'i1']]],
@@ -324,7 +324,7 @@ final class MultiSearchServiceTest extends TestCase
     public function testIndexPrefixIsAddedToQueryIndexUid(): void
     {
         $capturedQueries = [];
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')
             ->willReturnCallback(static function (array $queries) use (&$capturedQueries) {
                 $capturedQueries = $queries;
@@ -343,11 +343,11 @@ final class MultiSearchServiceTest extends TestCase
         $r1 = new SearchResult('invoice', 'i1', 'INV-001', '', '/invoices/i1');
         $r2 = new SearchResult('invoice', 'i2', 'INV-002', '', '/invoices/i2');
 
-        $formatter = $this->createMock(ResultFormatterInterface::class);
+        $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn('invoices');
         $formatter->method('format')->willReturnOnConsecutiveCalls($r1, $r2);
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createStub(Client::class);
         $client->method('multiSearch')->willReturn([
             'results' => [
                 ['indexUid' => 'test_invoices', 'hits' => [['id' => 'i1'], ['id' => 'i2']]],

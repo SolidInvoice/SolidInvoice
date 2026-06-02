@@ -153,7 +153,7 @@ final class QuoteTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn('random_number');
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
 
         $type = new QuoteType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {

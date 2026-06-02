@@ -91,7 +91,7 @@ final class QuoteClonerTest extends TestCase
             'quote'
         );
 
-        $config = $this->createMock(SystemConfig::class);
+        $config = $this->createStub(SystemConfig::class);
         $config->method('get')
             ->willReturn('generator');
 

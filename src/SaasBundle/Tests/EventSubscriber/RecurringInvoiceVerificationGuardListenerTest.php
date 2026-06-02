@@ -26,7 +26,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
 {
     public function testBlocksTransitionWhenGated(): void
     {
-        $gate = $this->createMock(EmailVerificationGateInterface::class);
+        $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn(true);
         $gate->method('reason')->willReturn('Please verify your email address before activating this recurring invoice.');
 
@@ -50,7 +50,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
 
     public function testAllowsTransitionWhenNotGated(): void
     {
-        $gate = $this->createMock(EmailVerificationGateInterface::class);
+        $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn(false);
 
         $event = new GuardEvent(

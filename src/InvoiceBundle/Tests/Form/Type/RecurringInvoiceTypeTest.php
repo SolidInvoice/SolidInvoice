@@ -99,7 +99,7 @@ final class RecurringInvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
 
         $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry, $featureGate);

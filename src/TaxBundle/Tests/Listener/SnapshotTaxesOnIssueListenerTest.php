@@ -182,7 +182,7 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
 
     private function makeEvent(object $subject, string $workflow, Transition $transition): Event
     {
-        $workflowMock = $this->createMock(WorkflowInterface::class);
+        $workflowMock = $this->createStub(WorkflowInterface::class);
         $workflowMock->method('getName')->willReturn($workflow);
 
         return new Event($subject, new Marking(), $transition, $workflowMock);

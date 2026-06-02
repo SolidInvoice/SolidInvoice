@@ -62,7 +62,7 @@ final class QuoteMailerListenerTest extends TestCase
         $logger = M::spy(LoggerInterface::class);
 
         $flashBag = new FlashBag();
-        $session = $this->createMock(Session::class);
+        $session = $this->createStub(Session::class);
         $session->method('getFlashBag')->willReturn($flashBag);
 
         $request = new Request();
