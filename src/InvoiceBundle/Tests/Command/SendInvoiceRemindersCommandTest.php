@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use const PHP_EOL;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +34,7 @@ use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
 use Symfony\Component\Console\Tester\TesterTrait;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Zenstruck\Foundry\Test\Factories;
 use function rewind;
 use function str_replace;
