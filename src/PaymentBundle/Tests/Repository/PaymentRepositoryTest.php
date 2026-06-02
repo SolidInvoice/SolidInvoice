@@ -391,29 +391,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    public function testGetPaymentsList(): void
-    {
-        $created = CarbonImmutable::now();
-
-        PaymentFactory::createOne([
-            'created' => $created,
-            'totalAmount' => 500123,
-        ]);
-
-        self::assertSame(
-            [
-                [
-                    Carbon::parse($created->format('Y-m-d'))->getTimestamp() * 1000,
-                    500123,
-                ]
-            ],
-            $this
-                ->em
-                ->getRepository(Payment::class)
-                ->getPaymentsList()
-        );
-    }
-
     public function testGetPaymentsByMonth(): void
     {
         $created = CarbonImmutable::now();

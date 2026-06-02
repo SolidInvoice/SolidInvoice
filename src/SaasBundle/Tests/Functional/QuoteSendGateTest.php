@@ -88,7 +88,8 @@ final class QuoteSendGateTest extends KernelTestCase
         $container = self::getContainer();
 
         $router = $this->createMock(RouterInterface::class);
-        $router->method('generate')
+        $router->expects(self::atLeastOnce())
+            ->method('generate')
             ->with('_quotes_view', self::anything())
             ->willReturn('/quotes/view/123');
 
