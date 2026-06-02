@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Tests\Listener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -43,7 +44,7 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $token->setDetails(new Identity((string) $ulid, Payment::class));
 
         $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
+        $repo = Mockery::mock(EntityRepository::class);
         $em->shouldReceive('getRepository')->with(Payment::class)->andReturn($repo);
         $repo->shouldReceive('find')
             ->once()
@@ -117,7 +118,7 @@ final class SecurityTokenPaymentLinkerTest extends TestCase
         $metadata = Mockery::mock(ClassMetadata::class);
 
         $em = Mockery::mock(EntityManagerInterface::class);
-        $repo = Mockery::mock();
+        $repo = Mockery::mock(EntityRepository::class);
         $em->shouldReceive('getRepository')->with(Payment::class)->andReturn($repo);
         $repo->shouldReceive('find')
             ->once()
