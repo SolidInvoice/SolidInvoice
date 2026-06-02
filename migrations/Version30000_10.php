@@ -141,8 +141,8 @@ final class Version30000_10 extends AbstractMigration
                     $shaped = [];
 
                     foreach ($decoded as $k => $v) {
-                        $value = (string) (is_int($k) ? $v : $k);
-                        $label = (string) $v;
+                        $value = is_int($k) ? (is_array($v) ? implode(', ', $v) : (string) $v) : (string) $k;
+                        $label = is_array($v) ? implode(', ', $v) : (string) $v;
                         $shaped[] = ['value' => $value, 'label' => $label];
                     }
 
@@ -167,7 +167,15 @@ final class Version30000_10 extends AbstractMigration
         }
 
         // 3b. Copy contact_details → custom_field_value
+        // The legacy schema allowed multiple values per (contact_type_id, contact_id) pair,
+        // but the new unique constraint uq_cfv_field_record only permits one. Keep the last seen value.
+        $seenFieldContact = [];
         foreach ($this->legacyValues as $r) {
+            $pairKey = bin2hex((string) $r['type_id']) . '_' . bin2hex((string) $r['contact_id']);
+            $seenFieldContact[$pairKey] = $r;
+        }
+
+        foreach ($seenFieldContact as $r) {
             $this->connection->insert('custom_field_value', [
                 'id' => $r['id'],
                 'company_id' => $r['company_id'],
