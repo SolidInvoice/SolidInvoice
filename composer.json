@@ -202,6 +202,8 @@
         "dbrekelmans/bdi": "^1.4",
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "ergebnis/composer-normalize": "^2.52",
+        "helgesverre/toon": "^3.1",
+        "laravel/pao": "^1.1",
         "liip/test-fixtures-bundle": "^3.9",
         "matthiasnoback/symfony-dependency-injection-test": "^6.3",
         "mockery/mockery": "^1.6.12",
@@ -215,6 +217,9 @@
         "rector/rector": "^2.4.4",
         "roave/security-advisories": "dev-latest",
         "spatie/phpunit-snapshot-assertions": "^5.4",
+        "symfony/ai-mate": "^0.8.0",
+        "symfony/ai-monolog-mate-extension": "^0.8.0",
+        "symfony/ai-symfony-mate-extension": "^0.8.0",
         "symfony/debug-bundle": "^7.1",
         "symfony/maker-bundle": "^1.33",
         "symfony/panther": "^2.4",
@@ -248,6 +253,7 @@
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
+            "symfony/ai-mate-composer-plugin": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -261,6 +267,15 @@
         "symfony": {
             "allow-contrib": true,
             "require": "^7.1"
+        },
+        "ai-mate": {
+            "extension": false,
+            "scan-dirs": [
+                "mate/src"
+            ],
+            "includes": [
+                "mate/config.php"
+            ]
         }
     },
     "scripts": {
@@ -275,6 +290,11 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "requirements-checker": "script"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Mate\\": "mate/src/"
         }
     }
 }
