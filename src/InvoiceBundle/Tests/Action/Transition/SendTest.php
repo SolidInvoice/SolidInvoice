@@ -141,7 +141,7 @@ final class SendTest extends TestCase
     public function testSendWithPaidStatusSkipsTransitionAndDispatchesEmail(): void
     {
         $invoice = new Invoice();
-        $invoice->addUser((new Contact())->setEmail('test@example.com'));
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
         $invoice->setStatus(InvoiceStatus::Paid);
 
         $workflow = $this->createMock(WorkflowInterface::class);
