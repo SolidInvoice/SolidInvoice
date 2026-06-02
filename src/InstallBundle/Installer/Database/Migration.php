@@ -15,6 +15,7 @@ namespace SolidInvoice\InstallBundle\Installer\Database;
 
 use Carbon\CarbonImmutable;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
 use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -58,9 +59,34 @@ final readonly class Migration
         $plan = $planCalculator->getPlanUntilVersion($version);
 
         $schemaTool = new SchemaTool($em);
-
-        $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables);
         $conn = $em->getConnection();
+
+        // ORM 3's SchemaTool::getUpdateSchemaSql() no longer has a "save mode" (the
+        // boolean second argument was removed in ORM 3), so it now emits DROP TABLE
+        // statements for any table present in the database but absent from the ORM
+        // metadata. The migrations metadata table (created by ensureInitialized()
+        // above) is exactly such a table, so without excluding it the generated SQL
+        // would try to drop it. Filter it out of the schema introspection while the
+        // update SQL is computed.
+        $dbalConfiguration = $conn->getConfiguration();
+        $previousFilter = $dbalConfiguration->getSchemaAssetsFilter();
+        $migrationsTable = $this->migrationsTableName();
+
+        $dbalConfiguration->setSchemaAssetsFilter(
+            static function (string $assetName) use ($previousFilter, $migrationsTable): bool {
+                if ($migrationsTable !== null && $assetName === $migrationsTable) {
+                    return false;
+                }
+
+                return $previousFilter($assetName);
+            }
+        );
+
+        try {
+            $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables);
+        } finally {
+            $dbalConfiguration->setSchemaAssetsFilter($previousFilter);
+        }
 
         if ($updateSchemaSql !== []) {
             foreach ($updateSchemaSql as $sql) {
@@ -79,5 +105,14 @@ final readonly class Migration
         foreach ($plan->getItems() as $item) {
             $metadataStorage->complete(new ExecutionResult($item->getVersion(), $item->getDirection(), $now));
         }
+    }
+
+    private function migrationsTableName(): ?string
+    {
+        $storageConfiguration = $this->migrationDependencyFactory->getConfiguration()->getMetadataStorageConfiguration();
+
+        return $storageConfiguration instanceof TableMetadataStorageConfiguration
+            ? $storageConfiguration->getTableName()
+            : null;
     }
 }
