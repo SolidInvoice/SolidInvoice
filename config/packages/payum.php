@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
@@ -24,107 +26,49 @@ use SolidInvoice\PaymentBundle\Form\Methods\PaypalExpressCheckout;
 use SolidInvoice\PaymentBundle\Form\Methods\PaypalProCheckout;
 use SolidInvoice\PaymentBundle\Form\Methods\StripeCheckout;
 use SolidInvoice\PaymentBundle\Form\Methods\StripeJs;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Config\PaymentConfig;
-use Symfony\Config\PayumConfig;
 
-return static function (PayumConfig $config, PaymentConfig $paymentConfig, ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-
-    $parameters->set('payum.template.layout', '@SolidInvoicePayment/layout.html.twig');
-
-    $config
-        ->security()
-        ->tokenStorage(SecurityToken::class)
-        ->doctrine('orm');
-
-    $config
-        ->storages(Payment::class)
-        ->doctrine('orm');
-
-    $config
-        ->dynamicGateways()
-        ->sonataAdmin(false)
-        ->configStorage(PaymentMethod::class)
-        ->doctrine('orm');
-
-    $paymentConfig
-        ->gateways()
-        ->name('credit')
-        ->factory('offline');
-
-    $paymentConfig
-        ->gateways()
-        ->name('custom')
-        ->factory('offline');
-
-    $paymentConfig
-        ->gateways()
-        ->name('cash')
-        ->factory('offline');
-
-    $paymentConfig
-        ->gateways()
-        ->name('bank_transfer')
-        ->factory('offline');
-
-    $paymentConfig
-        ->gateways()
-        ->name('paypal_express_checkout')
-        ->factory('paypal_express_checkout')
-        ->form(PaypalExpressCheckout::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('paypal_pro_checkout')
-        ->factory('paypal_pro_checkout')
-        ->form(PaypalProCheckout::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('stripe_checkout')
-        ->factory('stripe_checkout')
-        ->form(StripeCheckout::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('stripe_js')
-        ->factory('stripe_js')
-        ->form(StripeJs::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('klarna_invoice')
-        ->factory('klarna_invoice')
-        ->form(KlarnaInvoice::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('klarna_checkout')
-        ->factory('klarna_checkout')
-        ->form(KlarnaCheckout::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('be2bill_offsite')
-        ->factory('be2bill_offsite')
-        ->form(Be2billOffsite::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('be2bill_direct')
-        ->factory('be2bill_direct')
-        ->form(Be2billDirect::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('authorize_net_aim')
-        ->factory('authorize_net_aim')
-        ->form(AuthorizeNetAim::class);
-
-    $paymentConfig
-        ->gateways()
-        ->name('payex')
-        ->factory('payex')
-        ->form(Payex::class);
-};
+return App::config([
+    'parameters' => [
+        'payum.template.layout' => '@SolidInvoicePayment/layout.html.twig',
+    ],
+    'payum' => [
+        'security' => [
+            'token_storage' => [
+                SecurityToken::class => [
+                    'doctrine' => 'orm',
+                ],
+            ],
+        ],
+        'storages' => [
+            Payment::class => [
+                'doctrine' => 'orm',
+            ],
+        ],
+        'dynamic_gateways' => [
+            'sonata_admin' => false,
+            'config_storage' => [
+                PaymentMethod::class => [
+                    'doctrine' => 'orm',
+                ],
+            ],
+        ],
+    ],
+    'payment' => [
+        'gateways' => [
+            ['name' => 'credit', 'factory' => 'offline'],
+            ['name' => 'custom', 'factory' => 'offline'],
+            ['name' => 'cash', 'factory' => 'offline'],
+            ['name' => 'bank_transfer', 'factory' => 'offline'],
+            ['name' => 'paypal_express_checkout', 'factory' => 'paypal_express_checkout', 'form' => PaypalExpressCheckout::class],
+            ['name' => 'paypal_pro_checkout', 'factory' => 'paypal_pro_checkout', 'form' => PaypalProCheckout::class],
+            ['name' => 'stripe_checkout', 'factory' => 'stripe_checkout', 'form' => StripeCheckout::class],
+            ['name' => 'stripe_js', 'factory' => 'stripe_js', 'form' => StripeJs::class],
+            ['name' => 'klarna_invoice', 'factory' => 'klarna_invoice', 'form' => KlarnaInvoice::class],
+            ['name' => 'klarna_checkout', 'factory' => 'klarna_checkout', 'form' => KlarnaCheckout::class],
+            ['name' => 'be2bill_offsite', 'factory' => 'be2bill_offsite', 'form' => Be2billOffsite::class],
+            ['name' => 'be2bill_direct', 'factory' => 'be2bill_direct', 'form' => Be2billDirect::class],
+            ['name' => 'authorize_net_aim', 'factory' => 'authorize_net_aim', 'form' => AuthorizeNetAim::class],
+            ['name' => 'payex', 'factory' => 'payex', 'form' => Payex::class],
+        ],
+    ],
+]);

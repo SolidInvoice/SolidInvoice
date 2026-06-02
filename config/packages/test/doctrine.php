@@ -11,12 +11,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\DoctrineConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (DoctrineConfig $config): void {
-    $config
-        ->dbal()
-        ->connection('default')
-        ->dbnameSuffix('_test' . env('TEST_TOKEN')->default(''));
-};
+return App::config([
+    'doctrine' => [
+        'dbal' => [
+            'connections' => [
+                'default' => [
+                    'dbname_suffix' => '_test' . env('TEST_TOKEN')->default(''),
+                ],
+            ],
+        ],
+    ],
+]);

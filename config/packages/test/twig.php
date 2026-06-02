@@ -11,8 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\TwigConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (TwigConfig $config): void {
-    $config->strictVariables(true);
-};
+return App::config([
+    'twig' => [
+        'strict_variables' => true,
+    ],
+]);

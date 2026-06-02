@@ -11,11 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->assets()
-        ->jsonManifestPath(param('kernel.project_dir') . '/public/static/manifest.json');
-};
+return App::config([
+    'framework' => [
+        'assets' => [
+            'json_manifest_path' => param('kernel.project_dir') . '/public/static/manifest.json',
+        ],
+    ],
+]);

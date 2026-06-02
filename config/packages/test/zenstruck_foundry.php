@@ -11,9 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\ZenstruckFoundryConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (ZenstruckFoundryConfig $config): void {
-    $config->faker()
-        ->seed(91847);
-};
+return App::config([
+    'zenstruck_foundry' => [
+        'faker' => [
+            'seed' => 91847,
+        ],
+    ],
+]);

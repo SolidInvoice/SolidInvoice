@@ -11,16 +11,23 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config->rateLimiter()->limiter('api_global')
-        ->policy('sliding_window')
-        ->limit(300)
-        ->interval('1 minute');
-
-    $config->rateLimiter()->limiter('mcp_oauth_register')
-        ->policy('fixed_window')
-        ->limit(60)
-        ->interval('1 hour');
-};
+return App::config([
+    'framework' => [
+        'rate_limiter' => [
+            'limiters' => [
+                'api_global' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 300,
+                    'interval' => '1 minute',
+                ],
+                'mcp_oauth_register' => [
+                    'policy' => 'fixed_window',
+                    'limit' => 60,
+                    'interval' => '1 hour',
+                ],
+            ],
+        ],
+    ],
+]);

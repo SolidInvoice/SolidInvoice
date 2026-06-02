@@ -11,9 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\DebugConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (DebugConfig $config): void {
-    $config->dumpDestination('tcp://' . env('VAR_DUMPER_SERVER'));
-};
+return App::config([
+    'debug' => [
+        'dump_destination' => 'tcp://' . env('VAR_DUMPER_SERVER'),
+    ],
+]);

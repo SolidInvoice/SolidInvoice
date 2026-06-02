@@ -11,9 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config->messenger()
-        ->transport('async', 'in-memory://');
-};
+return App::config([
+    'framework' => [
+        'messenger' => [
+            'transports' => [
+                'async' => 'in-memory://',
+            ],
+        ],
+    ],
+]);

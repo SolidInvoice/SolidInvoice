@@ -11,12 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config
-        ->router()
-        ->utf8(true)
-        ->defaultUri(env('SOLIDINVOICE_APPLICATION_URL'));
-};
+return App::config([
+    'framework' => [
+        'router' => [
+            'utf8' => true,
+            'default_uri' => env('SOLIDINVOICE_APPLICATION_URL'),
+        ],
+    ],
+]);

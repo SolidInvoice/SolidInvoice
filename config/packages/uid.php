@@ -11,10 +11,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (FrameworkConfig $config): void {
-    $config->uid()
-        ->defaultUuidVersion(7)
-        ->timeBasedUuidVersion(7);
-};
+return App::config([
+    'framework' => [
+        'uid' => [
+            'default_uuid_version' => 7,
+            'time_based_uuid_version' => 7,
+        ],
+    ],
+]);
