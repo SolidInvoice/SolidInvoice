@@ -420,15 +420,23 @@ final class NotificationIntegrationsTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($user);
 
-        // Initial render
-        $rendered1 = $component->render()->toString();
-        self::assertStringContainsString('Refresh Test', $rendered1);
+        // Initial render shows the integration
+        $rendered = $component->render()->toString();
+        self::assertStringContainsString('Refresh Test', $rendered);
 
-        // Refresh component
-        $rendered2 = $component->refresh()->render()->toString();
+        // NotificationIntegrations delegates entirely to NotificationMarketplace — it has
+        // no wrapper element of its own. Using refresh() would re-post NotificationMarketplace's
+        // checksum (computed with NotificationMarketplace's component name) to the
+        // NotificationIntegrations endpoint, which v2.36+ correctly rejects. A fresh render
+        // via a new component instance exercises the same database query and rendering path.
+        $component2 = $this->createLiveComponent(
+            name: NotificationIntegrations::class,
+            data: [],
+            client: $this->client,
+        )->actingAs($user);
+
+        $rendered2 = $component2->render()->toString();
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($this->replaceUuid($rendered2)));
-
-        // Should still show the same content
         self::assertStringContainsString('Refresh Test', $rendered2);
     }
 
