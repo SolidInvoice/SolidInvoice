@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -27,6 +29,7 @@ use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
+use Stringable;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,6 +43,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Throwable;
 
 #[CoversClass(SubscribeController::class)]
 final class SubscribeControllerTest extends TestCase
@@ -58,10 +62,10 @@ final class SubscribeControllerTest extends TestCase
 
     public function testHttpClientExceptionRedirectsToOverviewWithErrorFlash(): void
     {
-        $exception = new class() extends \RuntimeException implements ClientExceptionInterface {
+        $exception = new class() extends RuntimeException implements ClientExceptionInterface {
             public function getResponse(): ResponseInterface
             {
-                throw new \LogicException('Not needed in test');
+                throw new LogicException('Not needed in test');
             }
         };
 
@@ -74,9 +78,9 @@ final class SubscribeControllerTest extends TestCase
     }
 
     /**
-     * @return array{0: RedirectResponse, 1: array<string, list<string|\Stringable>>}
+     * @return array{0: RedirectResponse, 1: array<string, list<string|Stringable>>}
      */
-    private function invokeControllerWithCheckoutException(\Throwable $exception): array
+    private function invokeControllerWithCheckoutException(Throwable $exception): array
     {
         $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
         $paymentIntegration->method('checkout')->willThrowException($exception);
@@ -94,7 +98,7 @@ final class SubscribeControllerTest extends TestCase
 
         $subscriptionManager = new SubscriptionManager(
             $subscriptionRepository,
-            $this->createMock(PlanRepositoryInterface::class),
+            $this->createStub(PlanRepositoryInterface::class),
             $paymentIntegration,
         );
 
@@ -108,16 +112,15 @@ final class SubscribeControllerTest extends TestCase
             $subscriptionManager,
             $companyRepository,
             $companySelector,
-            $this->createMock(PlanRepositoryInterface::class),
-            $this->createMock(EntityManagerInterface::class),
+            $this->createStub(PlanRepositoryInterface::class),
+            $this->createStub(EntityManagerInterface::class),
         );
 
         $session = new Session(new MockArraySessionStorage());
         $request = Request::create('/billing/subscription/activate');
         $request->setSession($session);
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $router = $this->createMock(RouterInterface::class);
         $router->method('generate')->willReturn('/billing/');
