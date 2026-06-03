@@ -37,7 +37,7 @@ final class InvoiceCreatedTelemetryListenerTest extends TestCase
             $this->createConfigWriter(),
             DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]),
             'build-123',
-            '1',
+            true,
             'manual',
             false,
             'en',

@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 
 #[CoversClass(Telemetry::class)]
@@ -40,21 +41,21 @@ final class TelemetryTest extends TestCase
 
     public function testEventDoesNothingWhenDisabledByFlag(): void
     {
-        $this->createTelemetry(enableTelemetry: '0')->event('client_created');
+        $this->createTelemetry(enableTelemetry: false)->event(TelemetryEvent::ClientCreated);
 
         self::assertSame([], $this->bus->messages);
     }
 
     public function testEventDoesNothingWhenBuildIdIsEmpty(): void
     {
-        $this->createTelemetry(buildId: '')->event('client_created');
+        $this->createTelemetry(buildId: '')->event(TelemetryEvent::ClientCreated);
 
         self::assertSame([], $this->bus->messages);
     }
 
     public function testEventBuildsTheCorrectPayload(): void
     {
-        $this->createTelemetry()->event('payment_received', ['gateway' => 'stripe']);
+        $this->createTelemetry()->event(TelemetryEvent::PaymentReceived, ['gateway' => 'stripe']);
 
         self::assertCount(1, $this->bus->messages);
 
@@ -177,7 +178,7 @@ final class TelemetryTest extends TestCase
 
     private function createTelemetry(
         ?string $buildId = 'build-123',
-        string $enableTelemetry = '1',
+        bool $enableTelemetry = true,
         string $installType = '',
         bool $docker = false,
         string $locale = 'en',

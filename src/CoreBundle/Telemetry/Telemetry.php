@@ -54,8 +54,8 @@ final readonly class Telemetry
         private Connection $connection,
         #[Autowire(env: 'default::SOLIDINVOICE_BUILD_ID')]
         private ?string $buildId,
-        #[Autowire(env: 'SOLIDINVOICE_ENABLE_TELEMETRY')]
-        private string $enableTelemetry,
+        #[Autowire(env: 'bool:SOLIDINVOICE_ENABLE_TELEMETRY')]
+        private bool $enableTelemetry,
         #[Autowire(env: 'SOLIDINVOICE_INSTALL_TYPE')]
         private string $installType,
         #[Autowire(env: 'bool:default::SOLIDINVOICE_DOCKER')]
@@ -73,7 +73,7 @@ final readonly class Telemetry
             return false;
         }
 
-        return ! in_array(strtolower($this->enableTelemetry), ['0', 'false', ''], true);
+        return $this->enableTelemetry;
     }
 
     /**
@@ -81,7 +81,7 @@ final readonly class Telemetry
      *
      * @param array<string, scalar|null> $properties
      */
-    public function event(string $event, array $properties = []): void
+    public function event(TelemetryEvent $event, array $properties = []): void
     {
         if (! $this->isEnabled()) {
             return;
@@ -91,7 +91,7 @@ final readonly class Telemetry
             $this->bus->dispatch(new SendTelemetryMessage('event', [
                 'build_id' => $this->buildId,
                 'app' => strtolower(SolidInvoiceCoreBundle::APP_NAME),
-                'event' => $event,
+                'event' => $event->value,
                 'properties' => $properties,
             ]));
         } catch (Throwable) {
@@ -113,7 +113,7 @@ final readonly class Telemetry
             $version = SolidInvoiceCoreBundle::VERSION;
 
             if (! in_array($this->lastVersion, [null, '', $version], true)) {
-                $this->event('update', [
+                $this->event(TelemetryEvent::Update, [
                     'from_version' => $this->lastVersion,
                     'to_version' => $version,
                 ]);
