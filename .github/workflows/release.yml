@@ -427,6 +427,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
 
+          # Discard the working-tree edits made by the version bump and
+          # 'helm dep update' (Chart.yaml / Chart.lock). They're already baked
+          # into the packaged .tgz, and would otherwise block the branch switch
+          # ("local changes would be overwritten by checkout").
+          git checkout -- .
+
           # Switch to gh-pages branch, creating an orphan if it doesn't exist yet
           if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
             git checkout gh-pages
