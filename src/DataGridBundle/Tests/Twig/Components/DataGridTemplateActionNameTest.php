@@ -76,4 +76,59 @@ final class DataGridTemplateActionNameTest extends TestCase
             'There must be no "executeSingleAction" method — the template should use "executeSingle".',
         );
     }
+
+    /**
+     * Regression tests for https://github.com/SolidInvoice/SolidInvoice/issues/2430:
+     * The DataGrid template was referencing "executeBatchAction" which does not exist —
+     * the correct LiveAction method name is "executeBatch".
+     */
+    public function testTemplateDoesNotReferenceNonexistentExecuteBatchActionName(): void
+    {
+        $content = file_get_contents(self::TEMPLATE_PATH);
+        self::assertIsString($content);
+
+        self::assertStringNotContainsString(
+            'executeBatchAction',
+            $content,
+            'Template must use "executeBatch", not "executeBatchAction" — the latter does not exist on the DataGrid component.',
+        );
+    }
+
+    public function testTemplateReferencesExecuteBatchLiveAction(): void
+    {
+        $content = file_get_contents(self::TEMPLATE_PATH);
+        self::assertIsString($content);
+
+        self::assertStringContainsString(
+            'executeBatch"',
+            $content,
+            'Template must reference the executeBatch live action.',
+        );
+    }
+
+    public function testExecuteBatchMethodExistsWithLiveActionAttribute(): void
+    {
+        $reflection = new ReflectionClass(DataGrid::class);
+
+        self::assertTrue(
+            $reflection->hasMethod('executeBatch'),
+            'DataGrid must have an executeBatch method.',
+        );
+
+        $attrs = $reflection->getMethod('executeBatch')->getAttributes(LiveAction::class);
+        self::assertNotEmpty(
+            $attrs,
+            'executeBatch must carry the #[LiveAction] attribute so the Live Component router can find it.',
+        );
+    }
+
+    public function testExecuteBatchActionMethodDoesNotExist(): void
+    {
+        $reflection = new ReflectionClass(DataGrid::class);
+
+        self::assertFalse(
+            $reflection->hasMethod('executeBatchAction'),
+            'There must be no "executeBatchAction" method — the template should use "executeBatch".',
+        );
+    }
 }
