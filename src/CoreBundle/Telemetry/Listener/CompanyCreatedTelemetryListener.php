@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Telemetry\Listener;
 
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(CompanyCreatedEvent::class)]
@@ -27,6 +28,6 @@ final readonly class CompanyCreatedTelemetryListener
 
     public function __invoke(CompanyCreatedEvent $event): void
     {
-        $this->telemetry->event('company_created');
+        $this->telemetry->event(TelemetryEvent::CompanyCreated);
     }
 }

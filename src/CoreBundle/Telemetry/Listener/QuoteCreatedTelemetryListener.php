@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Telemetry\Listener;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
 #[AsEntityListener(event: Events::postPersist, entity: Quote::class)]
@@ -28,6 +29,6 @@ final readonly class QuoteCreatedTelemetryListener
 
     public function postPersist(Quote $quote): void
     {
-        $this->telemetry->event('quote_created');
+        $this->telemetry->event(TelemetryEvent::QuoteCreated);
     }
 }

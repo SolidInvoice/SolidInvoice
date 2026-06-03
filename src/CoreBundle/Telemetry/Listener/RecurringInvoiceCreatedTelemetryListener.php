@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Telemetry\Listener;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
 #[AsEntityListener(event: Events::postPersist, entity: RecurringInvoice::class)]
@@ -28,6 +29,6 @@ final readonly class RecurringInvoiceCreatedTelemetryListener
 
     public function postPersist(RecurringInvoice $recurringInvoice): void
     {
-        $this->telemetry->event('recurring_invoice_created');
+        $this->telemetry->event(TelemetryEvent::RecurringInvoiceCreated);
     }
 }

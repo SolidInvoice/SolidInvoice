@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Telemetry\Listener;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\UserBundle\Entity\User;
 
 #[AsEntityListener(event: Events::postPersist, entity: User::class)]
@@ -28,6 +29,6 @@ final readonly class UserCreatedTelemetryListener
 
     public function postPersist(User $user): void
     {
-        $this->telemetry->event('user_created');
+        $this->telemetry->event(TelemetryEvent::UserCreated);
     }
 }

@@ -18,6 +18,7 @@ use DateTimeInterface;
 use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Form\Type\InstallationType;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
@@ -84,7 +85,7 @@ final class Install extends AbstractController
                 'application_url' => (string) $formData->applicationUrl,
             ]);
 
-            $this->telemetry->event('install_completed', ['method' => 'web']);
+            $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'web']);
 
             $form->reset();
 

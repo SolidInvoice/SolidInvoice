@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Telemetry\Listener;
 
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -28,7 +29,7 @@ final readonly class PaymentReceivedTelemetryListener
 
     public function __invoke(PaymentCompleteEvent $event): void
     {
-        $this->telemetry->event('payment_received', [
+        $this->telemetry->event(TelemetryEvent::PaymentReceived, [
             'gateway' => $event->getPayment()->getMethod()?->getGatewayName(),
         ]);
     }
