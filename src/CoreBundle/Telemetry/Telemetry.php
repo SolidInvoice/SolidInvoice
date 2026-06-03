@@ -112,7 +112,7 @@ final readonly class Telemetry
         try {
             $version = SolidInvoiceCoreBundle::VERSION;
 
-            if ($this->lastVersion !== null && $this->lastVersion !== '' && $this->lastVersion !== $version) {
+            if (! in_array($this->lastVersion, [null, '', $version], true)) {
                 $this->event('update', [
                     'from_version' => $this->lastVersion,
                     'to_version' => $version,
