@@ -30,6 +30,9 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Controller\SubscribeControllerTest
+ */
 class SubscribeController extends AbstractController
 {
     public function __construct(
