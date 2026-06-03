@@ -37,6 +37,8 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use function str_replace;
+use function ucwords;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Twig\Components\UserNotificationTest
@@ -142,14 +144,22 @@ final class UserNotification extends AbstractController
     {
         $attribute = $this->getNotificationAttribute($event);
 
-        return $attribute?->title ?? ucwords(str_replace('_', ' ', $event));
+        if (! $attribute instanceof AsNotification) {
+            return ucwords(str_replace('_', ' ', $event));
+        }
+
+        return $attribute->title;
     }
 
     public function getEventDescription(string $event): string
     {
         $attribute = $this->getNotificationAttribute($event);
 
-        return $attribute?->description ?? '';
+        if (! $attribute instanceof AsNotification) {
+            return '';
+        }
+
+        return $attribute->description;
     }
 
     public function getEventIcon(string $event): string

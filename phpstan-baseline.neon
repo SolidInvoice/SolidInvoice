@@ -2617,19 +2617,7 @@ parameters:
 			path: src/UserBundle/Twig/Components/TwoFactorSettings.php
 
 		-
-			message: '#^Using nullsafe property access "\?\-\>description" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/UserBundle/Twig/Components/UserNotification.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>icon" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/UserBundle/Twig/Components/UserNotification.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>title" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: src/UserBundle/Twig/Components/UserNotification.php
