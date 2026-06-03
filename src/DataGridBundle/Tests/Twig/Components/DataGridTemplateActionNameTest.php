@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Tests\Twig\Components;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 
@@ -24,7 +25,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
  */
 final class DataGridTemplateActionNameTest extends TestCase
 {
-    private const TEMPLATE_PATH = __DIR__ . '/../../../Resources/views/Components/DataGrid.html.twig';
+    private const string TEMPLATE_PATH = __DIR__ . '/../../../Resources/views/Components/DataGrid.html.twig';
 
     public function testTemplatDoesNotReferenceNonexistentExecuteSingleActionName(): void
     {
@@ -52,7 +53,7 @@ final class DataGridTemplateActionNameTest extends TestCase
 
     public function testExecuteSingleMethodExistsWithLiveActionAttribute(): void
     {
-        $reflection = new \ReflectionClass(DataGrid::class);
+        $reflection = new ReflectionClass(DataGrid::class);
 
         self::assertTrue(
             $reflection->hasMethod('executeSingle'),
@@ -68,7 +69,7 @@ final class DataGridTemplateActionNameTest extends TestCase
 
     public function testExecuteSingleActionMethodDoesNotExist(): void
     {
-        $reflection = new \ReflectionClass(DataGrid::class);
+        $reflection = new ReflectionClass(DataGrid::class);
 
         self::assertFalse(
             $reflection->hasMethod('executeSingleAction'),
