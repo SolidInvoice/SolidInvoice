@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Command;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -20,6 +21,7 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\InstallBundle\Command\InstallCommand;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -28,6 +30,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class InstallCommandTest extends TestCase
@@ -200,12 +203,27 @@ final class InstallCommandTest extends TestCase
         $vault = $this->createStub(AbstractVault::class);
         $configWriter = new ConfigWriter($vault, '/tmp/test-secrets');
 
+        // Telemetry is disabled here (null build ID), so it no-ops and never
+        // touches the message bus or connection during the command tests.
+        $telemetry = new Telemetry(
+            $this->createStub(MessageBusInterface::class),
+            $configWriter,
+            $this->createStub(Connection::class),
+            null,
+            false,
+            '',
+            false,
+            'en',
+            null,
+        );
+
         return new InstallCommand(
             $configWriter,
             $registry,
             $passwordHasher ?? M::mock(UserPasswordHasherInterface::class),
             new ServiceLocator([]),
             $this->createStub(KernelInterface::class),
+            $telemetry,
             '/tmp/test',
             null
         );

@@ -29,6 +29,8 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
@@ -74,6 +76,7 @@ class InstallCommand extends Command
         #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
         private readonly ServiceLocator $installationSteps,
         private readonly KernelInterface $kernel,
+        private readonly Telemetry $telemetry,
         private readonly string $projectDir,
         private readonly ?string $installed
     ) {
@@ -113,6 +116,8 @@ class InstallCommand extends Command
         $this->validate($input)
             ->saveConfig($input)
             ->install($input, $output);
+
+        $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'cli']);
 
         $success = new FormatterHelper()->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
         $output->writeln('');
