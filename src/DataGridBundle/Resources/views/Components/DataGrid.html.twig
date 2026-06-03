@@ -459,7 +459,7 @@
                                                                         type="button"
                                                                         class="dropdown-item {{ action.getColor == 'danger' ? 'text-danger' : '' }}"
                                                                         data-action="live#action"
-                                                                        data-live-action-param="executeSingleAction"
+                                                                        data-live-action-param="executeSingle"
                                                                         data-live-action-name-param="{{ action.getLabel }}"
                                                                         data-live-entity-id-param="{{ this.entityId(row) }}"
                                                                     >
@@ -634,7 +634,7 @@
                                 class="btn btn-{{ action.getColor|default('primary') }}"
                                 data-bs-dismiss="modal"
                                 data-action="live#action"
-                                data-live-action-param="executeSingleAction"
+                                data-live-action-param="executeSingle"
                                 data-live-action-name-param="{{ action.getLabel }}"
                                 data-live-entity-id-param="{{ gridComponent.entityId(row) }}"
                             >
