@@ -33,6 +33,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Throwable;
+use function array_key_first;
 use function str_replace;
 
 /**
@@ -110,10 +111,15 @@ final class Settings extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $isTrialSubscription = $this->subscriptionService?->isTrialSubscription() ?? false;
+        $appSettings = $this->getAppSettings(false);
+
+        if (! isset($appSettings[$this->section])) {
+            $this->section = (string) array_key_first($appSettings);
+        }
 
         return $this->createForm(
             SettingsType::class,
-            $this->getAppSettings(false)[$this->section],
+            $appSettings[$this->section],
             [
                 'settings' => $this->getAppSettings(true)[$this->section],
                 'subscription_in_trial' => $isTrialSubscription,

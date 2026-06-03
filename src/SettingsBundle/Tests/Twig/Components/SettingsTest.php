@@ -76,6 +76,34 @@ final class SettingsTest extends LiveComponentTest
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
     }
 
+    public function testInvalidSectionFallsBackToFirstSection(): void
+    {
+        $this->ensureSessionIsSet();
+
+        // Reproduce Sentry SOLIDINVOICE-8M / SOLIDINVOICE-8J: URL param ?section='"""""""
+        // sets $this->section to a key that does not exist in getAppSettings()
+        $this->settingsComponent->set('section', '\'"""""""');
+
+        // Before fix: throws ErrorException "Undefined array key '\"\"\"\"\"\"'"
+        // After fix: falls back to the first valid section and renders without crashing
+        $html = (string) $this->settingsComponent->render();
+
+        self::assertNotEmpty($html);
+    }
+
+    public function testEmptySectionFallsBackToFirstSection(): void
+    {
+        $this->ensureSessionIsSet();
+
+        // Reproduce Sentry SOLIDINVOICE-8J / SOLIDINVOICE-8K: URL param ?section= (empty)
+        // Before fix: throws ErrorException "Undefined array key ''"
+        // After fix: falls back to the first valid section and renders without crashing
+        $this->settingsComponent->set('section', '');
+        $html = (string) $this->settingsComponent->render();
+
+        self::assertNotEmpty($html);
+    }
+
     public function testSaveOnDifferentSection(): void
     {
         $this->csrfTokenManager
