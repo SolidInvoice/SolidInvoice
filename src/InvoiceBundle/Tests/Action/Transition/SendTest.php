@@ -145,36 +145,35 @@ final class SendTest extends TestCase
         $invoice->setStatus(InvoiceStatus::Paid);
 
         $workflow = $this->createMock(WorkflowInterface::class);
-        $workflow->expects(self::once())
+        $workflow->expects($this->once())
             ->method('can')
             ->with($invoice, Graph::TRANSITION_ACCEPT)
             ->willReturn(false);
-        $workflow->expects(self::never())->method('apply');
+        $workflow->expects($this->never())->method('apply');
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::once())
+        $mailer->expects($this->once())
             ->method('send')
             ->with(self::isInstanceOf(InvoiceEmail::class));
 
         $router = $this->createMock(RouterInterface::class);
-        $router->expects(self::once())
+        $router->expects($this->once())
             ->method('generate')
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
         $em = $this->createMock(ObjectManager::class);
-        $em->expects(self::once())->method('persist')->with($invoice);
-        $em->expects(self::once())->method('flush');
+        $em->expects($this->once())->method('persist')->with($invoice);
+        $em->expects($this->once())->method('flush');
 
         $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
+        $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
         $action = new Send($workflow, $mailer, $router, $this->createGate(false));
         $action->setDoctrine($doctrine);
 
         $response = $action(new Request(), $invoice);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
 

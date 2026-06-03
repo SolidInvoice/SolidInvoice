@@ -385,12 +385,6 @@ parameters:
 			path: src/ClientBundle/Tests/Form/Type/CreditTypeTest.php
 
 		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/ClientBundle/Tests/Search/ClientResultFormatterTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\ClientBundle\\Search\\ClientResultFormatter will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1201,18 +1195,6 @@ parameters:
 			path: src/InvoiceBundle/Tests/Action/SendManualReminderTest.php
 
 		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/InvoiceBundle/Tests/Action/ViewTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/InvoiceBundle/Tests/Search/InvoiceResultFormatterTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\InvoiceResultFormatter will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1223,12 +1205,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: src/InvoiceBundle/Tests/Search/InvoiceResultFormatterTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\InvoiceBundle\\Search\\RecurringInvoiceResultFormatter will always evaluate to true\.$#'
@@ -1825,12 +1801,6 @@ parameters:
 			path: src/QuoteBundle/Test/Factory/QuoteFactory.php
 
 		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/QuoteBundle/Tests/Search/QuoteResultFormatterTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'' and SolidInvoice\\QuoteBundle\\Search\\QuoteResultFormatter will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1861,40 +1831,16 @@ parameters:
 			path: src/SaasBundle/Tests/Email/SaasEmailVerificationGateTest.php
 
 		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: src/SaasBundle/Tests/EventSubscriber/SubscriptionPlanSyncListenerTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/SaasBundle/Tests/Functional/InvoiceReminderGateTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
 			path: src/SaasBundle/Tests/Functional/InvoiceReminderGateTest.php
 
 		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/SaasBundle/Tests/Functional/InvoiceSendGateTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
 			path: src/SaasBundle/Tests/Functional/InvoiceSendGateTest.php
-
-		-
-			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\InvocationStubber\:\:with\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/SaasBundle/Tests/Functional/QuoteSendGateTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
