@@ -564,7 +564,7 @@
                                 class="datagrid-bulk-btn {{ action.getColor == 'danger' ? 'btn-danger' : '' }}"
                                 data-action="live#action"
                                 data-live-action-name-param="{{ action.getLabel }}"
-                                data-live-action-param="debounce(300)|executeBatchAction"
+                                data-live-action-param="debounce(300)|executeBatch"
                             >
                                 {% if action.getIcon is not empty %}
                                     {{ ux_icon('tabler:' ~ action.getIcon, {width: 16, height: 16}) }}
@@ -608,7 +608,7 @@
                             data-bs-dismiss="modal"
                             data-action="live#action"
                             data-live-action-name-param="{{ action.getLabel }}"
-                            data-live-action-param="debounce(300)|executeBatchAction"
+                            data-live-action-param="debounce(300)|executeBatch"
                         >
                             {{ 'Confirm'|trans }}
                         </button>
