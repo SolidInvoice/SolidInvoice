@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\UserBundle\Entity\User;
@@ -27,13 +27,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class SubscribeController extends AbstractController
 {
     public function __construct(
         private readonly SubscriptionManager $subscriptionManager,
         private readonly CompanyRepository $companyRepository,
-        private readonly CompanySelector $companySelector,
+        private readonly CompanySelectorInterface $companySelector,
         private readonly PlanRepositoryInterface $planRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
@@ -77,6 +79,10 @@ class SubscribeController extends AbstractController
         try {
             $checkoutUrl = $this->subscriptionManager
                 ->getCheckoutUrl($subscription, $options);
+        } catch (HttpExceptionInterface | TransportExceptionInterface) {
+            $this->addFlash('error', 'Unable to create checkout session. Please try again later.');
+
+            return $this->redirectToRoute('billing_index');
         } finally {
             // Discard the in-memory plan swap. The subscription entity is
             // reloaded from the database so the in-memory mutation is never
