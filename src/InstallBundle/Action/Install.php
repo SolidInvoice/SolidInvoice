@@ -17,6 +17,7 @@ use const JSON_THROW_ON_ERROR;
 use DateTimeInterface;
 use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Form\Type\InstallationType;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
@@ -53,6 +54,7 @@ final class Install extends AbstractController
         private readonly ConfigWriter $configWriter,
         private readonly UserRepository $userRepository,
         private readonly Security $security,
+        private readonly Telemetry $telemetry,
         private readonly ?string $installed,
     ) {
     }
@@ -81,6 +83,8 @@ final class Install extends AbstractController
                 'installation_id' => Uuid::v4()->toString(),
                 'application_url' => (string) $formData->applicationUrl,
             ]);
+
+            $this->telemetry->event('install_completed', ['method' => 'web']);
 
             $form->reset();
 
