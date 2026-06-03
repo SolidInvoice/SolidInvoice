@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Export\Message\RequestCompanyExport;
+use SolidInvoice\CoreBundle\Telemetry\Message\SendTelemetryMessage;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
@@ -54,6 +55,13 @@ return static function (FrameworkConfig $config): void {
     // Full company data exports are long-running and email the user on completion,
     // so they must run out-of-band from the HTTP request that triggered them.
     $messenger->routing(RequestCompanyExport::class)
+        ->senders(['async']);
+
+    // Telemetry signals must be fire-and-forget — routing them through the async
+    // transport keeps the triggering web request fast and lets the worker drain
+    // them out-of-band. The handler swallows all errors and always acks, so a
+    // slow or unreachable Insights server never blocks the app or retries.
+    $messenger->routing(SendTelemetryMessage::class)
         ->senders(['async']);
 
     // Configure default bus
