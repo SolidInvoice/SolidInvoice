@@ -86,20 +86,20 @@ jobs:
           pip install asciichartpy
 
           python3 - /tmp/history/baseline-history.json "$pr_total" << 'PYEOF'
-            import json, sys
-            import asciichartpy
-            
-            with open(sys.argv[1]) as f:
-                history = json.load(f)
-            
-            pr_total = int(sys.argv[2])
-            totals = [h["total"] for h in history] + [pr_total]
-            
-            if len(totals) >= 2:
-                graph = asciichartpy.plot(totals, {"height": 10, "format": "{:>6.0f}"})
-                with open("/tmp/trend_graph.txt", "w") as f:
-                    f.write(graph)
-            PYEOF
+          import json, sys
+          import asciichartpy
+
+          with open(sys.argv[1]) as f:
+              history = json.load(f)
+
+          pr_total = int(sys.argv[2])
+          totals = [h["total"] for h in history] + [pr_total]
+
+          if len(totals) >= 2:
+              graph = asciichartpy.plot(totals, {"height": 10, "format": "{:>6.0f}"})
+              with open("/tmp/trend_graph.txt", "w") as f:
+                  f.write(graph)
+          PYEOF
 
           {
             echo 'REPORT<<REPORT_EOF'
@@ -244,19 +244,19 @@ jobs:
           CURRENT_DATE=$(date -u +%Y-%m-%d)
 
           python3 - /tmp/history/baseline-history.json "$CURRENT_DATE" "$COMMIT_SHA" "$total" << 'PYEOF'
-            import json, sys
-            
-            history_file, current_date, commit_sha, total = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
-            
-            with open(history_file) as f:
-                history = json.load(f)
-            
-            history.append({"date": current_date, "sha": commit_sha[:8], "total": total})
-            history = history[-15:]
-            
-            with open(history_file, "w") as f:
-                json.dump(history, f)
-            PYEOF
+          import json, sys
+
+          history_file, current_date, commit_sha, total = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
+
+          with open(history_file) as f:
+              history = json.load(f)
+
+          history.append({"date": current_date, "sha": commit_sha[:8], "total": total})
+          history = history[-15:]
+
+          with open(history_file, "w") as f:
+              json.dump(history, f)
+          PYEOF
 
       - name: Upload baseline history
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
