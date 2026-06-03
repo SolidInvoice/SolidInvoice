@@ -18,6 +18,9 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Telemetry\Listener\InvoiceCreatedTelemetryListenerTest
+ */
 #[AsEventListener(event: InvoiceEvents::INVOICE_POST_CREATE)]
 final readonly class InvoiceCreatedTelemetryListener
 {

@@ -22,6 +22,9 @@ use Throwable;
 use function rtrim;
 use function Sentry\captureException;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Telemetry\Message\Handler\SendTelemetryHandlerTest
+ */
 #[AsMessageHandler]
 final readonly class SendTelemetryHandler
 {

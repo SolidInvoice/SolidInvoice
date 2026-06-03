@@ -46,7 +46,7 @@ final class SendTelemetryHandlerTest extends TestCase
         self::assertContains('Content-Type: application/json', $requests[0]['options']['headers']);
         self::assertSame(
             ['build_id' => 'abc', 'app' => 'solidinvoice'],
-            json_decode($requests[0]['options']['body'], true, 512, JSON_THROW_ON_ERROR),
+            json_decode((string) $requests[0]['options']['body'], true, 512, JSON_THROW_ON_ERROR),
         );
     }
 
