@@ -48,3 +48,4 @@ create_new: 'Create New'
 invoice: Invoice
 quote: Quote
 client: Client
+live_component.session_expired: 'The page has expired. Please refresh and try again.'
