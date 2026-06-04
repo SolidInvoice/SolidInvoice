@@ -24,6 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Action\CustomField\DeleteActionTest
+ */
 final class DeleteAction extends AbstractController
 {
     public function __construct(
@@ -40,7 +43,8 @@ final class DeleteAction extends AbstractController
 
         $token = (string) $request->request->get('_token');
         if (! $this->isCsrfTokenValid('cf_delete_' . $id, $token)) {
-            throw $this->createAccessDeniedException('Invalid CSRF token.');
+            $this->addFlash('error', 'Invalid CSRF token. Please try again.');
+            return new RedirectResponse($this->generateUrl('_settings_custom_fields'));
         }
 
         $field = $this->em->find(CustomField::class, Ulid::fromString($id));
