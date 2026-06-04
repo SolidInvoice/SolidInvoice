@@ -27,11 +27,12 @@ use Symfony\UX\LiveComponent\Exception\HydrationException;
  *
  * This typically occurs when APP_SECRET rotates on redeployment or the
  * user's session expires while a Live Component form is open.
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\LiveComponentHydrationExceptionListenerTest
  */
-final class LiveComponentHydrationExceptionListener implements EventSubscriberInterface
+final readonly class LiveComponentHydrationExceptionListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly RouterInterface $router,
+        private RouterInterface $router,
     ) {
     }
 

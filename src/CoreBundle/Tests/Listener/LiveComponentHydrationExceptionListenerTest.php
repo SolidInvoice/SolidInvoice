@@ -45,8 +45,9 @@ final class LiveComponentHydrationExceptionListenerTest extends TestCase
 
         $listener = new LiveComponentHydrationExceptionListener($router);
 
-        $request = Request::create('/_components/CreateInvoice/saveUpdate', 'POST');
+        $request = Request::create('/_components/CreateInvoice/saveUpdate', Request::METHOD_POST);
         $request->headers->set('Referer', 'https://example.com/invoices/create');
+
         $session = new Session(new MockArraySessionStorage());
         $request->setSession($session);
 
@@ -76,7 +77,7 @@ final class LiveComponentHydrationExceptionListenerTest extends TestCase
 
         $listener = new LiveComponentHydrationExceptionListener($router);
 
-        $request = Request::create('/_components/CreateInvoice/saveUpdate', 'POST');
+        $request = Request::create('/_components/CreateInvoice/saveUpdate', Request::METHOD_POST);
         $session = new Session(new MockArraySessionStorage());
         $request->setSession($session);
 
@@ -103,7 +104,7 @@ final class LiveComponentHydrationExceptionListenerTest extends TestCase
 
         $listener = new LiveComponentHydrationExceptionListener($router);
 
-        $request = Request::create('/some-page', 'GET');
+        $request = Request::create('/some-page', Request::METHOD_GET);
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $event = new ExceptionEvent(
