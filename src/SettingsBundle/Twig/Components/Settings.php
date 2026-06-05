@@ -78,7 +78,7 @@ final class Settings extends AbstractController
     #[PreMount()]
     public function preMount(): void
     {
-        $this->section = key($this->getAppSettings());
+        $this->section = array_key_first($this->getAppSettings()) ?? '';
     }
 
     /**
@@ -112,6 +112,7 @@ final class Settings extends AbstractController
     {
         $isTrialSubscription = $this->subscriptionService?->isTrialSubscription() ?? false;
         $appSettings = $this->getAppSettings(false);
+        $appSettingsObjects = $this->getAppSettings(true);
 
         if (! isset($appSettings[$this->section])) {
             $this->section = (string) array_key_first($appSettings);
@@ -119,9 +120,9 @@ final class Settings extends AbstractController
 
         return $this->createForm(
             SettingsType::class,
-            $appSettings[$this->section],
+            $appSettings[$this->section] ?? [],
             [
-                'settings' => $this->getAppSettings(true)[$this->section],
+                'settings' => $appSettingsObjects[$this->section] ?? [],
                 'subscription_in_trial' => $isTrialSubscription,
             ]
         );
