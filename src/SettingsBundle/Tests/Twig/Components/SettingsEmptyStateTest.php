@@ -29,8 +29,6 @@ final class SettingsEmptyStateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
 
-    private MockObject&SettingsRepository $emptyRepo;
-
     private Settings $component;
 
     protected function setUp(): void
@@ -40,12 +38,12 @@ final class SettingsEmptyStateTest extends KernelTestCase
         /** @var MockObject&SettingsRepository $repo */
         $repo = $this->createMock(SettingsRepository::class);
         $repo->method('findAll')->willReturn([]);
-        $this->emptyRepo = $repo;
+        $emptyRepo = $repo;
 
         /** @var PropertyAccessorInterface $propertyAccessor */
         $propertyAccessor = self::getContainer()->get('property_accessor');
 
-        $this->component = new Settings($this->emptyRepo, $propertyAccessor);
+        $this->component = new Settings($emptyRepo, $propertyAccessor);
         $this->component->setContainer(self::getContainer());
     }
 
