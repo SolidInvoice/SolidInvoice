@@ -27,14 +27,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @param array{type: string|null, value: string|int|null} $data
+     * @param array{type: string|null, value?: string|int|null} $data
      * @throws MathException
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Discount
     {
         $discount = new Discount();
         $discount->setType($data['type'] ?? null);
-        $discount->setValue($data['value'] ?? null);
+
+        $value = $data['value'] ?? null;
+        if (null !== $value) {
+            $discount->setValue($value);
+        }
 
         return $discount;
     }

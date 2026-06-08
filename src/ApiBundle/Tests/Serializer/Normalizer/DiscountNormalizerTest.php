@@ -61,4 +61,26 @@ final class DiscountNormalizerTest extends TestCase
 
         self::assertEquals($discount, $this->normalizer->denormalize(['type' => 'money', 'value' => 10000], Discount::class));
     }
+
+    /**
+     * @throws MathException
+     */
+    public function testDenormalizationWithNullValue(): void
+    {
+        $discount = $this->normalizer->denormalize(['type' => 'percentage', 'value' => null], Discount::class);
+
+        self::assertInstanceOf(Discount::class, $discount);
+        self::assertSame('percentage', $discount->getType());
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testDenormalizationWithMissingValue(): void
+    {
+        $discount = $this->normalizer->denormalize(['type' => 'percentage'], Discount::class);
+
+        self::assertInstanceOf(Discount::class, $discount);
+        self::assertSame('percentage', $discount->getType());
+    }
 }
