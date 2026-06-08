@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Form\Step;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\DTO\UserAccount;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -76,6 +77,29 @@ class UserAccountStep extends AbstractType
             },
         );
 
+        $builder->add(
+            'telemetryEnabled',
+            CheckboxType::class,
+            [
+                'mapped' => false,
+                'required' => false,
+                'data' => true,
+                'label' => 'Send anonymous usage statistics',
+                'help' => 'Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.',
+            ],
+        );
+
+        $builder->get('telemetryEnabled')->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            static function (FormEvent $event): void {
+                $root = $event->getForm()->getRoot()->getData();
+
+                if ($root instanceof Installation) {
+                    $event->setData($root->telemetryEnabled);
+                }
+            },
+        );
+
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
             static function (FormEvent $event): void {
@@ -83,6 +107,7 @@ class UserAccountStep extends AbstractType
 
                 if ($root instanceof Installation) {
                     $root->applicationUrl = $event->getForm()->get('applicationUrl')->getData();
+                    $root->telemetryEnabled = (bool) $event->getForm()->get('telemetryEnabled')->getData();
                 }
             },
         );

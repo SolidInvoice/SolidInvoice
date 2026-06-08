@@ -83,9 +83,12 @@ final class Install extends AbstractController
                 'locale' => $formData->userAccount->locale,
                 'installation_id' => Uuid::v4()->toString(),
                 'application_url' => (string) $formData->applicationUrl,
+                'enable_telemetry' => $formData->telemetryEnabled ? '1' : '0',
             ]);
 
-            $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'web']);
+            if ($formData->telemetryEnabled) {
+                $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'web']);
+            }
 
             $form->reset();
 

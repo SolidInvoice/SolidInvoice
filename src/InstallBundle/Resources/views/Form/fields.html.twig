@@ -27,6 +27,37 @@
             {{ form_row(form.password) }}
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <label class="form-check">
+                {{ form_widget(form.telemetryEnabled, {attr: {class: 'form-check-input'}}) }}
+                <span class="form-check-label">Send anonymous usage statistics</span>
+            </label>
+            <small class="form-hint d-block">
+                Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.
+                <a href="#telemetry-details" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="telemetry-details">What do we collect?</a>
+            </small>
+            <div class="collapse mt-2" id="telemetry-details">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <p class="mb-2"><strong>What we send</strong> (anonymous, aggregate):</p>
+                        <ul class="mb-3">
+                            <li>A random installation ID (not linked to you or your data)</li>
+                            <li>SolidInvoice version and install type (manual, Docker, etc.)</li>
+                            <li>PHP version, operating system and OS version</li>
+                            <li>Database type and version, and the configured locale</li>
+                            <li>Anonymous feature events (e.g. "an invoice was created") — never their contents</li>
+                        </ul>
+                        <p class="mb-2"><strong>What we never send:</strong></p>
+                        <ul class="mb-0">
+                            <li>Invoices, quotes, clients, payment amounts or any business data</li>
+                            <li>Names, email addresses, IP addresses or any personally identifiable information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock user_account_step_widget %}
 
 {% block _installation_review_widget %}
@@ -176,6 +207,16 @@
                                 </div>
                             </div>
                         {% endif %}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Usage statistics</div>
+                            <div class="datagrid-content">
+                                {% if form.vars.data.telemetryEnabled %}
+                                    <span class="badge bg-success-lt">Enabled</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-lt">Disabled</span>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

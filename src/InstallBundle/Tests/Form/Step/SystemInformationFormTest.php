@@ -106,6 +106,16 @@ final class SystemInformationFormTest extends FormTestCase
         self::assertArrayHasKey('lastName', $view->children);
         self::assertArrayHasKey('emailAddress', $view->children);
         self::assertArrayHasKey('password', $view->children);
+        self::assertArrayHasKey('telemetryEnabled', $view->children);
+    }
+
+    public function testTelemetryFieldDefaultsToChecked(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertArrayHasKey('telemetryEnabled', $view->children);
+        self::assertTrue($view->children['telemetryEnabled']->vars['checked']);
     }
 
     public function testApplicationUrlFieldDefaultsToCurrentRequestHost(): void
