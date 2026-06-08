@@ -22,6 +22,7 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
+use Rector\Symfony\Configs\Rector\Closure\FromServicePublicToDefaultsPublicRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
@@ -115,5 +116,10 @@ return RectorConfig::configure()
         RemoveNewArrayCollectionOutsideConstructorRector::class => [
             // This file uses __clone() which must use a new array collection
             'src/InvoiceBundle/Entity/Invoice.php'
+        ],
+
+        FromServicePublicToDefaultsPublicRector::class => [
+            // This rule removes ->public() calls on services that must be defined as public.
+            'src/PaymentBundle/Resources/config/services/services.php'
         ],
     ]);
