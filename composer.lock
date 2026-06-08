@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13abf16cf3ada83f1181765400a2718a",
+    "content-hash": "73bc0dfef33b81c1217fc345fa6b10d5",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9676,17 +9676,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "c35c6d9d06303b3586dd8fb47643c1b68b431ebb"
+                "reference": "8f5484c67b5813bbe8eb600bb066fe56a47ca04c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/c35c6d9d06303b3586dd8fb47643c1b68b431ebb",
-                "reference": "c35c6d9d06303b3586dd8fb47643c1b68b431ebb",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/8f5484c67b5813bbe8eb600bb066fe56a47ca04c",
+                "reference": "8f5484c67b5813bbe8eb600bb066fe56a47ca04c",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
-                "doctrine/orm": "^2.15",
+                "doctrine/orm": "^2.15 || ^3.6",
                 "endroid/qr-code": "^6.0",
                 "knplabs/knp-menu-bundle": "^3.6",
                 "league/uri": "^7.8",
@@ -9756,7 +9756,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-06-02T13:40:41+00:00"
+            "time": "2026-06-03T20:19:32+00:00"
         },
         {
             "name": "solidworx/toggler",
