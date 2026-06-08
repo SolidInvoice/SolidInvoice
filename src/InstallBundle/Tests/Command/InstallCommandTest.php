@@ -196,6 +196,20 @@ final class InstallCommandTest extends TestCase
         self::assertSame($hashedPassword, $disabledUser->getPassword());
     }
 
+    public function testDisableTelemetryOptionIsRegistered(): void
+    {
+        $registry = M::mock(ManagerRegistry::class);
+        $command = $this->createCommand($registry);
+
+        $definition = $command->getDefinition();
+
+        self::assertTrue($definition->hasOption('disable-telemetry'));
+
+        $option = $definition->getOption('disable-telemetry');
+        self::assertFalse($option->acceptValue());
+        self::assertSame('Disable sending anonymous usage statistics', $option->getDescription());
+    }
+
     private function createCommand(
         ManagerRegistry $registry,
         ?UserPasswordHasherInterface $passwordHasher = null,
