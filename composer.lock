@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73bc0dfef33b81c1217fc345fa6b10d5",
+    "content-hash": "43ec58a3b40c84f44bd78059226924a0",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9672,7 +9672,7 @@
         },
         {
             "name": "solidworx/platform",
-            "version": "dev-main",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
@@ -9686,7 +9686,7 @@
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
-                "doctrine/orm": "^2.15 || ^3.6",
+                "doctrine/orm": "^2.15",
                 "endroid/qr-code": "^6.0",
                 "knplabs/knp-menu-bundle": "^3.6",
                 "league/uri": "^7.8",
@@ -9733,7 +9733,6 @@
                 "spatie/phpunit-snapshot-assertions": "^5.3",
                 "symplify/easy-coding-standard": "^13.0"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -9754,9 +9753,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/platform/issues",
-                "source": "https://github.com/SolidWorx/platform/tree/main"
+                "source": "https://github.com/SolidWorx/platform/tree/0.3.0"
             },
-            "time": "2026-06-03T20:19:32+00:00"
+            "time": "2026-06-03T20:19:31+00:00"
         },
         {
             "name": "solidworx/toggler",
@@ -9839,16 +9838,16 @@
         },
         {
             "name": "spomky-labs/otphp",
-            "version": "11.4.3",
+            "version": "11.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spomky-Labs/otphp.git",
-                "reference": "46663316285bf1f001a31584213b327494b00ae7"
+                "reference": "877683d6352b80cdc7020fd43a725629c2524435"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/46663316285bf1f001a31584213b327494b00ae7",
-                "reference": "46663316285bf1f001a31584213b327494b00ae7",
+                "url": "https://api.github.com/repos/Spomky-Labs/otphp/zipball/877683d6352b80cdc7020fd43a725629c2524435",
+                "reference": "877683d6352b80cdc7020fd43a725629c2524435",
                 "shasum": ""
             },
             "require": {
@@ -9893,7 +9892,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Spomky-Labs/otphp/issues",
-                "source": "https://github.com/Spomky-Labs/otphp/tree/11.4.3"
+                "source": "https://github.com/Spomky-Labs/otphp/tree/11.5.0"
             },
             "funding": [
                 {
@@ -9905,7 +9904,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-05-31T12:42:43+00:00"
+            "time": "2026-06-06T23:41:24+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -28316,7 +28315,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "solidworx/platform": 20,
         "solidworx/toggler": 10
     },
     "prefer-stable": false,
