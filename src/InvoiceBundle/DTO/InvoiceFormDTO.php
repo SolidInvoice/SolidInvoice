@@ -55,6 +55,7 @@ final class InvoiceFormDTO
 
     // Invoice entity fields
     #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     public string $invoiceId = '';
 
     #[Assert\NotBlank]
