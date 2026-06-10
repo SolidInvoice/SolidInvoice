@@ -187,7 +187,7 @@ class InvoiceType extends AbstractType
         // Generate invoice ID if not set (for new invoices)
         $data = $dto->invoiceId !== '' ? $dto->invoiceId : $this->billingIdGenerator->generate(new Invoice(), ['field' => 'invoiceId']);
 
-        $builder->add('invoiceId', null, ['data' => $data, 'attr' => ['maxlength' => 255]]);
+        $builder->add('invoiceId', null, ['data' => $data, 'empty_data' => '', 'attr' => ['maxlength' => 255]]);
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
