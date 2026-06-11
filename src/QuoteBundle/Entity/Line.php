@@ -163,7 +163,7 @@ class Line implements LineInterface, Stringable
         return $this->id;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
