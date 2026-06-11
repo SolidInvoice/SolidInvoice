@@ -22,7 +22,7 @@ interface LineInterface
 {
     public function getId(): Ulid;
 
-    public function setDescription(string $description): self;
+    public function setDescription(?string $description): self;
 
     public function getDescription(): ?string;
 
