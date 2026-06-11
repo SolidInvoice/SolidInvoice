@@ -28,6 +28,7 @@ class PdfResponse extends Response
     {
         parent::__construct($content, $status, $headers);
         $this->headers->add(['Content-Type' => 'application/pdf']);
-        $this->headers->add(['Content-Disposition' => $this->headers->makeDisposition($contentDisposition, $fileName)]);
+        $sanitizedFileName = str_replace(['/', '\\'], '_', $fileName);
+        $this->headers->add(['Content-Disposition' => $this->headers->makeDisposition($contentDisposition, $sanitizedFileName)]);
     }
 }
