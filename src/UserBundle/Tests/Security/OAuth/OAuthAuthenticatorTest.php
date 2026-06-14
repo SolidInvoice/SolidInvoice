@@ -699,6 +699,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $passport = $this->authenticator->authenticate($request);
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
 
         self::assertSame($user, $userBadge->getUser());
     }
@@ -777,6 +778,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $passport = $this->authenticator->authenticate($request);
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $result = $userBadge->getUser();
 
         self::assertInstanceOf(User::class, $result);
@@ -832,6 +834,7 @@ final class OAuthAuthenticatorTest extends TestCase
                 if (isset($criteria['email']) && $criteria['email'] === 'existing@example.com') {
                     return $existingUser;
                 }
+
                 return null;
             });
 
@@ -845,6 +848,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $passport = $this->authenticator->authenticate($request);
         $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
         $result = $userBadge->getUser();
 
         self::assertSame($existingUser, $result);
