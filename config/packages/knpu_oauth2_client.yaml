@@ -16,4 +16,4 @@ knpu_oauth2_client:
             redirect_route: _oauth_connect_check
             redirect_params:
                 service: facebook
-            graph_api_version: v18.0
+            graph_api_version: v25.0
