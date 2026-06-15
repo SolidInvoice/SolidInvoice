@@ -53,6 +53,13 @@ class InvoiceMailerListener implements EventSubscriberInterface
             return;
         }
 
+        if ($invoice->getUsers()->isEmpty()) {
+            $this->logger->warning('Cannot send invoice email: invoice has no recipients', [
+                'invoice_id' => (string) $invoice->getId(),
+            ]);
+            return;
+        }
+
         try {
             $this->mailer->send(new InvoiceEmail($invoice));
         } catch (TransportExceptionInterface $e) {
