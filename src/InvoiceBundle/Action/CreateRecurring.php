@@ -97,7 +97,7 @@ final class CreateRecurring extends AbstractController
                 $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
             }
 
-            if ('publish' === $action) {
+            if ('publish' === $action && $this->recurringInvoiceStateMachine->can($invoice, Graph::TRANSITION_ACTIVATE)) {
                 $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ACTIVATE);
             }
 

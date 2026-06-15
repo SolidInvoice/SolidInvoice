@@ -60,7 +60,7 @@ final class EditRecurring extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
 
-            if ('publish' === $action) {
+            if ('publish' === $action && $this->recurringInvoiceStateMachine->can($invoice, Graph::TRANSITION_ACTIVATE)) {
                 $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ACTIVATE);
             }
 
