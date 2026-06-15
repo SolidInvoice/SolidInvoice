@@ -55,7 +55,9 @@ use function filter_var;
 use function in_array;
 
 // @TODO: Refactor this class to make it cleaner
-
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Action\PrepareTest
+ */
 final class Prepare
 {
     use SaveableTrait;

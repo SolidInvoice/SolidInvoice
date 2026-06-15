@@ -195,10 +195,10 @@ final class PrepareTest extends KernelTestCase
             ->method('findOneBy')
             ->willReturn(null);
 
-        $paymentMethodRepository = $this->createMock(PaymentMethodRepository::class);
-        $invoiceStateMachine = $this->createMock(WorkflowInterface::class);
-        $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $router = $this->createMock(RouterInterface::class);
+        $paymentMethodRepository = $this->createStub(PaymentMethodRepository::class);
+        $invoiceStateMachine = $this->createStub(WorkflowInterface::class);
+        $authorizationChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $router = $this->createStub(RouterInterface::class);
 
         $action = $this->buildAction(
             $paymentMethodRepository,
@@ -231,7 +231,7 @@ final class PrepareTest extends KernelTestCase
             ->method('findOneBy')
             ->willReturn($invoice);
 
-        $paymentMethodRepository = $this->createMock(PaymentMethodRepository::class);
+        $paymentMethodRepository = $this->createStub(PaymentMethodRepository::class);
 
         $invoiceStateMachine = $this->createMock(WorkflowInterface::class);
         $invoiceStateMachine->expects(self::once())
