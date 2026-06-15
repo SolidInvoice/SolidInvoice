@@ -17,7 +17,6 @@ use const FILTER_VALIDATE_BOOLEAN;
 use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
 use Carbon\Carbon;
-use Exception;
 use Generator;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
@@ -80,7 +79,6 @@ final class Prepare
 
     /**
      * @return array{form: FormView, invoice: Invoice, internal: array<int, string>}|Response|null
-     * @throws Exception
      */
     #[Template('@SolidInvoicePayment/Payment/create.html.twig')]
     public function __invoke(Request $request, string $uuid): array | Response | null
@@ -119,7 +117,22 @@ final class Prepare
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($isAuthenticated) < 1) {
-            throw new Exception('No payment methods available');
+            $route = $isAuthenticated
+                ? $this->router->generate('_invoices_view', ['id' => $invoice->getId()])
+                : $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]);
+
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function __construct(
+                    string $route
+                ) {
+                    parent::__construct($route);
+                }
+
+                public function getFlash(): Generator
+                {
+                    yield self::FLASH_DANGER => 'payment.create.exception.no_payment_methods';
+                }
+            };
         }
 
         $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
