@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -37,12 +37,13 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 final class CreateRecurringTest extends TestCase
 {
+    /**
+     * @param FormInterface<mixed> $form
+     */
     private function buildAction(WorkflowInterface $workflow, RouterInterface $router, ManagerRegistry $doctrine, FormInterface $form): CreateRecurring
     {
         $clientRepository = $this->createMock(ClientRepository::class);
         $clientRepository->method('getTotalClients')->willReturn(2);
-
-        $totalCalculator = $this->createMock(TotalCalculator::class);
 
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
@@ -52,7 +53,7 @@ final class CreateRecurringTest extends TestCase
         $invoiceRepository->method('countCreatedInMonth')->willReturn(0);
 
         $clock = $this->createMock(ClockInterface::class);
-        $clock->method('now')->willReturn(new DateTimeImmutable());
+        $clock->method('now')->willReturn(CarbonImmutable::now());
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formFactory->method('create')->willReturn($form);
@@ -68,7 +69,7 @@ final class CreateRecurringTest extends TestCase
             $workflow,
             $router,
             $doctrine,
-            $totalCalculator,
+            $this->createStub(TotalCalculator::class),
             $featureGate,
             $invoiceRepository,
             $clock,
@@ -78,6 +79,9 @@ final class CreateRecurringTest extends TestCase
         return $action;
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     private function buildSubmittedForm(): FormInterface
     {
         $form = $this->createMock(FormInterface::class);
@@ -91,7 +95,7 @@ final class CreateRecurringTest extends TestCase
     private function buildRequest(string $saveAction): Request
     {
         $session = new Session(new MockArraySessionStorage());
-        $request = Request::create('/', 'POST', ['save' => $saveAction]);
+        $request = Request::create('/', Request::METHOD_POST, ['save' => $saveAction]);
         $request->setSession($session);
 
         return $request;
