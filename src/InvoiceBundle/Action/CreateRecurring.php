@@ -36,6 +36,9 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\CreateRecurringTest
+ */
 final class CreateRecurring extends AbstractController
 {
     public function __construct(

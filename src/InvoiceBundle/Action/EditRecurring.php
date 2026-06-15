@@ -31,6 +31,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\EditRecurringTest
+ */
 final class EditRecurring extends AbstractController
 {
     public function __construct(

@@ -40,12 +40,10 @@ final class EditRecurringTest extends TestCase
         WorkflowInterface $workflow,
         ManagerRegistry $doctrine,
     ): EditRecurring {
-        $totalCalculator = $this->createMock(TotalCalculator::class);
-
         $featureGate = $this->createMock(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
 
-        return new EditRecurring($formFactory, $router, $workflow, $doctrine, $totalCalculator, $featureGate);
+        return new EditRecurring($formFactory, $router, $workflow, $doctrine, $this->createStub(TotalCalculator::class), $featureGate);
     }
 
     private function buildInvoice(RecurringInvoiceStatus $status): RecurringInvoice
@@ -60,6 +58,9 @@ final class EditRecurringTest extends TestCase
         return $invoice;
     }
 
+    /**
+     * @return FormInterface<mixed>
+     */
     private function buildSubmittedForm(): FormInterface
     {
         $form = $this->createMock(FormInterface::class);
@@ -73,7 +74,7 @@ final class EditRecurringTest extends TestCase
     private function buildRequest(string $saveAction): Request
     {
         $session = new Session(new MockArraySessionStorage());
-        $request = Request::create('/', 'POST', ['save' => $saveAction]);
+        $request = Request::create('/', Request::METHOD_POST, ['save' => $saveAction]);
         $request->setSession($session);
 
         return $request;
