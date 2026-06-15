@@ -245,7 +245,11 @@ final class CreateInvoice extends AbstractController
             $this->entityManager->flush();
 
             if ('send' === $action) {
-                $this->mailer->send(new InvoiceEmail($this->invoice));
+                if ($this->invoice->getUsers()->isEmpty()) {
+                    $this->addFlash('error', 'invoice.send.no_recipients');
+                } else {
+                    $this->mailer->send(new InvoiceEmail($this->invoice));
+                }
             }
 
             $this->addFlash('success', 'invoice.edit.success');
@@ -283,7 +287,11 @@ final class CreateInvoice extends AbstractController
 
         // Send the invoice only if the action is 'send'
         if ('send' === $action) {
-            $this->mailer->send(new InvoiceEmail($invoice));
+            if ($invoice->getUsers()->isEmpty()) {
+                $this->addFlash('error', 'invoice.send.no_recipients');
+            } else {
+                $this->mailer->send(new InvoiceEmail($invoice));
+            }
         }
 
         // Add flash message and redirect

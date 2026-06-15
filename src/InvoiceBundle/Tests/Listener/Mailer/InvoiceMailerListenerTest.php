@@ -83,6 +83,22 @@ final class InvoiceMailerListenerTest extends TestCase
         self::assertSame(['invoice.email.send_failed'], $flashBag->get('error'));
     }
 
+    public function testListenerSkipsSendingWhenNoUsers(): void
+    {
+        $invoice = new Invoice();
+
+        $mailer = M::spy(MailerInterface::class);
+        $logger = M::spy(LoggerInterface::class);
+        $requestStack = new RequestStack();
+
+        $listener = new InvoiceMailerListener($mailer, $logger, $requestStack);
+        $listener->onInvoiceAccepted(new InvoiceEvent($invoice));
+
+        $mailer->shouldNotHaveReceived('send');
+        $logger->shouldHaveReceived('warning')
+            ->with(M::pattern('/no recipients/'), M::type('array'));
+    }
+
     public function testEvents(): void
     {
         self::assertSame([InvoiceEvents::INVOICE_POST_ACCEPT], \array_keys(InvoiceMailerListener::getSubscribedEvents()));
