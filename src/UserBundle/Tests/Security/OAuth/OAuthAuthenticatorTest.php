@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\Security\OAuth;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
+use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -635,5 +636,223 @@ final class OAuthAuthenticatorTest extends TestCase
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/login', $response->getTargetUrl());
+    }
+
+    public function testSupportsWithFacebookService(): void
+    {
+        $request = new Request();
+        $request->attributes->set('_route', OAuthConnectCheck::ROUTE);
+        $request->attributes->set('service', 'facebook');
+
+        $this->toggle
+            ->expects($this->once())
+            ->method('isActive')
+            ->with('facebook_oauth_login')
+            ->willReturn(true);
+
+        self::assertTrue($this->authenticator->supports($request));
+    }
+
+    public function testAuthenticateWithExistingFacebookUser(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'facebook');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+        $user = new User();
+
+        $facebookUser = new FacebookUser([
+            'id' => '987654321',
+            'email' => 'fb@example.com',
+            'first_name' => 'Jane',
+            'last_name' => 'Smith',
+        ]);
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('facebook')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($facebookUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(User::class)
+            ->willReturn($this->userRepository);
+
+        $this->userRepository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(['facebookId' => '987654321'])
+            ->willReturn($user);
+
+        $passport = $this->authenticator->authenticate($request);
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+
+        self::assertSame($user, $userBadge->getUser());
+    }
+
+    public function testAuthenticateWithNewFacebookUserSyncsNameFields(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'facebook');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+
+        $facebookUser = new FacebookUser([
+            'id' => '987654321',
+            'email' => 'fb@example.com',
+            'first_name' => 'Jane',
+            'last_name' => 'Smith',
+        ]);
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('facebook')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($facebookUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(User::class)
+            ->willReturn($this->userRepository);
+
+        $this->userRepository
+            ->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->willReturn(null);
+
+        $this->security
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
+
+        $this->toggle
+            ->expects($this->once())
+            ->method('isActive')
+            ->with('allow_registration')
+            ->willReturn(true);
+
+        $this->propertyAccessor
+            ->expects($this->once())
+            ->method('setValue')
+            ->with(
+                self::callback(static fn ($user): bool => $user instanceof User && $user->getEmail() === 'fb@example.com'),
+                'facebookId',
+                '987654321'
+            );
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with(self::callback(static fn ($user): bool => $user instanceof User
+                && $user->getFirstName() === 'Jane'
+                && $user->getLastName() === 'Smith'));
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $passport = $this->authenticator->authenticate($request);
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+        $result = $userBadge->getUser();
+
+        self::assertInstanceOf(User::class, $result);
+        self::assertSame('fb@example.com', $result->getEmail());
+        self::assertSame('Jane', $result->getFirstName());
+        self::assertSame('Smith', $result->getLastName());
+        self::assertTrue($result->isVerified());
+    }
+
+    public function testAuthenticateDoesNotOverwriteExistingNames(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'facebook');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+        $existingUser = new User();
+        $existingUser->setEmail('existing@example.com');
+        $existingUser->setFirstName('Original');
+        $existingUser->setLastName('Name');
+
+        $facebookUser = new FacebookUser([
+            'id' => '987654321',
+            'email' => 'existing@example.com',
+            'first_name' => 'Jane',
+            'last_name' => 'Smith',
+        ]);
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('facebook')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->willReturn($facebookUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->willReturn($this->userRepository);
+
+        $this->userRepository
+            ->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->willReturnCallback(static function (array $criteria) use ($existingUser): ?User {
+                if (isset($criteria['email']) && $criteria['email'] === 'existing@example.com') {
+                    return $existingUser;
+                }
+
+                return null;
+            });
+
+        $this->propertyAccessor
+            ->expects($this->once())
+            ->method('setValue')
+            ->with($existingUser, 'facebookId', '987654321');
+
+        $this->entityManager->expects($this->once())->method('persist')->with($existingUser);
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $passport = $this->authenticator->authenticate($request);
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+        $result = $userBadge->getUser();
+
+        self::assertSame($existingUser, $result);
+        self::assertSame('Original', $result->getFirstName());
+        self::assertSame('Name', $result->getLastName());
     }
 }

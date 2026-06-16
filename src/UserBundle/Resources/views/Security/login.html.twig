@@ -18,20 +18,33 @@
 {% endblock stylesheets %}
 
 {% block social_login %}
-    {% toggle 'google_oauth_login' %}
+    {% set has_oauth = toggle('google_oauth_login') or toggle('facebook_oauth_login') %}
+    {% if has_oauth %}
         <div class="hr-text">{{ 'security.login.or'|trans }}</div>
 
         <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">
-                        {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) }}
-                        {{ 'security.login.login_with_google'|trans }}
-                    </a>
+            {% toggle 'google_oauth_login' %}
+                <div class="row mb-2">
+                    <div class="col">
+                        <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">
+                            {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) }}
+                            {{ 'security.login.login_with_google'|trans }}
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% endtoggle %}
+            {% toggle 'facebook_oauth_login' %}
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ path('_oauth_connect', {'service': 'facebook' }) }}" class="btn btn-outline-secondary w-100">
+                            {{ ux_icon('tabler:brand-facebook', {width: 24, height: 24}) }}
+                            {{ 'security.login.login_with_facebook'|trans }}
+                        </a>
+                    </div>
+                </div>
+            {% endtoggle %}
         </div>
-    {% endtoggle %}
+    {% endif %}
 {% endblock social_login %}
 
 {% block content %}

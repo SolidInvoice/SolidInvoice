@@ -94,6 +94,20 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
 
                 $this->propertyAccessor->setValue($user, $oauthUser->getPropertyMap(), $oauthUser->getId());
 
+                if ($user->getFirstName() === null || $user->getFirstName() === '') {
+                    $firstName = $oauthUser->getFirstName();
+                    if ($firstName !== '') {
+                        $user->setFirstName($firstName);
+                    }
+                }
+
+                if ($user->getLastName() === null || $user->getLastName() === '') {
+                    $lastName = $oauthUser->getLastName();
+                    if ($lastName !== '') {
+                        $user->setLastName($lastName);
+                    }
+                }
+
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
 

@@ -76,6 +76,7 @@ security:
         forgot_password: 'Forgot Password'
         or: or
         login_with_google: 'Login with Google'
+        login_with_facebook: 'Login with Facebook'
         no_account: "Don't have an account yet?"
         register_now: 'Register Now'
     register:
@@ -112,6 +113,7 @@ security:
             login: 'Already have an account?'
             signin: 'Sign in'
             google: 'Sign up with Google'
+            facebook: 'Sign up with Facebook'
         placeholders:
             email: 'your@email.com'
             company: 'Your Company Name'

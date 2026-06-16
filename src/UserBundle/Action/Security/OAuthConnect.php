@@ -46,6 +46,7 @@ final class OAuthConnect extends AbstractController
     {
         return match ($service) {
             'google' => ['profile', 'email'],
+            'facebook' => ['email', 'public_profile'],
             default => throw $this->createNotFoundException('Service not found'),
         };
     }
