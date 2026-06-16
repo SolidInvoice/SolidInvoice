@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
 use SolidInvoice\InvoiceBundle\Entity\ReminderStatus;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\MessageHandler\SendInvoiceReminderHandler;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
@@ -281,6 +282,15 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $commandTester->execute([]);
 
         self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+
+        // The async transport uses in-memory storage in tests; consume queued messages synchronously.
+        $transport = self::getContainer()->get('messenger.transport.async');
+        $handler = self::getContainer()->get(SendInvoiceReminderHandler::class);
+
+        foreach ($transport->get() as $envelope) {
+            ($handler)($envelope->getMessage());
+            $transport->ack($envelope);
+        }
     }
 
     private function enableReminders(): void
