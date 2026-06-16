@@ -119,17 +119,11 @@ final class Prepare
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($isAuthenticated) < 1) {
-            $route = $isAuthenticated
+            $url = $isAuthenticated
                 ? $this->router->generate('_invoices_view', ['id' => $invoice->getId()])
                 : $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]);
 
-            return new class($route) extends RedirectResponse implements FlashResponse {
-                public function __construct(
-                    string $route
-                ) {
-                    parent::__construct($route);
-                }
-
+            return new class($url) extends RedirectResponse implements FlashResponse {
                 public function getFlash(): Generator
                 {
                     yield self::FLASH_DANGER => 'payment.create.exception.no_payment_methods';
