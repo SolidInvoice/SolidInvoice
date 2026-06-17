@@ -59,7 +59,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MCP_AUTH_CODE_TTL)', 'PT10M');
 
     $parameters->set('env(SOLIDINVOICE_TELEMETRY_URL)', 'https://insights.solidworx.co');
-    $parameters->set('env(SOLIDINVOICE_ENABLE_TELEMETRY)', '1'); // default ON; '0' disables
+    $parameters->set('env(SOLIDINVOICE_ENABLE_TELEMETRY)', '0'); // default ON; '0' disables
     $parameters->set('env(SOLIDINVOICE_INSTALL_TYPE)', '');       // '' → auto-detect (docker vs manual)
 
     if ($containerConfigurator->env() === 'test') {
