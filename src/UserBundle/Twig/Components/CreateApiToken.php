@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Twig\Components;
 
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ApiTokenType;
-use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
@@ -52,7 +52,6 @@ final class CreateApiToken extends AbstractController
     public function __construct(
         private readonly Security $security,
         private readonly ApiTokenManager $apiTokenManager,
-        private readonly FeatureGate $featureGate,
     ) {
     }
 
@@ -82,7 +81,9 @@ final class CreateApiToken extends AbstractController
     #[LiveAction]
     public function save(): void
     {
-        if (! $this->featureGate->isEnabled('rest_api_access')) {
+        // Delegates to the API access voter: SubscriptionVoter (paid-only) on SaaS,
+        // ApiAccessVoter (feature-only) on self-hosted.
+        if (! $this->isGranted(ApiAttribute::ACCESS)) {
             throw new AccessDeniedException('REST API access is not available on the current plan.');
         }
 

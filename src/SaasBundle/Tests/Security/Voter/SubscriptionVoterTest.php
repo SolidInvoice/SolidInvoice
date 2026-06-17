@@ -47,13 +47,10 @@ final class SubscriptionVoterTest extends KernelTestCase
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
     use EnsureApplicationInstalled;
 
-    private const string TRIAL_REASON = 'Your trial has ended. Activate a subscription to continue using this resource.';
+    // API and MCP are paid-only, so trial/free/paused/pending all share this denial reason.
+    private const string PAID_REQUIRED_REASON = 'A paid subscription is required to access this resource.';
 
-    private const string SUBSCRIPTION_ENDED_REASON = 'Your subscription has ended. Renew it to continue using this resource.';
-
-    private const string PAUSED_REASON = 'Your subscription is currently paused. Reactivate it to continue using this resource.';
-
-    private const string PENDING_REASON = 'Your subscription payment is still being processed. Access will resume once it completes.';
+    private const string SUBSCRIPTION_CHECK_FAILED_REASON = 'Unable to verify your subscription. Please try again later.';
 
     private const string NO_COMPANY_REASON = 'No company is associated with this request.';
 
@@ -88,11 +85,12 @@ final class SubscriptionVoterTest extends KernelTestCase
     }
 
     #[DataProvider('provideAttributes')]
-    public function testGrantsWhenNoSubscription(string $attribute): void
+    public function testDeniesWhenNoSubscription(string $attribute): void
     {
+        // No subscription is not paid access, so API/MCP are denied.
         $voter = $this->createVoter(subscription: null);
 
-        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -106,14 +104,15 @@ final class SubscriptionVoterTest extends KernelTestCase
     }
 
     #[DataProvider('provideAttributes')]
-    public function testGrantsTrialBeforeEndDate(string $attribute): void
+    public function testDeniesTrialBeforeEndDate(string $attribute): void
     {
+        // A trial is never paid access, even before it ends.
         $voter = $this->createVoter(
             subscription: $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2026-01-15')),
             now: CarbonImmutable::parse('2026-01-10'),
         );
 
-        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -124,12 +123,13 @@ final class SubscriptionVoterTest extends KernelTestCase
             now: CarbonImmutable::parse('2026-01-20'),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, self::TRIAL_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
     public function testGrantsCancelledWithinGrace(string $attribute): void
     {
+        // A cancelled subscription is still paid until the already-paid term elapses.
         $voter = $this->createVoter(
             subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, CarbonImmutable::parse('2026-01-15')),
             now: CarbonImmutable::parse('2026-01-10'),
@@ -146,7 +146,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             now: CarbonImmutable::parse('2026-01-20'),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -168,7 +168,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             now: CarbonImmutable::parse('2026-01-20'),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_ENDED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -178,7 +178,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PAUSED),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, self::PAUSED_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -188,12 +188,13 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PENDING),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, self::PENDING_REASON);
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
-    public function testGrantsWhenSubscriptionProviderThrows(string $attribute): void
+    public function testDeniesWhenSubscriptionProviderThrows(string $attribute): void
     {
+        // The voter guards paid-only access and must fail closed on any error.
         $provider = M::mock(SubscriptionProviderInterface::class);
         $provider->shouldReceive('getSubscriptionFor')
             ->andThrow(new RuntimeException('subscription table missing'));
@@ -207,7 +208,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             new NoopFeatureGate(),
         );
 
-        $this->assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+        $this->assertDeniedWithReason($voter, $attribute, self::SUBSCRIPTION_CHECK_FAILED_REASON);
     }
 
     #[DataProvider('provideAttributes')]
@@ -217,7 +218,7 @@ final class SubscriptionVoterTest extends KernelTestCase
             subscription: $this->createSubscription(SubscriptionStatus::PAST_DUE),
         );
 
-        $this->assertDeniedWithReason($voter, $attribute, 'Your subscription is not currently active.');
+        $this->assertDeniedWithReason($voter, $attribute, self::PAID_REQUIRED_REASON);
     }
 
     public function testDeniesWhenRestApiAccessFeatureIsDisabled(): void

@@ -23,4 +23,9 @@ return static function (FrameworkConfig $config): void {
         ->policy('fixed_window')
         ->limit(60)
         ->interval('1 hour');
+
+    $config->rateLimiter()->limiter('verification_resend')
+        ->policy('fixed_window')
+        ->limit(5)
+        ->interval('1 hour');
 };

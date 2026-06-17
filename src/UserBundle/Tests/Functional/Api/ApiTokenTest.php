@@ -18,8 +18,8 @@ use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
@@ -32,40 +32,38 @@ final class ApiTokenTest extends ApiTestCase
         return ApiToken::class;
     }
 
-    public function testCreate(): void
+    public function testCannotCreateViaApi(): void
     {
-        $data = [
-            'name' => 'Test Token',
-            'description' => 'A test token',
-        ];
+        // API tokens may only be created through the UI Live Component; the API
+        // exposes no write operation, so POST must be rejected as not allowed.
+        self::$client->request(Request::METHOD_POST, '/api/profile/api-tokens', [
+            'json' => ['name' => 'Test Token', 'description' => 'A test token'],
+            'headers' => [
+                'content-type' => 'application/ld+json',
+                'accept' => 'application/ld+json',
+            ],
+        ]);
 
-        $result = $this->requestPost('/api/profile/api-tokens', $data);
-
-        self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
-        self::assertArrayHasKey('token', $result);
-        self::assertNotEmpty($result['token']);
-        self::assertSame('Test Token', $result['name']);
-        self::assertSame('A test token', $result['description']);
+        self::assertResponseStatusCodeSame(Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
     public function testGet(): void
     {
-        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'My Get Token']);
-        $uri = '/api/profile/api-tokens/' . $created['id'];
+        $token = $this->createToken('My Get Token');
+        $uri = '/api/profile/api-tokens/' . $token->getId();
 
         $result = $this->requestGet($uri);
 
         self::assertArrayHasKey('id', $result);
-        self::assertSame($created['id'], $result['id']);
+        self::assertSame((string) $token->getId(), $result['id']);
         self::assertSame('My Get Token', $result['name']);
         self::assertArrayNotHasKey('token', $result);
     }
 
     public function testTokenValueNotReturnedOnGet(): void
     {
-        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'Token No Reveal']);
-        $uri = '/api/profile/api-tokens/' . $created['id'];
+        $token = $this->createToken('Token No Reveal');
+        $uri = '/api/profile/api-tokens/' . $token->getId();
 
         $result = $this->requestGet($uri);
 
@@ -74,16 +72,16 @@ final class ApiTokenTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'Token To Delete']);
-        $uri = '/api/profile/api-tokens/' . $created['id'];
+        $token = $this->createToken('Token To Delete');
+        $uri = '/api/profile/api-tokens/' . $token->getId();
 
         $this->requestDelete($uri);
     }
 
     public function testGetCollection(): void
     {
-        $this->requestPost('/api/profile/api-tokens', ['name' => 'Collection Token 1']);
-        $this->requestPost('/api/profile/api-tokens', ['name' => 'Collection Token 2']);
+        $this->createToken('Collection Token 1');
+        $this->createToken('Collection Token 2');
 
         $data = $this->requestGetCollection('/api/profile/api-tokens');
 
@@ -109,5 +107,18 @@ final class ApiTokenTest extends ApiTestCase
         ]);
 
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Tokens can no longer be created through the API, so functional coverage
+     * of the read/delete operations seeds them through the manager instead,
+     * owned by the authenticated user so the per-user providers return them.
+     */
+    private function createToken(string $name, ?string $description = null): ApiToken
+    {
+        /** @var ApiTokenManager $apiTokenManager */
+        $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
+
+        return $apiTokenManager->create($this->user, $name, $description)->token;
     }
 }

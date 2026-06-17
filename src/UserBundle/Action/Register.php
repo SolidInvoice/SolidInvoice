@@ -96,7 +96,16 @@ final class Register extends AbstractController
             // OnboardingLoginListener will handle post-login redirect:
             // - Invited users: Skip onboarding (they have a company)
             // - Regular users: Redirect to onboarding
-            return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
+            $response = $this->security->login($user, 'security.authenticator.form_login.main', 'main');
+
+            // On hosted deployments a freshly-registered user is unverified and must
+            // verify their email before anything else, so send them straight to the
+            // notice page instead of onboarding (the sandbox would redirect there anyway).
+            if ($this->toggle->isActive('saas_enabled') && ! $user->isVerified()) {
+                return $this->redirectToRoute('_verify_email_notice');
+            }
+
+            return $response;
         }
 
         return $this->render('@SolidInvoiceUser/Security/register.html.twig', ['form' => $form, 'turnstile_site_key' => $this->turnstileSiteKey]);

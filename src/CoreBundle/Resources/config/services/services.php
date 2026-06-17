@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\Email\NullEmailVerificationGate;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
@@ -24,6 +25,7 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Subscription\NullPaidSubscriptionGate;
 use SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -101,6 +103,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias(
         UpgradePromptProvider::class,
         NullUpgradePromptProvider::class,
+    );
+
+    $services->set(NullPaidSubscriptionGate::class);
+    $services->alias(
+        PaidSubscriptionGateInterface::class,
+        NullPaidSubscriptionGate::class,
     );
 
     $services
