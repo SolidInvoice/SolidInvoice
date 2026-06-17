@@ -67,7 +67,7 @@
         "@symfony/stimulus-bridge": "^4.0.1",
         "@tabler/core": "^1.4.0",
         "caniuse-lite": "^1.0.30001756",
-        "intl-messageformat": "^10.5.0",
+        "intl-messageformat": "^11.2.8",
         "jquery": "^3.7.1",
         "regenerator-runtime": "^0.14.1",
         "sortablejs": "^1.15.7"
