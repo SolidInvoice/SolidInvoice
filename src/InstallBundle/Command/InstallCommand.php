@@ -119,7 +119,7 @@ class InstallCommand extends Command
             ->install($input, $output);
 
         if (! $input->getOption('disable-telemetry')) {
-            $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'cli']);
+            $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'cli'], true);
         }
 
         $success = new FormatterHelper()->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
