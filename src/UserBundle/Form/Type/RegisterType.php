@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Form\Type;
 
 use SolidInvoice\UserBundle\DTO\Registration;
+use SolidInvoice\UserBundle\Validator\Constraints\Turnstile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -65,6 +67,14 @@ final class RegisterType extends AbstractType
             'required' => true,
             'label' => 'I agree to the  <a href="https://solidinvoice.co/terms-of-service" target="_blank" class="link-primary" rel="external noreferrer noopener">Terms & Conditions</a> and <a href="https://solidinvoice.co/privacy-policy" target="_blank" class="link-primary" rel="external noreferrer noopener">Privacy Policy</a>',
             'label_html' => true,
+        ]);
+        $builder->add('captcha', HiddenType::class, [
+            'mapped' => false,
+            'required' => false,
+            // Keep the violation on this field (HiddenType bubbles errors by default)
+            // so it renders next to the widget via form_errors(form.captcha).
+            'error_bubbling' => false,
+            'constraints' => [new Turnstile()],
         ]);
     }
 

@@ -19,6 +19,7 @@ return static function (TogglerConfig $config): void {
         ->config()
         ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'))
         ->features('google_oauth_login', '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null')
+        ->features('turnstile_captcha', '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null')
         ->features('saas_enabled', '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'')
         ->features('meilisearch_search', '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""')
     ;
