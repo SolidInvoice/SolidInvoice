@@ -23,8 +23,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * Wired onto the stateless API and MCP firewalls so that, on hosted
  * (`saas_enabled`) deployments, an unverified user is hard-blocked from those
- * channels regardless of a valid token. Unverified web users are handled more
- * gently by {@see \SolidInvoice\UserBundle\EventSubscriber\UnverifiedUserSubscriber}.
+ * channels regardless of a valid token. Unverified web users are NOT blocked —
+ * they keep full login and are nudged by the email-verification banner while the
+ * verification gate ({@see \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface})
+ * limits sensitive actions such as sending invoices.
  *
  * @see \SolidInvoice\UserBundle\Tests\Security\VerifiedUserCheckerTest
  */
