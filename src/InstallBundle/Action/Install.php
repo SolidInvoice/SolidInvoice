@@ -87,7 +87,7 @@ final class Install extends AbstractController
             ]);
 
             if ($formData->telemetryEnabled) {
-                $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'web']);
+                $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'web'], $formData->telemetryEnabled);
             }
 
             $form->reset();

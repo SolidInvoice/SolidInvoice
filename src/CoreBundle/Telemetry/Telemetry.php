@@ -81,9 +81,9 @@ final readonly class Telemetry
      *
      * @param array<string, scalar|null> $properties
      */
-    public function event(TelemetryEvent $event, array $properties = []): void
+    public function event(TelemetryEvent $event, array $properties = [], bool $force = false): void
     {
-        if (! $this->isEnabled()) {
+        if (! $force && ! $this->isEnabled()) {
             return;
         }
 
