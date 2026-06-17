@@ -12,6 +12,10 @@
             "loading": {
                 "enabled": true,
                 "fetch": "lazy"
+            },
+            "text-editor": {
+                "enabled": true,
+                "fetch": "lazy"
             }
         },
         "@symfony/ux-autocomplete": {

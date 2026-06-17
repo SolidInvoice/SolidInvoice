@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Validator\Constraints;
 
 use Attribute;
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -29,6 +30,7 @@ final class WithinPlanClientLimit extends Constraint
 {
     public string $message = 'You have reached the maximum number of clients allowed on your current plan.';
 
+    #[Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

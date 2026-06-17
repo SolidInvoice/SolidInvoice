@@ -28,6 +28,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveDeadVarThisFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
@@ -90,4 +91,5 @@ return ECSConfig::configure()
         ],
         __DIR__ . '/config/env',
         PhpdocLineSpanFixer::class,
+        RemoveDeadVarThisFixer::class,
     ]);
