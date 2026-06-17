@@ -60,7 +60,7 @@ jobs:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: 8.5
           extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
