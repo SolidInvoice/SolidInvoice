@@ -69,7 +69,6 @@ final class DiscountNormalizerTest extends TestCase
     {
         $discount = $this->normalizer->denormalize(['type' => 'percentage', 'value' => null], Discount::class);
 
-        self::assertInstanceOf(Discount::class, $discount);
         self::assertSame('percentage', $discount->getType());
     }
 
@@ -80,7 +79,6 @@ final class DiscountNormalizerTest extends TestCase
     {
         $discount = $this->normalizer->denormalize(['type' => 'percentage'], Discount::class);
 
-        self::assertInstanceOf(Discount::class, $discount);
         self::assertSame('percentage', $discount->getType());
     }
 }
