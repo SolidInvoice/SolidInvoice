@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43ec58a3b40c84f44bd78059226924a0",
+    "content-hash": "32244c30459241b2e3ecc1b9dbe2c869",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -27824,12 +27824,12 @@
             "version": "13.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/easy-coding-standard/ecs.git",
+                "url": "https://github.com/ecsphp/ecs.git",
                 "reference": "d894d088d7ebb9326f9eed28bf251481c813b89f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/easy-coding-standard/ecs/zipball/d894d088d7ebb9326f9eed28bf251481c813b89f",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/d894d088d7ebb9326f9eed28bf251481c813b89f",
                 "reference": "d894d088d7ebb9326f9eed28bf251481c813b89f",
                 "shasum": ""
             },
