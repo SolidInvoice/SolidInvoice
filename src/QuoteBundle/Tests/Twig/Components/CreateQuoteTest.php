@@ -77,7 +77,7 @@ final class CreateQuoteTest extends LiveComponentTest
         $em->persist($tax);
 
         (function (): void {
-            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
+            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680');
         })(...)->call($tax);
 
         $em->flush();
