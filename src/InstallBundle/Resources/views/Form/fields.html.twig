@@ -31,7 +31,6 @@
         <div class="col">
             <label class="form-check">
                 {{ form_widget(form.telemetryEnabled, {attr: {class: 'form-check-input'}}) }}
-                <span class="form-check-label">Send anonymous usage statistics</span>
             </label>
             <small class="form-hint d-block">
                 Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.
@@ -208,7 +207,7 @@
                             </div>
                         {% endif %}
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Usage statistics</div>
+                            <div>Usage statistics</div>
                             <div class="datagrid-content">
                                 {% if form.vars.data.telemetryEnabled %}
                                     <span class="badge bg-success-lt">Enabled</span>
