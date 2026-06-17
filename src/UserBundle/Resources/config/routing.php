@@ -25,10 +25,8 @@ use SolidInvoice\UserBundle\Action\ResendUserInvite;
 use SolidInvoice\UserBundle\Action\Security\ChangePassword;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnect;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
-use SolidInvoice\UserBundle\Action\Security\ResendVerification;
 use SolidInvoice\UserBundle\Action\Security\TwoFactorIndex;
 use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
-use SolidInvoice\UserBundle\Action\Security\VerifyEmailNotice;
 use SolidInvoice\UserBundle\Action\Users;
 use SolidInvoice\UserBundle\Onboarding\Action\Onboarding;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -96,15 +94,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_verify_email', '/verify')
         ->controller(VerifyEmail::class);
-
-    $routingConfigurator
-        ->add('_verify_email_notice', '/verify/pending')
-        ->controller(VerifyEmailNotice::class);
-
-    $routingConfigurator
-        ->add('_resend_verification', '/verify/resend')
-        ->controller(ResendVerification::class)
-        ->methods(['POST']);
 
     $routingConfigurator->add(OAuthConnect::ROUTE, '/oauth/connect/{service}')
         ->controller(OAuthConnect::class);

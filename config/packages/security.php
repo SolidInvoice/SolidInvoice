@@ -107,7 +107,8 @@ return static function (SecurityConfig $config): void {
     $mainFirewallConfig = LoginExtension::configureDefaultFormLogin($config, true);
 
     // Disabled-only on the web firewall, so registration auto-login still succeeds.
-    // Unverified web users are sandboxed by UnverifiedUserSubscriber rather than blocked here.
+    // Unverified web users keep full login — they are nudged by the email-verification
+    // banner and limited by the verification gate (e.g. cannot send invoices), not blocked.
     $mainFirewallConfig
         ->userChecker(UserChecker::class);
 
@@ -134,7 +135,7 @@ return static function (SecurityConfig $config): void {
             '/\.well-known/agent-skills/index\.json$|' .
             '/\.well-known/api-catalog$|' .
             '/install|' .
-            '/verify(?:/(?:pending|resend))?$|' .
+            '/verify$|' .
             '/logout$|' .
             '/invite/accept/[a-zA-Z0-9-]{26}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
