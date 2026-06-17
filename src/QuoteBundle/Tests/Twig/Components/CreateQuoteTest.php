@@ -26,6 +26,11 @@ use Zenstruck\Foundry\Test\Factories;
 
 final class CreateQuoteTest extends LiveComponentTest
 {
+    /**
+     * @var Ulid
+     */
+    public $id;
+
     use Factories;
 
     public function testCreateQuote(): void
@@ -72,7 +77,6 @@ final class CreateQuoteTest extends LiveComponentTest
         $em->persist($tax);
 
         (function (): void {
-            /** @var Tax $this */
             $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
         })(...)->call($tax);
 
