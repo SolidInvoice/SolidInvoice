@@ -157,7 +157,7 @@ final readonly class ExportAction
      * `client_id` on a client detail page). Base58 ULID strings are consumed by each
      * grid's `query()` method via Doctrine's UlidType string coercion.
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, bool|float|int|string|null>
      */
     private function resolveContext(Request $request): array
     {
@@ -191,7 +191,7 @@ final readonly class ExportAction
             }
         }
 
-        /** @var array<string, mixed> $decoded */
+        /** @var array<non-empty-string, bool|float|int|string|null> $decoded */
         return $decoded;
     }
 }
