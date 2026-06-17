@@ -5109,6 +5109,76 @@
             "time": "2025-07-25T09:04:22+00:00"
         },
         {
+            "name": "mattketmo/email-checker",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MattKetmo/EmailChecker.git",
+                "reference": "6a3f31f59ff1b549349d620a38b986cddd3e96ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MattKetmo/EmailChecker/zipball/6a3f31f59ff1b549349d620a38b986cddd3e96ec",
+                "reference": "6a3f31f59ff1b549349d620a38b986cddd3e96ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.91",
+                "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0",
+                "knplabs/gaufrette": "^0.11",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "symfony/validator": "^5.4 || ^6.4 || ^7.3 || ^8.0"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Use filesystem abstraction layer to read data",
+                "symfony/validator": "Add validation constraints"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "EmailChecker": "EmailChecker\\Laravel\\EmailCheckerFacade"
+                    },
+                    "providers": [
+                        "EmailChecker\\Laravel\\EmailCheckerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EmailChecker\\": "src/EmailChecker"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthieu Moquet",
+                    "email": "matthieu@moquet.net"
+                }
+            ],
+            "description": "Throwaway email detection library",
+            "keywords": [
+                "check",
+                "disposable",
+                "email",
+                "throwaway"
+            ],
+            "support": {
+                "issues": "https://github.com/MattKetmo/EmailChecker/issues",
+                "source": "https://github.com/MattKetmo/EmailChecker/tree/v3.0.0"
+            },
+            "time": "2026-01-26T13:00:11+00:00"
+        },
+        {
             "name": "mcp/sdk",
             "version": "v0.4.0",
             "source": {
@@ -9476,7 +9546,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "56b8e0e1ed23a38c81ac5de00cfe97b5dfe639c9"
+                "reference": "c747c0243c61564fea661241bb7ffb84e5c014da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/c747c0243c61564fea661241bb7ffb84e5c014da",
+                "reference": "c747c0243c61564fea661241bb7ffb84e5c014da",
+                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
@@ -9484,6 +9560,7 @@
                 "endroid/qr-code": "^6.0",
                 "knplabs/knp-menu-bundle": "^3.6",
                 "league/uri": "^7.8",
+                "mattketmo/email-checker": "^3.0",
                 "nesbot/carbon": "^3.9",
                 "php": ">=8.3",
                 "scheb/2fa-backup-code": "^7.10",
@@ -9496,6 +9573,7 @@
                 "symfony/event-dispatcher": "^7.2",
                 "symfony/form": "^7.3",
                 "symfony/framework-bundle": "^7.2",
+                "symfony/html-sanitizer": "^7.2",
                 "symfony/http-client": "^7.2",
                 "symfony/http-kernel": "^7.2",
                 "symfony/property-access": "^7.2",
@@ -9511,6 +9589,23 @@
                 "twig/html-extra": "^3.24",
                 "twig/twig": "^3.12"
             },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.52",
+                "ergebnis/phpunit-slow-test-detector": "^2.24",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-doctrine": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0.",
+                "phpstan/phpstan-symfony": "^2.0",
+                "phpunit/phpunit": "^12.5",
+                "rector/rector": "^2.4",
+                "roave/security-advisories": "dev-latest",
+                "spatie/phpunit-snapshot-assertions": "^5.4",
+                "symplify/easy-coding-standard": "^13.2"
+            },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -9521,7 +9616,19 @@
                     "SolidWorx\\Platform\\Tools\\": "src/Tools/",
                     "SolidWorx\\Platform\\UiBundle\\": "src/Bundle/Ui"
                 }
-            }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "keywords": [
+                "symfony-ux"
+            ],
+            "support": {
+                "issues": "https://github.com/SolidWorx/platform/issues",
+                "source": "https://github.com/SolidWorx/platform/tree/main"
+            },
+            "time": "2026-06-17T19:46:02+00:00"
         },
         {
             "name": "solidworx/toggler",

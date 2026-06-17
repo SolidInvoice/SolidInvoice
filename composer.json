@@ -75,7 +75,7 @@
         "php-http/message-factory": "^1.1",
         "runtime/frankenphp-symfony": "^1.0",
         "sentry/sentry-symfony": "^5.6",
-        "solidworx/platform": "dev-main#56b8e0e1ed23a38c81ac5de00cfe97b5dfe639c9",
+        "solidworx/platform": "dev-main",
         "solidworx/toggler": "2.0.0-beta2",
         "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/all-my-sms-notifier": "^7.1",
