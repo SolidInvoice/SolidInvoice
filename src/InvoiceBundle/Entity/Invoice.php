@@ -47,6 +47,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
+use SolidInvoice\InvoiceBundle\Validator\Constraints\WithinPlanInvoiceLimit;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
@@ -115,6 +116,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]
+#[WithinPlanInvoiceLimit]
 class Invoice extends BaseInvoice implements Stringable
 {
     final public const string TABLE_NAME = 'invoices';

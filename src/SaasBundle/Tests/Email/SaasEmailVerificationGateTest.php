@@ -40,11 +40,12 @@ final class SaasEmailVerificationGateTest extends TestCase
         self::assertFalse($gate->isGated());
     }
 
-    public function testNotGatedWhenNoSubscription(): void
+    public function testGatedWhenUnverifiedWithoutSubscription(): void
     {
+        // Any unverified hosted user with a company is gated, even before a subscription exists.
         $user = new User()->setVerified(false);
         $gate = $this->makeGate(user: $user, subscription: null);
-        self::assertFalse($gate->isGated());
+        self::assertTrue($gate->isGated());
     }
 
     public function testGatedWhenUnverifiedAndSubscribed(): void
@@ -116,26 +117,21 @@ final class SaasEmailVerificationGateTest extends TestCase
         $companySelector = $this->createStub(CompanySelectorInterface::class);
         $companySelector->method('getCompany')->willReturn($companyId);
 
+        // Memoized: the company is resolved only once even across repeated calls.
         $companyRepo = $this->createMock(CompanyRepository::class);
         $companyRepo->expects(self::once())->method('find')->with($companyId)->willReturn($company);
-
-        $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->expects(self::once())
-            ->method('getSubscriptionFor')
-            ->with($company)
-            ->willReturn($this->createStub(Subscription::class));
 
         $gate = new SaasEmailVerificationGate(
             $security,
             $companySelector,
             $companyRepo,
-            $subscriptionProvider,
+            $this->createStub(SubscriptionProviderInterface::class),
             $this->createStub(TranslatorInterface::class),
         );
 
         $gate->isGated();
         $gate->isGated();
-        self::assertTrue(true);
+        self::assertTrue($gate->isGated());
     }
 
     public function testResetClearsCachesSoStaleStateIsNotReturned(): void
@@ -150,20 +146,15 @@ final class SaasEmailVerificationGateTest extends TestCase
         $companySelector = $this->createStub(CompanySelectorInterface::class);
         $companySelector->method('getCompany')->willReturn($companyId);
 
+        // After reset the company must be resolved again, proving the cache was cleared.
         $companyRepo = $this->createMock(CompanyRepository::class);
         $companyRepo->expects(self::exactly(2))->method('find')->with($companyId)->willReturn($company);
-
-        $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->expects(self::exactly(2))
-            ->method('getSubscriptionFor')
-            ->with($company)
-            ->willReturn($this->createStub(Subscription::class));
 
         $gate = new SaasEmailVerificationGate(
             $security,
             $companySelector,
             $companyRepo,
-            $subscriptionProvider,
+            $this->createStub(SubscriptionProviderInterface::class),
             $this->createStub(TranslatorInterface::class),
         );
 

@@ -18,12 +18,10 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\ApiBundle\State\Processor\ApiTokenCreateProcessor;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenCollectionProvider;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenItemProvider;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
@@ -46,10 +44,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/profile/api-tokens',
     operations: [
         new GetCollection(provider: ApiTokenCollectionProvider::class),
-        new Post(
-            normalizationContext: ['groups' => ['api_token:read', 'api_token:create_read']],
-            processor: ApiTokenCreateProcessor::class,
-        ),
     ],
     normalizationContext: ['groups' => ['api_token:read']],
     denormalizationContext: ['groups' => ['api_token:write']],

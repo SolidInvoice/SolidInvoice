@@ -13,20 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ApiIndex extends AbstractController
 {
-    public function __construct(
-        private readonly FeatureGate $featureGate,
-    ) {
-    }
-
     public function __invoke(): Response
     {
-        if (! $this->featureGate->isEnabled('rest_api_access')) {
+        // Delegates to the API access voter: SubscriptionVoter (paid-only) on SaaS,
+        // ApiAccessVoter (feature-only) on self-hosted.
+        if (! $this->isGranted(ApiAttribute::ACCESS)) {
             return $this->render('@SolidInvoiceUser/Api/gated.html.twig');
         }
 

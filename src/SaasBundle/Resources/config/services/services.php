@@ -12,10 +12,12 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
 use SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
+use SolidInvoice\SaasBundle\Service\SubscriptionEligibility;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -46,5 +48,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias(
         UpgradePromptProvider::class,
         UpgradePromptRenderer::class,
+    );
+
+    $services->alias(
+        PaidSubscriptionGateInterface::class,
+        SubscriptionEligibility::class,
     );
 };

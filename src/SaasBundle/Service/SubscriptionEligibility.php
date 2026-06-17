@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Service;
 
 use Psr\Clock\ClockInterface;
+use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -27,7 +28,7 @@ use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
  * (filtering company pickers before the user even gets to authorise).
  * @see \SolidInvoice\SaasBundle\Tests\Service\SubscriptionEligibilityTest
  */
-final readonly class SubscriptionEligibility
+final readonly class SubscriptionEligibility implements PaidSubscriptionGateInterface
 {
     public function __construct(
         private SubscriptionProviderInterface $subscriptionProvider,
@@ -64,5 +65,29 @@ final readonly class SubscriptionEligibility
     public function isActive(Company $company): bool
     {
         return $this->evaluate($company)->active;
+    }
+
+    /**
+     * Stricter than {@see self::isActive()}: only paying tenants qualify.
+     *
+     * Used to gate the REST API and MCP, which are paid-plan features. A trial
+     * (even on a higher plan) and a free/no-subscription tenant are denied,
+     * while a cancelled or expired subscription still counts while the already
+     * paid-for term has not yet elapsed.
+     */
+    public function isPaid(Company $company): bool
+    {
+        $subscription = $this->subscriptionProvider->getSubscriptionFor($company);
+
+        if (! $subscription instanceof Subscription) {
+            return false;
+        }
+
+        return match ($subscription->getStatus()) {
+            SubscriptionStatus::ACTIVE => true,
+            SubscriptionStatus::CANCELLED, SubscriptionStatus::EXPIRED => $subscription->getEndDate() > $this->clock->now(),
+            // TRIAL, PAUSED, PENDING and any future status are not paid access.
+            default => false,
+        };
     }
 }

@@ -18,6 +18,8 @@ use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
+use SolidInvoice\UserBundle\Security\UserChecker;
+use SolidInvoice\UserBundle\Security\VerifiedUserChecker;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
@@ -73,6 +75,7 @@ return static function (SecurityConfig $config): void {
         ->pattern('^/api')
         ->stateless(true)
         ->provider('api_token_user_provider')
+        ->userChecker(VerifiedUserChecker::class)
         ->customAuthenticators([ApiTokenAuthenticator::class]);
 
     $config
@@ -98,9 +101,15 @@ return static function (SecurityConfig $config): void {
         ->pattern('^/_mcp')
         ->stateless(true)
         ->provider('mcp_oauth_user_provider')
+        ->userChecker(VerifiedUserChecker::class)
         ->customAuthenticators([McpOAuthAuthenticator::class]);
 
     $mainFirewallConfig = LoginExtension::configureDefaultFormLogin($config, true);
+
+    // Disabled-only on the web firewall, so registration auto-login still succeeds.
+    // Unverified web users are sandboxed by UnverifiedUserSubscriber rather than blocked here.
+    $mainFirewallConfig
+        ->userChecker(UserChecker::class);
 
     $mainFirewallConfig
         ->customAuthenticators([OAuthAuthenticator::class]);
@@ -125,7 +134,7 @@ return static function (SecurityConfig $config): void {
             '/\.well-known/agent-skills/index\.json$|' .
             '/\.well-known/api-catalog$|' .
             '/install|' .
-            '/verify$|' .
+            '/verify(?:/(?:pending|resend))?$|' .
             '/logout$|' .
             '/invite/accept/[a-zA-Z0-9-]{26}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .

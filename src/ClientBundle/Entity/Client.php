@@ -30,6 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -77,6 +78,7 @@ use function in_array;
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('name')]
+#[WithinPlanClientLimit]
 class Client implements Stringable
 {
     final public const string TABLE_NAME = 'clients';

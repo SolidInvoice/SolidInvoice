@@ -63,14 +63,11 @@ final class SaasEmailVerificationGate implements EmailVerificationGateInterface,
             return $this->cachedIsGated = false;
         }
 
+        // Any unverified hosted user with a company is gated, regardless of whether
+        // a subscription exists yet: email verification must precede sending.
         $company = $this->companyRepository->find($companyId);
-        if (! $company instanceof Company) {
-            return $this->cachedIsGated = false;
-        }
 
-        $subscription = $this->subscriptionProvider->getSubscriptionFor($company);
-
-        return $this->cachedIsGated = $subscription instanceof Subscription;
+        return $this->cachedIsGated = $company instanceof Company;
     }
 
     public function isCompanyGated(Company $company): bool
