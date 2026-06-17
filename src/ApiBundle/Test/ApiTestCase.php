@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\BeforeClass;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,6 +51,8 @@ abstract class ApiTestCase extends ApiPlatformTestCase
     protected Generator $faker;
 
     protected Company $company;
+
+    protected User $user;
 
     protected static ?bool $alwaysBootKernel = false;
 
@@ -99,10 +102,10 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
         $this->faker = Factory::create();
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $this->user = UserFactory::createOne(['companies' => [$this->company]])->_real();
 
         $tokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $generated = $tokenManager->getOrCreate($user, 'Functional Test');
+        $generated = $tokenManager->getOrCreate($this->user, 'Functional Test');
 
         self::$client = static::createClient(defaultOptions: ['headers' => ['X-API-TOKEN' => $generated->plaintext]]);
 

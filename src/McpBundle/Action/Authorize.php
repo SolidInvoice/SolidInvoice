@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\UserEligibleCompanies;
+use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -66,6 +67,7 @@ final readonly class Authorize
         private UrlGeneratorInterface $urlGenerator,
         private FeatureGate $featureGate,
         private UpgradePromptProvider $upgradePromptProvider,
+        private PaidSubscriptionGateInterface $paidSubscriptionGate,
         private Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -368,7 +370,12 @@ final readonly class Authorize
     {
         return array_values(array_filter(
             $companies,
-            fn (Company $company): bool => $this->featureGate->isEnabled('mcp_access', $company),
+            // MCP is a paid-plan feature. The feature gate alone allows trial tenants
+            // on a higher plan, so on SaaS a paid subscription is additionally required.
+            // On self-hosted NullPaidSubscriptionGate returns true, leaving the
+            // historical feature-only behaviour intact.
+            fn (Company $company): bool => $this->featureGate->isEnabled('mcp_access', $company)
+                && $this->paidSubscriptionGate->isPaid($company),
         ));
     }
 }

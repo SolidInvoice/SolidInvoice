@@ -78,10 +78,10 @@ final class SubscriptionVoter extends Voter
                 return $this->deny($vote, 'No company is associated with this request.');
             }
 
-            $result = $this->eligibility->evaluate($company);
-
-            if (! $result->active) {
-                return $this->deny($vote, $result->reason ?? 'Your subscription is not currently active.');
+            // API and MCP are paid-plan features: trial and free/no-subscription tenants
+            // are denied even though they retain access to the rest of the web app.
+            if (! $this->eligibility->isPaid($company)) {
+                return $this->deny($vote, 'A paid subscription is required to access this resource.');
             }
 
             $featureKey = $this->featureKeyFor($attribute);
@@ -92,15 +92,14 @@ final class SubscriptionVoter extends Voter
 
             return true;
         } catch (Throwable $e) {
-            // Self-hosted dev/test environments may not have the SaaS schema present even
-            // when this voter is registered. Log and grant so authentication still works
-            // — production SaaS deployments will surface the failure via the logger.
+            // This voter guards paid-only access on SaaS and must fail closed: a transient
+            // DB error or missing SaaS schema must never silently grant API/MCP access.
             $this->logger->warning(
-                'SubscriptionVoter failed to evaluate access; granting by default.',
+                'SubscriptionVoter failed to evaluate access; denying by default.',
                 ['exception' => $e],
             );
 
-            return true;
+            return $this->deny($vote, 'Unable to verify your subscription. Please try again later.');
         }
     }
 
