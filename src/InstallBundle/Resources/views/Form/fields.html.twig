@@ -59,7 +59,7 @@
                 <div class="card-body">
                     <div class="datagrid">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Driver</div>
+                            <div>Driver</div>
                             <div class="datagrid-content">
                                 <span class="badge bg-info-lt">{{ form.vars.data.databaseConfig.driver|upper }}</span>
                             </div>
@@ -67,7 +67,7 @@
                         {% if form.vars.data.databaseConfig.driver != 'sqlite' %}
                             {% if form.vars.data.databaseConfig.host %}
                                 <div class="datagrid-item">
-                                    <div class="datagrid-title">Host</div>
+                                    <div>Host</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.host }}{% if form.vars.data.databaseConfig.port %}:{{ form.vars.data.databaseConfig.port }}{% endif %}</code>
                                     </div>
@@ -75,7 +75,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.name %}
                                 <div class="datagrid-item">
-                                    <div class="datagrid-title">Database Name</div>
+                                    <div>Database Name</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.name }}</code>
                                     </div>
@@ -83,7 +83,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.user %}
                                 <div class="datagrid-item">
-                                    <div class="datagrid-title">Username</div>
+                                    <div>Username</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.user }}</code>
                                     </div>
@@ -91,7 +91,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.password %}
                                 <div class="datagrid-item">
-                                    <div class="datagrid-title">Password</div>
+                                    <div>Password</div>
                                     <div class="datagrid-content">
                                         <span class="password-toggle-container">
                                             <code class="password-masked" data-password="{{ form.vars.data.databaseConfig.password }}">••••••••</code>
@@ -131,7 +131,7 @@
                     <div class="datagrid">
                         {% if form.vars.data.userAccount.firstName or form.vars.data.userAccount.lastName %}
                             <div class="datagrid-item">
-                                <div class="datagrid-title">Name</div>
+                                <div>Name</div>
                                 <div class="datagrid-content">
                                     <strong>{{ form.vars.data.userAccount.firstName }} {{ form.vars.data.userAccount.lastName }}</strong>
                                 </div>
@@ -139,7 +139,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.emailAddress %}
                             <div class="datagrid-item">
-                                <div class="datagrid-title">Email Address</div>
+                                <div>Email Address</div>
                                 <div class="datagrid-content">
                                     <code>{{ form.vars.data.userAccount.emailAddress }}</code>
                                 </div>
@@ -147,7 +147,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.locale %}
                             <div class="datagrid-item">
-                                <div class="datagrid-title">Language</div>
+                                <div>Language</div>
                                 <div class="datagrid-content">
                                     <code>{{ form.vars.data.userAccount.locale|upper }}</code>
                                 </div>
@@ -155,7 +155,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.password %}
                             <div class="datagrid-item">
-                                <div class="datagrid-title">Password</div>
+                                <div>Password</div>
                                 <div class="datagrid-content">
                                     <span class="password-toggle-container">
                                         <code class="password-masked" data-password="{{ form.vars.data.userAccount.password }}">••••••••</code>
