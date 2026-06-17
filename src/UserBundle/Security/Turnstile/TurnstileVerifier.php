@@ -22,16 +22,17 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * Verifies a Cloudflare Turnstile token server-side.
  *
  * @see https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+ * @see \SolidInvoice\UserBundle\Tests\Security\Turnstile\TurnstileVerifierTest
  */
-final class TurnstileVerifier
+final readonly class TurnstileVerifier
 {
     private const string VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
-        private readonly ToggleInterface $toggle,
+        private HttpClientInterface $httpClient,
+        private ToggleInterface $toggle,
         #[Autowire('%env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)%')]
-        private readonly ?string $secretKey = null,
+        private ?string $secretKey = null,
     ) {
     }
 

@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Validator\Constraints;
 
 use SolidInvoice\UserBundle\Security\Turnstile\TurnstileVerifier;
 use SolidWorx\Toggler\ToggleInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -41,7 +42,7 @@ final class TurnstileValidator extends ConstraintValidator
 
         $request = $this->requestStack->getCurrentRequest();
 
-        if ($request === null) {
+        if (! $request instanceof Request) {
             $this->context->buildViolation($constraint->message)->addViolation();
 
             return;
