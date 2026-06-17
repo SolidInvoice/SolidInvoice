@@ -1,7 +1,7 @@
 ---
 title: System Installation
 description: Walk through the SolidInvoice installation wizard.
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # System Installation
