@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Security;
 
+use Override;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
@@ -37,6 +38,7 @@ final class VerifiedUserChecker extends UserChecker
     ) {
     }
 
+    #[Override]
     public function checkPostAuth(UserInterface $user): void
     {
         parent::checkPostAuth($user);

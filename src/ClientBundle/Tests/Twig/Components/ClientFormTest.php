@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
@@ -23,11 +24,6 @@ use Zenstruck\Foundry\Test\Factories;
 #[CoversClass(ClientForm::class)]
 final class ClientFormTest extends LiveComponentTest
 {
-    /**
-     * @var Ulid
-     */
-    public $id;
-
     use Factories;
 
     public function testRender(): void

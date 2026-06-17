@@ -709,12 +709,6 @@ parameters:
 			path: src/DashboardBundle/Twig/Extension/WidgetExtension.php
 
 		-
-			message: '#^PHPDoc tag @var with type array\<string, mixed\> is not subtype of native type array\<string, bool\|float\|int\|string\|null\>\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: src/DataGridBundle/Action/ExportAction.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between non\-falsy\-string and '''' will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -1817,12 +1811,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: src/SaasBundle/Tests/Email/SaasEmailVerificationGateTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'

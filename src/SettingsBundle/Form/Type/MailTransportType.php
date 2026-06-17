@@ -72,7 +72,7 @@ final class MailTransportType extends AbstractType
         $currentProvider = null;
 
         if (isset($options['data']) && is_string($options['data']) && json_validate($options['data'])) {
-            $mailSettings = json_decode($options['data'], true, JSON_THROW_ON_ERROR, JSON_THROW_ON_ERROR);
+            $mailSettings = json_decode($options['data'], true, 512, JSON_THROW_ON_ERROR);
             $currentProvider = $mailSettings['provider'];
         }
 
