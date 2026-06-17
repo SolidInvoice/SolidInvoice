@@ -71,6 +71,7 @@ class Company implements Stringable, SubscribableInterface
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank()]
+    #[Assert\Length(max: 45, maxMessage: 'The company name cannot be longer than {{ limit }} characters.')]
     private string $name;
 
     /**

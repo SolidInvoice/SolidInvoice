@@ -157,6 +157,44 @@ final class SubscriptionEligibilityTest extends TestCase
         self::assertSame('Your subscription is not currently active.', $result->reason);
     }
 
+    public function testIsPaidFalseWhenNoSubscription(): void
+    {
+        $eligibility = $this->makeEligibility(subscription: null);
+
+        self::assertFalse($eligibility->isPaid(new Company()));
+    }
+
+    /**
+     * @return iterable<string, array{SubscriptionStatus, string, bool}>
+     */
+    public static function providePaidScenarios(): iterable
+    {
+        // ACTIVE is paid regardless of end date.
+        yield 'active, past end date' => [SubscriptionStatus::ACTIVE, '2020-01-01', true];
+        // A trial is never paid access, even on a higher plan and before it ends.
+        yield 'trial before end' => [SubscriptionStatus::TRIAL, '2026-12-31', false];
+        yield 'trial after end' => [SubscriptionStatus::TRIAL, '2026-05-01', false];
+        // Cancelled/expired remain paid only while the already-paid term is unexpired.
+        yield 'cancelled within term' => [SubscriptionStatus::CANCELLED, '2026-12-31', true];
+        yield 'cancelled after term' => [SubscriptionStatus::CANCELLED, '2026-05-01', false];
+        yield 'expired within term' => [SubscriptionStatus::EXPIRED, '2026-12-31', true];
+        yield 'expired after term' => [SubscriptionStatus::EXPIRED, '2026-05-01', false];
+        // Paused/pending/unknown are not paid access.
+        yield 'paused' => [SubscriptionStatus::PAUSED, '2099-01-01', false];
+        yield 'pending' => [SubscriptionStatus::PENDING, '2099-01-01', false];
+        yield 'past due' => [SubscriptionStatus::PAST_DUE, '2099-01-01', false];
+    }
+
+    #[DataProvider('providePaidScenarios')]
+    public function testIsPaid(SubscriptionStatus $status, string $endDate, bool $expected): void
+    {
+        $eligibility = $this->makeEligibility(
+            $this->subscription($status, $endDate),
+        );
+
+        self::assertSame($expected, $eligibility->isPaid(new Company()));
+    }
+
     public function testEligibilityResultFactoryHelpers(): void
     {
         $active = EligibilityResult::active();
