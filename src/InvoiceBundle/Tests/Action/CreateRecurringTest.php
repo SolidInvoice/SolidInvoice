@@ -42,24 +42,26 @@ final class CreateRecurringTest extends TestCase
      */
     private function buildAction(WorkflowInterface $workflow, RouterInterface $router, ManagerRegistry $doctrine, FormInterface $form): CreateRecurring
     {
-        $clientRepository = $this->createMock(ClientRepository::class);
+        $clientRepository = $this->createStub(ClientRepository::class);
         $clientRepository->method('getTotalClients')->willReturn(2);
 
-        $featureGate = $this->createMock(FeatureGate::class);
+        $featureGate = $this->createStub(FeatureGate::class);
         $featureGate->method('isEnabled')->willReturn(true);
         $featureGate->method('canUse')->willReturn(true);
 
-        $invoiceRepository = $this->createMock(InvoiceRepository::class);
+        $invoiceRepository = $this->createStub(InvoiceRepository::class);
         $invoiceRepository->method('countCreatedInMonth')->willReturn(0);
 
-        $clock = $this->createMock(ClockInterface::class);
+        $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')->willReturn(CarbonImmutable::now());
 
-        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
         $formFactory->method('create')->willReturn($form);
 
         $container = $this->createMock(ContainerInterface::class);
-        $container->method('get')
+        $container
+            ->expects($this->once())
+            ->method('get')
             ->with('form.factory')
             ->willReturn($formFactory);
         $container->method('has')->willReturn(true);
@@ -84,7 +86,7 @@ final class CreateRecurringTest extends TestCase
      */
     private function buildSubmittedForm(): FormInterface
     {
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $form->method('isSubmitted')->willReturn(true);
         $form->method('isValid')->willReturn(true);
         $form->method('handleRequest');
@@ -103,11 +105,11 @@ final class CreateRecurringTest extends TestCase
 
     private function buildDoctrineWithManager(): ManagerRegistry
     {
-        $em = $this->createMock(ObjectManager::class);
+        $em = $this->createStub(ObjectManager::class);
         $em->method('persist');
         $em->method('flush');
 
-        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine = $this->createStub(ManagerRegistry::class);
         $doctrine->method('getManager')->willReturn($em);
 
         return $doctrine;
@@ -124,7 +126,7 @@ final class CreateRecurringTest extends TestCase
             ->with($this->anything(), Graph::TRANSITION_ACTIVATE)
             ->willReturn(false);
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')->willReturn('/invoices/recurring/view/123');
 
         $action = $this->buildAction($workflow, $router, $this->buildDoctrineWithManager(), $this->buildSubmittedForm());
@@ -150,7 +152,7 @@ final class CreateRecurringTest extends TestCase
             ->with($this->anything(), Graph::TRANSITION_ACTIVATE)
             ->willReturn(true);
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')->willReturn('/invoices/recurring/view/123');
 
         $action = $this->buildAction($workflow, $router, $this->buildDoctrineWithManager(), $this->buildSubmittedForm());
