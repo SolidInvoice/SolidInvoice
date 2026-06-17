@@ -1,15 +1,14 @@
 Changelog
 =========
 
-3.0.x (Unreleased)
-------------------
-
-The 3.0.x series is a major release focused on a complete UI redesign and new authentication options. Pre-release builds are available as `3.0.0-alpha1` and `3.0.0-alpha2`.
+3.0.0 / 2026-06-17
+-------------------
 
 ### Highlights
 
 * Full UI re-design across the entire application: dashboard, client list and view, invoice and quote create/list/view, payments, recurring invoices, tax rates, users, payment configuration, API tokens, integrations, registration, company select, 2FA configuration, email templates and external invoice/quote pages
 * Re-designed installation pages, error pages and PDF templates for invoices and quotes
+* 8 render-ready invoice and quote PDF templates
 * Mobile-friendly responsive layout
 * New user onboarding flow with an onboarding checklist
 * User email verification
@@ -17,14 +16,22 @@ The 3.0.x series is a major release focused on a complete UI redesign and new au
 * Two Factor Authentication (2FA)
 * First and last name fields added to user accounts
 * User-specific settings storage
+* Tax system overhaul: multi-tax support, invoice-level tax, and tax rate snapshot freeze
 * Add support for the Flat Rate tax type
 * Add option to mark invoices as overdue automatically and send notifications
 * Add invoice payment reminders
 * Add option to create a new client directly from the invoice or quote create page
 * Add option to delete a company from settings
 * Meilisearch integration for fast cross-company search
+* Grid export and full company data export
+* Custom fields for Clients and Contacts
 * Add Helm charts for Kubernetes deployments
 * Multi-platform package distribution support
+* Add configurable application URL to installer
+* Add option to hide "Powered By" text
+* MCP server with OAuth2 authentication
+* Cloudflare Turnstile captcha on the registration page
+* Opt-in Prometheus metrics for Caddy and FrankenPHP
 * Replace Zenstruck Schedule Bundle with Symfony Scheduler
 * Add Symfony Messenger integration for asynchronous tasks
 
@@ -34,8 +41,19 @@ The 3.0.x series is a major release focused on a complete UI redesign and new au
 * Fix send button on invoice and quote pages
 * Handle SMTP transport failures gracefully with proper error messages
 * Fix HTML sanitizer encoding special characters in line item descriptions
+* Fix enum status handling in PDF templates
 * Skip running messenger commands before the application is installed
 * Fix editing invoices and quotes
+* Fix ORMInvalidArgumentException when marking multiple invoices as overdue
+* Fix crash when sending an invoice with no email recipients
+* Fix crash when deleting a company
+* Fix crash when no payment methods are available
+* Fix DataGrid batch action errors
+* Fix Settings page crash with invalid section parameter
+* Fix TypeError when discount value is null
+* Fix TypeError in JSON-LD serializer for Payment resource
+* Fix PdfResponse crash caused by slashes in the filename
+* Fix NotEnabledTransitionException when publishing a recurring invoice
 * Cascade all entities during deletion so nothing is left behind
 * Installation command now creates an admin user if one does not exist instead of resetting an existing one
 
