@@ -5906,16 +5906,16 @@
         },
         {
             "name": "mpociot/vat-calculator",
-            "version": "3.25.0",
+            "version": "v3.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vat-calculator.git",
-                "reference": "fc4f0e2462a1b04f72c0062d0b4880510892ab98"
+                "reference": "2e56a6bda813a4f54328f522869326face2d2663"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vat-calculator/zipball/fc4f0e2462a1b04f72c0062d0b4880510892ab98",
-                "reference": "fc4f0e2462a1b04f72c0062d0b4880510892ab98",
+                "url": "https://api.github.com/repos/laravel/vat-calculator/zipball/2e56a6bda813a4f54328f522869326face2d2663",
+                "reference": "2e56a6bda813a4f54328f522869326face2d2663",
                 "shasum": ""
             },
             "require": {
@@ -5924,9 +5924,9 @@
                 "php": "^7.3|~8.0.0|~8.1.0|~8.2.0|~8.3.0|~8.4.0|~8.5.0"
             },
             "require-dev": {
-                "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
                 "mockery/mockery": "^1.3.3",
-                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
                 "phpunit/phpunit": "^9.5|^10.0|^11.0"
             },
             "type": "library",
@@ -5974,19 +5974,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/vat-calculator/issues",
-                "source": "https://github.com/laravel/vat-calculator/tree/3.25.0"
+                "source": "https://github.com/laravel/vat-calculator/tree/v3.26.0"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/sponsors/driesvints",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.paypal.com/paypalme/driesvints",
-                    "type": "paypal"
-                }
-            ],
-            "time": "2025-11-24T10:04:02+00:00"
+            "time": "2026-04-15T13:01:15+00:00"
         },
         {
             "name": "myclabs/deep-copy",
