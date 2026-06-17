@@ -45,7 +45,7 @@ fi
 if [ -z "${SPC_OPT_BUILD_ARGS}" ]; then
 	SPC_OPT_BUILD_ARGS=""
 fi
-if [ "${SPC_LIBC}" = "musl" ] && [[ "${SPC_OPT_BUILD_ARGS}" != *"--disable-opcache-jit"* ]]; then
+if ([ "${SPC_LIBC}" = "musl" ] || [ "${os}" = "mac" ]) && [[ "${SPC_OPT_BUILD_ARGS}" != *"--disable-opcache-jit"* ]]; then
 	SPC_OPT_BUILD_ARGS="${SPC_OPT_BUILD_ARGS} --disable-opcache-jit"
 fi
 # init spc download additional args
