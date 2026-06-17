@@ -15,7 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'webpack_encore' => [
-        'output_path' => param('kernel.project_dir') . '/public/static',
+        'output_path' => '%kernel.project_dir%/public/static',
         'strict_mode' => param('kernel.debug'),
         'script_attributes' => [
             'defer' => true,
