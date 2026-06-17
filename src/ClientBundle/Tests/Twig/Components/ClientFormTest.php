@@ -23,6 +23,11 @@ use Zenstruck\Foundry\Test\Factories;
 #[CoversClass(ClientForm::class)]
 final class ClientFormTest extends LiveComponentTest
 {
+    /**
+     * @var Ulid
+     */
+    public $id;
+
     use Factories;
 
     public function testRender(): void
