@@ -2,8 +2,36 @@ apiVersion: v1
 entries:
   solidinvoice:
   - apiVersion: v2
+    appVersion: 3.0.0
+    created: "2026-06-18T01:23:14.650009987Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.x.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.x.x
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.x.x
+    description: Simple and elegant open-source invoicing application
+    digest: e41ee79ec29fee442dd463ace44517d3b1f3375ab17e649c714d1aa0263fac4e
+    icon: https://solidinvoice.co/logo.png
+    name: solidinvoice
+    type: application
+    urls:
+    - https://solidinvoice.github.io/SolidInvoice/solidinvoice-3.0.0.tgz
+    version: 3.0.0
+  - apiVersion: v2
     appVersion: 3.0.0-alpha2
-    created: "2026-03-22T17:52:58.834458295Z"
+    created: "2026-06-18T01:23:14.634327054Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -29,4 +57,4 @@ entries:
     urls:
     - https://solidinvoice.github.io/SolidInvoice/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
-generated: "2026-03-22T17:52:58.819205209Z"
+generated: "2026-06-18T01:23:14.617993089Z"
