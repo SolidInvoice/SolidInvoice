@@ -126,5 +126,6 @@ return RectorConfig::configure()
 
         AttributeKeyToClassConstFetchRector::class => [
             'src/PaymentBundle/Entity/PaymentMethod.php',
+            'src/UserBundle/Entity/ApiTokenHistory.php',
         ],
     ]);
