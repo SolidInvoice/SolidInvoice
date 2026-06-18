@@ -3,7 +3,7 @@ entries:
   solidinvoice:
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2026-06-18T01:23:14.650009987Z"
+    created: "2026-06-18T13:57:22.826165729Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -22,7 +22,7 @@ entries:
       repository: https://meilisearch.github.io/meilisearch-kubernetes
       version: 0.x.x
     description: Simple and elegant open-source invoicing application
-    digest: e41ee79ec29fee442dd463ace44517d3b1f3375ab17e649c714d1aa0263fac4e
+    digest: e22be86d47c3dc4a2df152657a16df7fa497f2895d75960086cb03151774f827
     icon: https://solidinvoice.co/logo.png
     name: solidinvoice
     type: application
@@ -31,7 +31,7 @@ entries:
     version: 3.0.0
   - apiVersion: v2
     appVersion: 3.0.0-alpha2
-    created: "2026-06-18T01:23:14.634327054Z"
+    created: "2026-06-18T13:57:22.811024964Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -57,4 +57,4 @@ entries:
     urls:
     - https://solidinvoice.github.io/SolidInvoice/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
-generated: "2026-06-18T01:23:14.617993089Z"
+generated: "2026-06-18T13:57:22.795538779Z"
