@@ -19,7 +19,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -107,7 +107,7 @@ final class TelemetryTest extends TestCase
         yield 'mariadb' => [new MariaDBPlatform(), 'mariadb'];
         yield 'mysql' => [new MySQLPlatform(), 'mysql'];
         yield 'postgresql' => [new PostgreSQLPlatform(), 'pgsql'];
-        yield 'sqlite' => [new SqlitePlatform(), 'sqlite'];
+        yield 'sqlite' => [new SQLitePlatform(), 'sqlite'];
     }
 
     #[DataProvider('databasePlatformProvider')]
