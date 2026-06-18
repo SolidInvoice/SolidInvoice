@@ -22,7 +22,7 @@ use Doctrine\DBAL\Platforms\DB2Platform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -199,7 +199,7 @@ final readonly class Telemetry
             $platform instanceof MariaDBPlatform => 'mariadb',
             $platform instanceof AbstractMySQLPlatform => 'mysql',
             $platform instanceof PostgreSQLPlatform => 'pgsql',
-            $platform instanceof SqlitePlatform => 'sqlite',
+            $platform instanceof SQLitePlatform => 'sqlite',
             $platform instanceof SQLServerPlatform => 'mssql',
             $platform instanceof OraclePlatform => 'oracle',
             $platform instanceof DB2Platform => 'db2',
