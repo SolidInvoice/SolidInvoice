@@ -28,6 +28,7 @@ use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRe
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
+use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
 use SolidWorx\Platform\Tools\Rector\Set\SolidWorxSetList;
@@ -110,16 +111,20 @@ return RectorConfig::configure()
 
         DeclareStrictTypesRector::class => [
             // This file is auto-generated, which removes the strict types declare every time
-            'config/reference.php'
+            'config/reference.php',
         ],
 
         RemoveNewArrayCollectionOutsideConstructorRector::class => [
             // This file uses __clone() which must use a new array collection
-            'src/InvoiceBundle/Entity/Invoice.php'
+            'src/InvoiceBundle/Entity/Invoice.php',
         ],
 
         FromServicePublicToDefaultsPublicRector::class => [
             // This rule removes ->public() calls on services that must be defined as public.
-            'src/PaymentBundle/Resources/config/services/services.php'
+            'src/PaymentBundle/Resources/config/services/services.php',
+        ],
+
+        AttributeKeyToClassConstFetchRector::class => [
+            'src/PaymentBundle/Entity/PaymentMethod.php',
         ],
     ]);
