@@ -11,7 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Monolog\Level;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Sentry\SentryBundle\Monolog\LogsHandler;
 use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -86,4 +88,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('doctrine.event_listener', ['event' => 'postPersist'])
         ->tag('doctrine.event_listener', ['event' => 'postUpdate'])
         ->tag('doctrine.event_listener', ['event' => 'preRemove']);
+
+    $services->set(LogsHandler::class)->arg('$level', Level::Info);
 };

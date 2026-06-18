@@ -29,9 +29,6 @@ return App::config([
         'session' => [
             'name' => 'SOLIDINVOICE_APP',
         ],
-        'assets' => [
-            'json_manifest_path' => param('kernel.project_dir') . '/public/static/manifest.json',
-        ],
         'secrets' => [
             'enabled' => true,
             'vault_directory' => env('SOLIDINVOICE_CONFIG_DIR'),
