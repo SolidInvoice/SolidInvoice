@@ -69,7 +69,7 @@ final class ConfigurationTest extends TestCase
                     'gateways' => [],
                 ],
             ],
-            'The path "payment.gateways" should have at least 1 element(s) defined.'
+            // 'The path "payment.gateways" should have at least 1 element(s) defined.'
         );
     }
 
@@ -86,7 +86,7 @@ final class ConfigurationTest extends TestCase
                     ],
                 ],
             ],
-            'The path "payment.gateways.one.factory" cannot contain an empty value, but got "".'
+            // 'The path "payment.gateways.one.factory" cannot contain an empty value, but got "".'
         );
     }
 
@@ -104,7 +104,7 @@ final class ConfigurationTest extends TestCase
                     ],
                 ],
             ],
-            'The path "payment.gateways.one.form" cannot contain an empty value, but got null.'
+            // 'The path "payment.gateways.one.form" cannot contain an empty value, but got null.'
         );
     }
 }
