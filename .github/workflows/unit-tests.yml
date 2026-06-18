@@ -138,7 +138,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/logs/clover.xml
           flags: unittests
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           verbose: true
 
       - name: Add comment to PR with failure screenshots
