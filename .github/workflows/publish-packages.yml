@@ -243,7 +243,6 @@ jobs:
     name: Publish to Snap Store
     needs: [prepare]
     runs-on: ubuntu-latest
-    if: vars.SNAP_ENABLED == 'true'
     strategy:
       fail-fast: false
       matrix:
