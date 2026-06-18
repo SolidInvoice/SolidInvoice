@@ -181,6 +181,18 @@ jobs:
           # PHP and all extensions from source (~50 min → a few minutes).
           SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
 
+      - name: Upload static-php-cli build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: static-php-build-logs-${{ matrix.os }}-${{ matrix.platform }}
+          path: |
+            frankenphp/dist/static-php-cli/log/spc.output.log
+            frankenphp/dist/static-php-cli/log/spc.shell.log
+            frankenphp/dist/static-php-cli/log/php-src.config.log
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Save static-php cache
         if: steps.restore-static-php.outputs.cache-hit != 'true'
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -258,6 +270,18 @@ jobs:
           # Unset CI so build-static.sh preserves downloads/ and source/ for caching
           CI: ""
           SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+
+      - name: Upload static-php-cli build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: static-php-build-logs-linux-${{ matrix.arch }}
+          path: |
+            frankenphp/dist/static-php-cli/log/spc.output.log
+            frankenphp/dist/static-php-cli/log/spc.shell.log
+            frankenphp/dist/static-php-cli/log/php-src.config.log
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Save static-php cache
         if: steps.restore-static-php.outputs.cache-hit != 'true'
