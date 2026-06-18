@@ -169,6 +169,12 @@ fi
 
 #export SPC_OPT_BUILD_ARGS="--rebuild"
 
+# The zstd PHP extension checks for apc_serializer.h via $phpincludedir during configure.
+# In a static build with empty --prefix, phpincludedir is unset so the check fails even
+# though the APCu source is bundled at source/php-src/ext/apcu/apc_serializer.h.
+# Pointing phpincludedir to the PHP source tree fixes the check without modifying spc internals.
+export phpincludedir="${SCRIPT_DIR}/dist/static-php-cli/source/php-src"
+
 # Run the upstream build script.
 # We unset RELEASE so build-static.sh does not attempt to upload to dunglas/frankenphp.
 # The upload to our own repository is handled below after the binary is renamed.
