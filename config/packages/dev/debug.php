@@ -16,5 +16,5 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return App::config([
     'debug' => [
         'dump_destination' => 'tcp://' . env('VAR_DUMPER_SERVER'),
-    ],
+    ]
 ]);

@@ -19,15 +19,6 @@ use Sentry\State\HubInterface;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 
 return App::config([
-    'services' => [
-        // autowire/autoconfigure are disabled to mirror the previous explicit
-        // service definition (App::config() enables them by default).
-        LogsHandler::class => [
-            'autowire' => false,
-            'autoconfigure' => false,
-            'arguments' => [Level::Info],
-        ],
-    ],
     'sentry' => [
         'dsn' => env('SOLIDINVOICE_SENTRY_DSN'),
         'register_error_listener' => false,
