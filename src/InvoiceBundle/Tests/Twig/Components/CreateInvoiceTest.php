@@ -27,7 +27,6 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -79,11 +78,6 @@ final class CreateInvoiceTest extends LiveComponentTest
             ->setType(Tax::TYPE_INCLUSIVE);
 
         $em->persist($tax);
-
-        (function (): void {
-            /** @var Tax $this */
-            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
-        })(...)->call($tax);
 
         $em->flush();
 

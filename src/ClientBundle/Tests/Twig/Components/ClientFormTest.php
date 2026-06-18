@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
@@ -46,10 +45,7 @@ final class ClientFormTest extends LiveComponentTest
             'company' => $this->company
         ])->_real();
 
-        (function (): void {
-            /** @var Client $this */
-            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
-        })(...)->call($client);
+        $client->setId(Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'));
 
         $component = $this
             ->createLiveComponent(ClientForm::class, ['client' => $client])
