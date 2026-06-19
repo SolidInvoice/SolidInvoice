@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class SolidInvoiceCoreBundle extends Bundle
 {
-    public const string VERSION = '3.0.0-beta1';
+    public const string VERSION = '3.0.0';
 
     public const string APP_NAME = 'SolidInvoice';
 
