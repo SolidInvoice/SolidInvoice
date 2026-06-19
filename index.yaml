@@ -27,7 +27,7 @@ entries:
     name: solidinvoice
     type: application
     urls:
-    - https://solidinvoice.github.io/SolidInvoice/solidinvoice-3.0.0.tgz
+    - https://charts.solidinvoice.co/solidinvoice-3.0.0.tgz
     version: 3.0.0
   - apiVersion: v2
     appVersion: 3.0.0-alpha2
@@ -55,6 +55,6 @@ entries:
     name: solidinvoice
     type: application
     urls:
-    - https://solidinvoice.github.io/SolidInvoice/solidinvoice-3.0.0-alpha2.tgz
+    - https://charts.solidinvoice.co/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
 generated: "2026-06-18T13:57:22.795538779Z"
