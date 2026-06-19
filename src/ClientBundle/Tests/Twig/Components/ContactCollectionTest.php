@@ -35,7 +35,7 @@ final class ContactCollectionTest extends LiveComponentTest
 
         $client = ClientFactory::createOne(['company' => $this->company])->_real();
 
-        $field = (new CustomField())
+        $field = new CustomField()
             ->setLabel('Phone')
             ->setTarget(CustomFieldTarget::CONTACT)
             ->setType(CustomFieldType::TEXT)
