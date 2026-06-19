@@ -112,8 +112,8 @@ final class CustomFieldValueCollectionType extends AbstractType
 
             // An entity is "persisted" (has a stable Doctrine-assigned ID) only when it
             // is already managed by the UnitOfWork. For new (unpersisted) entities,
-            // Doctrine will overwrite any constructor-set ID on first persist, so we must
-            // defer targetId assignment until after postPersist.
+            // Doctrine's UlidGenerator overwrites any constructor-set ID on first persist,
+            // so we must defer targetId assignment until after postPersist fires.
             $parentIsManaged = $parentId instanceof Ulid && $this->em->contains($parent);
 
             /** @var list<CustomFieldValue> $pendingValues */
@@ -157,12 +157,13 @@ final class CustomFieldValueCollectionType extends AbstractType
 
             if ($pendingValues !== []) {
                 $em = $this->em;
-                $listener = null;
-                $listenerObj = new class($parent, $pendingValues, $em, $listener) {
+                $listenerObj = new class($parent, $pendingValues, $em) {
                     /**
                      * @var list<CustomFieldValue>
                      */
                     private array $toFlush = [];
+
+                    private ?object $self = null;
 
                     /**
                      * @param list<CustomFieldValue> $pending
@@ -171,8 +172,12 @@ final class CustomFieldValueCollectionType extends AbstractType
                         private readonly object $parent,
                         private readonly array $pending,
                         private readonly EntityManagerInterface $em,
-                        private mixed &$selfRef,
                     ) {
+                    }
+
+                    public function setSelf(object $self): void
+                    {
+                        $this->self = $self;
                     }
 
                     public function postPersist(PostPersistEventArgs $args): void
@@ -199,18 +204,17 @@ final class CustomFieldValueCollectionType extends AbstractType
                             return;
                         }
 
-                        $toFlush = $this->toFlush;
                         $this->toFlush = [];
 
                         // Unregister before flushing to prevent re-entry.
-                        if ($this->selfRef !== null) {
-                            $this->em->getEventManager()->removeEventListener(['postPersist', 'postFlush'], $this->selfRef);
+                        if ($this->self !== null) {
+                            $this->em->getEventManager()->removeEventListener(['postPersist', 'postFlush'], $this->self);
                         }
 
                         $this->em->flush();
                     }
                 };
-                $listener = $listenerObj;
+                $listenerObj->setSelf($listenerObj);
                 $this->em->getEventManager()->addEventListener(['postPersist', 'postFlush'], $listenerObj);
             }
         });
