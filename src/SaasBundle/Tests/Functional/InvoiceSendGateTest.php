@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
@@ -97,7 +98,7 @@ final class InvoiceSendGateTest extends KernelTestCase
         $workflow = $container->get('state_machine.invoice');
         self::assertInstanceOf(WorkflowInterface::class, $workflow);
 
-        $action = new Send($workflow, $mailer, $router, $gate);
+        $action = new Send($workflow, $mailer, $router, $gate, new NullLogger());
         $action->setDoctrine($container->get('doctrine'));
 
         return $action;
