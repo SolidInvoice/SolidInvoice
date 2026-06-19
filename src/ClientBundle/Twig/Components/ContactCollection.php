@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -40,7 +42,8 @@ final class ContactCollection extends AbstractController
     public int $count = 0;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager
+        private readonly EntityManagerInterface $manager,
+        private readonly CustomFieldFormWriter $customFieldFormWriter,
     ) {
     }
 
@@ -67,6 +70,18 @@ final class ContactCollection extends AbstractController
         $this->client->addContact($contact);
         $this->manager->persist($contact);
         $this->manager->flush();
+
+        $form = $this->getForm();
+        if ($form->has('customFields')) {
+            $this->customFieldFormWriter->write(
+                $form->get('customFields'),
+                CustomFieldTarget::CONTACT,
+                $contact->getId(),
+                $contact,
+            );
+            $this->manager->flush();
+        }
+
         $this->setContactCount();
         $this->dispatchBrowserEvent('modal:close');
         $this->resetForm();

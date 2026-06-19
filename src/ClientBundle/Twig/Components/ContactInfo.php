@@ -16,6 +16,8 @@ namespace SolidInvoice\ClientBundle\Twig\Components;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -51,7 +53,8 @@ final class ContactInfo extends AbstractController
     private Contact $readonlyContact;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager
+        private readonly EntityManagerInterface $manager,
+        private readonly CustomFieldFormWriter $customFieldFormWriter,
     ) {
     }
 
@@ -104,6 +107,17 @@ final class ContactInfo extends AbstractController
         $contact = $this->getForm()->getData();
         $this->manager->persist($contact);
         $this->manager->flush();
+
+        $form = $this->getForm();
+        if ($form->has('customFields')) {
+            $this->customFieldFormWriter->write(
+                $form->get('customFields'),
+                CustomFieldTarget::CONTACT,
+                $contact->getId(),
+                $contact,
+            );
+            $this->manager->flush();
+        }
 
         $this->edit = false;
         $this->readonlyContact = clone $contact;
