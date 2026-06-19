@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action\Transition;
 
 use Generator;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -23,6 +24,7 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -39,6 +41,7 @@ final class Send
         private readonly MailerInterface $mailer,
         private readonly RouterInterface $router,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -70,7 +73,18 @@ final class Send
 
         $this->save($invoice);
 
-        $this->mailer->send(new InvoiceEmail($invoice));
+        try {
+            $this->mailer->send(new InvoiceEmail($invoice));
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Failed to send invoice email: ' . $e->getMessage(), ['exception' => $e]);
+
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'invoice.email.send_failed';
+                }
+            };
+        }
 
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): Generator

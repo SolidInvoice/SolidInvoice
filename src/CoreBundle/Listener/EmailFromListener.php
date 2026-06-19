@@ -15,10 +15,10 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -35,24 +35,34 @@ final readonly class EmailFromListener implements EventSubscriberInterface
 
     public function __invoke(MessageEvent $event): void
     {
-        /** @var TemplatedEmail $message */
+        if ($event->isQueued()) {
+            return;
+        }
+
         $message = $event->getMessage();
+
+        if (! $message instanceof Email) {
+            return;
+        }
 
         $fromAddress = (string) $this->config->get('email/from_address');
 
         if ('' !== $fromAddress) {
             $fromName = (string) $this->config->get('email/from_name');
-
-            $message->from(new Address($fromAddress, $fromName));
+            $from = new Address($fromAddress, $fromName);
+            $message->from($from);
+            $event->getEnvelope()->setSender($from);
+            $message->getHeaders()->remove('Sender');
         } else {
-            // If a from address is not specified in the config, then we use the currently logged-in user's address
             $token = $this->tokenStorage->getToken();
 
             if ($token instanceof TokenInterface) {
                 /** @var User $user */
                 $user = $token->getUser();
-
-                $message->from($user->getEmail());
+                $from = Address::create($user->getEmail());
+                $message->from($from);
+                $event->getEnvelope()->setSender($from);
+                $message->getHeaders()->remove('Sender');
             }
         }
     }
@@ -60,7 +70,7 @@ final readonly class EmailFromListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            MessageEvent::class => '__invoke',
+            MessageEvent::class => ['__invoke', -256],
         ];
     }
 }

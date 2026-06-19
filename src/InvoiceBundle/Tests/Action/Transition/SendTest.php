@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action\Transition;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -25,6 +26,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -37,6 +39,11 @@ final class SendTest extends TestCase
         $gate->method('isGated')->willReturn($gated);
 
         return $gate;
+    }
+
+    private function createLogger(): LoggerInterface
+    {
+        return $this->createStub(LoggerInterface::class);
     }
 
     public function testSendWithNoContactsReturnsErrorFlash(): void
@@ -54,7 +61,7 @@ final class SendTest extends TestCase
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false));
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
 
         $invoice = new Invoice();
         // No users added — getUsers()->isEmpty() === true
@@ -84,7 +91,7 @@ final class SendTest extends TestCase
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(true));
+        $action = new Send($workflow, $mailer, $router, $this->createGate(true), $this->createLogger());
 
         $invoice = new Invoice();
         $invoice->addUser(new Contact()->setEmail('test@example.com'));
@@ -125,7 +132,7 @@ final class SendTest extends TestCase
         $doctrine = $this->createMock(ManagerRegistry::class);
         $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false));
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
         $response = $action(new Request(), $invoice);
@@ -169,7 +176,7 @@ final class SendTest extends TestCase
         $doctrine = $this->createMock(ManagerRegistry::class);
         $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false));
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
         $response = $action(new Request(), $invoice);
@@ -214,7 +221,7 @@ final class SendTest extends TestCase
         $doctrine = $this->createStub(ManagerRegistry::class);
         $doctrine->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false));
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
         $response = $action(new Request(), $invoice);
@@ -224,5 +231,48 @@ final class SendTest extends TestCase
         $flashes = iterator_to_array($response->getFlash());
         self::assertArrayHasKey(FlashResponse::FLASH_SUCCESS, $flashes);
         self::assertSame('invoice.transition.action.sent', $flashes[FlashResponse::FLASH_SUCCESS]);
+    }
+
+    public function testSendReturnsErrorFlashOnTransportException(): void
+    {
+        $invoice = new Invoice();
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
+        $invoice->setStatus(InvoiceStatus::Pending);
+
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->never())->method('apply');
+
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->willThrowException(new TransportException('Connection refused'));
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects($this->once())
+            ->method('generate')
+            ->with('_invoices_view', self::anything())
+            ->willReturn('/invoices/view/123');
+
+        $em = $this->createMock(ObjectManager::class);
+        $em->expects($this->once())->method('persist')->with($invoice);
+        $em->expects($this->once())->method('flush');
+
+        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine->expects($this->once())->method('getManager')->willReturn($em);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('error');
+
+        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $logger);
+        $action->setDoctrine($doctrine);
+
+        $response = $action(new Request(), $invoice);
+
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/invoices/view/123', $response->getTargetUrl());
+
+        $flashes = iterator_to_array($response->getFlash());
+        self::assertArrayHasKey(FlashResponse::FLASH_ERROR, $flashes);
+        self::assertSame('invoice.email.send_failed', $flashes[FlashResponse::FLASH_ERROR]);
     }
 }
