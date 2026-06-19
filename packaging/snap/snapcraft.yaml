@@ -24,12 +24,6 @@ base: core24
 confinement: strict
 grade: stable
 
-architectures:
-  - build-on: [amd64]
-    build-for: [amd64]
-  - build-on: [arm64]
-    build-for: [arm64]
-
 apps:
   solidinvoice:
     command: bin/solidinvoice run --disable-https --skip-intro --log-format json

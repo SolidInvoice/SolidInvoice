@@ -267,6 +267,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Configure snapcraft.yaml
+        run: |
+          VERSION="${SOLIDINVOICE_VERSION#v}"
+
+          sed -i "s/version: .*/version: \"${VERSION}\"/" packaging/snap/snapcraft.yaml
+
+          if [ "${SNAP_ARCH}" = "arm64" ]; then
+            printf '\nplatforms:\n  arm64:\n    build-on: [amd64]\n    build-for: [arm64]\n' >> packaging/snap/snapcraft.yaml
+          else
+            printf '\nplatforms:\n  %s:\n' "${SNAP_ARCH}" >> packaging/snap/snapcraft.yaml
+          fi
+        env:
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.version }}
+          SNAP_ARCH: ${{ matrix.arch }}
+
       - name: Build snap
         uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
         id: snapcraft
