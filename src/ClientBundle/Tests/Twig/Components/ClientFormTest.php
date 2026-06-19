@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
