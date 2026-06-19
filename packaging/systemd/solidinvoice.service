@@ -1,6 +1,6 @@
 [Unit]
 Description=SolidInvoice - Simple and elegant invoicing solution
-Documentation=https://docs.solidinvoice.co
+Documentation=https://solidinvoice.co/docs
 After=network-online.target
 Wants=network-online.target
 
