@@ -1,7 +1,7 @@
 ---
 title: Helm (Kubernetes)
 description: Deploy SolidInvoice to a Kubernetes cluster using the official Helm chart.
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Helm (Kubernetes)

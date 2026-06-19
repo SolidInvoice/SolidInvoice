@@ -1,0 +1,132 @@
+---
+title: Linux packages
+description: Install SolidInvoice natively on Debian, Ubuntu, RHEL, Fedora, CentOS, or Alpine Linux using apt, dnf, or apk.
+sidebar_position: 5
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Linux packages
+
+Native packages for Debian, Ubuntu, RHEL, Fedora, CentOS, and Alpine Linux are available from the [SolidInvoice repository on Cloudsmith](https://cloudsmith.io/~solidworx/repos/solidinvoice/packages/). Installing a package sets up a systemd service, places the binary at `/usr/bin/solidinvoice`, and creates a dedicated service user — nothing else to configure to get started.
+
+## Install
+
+<Tabs groupId="pkg-manager">
+  <TabItem value="apt" label="Debian / Ubuntu" default>
+
+  Add the SolidInvoice APT repository and install:
+
+  ```bash
+  curl -1sLf 'https://dl.cloudsmith.io/public/solidworx/solidinvoice/setup.deb.sh' | sudo -E bash
+  sudo apt install solidinvoice
+  ```
+
+  </TabItem>
+  <TabItem value="dnf" label="RHEL / Fedora / CentOS">
+
+  Add the SolidInvoice RPM repository and install:
+
+  ```bash
+  curl -1sLf 'https://dl.cloudsmith.io/public/solidworx/solidinvoice/setup.rpm.sh' | sudo -E bash
+  sudo dnf install solidinvoice
+  ```
+
+  :::note
+  On CentOS 7 or RHEL 7, substitute `yum` for `dnf`.
+  :::
+
+  </TabItem>
+  <TabItem value="apk" label="Alpine">
+
+  Add the SolidInvoice Alpine repository and install:
+
+  ```bash
+  curl -1sLf 'https://dl.cloudsmith.io/public/solidworx/solidinvoice/setup.alpine.sh' | sudo -E sh
+  sudo apk add solidinvoice
+  ```
+
+  </TabItem>
+</Tabs>
+
+:::info
+Packages are GPG-signed. The setup scripts configure the signing key automatically — no manual key import needed.
+:::
+
+## Start the service
+
+Enable and start the systemd service:
+
+```bash
+sudo systemctl enable solidinvoice --now
+```
+
+SolidInvoice listens on `http://localhost:8765`. Open that URL in your browser and finish setup with the [first-run wizard](./system-installation.md).
+
+:::info
+The service runs over plain HTTP by default. For production, place SolidInvoice behind a reverse proxy (Nginx, Caddy, Traefik) that handles TLS termination.
+:::
+
+## Configuration
+
+The service reads configuration from `/etc/solidinvoice/solidinvoice.env`. Edit this file to change the port, set the database URL, or override any other option:
+
+```ini title="/etc/solidinvoice/solidinvoice.env"
+# Port to listen on (default: 8765)
+#SOLIDINVOICE_PORT=8765
+
+# Database connection string
+#DATABASE_URL=mysql://user:password@localhost:3306/solidinvoice
+```
+
+After editing, restart the service to apply changes:
+
+```bash
+sudo systemctl restart solidinvoice
+```
+
+## Manage the service
+
+```bash
+sudo systemctl start solidinvoice     # start
+sudo systemctl stop solidinvoice      # stop
+sudo systemctl restart solidinvoice   # restart
+sudo systemctl status solidinvoice    # check status
+journalctl -u solidinvoice -f         # follow logs
+```
+
+## File locations
+
+| Path | Contents |
+| --- | --- |
+| `/usr/bin/solidinvoice` | Binary |
+| `/etc/solidinvoice/solidinvoice.env` | Configuration |
+| `/var/lib/solidinvoice/` | Application data |
+| `/usr/lib/systemd/system/solidinvoice.service` | systemd unit |
+
+## Update
+
+<Tabs groupId="pkg-manager">
+  <TabItem value="apt" label="Debian / Ubuntu" default>
+
+  ```bash
+  sudo apt update && sudo apt upgrade solidinvoice
+  ```
+
+  </TabItem>
+  <TabItem value="dnf" label="RHEL / Fedora / CentOS">
+
+  ```bash
+  sudo dnf update solidinvoice
+  ```
+
+  </TabItem>
+  <TabItem value="apk" label="Alpine">
+
+  ```bash
+  sudo apk update && sudo apk upgrade solidinvoice
+  ```
+
+  </TabItem>
+</Tabs>

@@ -1,7 +1,7 @@
 ---
 title: Docker
 description: Run SolidInvoice as a Docker container, optionally alongside a database via Docker Compose.
-sidebar_position: 4
+sidebar_position: 6
 ---
 
 # Docker

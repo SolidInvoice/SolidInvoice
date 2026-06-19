@@ -1,7 +1,7 @@
 ---
 title: Git (advanced)
 description: Clone the SolidInvoice source for contributing or hacking on the code.
-sidebar_position: 6
+sidebar_position: 9
 ---
 
 # Git (advanced)

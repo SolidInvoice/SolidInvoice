@@ -27,7 +27,20 @@ There is no native Windows build. Run the Linux binary inside [WSL2](https://lea
 <Tabs groupId="os">
   <TabItem value="linux" label="Linux" default>
 
-  Download the latest binary for your architecture from the [releases page](https://github.com/SolidInvoice/SolidInvoice/releases/latest), then make it executable and start it:
+  **One-liner install** — downloads the binary and installs it to `/usr/local/bin`:
+
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/SolidInvoice/SolidInvoice/3.0.x/packaging/install.sh | sh
+  solidinvoice run
+  ```
+
+  To also install a systemd service so SolidInvoice starts on boot:
+
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/SolidInvoice/SolidInvoice/3.0.x/packaging/install.sh | INSTALL_SERVICE=1 sh
+  ```
+
+  **Manual download** — grab the binary for your architecture from the [releases page](https://github.com/SolidInvoice/SolidInvoice/releases/latest), then make it executable and start it:
 
   ```bash
   chmod +x solidinvoice
@@ -45,6 +58,10 @@ There is no native Windows build. Run the Linux binary inside [WSL2](https://lea
   ```
 
   On first launch macOS may block the binary because it isn't notarised. Open `System Settings → Privacy & Security` and click `Open anyway`, or run `xattr -d com.apple.quarantine ./solidinvoice` first.
+
+  :::tip
+  On macOS, [Homebrew](./homebrew.md) is the easiest way to install and keep SolidInvoice up to date.
+  :::
 
   </TabItem>
 </Tabs>
