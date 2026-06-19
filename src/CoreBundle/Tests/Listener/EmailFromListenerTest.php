@@ -92,22 +92,6 @@ final class EmailFromListenerTest extends TestCase
         self::assertSame('test@example.com', $envelope->getSender()->getAddress());
     }
 
-    public function testDoesNothingWhenQueued(): void
-    {
-        $systemConfig = M::mock(SystemConfig::class);
-        $systemConfig->shouldNotReceive('get');
-
-        $tokenStorage = M::mock(TokenStorageInterface::class);
-        $tokenStorage->shouldNotReceive('getToken');
-
-        $listener = new EmailFromListener($systemConfig, $tokenStorage);
-
-        $message = new TemplatedEmail();
-        $listener(new MessageEvent($message, Envelope::create($message), 'smtp', true));
-
-        self::assertEmpty($message->getFrom());
-    }
-
     public function testDoesNothingForNonEmailMessages(): void
     {
         $systemConfig = M::mock(SystemConfig::class);

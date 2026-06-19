@@ -35,10 +35,6 @@ final readonly class EmailFromListener implements EventSubscriberInterface
 
     public function __invoke(MessageEvent $event): void
     {
-        if ($event->isQueued()) {
-            return;
-        }
-
         $message = $event->getMessage();
 
         if (! $message instanceof Email) {
