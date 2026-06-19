@@ -29,6 +29,9 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Twig\Components\ContactCollectionTest
+ */
 #[AsLiveComponent]
 final class ContactCollection extends AbstractController
 {
