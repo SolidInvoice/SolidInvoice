@@ -6,6 +6,19 @@ icon: https://solidinvoice.co/logo.png
 version: 1.0.0
 appVersion: "3.0.0"
 
+annotations:
+  artifacthub.io/license: MIT
+  artifacthub.io/maintainers: |
+    - name: Pierre du Plessis
+      email: open-source@solidworx.co
+  artifacthub.io/links: |
+    - name: Website
+      url: https://solidinvoice.co
+    - name: Documentation
+      url: https://solidinvoice.co/docs
+    - name: Source Code
+      url: https://github.com/SolidInvoice/SolidInvoice
+
 dependencies:
   - name: mysql
     version: "11.x.x"

@@ -396,6 +396,7 @@ jobs:
     needs: [prepare, publish-docker]
     permissions:
       contents: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner
@@ -442,6 +443,19 @@ jobs:
           gh release upload "$VERSION" /tmp/helm-packages/*.tgz \
             --repo solidinvoice/solidinvoice --clobber
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push chart to GHCR (OCI)
+        run: |
+          for chart in /tmp/helm-packages/*.tgz; do
+            helm push "$chart" oci://ghcr.io/solidinvoice/charts
+          done
+
       - name: Publish to Helm repository (gh-pages)
         env:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
@@ -450,6 +464,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+
+          # Save files we need before the branch switch wipes the working tree
+          cp helm/artifacthub-repo.yml /tmp/artifacthub-repo.yml 2>/dev/null || true
 
           # Discard the working-tree edits made by the version bump and
           # 'helm dep update' (Chart.yaml / Chart.lock). They're already baked
@@ -468,16 +485,23 @@ jobs:
           # Copy packaged chart into the gh-pages root
           cp /tmp/helm-packages/*.tgz .
 
+          # Ensure the custom domain CNAME is in place
+          echo "charts.solidinvoice.co" > CNAME
+
+          # Copy Artifact Hub repository configuration
+          cp /tmp/artifacthub-repo.yml . 2>/dev/null || true
+
           # Regenerate index.yaml, merging with any existing entries
           if [ -f index.yaml ]; then
             helm repo index . \
-              --url "https://solidinvoice.github.io/SolidInvoice" \
+              --url "https://charts.solidinvoice.co" \
               --merge index.yaml
           else
             helm repo index . \
-              --url "https://solidinvoice.github.io/SolidInvoice"
+              --url "https://charts.solidinvoice.co"
           fi
 
-          git add index.yaml *.tgz
+          git add index.yaml *.tgz CNAME
+          [ -f artifacthub-repo.yml ] && git add artifacthub-repo.yml
           git commit -m "chore: release Helm chart ${CHART_VERSION}"
           git push origin gh-pages

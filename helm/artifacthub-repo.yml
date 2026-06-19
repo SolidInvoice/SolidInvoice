@@ -1,0 +1,11 @@
+# Artifact Hub repository configuration
+# https://artifacthub.io/docs/topics/repositories/helm-charts/
+#
+# To verify ownership and unlock the "Verified Publisher" badge:
+#   1. Register at https://artifacthub.io
+#   2. Add this repository (type: Helm, URL: https://charts.solidinvoice.co)
+#   3. Copy the assigned repositoryID and paste it below
+repositoryID: ""
+owners:
+  - name: Pierre du Plessis
+    email: open-source@solidworx.co

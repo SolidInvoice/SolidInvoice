@@ -14,14 +14,21 @@ The official SolidInvoice Helm chart deploys the application, a background worke
 - Helm **3.2+**
 - A StorageClass that supports `ReadWriteOnce` PersistentVolumeClaims (required for the application's secrets vault at `/etc/solidinvoice`)
 
-## Add the chart
+## Add the Helm repository
 
-The chart lives in the `helm/solidinvoice/` directory of the SolidInvoice repository. Clone the repo or download the chart directory, then reference it locally in your install commands.
+```bash
+helm repo add solidinvoice https://charts.solidinvoice.co
+helm repo update
+```
+
+:::tip[Discover on Artifact Hub]
+The chart is also indexed on [Artifact Hub](https://artifacthub.io/packages/helm/solidinvoice/solidinvoice), where you can browse all available versions, read the full values reference, and copy install commands.
+:::
 
 ## Quick start with MySQL
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set mysql.enabled=true \
   --set mysql.auth.password="your-mysql-password" \
   --set mysql.auth.rootPassword="your-root-password" \
@@ -33,7 +40,7 @@ This brings up SolidInvoice with a bundled MySQL instance. Browse to the pod's U
 ## Quick start with PostgreSQL
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set postgresql.enabled=true \
   --set postgresql.auth.password="your-pg-password" \
   --set app.secret="your-secret-key"
@@ -44,7 +51,7 @@ helm install solidinvoice ./helm/solidinvoice \
 Pass a full `DATABASE_URL` to skip the bundled database subcharts:
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set externalDatabase.url="mysql://user:password@host:3306/solidinvoice" \
   --set app.secret="your-secret-key"
 ```
@@ -54,7 +61,7 @@ helm install solidinvoice ./helm/solidinvoice \
 Redis is required for asynchronous background jobs (sending emails, processing payments). When `redis.enabled=true` the chart configures the Messenger transport automatically:
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set mysql.enabled=true \
   --set mysql.auth.password="your-mysql-password" \
   --set redis.enabled=true \
@@ -67,7 +74,7 @@ helm install solidinvoice ./helm/solidinvoice \
 Set `install.enabled=true` to run the installer as a Kubernetes Job during the first deploy, so the wizard step is skipped entirely:
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set mysql.enabled=true \
   --set mysql.auth.password="your-mysql-password" \
   --set app.secret="your-secret-key" \
@@ -79,7 +86,7 @@ helm install solidinvoice ./helm/solidinvoice \
 ## Expose via Ingress
 
 ```bash
-helm install solidinvoice ./helm/solidinvoice \
+helm install solidinvoice solidinvoice/solidinvoice \
   --set mysql.enabled=true \
   --set mysql.auth.password="your-mysql-password" \
   --set app.secret="your-secret-key" \
@@ -87,6 +94,14 @@ helm install solidinvoice ./helm/solidinvoice \
   --set ingress.hosts[0].host="invoices.example.com" \
   --set ingress.tls[0].secretName="solidinvoice-tls" \
   --set "ingress.tls[0].hosts[0]=invoices.example.com"
+```
+
+## OCI registry (alternative)
+
+The chart is also published to GitHub Container Registry as an OCI artifact. Use this if you prefer OCI-native installs or want to pin to an exact version without adding a repo:
+
+```bash
+helm install solidinvoice oci://ghcr.io/solidinvoice/charts/solidinvoice --version 3.0.0
 ```
 
 ## Key values reference
@@ -112,7 +127,8 @@ helm install solidinvoice ./helm/solidinvoice \
 Always pass `--reuse-values` (or re-specify `app.secret`) so the secret doesn't change between releases:
 
 ```bash
-helm upgrade solidinvoice ./helm/solidinvoice --reuse-values
+helm repo update solidinvoice
+helm upgrade solidinvoice solidinvoice/solidinvoice --reuse-values
 ```
 
 Database migrations run automatically as a pre-upgrade Job before the new pods start.
