@@ -46,7 +46,7 @@ apps:
 parts:
   solidinvoice:
     plugin: dump
-    source: ../frankenphp/dist/
+    source: dist/
     source-type: local
     organize:
       solidinvoice-linux-*: bin/solidinvoice

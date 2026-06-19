@@ -258,14 +258,15 @@ jobs:
 
       - name: Download binary from release
         run: |
-          mkdir -p frankenphp/dist
+          mkdir -p packaging/snap/dist
           gh release download "${{ needs.prepare.outputs.version }}" \
             --repo "${{ github.repository }}" \
-            --pattern "solidinvoice-linux-${{ matrix.arch }}" \
-            --dir frankenphp/dist/
-          chmod +x "frankenphp/dist/solidinvoice-linux-${{ matrix.arch }}"
+            --pattern "solidinvoice-linux-${SNAP_ARCH}" \
+            --dir packaging/snap/dist/
+          chmod +x "packaging/snap/dist/solidinvoice-linux-${SNAP_ARCH}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNAP_ARCH: ${{ matrix.arch }}
 
       - name: Configure snapcraft.yaml
         run: |
