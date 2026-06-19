@@ -27,7 +27,7 @@ Send beautiful quotes and invoices, accept online payments, automate recurring b
   <a href="https://github.com/SolidInvoice/SolidInvoice"><img src="https://img.shields.io/badge/Star-on%20GitHub-181717?style=for-the-badge&logo=github" alt="Star on GitHub" /></a>
 </p>
 
-<img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/efdb4dc1-5b5f-4fa6-a90e-bd6d1bac186a" alt="SolidInvoice Dashboard" width="100%" />
+<img src="docs/static/img/dashboard.png" alt="SolidInvoice Dashboard" width="100%" />
 
 </div>
 
@@ -103,9 +103,9 @@ Both versions ship the same codebase and feature set. Pick whichever fits your w
 
 | | |
 | :---: | :---: |
-| <img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/efdb4dc1-5b5f-4fa6-a90e-bd6d1bac186a" alt="Dashboard" /><br/>**Dashboard** | <img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/b89c1239-2455-48ef-9ee0-47b78cf69483" alt="Client View" /><br/>**Client View** |
-| <img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/a04e2aad-ee98-4615-9096-e16d647534f5" alt="Invoice Editor" /><br/>**Invoice Editor** | <img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/bbd16da6-61ed-4b20-8a12-f78b1a20c39f" alt="Payments" /><br/>**Payments** |
-| <img src="https://github.com/SolidInvoice/SolidInvoice/assets/144858/fcc7e26e-6c58-4706-9891-1b00df371873" alt="Settings" /><br/>**Settings** | |
+| <img src="docs/static/img/dashboard.png" alt="Dashboard" /><br/>**Dashboard** | <img src="docs/static/img/managing-clients/client-view-overview.png" alt="Client View" /><br/>**Client View** |
+| <img src="docs/static/img/invoices/invoice-list.png" alt="Invoice List" /><br/>**Invoice List** | <img src="docs/static/img/invoices/create-invoice-form.png" alt="Invoice Editor" /><br/>**Invoice Editor** |
+| <img src="docs/static/img/recurring-invoices/recurring-invoices-list-page.png" alt="Recurring Invoices" /><br/>**Recurring Invoices** | <img src="docs/static/img/payments.png" alt="Payments" /><br/>**Payments** |
 
 ---
 
