@@ -23,6 +23,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\RawMessage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -49,9 +50,11 @@ final class EmailFromListenerTest extends TestCase
         $listener = new EmailFromListener($systemConfig, $tokenStorage);
 
         $message = new TemplatedEmail();
-        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
+        $envelope = Envelope::create($message);
+        $listener(new MessageEvent($message, $envelope, 'smtp'));
 
         self::assertEquals([new Address('info@example.com', 'SolidInvoice')], $message->getFrom());
+        self::assertSame('info@example.com', $envelope->getSender()->getAddress());
     }
 
     public function testWithoutFromAddress(): void
@@ -82,13 +85,47 @@ final class EmailFromListenerTest extends TestCase
         $listener = new EmailFromListener($systemConfig, $tokenStorage);
 
         $message = new TemplatedEmail();
-        $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
+        $envelope = Envelope::create($message);
+        $listener(new MessageEvent($message, $envelope, 'smtp'));
 
         self::assertEquals([new Address('test@example.com')], $message->getFrom());
+        self::assertSame('test@example.com', $envelope->getSender()->getAddress());
+    }
+
+    public function testDoesNothingWhenQueued(): void
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+        $systemConfig->shouldNotReceive('get');
+
+        $tokenStorage = M::mock(TokenStorageInterface::class);
+        $tokenStorage->shouldNotReceive('getToken');
+
+        $listener = new EmailFromListener($systemConfig, $tokenStorage);
+
+        $message = new TemplatedEmail();
+        $listener(new MessageEvent($message, Envelope::create($message), 'smtp', true));
+
+        self::assertEmpty($message->getFrom());
+    }
+
+    public function testDoesNothingForNonEmailMessages(): void
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+        $systemConfig->shouldNotReceive('get');
+
+        $tokenStorage = M::mock(TokenStorageInterface::class);
+        $tokenStorage->shouldNotReceive('getToken');
+
+        $listener = new EmailFromListener($systemConfig, $tokenStorage);
+
+        $message = new RawMessage('raw content');
+        $envelope = new Envelope(new Address('sender@example.com'), [new Address('recipient@example.com')]);
+        $listener(new MessageEvent($message, $envelope, 'smtp'));
     }
 
     public function testEvents(): void
     {
         self::assertSame([MessageEvent::class], \array_keys(EmailFromListener::getSubscribedEvents()));
+        self::assertSame(['__invoke', -256], EmailFromListener::getSubscribedEvents()[MessageEvent::class]);
     }
 }
