@@ -58,10 +58,6 @@ final readonly class ClientDummyDataLoader implements DummyDataLoaderInterface
                 ->setCurrencyCode($currencies[array_rand($currencies)])
                 ->setCompany($company);
 
-            if ($this->faker->boolean(70)) {
-                $client->setVatNumber($this->faker->numerify('VAT########'));
-            }
-
             $contactCount = random_int(1, 3);
             for ($j = 0; $j < $contactCount; ++$j) {
                 $contact = new Contact();
