@@ -22,6 +22,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 
 #[AsDataGrid(name: 'user_invitations', title: 'User Invitations')]
 final class UserInvitationsGrid extends Grid
@@ -42,11 +43,17 @@ final class UserInvitationsGrid extends Grid
                 ->label('Email Address'),
             RelativeDateColumn::new('created')
                 ->label('Invited'),
+            RelativeDateColumn::new('expiresAt')
+                ->label('Expires'),
             StatusColumn::new('status')
                 ->label('Status')
                 ->statusMap([
-                    UserInvitation::STATUS_PENDING => 'warning',
-                ]),
+                    InvitationStatus::Pending->value => 'warning',
+                    InvitationStatus::Expired->value => 'danger',
+                ])
+                ->formatValue(static fn (mixed $value, UserInvitation $invitation): string => $invitation->isExpired()
+                    ? InvitationStatus::Expired->value
+                    : $invitation->getStatus()->value),
             StringColumn::new('invitedBy.email')
                 ->label('Invited By'),
         ];
@@ -62,6 +69,11 @@ final class UserInvitationsGrid extends Grid
             Action::new('_user_resend_invite', ['id' => 'id'])
                 ->label('Resend Invitation')
                 ->icon('mail'),
+            Action::new('_user_delete_invite', ['id' => 'id'])
+                ->label('Delete')
+                ->icon('trash')
+                ->color('danger')
+                ->confirm('Are you sure you want to delete this invitation?'),
         ];
     }
 }

@@ -58,6 +58,12 @@ final class Register extends AbstractController
             if (! $invitation instanceof UserInvitation) {
                 throw $this->createNotFoundException('Invitation is not valid');
             }
+
+            if ($invitation->isExpired()) {
+                $this->invitationRepository->save($invitation->markExpired());
+
+                throw $this->createNotFoundException('Invitation is not valid');
+            }
         }
 
         if (! $request->query->has('invitation') && ! $this->toggle->isActive('allow_registration')) {

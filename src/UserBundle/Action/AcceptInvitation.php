@@ -48,6 +48,12 @@ final readonly class AcceptInvitation
             throw new NotFoundHttpException('Invitation is not valid');
         }
 
+        if ($invitation->isExpired()) {
+            $this->repository->save($invitation->markExpired());
+
+            throw new NotFoundHttpException('Invitation is not valid');
+        }
+
         $existingUser = $this->userRepository->findOneBy(['email' => $invitation->getEmail()]);
 
         if ($existingUser instanceof User) {

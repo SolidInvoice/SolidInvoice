@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -24,6 +25,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -69,7 +71,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $invitation->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
             ->setCompany($company)
-            ->setStatus(UserInvitation::STATUS_PENDING);
+            ->setStatus(InvitationStatus::Pending);
         $this->repository->save($invitation);
 
         self::assertSame(1, $this->repository->countPendingInvitations());
@@ -79,7 +81,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $invitation2->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
             ->setCompany($company)
-            ->setStatus(UserInvitation::STATUS_PENDING);
+            ->setStatus(InvitationStatus::Pending);
         $this->repository->save($invitation2);
 
         self::assertSame(2, $this->repository->countPendingInvitations());
@@ -91,6 +93,48 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         $alias = $queryBuilder->getRootAliases()[0];
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
+    }
+
+    public function testMarkExpiredFlagsOnlyExpiredInvitations(): void
+    {
+        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
+        $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
+
+        $registry = self::getContainer()->get('doctrine');
+        $company = $registry->getRepository(Company::class)->find($this->company->getId());
+
+        // An invitation created in the past, so its validity window has elapsed.
+        CarbonImmutable::setTestNow(CarbonImmutable::now()->subDays(UserInvitation::VALIDITY_DAYS + 1));
+        $expired = new UserInvitation();
+        $expired->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($company)
+            ->setStatus(InvitationStatus::Pending);
+        CarbonImmutable::setTestNow();
+        $this->repository->save($expired);
+
+        // A freshly created invitation that is still valid.
+        $valid = new UserInvitation();
+        $valid->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($company)
+            ->setStatus(InvitationStatus::Pending);
+        $this->repository->save($valid);
+
+        $expiredId = $expired->getId();
+        $validId = $valid->getId();
+
+        $updated = $this->repository->markExpired(CarbonImmutable::now());
+
+        self::assertSame(1, $updated);
+
+        // A bulk DQL UPDATE bypasses the unit of work, so clear the identity map
+        // to force the following lookups to hit the database.
+        $registry->getManager()->clear();
+
+        // The expired invitation is retained, only its status changes.
+        self::assertSame(InvitationStatus::Expired, $this->repository->find($expiredId)?->getStatus());
+        self::assertSame(InvitationStatus::Pending, $this->repository->find($validId)?->getStatus());
     }
 
     public function testCountPendingScopesByCompany(): void
@@ -107,16 +151,16 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $pending->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
             ->setCompany($company)
-            ->setStatus(UserInvitation::STATUS_PENDING);
+            ->setStatus(InvitationStatus::Pending);
         $this->repository->save($pending);
 
         // A same-company invitation in a non-pending status must not be counted.
-        $accepted = new UserInvitation();
-        $accepted->setEmail($this->faker->email)
+        $expired = new UserInvitation();
+        $expired->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
             ->setCompany($company)
-            ->setStatus('accepted');
-        $this->repository->save($accepted);
+            ->setStatus(InvitationStatus::Expired);
+        $this->repository->save($expired);
 
         self::assertSame(1, $this->repository->countPending($company));
     }
