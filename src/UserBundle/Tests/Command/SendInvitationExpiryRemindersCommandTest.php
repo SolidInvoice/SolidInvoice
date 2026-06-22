@@ -76,6 +76,7 @@ final class SendInvitationExpiryRemindersCommandTest extends KernelTestCase
         // Expiring within the 2-day window (created 6 days ago, expires in ~1 day).
         CarbonImmutable::setTestNow(CarbonImmutable::now()->subDays(UserInvitation::VALIDITY_DAYS - 1));
         $expiringSoon = new UserInvitation();
+        self::assertInstanceOf(Company::class, $company);
         $expiringSoon->setEmail('soon@example.com')
             ->setInvitedBy($inviter)
             ->setCompany($company)
