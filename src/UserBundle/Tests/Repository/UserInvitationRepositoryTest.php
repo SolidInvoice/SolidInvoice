@@ -28,6 +28,7 @@ use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Uid\Ulid;
 
 #[Group('functional')]
 final class UserInvitationRepositoryTest extends KernelTestCase
@@ -131,9 +132,11 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         // A bulk DQL UPDATE bypasses the unit of work, so clear the identity map
         // to force the following lookups to hit the database.
         $registry->getManager()->clear();
+        self::assertInstanceOf(Ulid::class, $expiredId);
 
         // The expired invitation is retained, only its status changes.
         self::assertSame(InvitationStatus::Expired, $this->repository->find($expiredId)?->getStatus());
+        self::assertInstanceOf(Ulid::class, $validId);
         self::assertSame(InvitationStatus::Pending, $this->repository->find($validId)?->getStatus());
     }
 
