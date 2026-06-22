@@ -35,3 +35,9 @@ invitation:
     accept: 'Accept Invitation'
     alternative: 'If the button above doesn''t work, copy and paste this link into your browser:'
     info: 'If you weren''t expecting this invitation, you can safely ignore this email.'
+    reminder:
+        title: 'Your invitation to join %company% is about to expire'
+        message: 'Your invitation to join %company% on SolidInvoice will expire in 2 days.'
+        instructions: 'Click the button below to accept your invitation before it expires.'
+        expires: 'Expires'
+        info: 'If you no longer wish to join, you can safely ignore this email and the invitation will expire automatically.'

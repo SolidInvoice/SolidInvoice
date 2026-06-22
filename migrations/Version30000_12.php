@@ -21,11 +21,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 
-final class Version30000_13 extends AbstractMigration
+final class Version30000_12 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add expires_at to user_invitations so invitations have a limited validity period';
+        return 'Add expires_at and reminder_sent_at to user_invitations so invitations have a limited validity period and a tracked expiry reminder';
     }
 
     public function isTransactional(): bool
@@ -39,6 +39,10 @@ final class Version30000_13 extends AbstractMigration
 
         if (! $table->hasColumn('expires_at')) {
             $table->addColumn('expires_at', Types::DATETIMETZ_IMMUTABLE, ['notnull' => false]);
+        }
+
+        if (! $table->hasColumn('reminder_sent_at')) {
+            $table->addColumn('reminder_sent_at', Types::DATETIMETZ_IMMUTABLE, ['notnull' => false]);
         }
     }
 
@@ -70,6 +74,10 @@ final class Version30000_13 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $table = $schema->getTable(UserInvitation::TABLE_NAME);
+
+        if ($table->hasColumn('reminder_sent_at')) {
+            $table->dropColumn('reminder_sent_at');
+        }
 
         if ($table->hasColumn('expires_at')) {
             $table->dropColumn('expires_at');

@@ -167,4 +167,53 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
         self::assertSame(1, $this->repository->countPending($company));
     }
+
+    public function testDeleteInvitationsOnlyRemovesCurrentCompanyInvitations(): void
+    {
+        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
+        $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
+
+        $registry = self::getContainer()->get('doctrine');
+        $manager = $registry->getManager();
+        $company = $registry->getRepository(Company::class)->find($this->company->getId());
+
+        // An invitation belonging to another company that must never be deleted
+        // through the current company's context.
+        $otherCompany = new Company();
+        $otherCompany->setName('Other Company');
+        $otherCompany->currency = 'USD';
+        $manager->persist($otherCompany);
+
+        $own = new UserInvitation();
+        $own->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($company)
+            ->setStatus(InvitationStatus::Pending);
+        $this->repository->save($own);
+
+        $foreign = new UserInvitation();
+        $foreign->setEmail($this->faker->email)
+            ->setInvitedBy($inviter)
+            ->setCompany($otherCompany)
+            ->setStatus(InvitationStatus::Pending);
+        $this->repository->save($foreign);
+
+        $ownId = $own->getId();
+        $foreignId = $foreign->getId();
+
+        // The company filter (enabled for the current company) must scope deletion.
+        $deleted = $this->repository->deleteInvitations([(string) $ownId, (string) $foreignId]);
+
+        self::assertSame(1, $deleted);
+
+        $manager->clear();
+        self::assertNull($this->repository->find($ownId));
+
+        // The other company's invitation survives — verified directly against the
+        // database (bypassing ORM filters) so the assertion is unambiguous.
+        $remaining = (int) $registry->getConnection()
+            ->executeQuery('SELECT COUNT(*) FROM ' . UserInvitation::TABLE_NAME)
+            ->fetchOne();
+        self::assertSame(1, $remaining);
+    }
 }
