@@ -25,6 +25,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Action\SelectPlanActionTest
+ */
 final class SelectPlanAction extends AbstractController
 {
     public function __construct(

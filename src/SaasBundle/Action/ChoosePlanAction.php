@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 use function strtolower;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Action\ChoosePlanActionTest
+ */
 final class ChoosePlanAction extends AbstractController
 {
     /**

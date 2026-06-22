@@ -68,6 +68,7 @@ final class SelectPlanActionTest extends TestCase
 
         $container = new Container();
         $container->set('twig', $twig);
+
         $action->setContainer($container);
 
         $action();
