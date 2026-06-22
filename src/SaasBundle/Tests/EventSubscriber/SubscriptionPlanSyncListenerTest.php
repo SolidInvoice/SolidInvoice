@@ -161,7 +161,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscriptionRepository->method('findOneBy')->willReturn($subscription);
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->with('12345')->willReturn($newPlan);
+        $planRepository->expects(self::once())->method('find')->with('12345')->willReturn($newPlan);
 
         $listener = $this->makeListener($subscriptionRepository, $planRepository);
 
@@ -183,7 +183,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscriptionRepository->method('findOneBy')->willReturn($subscription);
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->with('67890')->willReturn($newPlan);
+        $planRepository->expects(self::once())->method('find')->with('67890')->willReturn($newPlan);
 
         $listener = $this->makeListener($subscriptionRepository, $planRepository);
 
