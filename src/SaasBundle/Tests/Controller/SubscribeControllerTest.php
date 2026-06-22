@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Controller;
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
+use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Tests\Telemetry\CollectingMessageBus;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
@@ -30,6 +34,7 @@ use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use Stringable;
+use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,16 +53,27 @@ use Throwable;
 #[CoversClass(SubscribeController::class)]
 final class SubscribeControllerTest extends TestCase
 {
+    private CollectingMessageBus $bus;
+
+    protected function setUp(): void
+    {
+        $this->bus = new CollectingMessageBus();
+    }
+
     public function testTransportExceptionRedirectsToOverviewWithErrorFlash(): void
     {
         $exception = new TransportException('HTTP/2 404 returned for "https://api.lemonsqueezy.com/v1/checkouts"');
 
-        $response = $this->invokeControllerWithCheckoutException($exception);
+        $response = $this->invokeController($exception);
 
         self::assertInstanceOf(RedirectResponse::class, $response[0]);
         self::assertSame('/billing/', $response[0]->getTargetUrl());
         self::assertArrayHasKey('error', $response[1]);
         self::assertNotEmpty($response[1]['error']);
+
+        self::assertCount(1, $this->bus->messages);
+        self::assertSame('saas_checkout_failed', $this->bus->messages[0]->payload['event']);
+        self::assertSame('pro', $this->bus->messages[0]->payload['properties']['plan']);
     }
 
     public function testHttpClientExceptionRedirectsToOverviewWithErrorFlash(): void
@@ -69,21 +85,42 @@ final class SubscribeControllerTest extends TestCase
             }
         };
 
-        $response = $this->invokeControllerWithCheckoutException($exception);
+        $response = $this->invokeController($exception);
 
         self::assertInstanceOf(RedirectResponse::class, $response[0]);
         self::assertSame('/billing/', $response[0]->getTargetUrl());
         self::assertArrayHasKey('error', $response[1]);
         self::assertNotEmpty($response[1]['error']);
+
+        self::assertCount(1, $this->bus->messages);
+        self::assertSame('saas_checkout_failed', $this->bus->messages[0]->payload['event']);
+    }
+
+    public function testSuccessfulCheckoutEmitsCheckoutStartedTelemetryAndRedirects(): void
+    {
+        $response = $this->invokeController(null);
+
+        self::assertInstanceOf(RedirectResponse::class, $response[0]);
+        self::assertSame('https://checkout.lemonsqueezy.com/buy/abc', $response[0]->getTargetUrl());
+
+        self::assertCount(1, $this->bus->messages);
+        self::assertSame('event', $this->bus->messages[0]->type);
+        self::assertSame('saas_checkout_started', $this->bus->messages[0]->payload['event']);
+        self::assertSame('pro', $this->bus->messages[0]->payload['properties']['plan']);
     }
 
     /**
      * @return array{0: RedirectResponse, 1: array<string, list<string|Stringable>>}
      */
-    private function invokeControllerWithCheckoutException(Throwable $exception): array
+    private function invokeController(?Throwable $exception): array
     {
         $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
-        $paymentIntegration->method('checkout')->willThrowException($exception);
+
+        if ($exception instanceof Throwable) {
+            $paymentIntegration->method('checkout')->willThrowException($exception);
+        } else {
+            $paymentIntegration->method('checkout')->willReturn('https://checkout.lemonsqueezy.com/buy/abc');
+        }
 
         $plan = new Plan();
         $plan->setName('Pro');
@@ -114,6 +151,7 @@ final class SubscribeControllerTest extends TestCase
             $companySelector,
             $this->createStub(PlanRepositoryInterface::class),
             $this->createStub(EntityManagerInterface::class),
+            $this->makeTelemetry(),
         );
 
         $session = new Session(new MockArraySessionStorage());
@@ -145,5 +183,23 @@ final class SubscribeControllerTest extends TestCase
         $response = $controller(new Request());
 
         return [$response, $session->getFlashBag()->all()];
+    }
+
+    private function makeTelemetry(): Telemetry
+    {
+        $vault = $this->createMock(AbstractVault::class);
+        $vault->method('generateKeys')->willReturn(true);
+
+        return new Telemetry(
+            $this->bus,
+            new ConfigWriter($vault, '/tmp/solidinvoice-test-config'),
+            DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]),
+            'build-123',
+            true,
+            'manual',
+            false,
+            'en',
+            null,
+        );
     }
 }
