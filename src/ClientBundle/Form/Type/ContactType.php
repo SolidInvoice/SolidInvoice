@@ -44,6 +44,7 @@ class ContactType extends AbstractType
             $builder->add('customFields', CustomFieldValueCollectionType::class, [
                 'target' => CustomFieldTarget::CONTACT,
                 'parent_record' => $options['data'] ?? null,
+                'manage_persistence' => false,
             ]);
         }
     }
