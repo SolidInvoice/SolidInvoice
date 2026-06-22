@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use SolidInvoice\UserBundle\Action\AcceptInvitation;
 use SolidInvoice\UserBundle\Action\ApiIndex;
-use SolidInvoice\UserBundle\Action\DeleteUserInvite;
 use SolidInvoice\UserBundle\Action\EditProfile;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Check;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Request;
@@ -48,10 +47,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_user_resend_invite', '/users/invite/{id}/resend')
         ->controller(ResendUserInvite::class);
-
-    $routingConfigurator
-        ->add('_user_delete_invite', '/users/invite/{id}/delete')
-        ->controller(DeleteUserInvite::class);
 
     $routingConfigurator
         ->add('_user_accept_invite', '/invite/accept/{id}')

@@ -15,8 +15,6 @@ namespace SolidInvoice\UserBundle\Repository;
 
 use DateTimeInterface;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -50,21 +48,36 @@ final class UserInvitationRepository extends EntityRepository
     }
 
     /**
+     * Deletes the invitations matching the given ids. Each invitation is fetched
+     * with a DQL query (rather than find()) so that the company filter is applied
+     * and only invitations belonging to the current company are removed —
+     * find() would return identity-map hits without applying the filter. Returns
+     * the number of invitations that were deleted.
+     *
      * @param array<string> $ids
-     * @throws ConversionException|Exception
      */
     public function deleteInvitations(array $ids): int
     {
-        $platform = $this->_em->getConnection()->getDatabasePlatform();
-        $type = Type::getType(UlidType::NAME);
-        $convertId = static fn (string $id) => $type->convertToDatabaseValue($id, $platform);
+        $deleted = 0;
 
-        return $this->createQueryBuilder('u')
-            ->delete()
-            ->where('u.id IN (:ids)')
-            ->setParameter('ids', array_map($convertId, $ids))
-            ->getQuery()
-            ->execute();
+        foreach ($ids as $id) {
+            $invitation = $this->createQueryBuilder('u')
+                ->where('u.id = :id')
+                ->setParameter('id', $id, UlidType::NAME)
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            if ($invitation instanceof UserInvitation) {
+                $this->_em->remove($invitation);
+                ++$deleted;
+            }
+        }
+
+        if ($deleted > 0) {
+            $this->_em->flush();
+        }
+
+        return $deleted;
     }
 
     public function delete(UserInvitation $invitation): void
@@ -90,6 +103,28 @@ final class UserInvitationRepository extends EntityRepository
             ->setParameter('now', $now)
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * Returns pending invitations that are due an expiry reminder: still pending,
+     * not yet reminded, and expiring within the given window (between now and the
+     * threshold).
+     *
+     * @return list<UserInvitation>
+     */
+    public function findDueForExpiryReminder(DateTimeInterface $now, DateTimeInterface $threshold): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.status = :status')
+            ->andWhere('u.reminderSentAt IS NULL')
+            ->andWhere('u.expiresAt IS NOT NULL')
+            ->andWhere('u.expiresAt > :now')
+            ->andWhere('u.expiresAt <= :threshold')
+            ->setParameter('status', InvitationStatus::Pending->value)
+            ->setParameter('now', $now)
+            ->setParameter('threshold', $threshold)
+            ->getQuery()
+            ->getResult();
     }
 
     public function countPendingInvitations(): int

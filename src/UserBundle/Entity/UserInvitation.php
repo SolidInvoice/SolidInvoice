@@ -58,6 +58,9 @@ class UserInvitation
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $expiresAt = null;
 
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $reminderSentAt = null;
+
     #[ORM\Column(type: Types::STRING, enumType: InvitationStatus::class)]
     private InvitationStatus $status = InvitationStatus::Pending;
 
@@ -120,6 +123,7 @@ class UserInvitation
     {
         $this->expiresAt = CarbonImmutable::now()->addDays(self::VALIDITY_DAYS);
         $this->status = InvitationStatus::Pending;
+        $this->reminderSentAt = null;
 
         return $this;
     }
@@ -127,6 +131,18 @@ class UserInvitation
     public function markExpired(): self
     {
         $this->status = InvitationStatus::Expired;
+
+        return $this;
+    }
+
+    public function getReminderSentAt(): ?DateTimeImmutable
+    {
+        return $this->reminderSentAt;
+    }
+
+    public function markReminderSent(): self
+    {
+        $this->reminderSentAt = CarbonImmutable::now();
 
         return $this;
     }

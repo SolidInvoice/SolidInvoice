@@ -1,0 +1,70 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'invitation.reminder.title'|trans({'%company%': invitation.company.name}, 'email') }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'invitation.reminder.message'|trans({'%company%': invitation.company.name}, 'email') }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'invitation.reminder.instructions'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {# Invitation details #}
+    {{ email.info_row('invitation.company'|trans({}, 'email'), invitation.company.name, true) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('invitation.email'|trans({}, 'email'), invitation.email) }}
+    {% if invitation.expiresAt is not null %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invitation.reminder.expires'|trans({}, 'email'), invitation.expiresAt|date('d F Y')) }}
+    {% endif %}
+
+    {{ email.spacer('lg') }}
+
+    {# Accept invitation button #}
+    {{ email.button('invitation.accept'|trans([], 'email'), url('_user_accept_invite', {'id': invitation.id}), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {# Alternative link #}
+    {% set invitationUrl = url('_user_accept_invite', {'id': invitation.id}) %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #626976; font-size: 14px; line-height: 1.5; margin: 0; Margin: 0; text-align: center;">
+                    {{ 'invitation.alternative'|trans({}, 'email') }}
+                </p>
+                <p style="color: #206bc4; font-size: 14px; margin: 8px 0 0 0; Margin: 8px 0 0 0; text-align: center; word-break: break-all;">
+                    <a href="{{ invitationUrl }}" rel="external" target="_blank" style="color: #206bc4; text-decoration: none;">{{ invitationUrl }}</a>
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {# Info notice #}
+    {{ email.alert_box('invitation.reminder.info'|trans({}, 'email'), 'warning') }}
+
+    {{ email.spacer('sm') }}
+{%- endblock -%}

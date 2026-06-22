@@ -38,4 +38,19 @@ final readonly class UserInvitation
 
         $this->mailer->send($mail);
     }
+
+    public function sendExpiryReminder(UserInvitationEntity $invitation): void
+    {
+        $mail = new TemplatedEmail();
+
+        $mail->to($invitation->getEmail())
+            ->from($invitation->getInvitedBy()?->getEmail())
+            ->subject(sprintf('Your invitation to join %s is about to expire', $invitation->getCompany()->getName()))
+            ->htmlTemplate('@SolidInvoiceUser/Email/invitation_reminder.html.twig')
+            ->context([
+                'invitation' => $invitation,
+            ]);
+
+        $this->mailer->send($mail);
+    }
 }
