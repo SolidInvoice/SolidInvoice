@@ -92,9 +92,7 @@ final class MailTransportType extends AbstractType
         }
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            /**
-             * @return null|array<string, mixed>
-             */
+            /** @return array<string, mixed>|null */
             public function transform(mixed $value): ?array
             {
                 if (! is_string($value)) {

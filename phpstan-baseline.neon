@@ -67,12 +67,6 @@ parameters:
 			path: src/ClientBundle/DataGrid/ClientGrid.php
 
 		-
-			message: '#^Call to an undefined method SolidInvoice\\ClientBundle\\Entity\\Client\:\:setVatNumber\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/ClientBundle/DummyData/ClientDummyDataLoader.php
-
-		-
 			message: '#^Property SolidInvoice\\ClientBundle\\Entity\\Address\:\:\$created type mapping mismatch\: property can contain DateTimeInterface\|null but database expects DateTimeInterface\.$#'
 			identifier: doctrine.columnType
 			count: 1
