@@ -51,12 +51,12 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): bool
     {
-        return $request->headers->has('X-API-TOKEN');
+        return null !== $this->extractToken($request);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $apiToken = $request->headers->get('X-API-TOKEN');
+        $apiToken = $this->extractToken($request);
 
         $history = new ApiTokenHistory();
 
@@ -98,6 +98,13 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         return null;
     }
 
+    private function extractToken(Request $request): ?string
+    {
+        $apiToken = trim((string) $request->headers->get('X-API-TOKEN'));
+
+        return $apiToken === '' ? null : $apiToken;
+    }
+
     private function extractReason(AccessDecision $decision): string
     {
         $reasons = [];
@@ -124,11 +131,11 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $apiToken = $request->headers->get('X-API-TOKEN');
+        $apiToken = $this->extractToken($request);
 
         if (null === $apiToken) {
-            // The token header was empty, authentication fails with HTTP Status
-            // Code 401 "Unauthorized"
+            // The token header was missing or empty, authentication fails with
+            // HTTP Status Code 401 "Unauthorized"
             throw new CustomUserMessageAuthenticationException('No API token provided');
         }
 
