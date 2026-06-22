@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidWorx\Platform\SaasBundle\Dto\LemonSqueezy\Subscription as LemonSqueezySubscription;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -23,6 +25,7 @@ use SolidWorx\Platform\SaasBundle\Event\SubscriptionUpdatedEvent;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use function strtolower;
 
 /**
  * Listens to Lemon Squeezy `subscription_created` / `subscription_updated`
@@ -50,6 +53,7 @@ final readonly class SubscriptionPlanSyncListener
         private SubscriptionRepositoryInterface $subscriptionRepository,
         private PlanRepositoryInterface $planRepository,
         private LoggerInterface $logger,
+        private Telemetry $telemetry,
     ) {
     }
 
@@ -103,11 +107,22 @@ final readonly class SubscriptionPlanSyncListener
             return;
         }
 
+        // Capture whether this is a first conversion (free → paid) before the
+        // plan is overwritten, so the telemetry below counts genuine
+        // activations and not paid → paid upgrades (e.g. solo → business).
+        $isFirstConversion = $subscription->getPlan()->isFree() && ! $targetPlan->isFree();
+
         // Skip SubscriptionManager::changePlan() here: it guards against
         // mutating ACTIVE externally-billed subscriptions, which is *exactly*
         // the state this listener fires for. Lemon Squeezy is the authority
         // for the switch — we just record it.
         $subscription->setPlan($targetPlan);
         $this->subscriptionRepository->save($subscription);
+
+        if ($isFirstConversion) {
+            $this->telemetry->event(TelemetryEvent::SaasSubscriptionActivated, [
+                'plan' => strtolower($targetPlan->getName()),
+            ]);
+        }
     }
 }

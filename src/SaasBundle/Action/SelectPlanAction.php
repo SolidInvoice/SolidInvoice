@@ -15,6 +15,8 @@ namespace SolidInvoice\SaasBundle\Action;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
@@ -30,6 +32,7 @@ final class SelectPlanAction extends AbstractController
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly Telemetry $telemetry,
     ) {
     }
 
@@ -52,6 +55,8 @@ final class SelectPlanAction extends AbstractController
         if (count($plans) === 1) {
             return $this->redirectToRoute('saas_subscription_checkout');
         }
+
+        $this->telemetry->event(TelemetryEvent::SaasPricingPageViewed);
 
         return $this->render('@SolidInvoiceSaas/subscription/pricing.html.twig', [
             'plans' => $plans,

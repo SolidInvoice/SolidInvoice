@@ -16,6 +16,8 @@ namespace SolidInvoice\SaasBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
@@ -29,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use function strtolower;
 
 /**
  * @see \SolidInvoice\SaasBundle\Tests\Controller\SubscribeControllerTest
@@ -41,6 +44,7 @@ class SubscribeController extends AbstractController
         private readonly CompanySelectorInterface $companySelector,
         private readonly PlanRepositoryInterface $planRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly Telemetry $telemetry,
     ) {
     }
 
@@ -79,10 +83,16 @@ class SubscribeController extends AbstractController
             }
         }
 
+        // Capture the plan the user is checking out (the in-memory swapped
+        // target when a pending plan id was supplied) before the `finally`
+        // block refreshes the entity and discards the swap.
+        $planName = strtolower($subscription->getPlan()->getName());
+
         try {
             $checkoutUrl = $this->subscriptionManager
                 ->getCheckoutUrl($subscription, $options);
         } catch (HttpExceptionInterface | TransportExceptionInterface) {
+            $this->telemetry->event(TelemetryEvent::SaasCheckoutFailed, ['plan' => $planName]);
             $this->addFlash('error', 'Unable to create checkout session. Please try again later.');
 
             return $this->redirectToRoute('billing_index');
@@ -95,6 +105,8 @@ class SubscribeController extends AbstractController
                 $this->entityManager->refresh($subscription);
             }
         }
+
+        $this->telemetry->event(TelemetryEvent::SaasCheckoutStarted, ['plan' => $planName]);
 
         return $this->redirect($checkoutUrl);
     }

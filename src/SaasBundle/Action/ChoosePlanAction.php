@@ -15,6 +15,8 @@ namespace SolidInvoice\SaasBundle\Action;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Telemetry\Telemetry;
+use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -25,6 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use function strtolower;
 
 final class ChoosePlanAction extends AbstractController
 {
@@ -42,6 +45,7 @@ final class ChoosePlanAction extends AbstractController
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly Telemetry $telemetry,
     ) {
     }
 
@@ -73,6 +77,11 @@ final class ChoosePlanAction extends AbstractController
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
+
+        $this->telemetry->event(TelemetryEvent::SaasPlanSelected, [
+            'plan' => strtolower($plan->getName()),
+            'is_paid' => ! $plan->isFree(),
+        ]);
 
         // Free plan: no Lemon Squeezy round-trip; safe to commit locally now.
         if ($plan->isFree()) {
