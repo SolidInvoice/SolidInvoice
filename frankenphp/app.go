@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -202,7 +203,7 @@ func setupCommands() {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set log format early (before any logging)
 			if logFormat != "" {
-				must(os.Setenv("LOG_FORMAT", logFormat))
+				must(os.Setenv("SOLIDINVOICE_LOG_FORMAT", logFormat))
 			}
 
 			caddyLogInfo := `
@@ -521,6 +522,85 @@ func setupCommands() {
 	}
 	rootCmd.AddCommand(runCmd)
 
+	runCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
+		if !cmd.Flags().Changed("port") {
+			if v := os.Getenv("SOLIDINVOICE_PORT"); v != "" {
+				httpPort = v
+			}
+		}
+		if !cmd.Flags().Changed("server-ip") {
+			if v := os.Getenv("SOLIDINVOICE_SERVER_IP"); v != "" {
+				serverIp = v
+			}
+		}
+		if !cmd.Flags().Changed("domain") {
+			if v := os.Getenv("SOLIDINVOICE_DOMAIN"); v != "" {
+				domain = v
+			}
+		}
+		if !cmd.Flags().Changed("disable-https") {
+			v := os.Getenv("SOLIDINVOICE_DISABLE_HTTPS")
+			if v == "1" || strings.EqualFold(v, "true") {
+				disableHttps = true
+			}
+		}
+		if !cmd.Flags().Changed("lets-encrypt") {
+			v := os.Getenv("SOLIDINVOICE_LETS_ENCRYPT")
+			if v == "1" || strings.EqualFold(v, "true") {
+				enableLetsEncrypt = true
+			}
+		}
+		if !cmd.Flags().Changed("ssl-cert") {
+			if v := os.Getenv("SOLIDINVOICE_SSL_CERT"); v != "" {
+				sslCertFile = v
+			}
+		}
+		if !cmd.Flags().Changed("ssl-key") {
+			if v := os.Getenv("SOLIDINVOICE_SSL_KEY"); v != "" {
+				sslKeyFile = v
+			}
+		}
+		if !cmd.Flags().Changed("worker-threads") {
+			if v := os.Getenv("SOLIDINVOICE_WORKER_THREADS"); v != "" {
+				if n, err := strconv.Atoi(v); err == nil {
+					workerThreads = n
+				}
+			}
+		}
+		if !cmd.Flags().Changed("messenger-workers") {
+			if v := os.Getenv("SOLIDINVOICE_MESSENGER_WORKERS"); v != "" {
+				if n, err := strconv.Atoi(v); err == nil {
+					messengerWorkers = n
+				}
+			}
+		}
+		if !cmd.Flags().Changed("skip-intro") {
+			v := os.Getenv("SOLIDINVOICE_SKIP_INTRO")
+			if v == "1" || strings.EqualFold(v, "true") {
+				skipIntro = true
+			}
+		}
+		if !cmd.Flags().Changed("enable-metrics") {
+			v := os.Getenv("SOLIDINVOICE_ENABLE_METRICS")
+			if v == "1" || strings.EqualFold(v, "true") {
+				enableMetrics = true
+			}
+		}
+		if !cmd.Flags().Changed("metrics-port") {
+			if v := os.Getenv("SOLIDINVOICE_METRICS_PORT"); v != "" {
+				if n, err := strconv.Atoi(v); err == nil {
+					metricsPort = n
+				}
+			}
+		}
+		if !cmd.Flags().Changed("log-format") {
+			if v := os.Getenv("SOLIDINVOICE_LOG_FORMAT"); v != "" {
+				logFormat = v
+			}
+		}
+		return nil
+	}
+
 	runCmd.PersistentFlags().StringVar(&domain, "domain", "", "The domain name to use for the application. When specifying a domain, an SSL certificate will automatically be generated for you")
 	runCmd.PersistentFlags().StringVar(&httpPort, "port", defaultPort, "The default port to use for the application. When specifying a domain to use, the port will default to 443")
 	runCmd.PersistentFlags().StringVar(&serverIp, "server-ip", defaultServerIp, "If you have multiple IP addresses on your server, specify the IP address to use. By default, the server will bind to all IP addresses")
@@ -542,7 +622,7 @@ func setupCommands() {
 		Long:  "Starts one or more Symfony Messenger consumer processes managed by a supervisor loop with automatic restart and graceful shutdown. Intended for use in dedicated worker containers (e.g. a Kubernetes worker Deployment). Install detection is built in — workers wait automatically until the application is installed.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if logFormat != "" {
-				must(os.Setenv("LOG_FORMAT", logFormat))
+				must(os.Setenv("SOLIDINVOICE_LOG_FORMAT", logFormat))
 			}
 
 			caddyLogInfo := `
@@ -621,6 +701,22 @@ func setupCommands() {
 	}
 
 	rootCmd.AddCommand(workerCmd)
+
+	workerCmd.PreRunE = func(cmd *cobra.Command, args []string) error {
+		if !cmd.Flags().Changed("workers") {
+			if v := os.Getenv("SOLIDINVOICE_WORKER_COUNT"); v != "" {
+				if n, err := strconv.Atoi(v); err == nil {
+					workerCount = n
+				}
+			}
+		}
+		if !cmd.Flags().Changed("log-format") {
+			if v := os.Getenv("SOLIDINVOICE_LOG_FORMAT"); v != "" {
+				logFormat = v
+			}
+		}
+		return nil
+	}
 
 	workerCmd.PersistentFlags().IntVar(&workerCount, "workers", 1, "Number of messenger worker processes to spawn (default: 1). Each worker independently consumes async messages and is automatically restarted on failure.")
 	workerCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable output")

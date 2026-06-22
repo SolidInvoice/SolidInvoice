@@ -9,7 +9,7 @@ Type=exec
 User=solidinvoice
 Group=solidinvoice
 
-ExecStart=/usr/bin/solidinvoice run --disable-https --skip-intro --log-format json
+ExecStart=/usr/bin/solidinvoice run
 
 EnvironmentFile=-/etc/solidinvoice/solidinvoice.env
 

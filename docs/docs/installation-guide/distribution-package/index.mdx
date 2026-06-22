@@ -124,8 +124,8 @@ The first-run wizard configures everything you need to get started. The variable
 | `SOLIDINVOICE_APP_SECRET` | Long random string used to sign cookies and CSRF tokens. |
 | `SOLIDINVOICE_APPLICATION_URL` | Public URL of the installation, e.g. `https://invoice.example.com`. |
 | `SOLIDINVOICE_DATABASE_URL` | Database DSN. The first-run wizard can also write this for you. |
-| `SOLIDINVOICE_MAILER_DSN` | Outbound mail transport (SMTP, Mailgun, SendGrid, etc.). |
-| `SOLIDINVOICE_MAILER_SENDER` | The `From:` address SolidInvoice sends mail from. |
+| `SOLIDINVOICE_MAILER_DSN` | Outbound mail transport (SMTP, Mailgun, SendGrid, etc.). Overrides the transport configured in the UI. |
+| `SOLIDINVOICE_MAILER_SENDER` | The `From:` address SolidInvoice sends mail from. Overrides the address configured in the UI. |
 | `SOLIDINVOICE_LOCALE` | Default locale (e.g. `en`). |
 
 Other integrations (Sentry, Meilisearch, Google OAuth) have their own environment variables and are documented on their respective pages.
