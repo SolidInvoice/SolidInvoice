@@ -208,6 +208,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         self::assertSame(1, $deleted);
 
         $manager->clear();
+        self::assertInstanceOf(Ulid::class, $ownId);
         self::assertNull($this->repository->find($ownId));
 
         // The other company's invitation survives — verified directly against the
