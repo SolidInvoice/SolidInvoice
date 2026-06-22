@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Action\DeleteUserInviteTest
+ */
 final readonly class DeleteUserInvite
 {
     public function __construct(

@@ -73,6 +73,7 @@ final class MarkExpiredInvitationsCommandTest extends KernelTestCase
 
         CarbonImmutable::setTestNow(CarbonImmutable::now()->subDays(UserInvitation::VALIDITY_DAYS + 1));
         $expired = new UserInvitation();
+        self::assertInstanceOf(Company::class, $company);
         $expired->setEmail('expired@example.com')
             ->setInvitedBy($inviter)
             ->setCompany($company)
