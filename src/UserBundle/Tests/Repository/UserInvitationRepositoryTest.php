@@ -182,6 +182,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $otherCompany = new Company();
         $otherCompany->setName('Other Company');
         $otherCompany->currency = 'USD';
+
         $manager->persist($otherCompany);
 
         $own = new UserInvitation();
