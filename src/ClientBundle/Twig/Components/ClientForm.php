@@ -18,6 +18,8 @@ use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +42,8 @@ class ClientForm extends AbstractController
     public ?Client $client = null;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager
+        private readonly EntityManagerInterface $manager,
+        private readonly CustomFieldFormWriter $customFieldFormWriter,
     ) {
     }
 
@@ -62,6 +65,7 @@ class ClientForm extends AbstractController
     public function save(): RedirectResponse
     {
         $this->submitForm();
+
         /** @var Client $client */
         $client = $this->getForm()->getData();
         foreach ($client->getAddresses() as $address) {
@@ -72,6 +76,33 @@ class ClientForm extends AbstractController
 
         $this->manager->persist($client);
         $this->manager->flush();
+
+        $form = $this->getForm();
+
+        if ($form->has('customFields')) {
+            $this->customFieldFormWriter->write(
+                $form->get('customFields'),
+                CustomFieldTarget::CLIENT,
+                $client->getId(),
+                $client,
+            );
+        }
+
+        foreach ($form->get('contacts') as $contactForm) {
+            if ($contactForm->has('customFields')) {
+                /** @var Contact $contact */
+                $contact = $contactForm->getData();
+                $this->customFieldFormWriter->write(
+                    $contactForm->get('customFields'),
+                    CustomFieldTarget::CONTACT,
+                    $contact->getId(),
+                    $contact,
+                );
+            }
+        }
+
+        $this->manager->flush();
+
         $this->addFlash('success', 'client.create.success');
         return $this->redirectToRoute('_clients_view', [
             'id' => $client->getId(),
