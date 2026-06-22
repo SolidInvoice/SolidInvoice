@@ -83,8 +83,6 @@ curl -H "X-API-TOKEN: <your-token>" \
      https://your-instance.example/api/invoices
 ```
 
-A query-string fallback (`?token=<your-token>`) is also accepted for environments where setting headers is awkward, but the header is preferred — query strings end up in webserver access logs, browser history, and HTTP referrers.
-
 The API is **stateless** — there is no session, no CSRF token, and no login round-trip. Send the header on every request. Tokens are scoped to one user *and* one company; if your account belongs to multiple companies, generate a separate token per company by switching companies in the UI before creating the token.
 
 If a request lacks a valid token, the server responds with `401 Unauthorized` and a JSON body:

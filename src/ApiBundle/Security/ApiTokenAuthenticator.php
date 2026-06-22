@@ -51,12 +51,12 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): bool
     {
-        return $request->headers->has('X-API-TOKEN') || $request->query->has('token');
+        return $request->headers->has('X-API-TOKEN');
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $apiToken = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
+        $apiToken = $request->headers->get('X-API-TOKEN');
 
         $history = new ApiTokenHistory();
 
@@ -124,7 +124,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $apiToken = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
+        $apiToken = $request->headers->get('X-API-TOKEN');
 
         if (null === $apiToken) {
             // The token header was empty, authentication fails with HTTP Status

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+### Changes
+
+* API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+
 3.0.0 / 2026-06-17
 -------------------
 
