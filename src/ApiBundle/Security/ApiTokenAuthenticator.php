@@ -37,6 +37,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Security\ApiTokenAuthenticatorTest
+ */
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
