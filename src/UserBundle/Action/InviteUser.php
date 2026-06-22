@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidInvoice\UserBundle\Form\Type\UserInviteType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -86,7 +87,7 @@ final class InviteUser extends AbstractController
 
             $data->setCompany($company);
             $data->setInvitedBy($invitedBy);
-            $data->setStatus(UserInvitation::STATUS_PENDING);
+            $data->setStatus(InvitationStatus::Pending);
 
             $validation = $this->validator->validate($data);
 

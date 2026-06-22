@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Entity;
 
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -34,7 +36,10 @@ class UserInvitation
 
     use CompanyAware;
 
-    final public const string STATUS_PENDING = 'pending';
+    /**
+     * Number of days an invitation remains valid after it is created.
+     */
+    final public const int VALIDITY_DAYS = 7;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -50,8 +55,11 @@ class UserInvitation
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
     private readonly DateTimeInterface $created;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $status = self::STATUS_PENDING;
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $expiresAt = null;
+
+    #[ORM\Column(type: Types::STRING, enumType: InvitationStatus::class)]
+    private InvitationStatus $status = InvitationStatus::Pending;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'invited_by_id', nullable: false)]
@@ -59,7 +67,9 @@ class UserInvitation
 
     public function __construct()
     {
-        $this->created = CarbonImmutable::now();
+        $now = CarbonImmutable::now();
+        $this->created = $now;
+        $this->expiresAt = $now->addDays(self::VALIDITY_DAYS);
     }
 
     public function getId(): ?Ulid
@@ -96,12 +106,44 @@ class UserInvitation
         return $this->created;
     }
 
-    public function getStatus(): string
+    public function getExpiresAt(): ?DateTimeImmutable
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * Extends the validity window, starting from now, and returns the invitation
+     * to a pending state. Used when an invitation is re-sent so that the new link
+     * is usable for the full validity period again.
+     */
+    public function renew(): self
+    {
+        $this->expiresAt = CarbonImmutable::now()->addDays(self::VALIDITY_DAYS);
+        $this->status = InvitationStatus::Pending;
+
+        return $this;
+    }
+
+    public function markExpired(): self
+    {
+        $this->status = InvitationStatus::Expired;
+
+        return $this;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->status === InvitationStatus::Expired
+            || ($this->expiresAt instanceof DateTimeInterface
+                && $this->expiresAt < CarbonImmutable::now());
+    }
+
+    public function getStatus(): InvitationStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(InvitationStatus $status): self
     {
         $this->status = $status;
 

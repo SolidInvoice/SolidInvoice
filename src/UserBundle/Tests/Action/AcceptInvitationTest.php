@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Action;
 
+use Carbon\CarbonImmutable;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
@@ -55,5 +60,44 @@ final class AcceptInvitationTest extends WebTestCase
         $client->request(Request::METHOD_GET, '/invite/accept/' . $validUlid);
 
         self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testExpiredInvitationIsRejectedAndMarkedExpired(): void
+    {
+        $inviter = new User();
+        $inviter->setEmail('inviter@example.com');
+        $inviter->setPassword('invalid');
+        $inviter->setEnabled(true);
+
+        /** @var ManagerRegistry $registry */
+        $registry = self::getContainer()->get('doctrine');
+        $manager = $registry->getManager();
+        $manager->persist($inviter);
+
+        // Build an invitation whose validity window has already elapsed.
+        CarbonImmutable::setTestNow(CarbonImmutable::now()->subDays(UserInvitation::VALIDITY_DAYS + 1));
+        $invitation = new UserInvitation();
+        $invitation->setEmail('expired-invite@example.com')
+            ->setInvitedBy($inviter)
+            ->setCompany($this->company)
+            ->setStatus(InvitationStatus::Pending);
+        CarbonImmutable::setTestNow();
+
+        $manager->persist($invitation);
+        $manager->flush();
+
+        $id = (string) $invitation->getId();
+        $manager->clear();
+
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request(Request::METHOD_GET, '/invite/accept/' . $id);
+
+        self::assertResponseStatusCodeSame(404);
+
+        // The invitation is retained but flagged as expired when it is rejected.
+        $invitation = self::getContainer()->get('doctrine')->getRepository(UserInvitation::class)->find($id);
+        self::assertInstanceOf(UserInvitation::class, $invitation);
+        self::assertSame(InvitationStatus::Expired, $invitation->getStatus());
     }
 }

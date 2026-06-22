@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use DateTimeInterface;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -22,6 +23,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
@@ -71,13 +73,32 @@ final class UserInvitationRepository extends EntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * Flags pending invitations whose validity window has elapsed as expired.
+     * Returns the number of invitations that were updated.
+     */
+    public function markExpired(DateTimeInterface $now): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->update()
+            ->set('u.status', ':expired')
+            ->where('u.status = :pending')
+            ->andWhere('u.expiresAt IS NOT NULL')
+            ->andWhere('u.expiresAt < :now')
+            ->setParameter('expired', InvitationStatus::Expired->value)
+            ->setParameter('pending', InvitationStatus::Pending->value)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->execute();
+    }
+
     public function countPendingInvitations(): int
     {
         $qb = $this->createQueryBuilder('u');
 
         $qb->select('COUNT(u.id)')
             ->where('u.status = :status')
-            ->setParameter('status', UserInvitation::STATUS_PENDING);
+            ->setParameter('status', InvitationStatus::Pending->value);
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
@@ -98,7 +119,7 @@ final class UserInvitationRepository extends EntityRepository
         $qb->select('COUNT(u.id)')
             ->where('u.status = :status')
             ->andWhere('u.company = :companyId')
-            ->setParameter('status', UserInvitation::STATUS_PENDING)
+            ->setParameter('status', InvitationStatus::Pending->value)
             ->setParameter('companyId', $company->getId(), UlidType::NAME);
 
         try {

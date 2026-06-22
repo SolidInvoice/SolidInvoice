@@ -15,17 +15,15 @@ namespace SolidInvoice\UserBundle\Action;
 
 use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
-use SolidInvoice\UserBundle\Entity\UserInvitation as UserInvitationEntity;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
-use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 
-final readonly class ResendUserInvite
+final readonly class DeleteUserInvite
 {
     public function __construct(
-        private UserInvitation $invitation,
         private UserInvitationRepository $invitationRepository,
         private RouterInterface $router
     ) {
@@ -33,13 +31,12 @@ final readonly class ResendUserInvite
 
     public function __invoke(string $id): RedirectResponse
     {
-        $invitation = $this->invitationRepository->find(Ulid::fromString($id));
+        if (Ulid::isValid($id)) {
+            $invitation = $this->invitationRepository->find(Ulid::fromString($id));
 
-        if ($invitation instanceof UserInvitationEntity) {
-            $invitation->renew();
-            $this->invitationRepository->save($invitation);
-
-            $this->invitation->sendUserInvitation($invitation);
+            if ($invitation instanceof UserInvitation) {
+                $this->invitationRepository->delete($invitation);
+            }
         }
 
         $route = $this->router->generate('_users_list');
@@ -47,7 +44,7 @@ final readonly class ResendUserInvite
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): Generator
             {
-                yield FlashResponse::FLASH_SUCCESS => 'users.invitation.success';
+                yield FlashResponse::FLASH_SUCCESS => 'users.invitation.delete.success';
             }
         };
     }
