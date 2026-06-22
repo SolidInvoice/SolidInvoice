@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Doctrine\Migrations\Version\Comparator;
+use SolidInvoice\CoreBundle\Doctrine\Migrations\NaturalVersionComparator;
 use Symfony\Config\DoctrineMigrationsConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
@@ -22,4 +24,6 @@ return static function (DoctrineMigrationsConfig $config): void {
         ->tableStorage()
         ->tableName('migration_versions')
     ;
+
+    $config->services(Comparator::class, NaturalVersionComparator::class);
 };
