@@ -44,7 +44,7 @@ final class ContactInfoTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $component->set('formValues', [
+        $component->set('contact', [
             'firstName' => 'Jane',
             'lastName' => 'Smith',
             'email' => 'jane@example.com',

@@ -37,7 +37,7 @@ final class ContactCollectionTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $component->set('formValues', [
+        $component->set('contact', [
             'firstName' => 'John',
             'lastName' => 'Doe',
             'email' => 'john@example.com',
