@@ -17,9 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ContactCollection;
-use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
-use SolidInvoice\CoreBundle\Enum\CustomFieldType;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use Zenstruck\Foundry\Test\Factories;
@@ -31,17 +29,7 @@ final class ContactCollectionTest extends LiveComponentTest
 
     public function testSaveNewContactPersistsCustomFieldValue(): void
     {
-        $em = self::getContainer()->get('doctrine.orm.entity_manager');
-
         $client = ClientFactory::createOne(['company' => $this->company])->_real();
-
-        $field = new CustomField()
-            ->setLabel('Phone')
-            ->setTarget(CustomFieldTarget::CONTACT)
-            ->setType(CustomFieldType::TEXT)
-            ->setCompany($this->company);
-        $em->persist($field);
-        $em->flush();
 
         $component = $this->createLiveComponent(
             name: ContactCollection::class,
