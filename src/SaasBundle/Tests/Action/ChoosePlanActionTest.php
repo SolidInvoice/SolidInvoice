@@ -96,7 +96,7 @@ final class ChoosePlanActionTest extends TestCase
         // changePlan()/activate() (free-plan path) just persist via the mocked
         // repository.
         $subscriptionManager = new SubscriptionManager(
-            $this->createMock(SubscriptionRepositoryInterface::class),
+            $this->createStub(SubscriptionRepositoryInterface::class),
             $this->createStub(PlanRepositoryInterface::class),
             $this->createStub(PaymentIntegrationInterface::class),
         );
@@ -130,6 +130,7 @@ final class ChoosePlanActionTest extends TestCase
         $container->set('security.csrf.token_manager', $csrfTokenManager);
         $container->set('router', $router);
         $container->set('request_stack', $requestStack);
+
         $action->setContainer($container);
 
         return [$action, $bus];
@@ -137,7 +138,7 @@ final class ChoosePlanActionTest extends TestCase
 
     private function makeRequest(string $planId): Request
     {
-        $request = Request::create('/billing/subscription/plans/choose', 'POST', [
+        $request = Request::create('/billing/subscription/plans/choose', Request::METHOD_POST, [
             '_token' => 'token',
             'plan' => $planId,
         ]);
