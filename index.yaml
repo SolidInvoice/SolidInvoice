@@ -1,9 +1,49 @@
 apiVersion: v1
 entries:
   solidinvoice:
+  - annotations:
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Website
+          url: https://solidinvoice.co
+        - name: Documentation
+          url: https://solidinvoice.co/docs
+        - name: Source Code
+          url: https://github.com/SolidInvoice/SolidInvoice
+      artifacthub.io/maintainers: |
+        - name: Pierre du Plessis
+          email: open-source@solidworx.co
+    apiVersion: v2
+    appVersion: 3.0.1
+    created: "2026-06-23T20:22:44.706631847Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.x.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.x.x
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.x.x
+    description: Simple and elegant open-source invoicing application
+    digest: 3f4bf788626e0ee66ab5c4ba13c762488cd43c40aea11e083ceea9cc892fe396
+    icon: https://solidinvoice.co/logo.png
+    name: solidinvoice
+    type: application
+    urls:
+    - https://charts.solidinvoice.co/solidinvoice-3.0.1.tgz
+    version: 3.0.1
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2026-06-18T13:57:22.826165729Z"
+    created: "2026-06-23T20:22:44.691521076Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -31,7 +71,7 @@ entries:
     version: 3.0.0
   - apiVersion: v2
     appVersion: 3.0.0-alpha2
-    created: "2026-06-18T13:57:22.811024964Z"
+    created: "2026-06-23T20:22:44.676914855Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -57,4 +97,4 @@ entries:
     urls:
     - https://charts.solidinvoice.co/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
-generated: "2026-06-18T13:57:22.795538779Z"
+generated: "2026-06-23T20:22:44.658318921Z"
