@@ -55,6 +55,10 @@ final class ClientCredit extends AbstractController
     {
         $this->submitForm();
 
+        if (! $this->getForm()->isValid()) {
+            return;
+        }
+
         $data = $this->getForm()->getData();
 
         $this->repository->addCredit($this->client, $data['amount'] ?? 0);
