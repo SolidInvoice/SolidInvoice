@@ -63,7 +63,7 @@ final class DeleteUserInviteTest extends WebTestCase
         $inviter->setEnabled(true);
 
         $manager = self::getContainer()->get('doctrine')->getManager();
-        \assert($manager instanceof ObjectManager);
+        self::assertInstanceOf(ObjectManager::class, $manager);
         $manager->persist($inviter);
 
         if ($status === InvitationStatus::Expired) {
