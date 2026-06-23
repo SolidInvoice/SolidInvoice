@@ -20,21 +20,23 @@ use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\UserBundle\DataGrid\ApiTokenHistoryGrid;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Ulid;
 
 final class ApiTokenHistoryGridTest extends TestCase
 {
     public function testEntityFQCNReturnsApiTokenHistoryClass(): void
     {
-        $grid = new ApiTokenHistoryGrid();
+        $grid = new ApiTokenHistoryGrid($this->createStub(Security::class));
 
         self::assertSame(ApiTokenHistory::class, $grid->entityFQCN());
     }
 
-    public function testQueryAddsTokenFilterWhenTokenIdProvided(): void
+    public function testQueryAlwaysScopesToCurrentUser(): void
     {
-        $tokenId = Ulid::generate();
+        $userId = new Ulid();
 
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $entityManager = $this->createStub(EntityManagerInterface::class);
@@ -42,14 +44,20 @@ final class ApiTokenHistoryGridTest extends TestCase
 
         $queryBuilder
             ->expects(self::once())
+            ->method('join')
+            ->with(ORMSource::ALIAS . '.token', 'apiToken')
+            ->willReturnSelf();
+
+        $queryBuilder
+            ->expects(self::once())
             ->method('andWhere')
-            ->with('IDENTITY(' . ORMSource::ALIAS . '.token) = :token')
+            ->with('apiToken.user = :user')
             ->willReturnSelf();
 
         $queryBuilder
             ->expects(self::once())
             ->method('setParameter')
-            ->with('token', $tokenId, UlidType::NAME)
+            ->with('user', $userId, UlidType::NAME)
             ->willReturnSelf();
 
         $queryBuilder
@@ -64,7 +72,72 @@ final class ApiTokenHistoryGridTest extends TestCase
             ->with(100)
             ->willReturnSelf();
 
-        $grid = new ApiTokenHistoryGrid();
+        $grid = new ApiTokenHistoryGrid($this->mockSecurity($userId));
+
+        $result = $grid->query($entityManager, $query);
+
+        self::assertSame($query, $result);
+    }
+
+    public function testQueryAddsTokenFilterWhenTokenIdProvided(): void
+    {
+        $userId = new Ulid();
+        $tokenId = new Ulid();
+
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $query = new Query($queryBuilder, ORMSource::ALIAS);
+
+        $queryBuilder
+            ->expects(self::once())
+            ->method('join')
+            ->with(ORMSource::ALIAS . '.token', 'apiToken')
+            ->willReturnSelf();
+
+        $queryBuilder
+            ->expects(self::exactly(2))
+            ->method('andWhere')
+            ->willReturnCallback(static function (string $where) use ($queryBuilder): QueryBuilder {
+                static $calls = [];
+                $calls[] = $where;
+
+                self::assertContains($where, [
+                    'apiToken.user = :user',
+                    'IDENTITY(' . ORMSource::ALIAS . '.token) = :token',
+                ]);
+
+                return $queryBuilder;
+            });
+
+        $queryBuilder
+            ->expects(self::exactly(2))
+            ->method('setParameter')
+            ->willReturnCallback(static function (string $name, $value, $type) use ($queryBuilder, $userId, $tokenId): QueryBuilder {
+                if ('user' === $name) {
+                    self::assertSame($userId, $value);
+                    self::assertSame(UlidType::NAME, $type);
+                } else {
+                    self::assertSame('token', $name);
+                    self::assertSame($tokenId, $value);
+                    self::assertSame(UlidType::NAME, $type);
+                }
+
+                return $queryBuilder;
+            });
+
+        $queryBuilder
+            ->expects(self::once())
+            ->method('orderBy')
+            ->with(ORMSource::ALIAS . '.created', 'DESC')
+            ->willReturnSelf();
+
+        $queryBuilder
+            ->expects(self::once())
+            ->method('setMaxResults')
+            ->with(100)
+            ->willReturnSelf();
+
+        $grid = new ApiTokenHistoryGrid($this->mockSecurity($userId));
         $grid->initialize(['token_id' => $tokenId]);
 
         $result = $grid->query($entityManager, $query);
@@ -72,36 +145,14 @@ final class ApiTokenHistoryGridTest extends TestCase
         self::assertSame($query, $result);
     }
 
-    public function testQueryDoesNotAddTokenFilterWhenTokenIdNotProvided(): void
+    private function mockSecurity(Ulid $userId): Security
     {
-        $queryBuilder = $this->createMock(QueryBuilder::class);
-        $entityManager = $this->createStub(EntityManagerInterface::class);
-        $query = new Query($queryBuilder, ORMSource::ALIAS);
+        $user = $this->createStub(User::class);
+        $user->method('getId')->willReturn($userId);
 
-        $queryBuilder
-            ->expects(self::never())
-            ->method('andWhere');
+        $security = $this->createStub(Security::class);
+        $security->method('getUser')->willReturn($user);
 
-        $queryBuilder
-            ->expects(self::never())
-            ->method('setParameter');
-
-        $queryBuilder
-            ->expects(self::once())
-            ->method('orderBy')
-            ->with(ORMSource::ALIAS . '.created', 'DESC')
-            ->willReturnSelf();
-
-        $queryBuilder
-            ->expects(self::once())
-            ->method('setMaxResults')
-            ->with(100)
-            ->willReturnSelf();
-
-        $grid = new ApiTokenHistoryGrid();
-
-        $result = $grid->query($entityManager, $query);
-
-        self::assertSame($query, $result);
+        return $security;
     }
 }
