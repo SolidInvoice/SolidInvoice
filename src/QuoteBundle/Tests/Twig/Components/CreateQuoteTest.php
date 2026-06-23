@@ -25,11 +25,6 @@ use Zenstruck\Foundry\Test\Factories;
 
 final class CreateQuoteTest extends LiveComponentTest
 {
-    /**
-     * @var Ulid
-     */
-    public $id;
-
     use Factories;
 
     public function testCreateQuote(): void

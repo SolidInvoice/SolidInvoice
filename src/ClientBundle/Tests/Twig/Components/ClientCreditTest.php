@@ -56,8 +56,8 @@ final class ClientCreditTest extends LiveComponentTest
 
         self::assertNotNull($credit);
         self::assertTrue(
-            BigNumber::of($credit->getValue())->isGreaterThan($initialValue),
-            'Credit value should have increased after saving'
+            BigNumber::of($credit->getValue())->isEqualTo(BigNumber::of($initialValue)->plus('50')),
+            'Credit value should increase by exactly 50 after saving'
         );
     }
 
