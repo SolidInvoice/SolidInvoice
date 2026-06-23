@@ -25,6 +25,9 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Twig\Components\ClientCreditTest
+ */
 #[AsLiveComponent]
 final class ClientCredit extends AbstractController
 {
