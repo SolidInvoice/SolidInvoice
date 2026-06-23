@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
-use Brick\Math\BigNumber;
+use Brick\Math\BigDecimal;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -56,7 +56,7 @@ final class ClientCreditTest extends LiveComponentTest
 
         self::assertNotNull($credit);
         self::assertTrue(
-            BigNumber::of($credit->getValue())->isEqualTo(BigNumber::of($initialValue)->plus('50')),
+            BigDecimal::of($credit->getValue())->isEqualTo(BigDecimal::of($initialValue)->plus('50')),
             'Credit value should increase by exactly 50 after saving'
         );
     }

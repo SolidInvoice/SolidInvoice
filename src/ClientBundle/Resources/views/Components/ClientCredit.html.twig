@@ -1,11 +1,13 @@
-<div {{ attributes }} class="d-flex align-items-center justify-content-between gap-3">
-    <div class="client-credit-amount" id="client-credit-value">
-        {{ client.credit|formatCurrency(client.currency) }}
+<div {{ attributes }}>
+    <div class="d-flex align-items-center justify-content-between gap-3">
+        <div class="client-credit-amount" id="client-credit-value">
+            {{ client.credit|formatCurrency(client.currency) }}
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#add-client-credit">
+            {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
+            {{ 'client.view.actions.add_credit'|trans }}
+        </button>
     </div>
-    <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#add-client-credit">
-        {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
-        {{ 'client.view.actions.add_credit'|trans }}
-    </button>
 
     {{ form_start(form, {
         attr: {
