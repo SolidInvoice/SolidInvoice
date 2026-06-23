@@ -51,6 +51,10 @@ class DiscountTransformer implements DataTransformerInterface
      */
     public function reverseTransform(mixed $value): BigNumber
     {
+        if ($value === null || $value === '') {
+            return BigNumber::zero();
+        }
+
         $value = is_float($value) ? (string) $value : $value;
 
         return BigNumber::of($value)
