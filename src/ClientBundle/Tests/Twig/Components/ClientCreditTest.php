@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientCredit;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ClientCredit::class)]
@@ -36,7 +37,8 @@ final class ClientCreditTest extends LiveComponentTest
         $creditId = $clientEntity->getCredit()->getId();
         $initialValue = $clientEntity->getCredit()->getValue();
 
-        $component->submitForm(['credit' => ['amount' => '50']], 'save');
+        $submittedAmount = '50';
+        $component->submitForm(['credit' => ['amount' => $submittedAmount]], 'save');
 
         /** @var EntityManagerInterface $em */
         $em = self::getContainer()->get('doctrine')->getManager();
@@ -44,9 +46,11 @@ final class ClientCreditTest extends LiveComponentTest
 
         $credit = $em->find(Credit::class, $creditId);
 
+        // MoneyType ViewTransformer multiplies major units by 100 to get minor units (cents)
+        $expectedDelta = BigDecimal::of($submittedAmount)->multipliedBy(100);
         self::assertNotNull($credit);
         self::assertSame(
-            (string) BigDecimal::of($initialValue)->plus('5000'),
+            (string) BigDecimal::of($initialValue)->plus($expectedDelta),
             (string) $credit->getValue()
         );
     }
@@ -61,7 +65,7 @@ final class ClientCreditTest extends LiveComponentTest
     }
 
     /**
-     * @return array{0: Client, 1: mixed}
+     * @return array{0: Client, 1: TestLiveComponent}
      */
     private function createClientComponent(): array
     {
