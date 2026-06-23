@@ -14,20 +14,19 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
 use Brick\Math\BigDecimal;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientCredit;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
-use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ClientCredit::class)]
 final class ClientCreditTest extends LiveComponentTest
 {
-    use DoctrineTestTrait;
     use Factories;
 
     public function testSaveAddsCreditToClient(): void
@@ -39,8 +38,10 @@ final class ClientCreditTest extends LiveComponentTest
 
         $component->submitForm(['credit' => ['amount' => '50']], 'save');
 
-        $this->em->clear();
-        $credit = $this->em->find(Credit::class, $creditId);
+        /** @var EntityManagerInterface $em */
+        $em = self::getContainer()->get('doctrine')->getManager();
+        $em->clear();
+        $credit = $em->find(Credit::class, $creditId);
 
         self::assertNotNull($credit);
         self::assertSame(
