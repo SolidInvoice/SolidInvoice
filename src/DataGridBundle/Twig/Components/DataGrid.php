@@ -49,7 +49,6 @@ use Symfony\UX\TwigComponent\Attribute\PostMount;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 use function explode;
-use function unserialize;
 
 /**
  * @template T of object
@@ -465,7 +464,13 @@ class DataGrid extends AbstractController
      */
     public function dehydrateContext(array $context): string
     {
-        return serialize($context);
+        array_walk_recursive($context, static function (mixed &$value): void {
+            if ($value instanceof Ulid) {
+                $value = (string) $value;
+            }
+        });
+
+        return json_encode($context, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -473,6 +478,6 @@ class DataGrid extends AbstractController
      */
     public function hydrateContext(string $context): array
     {
-        return unserialize($context, ['allowed_classes' => [Ulid::class]]);
+        return json_decode($context, true, 512, JSON_THROW_ON_ERROR) ?? [];
     }
 }
