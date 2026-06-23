@@ -39,13 +39,13 @@ bump_version() {
 if [ -n "$VERSION" ]; then
   next_version="$VERSION"
 else
-  current_version=$(awk -F\' '/public const VERSION/ {print $2}' $FILE)
+  current_version=$(awk -F\' '/public const string VERSION/ {print $2}' $FILE)
   clean_version="${current_version%-dev}"
   next_version=$(bump_version "$clean_version" 2 1)  # bumping minor version
 fi
 
 # Update file with bumped version
-sed -i "s/public const VERSION = '.*';/public const VERSION = '$next_version';/" $FILE
+sed -i "s/public const string VERSION = '.*';/public const string VERSION = '$next_version';/" $FILE
 jq --arg version "$next_version" '.version=$version' --indent 4 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
 jq --arg version "$next_version" '.version=$version' --indent 4 $COMPOSER_JSON > tmp.json && mv tmp.json $COMPOSER_JSON
 
