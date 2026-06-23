@@ -98,8 +98,8 @@ final class UserInvitationRepository extends EntityRepository
             ->where('u.status = :pending')
             ->andWhere('u.expiresAt IS NOT NULL')
             ->andWhere('u.expiresAt < :now')
-            ->setParameter('expired', InvitationStatus::Expired->value)
-            ->setParameter('pending', InvitationStatus::Pending->value)
+            ->setParameter('expired', InvitationStatus::Expired)
+            ->setParameter('pending', InvitationStatus::Pending)
             ->setParameter('now', $now)
             ->getQuery()
             ->execute();
@@ -120,7 +120,7 @@ final class UserInvitationRepository extends EntityRepository
             ->andWhere('u.expiresAt IS NOT NULL')
             ->andWhere('u.expiresAt > :now')
             ->andWhere('u.expiresAt <= :threshold')
-            ->setParameter('status', InvitationStatus::Pending->value)
+            ->setParameter('status', InvitationStatus::Pending)
             ->setParameter('now', $now)
             ->setParameter('threshold', $threshold)
             ->getQuery()
@@ -133,7 +133,7 @@ final class UserInvitationRepository extends EntityRepository
 
         $qb->select('COUNT(u.id)')
             ->where('u.status = :status')
-            ->setParameter('status', InvitationStatus::Pending->value);
+            ->setParameter('status', InvitationStatus::Pending);
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
@@ -154,7 +154,7 @@ final class UserInvitationRepository extends EntityRepository
         $qb->select('COUNT(u.id)')
             ->where('u.status = :status')
             ->andWhere('u.company = :companyId')
-            ->setParameter('status', InvitationStatus::Pending->value)
+            ->setParameter('status', InvitationStatus::Pending)
             ->setParameter('companyId', $company->getId(), UlidType::NAME);
 
         try {
