@@ -85,8 +85,9 @@ final class ClientCreditTest extends LiveComponentTest
             )
             ->actingAs($this->getUser())
             // Simulate the user entering $10.00 in the amount field.
+            // ComponentWithFormTrait exposes formValues under the form's block prefix ('credit').
             // ViewTransformer::reverseTransform(10) = BigDecimal::of(1000) cents.
-            ->set('formData', ['amount' => 10])
+            ->set('credit', ['amount' => 10])
             ->call('save');
 
         // Fetch fresh data from the database to verify the credit was persisted.
