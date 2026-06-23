@@ -51,7 +51,8 @@ readonly class UpgradeListener implements EventSubscriberInterface
         }
 
         if (! $this->migration->isUpToDate()) {
-            $this->migration->migrate();
+            foreach ($this->migration->migrate() as $_) {
+            }
         }
     }
 }
