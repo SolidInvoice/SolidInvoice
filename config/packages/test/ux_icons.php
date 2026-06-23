@@ -16,8 +16,5 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return App::config([
     'ux_icons' => [
         'ignore_not_found' => true,
-        'iconify' => [
-            'on_demand' => false,
-        ],
     ],
 ]);
