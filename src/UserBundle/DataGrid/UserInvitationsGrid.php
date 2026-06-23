@@ -71,6 +71,11 @@ final class UserInvitationsGrid extends Grid
             Action::new('_user_resend_invite', ['id' => 'id'])
                 ->label('Resend Invitation')
                 ->icon('mail'),
+            Action::new('_user_delete_invite', ['id' => 'id'])
+                ->label('Delete')
+                ->icon('trash')
+                ->color('danger')
+                ->confirm('Are you sure you want to delete this invitation?'),
         ];
     }
 
