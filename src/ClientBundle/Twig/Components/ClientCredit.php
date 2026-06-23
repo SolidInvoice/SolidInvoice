@@ -60,10 +60,10 @@ final class ClientCredit extends AbstractController
 
         $data = $this->getForm()->getData();
 
-        $this->repository->addCredit($this->client, $data['amount'] ?? 0);
-
-        $this->dispatchBrowserEvent('modal:close');
+        $this->repository->addCredit($this->client, $data['amount']);
 
         $this->resetForm();
+
+        $this->dispatchBrowserEvent('modal:close');
     }
 }
