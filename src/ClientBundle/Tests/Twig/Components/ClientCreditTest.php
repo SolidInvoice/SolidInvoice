@@ -41,6 +41,7 @@ final class ClientCreditTest extends LiveComponentTest
         /** @var EntityManagerInterface $em */
         $em = self::getContainer()->get('doctrine')->getManager();
         $em->clear();
+
         $credit = $em->find(Credit::class, $creditId);
 
         self::assertNotNull($credit);
