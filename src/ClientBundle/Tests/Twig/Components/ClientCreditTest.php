@@ -14,70 +14,66 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
 use Brick\Math\BigDecimal;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientCredit;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
+use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ClientCredit::class)]
 final class ClientCreditTest extends LiveComponentTest
 {
+    use DoctrineTestTrait;
     use Factories;
 
     public function testSaveAddsCreditToClient(): void
     {
-        $client = ClientFactory::createOne([
-            'currencyCode' => 'USD',
-            'company' => $this->company,
-        ])->_real();
+        [$clientEntity, $component] = $this->createClientComponent();
 
-        $user = $this->getUser();
-
-        $component = $this->createLiveComponent(
-            name: ClientCredit::class,
-            data: ['client' => $client],
-            client: $this->client,
-        )->actingAs($user);
-
-        $creditId = $client->getCredit()->getId();
-        $initialValue = $client->getCredit()->getValue();
+        $creditId = $clientEntity->getCredit()->getId();
+        $initialValue = $clientEntity->getCredit()->getValue();
 
         $component->submitForm(['credit' => ['amount' => '50']], 'save');
 
-        /** @var EntityManagerInterface $em */
-        $em = self::getContainer()->get('doctrine')->getManager();
-        $em->clear();
-
-        $credit = $em->find(Credit::class, $creditId);
+        $this->em->clear();
+        $credit = $this->em->find(Credit::class, $creditId);
 
         self::assertNotNull($credit);
-        self::assertTrue(
-            BigDecimal::of($credit->getValue())->isEqualTo(BigDecimal::of($initialValue)->plus('50')),
-            'Credit value should increase by exactly 50 after saving'
+        self::assertSame(
+            (string) BigDecimal::of($initialValue)->plus('5000'),
+            (string) $credit->getValue()
         );
     }
 
     public function testSaveWithInvalidAmountRaisesValidationError(): void
     {
-        $client = ClientFactory::createOne([
-            'currencyCode' => 'USD',
-            'company' => $this->company,
-        ])->_real();
-
-        $user = $this->getUser();
-
-        $component = $this->createLiveComponent(
-            name: ClientCredit::class,
-            data: ['client' => $client],
-            client: $this->client,
-        )->actingAs($user);
+        [, $component] = $this->createClientComponent();
 
         $this->expectException(UnprocessableEntityHttpException::class);
 
         $component->submitForm(['credit' => ['amount' => 'abc']], 'save');
+    }
+
+    /**
+     * @return array{0: Client, 1: mixed}
+     */
+    private function createClientComponent(): array
+    {
+        $clientEntity = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'company' => $this->company,
+        ])->_real();
+
+        $component = $this->createLiveComponent(
+            name: ClientCredit::class,
+            data: ['client' => $clientEntity],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        return [$clientEntity, $component];
     }
 }

@@ -16,7 +16,7 @@
         }
     }) }}
     <twig:Ui:Modal id="add-client-credit" title="{{ 'client.modal.add_credit'|trans }}">
-        {{ form_row(form.amount) }}
+        {{ form_row(form) }}
 
         <twig:block name="footer">
             <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
