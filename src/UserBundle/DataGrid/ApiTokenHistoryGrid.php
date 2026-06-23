@@ -25,7 +25,9 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -34,6 +36,11 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[AsDataGrid(name: 'api_token_history_grid', title: 'Request History')]
 final class ApiTokenHistoryGrid extends Grid
 {
+    public function __construct(
+        private readonly Security $security
+    ) {
+    }
+
     public function entityFQCN(): string
     {
         return ApiTokenHistory::class;
@@ -94,14 +101,26 @@ final class ApiTokenHistoryGrid extends Grid
     #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
+        $user = $this->security->getUser();
+
+        assert($user instanceof User);
+
+        $queryBuilder = $query->getQueryBuilder();
+
+        // Only ever expose history for tokens that belong to the current user
+        $queryBuilder
+            ->join(ORMSource::ALIAS . '.token', 'apiToken')
+            ->andWhere('apiToken.user = :user')
+            ->setParameter('user', $user->getId(), UlidType::NAME);
+
         // Filter by token ID if provided in context
         if (isset($this->context['token_id'])) {
-            $query->getQueryBuilder()
+            $queryBuilder
                 ->andWhere('IDENTITY(' . ORMSource::ALIAS . '.token) = :token')
                 ->setParameter('token', $this->context['token_id'], UlidType::NAME);
         }
 
-        $query->getQueryBuilder()
+        $queryBuilder
             ->orderBy(ORMSource::ALIAS . '.created', 'DESC')
             ->setMaxResults(100);
 
