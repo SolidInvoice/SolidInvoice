@@ -32,6 +32,8 @@ class PaypalExpressCheckout extends AbstractType
             'username',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.paypal.username.label',
+                'help' => 'payment.gateway.field.paypal.username.help',
                 'constraints' => new NotBlank(),
             ]
         );
@@ -40,7 +42,8 @@ class PaypalExpressCheckout extends AbstractType
             'password',
             PasswordType::class,
             [
-                // 'help' => 'payment.settings.password.hint',
+                'label' => 'payment.gateway.field.paypal.password.label',
+                'help' => 'payment.gateway.field.paypal.password.help',
                 'constraints' => new NotBlank(),
                 'always_empty' => false,
             ]
@@ -50,6 +53,8 @@ class PaypalExpressCheckout extends AbstractType
             'signature',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.paypal.signature.label',
+                'help' => 'payment.gateway.field.paypal.signature.help',
                 'constraints' => new NotBlank(),
             ]
         );
@@ -58,6 +63,9 @@ class PaypalExpressCheckout extends AbstractType
             'sandbox',
             CheckboxType::class,
             [
+                'label' => 'payment.gateway.field.sandbox.label',
+                'help' => 'payment.gateway.field.sandbox.help',
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ]
         );

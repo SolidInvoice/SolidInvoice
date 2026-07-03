@@ -20,6 +20,8 @@ use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodType;
+use SolidInvoice\PaymentBundle\Gateway\GatewayInfo;
+use SolidInvoice\PaymentBundle\Gateway\GatewayMetadataProvider;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -49,7 +51,8 @@ final class PaymentSettings extends AbstractController
         private readonly PaymentFactories $factories,
         private readonly PaymentMethodRepository $repository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
+        private readonly GatewayMetadataProvider $metadata
     ) {
     }
 
@@ -77,22 +80,21 @@ final class PaymentSettings extends AbstractController
         return $paymentMethod;
     }
 
+    /**
+     * Presentation metadata (display name, icon, setup instructions, …) for the
+     * gateway being configured. New setups resolve by the gateway type name
+     * (e.g. "stripe_checkout"); saved methods fall back to their Payum factory.
+     */
     #[ExposeInTemplate]
-    public function gatewayIcon(): string
+    public function gatewayInfo(): GatewayInfo
     {
-        $paymentMethod = $this->paymentMethod();
-        // Use gateway name if it exists, otherwise use the method name or factory name
-        $name = $paymentMethod->getGatewayName() ?? $this->method ?? $paymentMethod->getFactoryName() ?? '';
+        $info = $this->metadata->find($this->method);
 
-        return match (true) {
-            str_contains($name, 'stripe') => 'tabler:brand-stripe',
-            str_contains($name, 'paypal') => 'tabler:brand-paypal',
-            $name === 'cash' => 'tabler:cash',
-            $name === 'bank_transfer' => 'tabler:building-bank',
-            $name === 'offline' => 'tabler:wallet',
-            $name === 'custom' => 'tabler:settings',
-            default => 'tabler:credit-card',
-        };
+        if ($info instanceof GatewayInfo) {
+            return $info;
+        }
+
+        return $this->metadata->get($this->paymentMethod()->getFactoryName() ?? $this->method);
     }
 
     /**

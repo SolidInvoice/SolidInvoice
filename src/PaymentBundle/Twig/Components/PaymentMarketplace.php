@@ -15,20 +15,26 @@ namespace SolidInvoice\PaymentBundle\Twig\Components;
 
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
+use SolidInvoice\PaymentBundle\Gateway\GatewayCategory;
+use SolidInvoice\PaymentBundle\Gateway\GatewayMetadataProvider;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use function array_filter;
 use function array_keys;
-use function in_array;
+use function array_values;
 use function str_contains;
-use function str_replace;
 use function strtolower;
-use function ucwords;
+use function usort;
 
+/**
+ * @phpstan-type GatewayRow array{name: string, displayName: string, tagline: string, category: string, icon: string, recommended: bool, advanced: bool, legacy: bool, isConfigured: bool}
+ */
 #[AsLiveComponent]
 final class PaymentMarketplace extends AbstractController
 {
@@ -45,59 +51,51 @@ final class PaymentMarketplace extends AbstractController
 
     public function __construct(
         private readonly PaymentFactories $factories,
-        private readonly PaymentMethodRepository $repository
+        private readonly PaymentMethodRepository $repository,
+        private readonly GatewayMetadataProvider $metadata,
+        private readonly TranslatorInterface $translator
     ) {
     }
 
     /**
-     * @return list<array{name: string, displayName: string, factory: string, category: string, description: string, icon: string, isPopular: bool, isConfigured: bool}>
+     * @return list<GatewayRow>
      */
     #[ExposeInTemplate]
     public function availableGateways(): array
     {
-        $factories = $this->factories->getFactories();
+        $factories = $this->factories->getFactories() ?? [];
         unset($factories['credit']); // Exclude internal credit system
 
         $gateways = [];
         foreach (array_keys($factories) as $name) {
+            $info = $this->metadata->get($name);
+
             $gateways[] = [
                 'name' => $name,
-                'displayName' => $this->humanizeGatewayName($name),
-                'factory' => $factories[$name],
-                'category' => $this->categorizeGateway($name),
-                'description' => $this->getGatewayDescription($name),
-                'icon' => $this->getGatewayIcon($name),
-                'isPopular' => in_array($name, ['stripe_checkout', 'paypal_express_checkout', 'offline'], true),
+                'displayName' => $this->translator->trans($info->displayName),
+                'tagline' => $this->translator->trans($info->tagline),
+                'category' => $info->category->value,
+                'icon' => $info->icon,
+                'recommended' => $info->recommended,
+                'advanced' => $info->isAdvanced(),
+                'legacy' => $info->legacy,
                 'isConfigured' => $this->isGatewayConfigured($name),
             ];
         }
 
-        // Sort: custom first, then popular, then alphabetical
+        // Within a group: recommended first, then alphabetical by display name.
         usort(
             $gateways,
-            static fn ($a, $b) =>
-            // Custom gateway always first
-            ($b['name'] === 'custom' ? 1 : ($a['name'] === 'custom' ? -1 : 0)) ?:
-            // Then popular gateways
-            ($b['isPopular'] <=> $a['isPopular']) ?:
-            // Then alphabetical
-            ($a['displayName'] <=> $b['displayName'])
+            static fn (array $a, array $b): int =>
+                ($b['recommended'] <=> $a['recommended'])
+                    ?: ($a['displayName'] <=> $b['displayName'])
         );
 
         return $gateways;
     }
 
     /**
-     * @return list<PaymentMethod>
-     */
-    #[ExposeInTemplate]
-    public function activeMethods(): array
-    {
-        return $this->repository->findBy([], ['name' => 'ASC']);
-    }
-
-    /**
-     * @return list<array{name: string, displayName: string, factory: string, category: string, description: string, icon: string, isPopular: bool, isConfigured: bool}>
+     * @return list<GatewayRow>
      */
     #[ExposeInTemplate]
     public function filteredGateways(): array
@@ -110,59 +108,46 @@ final class PaymentMarketplace extends AbstractController
 
         return array_values(array_filter(
             $this->availableGateways(),
-            static fn ($gateway) => str_contains(strtolower((string) $gateway['displayName']), $query) ||
-                           str_contains(strtolower((string) $gateway['description']), $query)
+            static fn (array $gateway): bool => str_contains(strtolower($gateway['displayName']), $query)
+                || str_contains(strtolower($gateway['tagline']), $query)
         ));
     }
 
-    private function humanizeGatewayName(string $name): string
+    /**
+     * Gateways split into the three marketplace sections shown to the user.
+     *
+     * @return array{online: list<GatewayRow>, offline: list<GatewayRow>, more: list<GatewayRow>}
+     */
+    #[ExposeInTemplate]
+    public function gatewayGroups(): array
     {
-        // Sanitize gateway name to prevent XSS - only keep alphanumeric, underscores, and hyphens
-        $sanitized = preg_replace('/[^a-z0-9_-]/i', '', $name);
+        $groups = ['online' => [], 'offline' => [], 'more' => []];
 
-        return ucwords(str_replace(['_', '-'], ' ', $sanitized));
-    }
-
-    private function categorizeGateway(string $name): string
-    {
-        if ($this->factories->isOffline($name)) {
-            return 'offline';
+        foreach ($this->filteredGateways() as $gateway) {
+            if ($gateway['legacy']) {
+                $groups['more'][] = $gateway;
+            } elseif ($gateway['category'] === GatewayCategory::Online->value) {
+                $groups['online'][] = $gateway;
+            } else {
+                $groups['offline'][] = $gateway;
+            }
         }
 
-        if (str_contains($name, 'stripe') || str_contains($name, 'paypal')) {
-            return 'online';
-        }
-
-        return 'other';
+        return $groups;
     }
 
-    private function getGatewayDescription(string $name): string
+    /**
+     * @return list<PaymentMethod>
+     */
+    #[ExposeInTemplate]
+    public function activeMethods(): array
     {
-        return match ($name) {
-            'stripe_checkout' => 'Accept credit cards with Stripe Checkout',
-            'stripe_js' => 'Accept credit cards with Stripe.js',
-            'paypal_express_checkout' => 'Accept PayPal and credit cards',
-            'paypal_pro_checkout' => 'PayPal Pro payment processing',
-            'authorize_net_aim' => 'Authorize.Net AIM integration',
-            'offline' => 'Cash, check, or bank transfer',
-            'cash' => 'Accept cash payments',
-            'bank_transfer' => 'Accept bank transfer payments',
-            'custom' => 'Custom payment method',
-            default => sprintf('Accept payments via %s', $this->humanizeGatewayName($name)),
-        };
+        return $this->repository->findBy([], ['name' => 'ASC']);
     }
 
-    public function getGatewayIcon(string $name): string
+    public function iconFor(string $name): string
     {
-        return match (true) {
-            str_contains($name, 'stripe') => 'tabler:brand-stripe',
-            str_contains($name, 'paypal') => 'tabler:brand-paypal',
-            $name === 'cash' => 'tabler:cash',
-            $name === 'bank_transfer' => 'tabler:building-bank',
-            $name === 'offline' => 'tabler:wallet',
-            $name === 'custom' => 'tabler:settings',
-            default => 'tabler:credit-card',
-        };
+        return $this->metadata->icon($name);
     }
 
     private function isGatewayConfigured(string $name): bool

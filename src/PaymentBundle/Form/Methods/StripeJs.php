@@ -30,6 +30,9 @@ class StripeJs extends AbstractType
             'publishable_key',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.stripe.publishable_key.label',
+                'help' => 'payment.gateway.field.stripe.publishable_key.help',
+                'attr' => ['placeholder' => 'pk_live_...'],
                 'constraints' => new NotBlank(),
             ]
         );
@@ -38,6 +41,9 @@ class StripeJs extends AbstractType
             'secret_key',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.stripe.secret_key.label',
+                'help' => 'payment.gateway.field.stripe.secret_key.help',
+                'attr' => ['placeholder' => 'sk_live_...'],
                 'constraints' => new NotBlank(),
             ]
         );

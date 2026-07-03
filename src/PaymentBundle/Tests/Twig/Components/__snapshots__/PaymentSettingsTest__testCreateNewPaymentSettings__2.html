@@ -17,7 +17,7 @@
                         Payex Test
                     </h3>
                     <p class="text-muted small mb-0">
-                        Configure payment gateway settings and credentials
+                        Legacy PayEx integration.
                     </p>
                 </div>
                 <a href="/payments/methods" class="btn btn-ghost btn-icon" aria-label="Close">
@@ -27,26 +27,44 @@
                     </div>
         
                                             <div class="card-body">
-                    <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
-            <div class="mb-4">
-                <div id="payment_methods" data-model="on(change)|*">
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Payex Test">
-</div>                                <div class="form-switch-field">
+                    
+        <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                        <section class="mb-4">
+                <h4 class="d-flex align-items-center gap-2 mb-1">
+                    <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3"></path></g></svg>
+                    Details
+                </h4>
+                <p class="text-muted small mb-3">How this payment method is identified inside SolidInvoice.</p>
+
+                <div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_name">Display name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" placeholder="e.g. Stripe - main account" aria-describedby="payment_methods_name_help" class="form-control" value="Payex Test"><div class="form-text text-muted mb-0" id="payment_methods_name_help">A label to help you recognise this method inside SolidInvoice - only you see it, not your clients. For example "Stripe - main account".</div>
+</div>
+                                                <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1" checked>
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
 </div></div>
+<div class="form-text text-muted mb-0" id="payment_methods_enabled_help">Turn this on to make the payment method available. Leave it off while you finish setting it up.</div>
 </div>
-                                    <div class="form-switch-field">
+    
+                                                                    <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_internal">Internal use only</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_internal_help">Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</div>
 </div>
-    <fieldset class="mb-3">                
-    <div id="payment_methods_config">
+    
+                            </section>
+
+                                        <section class="mb-4">
+                    <h4 class="d-flex align-items-center gap-2 mb-1">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1-4.069 0l-.301-.301l-6.558 6.558a2 2 0 0 1-1.239.578L5.172 21H4a1 1 0 0 1-.993-.883L3 20v-1.172a2 2 0 0 1 .467-1.284l.119-.13L4 17h2v-2h2v-2l2.144-2.144l-.301-.301a2.877 2.877 0 0 1 0-4.069l2.643-2.643a2.877 2.877 0 0 1 4.069 0M15 9h.01"></path></svg>
+                        Credentials
+                    </h4>
+                    <p class="text-muted small mb-3">Connect your account. You'll find these keys in your provider's dashboard.</p>
+
+                    <div id="payment_methods_config">
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_config_account_number">Account number</label><input type="text" id="payment_methods_config_account_number" name="payment_methods[config][account_number]" data-required="required" class="form-control" value="12345">
 </div>
@@ -59,10 +77,9 @@
 </div></div>
 </div>
     </div>
-</fieldset>
-<input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
-</div>
-            </div>
+                </section>
+            
+            <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
         </form>
 
         

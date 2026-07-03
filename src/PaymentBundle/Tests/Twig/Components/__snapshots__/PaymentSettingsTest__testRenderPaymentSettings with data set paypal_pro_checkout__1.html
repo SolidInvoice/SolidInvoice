@@ -14,10 +14,10 @@
                 <div>
                     <h3 class="card-title mb-1 d-flex align-items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 13h2.5c2.5 0 5-2.5 5-5c0-3-1.9-5-5-5H7c-.5 0-1 .5-1 1L4 18c0 .5.5 1 1 1h2.8L9 14c.1-.6.4-1 1-1m7.5-5.8C19.2 8.2 20 10 20 12c0 2.5-2.5 4.5-5 4.5h-2.6l-.6 3.6a1 1 0 0 1-1 .8H8.1a.5.5 0 0 1-.5-.6l.2-1.4"></path></svg>
-                        Configure Paypal Pro Checkout
+                        PayPal Pro (Payflow)
                     </h3>
                     <p class="text-muted small mb-0">
-                        Configure payment gateway settings and credentials
+                        Take card payments on-site (needs a PayPal Pro account).
                     </p>
                 </div>
                 <a href="/payments/methods" class="btn btn-ghost btn-icon" aria-label="Close">
@@ -27,48 +27,86 @@
                     </div>
         
                                             <div class="card-body">
-                    <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
-            <div class="mb-4">
-                <div id="payment_methods" data-model="on(change)|*">
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
-</div>                                <div class="form-switch-field">
+                                <div class="alert alert-info payment-gateway-about" role="note">
+                <div class="d-flex gap-2">
+                    <div class="flex-shrink-0">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <h4 class="alert-title">About this gateway</h4>
+                                                    <p class="mb-0">PayPal Pro (Payflow) processes card payments without sending customers to PayPal. It requires a paid PayPal Payments Pro or Payflow account. If you don't have one, use PayPal Express Checkout instead.</p>
+                                                                            <details class="mt-2 payment-gateway-compare">
+                                <summary class="fw-bold">Not sure which one to choose?</summary>
+                                <p class="mb-0 mt-1">PayPal Express Checkout (recommended): works with a standard PayPal Business account and is the right choice for almost everyone. PayPal Pro (Payflow): keeps customers on your site but needs a paid PayPal Payments Pro / Payflow account. Only choose Pro if PayPal has specifically set you up with it.</p>
+                            </details>
+                                                                            <a href="https://developer.paypal.com/api/nvp-soap/apiCredentials/" class="btn btn-sm btn-outline-primary mt-3" target="_blank" rel="noopener noreferrer">
+                                <svg viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5"></path></svg>
+                                Get your PayPal API credentials
+                            </a>
+                                            </div>
+                </div>
+            </div>
+        
+        <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                        <section class="mb-4">
+                <h4 class="d-flex align-items-center gap-2 mb-1">
+                    <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3"></path></g></svg>
+                    Details
+                </h4>
+                <p class="text-muted small mb-3">How this payment method is identified inside SolidInvoice.</p>
+
+                <div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_name">Display name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" placeholder="e.g. Stripe - main account" aria-describedby="payment_methods_name_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_name_help">A label to help you recognise this method inside SolidInvoice - only you see it, not your clients. For example "Stripe - main account".</div>
+</div>
+                                                <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
 </div></div>
+<div class="form-text text-muted mb-0" id="payment_methods_enabled_help">Turn this on to make the payment method available. Leave it off while you finish setting it up.</div>
 </div>
-                                    <div class="form-switch-field">
+    
+                                                                    <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_internal">Internal use only</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_internal_help">Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</div>
 </div>
-    <fieldset class="mb-3">                
-    <div id="payment_methods_config">
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_username">Username</label><input type="text" id="payment_methods_config_username" name="payment_methods[config][username]" data-required="required" class="form-control">
+    
+                            </section>
+
+                                        <section class="mb-4">
+                    <h4 class="d-flex align-items-center gap-2 mb-1">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1-4.069 0l-.301-.301l-6.558 6.558a2 2 0 0 1-1.239.578L5.172 21H4a1 1 0 0 1-.993-.883L3 20v-1.172a2 2 0 0 1 .467-1.284l.119-.13L4 17h2v-2h2v-2l2.144-2.144l-.301-.301a2.877 2.877 0 0 1 0-4.069l2.643-2.643a2.877 2.877 0 0 1 4.069 0M15 9h.01"></path></svg>
+                        Credentials
+                    </h4>
+                    <p class="text-muted small mb-3">Connect your account. You'll find these keys in your provider's dashboard.</p>
+
+                    <div id="payment_methods_config">
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_username">API username</label><input type="text" id="payment_methods_config_username" name="payment_methods[config][username]" data-required="required" aria-describedby="payment_methods_config_username_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_username_help">From your PayPal account under Account Settings &gt; API access &gt; NVP/SOAP API credentials.</div>
 </div>
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_password">Password</label><div class="toggle-password-container"><input type="password" id="payment_methods_config_password" name="payment_methods[config][password]" data-required="required" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' class="form-control"></div>
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_password">API password</label><div class="toggle-password-container"><input type="password" id="payment_methods_config_password" name="payment_methods[config][password]" data-required="required" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' aria-describedby="payment_methods_config_password_help" class="form-control"></div>
+<div class="form-text text-muted mb-0" id="payment_methods_config_password_help">From the same PayPal API credentials screen. Leave empty when editing to keep the saved value.</div>
 </div>
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_partner">Partner</label><input type="text" id="payment_methods_config_partner" name="payment_methods[config][partner]" data-required="required" class="form-control">
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_partner">Partner</label><input type="text" id="payment_methods_config_partner" name="payment_methods[config][partner]" data-required="required" aria-describedby="payment_methods_config_partner_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_partner_help">Your Payflow partner, usually "PayPal".</div>
 </div>
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_vendor">Vendor</label><input type="text" id="payment_methods_config_vendor" name="payment_methods[config][vendor]" data-required="required" class="form-control">
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_vendor">Vendor / merchant login</label><input type="text" id="payment_methods_config_vendor" name="payment_methods[config][vendor]" data-required="required" aria-describedby="payment_methods_config_vendor_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_vendor_help">Your Payflow merchant login (vendor) ID.</div>
 </div>                                <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" value="1">
-        <label class="form-check-label checkbox-switch" for="payment_methods_config_sandbox">Sandbox</label>
+        <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_config_sandbox">Test (sandbox) mode</label>
 </div></div>
+<div class="form-text text-muted mb-0" id="payment_methods_config_sandbox_help">Use the gateway's test environment with test credentials - no real money changes hands. Turn this off to accept live payments.</div>
 </div>
     </div>
-</fieldset>
-<input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
-</div>
-            </div>
+                </section>
+            
+            <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
         </form>
 
         
