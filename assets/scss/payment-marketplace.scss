@@ -417,7 +417,7 @@
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%),
                 0 10px 10px -5px rgb(0 0 0 / 4%);
     width: 100%;
-    max-width: 800px;
+    max-width: 920px;
     max-height: calc(100vh - var(--swp-space-8));
     display: flex;
     flex-direction: column;
@@ -580,6 +580,70 @@ body:has(.payment-modal) {
 
         .active-method-card {
             break-inside: avoid;
+        }
+    }
+}
+
+// ============================================================================
+// Gateway Groups (categorised marketplace sections)
+// ============================================================================
+
+.gateway-group {
+    margin-bottom: var(--swp-space-4);
+
+    .gateway-group-header {
+        h6 {
+            letter-spacing: 0.04em;
+        }
+    }
+
+    // Custom "create your own" card sits inside the offline group now, so the
+    // legacy full-width divider it used to draw is no longer needed.
+    .is-custom-gateway {
+        margin-bottom: var(--swp-space-3);
+
+        &::after {
+            display: none;
+        }
+    }
+}
+
+// Legacy / advanced processors are collapsed away by default.
+.gateway-group--more {
+    border-top: 1px solid var(--swp-border-light);
+    padding-top: var(--swp-space-3);
+
+    > summary {
+        cursor: pointer;
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &:hover h6 {
+            color: var(--swp-primary);
+        }
+    }
+}
+
+// ============================================================================
+// "About this gateway" guidance panel (in the config modal)
+// ============================================================================
+
+.payment-gateway-about {
+    .alert-title {
+        margin-bottom: var(--swp-space-1);
+    }
+
+    .payment-gateway-compare {
+        summary {
+            cursor: pointer;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
         }
     }
 }

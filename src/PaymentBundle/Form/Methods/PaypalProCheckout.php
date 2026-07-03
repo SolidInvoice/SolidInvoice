@@ -32,6 +32,8 @@ class PaypalProCheckout extends AbstractType
             'username',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.paypal.username.label',
+                'help' => 'payment.gateway.field.paypal.username.help',
                 'constraints' => new NotBlank(),
             ]
         );
@@ -40,7 +42,8 @@ class PaypalProCheckout extends AbstractType
             'password',
             PasswordType::class,
             [
-                // 'help' => 'payment.settings.password.hint',
+                'label' => 'payment.gateway.field.paypal.password.label',
+                'help' => 'payment.gateway.field.paypal.password.help',
                 'constraints' => new NotBlank(),
                 'always_empty' => false,
             ]
@@ -50,6 +53,8 @@ class PaypalProCheckout extends AbstractType
             'partner',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.paypal.partner.label',
+                'help' => 'payment.gateway.field.paypal.partner.help',
                 'constraints' => new NotBlank(),
             ]
         );
@@ -58,6 +63,8 @@ class PaypalProCheckout extends AbstractType
             'vendor',
             TextType::class,
             [
+                'label' => 'payment.gateway.field.paypal.vendor.label',
+                'help' => 'payment.gateway.field.paypal.vendor.help',
                 'constraints' => new NotBlank(),
             ]
         );
@@ -66,6 +73,9 @@ class PaypalProCheckout extends AbstractType
             'sandbox',
             CheckboxType::class,
             [
+                'label' => 'payment.gateway.field.sandbox.label',
+                'help' => 'payment.gateway.field.sandbox.help',
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ]
         );

@@ -7,6 +7,50 @@
 # with this source code in the file LICENSE.
 #}
 
+{% macro gateway_card(gateway) %}
+    <div class="gateway-card {{ gateway.isConfigured ? 'is-configured' : '' }} {{ gateway.name == 'custom' ? 'is-custom-gateway' : '' }}"
+         data-gateway="{{ gateway.name }}">
+        <div class="gateway-card-body">
+            <div class="d-flex align-items-start gap-3">
+                <div class="gateway-icon">
+                    {{ ux_icon(gateway.icon, {width: 24, height: 24}) }}
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                    <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                        <h6 class="mb-0">{{ gateway.displayName }}</h6>
+                        {% if gateway.recommended %}
+                            <span class="badge bg-primary-lt badge-sm">
+                                {{ 'payment.gateway.badge.recommended'|trans }}
+                            </span>
+                        {% elseif gateway.advanced %}
+                            <span class="badge bg-secondary-lt badge-sm">
+                                {{ 'payment.gateway.badge.advanced'|trans }}
+                            </span>
+                        {% endif %}
+                        {% if gateway.isConfigured %}
+                            <span class="badge bg-success-lt badge-sm">
+                                {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
+                                <span class="visually-hidden">{{ 'Configured'|trans }}</span>
+                            </span>
+                        {% endif %}
+                    </div>
+                    <p class="text-muted small mb-2">{{ gateway.tagline }}</p>
+                    <a href="{{ path('_payment_settings_index', {selectedGateway: gateway.name}) }}"
+                       class="btn btn-sm btn-outline-primary">
+                        {% if gateway.isConfigured %}
+                            {{ ux_icon('tabler:edit', {width: 14, height: 14}) }}
+                            {{ 'Edit'|trans }}
+                        {% else %}
+                            {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
+                            {{ 'Configure'|trans }}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
 <div class="payment-marketplace" {{ attributes }}>
     {% include "@SolidInvoiceCore/flash.html.twig" %}
 
@@ -45,7 +89,7 @@
                         {{ 'Payment Gateways'|trans }}
                     </h5>
                     <p class="text-muted small mb-3">
-                        {{ 'Choose from popular payment processors or add custom gateways'|trans }}
+                        {{ 'payment.gateway.marketplace.subtitle'|trans }}
                     </p>
 
                     {# Search Input #}
@@ -70,57 +114,63 @@
                     </div>
                 </div>
 
-                {# Gateway Cards Grid #}
-                <div class="gateway-grid">
-                    {% if filteredGateways|length > 0 %}
-                        {% for gateway in filteredGateways %}
-                            <div class="gateway-card {{ gateway.isConfigured ? 'is-configured' : '' }} {{ gateway.name == 'custom' ? 'is-custom-gateway' : '' }}"
-                                 data-gateway="{{ gateway.name }}">
-                                <div class="gateway-card-body">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div class="gateway-icon">
-                                            {{ ux_icon(gateway.icon, {width: 24, height: 24}) }}
-                                        </div>
-                                        <div class="flex-grow-1 min-w-0">
-                                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                                <h6 class="mb-0">{{ gateway.displayName }}</h6>
-                                                {% if gateway.isPopular %}
-                                                    <span class="badge bg-primary-lt badge-sm">
-                                                        {{ 'Popular'|trans }}
-                                                    </span>
-                                                {% endif %}
-                                                {% if gateway.isConfigured %}
-                                                    <span class="badge bg-success-lt badge-sm">
-                                                        {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
-                                                        <span class="visually-hidden">{{ 'Configured'|trans }}</span>
-                                                    </span>
-                                                {% endif %}
-                                            </div>
-                                            <p class="text-muted small mb-2">{{ gateway.description }}</p>
-                                            <a href="{{ path('_payment_settings_index', {selectedGateway: gateway.name}) }}"
-                                               class="btn btn-sm btn-outline-primary">
-                                                {% if gateway.isConfigured %}
-                                                    {{ ux_icon('tabler:edit', {width: 14, height: 14}) }}
-                                                    {{ 'Edit'|trans }}
-                                                {% else %}
-                                                    {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
-                                                    {{ 'Configure'|trans }}
-                                                {% endif %}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                {# Grouped Gateway Cards #}
+                {% if filteredGateways|length > 0 %}
+                    {# Online gateways #}
+                    {% if gatewayGroups.online|length > 0 %}
+                        <div class="gateway-group mb-4">
+                            <div class="gateway-group-header mb-2">
+                                <h6 class="text-uppercase text-muted small fw-bold mb-1">{{ 'payment.gateway.section.online.title'|trans }}</h6>
+                                <p class="text-muted small mb-0">{{ 'payment.gateway.section.online.subtitle'|trans }}</p>
                             </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty">
-                            <div class="empty-icon">
-                                {{ ux_icon('tabler:search-off', {width: 48, height: 48}) }}
+                            <div class="gateway-grid">
+                                {% for gateway in gatewayGroups.online %}
+                                    {{ _self.gateway_card(gateway) }}
+                                {% endfor %}
                             </div>
-                            <p class="empty-title">{{ 'No gateways found matching your search'|trans }}</p>
                         </div>
                     {% endif %}
-                </div>
+
+                    {# Offline / manual methods #}
+                    {% if gatewayGroups.offline|length > 0 %}
+                        <div class="gateway-group mb-4">
+                            <div class="gateway-group-header mb-2">
+                                <h6 class="text-uppercase text-muted small fw-bold mb-1">{{ 'payment.gateway.section.offline.title'|trans }}</h6>
+                                <p class="text-muted small mb-0">{{ 'payment.gateway.section.offline.subtitle'|trans }}</p>
+                            </div>
+                            <div class="gateway-grid">
+                                {% for gateway in gatewayGroups.offline %}
+                                    {{ _self.gateway_card(gateway) }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {# Legacy / advanced processors, tucked away #}
+                    {% if gatewayGroups.more|length > 0 %}
+                        <details class="gateway-group gateway-group--more"{{ searchQuery ? ' open' : '' }}>
+                            <summary class="gateway-group-header mb-2">
+                                <h6 class="text-uppercase text-muted small fw-bold mb-1 d-inline-flex align-items-center gap-1">
+                                    {{ 'payment.gateway.section.more.title'|trans }}
+                                    <span class="badge bg-secondary-lt badge-sm">{{ gatewayGroups.more|length }}</span>
+                                </h6>
+                                <p class="text-muted small mb-0">{{ 'payment.gateway.section.more.subtitle'|trans }}</p>
+                            </summary>
+                            <div class="gateway-grid mt-2">
+                                {% for gateway in gatewayGroups.more %}
+                                    {{ _self.gateway_card(gateway) }}
+                                {% endfor %}
+                            </div>
+                        </details>
+                    {% endif %}
+                {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            {{ ux_icon('tabler:search-off', {width: 48, height: 48}) }}
+                        </div>
+                        <p class="empty-title">{{ 'No gateways found matching your search'|trans }}</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -144,7 +194,7 @@
                                         <div class="d-flex align-items-start justify-content-between gap-3">
                                             <div class="d-flex align-items-start gap-3 flex-grow-1 min-w-0">
                                                 <div class="payment-method-icon">
-                                                    {{ ux_icon(this.getGatewayIcon(method.factoryName), {width: 24, height: 24}) }}
+                                                    {{ ux_icon(this.iconFor(method.factoryName), {width: 24, height: 24}) }}
                                                 </div>
                                                 <div class="flex-grow-1 min-w-0">
                                                     <h6 class="mb-2">{{ method.name }}</h6>

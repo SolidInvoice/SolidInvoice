@@ -14,10 +14,10 @@
                 <div>
                     <h3 class="card-title mb-1 d-flex align-items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.453 8.056c0-.623.518-.979 1.442-.979c1.69 0 3.41.343 4.605.923l.5-4c-.948-.449-2.82-1-5.5-1c-1.895 0-3.373.087-4.5 1c-1.172.956-2 2.33-2 4c0 3.03 1.958 4.906 5 6c1.961.69 3 .743 3 1.5c0 .735-.851 1.5-2 1.5c-1.423 0-3.963-.609-5.5-1.5l-.5 4c1.321.734 3.474 1.5 6 1.5c2 0 3.957-.468 5.084-1.36C18.347 18.661 19 17.372 19 15.5c0-3.096-1.915-4.547-5-5.637c-1.646-.605-2.544-1.07-2.544-1.807z"></path></svg>
-                        Configure Stripe Checkout
+                        Stripe Checkout
                     </h3>
                     <p class="text-muted small mb-0">
-                        Configure payment gateway settings and credentials
+                        Accept cards on a secure, Stripe-hosted payment page.
                     </p>
                 </div>
                 <a href="/payments/methods" class="btn btn-ghost btn-icon" aria-label="Close">
@@ -27,37 +27,73 @@
                     </div>
         
                                             <div class="card-body">
-                    <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
-            <div class="mb-4">
-                <div id="payment_methods" data-model="on(change)|*">
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
-</div>                                <div class="form-switch-field">
+                                <div class="alert alert-info payment-gateway-about" role="note">
+                <div class="d-flex gap-2">
+                    <div class="flex-shrink-0">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <h4 class="alert-title">About this gateway</h4>
+                                                    <p class="mb-0">Stripe redirects your client to a secure payment page hosted by Stripe, then brings them back once they've paid. It's the quickest and safest way to accept cards, because Stripe handles all the sensitive card data for you.</p>
+                                                                            <details class="mt-2 payment-gateway-compare">
+                                <summary class="fw-bold">Not sure which one to choose?</summary>
+                                <p class="mb-0 mt-1">Stripe Checkout (recommended): Stripe hosts the payment page - it's the simplest to set up and the most secure, with no extra compliance work for you. Stripe.js: the card fields are embedded directly in SolidInvoice for a more seamless look, but you take on more PCI-compliance responsibility. If you're unsure, choose Stripe Checkout.</p>
+                            </details>
+                                                                            <a href="https://dashboard.stripe.com/apikeys" class="btn btn-sm btn-outline-primary mt-3" target="_blank" rel="noopener noreferrer">
+                                <svg viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5"></path></svg>
+                                Get your Stripe API keys
+                            </a>
+                                            </div>
+                </div>
+            </div>
+        
+        <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                        <section class="mb-4">
+                <h4 class="d-flex align-items-center gap-2 mb-1">
+                    <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3"></path></g></svg>
+                    Details
+                </h4>
+                <p class="text-muted small mb-3">How this payment method is identified inside SolidInvoice.</p>
+
+                <div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_name">Display name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" placeholder="e.g. Stripe - main account" aria-describedby="payment_methods_name_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_name_help">A label to help you recognise this method inside SolidInvoice - only you see it, not your clients. For example "Stripe - main account".</div>
+</div>
+                                                <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
 </div></div>
+<div class="form-text text-muted mb-0" id="payment_methods_enabled_help">Turn this on to make the payment method available. Leave it off while you finish setting it up.</div>
 </div>
-                                    <div class="form-switch-field">
+    
+                                                                    <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_internal">Internal use only</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_internal_help">Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</div>
 </div>
-    <fieldset class="mb-3">                
-    <div id="payment_methods_config">
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_publishable_key">Publishable key</label><input type="text" id="payment_methods_config_publishable_key" name="payment_methods[config][publishable_key]" data-required="required" class="form-control">
+    
+                            </section>
+
+                                        <section class="mb-4">
+                    <h4 class="d-flex align-items-center gap-2 mb-1">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" class="text-muted" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1-4.069 0l-.301-.301l-6.558 6.558a2 2 0 0 1-1.239.578L5.172 21H4a1 1 0 0 1-.993-.883L3 20v-1.172a2 2 0 0 1 .467-1.284l.119-.13L4 17h2v-2h2v-2l2.144-2.144l-.301-.301a2.877 2.877 0 0 1 0-4.069l2.643-2.643a2.877 2.877 0 0 1 4.069 0M15 9h.01"></path></svg>
+                        Credentials
+                    </h4>
+                    <p class="text-muted small mb-3">Connect your account. You'll find these keys in your provider's dashboard.</p>
+
+                    <div id="payment_methods_config">
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_publishable_key">Publishable key</label><input type="text" id="payment_methods_config_publishable_key" name="payment_methods[config][publishable_key]" data-required="required" placeholder="pk_live_..." aria-describedby="payment_methods_config_publishable_key_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_publishable_key_help">Starts with "pk_". This key is safe to share publicly - it only identifies your Stripe account in the browser.</div>
 </div>
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="payment_methods_config_secret_key">Secret key</label><input type="text" id="payment_methods_config_secret_key" name="payment_methods[config][secret_key]" data-required="required" class="form-control">
+<div class="mb-3">    
+                                <label class="control-label required form-label required" for="payment_methods_config_secret_key">Secret key</label><input type="text" id="payment_methods_config_secret_key" name="payment_methods[config][secret_key]" data-required="required" placeholder="sk_live_..." aria-describedby="payment_methods_config_secret_key_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_secret_key_help">Starts with "sk_". Keep this private - it authorises charges on your account. Never share it.</div>
 </div>
 </div>
-</fieldset>
-<input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
-</div>
-            </div>
+                </section>
+            
+            <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
         </form>
 
         

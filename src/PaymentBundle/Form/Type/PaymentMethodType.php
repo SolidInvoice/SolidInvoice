@@ -28,9 +28,26 @@ class PaymentMethodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name');
+        $builder->add(
+            'name',
+            null,
+            [
+                'label' => 'payment.gateway.field.name.label',
+                'help' => 'payment.gateway.field.name.help',
+                'attr' => ['placeholder' => 'payment.gateway.field.name.placeholder'],
+            ]
+        );
 
-        $builder->add('enabled', CheckboxType::class, ['required' => false, 'label_attr' => ['class' => 'switch-custom']]);
+        $builder->add(
+            'enabled',
+            CheckboxType::class,
+            [
+                'required' => false,
+                'label' => 'payment.gateway.field.enabled.label',
+                'help' => 'payment.gateway.field.enabled.help',
+                'label_attr' => ['class' => 'switch-custom'],
+            ]
+        );
 
         if (false === $options['internal']) {
             $builder->add(

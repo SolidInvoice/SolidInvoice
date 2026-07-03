@@ -89,5 +89,125 @@ payment:
     settings:
         password:
             hint: 'Keep this empty to keep the existing value'
+    gateway:
+        marketplace:
+            subtitle: 'Choose how you want to accept payments from your clients, or record payments you receive offline.'
+        section:
+            online:
+                title: 'Online payment gateways'
+                subtitle: 'Charge cards automatically - your client pays through a secure checkout.'
+            offline:
+                title: 'Offline & manual methods'
+                subtitle: 'Record payments you receive outside SolidInvoice, such as cash or a bank transfer.'
+            more:
+                title: 'More gateways'
+                subtitle: 'Additional and legacy processors. Only use these if you already have an account with them.'
+            details:
+                title: 'Details'
+                subtitle: 'How this payment method is identified inside SolidInvoice.'
+            credentials:
+                title: 'Credentials'
+                subtitle: 'Connect your account. You''ll find these keys in your provider''s dashboard.'
+        badge:
+            recommended: 'Recommended'
+            advanced: 'Advanced'
+        about:
+            title: 'About this gateway'
+        compare:
+            title: 'Not sure which one to choose?'
+        setup:
+            default_label: 'How to get your API keys'
+        _fallback:
+            tagline: 'Accept payments through this gateway.'
+        stripe:
+            comparison: 'Stripe Checkout (recommended): Stripe hosts the payment page - it''s the simplest to set up and the most secure, with no extra compliance work for you. Stripe.js: the card fields are embedded directly in SolidInvoice for a more seamless look, but you take on more PCI-compliance responsibility. If you''re unsure, choose Stripe Checkout.'
+            setup_label: 'Get your Stripe API keys'
+        stripe_checkout:
+            display_name: 'Stripe Checkout'
+            tagline: 'Accept cards on a secure, Stripe-hosted payment page.'
+            overview: 'Stripe redirects your client to a secure payment page hosted by Stripe, then brings them back once they''ve paid. It''s the quickest and safest way to accept cards, because Stripe handles all the sensitive card data for you.'
+        stripe_js:
+            display_name: 'Stripe.js'
+            tagline: 'Embed card fields directly in SolidInvoice (advanced).'
+            overview: 'Stripe.js embeds the card input fields directly inside SolidInvoice instead of redirecting to Stripe. It gives a more seamless checkout, but you take on more responsibility for PCI compliance. Most businesses should use Stripe Checkout instead.'
+        paypal:
+            comparison: 'PayPal Express Checkout (recommended): works with a standard PayPal Business account and is the right choice for almost everyone. PayPal Pro (Payflow): keeps customers on your site but needs a paid PayPal Payments Pro / Payflow account. Only choose Pro if PayPal has specifically set you up with it.'
+            setup_label: 'Get your PayPal API credentials'
+        paypal_express_checkout:
+            display_name: 'PayPal Express Checkout'
+            tagline: 'Let clients pay with their PayPal account or a card.'
+            overview: 'PayPal Express Checkout sends your client to PayPal to approve the payment, then returns them to SolidInvoice. Clients can pay with their PayPal balance or a credit/debit card - no PayPal account required for card payments.'
+        paypal_pro_checkout:
+            display_name: 'PayPal Pro (Payflow)'
+            tagline: 'Take card payments on-site (needs a PayPal Pro account).'
+            overview: 'PayPal Pro (Payflow) processes card payments without sending customers to PayPal. It requires a paid PayPal Payments Pro or Payflow account. If you don''t have one, use PayPal Express Checkout instead.'
+        offline:
+            display_name: 'Offline Payment'
+            tagline: 'Record a payment made outside SolidInvoice.'
+            overview: 'Use this to record payments you receive outside the app - a cheque, a card taken in person, or any other method. Nothing is charged automatically; you simply mark the invoice as paid.'
+        cash:
+            display_name: 'Cash'
+            tagline: 'Record cash payments received in person.'
+            overview: 'Record cash you receive from clients. Nothing is charged online - you mark the invoice as paid once the cash is in hand.'
+        bank_transfer:
+            display_name: 'Bank Transfer'
+            tagline: 'Record payments made by direct bank transfer.'
+            overview: 'Record payments clients send by bank transfer (EFT). Share your banking details on invoices so clients know where to pay, then mark the invoice as paid once the funds arrive.'
+        custom:
+            display_name: 'Custom Method'
+            tagline: 'Create your own manually-recorded payment method.'
+            overview: 'Set up a payment method of your own - for example a local wallet or a gateway SolidInvoice doesn''t list. Payments are recorded manually.'
+        klarna_invoice:
+            display_name: 'Klarna Invoice'
+            tagline: 'Legacy Klarna invoice integration.'
+        klarna_checkout:
+            display_name: 'Klarna Checkout'
+            tagline: 'Legacy Klarna checkout integration.'
+        be2bill_offsite:
+            display_name: 'Be2Bill Offsite'
+            tagline: 'Legacy Be2Bill hosted integration.'
+        be2bill_direct:
+            display_name: 'Be2Bill Direct'
+            tagline: 'Legacy Be2Bill direct integration.'
+        authorize_net_aim:
+            display_name: 'Authorize.Net (AIM)'
+            tagline: 'Legacy Authorize.Net AIM integration.'
+        payex:
+            display_name: 'PayEx'
+            tagline: 'Legacy PayEx integration.'
+        field:
+            name:
+                label: 'Display name'
+                help: 'A label to help you recognise this method inside SolidInvoice - only you see it, not your clients. For example "Stripe - main account".'
+                placeholder: 'e.g. Stripe - main account'
+            enabled:
+                label: 'Enabled'
+                help: 'Turn this on to make the payment method available. Leave it off while you finish setting it up.'
+            stripe:
+                publishable_key:
+                    label: 'Publishable key'
+                    help: 'Starts with "pk_". This key is safe to share publicly - it only identifies your Stripe account in the browser.'
+                secret_key:
+                    label: 'Secret key'
+                    help: 'Starts with "sk_". Keep this private - it authorises charges on your account. Never share it.'
+            paypal:
+                username:
+                    label: 'API username'
+                    help: 'From your PayPal account under Account Settings > API access > NVP/SOAP API credentials.'
+                password:
+                    label: 'API password'
+                    help: 'From the same PayPal API credentials screen. Leave empty when editing to keep the saved value.'
+                signature:
+                    label: 'API signature'
+                    help: 'The long signature string listed with your PayPal API credentials.'
+                partner:
+                    label: 'Partner'
+                    help: 'Your Payflow partner, usually "PayPal".'
+                vendor:
+                    label: 'Vendor / merchant login'
+                    help: 'Your Payflow merchant login (vendor) ID.'
+            sandbox:
+                label: 'Test (sandbox) mode'
+                help: 'Use the gateway''s test environment with test credentials - no real money changes hands. Turn this off to accept live payments.'
 
 payment_made: 'Payment has been received'

@@ -13,11 +13,11 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h3 class="card-title mb-1 d-flex align-items-center gap-2">
-                        {{ ux_icon(gatewayIcon, {width: 20, height: 20, class: 'text-primary'}) }}
-                        {{ paymentMethod.name|default('Configure ' ~ method|humanize|title) }}
+                        {{ ux_icon(gatewayInfo.icon, {width: 20, height: 20, class: 'text-primary'}) }}
+                        {{ paymentMethod.name|default(gatewayInfo.displayName|trans) }}
                     </h3>
                     <p class="text-muted small mb-0">
-                        {{ 'Configure payment gateway settings and credentials'|trans }}
+                        {{ gatewayInfo.tagline|trans }}
                     </p>
                 </div>
                 <a href="{{ path('_payment_settings_index') }}"
@@ -28,15 +28,73 @@
             </div>
         </twig:block>
 
+        {# About this gateway: what it is, which variant to pick, and where to get the keys #}
+        {% if gatewayInfo.hasGuidance %}
+            <div class="alert alert-info payment-gateway-about" role="note">
+                <div class="d-flex gap-2">
+                    <div class="flex-shrink-0">
+                        {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="flex-grow-1 min-w-0">
+                        <h4 class="alert-title">{{ 'payment.gateway.about.title'|trans }}</h4>
+                        {% if gatewayInfo.overview %}
+                            <p class="mb-0">{{ gatewayInfo.overview|trans }}</p>
+                        {% endif %}
+                        {% if gatewayInfo.comparison %}
+                            <details class="mt-2 payment-gateway-compare">
+                                <summary class="fw-bold">{{ 'payment.gateway.compare.title'|trans }}</summary>
+                                <p class="mb-0 mt-1">{{ gatewayInfo.comparison|trans }}</p>
+                            </details>
+                        {% endif %}
+                        {% if gatewayInfo.setupUrl %}
+                            <a href="{{ gatewayInfo.setupUrl }}"
+                               class="btn btn-sm btn-outline-primary mt-3"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                                {{ (gatewayInfo.setupUrlLabel ?? 'payment.gateway.setup.default_label')|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         {{ form_start(form, {
             attr: {
                 'data-action': 'live#action:prevent',
                 'data-live-action-param': 'save'
             }
         }) }}
-            <div class="mb-4">
-                {{ form_widget(form) }}
-            </div>
+            {# Details: how this method is identified inside SolidInvoice #}
+            <section class="mb-4">
+                <h4 class="d-flex align-items-center gap-2 mb-1">
+                    {{ ux_icon('tabler:tag', {width: 18, height: 18, class: 'text-muted'}) }}
+                    {{ 'payment.gateway.section.details.title'|trans }}
+                </h4>
+                <p class="text-muted small mb-3">{{ 'payment.gateway.section.details.subtitle'|trans }}</p>
+
+                {{ form_row(form.name) }}
+                {{ form_row(form.enabled) }}
+                {% if form.internal is defined %}
+                    {{ form_row(form.internal) }}
+                {% endif %}
+            </section>
+
+            {# Credentials: the gateway-specific keys / API details #}
+            {% if form.config is defined %}
+                <section class="mb-4">
+                    <h4 class="d-flex align-items-center gap-2 mb-1">
+                        {{ ux_icon('tabler:key', {width: 18, height: 18, class: 'text-muted'}) }}
+                        {{ 'payment.gateway.section.credentials.title'|trans }}
+                    </h4>
+                    <p class="text-muted small mb-3">{{ 'payment.gateway.section.credentials.subtitle'|trans }}</p>
+
+                    {{ form_widget(form.config) }}
+                </section>
+            {% endif %}
+
+            {{ form_rest(form) }}
         {{ form_end(form) }}
 
         <twig:block name="footer">
