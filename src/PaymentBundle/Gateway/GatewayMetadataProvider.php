@@ -65,7 +65,7 @@ final class GatewayMetadataProvider
             return $this->metadata;
         }
 
-        $key = static fn (string $gateway, string $attribute): string => "payment.gateway.{$gateway}.{$attribute}";
+        $key = static fn (string $gateway, string $attribute): string => sprintf('payment.gateway.%s.%s', $gateway, $attribute);
 
         $gateways = [
             new GatewayInfo(
