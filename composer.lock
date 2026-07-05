@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70be660e5a7072c6e4754c989a523faa",
+    "content-hash": "28ee8ef7388090692cdef91e61a59c47",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -10693,16 +10693,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v3.7.0",
+            "version": "v3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "3d8d0c00cf8d2c18fd47a0fbbc4ad6a1d5ede078"
+                "reference": "08b31f5896b6963278abd0fc80bb39b49bb542dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/3d8d0c00cf8d2c18fd47a0fbbc4ad6a1d5ede078",
-                "reference": "3d8d0c00cf8d2c18fd47a0fbbc4ad6a1d5ede078",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/08b31f5896b6963278abd0fc80bb39b49bb542dc",
+                "reference": "08b31f5896b6963278abd0fc80bb39b49bb542dc",
                 "shasum": ""
             },
             "require": {
@@ -10768,7 +10768,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/contracts/tree/v3.7.0"
+                "source": "https://github.com/symfony/contracts/tree/v3.7.2"
             },
             "funding": [
                 {
@@ -10788,7 +10788,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-05T15:33:14+00:00"
+            "time": "2026-06-27T21:05:00+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -12374,22 +12374,22 @@
         },
         {
             "name": "symfony/gateway-api-notifier",
-            "version": "v7.4.4",
+            "version": "v8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/gateway-api-notifier.git",
-                "reference": "15baa41466f43907bfb0ebe53b98b92e49d940d3"
+                "reference": "b4c17b41e96964b28f8a4c677cb36543f2475bd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/15baa41466f43907bfb0ebe53b98b92e49d940d3",
-                "reference": "15baa41466f43907bfb0ebe53b98b92e49d940d3",
+                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/b4c17b41e96964b28f8a4c677cb36543f2475bd9",
+                "reference": "b4c17b41e96964b28f8a4c677cb36543f2475bd9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/http-client": "^6.4|^7.0|^8.0",
-                "symfony/notifier": "^7.2|^8.0"
+                "php": ">=8.4.1",
+                "symfony/http-client": "^7.4|^8.0",
+                "symfony/notifier": "^7.4|^8.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -12426,7 +12426,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/gateway-api-notifier/tree/v7.4.4"
+                "source": "https://github.com/symfony/gateway-api-notifier/tree/v8.1.0"
             },
             "funding": [
                 {
@@ -12446,7 +12446,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-05T08:47:25+00:00"
+            "time": "2026-05-29T05:06:50+00:00"
         },
         {
             "name": "symfony/gitter-notifier",
@@ -12735,16 +12735,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v7.4.13",
+            "version": "v7.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "e8a112b8415707265a7e614278136a9d92989a6a"
+                "reference": "f6bc6b5a54ff5afac4725cacec9bf2f52eb15920"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/e8a112b8415707265a7e614278136a9d92989a6a",
-                "reference": "e8a112b8415707265a7e614278136a9d92989a6a",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/f6bc6b5a54ff5afac4725cacec9bf2f52eb15920",
+                "reference": "f6bc6b5a54ff5afac4725cacec9bf2f52eb15920",
                 "shasum": ""
             },
             "require": {
@@ -12812,7 +12812,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v7.4.13"
+                "source": "https://github.com/symfony/http-client/tree/v7.4.14"
             },
             "funding": [
                 {
@@ -12832,7 +12832,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-24T09:57:54+00:00"
+            "time": "2026-06-16T11:50:14+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -24883,7 +24883,6 @@
                 "grumpydictator/firefly-iii": "<=6.6.2",
                 "gugoan/economizzer": "<=0.9.0.0-beta1",
                 "guzzlehttp/guzzle": "<7.12.1",
-                "guzzlehttp/guzzle-services": "<1.5.4",
                 "guzzlehttp/guzzle-services": "<1.5.4",
                 "guzzlehttp/oauth-subscriber": "<0.8.1",
                 "guzzlehttp/psr7": "<2.12.1",
