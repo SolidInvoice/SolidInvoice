@@ -92,7 +92,7 @@
         "symfony/doctrine-bridge": "^7.1",
         "symfony/doctrine-messenger": "^7.1",
         "symfony/dotenv": "^7.1",
-        "symfony/esendex-notifier": "^7.1",
+        "symfony/esendex-notifier": "^8.1",
         "symfony/event-dispatcher": "^7.1",
         "symfony/expression-language": "^7.1",
         "symfony/fake-chat-notifier": "^7.1",
