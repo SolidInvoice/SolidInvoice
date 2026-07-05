@@ -132,7 +132,7 @@
         "symfony/mime": "^7.1",
         "symfony/mobyt-notifier": "^7.1",
         "symfony/monolog-bundle": "^3.7",
-        "symfony/object-mapper": "^7.1",
+        "symfony/object-mapper": "^8.1",
         "symfony/octopush-notifier": "^7.1",
         "symfony/options-resolver": "^7.1",
         "symfony/ovh-cloud-notifier": "^7.1",

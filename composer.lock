@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70be660e5a7072c6e4754c989a523faa",
+    "content-hash": "e12e284b9c098f54d14be144f9fd179c",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14762,28 +14762,28 @@
         },
         {
             "name": "symfony/object-mapper",
-            "version": "v7.4.9",
+            "version": "v8.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/object-mapper.git",
-                "reference": "4f3f4973993b70e88e58dbcc3e332135d593f70d"
+                "reference": "f2d118d3ced275117b83acc5b57f6611ab38cd14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/object-mapper/zipball/4f3f4973993b70e88e58dbcc3e332135d593f70d",
-                "reference": "4f3f4973993b70e88e58dbcc3e332135d593f70d",
+                "url": "https://api.github.com/repos/symfony/object-mapper/zipball/f2d118d3ced275117b83acc5b57f6611ab38cd14",
+                "reference": "f2d118d3ced275117b83acc5b57f6611ab38cd14",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
+                "php": ">=8.4.1",
                 "psr/container": "^2.0"
             },
             "conflict": {
                 "symfony/property-access": "<7.2"
             },
             "require-dev": {
-                "symfony/property-access": "^7.2|^8.0",
-                "symfony/var-exporter": "^7.2|^8.0"
+                "symfony/property-access": "^7.4|^8.0",
+                "symfony/var-exporter": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -14811,7 +14811,7 @@
             "description": "Provides a way to map an object to another object",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/object-mapper/tree/v7.4.9"
+                "source": "https://github.com/symfony/object-mapper/tree/v8.1.1"
             },
             "funding": [
                 {
@@ -14831,7 +14831,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-22T15:21:55+00:00"
+            "time": "2026-06-17T10:12:54+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
@@ -24883,7 +24883,6 @@
                 "grumpydictator/firefly-iii": "<=6.6.2",
                 "gugoan/economizzer": "<=0.9.0.0-beta1",
                 "guzzlehttp/guzzle": "<7.12.1",
-                "guzzlehttp/guzzle-services": "<1.5.4",
                 "guzzlehttp/guzzle-services": "<1.5.4",
                 "guzzlehttp/oauth-subscriber": "<0.8.1",
                 "guzzlehttp/psr7": "<2.12.1",
