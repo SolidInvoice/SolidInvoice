@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Form\Methods;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -37,9 +38,10 @@ class AuthorizeNetAim extends AbstractType
 
         $builder->add(
             'transaction_key',
-            TextType::class,
+            PasswordType::class,
             [
                 'constraints' => new NotBlank(),
+                'always_empty' => false,
             ]
         );
 

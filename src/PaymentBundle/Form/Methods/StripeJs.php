@@ -15,6 +15,7 @@ namespace SolidInvoice\PaymentBundle\Form\Methods;
 
 use Override;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -39,12 +40,13 @@ class StripeJs extends AbstractType
 
         $builder->add(
             'secret_key',
-            TextType::class,
+            PasswordType::class,
             [
                 'label' => 'payment.gateway.field.stripe.secret_key.label',
                 'help' => 'payment.gateway.field.stripe.secret_key.help',
                 'attr' => ['placeholder' => 'sk_live_...'],
                 'constraints' => new NotBlank(),
+                'always_empty' => false,
             ]
         );
     }
