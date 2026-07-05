@@ -30,33 +30,32 @@
 
         {# About this gateway: what it is, which variant to pick, and where to get the keys #}
         {% if gatewayInfo.hasGuidance %}
-            <div class="alert alert-info payment-gateway-about" role="note">
-                <div class="d-flex gap-2">
-                    <div class="flex-shrink-0">
-                        {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
-                    </div>
-                    <div class="flex-grow-1 min-w-0">
-                        <h4 class="alert-title">{{ 'payment.gateway.about.title'|trans }}</h4>
-                        {% if gatewayInfo.overview %}
-                            <p class="mb-0">{{ gatewayInfo.overview|trans }}</p>
-                        {% endif %}
-                        {% if gatewayInfo.comparison %}
-                            <details class="mt-2 payment-gateway-compare">
-                                <summary class="fw-bold">{{ 'payment.gateway.compare.title'|trans }}</summary>
-                                <p class="mb-0 mt-1">{{ gatewayInfo.comparison|trans }}</p>
-                            </details>
-                        {% endif %}
-                        {% if gatewayInfo.setupUrl %}
-                            <a href="{{ gatewayInfo.setupUrl }}"
-                               class="btn btn-sm btn-outline-primary mt-3"
-                               target="_blank"
-                               rel="noopener noreferrer">
-                                {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
-                                {{ (gatewayInfo.setupUrlLabel ?? 'payment.gateway.setup.default_label')|trans }}
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
+            {# Wrapper carries the scoping class for the SCSS; passing it to the component collides with its own cva class output #}
+            <div class="payment-gateway-about">
+                <twig:Ui:Alert
+                    type="info"
+                    icon="tabler:info-circle"
+                    title="{{ 'payment.gateway.about.title'|trans }}"
+                >
+                    {% if gatewayInfo.overview %}
+                        <p class="mb-0">{{ gatewayInfo.overview|trans }}</p>
+                    {% endif %}
+                    {% if gatewayInfo.comparison %}
+                        <details class="mt-2 payment-gateway-compare">
+                            <summary class="fw-bold">{{ 'payment.gateway.compare.title'|trans }}</summary>
+                            <p class="mb-0 mt-1">{{ gatewayInfo.comparison|trans }}</p>
+                        </details>
+                    {% endif %}
+                    {% if gatewayInfo.setupUrl %}
+                        <a href="{{ gatewayInfo.setupUrl }}"
+                           class="btn btn-sm btn-outline-primary mt-3"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                            {{ (gatewayInfo.setupUrlLabel ?? 'payment.gateway.setup.default_label')|trans }}
+                        </a>
+                    {% endif %}
+                </twig:Ui:Alert>
             </div>
         {% endif %}
 

@@ -27,24 +27,33 @@
                     </div>
         
                                             <div class="card-body">
-                                <div class="alert alert-info payment-gateway-about" role="note">
-                <div class="d-flex gap-2">
-                    <div class="flex-shrink-0">
-                        <svg viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
-                    </div>
-                    <div class="flex-grow-1 min-w-0">
-                        <h4 class="alert-title">About this gateway</h4>
-                                                    <p class="mb-0">Stripe.js embeds the card input fields directly inside SolidInvoice instead of redirecting to Stripe. It gives a more seamless checkout, but you take on more responsibility for PCI compliance. Most businesses should use Stripe Checkout instead.</p>
-                                                                            <details class="mt-2 payment-gateway-compare">
-                                <summary class="fw-bold">Not sure which one to choose?</summary>
-                                <p class="mb-0 mt-1">Stripe Checkout (recommended): Stripe hosts the payment page - it's the simplest to set up and the most secure, with no extra compliance work for you. Stripe.js: the card fields are embedded directly in SolidInvoice for a more seamless look, but you take on more PCI-compliance responsibility. If you're unsure, choose Stripe Checkout.</p>
-                            </details>
-                                                                            <a href="https://dashboard.stripe.com/apikeys" class="btn btn-sm btn-outline-primary mt-3" target="_blank" rel="noopener noreferrer">
-                                <svg viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5"></path></svg>
-                                Get your Stripe API keys
-                            </a>
-                                            </div>
-                </div>
+                                            <div class="payment-gateway-about">
+                
+
+
+<div class="alert alert-info" role="alert">
+    <div class="d-flex">
+                    <div class="alert-icon">
+                <svg viewbox="0 0 24 24" fill="currentColor" class="icon" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
+            </div>
+                <div class="flex-fill">
+                            <h4 class="alert-title">About this gateway</h4>
+            
+            <div text-body-secondary>
+                                        <p class="mb-0">Stripe.js embeds the card input fields directly inside SolidInvoice instead of redirecting to Stripe. It gives a more seamless checkout, but you take on more responsibility for PCI compliance. Most businesses should use Stripe Checkout instead.</p>
+                                                                <details class="mt-2 payment-gateway-compare">
+                            <summary class="fw-bold">Not sure which one to choose?</summary>
+                            <p class="mb-0 mt-1">Stripe Checkout (recommended): Stripe hosts the payment page - it's the simplest to set up and the most secure, with no extra compliance work for you. Stripe.js: the card fields are embedded directly in SolidInvoice for a more seamless look, but you take on more PCI-compliance responsibility. If you're unsure, choose Stripe Checkout.</p>
+                        </details>
+                                                                <a href="https://dashboard.stripe.com/apikeys" class="btn btn-sm btn-outline-primary mt-3" target="_blank" rel="noopener noreferrer">
+                            <svg viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5"></path></svg>
+                            Get your Stripe API keys
+                        </a>
+                                                </div>
+        </div>
+
+            </div>
+</div>
             </div>
         
         <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">

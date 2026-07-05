@@ -27,16 +27,25 @@
                     </div>
         
                                             <div class="card-body">
-                                <div class="alert alert-info payment-gateway-about" role="note">
-                <div class="d-flex gap-2">
-                    <div class="flex-shrink-0">
-                        <svg viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
-                    </div>
-                    <div class="flex-grow-1 min-w-0">
-                        <h4 class="alert-title">About this gateway</h4>
-                                                    <p class="mb-0">Record payments clients send by bank transfer (EFT). Share your banking details on invoices so clients know where to pay, then mark the invoice as paid once the funds arrive.</p>
-                                                                                            </div>
-                </div>
+                                            <div class="payment-gateway-about">
+                
+
+
+<div class="alert alert-info" role="alert">
+    <div class="d-flex">
+                    <div class="alert-icon">
+                <svg viewbox="0 0 24 24" fill="currentColor" class="icon" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"></path><path d="M11 12h1v4h1"></path></g></svg>
+            </div>
+                <div class="flex-fill">
+                            <h4 class="alert-title">About this gateway</h4>
+            
+            <div text-body-secondary>
+                                        <p class="mb-0">Record payments clients send by bank transfer (EFT). Share your banking details on invoices so clients know where to pay, then mark the invoice as paid once the funds arrive.</p>
+                                                                                        </div>
+        </div>
+
+            </div>
+</div>
             </div>
         
         <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
