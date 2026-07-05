@@ -65,6 +65,9 @@
                 'data-live-action-param': 'save'
             }
         }) }}
+            {# Form-level / non-field errors (e.g. the UniqueEntity gatewayName violation, which maps to the root form) #}
+            {{ form_errors(form) }}
+
             {# Details: how this method is identified inside SolidInvoice #}
             <section class="mb-4">
                 <h4 class="d-flex align-items-center gap-2 mb-1">
@@ -89,6 +92,8 @@
                     </h4>
                     <p class="text-muted small mb-3">{{ 'payment.gateway.section.credentials.subtitle'|trans }}</p>
 
+                    {# Compound-level errors on the config field itself (not rendered by form_widget) #}
+                    {{ form_errors(form.config) }}
                     {{ form_widget(form.config) }}
                 </section>
             {% endif %}
