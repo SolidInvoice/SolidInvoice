@@ -14,7 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Translation\Extractor;
 
 use PhpParser\Node;
+use PhpParser\Node\ArrayItem;
+use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\BinaryOp\Concat;
+use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitor;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Translation\Extractor\Visitor\AbstractVisitor;
 
 /**
@@ -31,7 +41,7 @@ use Symfony\Component\Translation\Extractor\Visitor\AbstractVisitor;
  */
 final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
 {
-    private const DOMAIN = 'messages';
+    private const string DOMAIN = 'messages';
 
     public function beforeTraverse(array $nodes): ?Node
     {
@@ -45,7 +55,7 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
 
     public function leaveNode(Node $node): ?Node
     {
-        if (! $node instanceof Node\Expr\MethodCall || ! $node->name instanceof Node\Identifier) {
+        if (! $node instanceof MethodCall || ! $node->name instanceof Identifier) {
             return null;
         }
 
@@ -84,13 +94,13 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
      */
     private function resolveLabelOption(?Node $options): array
     {
-        if (! $options instanceof Node\Expr\Array_) {
+        if (! $options instanceof Array_) {
             return [false, null];
         }
 
         foreach ($options->items as $item) {
-            if ($item instanceof Node\ArrayItem
-                && $item->key instanceof Node\Scalar\String_
+            if ($item instanceof ArrayItem
+                && $item->key instanceof String_
                 && 'label' === $item->key->value
             ) {
                 return [true, $this->getStringValue($item->value)];
@@ -102,21 +112,21 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
 
     private function getStringValue(?Node $node): ?string
     {
-        if ($node instanceof Node\Scalar\String_) {
+        if ($node instanceof String_) {
             return $node->value;
         }
 
-        if ($node instanceof Node\Expr\BinaryOp\Concat) {
+        if ($node instanceof Concat) {
             $left = $this->getStringValue($node->left);
             $right = $this->getStringValue($node->right);
 
             return null === $left || null === $right ? null : $left . $right;
         }
 
-        if ($node instanceof Node\Expr\ClassConstFetch && $node->class instanceof Node\Name && $node->name instanceof Node\Identifier) {
+        if ($node instanceof ClassConstFetch && $node->class instanceof Name && $node->name instanceof Identifier) {
             try {
-                $constant = (new \ReflectionClass($node->class->toString()))->getReflectionConstant($node->name->toString());
-            } catch (\ReflectionException) {
+                $constant = new ReflectionClass($node->class->toString())->getReflectionConstant($node->name->toString());
+            } catch (ReflectionException) {
                 return null;
             }
 
