@@ -7,7 +7,7 @@ user:
         min_length_long: 'Your password must be at least {{ limit }} characters long'
         weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
         compromised: 'This password has been leaked in a data breach, please use a different password.'
-        mismatch: "The passwords doesn't match"
+        mismatch: 'Passwords do not match.'
         fields_match: 'The password fields must match.'
     email:
         not_blank: 'Please enter your email'
