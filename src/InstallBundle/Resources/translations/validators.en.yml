@@ -12,6 +12,6 @@ install:
         last_name:
             not_blank: 'Please enter a last name'
         email:
-            not_blank: 'Please enter a email'
+            not_blank: 'Please enter an email'
         password:
             not_blank: 'You must enter a secure password'
