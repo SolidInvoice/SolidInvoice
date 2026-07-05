@@ -29,7 +29,7 @@ class ApiTokenType extends AbstractType
         $builder->add('name');
         $builder->add('description', TextareaType::class, [
             'required' => false,
-            'attr' => ['rows' => 3, 'placeholder' => 'Optional description for this token...'],
+            'attr' => ['rows' => 3, 'placeholder' => 'profile.api.form.description_placeholder'],
         ]);
     }
 

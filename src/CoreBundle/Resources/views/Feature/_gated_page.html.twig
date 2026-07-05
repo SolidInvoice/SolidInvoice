@@ -39,7 +39,7 @@
 {% set plan_name = feature_required_plan_label(feature) %}
 {% set _copy = feature_copy(feature) %}
 {% set _icon = icon|default(_copy ? _copy.icon : 'tabler:lock') %}
-{% set _headline = headline|default(_copy ? _copy.headline|trans : 'This feature requires an upgrade'|trans) %}
+{% set _headline = headline|default(_copy ? _copy.headline|trans : 'feature.upgrade_required'|trans) %}
 {% set _description = description ?? (_copy ? _copy.description|trans : null) %}
 {% set _bullets = bullets ?? (_copy ? _copy.bullets : []) %}
 {% set _quote = _copy ? _copy.quote : null %}
@@ -56,7 +56,7 @@
 
             {% if plan_name %}
                 <p class="empty-subtitle text-secondary">
-                    {{ 'Available on the %plan% plan and higher.'|trans({'%plan%': plan_name}) }}
+                    {{ 'feature.available_on_plan'|trans({'%plan%': plan_name}) }}
                 </p>
             {% endif %}
 
@@ -90,14 +90,14 @@
                 {% if plan_name %}
                     <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary">
                         {{ ux_icon('tabler:arrow-up-circle', {width: 18, height: 18}) }}
-                        {{ 'Upgrade to %plan%'|trans({'%plan%': plan_name}) }}
+                        {{ 'feature.upgrade_to'|trans({'%plan%': plan_name}) }}
                     </a>
                     <a href="{{ path('saas_subscription_plans') }}" class="btn btn-link ms-2">
-                        {{ 'View all plans'|trans }}
+                        {{ 'feature.view_all_plans'|trans }}
                     </a>
                 {% else %}
                     <p class="text-muted mb-0">
-                        {{ 'Contact your administrator to enable this feature.'|trans }}
+                        {{ 'feature.contact_admin'|trans }}
                     </p>
                 {% endif %}
             </div>

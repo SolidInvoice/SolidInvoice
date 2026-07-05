@@ -13,7 +13,7 @@
             <div class="navbar-nav flex-row order-md-last">
                 {% if not is_custom_domain() %}
                     <div class="nav-item dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open user menu">
+                        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="{{ 'layout.aria.open_user_menu'|trans }}">
                             {{ app_logo(25) }}
                             {{ company_name() }}
                         </button>
@@ -32,14 +32,14 @@
 
                             <a href="{{ path('_create_company') }}" class="dropdown-item">
                                 {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                                {{ 'Add Company'|trans }}
+                                {{ 'layout.add_company'|trans }}
                             </a>
                         </div>
                     </div>
                 {% endif %}
 
                 <div class="nav-item dropdown mx-4">
-                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open create menu">
+                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-label="{{ 'layout.aria.open_create_menu'|trans }}">
                         {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
                         {{ 'menu.button.create'|trans }}
                     </button>
@@ -60,9 +60,9 @@
                 </div>
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="{{ 'layout.aria.open_user_menu'|trans }}">
                         <span class="avatar avatar-sm">
-                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
+                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'layout.user_image'|trans }}">
                         </span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ app.user.email }}</div>
@@ -71,16 +71,16 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ path('_profile') }}" class="dropdown-item">
                             {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
-                            {{ 'Profile'|trans }}
+                            {{ 'layout.profile'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
                             {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}
-                            {{ 'API Keys'|trans }}
+                            {{ 'layout.api_keys'|trans }}
                         </a>
                         <a href="{{ path('_export_list') }}" class="dropdown-item">
                             {{ ux_icon('tabler:database-export', {width: 16, height: 16}) }}
-                            {{ 'Data Export'|trans }}
+                            {{ 'layout.data_export'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
                     </div>
@@ -100,13 +100,13 @@
                             <input
                                 type="search"
                                 class="global-search-input"
-                                placeholder="{{ 'Search...'|trans }}"
+                                placeholder="{{ 'search.placeholder'|trans }}"
                                 autocomplete="off"
                                 data-global-search-target="input"
                                 data-action="input->global-search#onInput keydown->global-search#onKeydown"
                             >
                             <span class="global-search-actions">
-                                <button type="button" class="search-help-trigger" data-bs-toggle="modal" data-bs-target="#searchHelpModal" aria-label="{{ 'Search guide'|trans }}" title="{{ 'Search guide'|trans }}">
+                                <button type="button" class="search-help-trigger" data-bs-toggle="modal" data-bs-target="#searchHelpModal" aria-label="{{ 'search.guide'|trans }}" title="{{ 'search.guide'|trans }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                                 </button>
                                 <span class="global-search-shortcut d-none d-xl-flex">
@@ -118,9 +118,9 @@
                         <div class="search-dropdown" data-global-search-target="dropdown">
                             <div class="search-spinner d-none" data-global-search-target="spinner">
                                 <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                    <span class="visually-hidden">{{ 'Searching...'|trans }}</span>
+                                    <span class="visually-hidden">{{ 'search.searching'|trans }}</span>
                                 </div>
-                                <span>{{ 'Searching...'|trans }}</span>
+                                <span>{{ 'search.searching'|trans }}</span>
                             </div>
                             <div class="search-results" data-global-search-target="results"></div>
                         </div>
@@ -137,58 +137,58 @@
                 <div class="modal-header">
                     <h5 class="modal-title d-flex align-items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        {{ 'Search Guide'|trans }}
+                        {{ 'search.guide_title'|trans }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans }}"></button>
                 </div>
                 <div class="modal-body p-0">
 
                     <div class="px-4 py-3 bg-light border-bottom">
                         <p class="text-muted mb-0" style="font-size:.875rem">
-                            {{ 'Type to search across all sections. Use qualifiers to narrow and filter your results. Multiple qualifiers can be combined in a single query.'|trans }}
+                            {{ 'search.intro'|trans }}
                         </p>
                     </div>
 
                     <div class="p-4">
-                        <h6 class="search-help-section-title">{{ 'Available Qualifiers'|trans }}</h6>
+                        <h6 class="search-help-section-title">{{ 'search.available_qualifiers'|trans }}</h6>
                         <div class="table-responsive">
                             <table class="table table-sm table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th style="width:120px">{{ 'Qualifier'|trans }}</th>
-                                        <th>{{ 'Description'|trans }}</th>
-                                        <th>{{ 'Values / Syntax'|trans }}</th>
+                                        <th style="width:120px">{{ 'search.qualifier'|trans }}</th>
+                                        <th>{{ 'search.description'|trans }}</th>
+                                        <th>{{ 'search.values_syntax'|trans }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td><code>in:</code></td>
-                                        <td>{{ 'Limit search to a specific section'|trans }}</td>
+                                        <td>{{ 'search.limit_section'|trans }}</td>
                                         <td class="text-muted"><small>invoices · quotes · payments · clients · contacts · recurring_invoices</small></td>
                                     </tr>
                                     <tr>
                                         <td><code>status:</code></td>
-                                        <td>{{ 'Filter by record status'|trans }}</td>
+                                        <td>{{ 'search.filter_status'|trans }}</td>
                                         <td class="text-muted"><small>draft · pending · paid · overdue · cancelled · active · paused · captured · refunded · failed</small></td>
                                     </tr>
                                     <tr>
                                         <td><code>amount:</code></td>
-                                        <td>{{ 'Filter by amount'|trans }}</td>
-                                        <td class="text-muted"><small>{{ 'Supports comparison operators and ranges — see below'|trans }}</small></td>
+                                        <td>{{ 'search.filter_amount'|trans }}</td>
+                                        <td class="text-muted"><small>{{ 'search.supports_operators'|trans }}</small></td>
                                     </tr>
                                     <tr>
                                         <td><code>client:</code></td>
-                                        <td>{{ 'Filter by client name'|trans }}</td>
+                                        <td>{{ 'search.filter_client'|trans }}</td>
                                         <td class="text-muted"><small>client:Acme &nbsp;·&nbsp; client:"Acme Corp"</small></td>
                                     </tr>
                                     <tr>
                                         <td><code>created:</code></td>
-                                        <td>{{ 'Filter by creation date'|trans }}</td>
-                                        <td class="text-muted"><small>{{ 'Supports comparison operators and ranges — see below'|trans }}</small></td>
+                                        <td>{{ 'search.filter_created'|trans }}</td>
+                                        <td class="text-muted"><small>{{ 'search.supports_operators'|trans }}</small></td>
                                     </tr>
                                     <tr>
                                         <td><code>sort:</code></td>
-                                        <td>{{ 'Sort results'|trans }}</td>
+                                        <td>{{ 'search.sort_results'|trans }}</td>
                                         <td class="text-muted"><small>amount · amount_desc · date · date_desc</small></td>
                                     </tr>
                                 </tbody>
@@ -200,58 +200,58 @@
 
                     <div class="row g-0">
                         <div class="col-md-5 p-4 border-end">
-                            <h6 class="search-help-section-title">{{ 'Comparison Operators'|trans }}</h6>
-                            <p class="text-muted mb-3" style="font-size:.8125rem">{{ 'Applies to'|trans }} <code>amount:</code> {{ 'and'|trans }} <code>created:</code></p>
+                            <h6 class="search-help-section-title">{{ 'search.comparison_operators'|trans }}</h6>
+                            <p class="text-muted mb-3" style="font-size:.8125rem">{{ 'search.applies_to'|trans }} <code>amount:</code> {{ 'search.and'|trans }} <code>created:</code></p>
                             <div class="d-flex flex-column gap-2">
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">100</code>
-                                    <span class="text-muted small">{{ 'exact match'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.exact_match'|trans }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">&gt;100</code>
-                                    <span class="text-muted small">{{ 'greater than'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.greater_than'|trans }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">&gt;=100</code>
-                                    <span class="text-muted small">{{ 'at least'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.at_least'|trans }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">&lt;100</code>
-                                    <span class="text-muted small">{{ 'less than'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.less_than'|trans }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">&lt;=100</code>
-                                    <span class="text-muted small">{{ 'at most'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.at_most'|trans }}</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
                                     <code class="search-help-op">50..200</code>
-                                    <span class="text-muted small">{{ 'between a range'|trans }}</span>
+                                    <span class="text-muted small">{{ 'search.between_range'|trans }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-7 p-4">
-                            <h6 class="search-help-section-title">{{ 'Example Queries'|trans }}</h6>
+                            <h6 class="search-help-section-title">{{ 'search.example_queries'|trans }}</h6>
                             <div class="d-flex flex-column gap-2">
                                 <div class="search-help-example">
                                     <code>status:overdue</code>
-                                    <span>{{ 'All overdue records across every section'|trans }}</span>
+                                    <span>{{ 'search.example_overdue'|trans }}</span>
                                 </div>
                                 <div class="search-help-example">
                                     <code>in:invoices status:paid amount:&gt;500</code>
-                                    <span>{{ 'Paid invoices with an amount over 500'|trans }}</span>
+                                    <span>{{ 'search.example_paid'|trans }}</span>
                                 </div>
                                 <div class="search-help-example">
                                     <code>client:"Acme Corp" status:pending</code>
-                                    <span>{{ 'Pending items linked to Acme Corp'|trans }}</span>
+                                    <span>{{ 'search.example_pending'|trans }}</span>
                                 </div>
                                 <div class="search-help-example">
                                     <code>in:payments sort:amount_desc</code>
-                                    <span>{{ 'Payments sorted from highest to lowest amount'|trans }}</span>
+                                    <span>{{ 'search.example_payments'|trans }}</span>
                                 </div>
                                 <div class="search-help-example">
                                     <code>created:&gt;2024-01-01 in:quotes</code>
-                                    <span>{{ 'Quotes created after January 1, 2024'|trans }}</span>
+                                    <span>{{ 'search.example_quotes'|trans }}</span>
                                 </div>
                             </div>
                         </div>

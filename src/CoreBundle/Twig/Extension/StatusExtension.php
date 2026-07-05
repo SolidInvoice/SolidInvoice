@@ -21,12 +21,18 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class StatusExtension extends AbstractExtension
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
     /**
      * @return TwigFunction[]
      */
@@ -106,11 +112,18 @@ class StatusExtension extends AbstractExtension
 
     private function renderStatusLabel(Environment $environment, HasStatusLabel $status, ?string $tooltip = null): string
     {
+        // Translate the status at this single display chokepoint via a shared `status.*`
+        // key (keyed by the enum's backing value), so the catalog stays the source of
+        // truth. getLabel() itself is left untranslated for its non-display consumers
+        // (grids, filters, API), and the English catalog value equals getLabel() so
+        // rendered output is unchanged.
+        $key = $status instanceof BackedEnum ? $status->value : strtolower($status->getLabel());
+
         return $environment->render(
             '@SolidInvoiceCore/Status/label.html.twig',
             [
                 'entity' => [
-                    'name' => $status->getLabel(),
+                    'name' => $this->translator->trans('status.' . $key),
                     'label' => $status->getColor(),
                 ],
                 'tooltip' => $tooltip,

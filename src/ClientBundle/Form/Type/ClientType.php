@@ -46,14 +46,15 @@ class ClientType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
-        $builder->add('website', UrlType::class, ['required' => false, 'default_protocol' => 'http']);
+        $builder->add('name', null, ['label' => 'client.form.name.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
+        $builder->add('website', UrlType::class, ['label' => 'client.form.website.label', 'required' => false, 'default_protocol' => 'http']);
 
         if ($this->featureGate->isEnabled(Feature::MultiCurrency->value)) {
             $builder->add(
                 'currencyCode',
                 CurrencyType::class,
                 [
+                    'label' => 'client.form.currency_code.label',
                     'placeholder' => 'client.form.currency.empty_value',
                     'required' => false,
                 ]
@@ -65,6 +66,7 @@ class ClientType extends AbstractType
                 'currencyCode',
                 CurrencyType::class,
                 [
+                    'label' => 'client.form.currency_code.label',
                     'placeholder' => 'client.form.currency.empty_value',
                     'required' => false,
                     'disabled' => true,

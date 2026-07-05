@@ -22,7 +22,7 @@
         {% for message in app.flashes('success') %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'action.close'|trans }}"></button>
             </div>
         {% endfor %}
     {% endif %}
@@ -33,7 +33,7 @@
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div class="alert alert-info mb-0">
                     {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
-                    {{ 'To view the API documentation, visit the'|trans }} <a href="{{ path('api_doc') }}" target="_blank" class="alert-link">{{ 'API documentation'|trans }}</a> {{ 'page.'|trans }}
+                    {{ 'profile.api.doc_notice'|trans({'%link%': '<a href="' ~ path('api_doc') ~ '" target="_blank" class="alert-link">' ~ 'profile.api.doc_link'|trans ~ '</a>'})|raw }}
                 </div>
                 <twig:CreateApiToken />
             </div>

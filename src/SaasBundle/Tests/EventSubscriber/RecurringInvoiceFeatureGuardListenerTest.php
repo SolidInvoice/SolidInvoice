@@ -20,6 +20,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\SaasBundle\EventSubscriber\RecurringInvoiceFeatureGuardListener;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\Marking;
@@ -126,6 +127,15 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
 
     private function buildTranslator(): TranslatorInterface
     {
-        return new Translator('en');
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource(
+            'yaml',
+            dirname(__DIR__, 2) . '/Resources/translations/messages.en.yml',
+            'en',
+            'messages',
+        );
+
+        return $translator;
     }
 }

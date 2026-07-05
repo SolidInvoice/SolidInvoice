@@ -18,13 +18,13 @@
     <a href="{{ path('saas_subscription_plans') }}"
        class="badge bg-azure-lt text-decoration-none text-azure"
        title="{{ plan
-            ? 'Upgrade to %plan% to unlock this feature'|trans({'%plan%': plan})
-            : 'Upgrade your plan to unlock this feature'|trans }}">
+            ? 'settings.upgrade.tooltip_plan'|trans({'%plan%': plan})
+            : 'settings.upgrade.tooltip'|trans }}">
         {{ ux_icon('tabler:arrow-up-circle', {width: 14, height: 14, class: 'me-1'}) }}
         {%- if plan -%}
-            {{ 'Upgrade to %plan%'|trans({'%plan%': plan}) }}
+            {{ 'settings.upgrade.label_plan'|trans({'%plan%': plan}) }}
         {%- else -%}
-            {{ 'Upgrade plan'|trans }}
+            {{ 'settings.upgrade.label'|trans }}
         {%- endif -%}
     </a>
 {% endmacro %}
@@ -32,9 +32,9 @@
 {% macro trial_restricted_badge() %}
     <a href="{{ path('saas_subscription_checkout') }}"
        class="badge bg-azure-lt text-decoration-none text-azure"
-       title="{{ 'Activate your subscription to unlock this feature'|trans }}">
+       title="{{ 'settings.upgrade.activate_tooltip'|trans }}">
         {{ ux_icon('tabler:arrow-up-circle', {width: 14, height: 14, class: 'me-1'}) }}
-        {{ 'Activate subscription'|trans }}
+        {{ 'settings.upgrade.activate'|trans }}
     </a>
 {% endmacro %}
 
@@ -101,22 +101,22 @@
         <div class="card-body py-3">
             <div class="row g-3">
                 <div class="col-12">
-                    {{ form_row(form.street1, {label: 'Street Address'|trans, attr: {placeholder: 'Street address line 1'|trans}}) }}
+                    {{ form_row(form.street1, {label: 'settings.address.street1'|trans, attr: {placeholder: 'settings.address.street1_placeholder'|trans}}) }}
                 </div>
                 <div class="col-12">
-                    {{ form_row(form.street2, {label: 'Street Address 2'|trans, attr: {placeholder: 'Apartment, suite, unit, etc. (optional)'|trans}}) }}
+                    {{ form_row(form.street2, {label: 'settings.address.street2'|trans, attr: {placeholder: 'settings.address.street2_placeholder'|trans}}) }}
                 </div>
                 <div class="col-md-6">
-                    {{ form_row(form.city, {label: 'City'|trans, attr: {placeholder: 'City'|trans}}) }}
+                    {{ form_row(form.city, {label: 'settings.address.city'|trans, attr: {placeholder: 'settings.address.city_placeholder'|trans}}) }}
                 </div>
                 <div class="col-md-6">
-                    {{ form_row(form.state, {label: 'State / Province'|trans, attr: {placeholder: 'State or province'|trans}}) }}
+                    {{ form_row(form.state, {label: 'settings.address.state'|trans, attr: {placeholder: 'settings.address.state_placeholder'|trans}}) }}
                 </div>
                 <div class="col-md-6">
-                    {{ form_row(form.zip, {label: 'Postal Code'|trans, attr: {placeholder: 'ZIP / Postal code'|trans}}) }}
+                    {{ form_row(form.zip, {label: 'settings.address.zip'|trans, attr: {placeholder: 'settings.address.zip_placeholder'|trans}}) }}
                 </div>
                 <div class="col-md-6">
-                    {{ form_row(form.country, {label: 'Country'|trans}) }}
+                    {{ form_row(form.country, {label: 'settings.address.country'|trans}) }}
                 </div>
             </div>
         </div>
@@ -137,7 +137,7 @@
         <div class="flex-grow-1">
             {{ block('dropzone_widget') }}
             <p class="text-muted small mt-2 mb-0">
-                {{ 'Recommended: Square image, at least 200x200px. PNG or JPG format.'|trans }}
+                {{ 'settings.logo.help'|trans }}
             </p>
         </div>
     </div>

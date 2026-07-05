@@ -11,7 +11,7 @@
 {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
-    {{ 'Your data export is ready'|trans }}
+    {{ 'export.email.ready'|trans }}
 {%- endblock -%}
 
 {%- block content -%}
@@ -19,10 +19,10 @@
         <row>
             <columns>
                 <p style="color: #0891b2; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    {{ 'Export ready for download'|trans }}
+                    {{ 'export.email.ready_heading'|trans }}
                 </p>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'The full data export you requested has completed. The archive contains one file per entity type plus a manifest describing the contents.'|trans }}
+                    {{ 'export.email.ready_body'|trans }}
                 </p>
             </columns>
         </row>
@@ -30,18 +30,18 @@
 
     {{ email.spacer('sm') }}
 
-    {{ email.info_row('Format'|trans, job.format.value|upper) }}
+    {{ email.info_row('export.format'|trans, job.format.value|upper) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('Requested'|trans, job.createdAt|date('Y-m-d H:i')) }}
+    {{ email.info_row('export.email.requested'|trans, job.createdAt|date('Y-m-d H:i')) }}
 
     {% if job.fileSize %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Archive size'|trans, (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
+        {{ email.info_row('export.email.archive_size'|trans, (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
     {% endif %}
 
     {{ email.divider('md') }}
 
-    {{ email.button('Download Export'|trans, downloadUrl, 'primary', 'large') }}
+    {{ email.button('export.email.download_export'|trans, downloadUrl, 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
@@ -49,7 +49,7 @@
         <row>
             <columns>
                 <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
-                    {{ 'This download link requires authentication as the user who requested the export.'|trans }}
+                    {{ 'export.email.auth_note'|trans }}
                 </p>
             </columns>
         </row>

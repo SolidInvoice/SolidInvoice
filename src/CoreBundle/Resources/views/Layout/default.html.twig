@@ -34,7 +34,7 @@
 {% block body %}
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark" data-bs-theme="dark">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="{{ 'layout.aria.toggle_navigation'|trans }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -49,9 +49,9 @@
 
             <div class="navbar-nav flex-row d-lg-none">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0 px-2" data-bs-toggle="dropdown" aria-label="{{ 'layout.aria.open_user_menu'|trans }}">
                         <span class="avatar avatar-sm">
-                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
+                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'layout.user_image'|trans }}">
                         </span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ app.user.email }}</div>
@@ -60,11 +60,11 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ path('_profile') }}" class="dropdown-item d-flex align-items-center gap-2">
                             {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
-                            {{ 'Profile'|trans }}
+                            {{ 'layout.profile'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ path('_api_keys_index') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}{{ 'API Keys'|trans }}
+                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}{{ 'layout.api_keys'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
                     </div>

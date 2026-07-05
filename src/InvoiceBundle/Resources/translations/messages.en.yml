@@ -36,6 +36,7 @@ invoice:
     title: 'Invoice #%id%'
     notes: Notes
     terms: Terms
+    custom_fields: 'Custom fields'
     client:
         title: 'Client'
         choose: 'Choose a client'

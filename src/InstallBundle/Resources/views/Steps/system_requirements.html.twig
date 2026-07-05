@@ -25,9 +25,9 @@
         </div>
         <div class="flex-shrink-0">
             {% if requirement.fulfilled %}
-                <span class="badge bg-success-lt">{{ 'Passed'|trans }}</span>
+                <span class="badge bg-success-lt">{{ 'installation.requirements_page.status.passed'|trans }}</span>
             {% else %}
-                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }}-lt">{{ requirement.optional ? 'Warning'|trans : 'Failed'|trans }}</span>
+                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }}-lt">{{ requirement.optional ? 'installation.requirements_page.status.warning'|trans : 'installation.requirements_page.status.failed'|trans }}</span>
             {% endif %}
         </div>
     </div>
@@ -37,7 +37,7 @@
 
 <div class="progress progress-sm card-progress">
     <div class="progress-bar bg-primary" style="width: {{ progress }}%" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
-        <span class="visually-hidden">{{ progress }}% Complete</span>
+        <span class="visually-hidden">{{ 'installation.progress_complete'|trans({'%progress%': progress}) }}</span>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
         <div class="flex-grow-1">
             <h2 class="card-title pb-3">
                 {{ app_logo(showDefault: true) }}
-                {{ app_name }} {{ 'Installation'|trans }}
+                {{ app_name }} {{ 'installation.label'|trans }}
             </h2>
             <div class="vstack gap-4 my-4">
                 {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}
@@ -116,7 +116,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <div class="text-muted small text-uppercase mb-1">{{ 'Required'|trans }}</div>
+                                    <div class="text-muted small text-uppercase mb-1">{{ 'installation.requirements_page.required'|trans }}</div>
                                     <div class="h3 mb-0">
                                         {{ computed.appRequirements.requirements|filter(r => r.fulfilled)|length }} / {{ computed.appRequirements.requirements|length }}
                                     </div>
@@ -133,7 +133,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <div class="text-muted small text-uppercase mb-1">{{ 'Recommended'|trans }}</div>
+                                    <div class="text-muted small text-uppercase mb-1">{{ 'installation.requirements_page.recommended'|trans }}</div>
                                     <div class="h3 mb-0">
                                         {{ computed.appRequirements.recommendations|filter(r => r.fulfilled)|length }} / {{ computed.appRequirements.recommendations|length }}
                                     </div>
@@ -197,11 +197,11 @@
                             {{ ux_icon('tabler:info-circle', {width: 32, height: 32}) }}
                         </div>
                         <div class="flex-grow-1">
-                            <h5 class="card-title mb-3">{{ 'System Information'|trans }}</h5>
+                            <h5 class="card-title mb-3">{{ 'installation.requirements_page.system_information'|trans }}</h5>
                             <div class="vstack gap-2">
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Operating System'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.operating_system'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ constant('PHP_OS') }} ({{ constant('PHP_OS_FAMILY') }})</code>
@@ -209,7 +209,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Web Server'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.web_server'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark text-break">{{ app.request.server.get('SERVER_SOFTWARE', 'Unknown') }}</code>
@@ -217,7 +217,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Current User'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.current_user'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ this.getCurrentUser() }}</code>
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'PHP Version'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.php_version'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ constant('PHP_VERSION') }}</code>
@@ -234,19 +234,19 @@
                                 {% if computed.appRequirements.getPhpIniPath() %}
                                     <div class="d-flex align-items-start gap-2">
                                         <div class="flex-shrink-0 text-muted sysinfo-label">
-                                            <strong>{{ 'PHP Config File'|trans }}:</strong>
+                                            <strong>{{ 'installation.requirements_page.php_config_file'|trans }}:</strong>
                                         </div>
                                         <div class="flex-grow-1">
                                             <code class="text-dark text-break">{{ computed.appRequirements.getPhpIniPath() }}</code>
                                             <div class="text-muted small mt-1">
-                                                {{ 'Edit this file to modify PHP settings'|trans }}
+                                                {{ 'installation.requirements_page.edit_config_hint'|trans }}
                                             </div>
                                         </div>
                                     </div>
                                 {% endif %}
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Memory Limit'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.memory_limit'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ this.iniGet('memory_limit') }}</code>
@@ -254,7 +254,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Max Execution Time'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.max_execution_time'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ this.iniGet('max_execution_time') }}s</code>
@@ -262,7 +262,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Upload Max Size'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.upload_max_size'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark">{{ this.iniGet('upload_max_filesize') }}</code>
@@ -270,7 +270,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Config Directory'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.config_directory'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.configDir }}</code>
@@ -278,7 +278,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Cache Directory'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.cache_directory'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.cacheDir }}</code>
@@ -286,7 +286,7 @@
                                 </div>
                                 <div class="d-flex align-items-start gap-2">
                                     <div class="flex-shrink-0 text-muted sysinfo-label">
-                                        <strong>{{ 'Log Directory'|trans }}:</strong>
+                                        <strong>{{ 'installation.requirements_page.log_directory'|trans }}:</strong>
                                     </div>
                                     <div class="flex-grow-1">
                                         <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.logsDir }}</code>

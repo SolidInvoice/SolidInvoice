@@ -52,7 +52,7 @@ class ClientCreateNotification extends NotificationMessage
     #[Override]
     public function getSubject(): string
     {
-        return 'A new client has been created';
+        return 'client.create.subject';
     }
 
     #[Override]

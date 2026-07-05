@@ -19,5 +19,5 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class NotApplicationUrlHost extends Constraint
 {
-    public string $message = 'This domain is reserved for the default application URL.';
+    public string $message = 'core.constraint.application_url_host';
 }

@@ -38,7 +38,7 @@ final class CustomFieldOptionType extends AbstractType
     {
         $builder->add('label', TextType::class, [
             'label' => false,
-            'attr' => ['placeholder' => 'Option label'],
+            'attr' => ['placeholder' => 'custom_field.form.option.placeholder'],
             'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 125)],
         ]);
 

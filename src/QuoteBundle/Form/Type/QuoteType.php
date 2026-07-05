@@ -150,7 +150,7 @@ class QuoteType extends AbstractType
             DiscountType::class,
             [
                 'required' => false,
-                'label' => 'Discount',
+                'label' => 'billing.discount',
                 'currency' => $options['currency']
             ]
         );
@@ -178,7 +178,7 @@ class QuoteType extends AbstractType
                 'allow_delete' => true,
                 'required' => false,
                 'by_reference' => false,
-                'label' => 'Withholding & adjustments',
+                'label' => 'billing.withholding',
                 'attr' => [
                     'data-controller' => 'invoice-tax',
                 ],
@@ -193,7 +193,7 @@ class QuoteType extends AbstractType
         $builder->add('quoteId', null, ['data' => $data]);
 
         $builder->add('terms');
-        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);

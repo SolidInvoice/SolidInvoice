@@ -55,7 +55,7 @@ final class ChoosePlanAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         if (! $this->isCsrfTokenValid('choose_plan', (string) $request->request->get('_token', ''))) {
-            $this->addFlash('error', 'Invalid security token, please try again.');
+            $this->addFlash('error', 'saas.flash.invalid_token');
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
@@ -63,7 +63,7 @@ final class ChoosePlanAction extends AbstractController
         $subscription = $this->getSubscription();
 
         if (! $subscription instanceof Subscription) {
-            $this->addFlash('error', 'No subscription found');
+            $this->addFlash('error', 'saas.flash.no_subscription_short');
 
             return $this->redirectToRoute('_dashboard');
         }
@@ -76,7 +76,7 @@ final class ChoosePlanAction extends AbstractController
         $plan = $planId === '' ? null : $this->planRepository->find($planId);
 
         if (! $plan instanceof Plan || ! $plan->isActive()) {
-            $this->addFlash('error', 'The selected plan is invalid.');
+            $this->addFlash('error', 'saas.flash.invalid_plan');
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
@@ -93,7 +93,7 @@ final class ChoosePlanAction extends AbstractController
             }
 
             $this->subscriptionManager->activate($subscription);
-            $this->addFlash('success', 'Your free plan is now active.');
+            $this->addFlash('success', 'saas.flash.free_plan_active');
 
             return $this->redirectToRoute('_dashboard');
         }

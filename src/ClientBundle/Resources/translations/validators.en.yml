@@ -1,0 +1,7 @@
+client:
+    constraint:
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        contacts:
+            min: 'You need to add at least one contact to this client'

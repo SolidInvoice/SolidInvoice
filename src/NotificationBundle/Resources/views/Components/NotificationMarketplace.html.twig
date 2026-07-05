@@ -19,7 +19,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:apps', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Marketplace'|trans }}</span>
+                <span>{{ 'notification.marketplace.title'|trans }}</span>
             </a>
         </li>
         <li class="nav-item">
@@ -29,7 +29,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Configured'|trans }} <span class="badge bg-secondary-lt ms-1">{{ configuredIntegrations|length }}</span></span>
+                <span>{{ 'notification.marketplace.configured'|trans }} <span class="badge bg-secondary-lt ms-1">{{ configuredIntegrations|length }}</span></span>
             </a>
         </li>
     </ul>
@@ -42,10 +42,10 @@
                 <div class="marketplace-header mb-4">
                     <h5 class="mb-2 d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:bell-ringing', {width: 20, height: 20, class: 'text-primary'}) }}
-                        {{ 'Notification Integrations'|trans }}
+                        {{ 'notification.marketplace.heading'|trans }}
                     </h5>
                     <p class="text-muted small mb-3">
-                        {{ 'Send notifications via SMS or chat platforms'|trans }}
+                        {{ 'notification.marketplace.subtitle'|trans }}
                     </p>
 
                     {# Search Input #}
@@ -55,15 +55,15 @@
                         </span>
                         <input type="text"
                                class="form-control"
-                               placeholder="{{ 'Search integrations...'|trans }}"
+                               placeholder="{{ 'notification.marketplace.search_placeholder'|trans }}"
                                data-model="searchQuery"
-                               aria-label="{{ 'Search notification integrations'|trans }}">
+                               aria-label="{{ 'notification.marketplace.search_aria'|trans }}">
                         {% if searchQuery %}
                             <button type="button"
                                     class="btn btn-ghost btn-icon position-absolute end-0 top-50 translate-middle-y marketplace-search-clear"
                                     data-action="live#action"
                                     data-live-action-param="clearSearch"
-                                    aria-label="{{ 'Clear search'|trans }}">
+                                    aria-label="{{ 'notification.marketplace.clear_search'|trans }}">
                                 {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
                             </button>
                         {% endif %}
@@ -78,7 +78,7 @@
                                 <span class="nav-link-icon">
                                     {{ ux_icon('tabler:message-2', {width: 16, height: 16}) }}
                                 </span>
-                                <span>{{ 'SMS'|trans }}</span>
+                                <span>{{ 'notification.type.sms'|trans }}</span>
                             </a>
                         </li>
                         <li class="nav-item flex-fill">
@@ -88,7 +88,7 @@
                                 <span class="nav-link-icon">
                                     {{ ux_icon('tabler:message-circle', {width: 16, height: 16}) }}
                                 </span>
-                                <span>{{ 'Chat'|trans }}</span>
+                                <span>{{ 'notification.type.chat'|trans }}</span>
                             </a>
                         </li>
                     </ul>
@@ -103,7 +103,7 @@
                             <div class="integration-section">
                                 <div class="integration-section-header">
                                     {{ ux_icon('tabler:star', {width: 16, height: 16}) }}
-                                    {{ 'Featured Providers'|trans }}
+                                    {{ 'notification.marketplace.featured_providers'|trans }}
                                 </div>
                                 <div class="integration-cards-grid">
                             {% for integration in featuredIntegrations %}
@@ -117,7 +117,7 @@
                                             {% if integration.isConfigured %}
                                                 <span class="badge bg-success-lt">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
-                                                    <span class="visually-hidden">{{ 'Configured'|trans }}</span>
+                                                    <span class="visually-hidden">{{ 'notification.marketplace.configured'|trans }}</span>
                                                 </span>
                                             {% endif %}
                                             <p class="integration-card-description">{{ integration.description }}</p>
@@ -126,7 +126,7 @@
                                             <a href="{{ path('_notification_integration', {transport: integration.name, type: integration.type, activeTab: activeTab}) }}"
                                                class="btn btn-sm btn-outline-primary w-100">
                                                 {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
-                                                {{ 'Configure'|trans }}
+                                                {{ 'notification.marketplace.configure'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                             <div class="integration-section {% if featuredIntegrations|length > 0 %}mt-5{% endif %}">
                                 <div class="integration-section-header">
                                     {{ ux_icon('tabler:apps', {width: 16, height: 16}) }}
-                                    {{ 'All Providers'|trans }}
+                                    {{ 'notification.marketplace.all_providers'|trans }}
                                 </div>
                                 <div class="integration-cards-grid">
                             {% for integration in regularIntegrations %}
@@ -155,7 +155,7 @@
                                             {% if integration.isConfigured %}
                                                 <span class="badge bg-success-lt">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
-                                                    <span class="visually-hidden">{{ 'Configured'|trans }}</span>
+                                                    <span class="visually-hidden">{{ 'notification.marketplace.configured'|trans }}</span>
                                                 </span>
                                             {% endif %}
                                             <p class="integration-card-description">{{ integration.description }}</p>
@@ -164,7 +164,7 @@
                                             <a href="{{ path('_notification_integration', {transport: integration.name, type: integration.type, activeTab: activeTab}) }}"
                                                class="btn btn-sm btn-outline-primary w-100">
                                                 {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
-                                                {{ 'Configure'|trans }}
+                                                {{ 'notification.marketplace.configure'|trans }}
                                             </a>
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@
                             <div class="empty-icon">
                                 {{ ux_icon('tabler:search-off', {width: 48, height: 48}) }}
                             </div>
-                            <p class="empty-title">{{ 'No integrations found matching your search'|trans }}</p>
+                            <p class="empty-title">{{ 'notification.marketplace.no_results'|trans }}</p>
                         </div>
                     {% endif %}
                 </div>
@@ -191,7 +191,7 @@
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h5 class="mb-0 d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
-                        {{ 'Configured Integrations'|trans }}
+                        {{ 'notification.marketplace.configured_title'|trans }}
                     </h5>
                     <span class="badge bg-secondary-lt">{{ configuredIntegrations|length }}</span>
                 </div>
@@ -221,7 +221,7 @@
                                         <div class="d-flex gap-2 flex-shrink-0">
                                             <a href="{{ path('_notification_integration', {selectedIntegration: setting.id.toString(), type: this.getIntegrationType(setting.transport), activeTab: activeTab}) }}"
                                                class="btn btn-outline-secondary btn-sm"
-                                               aria-label="{{ 'Edit %name%'|trans({'%name%': setting.name}) }}">
+                                               aria-label="{{ 'notification.marketplace.edit'|trans({'%name%': setting.name}) }}">
                                                 {{ ux_icon('tabler:edit', {width: 16, height: 16}) }}
                                             </a>
                                         </div>
@@ -235,15 +235,15 @@
                         <div class="empty-icon">
                             {{ ux_icon('tabler:bell-off', {width: 64, height: 64}) }}
                         </div>
-                        <p class="empty-title">{{ 'No integrations configured'|trans }}</p>
+                        <p class="empty-title">{{ 'notification.marketplace.empty_title'|trans }}</p>
                         <p class="empty-subtitle text-secondary">
-                            {{ 'Configure your first notification integration to start sending SMS or chat notifications.'|trans }}
+                            {{ 'notification.marketplace.empty_subtitle'|trans }}
                         </p>
                         <div class="empty-action">
                             <a href="{{ path('_notification_integration', {view: 'marketplace'}) }}"
                                class="btn btn-primary">
                                 {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                                {{ 'Browse Integrations'|trans }}
+                                {{ 'notification.marketplace.browse'|trans }}
                             </a>
                         </div>
                     </div>
@@ -267,12 +267,12 @@
             <div class="notification-modal-container">
                 <div class="notification-modal-header">
                     <h3 id="notification-modal-title" class="notification-modal-title">
-                        {{ 'Configure Notification Integration'|trans }}
+                        {{ 'notification.marketplace.modal_title'|trans }}
                     </h3>
                     <a href="{{ path('_notification_integration', {activeTab: activeTab}) }}"
                        class="btn btn-ghost btn-icon notification-modal-close"
-                       aria-label="{{ 'Close'|trans }}"
-                       title="{{ 'Close (Esc)'|trans }}">
+                       aria-label="{{ 'action.close'|trans }}"
+                       title="{{ 'notification.marketplace.close_esc'|trans }}">
                         {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
                     </a>
                 </div>

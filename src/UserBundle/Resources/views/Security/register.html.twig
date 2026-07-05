@@ -72,7 +72,7 @@
                                     }) }}
 
                                     <span class="input-group-text">
-                                        <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password" {{ stimulus_action('password-visibility', 'toggle') }}>
+                                        <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="{{ 'security.register.show_password'|trans }}" data-bs-original-title="{{ 'security.register.show_password'|trans }}" {{ stimulus_action('password-visibility', 'toggle') }}>
                                             <span {{ stimulus_target('password-visibility', 'icon') }}>
                                                 {{ ux_icon('tabler:eye', {width: 24, height: 24}) }}
                                             </span>

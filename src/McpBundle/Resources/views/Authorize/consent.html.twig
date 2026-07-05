@@ -9,7 +9,7 @@
 
 {% extends '@SolidInvoiceCore/Layout/login.html.twig' %}
 
-{% block page_title %}{{ app_name }} - {{ 'mcp.consent.title'|trans({}, 'SolidInvoiceMcpBundle') }}{% endblock %}
+{% block page_title %}{{ app_name }} - {{ 'mcp.consent.title'|trans({}) }}{% endblock %}
 
 {% block content %}
     <div class="page page-center">
@@ -23,12 +23,12 @@
             <div class="card card-md">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-3">
-                        {{ 'mcp.consent.heading'|trans({'%client%': client.name}, 'SolidInvoiceMcpBundle') }}
+                        {{ 'mcp.consent.heading'|trans({'%client%': client.name}) }}
                     </h2>
 
                     {% if client.redirectUris|length > 0 %}
                         <p class="text-muted small text-center text-break">
-                            {{ 'mcp.consent.redirect'|trans({'%uri%': client.redirectUris|first}, 'SolidInvoiceMcpBundle') }}
+                            {{ 'mcp.consent.redirect'|trans({'%uri%': client.redirectUris|first}) }}
                         </p>
                     {% endif %}
 
@@ -37,7 +37,7 @@
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf_token_id) }}">
 
                         <div class="mb-3">
-                            <label class="form-label">{{ 'mcp.consent.company'|trans({}, 'SolidInvoiceMcpBundle') }}</label>
+                            <label class="form-label">{{ 'mcp.consent.company'|trans({}) }}</label>
 
                             {% if companies|length == 1 %}
                                 {% set company = companies|first %}
@@ -56,7 +56,7 @@
                             {% endif %}
                         </div>
 
-                        <h3 class="mt-4 mb-2">{{ 'mcp.consent.permissions'|trans({}, 'SolidInvoiceMcpBundle') }}</h3>
+                        <h3 class="mt-4 mb-2">{{ 'mcp.consent.permissions'|trans({}) }}</h3>
 
                         <ul class="list-unstyled">
                             <li class="mb-2">
@@ -64,7 +64,7 @@
                                     <input class="form-check-input" type="checkbox" checked disabled>
                                     <span class="form-check-label">
                                         {{ ux_icon('tabler:eye', {width: 18, height: 18, class: 'me-1 text-muted'}) }}
-                                        {{ 'mcp.consent.scope.read'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                        {{ 'mcp.consent.scope.read'|trans({}) }}
                                     </span>
                                 </label>
                             </li>
@@ -75,7 +75,7 @@
                                         <input class="form-check-input" type="checkbox" name="grant_write" value="1" checked>
                                         <span class="form-check-label">
                                             {{ ux_icon('tabler:pencil', {width: 18, height: 18, class: 'me-1 text-muted'}) }}
-                                            {{ 'mcp.consent.scope.write'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                            {{ 'mcp.consent.scope.write'|trans({}) }}
                                         </span>
                                     </label>
                                 </li>
@@ -86,24 +86,24 @@
                             <label class="form-check">
                                 <input class="form-check-input" type="checkbox" name="remember" value="1">
                                 <span class="form-check-label">
-                                    {{ 'mcp.consent.remember'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                    {{ 'mcp.consent.remember'|trans({}) }}
                                 </span>
                             </label>
                         </div>
 
                         <div class="form-footer d-flex gap-2">
                             <button type="submit" name="action" value="deny" class="btn btn-ghost-secondary flex-fill">
-                                {{ 'mcp.consent.cancel'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                {{ 'mcp.consent.cancel'|trans({}) }}
                             </button>
                             <button type="submit" name="action" value="approve" class="btn btn-primary flex-fill">
-                                {{ 'mcp.consent.authorize'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                {{ 'mcp.consent.authorize'|trans({}) }}
                             </button>
                         </div>
                     </form>
 
                     <p class="text-muted small text-center mt-3 mb-0">
-                        {{ 'mcp.consent.revoke_hint'|trans({}, 'SolidInvoiceMcpBundle') }}
-                        <a href="{{ path('mcp_connected_apps_list') }}">{{ 'mcp.consent.revoke_hint_link'|trans({}, 'SolidInvoiceMcpBundle') }}</a>.
+                        {{ 'mcp.consent.revoke_hint'|trans({}) }}
+                        <a href="{{ path('mcp_connected_apps_list') }}">{{ 'mcp.consent.revoke_hint_link'|trans({}) }}</a>.
                     </p>
                 </div>
             </div>

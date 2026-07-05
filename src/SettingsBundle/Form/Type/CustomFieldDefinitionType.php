@@ -64,18 +64,20 @@ final class CustomFieldDefinitionType extends AbstractType
                 'choice_label' => static fn (CustomFieldTarget $t): string => $t->label(),
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Applies to',
-                'help' => 'Choose where this field should appear.',
+                'label' => 'custom_field.form.target.label',
+                'help' => 'custom_field.form.target.help',
                 'disabled' => $options['lock_target'],
             ])
             ->add('label', TextType::class, [
+                'label' => 'custom_field.form.field_label.label',
                 'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 125)],
             ])
             ->add('type', EnumType::class, [
                 'class' => CFType::class,
+                'label' => 'custom_field.form.type.label',
                 'choice_label' => static fn (CFType $t): string => $t->label(),
             ])
-            ->add('required', CheckboxType::class, ['required' => false]);
+            ->add('required', CheckboxType::class, ['label' => 'custom_field.form.required.label', 'required' => false]);
 
         $builder->addDependent('visibility', ['target'], static function (DependentField $field, ?CustomFieldTarget $target): void {
             if (! $target instanceof CustomFieldTarget || ! $target->supportsVisibility()) {
@@ -87,8 +89,8 @@ final class CustomFieldDefinitionType extends AbstractType
                 'choice_label' => static fn (CustomFieldVisibility $v): string => $v->label(),
                 'expanded' => true,
                 'multiple' => false,
-                'label' => 'Visibility',
-                'help' => 'Internal fields appear only on admin views. Client-visible fields also appear on PDF and online views.',
+                'label' => 'custom_field.form.visibility.label',
+                'help' => 'custom_field.form.visibility.help',
                 'placeholder' => false,
             ]);
         });
@@ -106,7 +108,7 @@ final class CustomFieldDefinitionType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'button_add_options' => [
-                    'label' => 'Add option',
+                    'label' => 'custom_field.form.option.add',
                     'attr' => ['class' => 'btn btn-sm btn-outline-primary'],
                 ],
                 'button_delete_options' => [
@@ -130,13 +132,13 @@ final class CustomFieldDefinitionType extends AbstractType
 
             $tempField = new CustomField()->setType($type)->setOptions($validOptions);
             [$class, $opts] = $this->resolver->formTypeAndOptions($tempField);
-            $opts['label'] = 'Default value';
-            $opts['help'] = 'Optional — pre-fills new records. Leave empty for no default.';
+            $opts['label'] = 'custom_field.form.default_value.label';
+            $opts['help'] = 'custom_field.form.default_value.help';
             $opts['required'] = false;
             $opts['mapped'] = false;
 
             if (in_array($type, [CFType::SELECT, CFType::MULTI_SELECT], true)) {
-                $opts['placeholder'] = 'No default';
+                $opts['placeholder'] = 'custom_field.form.default_value.placeholder';
             }
 
             if ($type === CFType::MULTI_SELECT) {

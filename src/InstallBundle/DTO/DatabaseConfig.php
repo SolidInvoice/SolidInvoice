@@ -30,7 +30,7 @@ use Throwable;
 final class DatabaseConfig
 {
     public function __construct(
-        #[NotBlank(message: 'Please select a database driver.', groups: ['database_config'])]
+        #[NotBlank(message: 'install.database.driver.not_blank', groups: ['database_config'])]
         public ?string $driver = null,
         #[NotBlank(groups: ['database_config_mysql', 'database_config_mariadb', 'database_config_pgsql'])]
         public ?string $host = null,

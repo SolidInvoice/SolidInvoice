@@ -162,7 +162,7 @@
                class="form-control"
                {% if value is defined and value is not null %}value="{{ value }}"{% endif %}
                {% if disabled %}disabled="disabled"{% endif %}
-               placeholder="{{ 'e.g. GB123456789'|trans }}"
+               placeholder="{{ 'form.placeholder.vat_example'|trans }}"
                {{ stimulus_target('vat-validator', 'input') }}
                {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
         >
@@ -170,10 +170,10 @@
                 class="btn btn-outline-secondary btn-validate"
                 {{ stimulus_action('vat-validator', 'validate', 'click') }}
                 {{ stimulus_target('vat-validator', 'button') }}
-                title="{{ 'Validate VAT Number (EU Countries Only)'|trans }}"
+                title="{{ 'form.validate_vat'|trans }}"
         >
             {{ ux_icon('tabler:circle-check', {width: 16, height: 16}) }}
-            <span>{{ 'Validate'|trans }}</span>
+            <span>{{ 'form.validate'|trans }}</span>
         </button>
     </div>
 {%- endblock tax_number_widget %}
@@ -202,7 +202,7 @@
                 {{ ux_icon('tabler:map-pin', {width: 20, height: 20}) }}
             </div>
             <div class="address-card-title">
-                <span class="address-label">{{ 'Address'|trans }}</span>
+                <span class="address-label">{{ 'form.address'|trans }}</span>
             </div>
             {% if form.vars.button_delete is defined %}
                 <div class="address-card-actions">
@@ -222,27 +222,27 @@
             <div class="address-form-grid">
                 <div class="address-field address-field-street">
                     {{ form_row(form.street1, {
-                        attr: { placeholder: '123 Main Street'|trans }
+                        attr: { placeholder: 'form.placeholder.street'|trans }
                     }) }}
                 </div>
                 <div class="address-field address-field-street">
                     {{ form_row(form.street2, {
-                        attr: { placeholder: 'Apartment, suite, unit, etc.'|trans }
+                        attr: { placeholder: 'form.placeholder.address_line'|trans }
                     }) }}
                 </div>
                 <div class="address-field address-field-city">
                     {{ form_row(form.city, {
-                        attr: { placeholder: 'City'|trans }
+                        attr: { placeholder: 'form.placeholder.city'|trans }
                     }) }}
                 </div>
                 <div class="address-field address-field-state">
                     {{ form_row(form.state, {
-                        attr: { placeholder: 'State/Province'|trans }
+                        attr: { placeholder: 'form.placeholder.state_province'|trans }
                     }) }}
                 </div>
                 <div class="address-field address-field-zip">
                     {{ form_row(form.zip, {
-                        attr: { placeholder: 'Postal Code'|trans }
+                        attr: { placeholder: 'form.placeholder.postal_code'|trans }
                     }) }}
                 </div>
                 <div class="address-field address-field-country">
@@ -258,7 +258,7 @@
     <div class="settings-section">
         <div class="settings-section-title">
             {{ ux_icon('tabler:map-pin', {width: 18, height: 18}) }}
-            {{ 'Address'|trans }}
+            {{ 'form.address'|trans }}
         </div>
         {{ block('address_widget') }}
     </div>
@@ -271,7 +271,7 @@
 {% endblock cron_widget %}
 
 {% block discount_row %}
-    <label for="{{ form.value.vars.id }}">{{ label }}</label>
+    <label for="{{ form.value.vars.id }}">{{ label|trans({}, translation_domain) }}</label>
     <div class="mb-3 multiple-form-group input-group">
         {{ form_widget(form.value) }}
         {{ form_widget(form.type) }}

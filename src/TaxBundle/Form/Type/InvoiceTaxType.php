@@ -38,7 +38,7 @@ final class InvoiceTaxType extends AbstractType
         $builder
             ->add('tax', EntityType::class, [
                 'class' => Tax::class,
-                'placeholder' => 'Select a tax',
+                'placeholder' => 'tax.invoice_tax.tax.placeholder',
                 'required' => true,
                 'choice_label' => static function (Tax $tax): string {
                     $rate = $tax->getRate() ?? 0;
@@ -71,10 +71,10 @@ final class InvoiceTaxType extends AbstractType
             ])
             ->add('note', TextType::class, [
                 'required' => false,
-                'label' => 'Note',
+                'label' => 'tax.invoice_tax.note.label',
                 'attr' => [
                     'data-invoice-tax-target' => 'note',
-                    'placeholder' => 'Optional note (e.g. reverse-charge VAT notice)',
+                    'placeholder' => 'tax.invoice_tax.note.placeholder',
                 ],
             ])
             ->add('sequence', HiddenType::class, [

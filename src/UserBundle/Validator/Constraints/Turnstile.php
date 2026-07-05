@@ -19,5 +19,5 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
 final class Turnstile extends Constraint
 {
-    public string $message = 'Captcha verification failed. Please try again.';
+    public string $message = 'user.turnstile.failed';
 }

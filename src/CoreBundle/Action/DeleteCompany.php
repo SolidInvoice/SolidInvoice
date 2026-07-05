@@ -44,7 +44,7 @@ final class DeleteCompany extends AbstractController
             $session->remove('company');
         }
 
-        $this->addFlash('success', 'Company deleted successfully.');
+        $this->addFlash('success', 'flash.company_deleted');
 
         return $this->redirectToRoute('_select_company');
     }

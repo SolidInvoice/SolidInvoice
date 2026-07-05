@@ -59,7 +59,7 @@ class PaymentType extends AbstractType
                 'required' => true,
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
-                'placeholder' => 'Choose Payment Method',
+                'placeholder' => 'payment.form.payment_method.placeholder',
                 'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-offline' => $paymentMethod->isOffline()],
                 'attr' => $attributes->toArray(),
             ]

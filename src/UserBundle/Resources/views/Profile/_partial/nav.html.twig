@@ -1,7 +1,7 @@
 <div class="card card-primary card-outline">
     <div class="card-header">
         <h3 class="card-title">
-            {{ 'Preferences'|trans }}
+            {{ 'profile.nav.preferences'|trans }}
         </h3>
     </div>
     <div class="card-body">
@@ -13,14 +13,14 @@
                 <a href="{{ path('_profile') }}" class="nav-link{{ menuItem is defined and menuItem is same as('profile') ? ' active'}}">
                     {{ icon('user') }}
 
-                    <span class="icon">Profile</span>
+                    <span class="icon">{{ 'profile.nav.profile'|trans }}</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ path('_change_password') }}" class="nav-link{{ menuItem is defined and menuItem is same as('security') ? ' active'}}">
                     {{ icon('lock') }}
 
-                    <span class="icon">Security</span>
+                    <span class="icon">{{ 'profile.nav.change_password'|trans }}</span>
                 </a>
             </li>
             {# <li class="nav-header nav-item first">
@@ -30,14 +30,14 @@
                 <a href="{{ path('_profile_notifications') }}" class="nav-link{{ menuItem is defined and menuItem is same as('notification') ? ' active'}}">
                     {{ icon('bell') }}
 
-                    <span class="icon">Notifications</span>
+                    <span class="icon">{{ 'profile.nav.notifications'|trans }}</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ path('_api_keys_index') }}" class="nav-link{{ menuItem is defined and menuItem is same as('api') ? ' active'}}">
                     {{ icon('user-secret') }}
 
-                    <span class="icon">API Keys</span>
+                    <span class="icon">{{ 'profile.nav.api_keys'|trans }}</span>
                 </a>
             </li>
         </ul>

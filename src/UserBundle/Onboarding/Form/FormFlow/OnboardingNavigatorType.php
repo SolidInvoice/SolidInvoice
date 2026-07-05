@@ -36,7 +36,6 @@ final class OnboardingNavigatorType extends AbstractType
             PreviousFlowType::class,
             [
                 'label' => 'onboarding.navigation.back',
-                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-link text-muted'],
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->canMoveBack() && ! $cursor->isLastStep(),
             ]
@@ -47,7 +46,6 @@ final class OnboardingNavigatorType extends AbstractType
             NextFlowType::class,
             [
                 'label' => $options['next_button_label'],
-                'translation_domain' => 'onboarding',
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->canMoveNext() && ! $cursor->isLastStep(),
             ]
         );
@@ -58,7 +56,6 @@ final class OnboardingNavigatorType extends AbstractType
             ButtonFlowType::class,
             [
                 'label' => 'onboarding.navigation.skip',
-                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-link text-muted', 'name' => 'skip'],
                 'validation_groups' => false,
                 'handler' => function (mixed $data, ButtonFlow $button, FormFlow $flow): void {
@@ -76,7 +73,6 @@ final class OnboardingNavigatorType extends AbstractType
             FinishFlowType::class,
             [
                 'label' => 'onboarding.navigation.finish',
-                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-primary btn-lg'],
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->isLastStep(),
             ]

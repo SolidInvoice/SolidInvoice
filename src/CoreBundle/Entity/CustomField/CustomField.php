@@ -72,8 +72,8 @@ use function in_array;
 #[ORM\Index(name: 'idx_cf_company_target_pos', columns: ['company_id', 'target', 'position'])]
 #[ORM\UniqueConstraint(name: 'uq_cf_company_target_key', columns: ['company_id', 'target', 'field_key'])]
 #[ORM\Entity(repositoryClass: CustomFieldRepository::class)]
-#[UniqueEntity(fields: ['company', 'target', 'label'], message: 'A custom field with this label already exists for the selected target.', errorPath: 'label')]
-#[UniqueEntity(fields: ['company', 'target', 'fieldKey'], message: 'A custom field with a similar label already exists for the selected target.', errorPath: 'label')]
+#[UniqueEntity(fields: ['company', 'target', 'label'], message: 'core.custom_field.unique_label', errorPath: 'label')]
+#[UniqueEntity(fields: ['company', 'target', 'fieldKey'], message: 'core.custom_field.similar_label', errorPath: 'label')]
 class CustomField
 {
     final public const string TABLE_NAME = 'custom_field';
@@ -102,7 +102,7 @@ class CustomField
     #[ORM\Column(name: 'field_key', type: Types::STRING, length: 64)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 64)]
-    #[Assert\Regex(pattern: '/^[a-z][a-z0-9_]*$/', message: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.')]
+    #[Assert\Regex(pattern: '/^[a-z][a-z0-9_]*$/', message: 'core.custom_field.field_key')]
     #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?string $fieldKey = null;
 

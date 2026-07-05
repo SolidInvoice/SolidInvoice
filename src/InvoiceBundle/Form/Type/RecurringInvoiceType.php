@@ -68,7 +68,7 @@ class RecurringInvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']]);
+        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'billing.discount', 'currency' => $options['currency']]);
 
         $builder->add(
             'lines',
@@ -93,7 +93,7 @@ class RecurringInvoiceType extends AbstractType
                 'allow_delete' => true,
                 'required' => false,
                 'by_reference' => false,
-                'label' => 'Withholding & adjustments',
+                'label' => 'billing.withholding',
                 'attr' => [
                     'data-controller' => 'invoice-tax',
                 ],
@@ -101,7 +101,7 @@ class RecurringInvoiceType extends AbstractType
         );
 
         $builder->add('terms');
-        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);

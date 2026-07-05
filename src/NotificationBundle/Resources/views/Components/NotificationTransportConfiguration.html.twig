@@ -17,16 +17,16 @@
                         {% if not isNewSetting %}
                             {{ transportSetting.name }}
                         {% else %}
-                            {{ 'Add %type% Integration'|trans({'%type%': notificationType}) }}
+                            {{ 'notification.integration.add'|trans({'%type%': notificationType}) }}
                         {% endif %}
                     </h3>
                     <p class="text-muted small mb-0">
-                        {{ 'Configure notification integration credentials'|trans }}
+                        {{ 'notification.integration.configure_credentials'|trans }}
                     </p>
                 </div>
                 <a href="{{ path('_notification_integration') }}"
                    class="btn btn-ghost btn-icon"
-                   aria-label="{{ 'Close'|trans }}">
+                   aria-label="{{ 'action.close'|trans }}">
                     {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
                 </a>
             </div>
@@ -50,15 +50,15 @@
                             class="btn btn-outline-danger"
                             data-action="live#action"
                             data-live-action-param="showDeleteConfirmation"
-                            aria-label="{{ 'Delete integration'|trans }}">
+                            aria-label="{{ 'notification.integration.delete'|trans }}">
                         {{ ux_icon('tabler:trash', {width: 18, height: 18}) }}
-                        {{ 'Delete'|trans }}
+                        {{ 'action.delete'|trans }}
                     </button>
                 {% else %}
                     <a href="{{ path('_notification_integration') }}"
                        class="btn btn-ghost">
                         {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
-                        {{ 'Cancel'|trans }}
+                        {{ 'action.cancel'|trans }}
                     </a>
                 {% endif %}
                 <button type="submit"
@@ -66,9 +66,9 @@
                         data-action="live#action"
                         data-live-action-param="save"
                         data-loading="addAttribute(disabled)"
-                        aria-label="{{ 'Save integration'|trans }}">
+                        aria-label="{{ 'notification.integration.save'|trans }}">
                     {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
-                    {{ 'Save Integration'|trans }}
+                    {{ 'notification.integration.save_button'|trans }}
                 </button>
             </div>
         </twig:block>
@@ -93,15 +93,15 @@
                             {{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'text-danger'}) }}
                         </div>
                         <div>
-                            <h4 id="delete-modal-title" class="mb-1">{{ 'Delete Integration'|trans }}</h4>
-                            <p class="text-muted small mb-0">{{ 'This action cannot be undone'|trans }}</p>
+                            <h4 id="delete-modal-title" class="mb-1">{{ 'notification.integration.delete_title'|trans }}</h4>
+                            <p class="text-muted small mb-0">{{ 'notification.integration.delete_undone'|trans }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="delete-confirmation-body">
                     <p class="mb-0">
-                        {{ 'Are you sure you want to delete'|trans }} <strong>{{ transportSetting.name }}</strong>?
-                        {{ 'This will remove the notification integration and cannot be reversed.'|trans }}
+                        {{ 'notification.integration.delete_confirm'|trans }} <strong>{{ transportSetting.name }}</strong>?
+                        {{ 'notification.integration.delete_warning'|trans }}
                     </p>
                 </div>
                 <div class="delete-confirmation-footer">
@@ -109,7 +109,7 @@
                             class="btn btn-ghost"
                             data-action="live#action"
                             data-live-action-param="cancelDelete">
-                        {{ 'Cancel'|trans }}
+                        {{ 'action.cancel'|trans }}
                     </button>
                     <button type="button"
                             class="btn btn-danger"
@@ -117,7 +117,7 @@
                             data-live-action-param="confirmDelete"
                             data-loading="addAttribute(disabled)">
                         {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                        {{ 'Delete Integration'|trans }}
+                        {{ 'notification.integration.delete_title'|trans }}
                     </button>
                 </div>
             </div>

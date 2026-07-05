@@ -37,9 +37,9 @@
                     <span class="avatar avatar-md rounded-circle bg-primary-lt">
                         {{ ux_icon('tabler:users', {width: 24, height: 24, class: 'text-primary'}) }}
                     </span>
-                    <h2 class="h3 mb-0">{{ 'Welcome Back %name%'|trans({'%name%': app.user.firstName}) }}</h2>
+                    <h2 class="h3 mb-0">{{ 'company.select.welcome_back'|trans({'%name%': app.user.firstName}) }}</h2>
                 </div>
-                <p class="text-secondary mb-0">{{ 'Select a company to continue'|trans }}</p>
+                <p class="text-secondary mb-0">{{ 'company.select.subtitle'|trans }}</p>
             </div>
 
             {# Main Company Selection Card #}
@@ -71,7 +71,7 @@
                                                     <div class="flex-fill min-w-0">
                                                         <h3 class="h4 mb-1 text-truncate">{{ company }}</h3>
                                                         <p class="text-secondary mb-0 small">
-                                                            {{ 'Click to access'|trans }}
+                                                            {{ 'company.select.click_to_access'|trans }}
                                                         </p>
                                                     </div>
                                                     <div class="company-arrow">
@@ -97,14 +97,14 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <h4 class="h5 mb-1">{{ 'Create New Company'|trans }}</h4>
+                                            <h4 class="h5 mb-1">{{ 'company.select.create_new'|trans }}</h4>
                                             <p class="text-secondary mb-0 small">
-                                                {{ 'Set up another workspace to manage a different business'|trans }}
+                                                {{ 'company.select.create_new_help'|trans }}
                                             </p>
                                         </div>
                                         <div class="col-12 col-md-auto">
                                             <a href="{{ path('_create_company') }}" class="btn btn-primary w-100">
-                                                {{ ux_icon('tabler:building-plus') }} {{ 'Create Company'|trans }}
+                                                {{ ux_icon('tabler:building-plus') }} {{ 'company.select.create_button'|trans }}
                                             </a>
                                         </div>
                                     </div>

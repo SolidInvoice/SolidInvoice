@@ -28,6 +28,7 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Subscription\NullPaidSubscriptionGate;
 use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
+use SolidInvoice\CoreBundle\Translation\Extractor\MenuLabelExtractor;
 use SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -136,6 +137,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$kernel', service('kernel'));
 
     $services->set(VatCalculator::class);
+
+    // Custom translation extractor for menu-builder labels. KnpMenu `addChild()` calls
+    // carry no `->trans()`/constraint tokens, so Symfony's PhpAstExtractor skips them;
+    // this extractor surfaces those labels to `translation:extract`.
+    $services->set(MenuLabelExtractor::class)
+        ->tag('translation.extractor', ['alias' => 'menu']);
 
     $services->set(GenerateUlidCommand::class);
     $services->set(GenerateUuidCommand::class);

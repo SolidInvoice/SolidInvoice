@@ -36,7 +36,6 @@ final class InvoiceSetupStep extends AbstractType
                 'rows' => 3,
             ],
             'help' => 'onboarding.invoice.fields.description.help',
-            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('invoiceAmount', MoneyType::class, [
@@ -47,7 +46,6 @@ final class InvoiceSetupStep extends AbstractType
                 'placeholder' => 'onboarding.invoice.fields.amount.placeholder',
             ],
             'help' => 'onboarding.invoice.fields.amount.help',
-            'translation_domain' => 'onboarding',
         ]);
     }
 

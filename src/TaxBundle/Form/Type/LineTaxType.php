@@ -35,7 +35,7 @@ final class LineTaxType extends AbstractType
         $builder
             ->add('tax', EntityType::class, [
                 'class' => Tax::class,
-                'placeholder' => 'No Tax',
+                'placeholder' => 'tax.line_tax.tax.placeholder',
                 'required' => false,
                 'choice_label' => static function (Tax $tax): string {
                     $rate = $tax->getRate() ?? 0;

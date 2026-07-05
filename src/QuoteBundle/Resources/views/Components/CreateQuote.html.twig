@@ -96,7 +96,7 @@
                                 <span class="billing-id-label">{{ 'quote.label'|trans }}</span>
                                 <span class="billing-id-value" {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>
                                 {% if editQuoteId is not defined or editQuoteId is not same as(false) %}
-                                    <button type="button" class="billing-id-edit" {{ stimulus_action('billing-id', 'edit') }} aria-label="{{ 'quote.id.edit'|trans }}" title="{{ 'Edit'|trans }}">
+                                    <button type="button" class="billing-id-edit" {{ stimulus_action('billing-id', 'edit') }} aria-label="{{ 'quote.id.edit'|trans }}" title="{{ 'action.edit'|trans }}">
                                         {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
                                     </button>
                                 {% endif %}
@@ -107,10 +107,10 @@
                             {{ form_label(form.quoteId) }}
                             <div class="input-group">
                                 {{ form_widget(form.quoteId, {attr: {class: 'form-control'}}) }}
-                                <button class="btn btn-outline-primary" type="button" {{ stimulus_action('billing-id', 'save') }} aria-label="{{ 'quote.id.save'|trans }}" title="{{ 'Save'|trans }}">
+                                <button class="btn btn-outline-primary" type="button" {{ stimulus_action('billing-id', 'save') }} aria-label="{{ 'quote.id.save'|trans }}" title="{{ 'action.save'|trans }}">
                                     {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
                                 </button>
-                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} aria-label="{{ 'quote.id.cancel'|trans }}" title="{{ 'Cancel'|trans }}">
+                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} aria-label="{{ 'quote.id.cancel'|trans }}" title="{{ 'action.cancel'|trans }}">
                                     {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
                                 </button>
                             </div>
@@ -330,12 +330,12 @@
         {# Custom Fields - Collapsible Section #}
         {% if form.customFields|length > 0 %}
             <details class="billing-terms-section" open>
-                <summary class="terms-summary" aria-label="{{ 'Custom fields'|trans }}">
+                <summary class="terms-summary" aria-label="{{ 'quote.custom_fields.title'|trans }}">
                     <span class="terms-summary-icon">
                         {{ ux_icon('tabler:chevron-right', {width: 18, height: 18}) }}
                     </span>
                     <span class="terms-summary-text">
-                        <span class="terms-summary-title">{{ 'Custom fields'|trans }}</span>
+                        <span class="terms-summary-title">{{ 'quote.custom_fields.title'|trans }}</span>
                     </span>
                 </summary>
                 <div class="terms-content">
@@ -356,7 +356,7 @@
                 </span>
                 <span class="terms-summary-text">
                     <span class="terms-summary-title">{{ 'quote.terms_notes.title'|trans }}</span>
-                    <span class="badge bg-secondary-lt">{{ 'optional'|trans }}</span>
+                    <span class="badge bg-secondary-lt">{{ 'label.optional'|trans }}</span>
                 </span>
             </summary>
             <div class="terms-content">

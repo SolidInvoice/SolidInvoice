@@ -26,7 +26,7 @@
                                                 onclick="retryStep('{{ step.label|u.snake }}')"
                                         >
                                             {{ ux_icon('tabler:refresh', {width: 16, height: 16}) }}
-                                            <span class="ms-1">Retry</span>
+                                            <span class="ms-1">{{ 'installation.process_page.retry'|trans }}</span>
                                         </button>
                                         <button type="button"
                                                 class="btn btn-sm btn-ghost-secondary d-none"
@@ -36,7 +36,7 @@
                                                 aria-expanded="false"
                                         >
                                             {{ ux_icon('tabler:chevron-down', {width: 20, height: 20}) }}
-                                            <span class="ms-1">View logs</span>
+                                            <span class="ms-1">{{ 'installation.process_page.view_logs'|trans }}</span>
                                         </button>
                                     </div>
                                 </div>

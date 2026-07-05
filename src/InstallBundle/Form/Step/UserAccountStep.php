@@ -50,8 +50,8 @@ class UserAccountStep extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'default_protocol' => null,
-                'label' => 'Application URL',
-                'help' => 'The URL where this SolidInvoice instance is accessible. Include the protocol (http:// or https://).',
+                'label' => 'installation.user_account.application_url',
+                'help' => 'installation.user_account.application_url_help',
                 'constraints' => [
                     new NotBlank(),
                     // requireTld defaults to true in Symfony 8, but installing on
@@ -89,8 +89,8 @@ class UserAccountStep extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'data' => true,
-                'label' => 'Send anonymous usage statistics',
-                'help' => 'Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.',
+                'label' => 'installation.user_account.telemetry',
+                'help' => 'installation.user_account.telemetry_help',
             ],
         );
 
@@ -132,7 +132,7 @@ class UserAccountStep extends AbstractType
                 ChoiceType::class,
                 [
                     'choices' => array_flip(Locales::getNames()),
-                    'placeholder' => 'Please select a locale',
+                    'placeholder' => 'installation.user_account.locale_placeholder',
                 ]
             );
         } else {
@@ -144,8 +144,8 @@ class UserAccountStep extends AbstractType
                     'attr' => [
                         'readonly' => true,
                     ],
-                    'help' => 'The only currently supported locale is "en". To choose a different locale, please install the \'intl\' extension',
-                    'placeholder' => 'Please select a locale',
+                    'help' => 'installation.user_account.locale_help',
+                    'placeholder' => 'installation.user_account.locale_placeholder',
                 ]
             );
         }

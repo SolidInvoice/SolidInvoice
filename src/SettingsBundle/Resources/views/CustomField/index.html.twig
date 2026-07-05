@@ -9,12 +9,12 @@
 
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ "Custom fields"|trans }}{% endblock %}
+{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ 'custom_field.title'|trans }}{% endblock %}
 
 {% block heading %}
     <a href="{{ path('_settings_custom_fields_create') }}" class="btn btn-primary">
         {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-        {{ 'Add field'|trans }}
+        {{ 'custom_field.add'|trans }}
     </a>
 {% endblock %}
 
@@ -25,7 +25,7 @@
                 <span class="nav-link-icon d-none d-sm-inline-block">
                     {{ ux_icon('tabler:building', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Client fields'|trans }}</span>
+                <span>{{ 'custom_field.tab.client'|trans }}</span>
             </a>
         </li>
         <li class="nav-item">
@@ -33,7 +33,7 @@
                 <span class="nav-link-icon d-none d-sm-inline-block">
                     {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Contact fields'|trans }}</span>
+                <span>{{ 'custom_field.tab.contact'|trans }}</span>
             </a>
         </li>
         <li class="nav-item">
@@ -41,7 +41,7 @@
                 <span class="nav-link-icon d-none d-sm-inline-block">
                     {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Invoice fields'|trans }}</span>
+                <span>{{ 'custom_field.tab.invoice'|trans }}</span>
             </a>
         </li>
         <li class="nav-item">
@@ -49,7 +49,7 @@
                 <span class="nav-link-icon d-none d-sm-inline-block">
                     {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Quote fields'|trans }}</span>
+                <span>{{ 'custom_field.tab.quote'|trans }}</span>
             </a>
         </li>
     </ul>
@@ -60,7 +60,7 @@
                 <div class="tab-pane{% if loop.first %} active show{% endif %}" id="tab-{{ tabId }}">
                     {% if rows is empty %}
                         <div class="card-body text-center text-muted">
-                            {{ 'No custom fields yet — click Add field to create one.'|trans }}
+                            {{ 'custom_field.empty'|trans }}
                         </div>
                     {% else %}
                         <div class="list-group list-group-flush custom-field-list"
@@ -70,34 +70,34 @@
                              }) }}>
                             {% for row in rows %}
                                 <div class="list-group-item d-flex align-items-center custom-field-row" data-id="{{ row.field.id }}">
-                                    <span class="custom-field-handle me-3" data-handle title="{{ 'Drag to reorder'|trans }}" aria-label="{{ 'Drag to reorder'|trans }}">
+                                    <span class="custom-field-handle me-3" data-handle title="{{ 'custom_field.reorder.handle'|trans }}" aria-label="{{ 'custom_field.reorder.handle'|trans }}">
                                         {{ ux_icon('tabler:grip-vertical', {width: 18, height: 18}) }}
                                     </span>
                                     <div class="flex-fill">
                                         <strong>{{ row.field.label }}</strong>
                                         <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
-                                        {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'Required'|trans }}</span>{% endif %}
+                                        {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'label.required'|trans }}</span>{% endif %}
                                         {% if row.field.visibility is not null %}
                                             {% if row.field.visibility.value == 'CLIENT_VISIBLE' %}
-                                                <span class="badge bg-blue-lt ms-1">{{ 'Client-visible'|trans }}</span>
+                                                <span class="badge bg-blue-lt ms-1">{{ 'custom_field.badge.client_visible'|trans }}</span>
                                             {% else %}
-                                                <span class="badge bg-secondary-lt ms-1">{{ 'Internal'|trans }}</span>
+                                                <span class="badge bg-secondary-lt ms-1">{{ 'custom_field.badge.internal'|trans }}</span>
                                             {% endif %}
                                         {% endif %}
-                                        <div class="text-muted small">{{ row.count }} {{ 'values'|trans }}</div>
+                                        <div class="text-muted small">{{ row.count }} {{ 'custom_field.values'|trans }}</div>
                                     </div>
                                     <div class="d-flex gap-1">
                                         <a href="{{ path('_settings_custom_fields_edit', {id: row.field.id}) }}"
                                            class="btn btn-ghost-secondary btn-icon btn-icon-sm"
-                                           title="{{ 'Edit'|trans }}"
-                                           aria-label="{{ 'Edit'|trans }}">
+                                           title="{{ 'action.edit'|trans }}"
+                                           aria-label="{{ 'action.edit'|trans }}">
                                             {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
                                         </a>
-                                        <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
+                                        <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'custom_field.delete_confirm'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
                                             <input type="hidden" name="_token" value="{{ csrf_token('cf_delete_' ~ row.field.id) }}">
                                             <button class="btn btn-ghost-danger btn-icon btn-icon-sm" type="submit"
-                                                    title="{{ 'Delete'|trans }}"
-                                                    aria-label="{{ 'Delete'|trans }}">
+                                                    title="{{ 'action.delete'|trans }}"
+                                                    aria-label="{{ 'action.delete'|trans }}">
                                                 {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
                                             </button>
                                         </form>
@@ -108,7 +108,7 @@
                         {% if rows|length > 1 %}
                             <div class="px-3 py-2 text-muted small d-flex align-items-center gap-2">
                                 {{ ux_icon('tabler:arrows-sort', {width: 16, height: 16}) }}
-                                {{ 'Drag the handle on the left of each row to reorder fields.'|trans }}
+                                {{ 'custom_field.reorder.hint'|trans }}
                             </div>
                         {% endif %}
                     {% endif %}

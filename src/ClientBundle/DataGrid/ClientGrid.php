@@ -43,6 +43,6 @@ final class ClientGrid extends BaseClientGrid
     #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
-        return new TranslatableMessage('Create Client');
+        return new TranslatableMessage('client.grid.create');
     }
 }

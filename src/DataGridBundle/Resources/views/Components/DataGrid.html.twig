@@ -17,8 +17,8 @@
                     <input
                         type="search"
                         class="datagrid-search-input"
-                        placeholder="{{ 'Search...'|trans }}"
-                        aria-label="{{ 'Search'|trans }}"
+                        placeholder="{{ 'datagrid.search.placeholder'|trans }}"
+                        aria-label="{{ 'datagrid.search'|trans }}"
                         value="{{ search }}"
                         data-model="debounce(300)|search"
                     >
@@ -51,7 +51,7 @@
                                 data-action="live#action:prevent"
                                 data-live-action-param="removeFilter"
                                 data-live-filter-key-param="{{ key }}"
-                                title="{{ 'Click to remove'|trans }}"
+                                title="{{ 'datagrid.filter.remove'|trans }}"
                             >
                                 <span class="datagrid-active-filter-key">{{ key|replace({'_': ' '})|title }}</span>
                                 <span class="datagrid-active-filter-value">{{ displayValue }}</span>
@@ -72,10 +72,10 @@
                             data-bs-toggle="dropdown"
                             data-bs-auto-close="outside"
                             aria-expanded="false"
-                            aria-label="{{ 'Filters'|trans }}"
+                            aria-label="{{ 'datagrid.filters'|trans }}"
                         >
                             {{ ux_icon('tabler:filter', {width: 18, height: 18}) }}
-                            <span class="d-none d-sm-inline ms-1">{{ 'Filters'|trans }}</span>
+                            <span class="d-none d-sm-inline ms-1">{{ 'datagrid.filters'|trans }}</span>
                             {% if gridFilters is not empty %}
                                 <span class="badge bg-white text-primary rounded-pill ms-1">{{ gridFilters|length }}</span>
                             {% endif %}
@@ -84,7 +84,7 @@
                             <div class="datagrid-filter-panel-header">
                                 <h6 class="datagrid-filter-panel-title">
                                     {{ ux_icon('tabler:filter', {width: 16, height: 16}) }}
-                                    {{ 'Filters'|trans }}
+                                    {{ 'datagrid.filters'|trans }}
                                 </h6>
                             </div>
 
@@ -126,7 +126,7 @@
                                             data-action="live#action:prevent"
                                             data-live-action-param="clearFilters"
                                         >
-                                            {{ 'Clear'|trans }}
+                                            {{ 'datagrid.clear'|trans }}
                                         </button>
                                         <button
                                             type="submit"
@@ -135,7 +135,7 @@
                                             data-live-action-param="applyFilters"
                                         >
                                             {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
-                                            {{ 'Apply'|trans }}
+                                            {{ 'datagrid.apply'|trans }}
                                         </button>
                                     </div>
                                 </div>
@@ -154,9 +154,9 @@
                     context: context|json_encode,
                 } %}
                 {% set exportFormats = [
-                    {value: 'csv',  label: 'CSV',  icon: 'tabler:file-type-csv',  hint: 'Spreadsheet-friendly'},
-                    {value: 'json', label: 'JSON', icon: 'tabler:braces',         hint: 'Machine-readable'},
-                    {value: 'xml',  label: 'XML',  icon: 'tabler:file-type-xml',  hint: 'Structured markup'},
+                    {value: 'csv',  label: 'datagrid.export.format.csv.label',  icon: 'tabler:file-type-csv',  hint: 'datagrid.export.format.csv.hint'},
+                    {value: 'json', label: 'datagrid.export.format.json.label', icon: 'tabler:braces',         hint: 'datagrid.export.format.json.hint'},
+                    {value: 'xml',  label: 'datagrid.export.format.xml.label',  icon: 'tabler:file-type-xml',  hint: 'datagrid.export.format.xml.hint'},
                 ] %}
                 <div class="dropdown datagrid-export-dropdown">
                     <button
@@ -164,19 +164,19 @@
                         class="btn btn-sm btn-ghost"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
-                        aria-label="{{ 'Export'|trans }}"
+                        aria-label="{{ 'datagrid.export'|trans }}"
                     >
                         {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
-                        <span class="d-none d-sm-inline ms-1">{{ 'Export'|trans }}</span>
+                        <span class="d-none d-sm-inline ms-1">{{ 'datagrid.export'|trans }}</span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end datagrid-export-menu">
                         <div class="datagrid-export-menu-header">
                             <h6 class="datagrid-export-menu-title">
                                 {{ ux_icon('tabler:download', {width: 16, height: 16}) }}
-                                {{ 'Export'|trans }}
+                                {{ 'datagrid.export'|trans }}
                             </h6>
                             <p class="datagrid-export-menu-subtitle">
-                                {{ 'Choose a format to download the filtered results.'|trans }}
+                                {{ 'datagrid.export.subtitle'|trans }}
                             </p>
                         </div>
                         <div class="datagrid-export-menu-body">
@@ -209,8 +209,8 @@
                                 class="dropdown-toggle"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
-                                aria-label="{{ 'Columns'|trans }}"
-                                title="{{ 'Show/Hide Columns'|trans }}"
+                                aria-label="{{ 'datagrid.columns'|trans }}"
+                                title="{{ 'datagrid.columns.toggle'|trans }}"
                             >
                                 {{ ux_icon('tabler:columns-3', {width: 18, height: 18}) }}
                             </button>
@@ -236,7 +236,7 @@
                                         data-live-action-param="resetColumns"
                                     >
                                         {{ ux_icon('tabler:refresh', {width: 16, height: 16}) }}
-                                        {{ 'Reset to default'|trans }}
+                                        {{ 'datagrid.columns.reset'|trans }}
                                     </a>
                                 {% endif %}
                             </div>
@@ -259,7 +259,7 @@
                                         type="checkbox"
                                         {{ stimulus_target('checkbox-select-all', 'checkboxAll') }}
                                         data-model="selectedAll"
-                                        aria-label="{{ 'Select all'|trans }}"
+                                        aria-label="{{ 'datagrid.select_all'|trans }}"
                                     />
                                 </div>
                             </th>
@@ -268,7 +268,7 @@
                         {# Expand Column for Row Details #}
                         {% if grid.hasRowDetails() %}
                             <th class="col-expand">
-                                <span class="visually-hidden">{{ 'Expand'|trans }}</span>
+                                <span class="visually-hidden">{{ 'datagrid.expand'|trans }}</span>
                             </th>
                         {% endif %}
 
@@ -301,7 +301,7 @@
                         {# Actions Column #}
                         {% if grid.actions|length > 0 or grid.batchActions|length > 0 %}
                             <th class="col-actions">
-                                <span class="visually-hidden">{{ 'Actions'|trans }}</span>
+                                <span class="visually-hidden">{{ 'datagrid.actions'|trans }}</span>
                             </th>
                         {% endif %}
                     </tr>
@@ -315,12 +315,12 @@
                                     <div class="datagrid-empty-icon">
                                         {{ ux_icon('tabler:database-off', {width: 40, height: 40}) }}
                                     </div>
-                                    <h3 class="datagrid-empty-title">{{ 'No results found'|trans }}</h3>
+                                    <h3 class="datagrid-empty-title">{{ 'datagrid.no_results'|trans }}</h3>
                                     <p class="datagrid-empty-message">
                                         {% if search is not empty or gridFilters is not empty %}
-                                            {{ 'Try adjusting your search or filters to find what you\'re looking for.'|trans }}
+                                            {{ 'datagrid.no_results.filtered'|trans }}
                                         {% else %}
-                                            {{ 'Get started by creating your first item.'|trans }}
+                                            {{ 'datagrid.no_results.empty'|trans }}
                                         {% endif %}
                                     </p>
                                     {% block empty_state_action %}
@@ -328,7 +328,7 @@
                                             <div class="datagrid-empty-action">
                                                 <a href="{{ path(grid.getCreateRoute()) }}" class="btn btn-primary">
                                                     {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                                                    {{ grid.getCreateLabel()|default('Create')|trans }}
+                                                    {{ grid.getCreateLabel()|default('action.create')|trans }}
                                                 </a>
                                             </div>
                                         {% endif %}
@@ -350,7 +350,7 @@
                                                 value="{{ this.entityId(row) }}"
                                                 data-model="selectedItems"
                                                 {{ this.entityId(row) in selectedItems ? 'checked' : '' }}
-                                                aria-label="{{ 'Select row'|trans }}"
+                                                aria-label="{{ 'datagrid.select_row'|trans }}"
                                             />
                                         </div>
                                     </td>
@@ -363,7 +363,7 @@
                                             type="button"
                                             class="datagrid-expand-btn"
                                             {{ stimulus_action('datagrid-row-expand', 'toggle') }}
-                                            aria-label="{{ 'Expand row'|trans }}"
+                                            aria-label="{{ 'datagrid.expand_row'|trans }}"
                                         >
                                             <span {{ stimulus_target('datagrid-row-expand', 'expandIcon') }}>
                                                 {{ ux_icon('tabler:chevron-right', {width: 16, height: 16}) }}
@@ -409,7 +409,7 @@
                                                         class="datagrid-action-btn datagrid-more-btn"
                                                         data-bs-toggle="dropdown"
                                                         aria-expanded="false"
-                                                        aria-label="{{ 'More actions'|trans }}"
+                                                        aria-label="{{ 'datagrid.more_actions'|trans }}"
                                                     >
                                                         {{ ux_icon('tabler:dots-vertical', {width: 18, height: 18}) }}
                                                     </button>
@@ -504,7 +504,7 @@
         {% if paginator.nbResults > 0 %}
             <div class="datagrid-footer">
                 <div class="datagrid-footer-info">
-                    {{ 'Showing %start% - %end% of %total% results'|trans({
+                    {{ 'datagrid.footer.showing'|trans({
                         '%start%': paginator.currentPageOffsetStart,
                         '%end%': paginator.currentPageOffsetEnd,
                         '%total%': paginator.nbResults
@@ -512,12 +512,12 @@
                 </div>
 
                 <div class="datagrid-per-page">
-                    <span>{{ 'Show'|trans }}</span>
-                    <select data-model="perPage" aria-label="{{ 'Items per page'|trans }}">
+                    <span>{{ 'datagrid.per_page'|trans }}</span>
+                    <select data-model="perPage" aria-label="{{ 'datagrid.items_per_page'|trans }}">
                         <option value="10" {{ perPage == 10 ? 'selected' : '' }}>10</option>
                         <option value="25" {{ perPage == 25 ? 'selected' : '' }}>25</option>
                         <option value="50" {{ perPage == 50 ? 'selected' : '' }}>50</option>
-                        <option value="{{ paginator.nbResults }}" {{ perPage == paginator.nbResults ? 'selected' : '' }}>{{ 'All'|trans }}</option>
+                        <option value="{{ paginator.nbResults }}" {{ perPage == paginator.nbResults ? 'selected' : '' }}>{{ 'datagrid.all'|trans }}</option>
                     </select>
                 </div>
 
@@ -533,11 +533,11 @@
 
     {# Floating Bulk Action Bar #}
     {% if grid.batchActions|length > 0 %}
-        <div class="datagrid-bulk-bar {{ selectedItems|length > 0 ? 'visible' : '' }}" role="toolbar" aria-label="{{ 'Bulk actions'|trans }}">
+        <div class="datagrid-bulk-bar {{ selectedItems|length > 0 ? 'visible' : '' }}" role="toolbar" aria-label="{{ 'datagrid.bulk_actions'|trans }}">
             <div class="datagrid-bulk-bar-inner">
                 <div class="datagrid-bulk-count">
                     <span class="count">{{ selectedItems|length }}</span>
-                    {{ 'selected'|trans }}
+                    {{ 'datagrid.selected'|trans }}
                 </div>
 
                 <div class="datagrid-bulk-divider"></div>
@@ -582,7 +582,7 @@
                     class="datagrid-bulk-close"
                     data-action="live#action:prevent"
                     data-live-action-param="clearSelection"
-                    aria-label="{{ 'Clear selection'|trans }}"
+                    aria-label="{{ 'datagrid.clear_selection'|trans }}"
                 >
                     {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
                 </button>
@@ -595,12 +595,12 @@
         {% for action in grid.batchActions %}
             {% if action.shouldConfirm %}
                 {% set modalId = 'modal_' ~ action.getLabel|u.snake %}
-                <twig:Ui:Modal id="{{ modalId }}" title="{{ 'Confirm'|trans }}" status="{{ action.getColor|default('primary') }}">
-                    <p>{{ action.getConfirmMessage|default('Are you sure you want to perform this action on the selected items?')|trans|nl2br }}</p>
+                <twig:Ui:Modal id="{{ modalId }}" title="{{ 'action.confirm'|trans }}" status="{{ action.getColor|default('primary') }}">
+                    <p>{{ action.getConfirmMessage|default('datagrid.confirm.batch')|trans|nl2br }}</p>
 
                     <twig:block name="footer">
                         <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
-                            {{ 'Cancel'|trans }}
+                            {{ 'action.cancel'|trans }}
                         </button>
                         <button
                             type="button"
@@ -610,7 +610,7 @@
                             data-live-action-name-param="{{ action.getLabel }}"
                             data-live-action-param="debounce(300)|executeBatch"
                         >
-                            {{ 'Confirm'|trans }}
+                            {{ 'action.confirm'|trans }}
                         </button>
                     </twig:block>
                 </twig:Ui:Modal>
@@ -622,12 +622,12 @@
             {% for action in grid.batchActions %}
                 {% if action.shouldConfirm %}
                     {% set modalId = 'row_modal_' ~ action.getLabel|u.snake ~ '_' ~ loop.index ~ '_' ~ this.entityId(row) %}
-                    <twig:Ui:Modal id="{{ modalId }}" title="{{ 'Confirm'|trans }}" status="{{ action.getColor|default('primary') }}">
-                        <p>{{ action.getConfirmMessage|default('Are you sure you want to perform this action?')|trans|nl2br }}</p>
+                    <twig:Ui:Modal id="{{ modalId }}" title="{{ 'action.confirm'|trans }}" status="{{ action.getColor|default('primary') }}">
+                        <p>{{ action.getConfirmMessage|default('datagrid.confirm.single')|trans|nl2br }}</p>
 
                         <twig:block name="footer">
                             <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
-                                {{ 'Cancel'|trans }}
+                                {{ 'action.cancel'|trans }}
                             </button>
                             <button
                                 type="button"
@@ -638,7 +638,7 @@
                                 data-live-action-name-param="{{ action.getLabel }}"
                                 data-live-entity-id-param="{{ gridComponent.entityId(row) }}"
                             >
-                                {{ 'Confirm'|trans }}
+                                {{ 'action.confirm'|trans }}
                             </button>
                         </twig:block>
                     </twig:Ui:Modal>

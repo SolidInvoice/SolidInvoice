@@ -298,7 +298,7 @@ class Quote
      */
     #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Quote')]
+    #[Assert\Count(min: 1, minMessage: 'quote.lines.min')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $lines;
 
@@ -311,7 +311,7 @@ class Quote
     )]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'quotes')]
     #[ORM\JoinTable(name: 'quote_contact')]
-    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
+    #[Assert\Count(min: 1, minMessage: 'quote.users.min')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;
 

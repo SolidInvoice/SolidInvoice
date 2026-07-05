@@ -20,7 +20,7 @@ class PaymentSuccess extends AbstractController
 {
     public function __invoke(): Response
     {
-        $this->addFlash('success', 'Your subscription has been activated.');
+        $this->addFlash('success', 'saas.flash.subscription_activated');
 
         return $this->redirectToRoute('_dashboard');
     }

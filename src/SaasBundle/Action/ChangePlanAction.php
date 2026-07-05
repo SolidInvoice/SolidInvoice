@@ -37,7 +37,7 @@ final class ChangePlanAction extends AbstractController
         $subscription = $this->getSubscription();
 
         if (! $subscription instanceof Subscription) {
-            $this->addFlash('error', 'No subscription found.');
+            $this->addFlash('error', 'saas.flash.no_subscription');
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
@@ -45,7 +45,7 @@ final class ChangePlanAction extends AbstractController
         $plans = $this->planRepository->findAllOrdered();
 
         if ($plans === []) {
-            $this->addFlash('error', 'No subscription plans are available.');
+            $this->addFlash('error', 'saas.flash.no_plans_available');
 
             return $this->redirectToRoute('billing_index');
         }

@@ -147,7 +147,7 @@ class InvoiceType extends AbstractType
             DiscountType::class,
             [
                 'required' => false,
-                'label' => 'Discount',
+                'label' => 'billing.discount',
                 'currency' => $options['currency']
             ]
         );
@@ -175,7 +175,7 @@ class InvoiceType extends AbstractType
                 'allow_delete' => true,
                 'required' => false,
                 'by_reference' => false,
-                'label' => 'Withholding & adjustments',
+                'label' => 'billing.withholding',
                 'attr' => [
                     'data-controller' => 'invoice-tax',
                 ],
@@ -190,12 +190,12 @@ class InvoiceType extends AbstractType
         $builder->add('invoiceId', null, ['data' => $data, 'empty_data' => '', 'attr' => ['maxlength' => 255]]);
 
         $builder->add('terms');
-        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('invoiceDate', DateType::class, ['widget' => 'single_text', 'input' => 'datetime_immutable']);
-        $builder->add('due', DateType::class, ['widget' => 'single_text', 'label' => 'Due Date', 'required' => false, 'input' => 'datetime_immutable']);
+        $builder->add('due', DateType::class, ['widget' => 'single_text', 'label' => 'billing.due_date', 'required' => false, 'input' => 'datetime_immutable']);
 
         $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
             if (! $client instanceof Client || ! $client->getId() instanceof Ulid) {

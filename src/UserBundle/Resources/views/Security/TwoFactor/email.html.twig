@@ -24,10 +24,10 @@
 
                             {# Title #}
                             <h2 class="two-factor-login-title">
-                                {{ 'Email Verification'|trans }}
+                                {{ 'security.two_factor.email.title'|trans }}
                             </h2>
                             <p class="two-factor-login-description">
-                                {{ 'We sent a 6-digit verification code to your email address'|trans }}
+                                {{ 'security.two_factor.email.description'|trans }}
                             </p>
 
                             {# Error Alert #}
@@ -39,7 +39,7 @@
                                             {{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
                                         </div>
                                     </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'Close'|trans }}"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'action.close'|trans }}"></button>
                                 </div>
                             {% endif %}
 
@@ -48,7 +48,7 @@
                                 {# Code Input #}
                                 <div class="mb-4">
                                     <label for="two_factor_code" class="form-label visually-hidden">
-                                        {{ 'Verification Code'|trans }}
+                                        {{ 'security.two_factor.verification_code'|trans }}
                                     </label>
                                     <input
                                         id="two_factor_code"
@@ -59,12 +59,12 @@
                                         pattern="[0-9]*"
                                         inputmode="numeric"
                                         autocomplete="one-time-code"
-                                        placeholder="000000"
+                                        placeholder="{{ 'security.two_factor.code_placeholder'|trans }}"
                                         autofocus
-                                        aria-label="{{ 'Enter 6-digit verification code'|trans }}"
+                                        aria-label="{{ 'security.two_factor.code_aria_label'|trans }}"
                                     />
                                     <div class="two-factor-form-hint">
-                                        {{ 'Check your inbox and spam folder'|trans }}
+                                        {{ 'security.two_factor.email.check_inbox'|trans }}
                                     </div>
                                 </div>
 
@@ -85,7 +85,7 @@
                                             />
                                             <label for="_trusted" class="form-check-label">
                                                 {{ ux_icon('tabler:device-check', {width: 16, height: 16, class: 'me-1'}) }}
-                                                {{ "Trust this device for 30 days"|trans }}
+                                                {{ 'security.two_factor.trust_device'|trans }}
                                             </label>
                                         </div>
                                     </div>
@@ -94,21 +94,21 @@
                                 {# Submit Button #}
                                 <button class="btn btn-primary btn-lg w-100 mt-4" type="submit">
                                     {{ ux_icon('tabler:lock-open', {width: 20, height: 20}) }}
-                                    {{ "Verify & Continue"|trans }}
+                                    {{ 'security.two_factor.verify_continue'|trans }}
                                 </button>
                             </form>
 
                             {# Resend Code Section #}
                             <div class="email-resend-section">
                                 <p class="resend-text mb-0">
-                                    {{ "Didn't receive the code?"|trans }}
+                                    {{ 'security.two_factor.email.no_code'|trans }}
                                     <a href="{{ path('_solidworx_platform_security_two_factor_resend') }}" class="resend-link">
-                                        {{ "Resend code"|trans }}
+                                        {{ 'security.two_factor.email.resend'|trans }}
                                     </a>
                                 </p>
                                 <p class="expiry-warning mb-0">
                                     {{ ux_icon('tabler:clock', {width: 14, height: 14}) }}
-                                    {{ 'Code expires in 10 minutes'|trans }}
+                                    {{ 'security.two_factor.email.expires'|trans }}
                                 </p>
                             </div>
 
@@ -116,7 +116,7 @@
                             {% if availableTwoFactorProviders|length > 1 %}
                                 <div class="alternative-methods">
                                     <p class="alternative-methods-title">
-                                        {{ 'Try another verification method'|trans }}
+                                        {{ 'security.two_factor.try_another_method'|trans }}
                                     </p>
                                     <div class="alternative-methods-list">
                                         {% for provider in availableTwoFactorProviders|filter(v => v != twoFactorProvider) %}
@@ -138,7 +138,7 @@
                     {# Security Notice #}
                     <div class="two-factor-security-notice">
                         {{ ux_icon('tabler:info-circle', {width: 16, height: 16}) }}
-                        <span>{{ 'This is an additional security step to protect your account'|trans }}</span>
+                        <span>{{ 'security.two_factor.security_notice'|trans }}</span>
                     </div>
                 </div>
             </div>

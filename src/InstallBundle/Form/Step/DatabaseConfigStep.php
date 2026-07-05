@@ -41,9 +41,9 @@ class DatabaseConfigStep extends AbstractType
             'driver',
             ChoiceType::class,
             [
-                'label' => 'Database Type',
+                'label' => 'installation.database.type',
                 'choices' => Drivers::getChoiceList(),
-                'placeholder' => 'Select Database Driver',
+                'placeholder' => 'installation.database.select_driver',
                 'expanded' => true,
             ]
         );
@@ -80,7 +80,7 @@ class DatabaseConfigStep extends AbstractType
             'name' => [
                 null,
                 [
-                    'label' => 'Database Name',
+                    'label' => 'installation.database.name',
                     'required' => true,
                     'attr' => [
                         'placeholder' => strtolower(SolidInvoiceCoreBundle::APP_NAME),

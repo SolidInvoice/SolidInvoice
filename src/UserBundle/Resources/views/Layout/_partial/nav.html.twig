@@ -5,43 +5,43 @@
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Profile'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.profile'|trans }}</span>
             </a>
             <a href="{{ path('_change_password') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('change-password') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Change Password'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.change_password'|trans }}</span>
             </a>
             <a href="{{ path('_2fa_list') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('2fa') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:shield-check', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Two-Factor Authentication'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.two_factor'|trans }}</span>
             </a>
             <a href="{{ path('_profile_notifications') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('notification') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:bell', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Notifications'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.notifications'|trans }}</span>
             </a>
             <a href="{{ path('_api_keys_index') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('api-tokens') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:key', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'API Keys'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.api_keys'|trans }}</span>
             </a>
             <a href="{{ path('mcp_connected_apps_list') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('connected-apps') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:plug-connected', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Connected Apps'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.connected_apps'|trans }}</span>
             </a>
             <a href="{{ path('_export_list') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('data-export') ? ' active' : '' }}">
                 <span class="profile-nav-icon">
                     {{ ux_icon('tabler:database-export', {width: 20, height: 20}) }}
                 </span>
-                <span class="profile-nav-text">{{ 'Data Export'|trans }}</span>
+                <span class="profile-nav-text">{{ 'profile.nav.data_export'|trans }}</span>
             </a>
         </nav>
     </div>

@@ -22,10 +22,10 @@
                     <div class="text-center mb-5">
                         <h1 class="display-6 fw-bold text-success mb-3">
                             {{ ux_icon('tabler:confetti', {width: 36, height: 36, class: 'me-2'}) }}
-                            {{ 'Installation Complete!'|trans }}
+                            {{ 'installation.finish_page.title'|trans }}
                         </h1>
                         <p class="lead text-dark mb-4">
-                            {{ 'Congratulations! SolidInvoice has been successfully installed and configured.'|trans }}
+                            {{ 'installation.finish_page.subtitle'|trans }}
                         </p>
                     </div>
 
@@ -33,7 +33,7 @@
 
                     <div class="row g-3 mb-4">
                         <div class="col-12">
-                            <h4 class="fw-bold mb-3 text-center">{{ 'What\'s Next?'|trans }}</h4>
+                            <h4 class="fw-bold mb-3 text-center">{{ 'installation.finish_page.whats_next'|trans }}</h4>
                         </div>
                         <div class="col-md-4">
                             <div class="card h-100 border-primary shadow-sm">
@@ -41,9 +41,9 @@
                                     <div class="text-primary mb-3">
                                         {{ ux_icon('tabler:users-plus', {width: 48, height: 48}) }}
                                     </div>
-                                    <h5 class="fw-bold mb-2">{{ 'Add Clients'|trans }}</h5>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.finish_page.add_clients.title'|trans }}</h5>
                                     <p class="text-muted small mb-0">
-                                        {{ 'Start by adding your clients and their contact information'|trans }}
+                                        {{ 'installation.finish_page.add_clients.description'|trans }}
                                     </p>
                                 </div>
                             </div>
@@ -54,9 +54,9 @@
                                     <div class="text-info mb-3">
                                         {{ ux_icon('tabler:file-invoice', {width: 48, height: 48}) }}
                                     </div>
-                                    <h5 class="fw-bold mb-2">{{ 'Create Invoice'|trans }}</h5>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.finish_page.create_invoice.title'|trans }}</h5>
                                     <p class="text-muted small mb-0">
-                                        {{ 'Generate your first professional invoice in seconds'|trans }}
+                                        {{ 'installation.finish_page.create_invoice.description'|trans }}
                                     </p>
                                 </div>
                             </div>
@@ -67,9 +67,9 @@
                                     <div class="text-success mb-3">
                                         {{ ux_icon('tabler:settings', {width: 48, height: 48}) }}
                                     </div>
-                                    <h5 class="fw-bold mb-2">{{ 'Configure Settings'|trans }}</h5>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.finish_page.configure_settings.title'|trans }}</h5>
                                     <p class="text-muted small mb-0">
-                                        {{ 'Customize your company details and preferences'|trans }}
+                                        {{ 'installation.finish_page.configure_settings.description'|trans }}
                                     </p>
                                 </div>
                             </div>
@@ -83,22 +83,22 @@
                                 {{ ux_icon('tabler:info-circle', {width: 24, height: 24}) }}
                             </div>
                             <div>
-                                <h5 class="fw-bold mb-2">{{ 'Installation Summary'|trans }}</h5>
+                                <h5 class="fw-bold mb-2">{{ 'installation.finish_page.summary.title'|trans }}</h5>
                                 <ul class="mb-0 small">
-                                    <li>{{ 'Database has been created and configured'|trans }}</li>
-                                    <li>{{ 'All required migrations have been applied'|trans }}</li>
-                                    <li>{{ 'Your administrator account is ready to use'|trans }}</li>
-                                    <li>{{ 'Application is secured with a unique secret key'|trans }}</li>
+                                    <li>{{ 'installation.finish_page.summary.database'|trans }}</li>
+                                    <li>{{ 'installation.finish_page.summary.migrations'|trans }}</li>
+                                    <li>{{ 'installation.finish_page.summary.admin'|trans }}</li>
+                                    <li>{{ 'installation.finish_page.summary.secret'|trans }}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex flex-column align-items-center mt-4">
-                        <p class="text-muted mb-3 text-center">{{ 'You\'re all set! Ready to start managing your invoices?'|trans }}</p>
+                        <p class="text-muted mb-3 text-center">{{ 'installation.finish_page.all_set'|trans }}</p>
                         {{ form_widget(form.navigator.finish, {
                             attr: {class: 'btn-success btn-lg px-5 shadow'},
-                            label: 'Launch SolidInvoice'|trans,
+                            label: 'installation.finish_page.launch'|trans,
                             icon: ux_icon('tabler:rocket', {width: 24, height: 24}),
                         }) }}
                     </div>

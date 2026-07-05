@@ -11,7 +11,7 @@
 
 {% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
-{% block title %}{{ ux_icon('tabler:shield-check', {width: 24, height: 24, class: 'me-2'}) }}{{ "Two-Factor Authentication"|trans }}{% endblock title %}
+{% block title %}{{ ux_icon('tabler:shield-check', {width: 24, height: 24, class: 'me-2'}) }}{{ 'security.two_factor.title'|trans }}{% endblock title %}
 
 {% block profile_content %}
     <div class="form-page">
@@ -23,8 +23,8 @@
                         {{ ux_icon('tabler:shield-lock', {width: 28, height: 28}) }}
                     </div>
                     <div>
-                        <h1 class="form-page-title">{{ 'Two-Factor Authentication'|trans }}</h1>
-                        <p class="form-page-subtitle">{{ 'Add an extra layer of security to your account'|trans }}</p>
+                        <h1 class="form-page-title">{{ 'security.two_factor.title'|trans }}</h1>
+                        <p class="form-page-subtitle">{{ 'security.two_factor.subtitle'|trans }}</p>
                     </div>
                 </div>
             </div>

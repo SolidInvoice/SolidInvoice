@@ -24,11 +24,9 @@
             </div>
 
             {# Headline #}
-            <h1 class="subscription-title">{{ 'Your Subscription is Paused'|trans }}</h1>
+            <h1 class="subscription-title">{{ 'saas.paused.title'|trans }}</h1>
             <p class="subscription-subtitle">
-                {% trans with {'%price%': subscription.plan.price|formatCurrency('USD')} %}
-                    You won't be charged while your subscription is paused. Resume anytime at %price%/month to regain access to all features.
-                {% endtrans %}
+                {{ 'saas.paused.subtitle'|trans({'%price%': subscription.plan.price|formatCurrency('USD')}) }}
             </p>
 
             {# Paused Status Info #}
@@ -36,35 +34,35 @@
                 <div class="d-flex align-items-start gap-2">
                     {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
                     <div>
-                        <strong>{{ 'While paused'|trans }}</strong><br>
-                        {{ 'Your data is safe and will be waiting for you. You won\'t be charged during this time, but you won\'t have access to features until you resume.'|trans }}
+                        <strong>{{ 'saas.paused.while_paused'|trans }}</strong><br>
+                        {{ 'saas.paused.while_paused_message'|trans }}
                     </div>
                 </div>
             </twig:Ui:Alert>
 
             {# Features Available After Resume #}
             <div class="subscription-benefits">
-                <h3>{{ 'Resume to access these features:'|trans }}</h3>
+                <h3>{{ 'saas.paused.features_heading'|trans }}</h3>
                 <ul>
                     <li>
                         {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
-                        {{ 'Unlimited invoices and quotes'|trans }}
+                        {{ 'saas.paused.feature_invoices'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
-                        {{ 'Professional payment processing'|trans }}
+                        {{ 'saas.paused.feature_payments'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
-                        {{ 'Client and contact management'|trans }}
+                        {{ 'saas.paused.feature_clients'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
-                        {{ 'Financial reports and insights'|trans }}
+                        {{ 'saas.paused.feature_reports'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
-                        {{ 'Recurring invoices and subscriptions'|trans }}
+                        {{ 'saas.paused.feature_recurring'|trans }}
                     </li>
                 </ul>
             </div>
@@ -72,10 +70,10 @@
             {# Primary CTA #}
             <div class="subscription-actions">
                 <a href="{{ path('billing_index') }}" class="btn btn-primary btn-lg">
-                    {{ ux_icon('tabler:player-play', {width: 20, height: 20}) }} {{ 'Resume Subscription'|trans }}
+                    {{ ux_icon('tabler:player-play', {width: 20, height: 20}) }} {{ 'saas.paused.resume'|trans }}
                 </a>
                 <a href="https://solidinvoice.co/contact" class="btn btn-ghost" target="_blank" rel="external noreferrer noopener">
-                    {{ ux_icon('tabler:help', {width: 18, height: 18}) }} {{ 'Contact Support'|trans }}
+                    {{ ux_icon('tabler:help', {width: 18, height: 18}) }} {{ 'saas.action.contact_support'|trans }}
                 </a>
             </div>
 
@@ -85,9 +83,9 @@
                     <div class="d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
                         <div>
-                            {{ 'You have access to other companies.'|trans }}
+                            {{ 'saas.company.access_other'|trans }}
                             <a href="{{ path('_switch_company', {'id': availableCompanies|first.id}) }}" class="alert-link">
-                                {{ 'Switch to %company%'|trans({'%company%': availableCompanies|first}) }}
+                                {{ 'saas.company.switch_to'|trans({'%company%': availableCompanies|first}) }}
                             </a>
                         </div>
                     </div>

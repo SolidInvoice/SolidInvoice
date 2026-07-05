@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center justify-content-between w-100">
                 <span class="d-flex align-items-center gap-2">
                     {{ ux_icon('tabler:map-pin', {width: 16, height: 16, class: 'text-muted'}) }}
-                    <span class="fw-medium">{{ 'Address'|trans }}</span>
+                    <span class="fw-medium">{{ 'client.address.label'|trans }}</span>
                 </span>
                 <div class="d-flex gap-1">
                     <button type="button" class="btn btn-ghost-secondary btn-icon btn-icon-sm"
@@ -32,11 +32,11 @@
 
                 <div class="client-form-actions">
                     <button type="button" class="btn btn-ghost" data-model="edit" data-value="false" data-action="live#update:prevent">
-                        {{ 'Cancel'|trans }}
+                        {{ 'action.cancel'|trans }}
                     </button>
                     <button type="submit" class="btn btn-primary">
                         {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
-                        {{ 'Save'|trans }}
+                        {{ 'action.save'|trans }}
                     </button>
                 </div>
                 {{ form_end(form) }}
@@ -53,19 +53,19 @@
         </div>
     </div>
 
-    <twig:Ui:Modal id="delete-address-{{ computed.address.id }}" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+    <twig:Ui:Modal id="delete-address-{{ computed.address.id }}" title="{{ 'action.confirm'|trans }}" status="danger" :centered="true">
         <div class="text-center py-3">
             <div class="mb-3">
                 {{ ux_icon('tabler:map-pin-off', {width: 48, height: 48, class: 'text-danger'}) }}
             </div>
-            <p>{{ 'Are you sure you want to delete the address?'|trans }}</p>
+            <p>{{ 'client.address.delete_confirm_inline'|trans }}</p>
         </div>
 
         <twig:block name="footer">
-            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'action.cancel'|trans }}</button>
             <button type="button" class="btn btn-danger" data-action="live#action:prevent" data-live-action-param="delete">
                 {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                {{ 'Confirm'|trans }}
+                {{ 'action.confirm'|trans }}
             </button>
         </twig:block>
     </twig:Ui:Modal>

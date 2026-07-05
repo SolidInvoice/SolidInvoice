@@ -19,5 +19,5 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class UniqueClientName extends Constraint
 {
-    public string $message = 'A client with the name "{{ value }}" already exists.';
+    public string $message = 'client.constraint.unique_name';
 }

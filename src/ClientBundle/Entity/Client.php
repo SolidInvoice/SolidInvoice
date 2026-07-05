@@ -136,7 +136,7 @@ class Client implements Stringable
         // property: 'currency'
     )
     ]
-    #[Assert\Length(min: 3, max: 3, exactMessage: 'Currency code must be exactly {{ limit }} characters long.')]
+    #[Assert\Length(min: 3, max: 3, exactMessage: 'client.constraint.currency_code.exact_length')]
     private ?string $currencyCode = null;
 
     private Currency $currency;
@@ -155,7 +155,7 @@ class Client implements Stringable
     #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'client', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Assert\Count(
         min: 1,
-        minMessage: 'You need to add at least one contact to this client',
+        minMessage: 'client.constraint.contacts.min',
         // Only validate from the form.
         // API validation should not happen, since you should be able to
         // create clients without contacts

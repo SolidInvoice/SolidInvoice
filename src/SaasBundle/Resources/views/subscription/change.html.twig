@@ -14,21 +14,21 @@
 
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ ux_icon('tabler:arrows-exchange', {width: 24, height: 24, class: 'me-2'}) }}{{ 'Change plan'|trans }}{% endblock %}
+{% block title %}{{ ux_icon('tabler:arrows-exchange', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.change.title'|trans }}{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-12">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <div>
-                    <h1 class="h3 mb-1">{{ 'Change your plan'|trans }}</h1>
+                    <h1 class="h3 mb-1">{{ 'saas.change.heading'|trans }}</h1>
                     <p class="text-secondary mb-0">
-                        {{ 'Pick a different plan. Upgrades take effect immediately. Downgrades to the free plan apply at the end of your current billing period.'|trans }}
+                        {{ 'saas.change.description'|trans }}
                     </p>
                 </div>
                 <a href="{{ path('billing_index') }}" class="btn btn-outline-secondary">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
-                    {{ 'Back'|trans }}
+                    {{ 'saas.action.back'|trans }}
                 </a>
             </div>
 

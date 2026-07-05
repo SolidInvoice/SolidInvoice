@@ -55,7 +55,7 @@ final class DeleteAction extends AbstractController
         $this->em->remove($field);
         $this->em->flush();
 
-        $this->addFlash('success', 'Custom field deleted.');
+        $this->addFlash('success', 'custom_field.flash.deleted');
         return new RedirectResponse($this->generateUrl('_settings_custom_fields'));
     }
 }

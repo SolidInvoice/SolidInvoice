@@ -50,7 +50,7 @@ final readonly class SaasMenu
         $systemMenu->addChild(
             'billing',
             [
-                'label' => 'Subscription',
+                'label' => 'saas.menu.billing',
                 'route' => 'billing_index',
                 'extras' => ['icon' => 'receipt-2'],
             ],

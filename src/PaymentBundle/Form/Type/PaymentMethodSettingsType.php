@@ -53,7 +53,7 @@ class PaymentMethodSettingsType extends AbstractType
 
             case 'choice':
                 $options['choices'] = array_flip($settings['options']);
-                $options['placeholder'] = 'Please Choose';
+                $options['placeholder'] = 'payment.method_settings.choice.placeholder';
 
                 break;
 

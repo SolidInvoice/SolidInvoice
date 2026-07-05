@@ -54,10 +54,10 @@ abstract class BaseClientGrid extends Grid
             StringColumn::new('name'),
             UrlColumn::new('website'),
             CurrencyColumn::new('currencyCode')
-                ->label(new TranslatableMessage('Currency'))
+                ->label(new TranslatableMessage('client.grid.currency'))
                 ->filter(new ChoiceFilter('currencyCode', Currencies::getNames($this->locale))),
             MoneyColumn::new('total')
-                ->label(new TranslatableMessage('Total Balance'))
+                ->label(new TranslatableMessage('client.grid.total_balance'))
                 ->sortable(false)
                 ->searchable(false)
                 ->formatValue(static function ($value, Client $client) {
@@ -74,7 +74,7 @@ abstract class BaseClientGrid extends Grid
                     return $total;
                 }),
             MoneyColumn::new('outstanding')
-                ->label(new TranslatableMessage('Outstanding Balance'))
+                ->label(new TranslatableMessage('client.grid.outstanding_balance'))
                 ->sortable(false)
                 ->searchable(false)
                 ->formatValue(static function ($value, Client $client) {
