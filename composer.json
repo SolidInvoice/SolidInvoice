@@ -96,7 +96,7 @@
         "symfony/event-dispatcher": "^7.1",
         "symfony/expression-language": "^7.1",
         "symfony/fake-chat-notifier": "^7.1",
-        "symfony/fake-sms-notifier": "^7.1",
+        "symfony/fake-sms-notifier": "^8.1",
         "symfony/filesystem": "^7.1",
         "symfony/finder": "^7.1",
         "symfony/firebase-notifier": "^7.1",
