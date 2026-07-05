@@ -73,7 +73,7 @@
         "baseline-browser-mapping": "^2.10.38",
         "caniuse-lite": "^1.0.30001799",
         "intl-messageformat": "^11.2.8",
-        "jquery": "^3.7.1",
+        "jquery": "^4.0.0",
         "regenerator-runtime": "^0.14.1",
         "sortablejs": "^1.15.7"
     },
