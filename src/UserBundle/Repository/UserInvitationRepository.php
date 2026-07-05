@@ -31,8 +31,6 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
  */
 final class UserInvitationRepository extends EntityRepository
 {
-    public $_em;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserInvitation::class);
@@ -70,13 +68,13 @@ final class UserInvitationRepository extends EntityRepository
                 ->getOneOrNullResult();
 
             if ($invitation instanceof UserInvitation) {
-                $this->_em->remove($invitation);
+                $this->getEntityManager()->remove($invitation);
                 ++$deleted;
             }
         }
 
         if ($deleted > 0) {
-            $this->_em->flush();
+            $this->getEntityManager()->flush();
         }
 
         return $deleted;
