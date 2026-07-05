@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Translation\Extractor;
 
+use LogicException;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\Extractor\AbstractFileExtractor;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
@@ -35,6 +37,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  * It is intentionally self-contained and only depends on the `#[MenuBuilder]` attribute
  * and KnpMenu's `addChild()` contract, so it can be promoted to solidworx/platform as a
  * platform-level integration without modification.
+ * @see \SolidInvoice\CoreBundle\Tests\Translation\Extractor\MenuLabelExtractorTest
  */
 final class MenuLabelExtractor extends AbstractFileExtractor implements ExtractorInterface
 {
@@ -45,10 +48,10 @@ final class MenuLabelExtractor extends AbstractFileExtractor implements Extracto
     public function __construct()
     {
         if (! class_exists(ParserFactory::class)) {
-            throw new \LogicException(\sprintf('You cannot use "%s" as the "nikic/php-parser" package is not installed. Try running "composer require nikic/php-parser".', self::class));
+            throw new LogicException(\sprintf('You cannot use "%s" as the "nikic/php-parser" package is not installed. Try running "composer require nikic/php-parser".', self::class));
         }
 
-        $this->parser = (new ParserFactory())->createForHostVersion();
+        $this->parser = new ParserFactory()->createForHostVersion();
     }
 
     public function extract(iterable|string $resource, MessageCatalogue $catalogue): void
@@ -85,10 +88,10 @@ final class MenuLabelExtractor extends AbstractFileExtractor implements Extracto
     /**
      * @param string|array<string> $resource
      *
-     * @return iterable<\SplFileInfo>
+     * @return iterable<SplFileInfo>
      */
     protected function extractFromDirectory(array|string $resource): iterable
     {
-        return (new Finder())->files()->name('*.php')->in($resource);
+        return new Finder()->files()->name('*.php')->in($resource);
     }
 }

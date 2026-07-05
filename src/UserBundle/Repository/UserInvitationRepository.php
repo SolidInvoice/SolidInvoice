@@ -31,6 +31,8 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
  */
 final class UserInvitationRepository extends EntityRepository
 {
+    public $_em;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserInvitation::class);
