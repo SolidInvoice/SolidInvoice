@@ -592,6 +592,7 @@ body:has(.payment-modal) {
     margin-bottom: var(--swp-space-4);
 
     .gateway-group-header {
+
         h6 {
             letter-spacing: 0.04em;
         }
@@ -599,6 +600,7 @@ body:has(.payment-modal) {
 
     // Custom "create your own" card sits inside the offline group now, so the
     // legacy full-width divider it used to draw is no longer needed.
+
     .is-custom-gateway {
         margin-bottom: var(--swp-space-3);
 
@@ -609,6 +611,7 @@ body:has(.payment-modal) {
 }
 
 // Legacy / advanced processors are collapsed away by default.
+
 .gateway-group--more {
     border-top: 1px solid var(--swp-border-light);
     padding-top: var(--swp-space-3);
@@ -632,11 +635,13 @@ body:has(.payment-modal) {
 // ============================================================================
 
 .payment-gateway-about {
+
     .alert-title {
         margin-bottom: var(--swp-space-1);
     }
 
     .payment-gateway-compare {
+
         summary {
             cursor: pointer;
             list-style: none;
