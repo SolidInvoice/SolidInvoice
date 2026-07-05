@@ -94,10 +94,10 @@
                         {% if isRecurring is not defined or isRecurring is same as(false) %}
                             <div class="col-sm-2 invoice-col">
                                 <dl class="dl-horizontal">
-                                    <dt>{{ "Invoice Date"|trans }}</dt>
+                                    <dt>{{ "invoice.date"|trans }}</dt>
                                     <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
                                     {% if invoice.due is not empty %}
-                                        <dt>{{ "Due Date"|trans }}</dt>
+                                        <dt>{{ "invoice.due_date"|trans }}</dt>
                                         <dd>{{ invoice.due | date('d F Y') }}</dd>
                                     {% endif %}
                                 </dl>

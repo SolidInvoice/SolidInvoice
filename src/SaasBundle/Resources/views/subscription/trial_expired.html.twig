@@ -24,36 +24,34 @@
             </div>
 
             {# Headline #}
-            <h1 class="subscription-title">{{ 'Your trial has ended'|trans }}</h1>
+            <h1 class="subscription-title">{{ 'saas.trial_expired.title'|trans }}</h1>
             <p class="subscription-subtitle">
-                {% trans with {'%days%': subscription.startDate.diff(subscription.endDate).days|abs, '%date%': subscription.endDate|date('F j, Y'), '%price%': subscription.plan.price|formatCurrency('USD')} %}
-                    Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.
-                {% endtrans %}
+                {{ 'saas.trial_expired.subtitle'|trans({'%days%': subscription.startDate.diff(subscription.endDate).days|abs, '%date%': subscription.endDate|date('F j, Y'), '%price%': subscription.plan.price|formatCurrency('USD')}) }}
             </p>
 
             {# Benefits Reminder #}
             <div class="subscription-benefits">
-                <h3>{{ 'Continue enjoying these features:'|trans }}</h3>
+                <h3>{{ 'saas.trial_expired.features_heading'|trans }}</h3>
                 <ul>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
-                        {{ 'Unlimited invoices and quotes'|trans }}
+                        {{ 'saas.trial_expired.feature_invoices'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
-                        {{ 'Professional payment processing'|trans }}
+                        {{ 'saas.trial_expired.feature_payments'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
-                        {{ 'Client and contact management'|trans }}
+                        {{ 'saas.trial_expired.feature_clients'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
-                        {{ 'Financial reports and insights'|trans }}
+                        {{ 'saas.trial_expired.feature_reports'|trans }}
                     </li>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
-                        {{ 'Recurring invoices and subscriptions'|trans }}
+                        {{ 'saas.trial_expired.feature_recurring'|trans }}
                     </li>
                 </ul>
             </div>
@@ -68,16 +66,14 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="fw-bold fs-3 mb-1">
-                                    {{ 'Don\'t go just yet — here\'s 20% off'|trans }}
+                                    {{ 'saas.trial_expired.promo_heading'|trans }}
                                 </div>
                                 <div class="text-secondary">
-                                    {% trans with {'%code%': coupon_code} %}
-                                        Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>20%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.
-                                    {% endtrans %}
+                                    {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code})|raw }}
                                 </div>
                             </div>
                             <div class="subscription-promo-code text-center">
-                                <div class="text-uppercase text-secondary small mb-1">{{ 'Promo code'|trans }}</div>
+                                <div class="text-uppercase text-secondary small mb-1">{{ 'saas.trial_expired.promo_code'|trans }}</div>
                                 <span class="badge bg-azure text-white fs-2 px-3 py-2 font-monospace">{{ coupon_code }}</span>
                             </div>
                         </div>
@@ -90,13 +86,13 @@
                 <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary btn-lg">
                     {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }}
                     {% if coupon_code|default('') is not empty %}
-                        {{ 'Activate & Save 20%'|trans }}
+                        {{ 'saas.trial_expired.activate_save'|trans }}
                     {% else %}
-                        {{ 'Activate Subscription'|trans }}
+                        {{ 'saas.trial_expired.activate'|trans }}
                     {% endif %}
                 </a>
                 <a href="https://solidinvoice.co/contact" class="btn btn-ghost" target="_blank" rel="external noreferrer noopener">
-                    {{ ux_icon('tabler:help', {width: 18, height: 18}) }} {{ 'Contact Support'|trans }}
+                    {{ ux_icon('tabler:help', {width: 18, height: 18}) }} {{ 'saas.action.contact_support'|trans }}
                 </a>
             </div>
 
@@ -106,9 +102,9 @@
                     <div class="d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
                         <div>
-                            {{ 'You have access to other companies.'|trans }}
+                            {{ 'saas.company.access_other'|trans }}
                             <a href="{{ path('_switch_company', {'id': availableCompanies|first.id}) }}" class="alert-link">
-                                {{ 'Switch to %company%'|trans({'%company%': availableCompanies|first}) }}
+                                {{ 'saas.company.switch_to'|trans({'%company%': availableCompanies|first}) }}
                             </a>
                         </div>
                     </div>

@@ -56,6 +56,6 @@ final class ApiTokens extends AbstractController
         $this->apiTokenRepository->revoke($token);
         $this->emit('api.token.revoked');
         $this->dispatchBrowserEvent('modal:close');
-        $this->addFlash('success', 'API Token revoked successfully');
+        $this->addFlash('success', 'profile.api.flash.revoked');
     }
 }

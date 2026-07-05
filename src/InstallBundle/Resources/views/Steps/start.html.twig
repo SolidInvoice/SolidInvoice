@@ -7,18 +7,18 @@
                 <div class="flex-grow-1" style="min-height: 410px">
                     {# Welcome Header #}
                     <div class="text-center mb-5">
-                        <h2 class="fw-bold text-dark mb-1">Welcome to</h2>
+                        <h2 class="fw-bold text-dark mb-1">{{ 'installation.start.welcome'|trans }}</h2>
                         <h1 class="display-5 fw-bold text-primary mb-3">{{ app_logo(showDefault: true) }}{{ app_name }}</h1>
-                        <p class="lead text-muted">{{ 'Your complete invoicing and billing solution'|trans }}</p>
+                        <p class="lead text-muted">{{ 'installation.start.tagline'|trans }}</p>
                     </div>
 
                     <hr class="border-secondary-subtle mb-5">
 
                     <div class="mb-5">
                         <p class="fs-5 text-dark text-center">
-                            {{ 'Thank you for choosing SolidInvoice!'|trans }}
+                            {{ 'installation.start.thank_you'|trans }}
                             <br />
-                            {{ 'You\'re about to set up a powerful, open-source invoicing platform that will help you manage your business finances with ease.'|trans }}
+                            {{ 'installation.start.intro'|trans }}
                         </p>
                     </div>
 
@@ -29,8 +29,8 @@
                                     {{ ux_icon('tabler:file-invoice', {width: 32, height: 32}) }}
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold mb-2">{{ 'Professional Invoicing'|trans }}</h5>
-                                    <p class="text-muted small mb-0">{{ 'Create beautiful, customized invoices and quotes in seconds'|trans }}</p>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.start.feature.invoicing.title'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'installation.start.feature.invoicing.description'|trans }}</p>
                                 </div>
                             </div>
                         </div>
@@ -40,8 +40,8 @@
                                     {{ ux_icon('tabler:credit-card', {width: 32, height: 32}) }}
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold mb-2">{{ 'Online Payments'|trans }}</h5>
-                                    <p class="text-muted small mb-0">{{ 'Accept payments online with multiple payment gateway integrations'|trans }}</p>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.start.feature.payments.title'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'installation.start.feature.payments.description'|trans }}</p>
                                 </div>
                             </div>
                         </div>
@@ -51,8 +51,8 @@
                                     {{ ux_icon('tabler:users', {width: 32, height: 32}) }}
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold mb-2">{{ 'Client Management'|trans }}</h5>
-                                    <p class="text-muted small mb-0">{{ 'Keep track of clients, contacts, and communication history'|trans }}</p>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.start.feature.clients.title'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'installation.start.feature.clients.description'|trans }}</p>
                                 </div>
                             </div>
                         </div>
@@ -62,8 +62,8 @@
                                     {{ ux_icon('tabler:chart-bar', {width: 32, height: 32}) }}
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold mb-2">{{ 'Financial Insights'|trans }}</h5>
-                                    <p class="text-muted small mb-0">{{ 'Track payments, expenses, and get detailed financial reports'|trans }}</p>
+                                    <h5 class="fw-bold mb-2">{{ 'installation.start.feature.insights.title'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'installation.start.feature.insights.description'|trans }}</p>
                                 </div>
                             </div>
                         </div>
@@ -86,21 +86,21 @@
                                 {{ ux_icon('tabler:info-circle', {width: 24, height: 24}) }}
                             </div>
                             <div>
-                                <h4 class="fw-bold mb-2">{{ 'Quick & Easy Setup'|trans }}</h4>
+                                <h4 class="fw-bold mb-2">{{ 'installation.start.setup.title'|trans }}</h4>
                                 <p class="mb-0 small">
-                                    {{ 'This installation wizard will guide you through the setup process.'|trans }}
+                                    {{ 'installation.start.setup.line1'|trans }}
                                     <br />
-                                    {{ 'It will only take a few minutes to configure your database, set up your account, and get started with SolidInvoice.'|trans }}
+                                    {{ 'installation.start.setup.line2'|trans }}
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <div class="text-center mt-5">
-                        <p class="text-muted mb-4">{{ 'Ready to get started?'|trans }}</p>
+                        <p class="text-muted mb-4">{{ 'installation.start.ready'|trans }}</p>
                         {{ form_widget(form.navigator.next, {
                             attr: {class: 'btn-primary btn-lg px-5'},
-                            label: 'Begin Installation'|trans,
+                            label: 'installation.start.begin'|trans,
                         }) }}
                     </div>
                 </div>

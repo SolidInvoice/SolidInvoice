@@ -61,7 +61,7 @@ class RecurringOptions
     private ScheduleEndType $endType;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
-    #[Assert\GreaterThan(value: 'today', message: 'End date must be in the future')]
+    #[Assert\GreaterThan(value: 'today', message: 'recurring_invoice.end_date.future')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?DateTimeImmutable $endDate = null;
 
@@ -192,45 +192,45 @@ class RecurringOptions
     public function validateDays(ExecutionContextInterface $context): void
     {
         if (! isset($this->type)) {
-            $context->buildViolation('You must select a recurrence type')
+            $context->buildViolation('recurring_invoice.schedule.type.required')
                 ->atPath('type')
                 ->addViolation();
             return;
         }
 
         if ([] === $this->days && $this->type->isWeekly()) {
-            $context->buildViolation('You must select at least one day for weekly recurrence')
+            $context->buildViolation('recurring_invoice.schedule.days.weekly_required')
                 ->atPath('days')
                 ->addViolation();
         }
 
         if ([] === $this->days && $this->type->isMonthly()) {
-            $context->buildViolation('You must select at least one day for monthly recurrence')
+            $context->buildViolation('recurring_invoice.schedule.days.monthly_required')
                 ->atPath('days')
                 ->addViolation();
         }
 
         if ([] === $this->days && $this->type->isYearly()) {
-            $context->buildViolation('You must select at least one month for yearly recurrence')
+            $context->buildViolation('recurring_invoice.schedule.days.yearly_required')
                 ->atPath('days')
                 ->addViolation();
         }
 
         if (! isset($this->endType)) {
-            $context->buildViolation('You must select an end type')
+            $context->buildViolation('recurring_invoice.schedule.end_type.required')
                 ->atPath('endType')
                 ->addViolation();
             return;
         }
 
         if ((0 === $this->endOccurrence || null === $this->endOccurrence) && $this->endType->isAfter()) {
-            $context->buildViolation('You must specify the number of occurrences')
+            $context->buildViolation('recurring_invoice.schedule.end_occurrence.required')
                 ->atPath('endOccurrence')
                 ->addViolation();
         }
 
         if (! $this->endDate instanceof DateTimeInterface && $this->endType->isOn()) {
-            $context->buildViolation('You must specify an end date')
+            $context->buildViolation('recurring_invoice.schedule.end_date.required')
                 ->atPath('endDate')
                 ->addViolation();
         }

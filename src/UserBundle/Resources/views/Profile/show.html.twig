@@ -33,19 +33,19 @@
                 {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
             </div>
             <div class="profile-section-title">
-                <h3 class="section-title">{{ 'Personal Information'|trans }}</h3>
-                <p class="section-description">{{ 'Your contact details and account information'|trans }}</p>
+                <h3 class="section-title">{{ 'profile.show.personal.title'|trans }}</h3>
+                <p class="section-description">{{ 'profile.show.personal.description'|trans }}</p>
             </div>
         </div>
 
         <div class="profile-section-body">
             <div class="profile-detail-grid">
                 <div class="detail-item">
-                    <span class="detail-label">{{ 'First Name'|trans }}</span>
+                    <span class="detail-label">{{ 'profile.show.first_name'|trans }}</span>
                     <span class="detail-value">{{ app.user.firstName }}</span>
                 </div>
                 <div class="detail-item">
-                    <span class="detail-label">{{ 'Last Name'|trans }}</span>
+                    <span class="detail-label">{{ 'profile.show.last_name'|trans }}</span>
                     <span class="detail-value">{{ app.user.lastName }}</span>
                 </div>
                 <div class="detail-item detail-item-wide">
@@ -76,8 +76,8 @@
                 {{ ux_icon('tabler:shield', {width: 20, height: 20}) }}
             </div>
             <div class="profile-section-title">
-                <h3 class="section-title">{{ 'Security'|trans }}</h3>
-                <p class="section-description">{{ 'Manage your account security settings'|trans }}</p>
+                <h3 class="section-title">{{ 'profile.show.security.title'|trans }}</h3>
+                <p class="section-description">{{ 'profile.show.security.description'|trans }}</p>
             </div>
         </div>
 
@@ -90,19 +90,19 @@
                             {{ ux_icon(app.user.is2FaEnabled ? 'tabler:shield-check' : 'tabler:shield-x', {width: 20, height: 20}) }}
                         </div>
                         <div class="security-item-content">
-                            <h4 class="security-item-title">{{ 'Two-Factor Authentication'|trans }}</h4>
+                            <h4 class="security-item-title">{{ 'security.two_factor.title'|trans }}</h4>
                             <p class="security-item-description">
                                 {% if app.user.is2FaEnabled %}
-                                    {{ 'Two-factor authentication is enabled'|trans }}
+                                    {{ 'profile.show.security.2fa_enabled'|trans }}
                                 {% else %}
-                                    {{ 'Add an extra layer of security to your account'|trans }}
+                                    {{ 'security.two_factor.subtitle'|trans }}
                                 {% endif %}
                             </p>
                         </div>
                     </div>
                     <div class="security-item-action">
                         <a href="{{ path('_2fa_list') }}" class="btn btn-sm btn-outline-primary">
-                            {{ app.user.is2FaEnabled ? 'Manage'|trans : 'Enable'|trans }}
+                            {{ app.user.is2FaEnabled ? 'profile.show.security.manage'|trans : 'profile.show.security.enable'|trans }}
                         </a>
                     </div>
                 </div>
@@ -115,12 +115,12 @@
                                 {{ ux_icon(app.user.googleId is not empty ? 'tabler:brand-google' : 'tabler:unlink', {width: 20, height: 20}) }}
                             </div>
                             <div class="security-item-content">
-                                <h4 class="security-item-title">{{ 'Google Account'|trans }}</h4>
+                                <h4 class="security-item-title">{{ 'profile.show.security.google.title'|trans }}</h4>
                                 <p class="security-item-description">
                                     {% if app.user.googleId is not empty %}
-                                        {{ 'Your account is linked with Google'|trans }}
+                                        {{ 'profile.show.security.google.linked'|trans }}
                                     {% else %}
-                                        {{ 'Link your account with Google for easier sign-in'|trans }}
+                                        {{ 'profile.show.security.google.link'|trans }}
                                     {% endif %}
                                 </p>
                             </div>
@@ -129,10 +129,10 @@
                             {% if app.user.googleId is empty %}
                                 <a href="{{ path('_oauth_connect', {'service': 'google'}) }}" class="btn btn-sm btn-outline-primary google-signin-btn">
                                     {{ ux_icon('tabler:brand-google', {width: 16, height: 16}) }}
-                                    {{ 'Sign in with Google'|trans }}
+                                    {{ 'profile.show.security.google.sign_in'|trans }}
                                 </a>
                             {% else %}
-                                <span class="badge bg-success-lt">{{ 'Linked'|trans }}</span>
+                                <span class="badge bg-success-lt">{{ 'profile.show.security.google.badge'|trans }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -145,13 +145,13 @@
                             {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
                         </div>
                         <div class="security-item-content">
-                            <h4 class="security-item-title">{{ 'Password'|trans }}</h4>
-                            <p class="security-item-description">{{ 'Change your password to keep your account secure'|trans }}</p>
+                            <h4 class="security-item-title">{{ 'profile.show.security.password.title'|trans }}</h4>
+                            <p class="security-item-description">{{ 'profile.show.security.password.description'|trans }}</p>
                         </div>
                     </div>
                     <div class="security-item-action">
                         <a href="{{ path('_change_password') }}" class="btn btn-sm btn-outline-primary">
-                            {{ 'Change Password'|trans }}
+                            {{ 'profile.nav.change_password'|trans }}
                         </a>
                     </div>
                 </div>

@@ -258,7 +258,7 @@ class DataGrid extends AbstractController
     {
         try {
             if ($this->selectedItems === []) {
-                $this->addFlash('warning', 'Please select at least one item.');
+                $this->addFlash('warning', 'datagrid.flash.select_one');
                 return;
             }
 
@@ -272,13 +272,13 @@ class DataGrid extends AbstractController
                 $actionFn = $action->getAction();
 
                 if (null === $actionFn) {
-                    $this->addFlash('warning', 'Action not implemented.');
+                    $this->addFlash('warning', 'datagrid.flash.not_implemented');
                     return;
                 }
 
                 $actionFn($this->registry->getRepository($grid->entityFQCN()), $this->selectedItems);
 
-                $this->addFlash('success', 'Success');
+                $this->addFlash('success', 'datagrid.flash.success');
 
                 return;
             }
@@ -312,19 +312,19 @@ class DataGrid extends AbstractController
             $actionFn = $action->getAction();
 
             if (null === $actionFn) {
-                $this->addFlash('warning', 'Action not implemented.');
+                $this->addFlash('warning', 'datagrid.flash.not_implemented');
                 return;
             }
 
             $actionFn($this->registry->getRepository($grid->entityFQCN()), [$entityId]);
 
-            $this->addFlash('success', 'Success');
+            $this->addFlash('success', 'datagrid.flash.success');
             $this->dispatchBrowserEvent('modal:close');
 
             return;
         }
 
-        $this->addFlash('warning', 'Action not found.');
+        $this->addFlash('warning', 'datagrid.flash.not_found');
     }
 
     /**

@@ -56,7 +56,7 @@ class SubscribeController extends AbstractController
 
         $subscription = $this->getSubscription();
         if (! $subscription instanceof Subscription) {
-            $this->addFlash('error', 'No subscription found');
+            $this->addFlash('error', 'saas.flash.no_subscription_short');
             return $this->redirectToRoute('_dashboard');
         }
 
@@ -94,7 +94,7 @@ class SubscribeController extends AbstractController
                 ->getCheckoutUrl($subscription, $options);
         } catch (HttpExceptionInterface | TransportExceptionInterface) {
             $this->telemetry->event(TelemetryEvent::SaasCheckoutFailed, ['plan' => $planName]);
-            $this->addFlash('error', 'Unable to create checkout session. Please try again later.');
+            $this->addFlash('error', 'saas.flash.checkout_failed');
 
             return $this->redirectToRoute('billing_index');
         } finally {

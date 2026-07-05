@@ -109,7 +109,7 @@
                 <div class="text-secondary small">{{ 'dashboard.checklist.subtitle'|trans({'%completed%': progress.completed, '%total%': progress.total}) }}</div>
             </div>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{{ 'Close'|trans }}"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{{ 'action.close'|trans }}"></button>
     </div>
 
     <div class="offcanvas-body">
@@ -192,7 +192,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
-                    {{ 'Cancel'|trans }}
+                    {{ 'action.cancel'|trans }}
                 </button>
                 <button type="button" class="btn btn-danger" onclick="document.getElementById('dismissChecklistForm').submit()">
                     {{ 'dashboard.checklist.dismiss'|trans }}

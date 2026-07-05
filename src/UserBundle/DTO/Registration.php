@@ -31,16 +31,16 @@ final class Registration
     public ?string $email = null;
 
     #[
-        NotBlank(message: 'Please enter a password'),
+        NotBlank(message: 'user.password.not_blank'),
         Length(
             min: 8,
             max: 4096,
             // max length allowed by Symfony for security reasons
-            minMessage: 'Your password should be at least {{ limit }} characters',
+            minMessage: 'user.password.min_length',
         ),
         PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     public ?string $plainPassword = null;
 
-    #[IsTrue(message: 'You must accept the terms and conditions to register')]
+    #[IsTrue(message: 'user.register.accept_terms')]
     public ?bool $acceptTerms = null;
 }

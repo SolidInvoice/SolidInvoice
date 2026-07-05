@@ -107,7 +107,7 @@ final class CreateApiToken extends AbstractController
         $this->createdToken = $generated->plaintext;
         $this->createdTokenName = $generated->token->getName();
 
-        $this->addFlash('success', 'API Token created successfully');
+        $this->addFlash('success', 'profile.api.flash.created');
 
         $this->emit(self::API_TOKEN_CREATED_EVENT);
 

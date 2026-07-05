@@ -87,6 +87,7 @@
         "symfony/config": "^8.1",
         "symfony/console": "^8.1",
         "symfony/contracts": "*",
+        "symfony/crowdin-translation-provider": "^8.1",
         "symfony/dependency-injection": "^8.1",
         "symfony/discord-notifier": "^8.1",
         "symfony/doctrine-bridge": "^8.1",

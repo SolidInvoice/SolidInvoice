@@ -12,9 +12,9 @@
         {{ ux_icon('tabler:users', {width: 32, height: 32, class: 'text-white'}) }}
     </div>
 
-    <h2 class="h2 text-center mb-2">{{ 'onboarding.client.title'|trans({}, 'onboarding') }}</h2>
+    <h2 class="h2 text-center mb-2">{{ 'onboarding.client.title'|trans({}) }}</h2>
     <p class="text-muted text-center lead mb-4">
-        {{ 'onboarding.client.description'|trans({}, 'onboarding') }}
+        {{ 'onboarding.client.description'|trans({}) }}
     </p>
 
     {# Benefits Box #}
@@ -22,9 +22,9 @@
         <div class="d-flex align-items-start gap-2">
             {{ ux_icon('tabler:bulb', {width: 20, height: 20, class: 'text-warning mt-1'}) }}
             <div>
-                <strong class="d-block mb-1">{{ 'onboarding.client.why_title'|trans({}, 'onboarding') }}</strong>
+                <strong class="d-block mb-1">{{ 'onboarding.client.why_title'|trans({}) }}</strong>
                 <ul class="mb-0">
-                    {% for benefit in 'onboarding.client.benefits'|trans({}, 'onboarding')|trim|split("\n") %}
+                    {% for benefit in 'onboarding.client.benefits'|trans({})|trim|split("\n") %}
                         <li>{{ benefit }}</li>
                     {% endfor %}
                 </ul>
@@ -55,7 +55,7 @@
             }) }}
 
             {{ form_widget(form.navigator.skip, {
-                'label': 'onboarding.navigation.skip_client'|trans({}, 'onboarding'),
+                'label': 'onboarding.navigation.skip_client'|trans({}),
                 'attr': {'class': 'btn btn-link w-100 mt-2 text-muted small'}
             }) }}
 

@@ -15,27 +15,49 @@ client:
         active: 'Active'
         archived: 'Archived'
     address:
+        label: 'Address'
         info: 'Address Info'
         add: 'Add Address'
         delete: 'Delete Address'
         edit: 'Edit Address'
         delete_confirm: 'Are you sure you want to delete this address?'
+        delete_confirm_inline: 'Are you sure you want to delete the address?'
         empty_hint: 'No addresses added yet. Click the button below to add one.'
+        street1: 'Street1'
+        street2: 'Street2'
+        city: 'City'
+        state: 'State'
+        zip: 'Zip'
         country:
+            label: 'Country'
             select: 'Select Country'
         view_map: 'View Map'
     contact:
         at_least_1: 'This client needs to have at least 1 contact'
+        label: 'Contact'
         info: 'Contact Info'
         add: 'Add Contact'
         delete: 'Delete Contact'
         delete_confirm: 'Are you sure you want to delete this contact?'
+        delete_confirm_inline: 'Are you sure you want to delete the contact?'
         empty_hint: 'Click the button below to add your first contact'
+        firstName:
+            label: 'First name'
+            placeholder: 'John'
+        lastName:
+            label: 'Last name'
+            placeholder: 'Doe'
+        email:
+            label: 'Email'
         details:
             choose: 'Choose'
             extra: 'Additional Contact Details'
             email: 'Email'
     grid:
+        currency: 'Currency'
+        total_balance: 'Total Balance'
+        outstanding_balance: 'Outstanding Balance'
+        create: 'Create Client'
         actions:
             view: 'View'
             edit: 'Edit'
@@ -60,6 +82,7 @@ client:
             total_outstanding: 'Total number of outstanding invoices for this client'
             total_paid: 'Total number of paid invoices for this client'
     view:
+        more_actions: 'More actions'
         actions:
             create_quote: 'Create Quote'
             create_invoice: 'Create Invoice'
@@ -102,8 +125,20 @@ client:
         contact_description: 'Add at least one contact person for this client'
         address_description: 'Add billing or shipping addresses for this client'
         tax_identifiers_description: "The client's tax registration numbers (VAT, GSTIN, TIN, ABN, etc.). These appear on invoices and quotes issued to this client."
+        name:
+            label: 'Name'
+            placeholder: 'Acme Corporation'
+        website:
+            label: 'Website'
+        currency_code:
+            label: 'Currency code'
+        feature_gated:
+            with_plan: 'This feature is available on the %plan% plan. Upgrade to unlock it.'
+            generic: 'This feature requires a higher plan. Upgrade now to unlock it.'
+            upgrade: 'Upgrade Now'
         currency:
             empty_value: 'System Default'
+    custom_fields: 'Custom fields'
     tax_identifiers:
         info: 'Tax Identifiers'
         add: 'Add tax identifier'

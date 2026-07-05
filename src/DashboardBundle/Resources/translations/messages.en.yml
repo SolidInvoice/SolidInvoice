@@ -22,6 +22,15 @@ dashboard:
         no_data_hint: 'Payments will appear here once received'
         no_invoices: 'No invoices yet'
 
+    # Invoice distribution chart status labels
+    distribution:
+        status:
+            paid: 'Paid'
+            pending: 'Pending'
+            overdue: 'Overdue'
+            draft: 'Draft'
+            cancelled: 'Cancelled'
+
     # Attention Required
     attention:
         title: 'Attention Required'

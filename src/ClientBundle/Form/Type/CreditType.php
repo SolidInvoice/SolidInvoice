@@ -40,6 +40,7 @@ class CreditType extends AbstractType
             'amount',
             MoneyType::class,
             [
+                'label' => 'client.modal.credit.amount',
                 'help' => $this->translator->trans('client.modal.credit.tip', ['%amount%' => '-20']),
                 'help_html' => true,
                 'constraints' => new Assert\NotBlank(),

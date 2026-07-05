@@ -15,7 +15,7 @@
             {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
         </div>
         <div class="contact-card-title">
-            <span class="contact-label">{{ 'Contact'|trans }}</span>
+            <span class="contact-label">{{ 'client.contact.label'|trans }}</span>
         </div>
         <div class="contact-card-actions">
             {#{{ form_widget(form.vars.button_delete, {
@@ -34,14 +34,14 @@
             <div class="contact-field contact-field-name">
                 {{ form_row(form.firstName, {
                     attr: {
-                        placeholder: 'John'|trans
+                        placeholder: 'client.contact.firstName.placeholder'|trans
                     }
                 }) }}
             </div>
             <div class="contact-field contact-field-name">
                 {{ form_row(form.lastName, {
                     attr: {
-                        placeholder: 'Doe'|trans
+                        placeholder: 'client.contact.lastName.placeholder'|trans
                     }
                 }) }}
             </div>
@@ -56,7 +56,7 @@
 
         {% if form.customFields|length > 0 %}
         <div class="mt-2">
-            <strong class="d-block mb-1">{{ 'Custom fields'|trans }}</strong>
+            <strong class="d-block mb-1">{{ 'client.custom_fields'|trans }}</strong>
             {{ form_widget(form.customFields) }}
         </div>
         {% endif %}

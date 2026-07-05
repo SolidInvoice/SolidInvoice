@@ -2,7 +2,7 @@
 
 <div class="progress progress-sm card-progress">
     <div class="progress-bar bg-primary" style="width: {{ progress }}%" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
-        <span class="visually-hidden">{{ progress }}% Complete</span>
+        <span class="visually-hidden">{{ 'installation.progress_complete'|trans({'%progress%': progress}) }}</span>
     </div>
 </div>
 
@@ -11,8 +11,7 @@
         <div class="flex-grow-1">
             <h2 class="card-title pb-3">
                 {{ app_logo(showDefault: true) }}
-                {{ app_name }} {{ 'Installation'|trans }}
-                {# {{ 'System Installation'|trans }} #}
+                {{ app_name }} {{ 'installation.label'|trans }}
             </h2>
             <div class="vstack gap-4 my-4">
                 {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}

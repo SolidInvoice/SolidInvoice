@@ -210,7 +210,7 @@ class Invoice extends BaseInvoice implements Stringable
      */
     #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
+    #[Assert\Count(min: 1, minMessage: 'invoice.lines.min')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $lines;
 
@@ -223,7 +223,7 @@ class Invoice extends BaseInvoice implements Stringable
     )]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'invoices')]
     #[ORM\JoinTable(name: 'invoice_contact')]
-    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
+    #[Assert\Count(min: 1, minMessage: 'invoice.users.min')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $users;
 

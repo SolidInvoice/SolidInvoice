@@ -61,8 +61,8 @@ final class MailTransportType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => array_combine($choices, $choices),
-                'placeholder' => 'Choose Mail Provider',
-                'label' => 'Mail Provider',
+                'placeholder' => 'settings.mail_transport.provider.placeholder',
+                'label' => 'settings.mail_transport.provider.label',
                 'attr' => [
                     'data-mailsettings-target' => 'provider',
                 ],

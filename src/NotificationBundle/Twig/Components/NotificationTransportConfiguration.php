@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -69,7 +70,8 @@ final class NotificationTransportConfiguration extends AbstractController
         private readonly ServiceLocator $transportConfigurations,
         private readonly TransportSettingRepository $repository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -111,11 +113,11 @@ final class NotificationTransportConfiguration extends AbstractController
     #[ExposeInTemplate]
     public function notificationType(): string
     {
-        return match ($this->type) {
-            'texter' => 'SMS',
-            'chatter' => 'Chat',
-            default => 'Unknown',
-        };
+        return $this->translator->trans(match ($this->type) {
+            'texter' => 'notification.type.sms',
+            'chatter' => 'notification.type.chat',
+            default => 'notification.type.unknown',
+        });
     }
 
     #[ExposeInTemplate]
@@ -167,8 +169,7 @@ final class NotificationTransportConfiguration extends AbstractController
             $session = $this->requestStack->getSession();
             assert($session instanceof Session);
 
-            $session->getFlashBag()
-                ->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'notification.flash.validation_errors');
 
             return $this->redirectToRoute('_notification_integration');
         }
@@ -185,11 +186,10 @@ final class NotificationTransportConfiguration extends AbstractController
 
         $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-        $session->getFlashBag()
-            ->add(
-                FlashResponse::FLASH_SUCCESS,
-                $isNew ? 'Integration added' : 'Integration updated'
-            );
+        $session->getFlashBag()->add(
+            FlashResponse::FLASH_SUCCESS,
+            $isNew ? 'notification.flash.added' : 'notification.flash.updated'
+        );
         return $this->redirectToRoute('_notification_integration');
     }
 
@@ -213,24 +213,21 @@ final class NotificationTransportConfiguration extends AbstractController
         $setting = $this->transportSetting();
         // Check if the integration exists in the database (new entities don't have an ID)
         if ($this->isNewSetting()) {
-            $session->getFlashBag()
-                ->add(FlashResponse::FLASH_ERROR, 'Integration does not exist');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'notification.flash.not_exist');
 
             return $this->redirectToRoute('_notification_integration');
         }
 
         // Verify ownership before deleting
         if ($setting->getUser() !== $this->getUser()) {
-            $session->getFlashBag()
-                ->add(FlashResponse::FLASH_ERROR, 'You do not have permission to delete this integration');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'notification.flash.no_delete_permission');
 
             return $this->redirectToRoute('_notification_integration');
         }
 
         $this->entityManager->remove($setting);
         $this->entityManager->flush();
-        $session->getFlashBag()
-            ->add(FlashResponse::FLASH_INFO, 'Integration deleted');
+        $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'notification.flash.deleted');
         return $this->redirectToRoute('_notification_integration');
     }
 }

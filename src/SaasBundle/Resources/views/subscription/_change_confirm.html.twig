@@ -14,7 +14,7 @@
 
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'me-2'}) }}{{ 'Confirm downgrade'|trans }}{% endblock %}
+{% block title %}{{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.confirm.title'|trans }}{% endblock %}
 
 {% import _self as macros %}
 
@@ -28,24 +28,24 @@
                 <div class="card-header">
                     <h3 class="card-title mb-0">
                         {{ ux_icon('tabler:alert-triangle', {width: 22, height: 22, class: 'text-warning me-2'}) }}
-                        {{ 'Confirm downgrade to %plan%'|trans({'%plan%': newPlan.name}) }}
+                        {{ 'saas.confirm.heading'|trans({'%plan%': newPlan.name}) }}
                     </h3>
                 </div>
                 <div class="card-body">
                     <p>
                         {% if newPlan.isFree() %}
-                            {{ 'Your paid plan will keep working until the end of your current billing period, then switch to the free plan automatically.'|trans }}
+                            {{ 'saas.confirm.free_notice'|trans }}
                         {% else %}
-                            {{ 'Your plan will switch to %plan% immediately. The change is processed by our payment provider and any proration will be applied to your next invoice.'|trans({'%plan%': newPlan.name}) }}
+                            {{ 'saas.confirm.paid_notice'|trans({'%plan%': newPlan.name}) }}
                         {% endif %}
                     </p>
 
-                    <h4 class="mt-4">{{ 'What changes'|trans }}</h4>
+                    <h4 class="mt-4">{{ 'saas.confirm.what_changes'|trans }}</h4>
                     <div class="table-responsive">
                         <table class="table table-vcenter">
                             <thead>
                                 <tr>
-                                    <th>{{ 'Feature'|trans }}</th>
+                                    <th>{{ 'saas.confirm.feature'|trans }}</th>
                                     <th>{{ currentPlan.name }}</th>
                                     <th>{{ newPlan.name }}</th>
                                 </tr>
@@ -58,7 +58,7 @@
                                         <td>{{ label }}</td>
                                         <td>{{ macros.format_value(current) }}</td>
                                         <td class="{{ new is null ? 'text-danger' : '' }}">
-                                            {{ new is null ? 'Not included'|trans : macros.format_value(new) }}
+                                            {{ new is null ? 'saas.plan.not_included'|trans : macros.format_value(new) }}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -68,7 +68,7 @@
                 </div>
                 <div class="card-footer d-flex justify-content-end gap-2">
                     <a href="{{ path('saas_subscription_change') }}" class="btn btn-outline-secondary">
-                        {{ 'Cancel'|trans }}
+                        {{ 'action.cancel'|trans }}
                     </a>
                     <form method="post" action="{{ path('saas_subscription_change_confirm') }}">
                         <input type="hidden" name="plan" value="{{ newPlan.planId }}">
@@ -76,7 +76,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token('change_plan') }}">
                         <button type="submit" class="btn btn-warning">
                             {{ ux_icon('tabler:arrow-down-circle', {width: 18, height: 18}) }}
-                            {{ 'Confirm downgrade'|trans }}
+                            {{ 'saas.confirm.title'|trans }}
                         </button>
                     </form>
                 </div>
@@ -90,11 +90,11 @@
     {% set isBool = feature.type.value == 'boolean' %}
     {% if isBool %}
         {% set isEnabled = value matches '/^(1|true)$/i' or value is same as(true) %}
-        {{ isEnabled ? 'Included'|trans : 'Not included'|trans }}
+        {{ isEnabled ? 'saas.plan.included'|trans : 'saas.plan.not_included'|trans }}
     {% elseif value is iterable %}
         {{ value|join(', ') }}
     {% elseif value == -1 %}
-        {{ 'Unlimited'|trans }}
+        {{ 'saas.plan.unlimited'|trans }}
     {% else %}
         {{ value }}
     {% endif %}

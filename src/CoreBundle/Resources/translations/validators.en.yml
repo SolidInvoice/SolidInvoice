@@ -1,0 +1,7 @@
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        unique_label: 'A custom field with this label already exists for the selected target.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'

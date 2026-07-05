@@ -278,12 +278,12 @@
         {# Custom Fields - Collapsible Section #}
         {% if form.customFields|length > 0 %}
             <details class="billing-terms-section" open>
-                <summary class="terms-summary" aria-label="{{ 'Custom fields'|trans }}">
+                <summary class="terms-summary" aria-label="{{ 'invoice.custom_fields'|trans }}">
                     <span class="terms-summary-icon">
                         {{ ux_icon('tabler:chevron-right', {width: 18, height: 18}) }}
                     </span>
                     <span class="terms-summary-text">
-                        <span class="terms-summary-title">{{ 'Custom fields'|trans }}</span>
+                        <span class="terms-summary-title">{{ 'invoice.custom_fields'|trans }}</span>
                     </span>
                 </summary>
                 <div class="terms-content">

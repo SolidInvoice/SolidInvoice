@@ -161,7 +161,7 @@ class RecurringInvoice extends BaseInvoice
      */
     #[ORM\OneToMany(targetEntity: RecurringInvoiceLine::class, mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
+    #[Assert\Count(min: 1, minMessage: 'recurring_invoice.lines.min')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private Collection $lines;
 
@@ -174,7 +174,7 @@ class RecurringInvoice extends BaseInvoice
     )]
     #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'recurringInvoices')]
     #[ORM\JoinTable(name: 'recurringinvoice_contacts')]
-    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
+    #[Assert\Count(min: 1, minMessage: 'recurring_invoice.users.min')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private Collection $users;
 

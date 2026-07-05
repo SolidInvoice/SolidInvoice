@@ -86,19 +86,19 @@
                                         </span>
                                     </div>
                                     <div class="detail-item">
-                                        <span class="detail-label">{{ 'Invoice Date'|trans }}</span>
+                                        <span class="detail-label">{{ 'payment.create.invoice_date'|trans }}</span>
                                         <span class="detail-value">{{ invoice.invoiceDate|date('d M Y') }}</span>
                                     </div>
                                     {% if invoice.due is not empty %}
                                         <div class="detail-item">
-                                            <span class="detail-label">{{ 'Due Date'|trans }}</span>
+                                            <span class="detail-label">{{ 'billing.due_date'|trans }}</span>
                                             <span class="detail-value{% if invoice.due < date() %} text-danger{% endif %}">
                                                 {{ invoice.due|date('d M Y') }}
                                             </span>
                                         </div>
                                     {% endif %}
                                     <div class="detail-item">
-                                        <span class="detail-label">{{ 'Status'|trans }}</span>
+                                        <span class="detail-label">{{ 'payment.list.grid.status'|trans }}</span>
                                         <span class="detail-value">{{ invoice_label(invoice.status) }}</span>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                     {% for payment in invoice.payments|filter((v) => v.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured) %}
                                         <div class="totals-row totals-row-payment">
                                             <span class="totals-label">
-                                                {{ 'Payment'|trans }}: {{ payment.method.name }}
+                                                {{ 'payment.create.payment_label'|trans }}: {{ payment.method.name }}
                                             </span>
                                             <span class="totals-value">-{{ payment.amount.amount|formatCurrency(invoice.client.currency) }}</span>
                                         </div>
@@ -335,7 +335,7 @@
                         <div class="payment-form-footer">
                             <a href="javascript:history.go(-1)" class="btn btn-ghost">
                                 {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
-                                {{ 'Cancel'|trans }}
+                                {{ 'action.cancel'|trans }}
                             </a>
                             <button type="submit" class="btn btn-primary btn-pay">
                                 {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}

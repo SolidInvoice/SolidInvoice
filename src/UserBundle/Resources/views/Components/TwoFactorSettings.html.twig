@@ -22,8 +22,8 @@
                     {{ ux_icon('tabler:mail', {width: 20, height: 20}) }}
                 </div>
                 <div class="section-header-text">
-                    <h2 class="section-title">{{ 'Email Authentication'|trans }}</h2>
-                    <p class="section-description">{{ 'Receive verification codes via email when logging in'|trans }}</p>
+                    <h2 class="section-title">{{ 'security.two_factor.settings.email.title'|trans }}</h2>
+                    <p class="section-description">{{ 'security.two_factor.settings.email.description'|trans }}</p>
                 </div>
             </div>
 
@@ -33,23 +33,23 @@
                         <div class="mb-2">
                             <span class="badge bg-{{ app.user.isEmailAuthEnabled ? 'success' : 'secondary' }}-lt">
                                 {{ ux_icon(app.user.isEmailAuthEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
-                                {{ app.user.isEmailAuthEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
+                                {{ app.user.isEmailAuthEnabled ? 'security.two_factor.settings.status.enabled'|trans : 'security.two_factor.settings.status.disabled'|trans }}
                             </span>
                         </div>
                         <p class="text-muted mb-0 small">
-                            {{ 'Codes will be sent to'|trans }}: <strong>{{ app.user.email }}</strong>
+                            {{ 'security.two_factor.settings.email.codes_sent_to'|trans }}: <strong>{{ app.user.email }}</strong>
                         </p>
                     </div>
                     <div class="two-factor-section-actions">
                         {% if app.user.isEmailAuthEnabled %}
                             <button type="button" class="btn btn-danger" {{ live_action('disableEmailAuth:prevent') }}>
                                 {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
-                                {{ 'Disable'|trans }}
+                                {{ 'security.two_factor.settings.disable'|trans }}
                             </button>
                         {% else %}
                             <button type="button" class="btn btn-primary" {{ live_action('enableEmailAuth:prevent') }}>
                                 {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
-                                {{ 'Enable'|trans }}
+                                {{ 'security.two_factor.settings.enable'|trans }}
                             </button>
                         {% endif %}
                     </div>
@@ -66,8 +66,8 @@
                     {{ ux_icon('tabler:device-mobile', {width: 20, height: 20}) }}
                 </div>
                 <div class="section-header-text">
-                    <h2 class="section-title">{{ 'Authenticator App'|trans }}</h2>
-                    <p class="section-description">{{ 'Use Google Authenticator, Authy, or similar apps for verification'|trans }}</p>
+                    <h2 class="section-title">{{ 'security.two_factor.settings.totp.title'|trans }}</h2>
+                    <p class="section-description">{{ 'security.two_factor.settings.totp.description'|trans }}</p>
                 </div>
             </div>
 
@@ -77,13 +77,13 @@
                         <div class="mb-2">
                             <span class="badge bg-{{ app.user.isTotpAuthenticationEnabled ? 'success' : 'secondary' }}-lt">
                                 {{ ux_icon(app.user.isTotpAuthenticationEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
-                                {{ app.user.isTotpAuthenticationEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
+                                {{ app.user.isTotpAuthenticationEnabled ? 'security.two_factor.settings.status.enabled'|trans : 'security.two_factor.settings.status.disabled'|trans }}
                             </span>
                         </div>
                         <p class="text-muted mb-0 small">
                             {{ app.user.isTotpAuthenticationEnabled ?
-                                'Your authenticator app is configured and ready to use'|trans :
-                                'Set up an authenticator app for enhanced security'|trans
+                                'security.two_factor.settings.totp.configured'|trans :
+                                'security.two_factor.settings.totp.not_configured'|trans
                             }}
                         </p>
                     </div>
@@ -91,12 +91,12 @@
                         {% if app.user.isTotpAuthenticationEnabled %}
                             <button type="button" class="btn btn-danger" {{ live_action('disableTOTPAuth:prevent') }}>
                                 {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
-                                {{ 'Disable'|trans }}
+                                {{ 'security.two_factor.settings.disable'|trans }}
                             </button>
                         {% else %}
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#totp-setup-modal">
                                 {{ ux_icon('tabler:qrcode', {width: 18, height: 18}) }}
-                                {{ 'Set Up'|trans }}
+                                {{ 'security.two_factor.settings.set_up'|trans }}
                             </button>
                         {% endif %}
                     </div>
@@ -114,8 +114,8 @@
                         {{ ux_icon('tabler:key', {width: 20, height: 20}) }}
                     </div>
                     <div class="section-header-text">
-                        <h2 class="section-title">{{ 'Backup Codes'|trans }}</h2>
-                        <p class="section-description">{{ 'Use these codes when you lose access to your authentication device'|trans }}</p>
+                        <h2 class="section-title">{{ 'security.two_factor.settings.backup.title'|trans }}</h2>
+                        <p class="section-description">{{ 'security.two_factor.settings.backup.description'|trans }}</p>
                     </div>
                 </div>
 
@@ -124,22 +124,22 @@
                         <div class="two-factor-section-info">
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="badge bg-success-lt">
-                                    {{ app.user.backupCodes|length }} {{ 'codes available'|trans }}
+                                    {{ app.user.backupCodes|length }} {{ 'security.two_factor.settings.backup.available'|trans }}
                                 </span>
                             </div>
                             <p class="text-muted mb-0 small">
                                 {{ ux_icon('tabler:alert-triangle', {width: 16, height: 16, class: 'text-warning'}) }}
-                                {{ 'Store these safely - each can only be used once'|trans }}
+                                {{ 'security.two_factor.settings.backup.store_safely'|trans }}
                             </p>
                         </div>
                         <div class="two-factor-section-actions">
                             <button type="button" class="btn btn-ghost" data-bs-toggle="modal" data-bs-target="#backup-codes-modal">
                                 {{ ux_icon('tabler:eye', {width: 18, height: 18}) }}
-                                {{ 'View Codes'|trans }}
+                                {{ 'security.two_factor.settings.backup.view'|trans }}
                             </button>
                             <button type="button" class="btn btn-outline-primary" {{ live_action('downloadBackupCodes:prevent') }}>
                                 {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
-                                {{ 'Download'|trans }}
+                                {{ 'security.two_factor.settings.backup.download'|trans }}
                             </button>
                         </div>
                     </div>
@@ -157,8 +157,8 @@
                         {{ ux_icon('tabler:devices-check', {width: 20, height: 20}) }}
                     </div>
                     <div class="section-header-text">
-                        <h2 class="section-title">{{ 'Trusted Device'|trans }}</h2>
-                        <p class="section-description">{{ 'This device is trusted and won\'t require 2FA verification'|trans }}</p>
+                        <h2 class="section-title">{{ 'security.two_factor.settings.trusted.title'|trans }}</h2>
+                        <p class="section-description">{{ 'security.two_factor.settings.trusted.description'|trans }}</p>
                     </div>
                 </div>
 
@@ -168,17 +168,17 @@
                             <div class="mb-2">
                                 <span class="badge bg-success-lt">
                                     {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
-                                    {{ 'Device Trusted'|trans }}
+                                    {{ 'security.two_factor.settings.trusted.badge'|trans }}
                                 </span>
                             </div>
                             <p class="text-muted mb-0 small">
-                                {{ 'You won\'t be asked for verification codes on this device'|trans }}
+                                {{ 'security.two_factor.settings.trusted.note'|trans }}
                             </p>
                         </div>
                         <div class="two-factor-section-actions">
                             <button type="button" class="btn btn-danger" {{ live_action('clearTrustedDevice:prevent') }}>
                                 {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
-                                {{ 'Revoke Trust'|trans }}
+                                {{ 'security.two_factor.settings.trusted.revoke'|trans }}
                             </button>
                         </div>
                     </div>
@@ -194,35 +194,35 @@
     {% if not app.user.isTotpAuthenticationEnabled %}
         {% set qrImage = this.qrContent %}
 
-        <twig:Ui:Modal id="totp-setup-modal" title="{{ 'Set Up Authenticator App'|trans }}" size="lg" :show="showQrModal">
+        <twig:Ui:Modal id="totp-setup-modal" title="{{ 'security.two_factor.settings.modal.setup_title'|trans }}" size="lg" :show="showQrModal">
             <twig:block name="body">
                 <div class="totp-setup-container">
                     {# Step indicator #}
                     <div class="setup-steps">
                         <div class="step active">
                             <span class="step-number">1</span>
-                            <span class="step-label">{{ 'Scan QR Code'|trans }}</span>
+                            <span class="step-label">{{ 'security.two_factor.settings.modal.scan_qr'|trans }}</span>
                         </div>
                         <div class="step">
                             <span class="step-number">2</span>
-                            <span class="step-label">{{ 'Verify Code'|trans }}</span>
+                            <span class="step-label">{{ 'security.two_factor.settings.modal.verify_code'|trans }}</span>
                         </div>
                     </div>
 
                     {# QR Code Display #}
                     <div class="qr-code-container">
                         <div class="text-center">
-                            <img src="{{ qrImage }}" alt="{{ 'QR Code'|trans }}" class="qr-code-image" />
+                            <img src="{{ qrImage }}" alt="{{ 'security.two_factor.settings.modal.qr_alt'|trans }}" class="qr-code-image" />
                             <p class="text-muted mt-3 mb-0">
-                                {{ 'Scan this QR code with your authenticator app'|trans }}
+                                {{ 'security.two_factor.settings.modal.scan_instruction'|trans }}
                             </p>
                         </div>
 
                         {# Manual entry option #}
                         <details class="manual-entry-details mt-4">
-                            <summary>{{ 'Can\'t scan? Enter manually'|trans }}</summary>
+                            <summary>{{ 'security.two_factor.settings.modal.manual_entry'|trans }}</summary>
                             <div class="manual-entry-content">
-                                <p class="text-muted small mb-2">{{ 'Enter this code in your authenticator app:'|trans }}</p>
+                                <p class="text-muted small mb-2">{{ 'security.two_factor.settings.modal.manual_instruction'|trans }}</p>
                                 <code class="manual-entry-code">{{ totpSecret }}</code>
                             </div>
                         </details>
@@ -233,12 +233,12 @@
                         {{ form_start(form, {attr: {class: 'verification-form'}}) }}
                             <div class="mb-4">
                                 <label for="{{ form.code.vars.id }}" class="form-label">
-                                    {{ 'Enter the 6-digit code from your app'|trans }}
+                                    {{ 'security.two_factor.settings.modal.enter_code'|trans }}
                                 </label>
                                 {{ form_widget(form.code, {
                                     attr: {
                                         class: 'form-control form-control-lg text-center verification-code-input',
-                                        placeholder: '000000',
+                                        placeholder: 'security.two_factor.code_placeholder'|trans,
                                         maxlength: 6,
                                         pattern: '[0-9]*',
                                         inputmode: 'numeric',
@@ -256,11 +256,11 @@
             <twig:block name="footer">
                 <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
                     {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
-                    {{ 'Cancel'|trans }}
+                    {{ 'action.cancel'|trans }}
                 </button>
                 <button type="button" class="btn btn-primary" {{ live_action('enableTOTPAuth:prevent') }}>
                     {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
-                    {{ 'Verify & Enable'|trans }}
+                    {{ 'security.two_factor.settings.modal.verify_enable'|trans }}
                 </button>
             </twig:block>
         </twig:Ui:Modal>
@@ -269,15 +269,15 @@
     {# ============================================ #}
     {# Backup Codes Modal                           #}
     {# ============================================ #}
-    <twig:Ui:Modal id="backup-codes-modal" title="{{ 'Backup Codes'|trans }}" :show="showBackupCodes">
+    <twig:Ui:Modal id="backup-codes-modal" title="{{ 'security.two_factor.settings.backup.title'|trans }}" :show="showBackupCodes">
         <twig:block name="body">
             <div class="backup-codes-modal-content">
                 {# Warning Alert #}
                 <div class="alert alert-warning d-flex align-items-start gap-2 mb-4" role="alert">
                     {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
                     <div>
-                        <strong>{{ 'Important:'|trans }}</strong>
-                        {{ 'Save these codes in a secure place. Each code can only be used once.'|trans }}
+                        <strong>{{ 'security.two_factor.settings.backup.important'|trans }}</strong>
+                        {{ 'security.two_factor.settings.backup.save_notice'|trans }}
                     </div>
                 </div>
 
@@ -293,18 +293,18 @@
                 {# Download Button #}
                 <button type="button" class="btn btn-outline-primary w-100 mt-4" {{ live_action('downloadBackupCodes:prevent') }}>
                     {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
-                    {{ 'Download as Text File'|trans }}
+                    {{ 'security.two_factor.settings.backup.download_text'|trans }}
                 </button>
             </div>
         </twig:block>
 
         <twig:block name="footer">
             <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
-                {{ 'Close'|trans }}
+                {{ 'action.close'|trans }}
             </button>
             <button type="button" class="btn btn-warning" {{ live_action('regenerateBackupCodes:prevent') }}>
                 {{ ux_icon('tabler:refresh', {width: 18, height: 18}) }}
-                {{ 'Regenerate Codes'|trans }}
+                {{ 'security.two_factor.settings.backup.regenerate'|trans }}
             </button>
         </twig:block>
     </twig:Ui:Modal>

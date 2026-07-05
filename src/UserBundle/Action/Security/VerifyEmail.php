@@ -59,14 +59,14 @@ final class VerifyEmail extends AbstractController
             return $this->redirectToRoute('_login_main');
         }
 
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'security.verify_email.flash.success');
 
         return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
     }
 
     private function invalid(): Response
     {
-        $this->addFlash('error', 'The email verification link is invalid.');
+        $this->addFlash('error', 'security.verify_email.flash.invalid');
         return $this->redirectToRoute('_login_main');
     }
 }

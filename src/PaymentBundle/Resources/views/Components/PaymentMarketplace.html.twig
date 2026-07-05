@@ -30,7 +30,7 @@
                         {% if gateway.isConfigured %}
                             <span class="badge bg-success-lt badge-sm">
                                 {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
-                                <span class="visually-hidden">{{ 'Configured'|trans }}</span>
+                                <span class="visually-hidden">{{ 'payment.marketplace.badge.configured'|trans }}</span>
                             </span>
                         {% endif %}
                     </div>
@@ -39,10 +39,10 @@
                        class="btn btn-sm btn-outline-primary">
                         {% if gateway.isConfigured %}
                             {{ ux_icon('tabler:edit', {width: 14, height: 14}) }}
-                            {{ 'Edit'|trans }}
+                            {{ 'action.edit'|trans }}
                         {% else %}
                             {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
-                            {{ 'Configure'|trans }}
+                            {{ 'payment.marketplace.action.configure'|trans }}
                         {% endif %}
                     </a>
                 </div>
@@ -63,7 +63,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:apps', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Marketplace'|trans }}</span>
+                <span>{{ 'payment.marketplace.tab.marketplace'|trans }}</span>
             </a>
         </li>
         <li class="nav-item">
@@ -73,7 +73,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Active'|trans }} <span class="badge bg-secondary-lt ms-1">{{ activeMethods|length }}</span></span>
+                <span>{{ 'payment.marketplace.tab.active'|trans }} <span class="badge bg-secondary-lt ms-1">{{ activeMethods|length }}</span></span>
             </a>
         </li>
     </ul>
@@ -86,7 +86,7 @@
                 <div class="marketplace-header mb-4">
                     <h5 class="mb-2 d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:apps', {width: 20, height: 20, class: 'text-primary'}) }}
-                        {{ 'Payment Gateways'|trans }}
+                        {{ 'payment.marketplace.gateways.title'|trans }}
                     </h5>
                     <p class="text-muted small mb-3">
                         {{ 'payment.gateway.marketplace.subtitle'|trans }}
@@ -99,15 +99,15 @@
                         </span>
                         <input type="text"
                                class="form-control"
-                               placeholder="{{ 'Search gateways...'|trans }}"
+                               placeholder="{{ 'payment.marketplace.search.placeholder'|trans }}"
                                data-model="searchQuery"
-                               aria-label="{{ 'Search payment gateways'|trans }}">
+                               aria-label="{{ 'payment.marketplace.search.aria'|trans }}">
                         {% if searchQuery %}
                             <button type="button"
                                     class="btn btn-ghost btn-icon position-absolute end-0 top-50 translate-middle-y marketplace-search-clear"
                                     data-action="live#action"
                                     data-live-action-param="clearSearch"
-                                    aria-label="{{ 'Clear search'|trans }}">
+                                    aria-label="{{ 'payment.marketplace.search.clear'|trans }}">
                                 {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
                             </button>
                         {% endif %}
@@ -168,7 +168,7 @@
                         <div class="empty-icon">
                             {{ ux_icon('tabler:search-off', {width: 48, height: 48}) }}
                         </div>
-                        <p class="empty-title">{{ 'No gateways found matching your search'|trans }}</p>
+                        <p class="empty-title">{{ 'payment.marketplace.empty.no_gateways'|trans }}</p>
                     </div>
                 {% endif %}
             </div>
@@ -181,7 +181,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h5 class="mb-0 d-flex align-items-center gap-2">
                             {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
-                            {{ 'Active Payment Methods'|trans }}
+                            {{ 'payment.marketplace.active.title'|trans }}
                         </h5>
                         <span class="badge bg-secondary-lt">{{ activeMethods|length }}</span>
                     </div>
@@ -200,17 +200,17 @@
                                                     <h6 class="mb-2">{{ method.name }}</h6>
                                                     <div class="d-flex align-items-center gap-2 flex-wrap">
                                                         <span class="badge {{ method.enabled ? 'bg-success-lt' : 'bg-secondary-lt' }}">
-                                                            {{ method.enabled ? 'Enabled'|trans : 'Disabled'|trans }}
+                                                            {{ method.enabled ? 'payment.marketplace.badge.enabled'|trans : 'payment.marketplace.badge.disabled'|trans }}
                                                         </span>
                                                         {% if method.config.sandbox|default(false) %}
                                                             <span class="badge bg-warning-lt">
                                                                 {{ ux_icon('tabler:flask', {width: 12, height: 12}) }}
-                                                                {{ 'Test Mode'|trans }}
+                                                                {{ 'payment.marketplace.badge.test_mode'|trans }}
                                                             </span>
                                                         {% endif %}
                                                         {% if method.isInternal %}
                                                             <span class="badge bg-info-lt">
-                                                                {{ 'Offline'|trans }}
+                                                                {{ 'payment.method.offline'|trans }}
                                                             </span>
                                                         {% endif %}
                                                     </div>
@@ -219,7 +219,7 @@
                                             <div class="d-flex gap-2 flex-shrink-0">
                                                 <a href="{{ path('_payment_settings_index', {selectedGateway: method.gatewayName}) }}"
                                                    class="btn btn-outline-secondary btn-sm"
-                                                   aria-label="{{ 'Edit %name%'|trans({'%name%': method.name}) }}">
+                                                   aria-label="{{ 'payment.marketplace.edit_aria'|trans({'%name%': method.name}) }}">
                                                     {{ ux_icon('tabler:edit', {width: 16, height: 16}) }}
                                                 </a>
                                             </div>
@@ -233,15 +233,15 @@
                             <div class="empty-icon">
                                 {{ ux_icon('tabler:credit-card-off', {width: 64, height: 64}) }}
                             </div>
-                            <p class="empty-title">{{ 'No payment methods configured'|trans }}</p>
+                            <p class="empty-title">{{ 'payment.marketplace.empty.no_methods'|trans }}</p>
                             <p class="empty-subtitle text-secondary">
-                                {{ 'Get started by selecting a gateway from the marketplace on the left.'|trans }}
+                                {{ 'payment.marketplace.empty.no_methods_hint'|trans }}
                             </p>
                             <div class="empty-action">
                                 <a href="{{ path('_payment_settings_index', {view: 'marketplace'}) }}"
                                    class="btn btn-primary">
                                     {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                                    {{ 'Browse Payment Gateways'|trans }}
+                                    {{ 'payment.marketplace.empty.browse'|trans }}
                                 </a>
                             </div>
                         </div>
@@ -265,12 +265,12 @@
             <div class="payment-modal-container">
                 <div class="payment-modal-header">
                     <h3 id="payment-modal-title" class="payment-modal-title">
-                        {{ 'Configure Payment Gateway'|trans }}
+                        {{ 'payment.marketplace.modal.title'|trans }}
                     </h3>
                     <a href="{{ path('_payment_settings_index') }}"
                        class="btn btn-ghost btn-icon payment-modal-close"
-                       aria-label="{{ 'Close'|trans }}"
-                       title="{{ 'Close (Esc)'|trans }}">
+                       aria-label="{{ 'action.close'|trans }}"
+                       title="{{ 'payment.marketplace.modal.close_title'|trans }}">
                         {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
                     </a>
                 </div>

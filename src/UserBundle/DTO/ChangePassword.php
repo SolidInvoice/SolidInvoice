@@ -28,14 +28,14 @@ final class ChangePassword
     #[UserPassword]
     public ?string $currentPassword = null;
 
-    #[NotBlank(message: 'Please enter a password')]
-    #[Length(min: 8, max: 4096, minMessage: 'Your password must be at least {{ limit }} characters long')]
+    #[NotBlank(message: 'user.password.not_blank')]
+    #[Length(min: 8, max: 4096, minMessage: 'user.password.min_length_long')]
     #[PasswordStrength(
         minScore: PasswordStrength::STRENGTH_MEDIUM,
-        message: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+        message: 'user.password.weak'
     )]
     #[NotCompromisedPassword(
-        message: 'This password has been leaked in a data breach, please use a different password.'
+        message: 'user.password.compromised'
     )]
     public ?string $plainPassword = null;
 }

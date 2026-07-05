@@ -34,14 +34,12 @@ final class CompanySetupStep extends AbstractType
                 'autofocus' => true,
             ],
             'help' => 'onboarding.company.fields.name.help',
-            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('companyCurrency', CurrencyType::class, [
             'label' => 'onboarding.company.fields.currency.label',
             'required' => true,
             'help' => 'onboarding.company.fields.currency.help',
-            'translation_domain' => 'onboarding',
         ]);
     }
 }

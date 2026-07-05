@@ -30,7 +30,7 @@ class ChangePasswordType extends AbstractType
     {
         if (true === $options['confirm_password']) {
             $builder->add('currentPassword', PasswordType::class, [
-                'label' => 'Current Password',
+                'label' => 'change_password.form.current_password',
                 'attr' => [
                     'autocomplete' => 'current-password',
                 ],
@@ -45,12 +45,12 @@ class ChangePasswordType extends AbstractType
                 ],
             ],
             'first_options' => [
-                'label' => 'New Password',
+                'label' => 'change_password.form.new_password',
             ],
             'second_options' => [
-                'label' => 'Confirm New Password',
+                'label' => 'change_password.form.confirm_password',
             ],
-            'invalid_message' => "The passwords doesn't match",
+            'invalid_message' => 'user.password.mismatch',
         ]);
     }
 

@@ -1,0 +1,141 @@
+saas:
+    action:
+        back: Back
+        contact_support: Contact Support
+        contact_support_short: Contact support
+        switch_company: Switch company
+    flash:
+        invalid_token: 'Invalid security token, please try again.'
+        no_subscription: 'No subscription found.'
+        no_subscription_short: 'No subscription found'
+        invalid_plan: 'The selected plan is invalid.'
+        no_plans_available: 'No subscription plans are available.'
+        plan_changed: 'Your plan has been changed.'
+        plan_updated: 'Your plan has been updated.'
+        plan_update_failed: 'Could not update your plan: %error%'
+        free_plan_active: 'Your free plan is now active.'
+        downgrade_scheduled: 'Your plan will be downgraded at the end of the current billing period.'
+        downgrade_cancelled: 'Scheduled plan change cancelled.'
+        downgrade_cancel_failed: 'Could not cancel the scheduled change: %error%'
+        subscription_activated: 'Your subscription has been activated.'
+        checkout_failed: 'Unable to create checkout session. Please try again later.'
+    menu:
+        billing: Subscription
+    plan:
+        choose: Choose plan
+        current: Current plan
+        recommended: Recommended
+        per_month: /month
+        unlimited: Unlimited
+        included: Included
+        not_included: Not included
+        continue_free: Continue with Free
+        your_current_plan: Your current plan
+        just_getting_started: 'Just getting started?'
+        no_credit_card: No credit card required
+    recurring:
+        feature_blocked: 'Recurring invoices are not available on your current plan.'
+        feature_blocked_upgrade: 'Recurring invoices are not available on your current plan. Upgrade to %plan% to activate this recurring invoice.'
+    feature:
+        upgrade_required: Upgrade required
+        upgrade_to: 'Upgrade to %plan%'
+        available_on_plan: 'This feature is available on the %plan% plan.'
+        approaching_limit: Approaching plan limit
+        remaining: '%remaining% of %total% remaining.'
+    overview:
+        title: Subscription
+        status:
+            active: Active
+            trial: Trial
+            pending: Pending
+            past_due: Past due
+            paused: Paused
+            cancelled: Cancelled
+            expired: Expired
+            unpaid: Unpaid
+            inactive: Inactive
+        pending_change_title: Plan change scheduled
+        pending_change_message: 'You will be moved to the %plan% plan on %date%.'
+        cancel_change: Cancel change
+        trial_days_left: '%count% days left in your trial'
+        trial_keep_features: 'Pick a paid plan to keep using all features after the trial ends.'
+        trial_ended: 'Your trial has ended.'
+        choose_to_continue: Choose a plan to continue.
+        past_due_title: Payment past due
+        past_due_message: 'Please update your payment details to keep your subscription active.'
+        paused_message: 'Your subscription is currently paused.'
+        current_plan: Current plan
+        free: Free
+        started: Started
+        trial_ends: Trial ends
+        renewal: Renewal
+        renewal_none: '—'
+        next_renewal: Next renewal
+        change_plan: Change plan
+        manage_payment_method: Manage payment method
+        plan_features: Plan features
+    change:
+        title: Change plan
+        heading: Change your plan
+        description: 'Pick a different plan. Upgrades take effect immediately. Downgrades to the free plan apply at the end of your current billing period.'
+    confirm:
+        title: Confirm downgrade
+        heading: 'Confirm downgrade to %plan%'
+        free_notice: 'Your paid plan will keep working until the end of your current billing period, then switch to the free plan automatically.'
+        paid_notice: 'Your plan will switch to %plan% immediately. The change is processed by our payment provider and any proration will be applied to your next invoice.'
+        what_changes: What changes
+        feature: Feature
+    pricing:
+        title: Choose your plan
+        subtitle: 'Pick the plan that fits your needs. You can change it later.'
+    pending:
+        title: Activate Your Subscription
+        subtitle: 'Pick a plan and start running your business with SolidInvoice in minutes.'
+        secure_checkout: 'Secure checkout · Cancel anytime · No hidden fees'
+        activate: Activate Subscription
+        just_completed_title: 'Just completed checkout?'
+        just_completed_message: 'If you just completed the payment process, your subscription may take a moment to activate. You can refresh this page or wait a few seconds.'
+        already_activated: 'Already activated?'
+        switch_company: Switch to another company
+        need_help: 'Need a hand?'
+    cancelled:
+        title: "We're sorry to see you go"
+        subtitle: "Your subscription has been cancelled. We'd love to have you back at %price%/month whenever you're ready."
+        features_heading: 'Features requiring reactivation:'
+        feature_invoices: Create new invoices and quotes
+        feature_payments: Accept online payments from clients
+        feature_history: Access to payment history and reports
+        feature_clients: Client and contact management
+        feature_recurring: Recurring invoices and subscriptions
+        reactivate: Reactivate Subscription
+        changed_mind: 'Changed your mind?'
+        data_safe: "We'd love to have you back! Your data is safe and will be waiting for you when you reactivate."
+    paused:
+        title: Your Subscription is Paused
+        subtitle: "You won't be charged while your subscription is paused. Resume anytime at %price%/month to regain access to all features."
+        while_paused: While paused
+        while_paused_message: "Your data is safe and will be waiting for you. You won't be charged during this time, but you won't have access to features until you resume."
+        features_heading: 'Resume to access these features:'
+        feature_invoices: Unlimited invoices and quotes
+        feature_payments: Professional payment processing
+        feature_clients: Client and contact management
+        feature_reports: Financial reports and insights
+        feature_recurring: Recurring invoices and subscriptions
+        resume: Resume Subscription
+    trial_expired:
+        title: Your trial has ended
+        subtitle: 'Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.'
+        features_heading: 'Continue enjoying these features:'
+        feature_invoices: Unlimited invoices and quotes
+        feature_payments: Professional payment processing
+        feature_clients: Client and contact management
+        feature_reports: Financial reports and insights
+        feature_recurring: Recurring invoices and subscriptions
+        promo_heading: "Don't go just yet — here's 20% off"
+        promo_message: 'Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>20%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.'
+        promo_code: Promo code
+        activate_save: Activate & Save 20%
+        activate: Activate Subscription
+    company:
+        access_other: You have access to other companies.
+        switch_to: Switch to %company%

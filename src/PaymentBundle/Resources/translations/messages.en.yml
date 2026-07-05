@@ -10,6 +10,8 @@ payment:
         subtitle: 'Complete your payment securely'
         balance: 'Outstanding balance'
         credit: 'Credit:'
+        invoice_date: 'Invoice Date'
+        payment_label: 'Payment'
         exception:
             not_enough_credit: 'Not have enough credit available'
             amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
@@ -55,6 +57,54 @@ payment:
             internal: 'Selecting this option will make this payment option only available for internal use. Clients won''t be able to select the method to complete a payment.'
         label:
             internal: 'Internal use only'
+        payment_method:
+            placeholder: 'Choose Payment Method'
+    method_settings:
+        choice:
+            placeholder: 'Please Choose'
+    settings:
+        password:
+            hint: 'Keep this empty to keep the existing value'
+        subtitle: 'Configure payment gateway settings and credentials'
+        configure_gateway: 'Configure %method%'
+        delete_aria: 'Delete payment method'
+        save_aria: 'Save payment method'
+        save: 'Save Payment Method'
+        delete_modal:
+            title: 'Delete Payment Method'
+            subtitle: 'This action cannot be undone'
+            confirm_prefix: 'Are you sure you want to delete'
+            confirm_suffix: 'This will remove the payment method and cannot be reversed.'
+    marketplace:
+        tab:
+            marketplace: 'Marketplace'
+            active: 'Active'
+        gateways:
+            title: 'Payment Gateways'
+            subtitle: 'Choose from popular payment processors or add custom gateways'
+        search:
+            placeholder: 'Search gateways...'
+            aria: 'Search payment gateways'
+            clear: 'Clear search'
+        badge:
+            popular: 'Popular'
+            configured: 'Configured'
+            enabled: 'Enabled'
+            disabled: 'Disabled'
+            test_mode: 'Test Mode'
+        action:
+            configure: 'Configure'
+        empty:
+            no_gateways: 'No gateways found matching your search'
+            no_methods: 'No payment methods configured'
+            no_methods_hint: 'Get started by selecting a gateway from the marketplace on the left.'
+            browse: 'Browse Payment Gateways'
+        active:
+            title: 'Active Payment Methods'
+        edit_aria: 'Edit %name%'
+        modal:
+            title: 'Configure Payment Gateway'
+            close_title: 'Close (Esc)'
     action:
         pay: 'Pay Now'
     list:
@@ -83,12 +133,10 @@ payment:
         online: 'Online'
     methods:
         title: 'Payment Methods'
+        available: 'Available Payment Methods'
     menu:
         main: Payments
         methods: 'Payment Methods'
-    settings:
-        password:
-            hint: 'Keep this empty to keep the existing value'
     gateway:
         marketplace:
             subtitle: 'Choose how you want to accept payments from your clients, or record payments you receive offline.'

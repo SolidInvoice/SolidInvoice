@@ -24,10 +24,10 @@
 
                             {# Title #}
                             <h2 class="two-factor-login-title">
-                                {{ 'Two-Factor Authentication'|trans }}
+                                {{ 'security.two_factor.title'|trans }}
                             </h2>
                             <p class="two-factor-login-description">
-                                {{ 'Enter the verification code from your authenticator app'|trans }}
+                                {{ 'security.two_factor.totp.description'|trans }}
                             </p>
 
                             {# Error Alert #}
@@ -39,7 +39,7 @@
                                             {{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
                                         </div>
                                     </div>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'Close'|trans }}"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'action.close'|trans }}"></button>
                                 </div>
                             {% endif %}
 
@@ -48,7 +48,7 @@
                                 {# Code Input #}
                                 <div class="mb-4">
                                     <label for="two_factor_code" class="form-label visually-hidden">
-                                        {{ 'Verification Code'|trans }}
+                                        {{ 'security.two_factor.verification_code'|trans }}
                                     </label>
                                     <input
                                         id="two_factor_code"
@@ -59,14 +59,14 @@
                                         pattern="[0-9]*"
                                         inputmode="numeric"
                                         autocomplete="one-time-code"
-                                        placeholder="000000"
+                                        placeholder="{{ 'security.two_factor.code_placeholder'|trans }}"
                                         autofocus
-                                        aria-label="{{ 'Enter 6-digit verification code'|trans }}"
+                                        aria-label="{{ 'security.two_factor.code_aria_label'|trans }}"
                                     />
                                     <div class="two-factor-form-hint">
-                                        {{ 'Lost your authenticator? Use a'|trans }}
-                                        <a href="#" onclick="return false;">{{ 'backup code'|trans }}</a>
-                                        {{ 'instead'|trans }}
+                                        {{ 'security.two_factor.lost_authenticator'|trans }}
+                                        <a href="#" onclick="return false;">{{ 'security.two_factor.backup_code'|trans }}</a>
+                                        {{ 'security.two_factor.instead'|trans }}
                                     </div>
                                 </div>
 
@@ -87,7 +87,7 @@
                                             />
                                             <label for="_trusted" class="form-check-label">
                                                 {{ ux_icon('tabler:device-check', {width: 16, height: 16, class: 'me-1'}) }}
-                                                {{ "Trust this device for 30 days"|trans }}
+                                                {{ 'security.two_factor.trust_device'|trans }}
                                             </label>
                                         </div>
                                     </div>
@@ -96,7 +96,7 @@
                                 {# Submit Button #}
                                 <button class="btn btn-primary btn-lg w-100 mt-4" type="submit">
                                     {{ ux_icon('tabler:lock-open', {width: 20, height: 20}) }}
-                                    {{ "Verify & Continue"|trans }}
+                                    {{ 'security.two_factor.verify_continue'|trans }}
                                 </button>
                             </form>
 
@@ -104,7 +104,7 @@
                             {% if availableTwoFactorProviders|length > 1 %}
                                 <div class="alternative-methods">
                                     <p class="alternative-methods-title">
-                                        {{ 'Try another verification method'|trans }}
+                                        {{ 'security.two_factor.try_another_method'|trans }}
                                     </p>
                                     <div class="alternative-methods-list">
                                         {% for provider in availableTwoFactorProviders|filter(v => v != twoFactorProvider) %}
@@ -126,7 +126,7 @@
                     {# Security Notice #}
                     <div class="two-factor-security-notice">
                         {{ ux_icon('tabler:info-circle', {width: 16, height: 16}) }}
-                        <span>{{ 'This is an additional security step to protect your account'|trans }}</span>
+                        <span>{{ 'security.two_factor.security_notice'|trans }}</span>
                     </div>
                 </div>
             </div>

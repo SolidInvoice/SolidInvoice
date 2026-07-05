@@ -261,7 +261,7 @@ final class UserNotification extends AbstractController
         }
 
         $em->flush();
-        $this->addFlash('success', 'Notification saved!');
+        $this->addFlash('success', 'notifications.flash.saved');
         return $this->redirectToRoute('_profile_notifications');
     }
 }

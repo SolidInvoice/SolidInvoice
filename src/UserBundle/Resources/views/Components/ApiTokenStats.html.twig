@@ -14,7 +14,7 @@
                             {{ stats.activeTokens }}
                         </div>
                         <div class="text-secondary">
-                            {{ 'Active Tokens'|trans }}
+                            {{ 'profile.api.stats.active_tokens'|trans }}
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                             {{ stats.apiCallsThisMonth|number_format }}
                         </div>
                         <div class="text-secondary">
-                            {{ 'API Calls This Month'|trans }}
+                            {{ 'profile.api.stats.calls_month'|trans }}
                         </div>
                     </div>
                 </div>
@@ -60,11 +60,11 @@
                             {% if stats.lastActivity %}
                                 {{ stats.lastActivity|date('d M Y') }}
                             {% else %}
-                                {{ 'Never'|trans }}
+                                {{ 'profile.api.tokens.used.never'|trans }}
                             {% endif %}
                         </div>
                         <div class="text-secondary">
-                            {{ 'Last Activity'|trans }}
+                            {{ 'profile.api.stats.last_activity'|trans }}
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                             {{ stats.mostUsedToken|default('-')|u.truncate(18, '...') }}
                         </div>
                         <div class="text-secondary">
-                            {{ 'Most Used Token'|trans }}
+                            {{ 'profile.api.stats.most_used'|trans }}
                         </div>
                     </div>
                 </div>

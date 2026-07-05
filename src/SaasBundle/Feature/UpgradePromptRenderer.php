@@ -95,9 +95,9 @@ final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider,
         }
 
         return $this->twig->render(self::BANNER_TEMPLATE, [
-            'title' => $this->translator->trans('Upgrade required'),
+            'title' => $this->translator->trans('saas.feature.upgrade_required'),
             'message' => $this->translator->trans(
-                'This feature is available on the %plan% plan.',
+                'saas.feature.available_on_plan',
                 ['%plan%' => $plan->getName()],
             ),
             'plan_name' => $plan->getName(),
@@ -140,9 +140,9 @@ final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider,
         $plan = $this->lowestPlanFor($featureKey);
 
         return $this->twig->render(self::BANNER_TEMPLATE, [
-            'title' => $this->translator->trans('Approaching plan limit'),
+            'title' => $this->translator->trans('saas.feature.approaching_limit'),
             'message' => $this->translator->trans(
-                '%remaining% of %total% remaining.',
+                'saas.feature.remaining',
                 ['%remaining%' => $remaining, '%total%' => $total],
             ),
             'plan_name' => $plan instanceof Plan ? $plan->getName() : null,

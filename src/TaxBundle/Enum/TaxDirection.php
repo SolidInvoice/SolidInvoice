@@ -22,9 +22,9 @@ enum TaxDirection: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::Additive => 'Additive',
-            self::Deductive => 'Deductive',
-            self::Informational => 'Informational',
+            self::Additive => 'tax.direction.additive',
+            self::Deductive => 'tax.direction.deductive',
+            self::Informational => 'tax.direction.informational',
         };
     }
 }

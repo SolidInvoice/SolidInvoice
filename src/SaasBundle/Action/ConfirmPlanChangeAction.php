@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConfirmPlanChangeAction extends AbstractController
 {
@@ -35,13 +36,14 @@ final class ConfirmPlanChangeAction extends AbstractController
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
         if (! $this->isCsrfTokenValid('change_plan', (string) $request->request->get('_token', ''))) {
-            $this->addFlash('error', 'Invalid security token, please try again.');
+            $this->addFlash('error', 'saas.flash.invalid_token');
 
             return $this->redirectToRoute('saas_subscription_change');
         }
@@ -49,7 +51,7 @@ final class ConfirmPlanChangeAction extends AbstractController
         $subscription = $this->getSubscription();
 
         if (! $subscription instanceof Subscription) {
-            $this->addFlash('error', 'No subscription found.');
+            $this->addFlash('error', 'saas.flash.no_subscription');
 
             return $this->redirectToRoute('saas_subscription_plans');
         }
@@ -58,7 +60,7 @@ final class ConfirmPlanChangeAction extends AbstractController
         $plan = $planId === '' ? null : $this->planRepository->find($planId);
 
         if (! $plan instanceof Plan || ! $plan->isActive()) {
-            $this->addFlash('error', 'The selected plan is invalid.');
+            $this->addFlash('error', 'saas.flash.invalid_plan');
 
             return $this->redirectToRoute('saas_subscription_change');
         }
@@ -90,7 +92,7 @@ final class ConfirmPlanChangeAction extends AbstractController
         if ($plan->isFree()) {
             $this->subscriptionManager->changePlan($subscription, $plan);
             $this->subscriptionManager->activate($subscription);
-            $this->addFlash('success', 'Your plan has been changed.');
+            $this->addFlash('success', 'saas.flash.plan_changed');
 
             return $this->redirectToRoute('billing_index');
         }
@@ -105,18 +107,18 @@ final class ConfirmPlanChangeAction extends AbstractController
         try {
             if ($isDowngrade && $plan->isFree()) {
                 $this->subscriptionManager->scheduleDowngrade($subscription, $plan);
-                $this->addFlash(
-                    'success',
-                    'Your plan will be downgraded at the end of the current billing period.',
-                );
+                $this->addFlash('success', 'saas.flash.downgrade_scheduled');
 
                 return $this->redirectToRoute('billing_index');
             }
 
             $this->subscriptionManager->changeActivePlan($subscription, $plan);
-            $this->addFlash('success', 'Your plan has been updated.');
+            $this->addFlash('success', 'saas.flash.plan_updated');
         } catch (PaymentIntegrationException $e) {
-            $this->addFlash('error', sprintf('Could not update your plan: %s', $e->getMessage()));
+            $this->addFlash('error', $this->translator->trans(
+                'saas.flash.plan_update_failed',
+                ['%error%' => $e->getMessage()],
+            ));
         }
 
         return $this->redirectToRoute('billing_index');

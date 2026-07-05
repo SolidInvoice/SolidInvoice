@@ -55,17 +55,17 @@ final class RegisterType extends AbstractType
         $builder->add('email', EmailType::class, $emailOptions);
         $builder->add('plainPassword', PasswordType::class, [
             'required' => true,
-            'label' => 'Password',
+            'label' => 'security.register.password',
             'use_toggle_form_theme' => false,
             'toggle' => false,
             'attr' => [
-                'placeholder' => 'Create a strong password',
+                'placeholder' => 'security.register.placeholders.password',
                 'autocomplete' => 'new-password',
             ],
         ]);
         $builder->add('acceptTerms', CheckboxType::class, [
             'required' => true,
-            'label' => 'I agree to the  <a href="https://solidinvoice.co/terms-of-service" target="_blank" class="link-primary" rel="external noreferrer noopener">Terms & Conditions</a> and <a href="https://solidinvoice.co/privacy-policy" target="_blank" class="link-primary" rel="external noreferrer noopener">Privacy Policy</a>',
+            'label' => 'security.register.terms_agreement_html',
             'label_html' => true,
         ]);
         $builder->add('captcha', HiddenType::class, [

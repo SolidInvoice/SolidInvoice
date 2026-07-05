@@ -62,11 +62,11 @@ final readonly class RecurringInvoiceFeatureGuardListener
         $planLabel = $this->upgradePromptProvider->menuLabel(Feature::RecurringInvoices->value);
 
         if ($planLabel === null) {
-            return $this->translator->trans('Recurring invoices are not available on your current plan.');
+            return $this->translator->trans('saas.recurring.feature_blocked');
         }
 
         return $this->translator->trans(
-            'Recurring invoices are not available on your current plan. Upgrade to %plan% to activate this recurring invoice.',
+            'saas.recurring.feature_blocked_upgrade',
             ['%plan%' => $planLabel],
         );
     }

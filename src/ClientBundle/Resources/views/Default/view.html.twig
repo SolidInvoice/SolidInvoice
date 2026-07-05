@@ -61,7 +61,7 @@
                     {{ 'client.view.actions.create_invoice'|trans }}
                 </a>
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'More actions'|trans }}">
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'client.view.more_actions'|trans }}">
                         {{ ux_icon('tabler:dots-vertical', {width: 18, height: 18}) }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -218,7 +218,7 @@
     {# ========================================================================
        DELETE CLIENT MODAL
        ======================================================================== #}
-    <twig:Ui:Modal id="delete-client-modal" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+    <twig:Ui:Modal id="delete-client-modal" title="{{ 'action.confirm'|trans }}" status="danger" :centered="true">
         <div class="text-center py-3">
             <div class="mb-3">
                 {{ ux_icon('tabler:alert-triangle', {width: 48, height: 48, class: 'text-danger'}) }}
@@ -228,7 +228,7 @@
         </div>
 
         <twig:block name="footer">
-            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'action.cancel'|trans }}</button>
             <form method="post" action="{{ path('_clients_delete', {'id': client.id}) }}" class="d-inline">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">

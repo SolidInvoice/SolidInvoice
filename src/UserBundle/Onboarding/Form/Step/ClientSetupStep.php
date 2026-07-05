@@ -33,7 +33,6 @@ final class ClientSetupStep extends AbstractType
                 'placeholder' => 'onboarding.client.fields.name.placeholder',
             ],
             'help' => 'onboarding.client.fields.name.help',
-            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('clientEmail', EmailType::class, [
@@ -43,7 +42,6 @@ final class ClientSetupStep extends AbstractType
                 'placeholder' => 'client@example.com',
             ],
             'help' => 'onboarding.client.fields.email.help',
-            'translation_domain' => 'onboarding',
         ]);
     }
 }

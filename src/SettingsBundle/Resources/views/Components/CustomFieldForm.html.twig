@@ -53,7 +53,7 @@
                 <div class="col-md-6">
                     {% if mode == 'edit' and usageCount > 0 %}
                         <div class="alert alert-info">
-                            {{ 'This field has %count% values; type cannot be changed. Delete and recreate to change type.'|trans({'%count%': usageCount}) }}
+                            {{ 'custom_field.form.type.locked'|trans({'%count%': usageCount}) }}
                         </div>
                         {{ form_row(form.type, {attr: {disabled: 'disabled'}}) }}
                     {% else %}
@@ -69,8 +69,8 @@
             {% if form.options is defined %}
                 <div class="mt-4">
                     <div class="d-flex align-items-center mb-2">
-                        <h4 class="mb-0 me-2">{{ 'Options'|trans }}</h4>
-                        <span class="text-muted small">{{ '(used for single- and multi-select)'|trans }}</span>
+                        <h4 class="mb-0 me-2">{{ 'label.options'|trans }}</h4>
+                        <span class="text-muted small">{{ 'custom_field.form.option.hint'|trans }}</span>
                     </div>
 
                     <div>
@@ -81,8 +81,8 @@
                                     label: ux_icon('tabler:trash', {width: 18, height: 18, 'aria-hidden': 'true'})|raw,
                                     label_html: true,
                                     attr: {
-                                        'aria-label': 'Delete option'|trans,
-                                        title: 'Delete option'|trans,
+                                        'aria-label': 'custom_field.form.option.delete'|trans,
+                                        title: 'custom_field.form.option.delete'|trans,
                                     },
                                 }) }}
                             </div>
@@ -95,10 +95,10 @@
             {% endif %}
 
             <div class="mt-4 d-flex justify-content-between">
-                <a class="btn btn-outline-secondary" href="{{ path('_settings_custom_fields') }}">{{ 'Cancel'|trans }}</a>
-                <button class="btn btn-primary btn-save" type="submit" aria-label="{{ 'Save'|trans }}">
+                <a class="btn btn-outline-secondary" href="{{ path('_settings_custom_fields') }}">{{ 'action.cancel'|trans }}</a>
+                <button class="btn btn-primary btn-save" type="submit" aria-label="{{ 'action.save'|trans }}">
                     {{ ux_icon('tabler:device-floppy', {width: 18, height: 18, 'aria-hidden': 'true'}) }}
-                    {{ 'Save'|trans }}
+                    {{ 'action.save'|trans }}
                 </button>
             </div>
         {{ form_end(form) }}

@@ -107,7 +107,7 @@ final class CustomFieldForm extends AbstractController
 
         $this->em->flush();
 
-        $this->addFlash('success', $this->editing ? 'Custom field updated.' : 'Custom field created.');
+        $this->addFlash('success', $this->editing ? 'custom_field.flash.updated' : 'custom_field.flash.created');
 
         return $this->redirectToRoute('_settings_custom_fields');
     }

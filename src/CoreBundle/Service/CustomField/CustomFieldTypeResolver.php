@@ -63,7 +63,7 @@ final class CustomFieldTypeResolver
             CustomFieldType::CHECKBOX => [CheckboxType::class, []],
             CustomFieldType::SELECT => [ChoiceType::class, [
                 'choices' => $this->choices($field),
-                'placeholder' => 'Choose...',
+                'placeholder' => 'form.placeholder.choose',
             ]],
             CustomFieldType::MULTI_SELECT => [ChoiceType::class, [
                 'choices' => $this->choices($field),

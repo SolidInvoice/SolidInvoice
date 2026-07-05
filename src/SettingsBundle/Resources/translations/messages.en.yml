@@ -13,3 +13,166 @@ settings:
         description: 'Configure how %type% numbers are generated.'
     numbering_strategy:
         help: 'Choose how %type% IDs are generated.'
+    mail_transport:
+        provider:
+            label: 'Mail Provider'
+            placeholder: 'Choose Mail Provider'
+    upgrade:
+        tooltip: 'Upgrade your plan to unlock this feature'
+        tooltip_plan: 'Upgrade to %plan% to unlock this feature'
+        label: 'Upgrade plan'
+        label_plan: 'Upgrade to %plan%'
+        activate: 'Activate subscription'
+        activate_tooltip: 'Activate your subscription to unlock this feature'
+    logo:
+        help: 'Recommended: Square image, at least 200x200px. PNG or JPG format.'
+    address:
+        street1: 'Street Address'
+        street1_placeholder: 'Street address line 1'
+        street2: 'Street Address 2'
+        street2_placeholder: 'Apartment, suite, unit, etc. (optional)'
+        city: 'City'
+        city_placeholder: 'City'
+        state: 'State / Province'
+        state_placeholder: 'State or province'
+        zip: 'Postal Code'
+        zip_placeholder: 'ZIP / Postal code'
+        country: 'Country'
+    page:
+        tab:
+            system: 'Company'
+            invoice: 'Invoices'
+            quote: 'Quotes'
+            email: 'Email'
+            design: 'Design'
+        save: 'Save Settings'
+        company:
+            profile: 'Company Profile'
+            name: 'Company Name'
+            name_placeholder: 'Your company name'
+            logo: 'Company Logo'
+            business_details: 'Business Details'
+            currency: 'Default Currency'
+            currency_help: 'The default currency used for new invoices and quotes.'
+            contact_details: 'Contact Details'
+            contact_help: 'This information will appear on your invoices and quotes.'
+            contact_email: 'Contact Email'
+            contact_email_placeholder: 'contact@yourcompany.com'
+            phone: 'Phone Number'
+            phone_placeholder: '+1 (555) 123-4567'
+            business_address: 'Business Address'
+        domain:
+            title: 'Domain'
+            subtitle: 'Serve SolidInvoice from your own domain (e.g. invoices.yourcompany.com) instead of the default URL.'
+            custom_domain: 'Custom Domain'
+            dns_title: 'DNS setup required'
+            dns_help: 'After saving, add a CNAME record at your DNS provider so your domain points to SolidInvoice. DNS changes can take up to 24 hours to propagate.'
+            dns_type: 'Type'
+            dns_name: 'Name / Host'
+            dns_value: 'Value / Target'
+            dns_footer: 'Once the CNAME is in place, your custom domain will resolve to SolidInvoice automatically — no further action required.'
+        general:
+            title: 'General Settings'
+        display:
+            title: 'Display Settings'
+            watermark: 'Show Status Watermark'
+        design:
+            template:
+                title: 'Invoice & Quote Template'
+                subtitle: 'Choose the design used for your invoices and quotes everywhere clients see them — PDF downloads, emails and the client portal.'
+        email:
+            notifications: 'Email Notifications'
+            subject: 'Email Subject Line'
+            bcc: 'BCC Email Address'
+            sender:
+                title: 'Sender Information'
+                subtitle: 'Configure how your emails appear to recipients.'
+                from_name: 'From Name'
+                from_name_help: 'The name that appears in the "From" field.'
+                from_name_placeholder: 'Your Company Name'
+                from_address: 'From Email Address'
+                from_address_help: 'Replies will be sent to this address.'
+            delivery:
+                title: 'Email Delivery'
+                subtitle: 'Choose and configure your email delivery service.'
+        numbering:
+            title: 'Numbering Scheme'
+            strategy: 'Numbering Strategy'
+            prefix: 'ID Prefix'
+            prefix_help: 'Added before the number. E.g., "INV-" results in INV-001'
+            suffix: 'ID Suffix'
+            suffix_help: 'Added after the number. E.g., "-2024" results in 001-2024'
+            example: 'Example:'
+        reminder:
+            title: 'Payment Reminders'
+            subtitle: 'Automatically send payment reminders to clients for pending invoices. Reminders are sent before the due date and at intervals after the invoice becomes overdue.'
+            enable: 'Enable Automatic Reminders'
+            enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'
+            how_label: 'How It Works:'
+            how_help: 'Reminders are sent daily at 9:00 AM. Each invoice receives a maximum of 4 automated reminders (1 pre-due + 3 overdue). After the final reminder, you''ll receive an escalation notification to handle the invoice manually. Paid invoices will not receive reminders.'
+            pre_due:
+                title: 'Pre-Due Reminder'
+                subtitle: 'Send a friendly reminder before the invoice due date to help clients pay on time.'
+                enable: 'Enable Pre-Due Reminders'
+                days: 'Days Before Due Date'
+                days_help: 'Send the reminder this many days before the invoice is due (0 to send on due date).'
+            overdue:
+                title: 'Overdue Reminder Schedule'
+                subtitle: 'Automatic reminders are sent at 1, 7, and 14 days after the invoice becomes overdue. After the final (14-day) reminder, an escalation notification is sent to internal users for manual follow-up.'
+                tone_label: 'Escalating Tone:'
+                tone_help: 'Reminder messages become progressively more urgent: polite at 1 day, firm at 7 days, and urgent at 14 days overdue.'
+        danger:
+            title: 'Danger Zone'
+            delete: 'Delete Company'
+            delete_help: 'Permanently delete your company and all associated data. This action cannot be undone.'
+            modal:
+                title: 'Confirm Company Deletion'
+                warning: 'Warning!'
+                warning_help: 'This action will permanently delete your company and all associated data including invoices, quotes, clients, and payments. This cannot be undone.'
+                confirm_prompt: 'To confirm deletion, please type the company name exactly as shown below:'
+                company_name_aria: 'Company name to type'
+                input_placeholder: 'Enter company name to confirm'
+custom_field:
+    title: 'Custom fields'
+    add: 'Add field'
+    values: values
+    tab:
+        client: 'Client fields'
+        contact: 'Contact fields'
+        invoice: 'Invoice fields'
+        quote: 'Quote fields'
+    empty: 'No custom fields yet — click Add field to create one.'
+    delete_confirm: 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'
+    badge:
+        client_visible: 'Client-visible'
+        internal: Internal
+    reorder:
+        handle: 'Drag to reorder'
+        hint: 'Drag the handle on the left of each row to reorder fields.'
+    flash:
+        created: 'Custom field created.'
+        updated: 'Custom field updated.'
+        deleted: 'Custom field deleted.'
+    form:
+        target:
+            label: 'Applies to'
+            help: 'Choose where this field should appear.'
+        field_label:
+            label: Label
+        type:
+            label: Type
+            locked: 'This field has %count% values; type cannot be changed. Delete and recreate to change type.'
+        required:
+            label: Required
+        visibility:
+            label: Visibility
+            help: 'Internal fields appear only on admin views. Client-visible fields also appear on PDF and online views.'
+        option:
+            add: 'Add option'
+            placeholder: 'Option label'
+            hint: '(used for single- and multi-select)'
+            delete: 'Delete option'
+        default_value:
+            label: 'Default value'
+            help: 'Optional — pre-fills new records. Leave empty for no default.'
+            placeholder: 'No default'

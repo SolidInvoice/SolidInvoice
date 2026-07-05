@@ -20,10 +20,10 @@
                     <div class="col">
                         <div class="d-flex justify-content-between align-items-center">
                             {% set steps = [
-                                {name: 'company', label: 'onboarding.progress.company'|trans({}, 'onboarding'), icon: 'building'},
-                                {name: 'client', label: 'onboarding.progress.client'|trans({}, 'onboarding'), icon: 'users'},
-                                {name: 'invoice', label: 'onboarding.progress.invoice'|trans({}, 'onboarding'), icon: 'file-invoice'},
-                                {name: 'complete', label: 'onboarding.progress.complete'|trans({}, 'onboarding'), icon: 'circle-check'}
+                                {name: 'company', label: 'onboarding.progress.company'|trans({}), icon: 'building'},
+                                {name: 'client', label: 'onboarding.progress.client'|trans({}), icon: 'users'},
+                                {name: 'invoice', label: 'onboarding.progress.invoice'|trans({}), icon: 'file-invoice'},
+                                {name: 'complete', label: 'onboarding.progress.complete'|trans({}), icon: 'circle-check'}
                             ] %}
                             {% for step in steps %}
                                 <div class="d-flex align-items-center {% if loop.last %}{% else %}flex-fill{% endif %}">

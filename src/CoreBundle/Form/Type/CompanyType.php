@@ -32,7 +32,7 @@ final class CompanyType extends AbstractType
                 'currency',
                 CurrencyType::class,
                 [
-                    'placeholder' => 'Choose Currency',
+                    'placeholder' => 'form.placeholder.choose_currency',
                 ]
             );
     }

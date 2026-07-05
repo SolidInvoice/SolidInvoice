@@ -56,7 +56,7 @@
                         <div class="form-field form-field-wide">
                             {{ form_row(form.name, {
                                 attr: {
-                                    placeholder: 'Acme Corporation'|trans
+                                    placeholder: 'client.form.name.placeholder'|trans
                                 }
                             }) }}
                         </div>
@@ -74,11 +74,11 @@
                             {%- if form.currencyCode.vars.feature_gated_active ?? false %}
                                 <small class="form-hint text-muted feature-gated-hint">
                                     {%- if form.currencyCode.vars.feature_gated_plan ?? null %}
-                                        {{ 'This feature is available on the %plan% plan. Upgrade to unlock it.'|trans({'%plan%': form.currencyCode.vars.feature_gated_plan}) }}
+                                        {{ 'client.form.feature_gated.with_plan'|trans({'%plan%': form.currencyCode.vars.feature_gated_plan}) }}
                                     {%- else %}
-                                        {{ 'This feature requires a higher plan. Upgrade now to unlock it.'|trans }}
+                                        {{ 'client.form.feature_gated.generic'|trans }}
                                     {%- endif %}
-                                    <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+                                    <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'client.form.feature_gated.upgrade'|trans }}</a>
                                 </small>
                             {%- endif %}
                         </div>
@@ -207,7 +207,7 @@
                         {{ ux_icon('tabler:forms', {width: 20, height: 20}) }}
                     </div>
                     <div class="section-header-text">
-                        <h2 class="section-title">{{ 'Custom fields'|trans }}</h2>
+                        <h2 class="section-title">{{ 'client.custom_fields'|trans }}</h2>
                     </div>
                 </div>
 

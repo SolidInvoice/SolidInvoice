@@ -26,7 +26,7 @@
                     {% if allowCancel %}
                         <div>
                             <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-sm">
-                                {{ ux_icon('tabler:arrow-left', {width: 24, height: 24}) }} {{ 'Back'|trans }}
+                                {{ ux_icon('tabler:arrow-left', {width: 24, height: 24}) }} {{ 'company.create.back'|trans }}
                             </a>
                         </div>
                     {% endif %}
@@ -43,9 +43,9 @@
                             <span class="avatar avatar-md rounded-circle bg-primary-lt">
                                 {{ ux_icon('tabler:building', {width: 24, height: 24, class: 'text-primary'}) }}
                             </span>
-                            <h2 class="h3 mb-0">{{ 'Create Your Company'|trans }}</h2>
+                            <h2 class="h3 mb-0">{{ 'company.create.title'|trans }}</h2>
                         </div>
-                        <p class="text-secondary mb-0">{{ 'Set up your workspace and start managing your business in minutes'|trans }}</p>
+                        <p class="text-secondary mb-0">{{ 'company.create.subtitle'|trans }}</p>
                     </div>
 
                     {{ form_start(form, {'attr': {'class': 'form-smooth'}}) }}
@@ -58,13 +58,13 @@
                                             {{ form_row(form.name, {
                                                 'attr': {
                                                     'class': 'form-control-lg',
-                                                    'placeholder': 'e.g., Acme Corporation'|trans,
+                                                    'placeholder': 'company.create.name_placeholder'|trans,
                                                     'autofocus': 'autofocus'
                                                 }
                                             }) }}
                                             <div class="form-hint mt-2">
                                                 {{ ux_icon('tabler:info-circle', {width: 14, height: 14, class: 'me-1'}) }}
-                                                {{ 'This will be displayed on your invoices and quotes'|trans }}
+                                                {{ 'company.create.name_help'|trans }}
                                             </div>
                                         </div>
 
@@ -76,7 +76,7 @@
                                             }) }}
                                             <div class="form-hint mt-2">
                                                 {{ ux_icon('tabler:currency-dollar', {width: 14, height: 14, class: 'me-1'}) }}
-                                                {{ 'All invoices and payments will use this currency'|trans }}
+                                                {{ 'company.create.currency_help'|trans }}
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                                 {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
                                             </div>
                                             <div class="flex-fill">
-                                                <div class="alert-title fw-semibold">{{ 'Start Your Free Trial'|trans }}</div>
+                                                <div class="alert-title fw-semibold">{{ 'company.create.trial_title'|trans }}</div>
                                                 <div class="text-secondary mb-2">
                                                     {% apply spaceless %}
                                                         {% set trial_label %}
@@ -106,8 +106,8 @@
                                                 </div>
                                                 {% if planPrice %}
                                                     <div class="d-flex align-items-center gap-2 mt-2">
-                                                        <span class="badge bg-info-lt">{{ 'Then'|trans }} {{ planPrice }}/{{ 'month'|trans }}</span>
-                                                        <span class="text-muted small">{{ 'Cancel anytime'|trans }}</span>
+                                                        <span class="badge bg-info-lt">{{ 'company.create.then'|trans }} {{ planPrice }}/{{ 'company.create.month'|trans }}</span>
+                                                        <span class="text-muted small">{{ 'company.create.cancel_anytime'|trans }}</span>
                                                     </div>
                                                 {% endif %}
                                             </div>
@@ -118,13 +118,13 @@
                                                 {{ ux_icon('tabler:credit-card', {width: 24, height: 24}) }}
                                             </div>
                                             <div class="flex-fill">
-                                                <div class="alert-title fw-semibold">{{ 'Payment Required'|trans }}</div>
+                                                <div class="alert-title fw-semibold">{{ 'company.create.payment_required_title'|trans }}</div>
                                                 <div class="text-secondary">
                                                     {% if userHasTrial %}
-                                                        {{ 'You have already used your free trial.'|trans }}
-                                                        {{ 'After creating this company, you\'ll choose a plan and proceed to checkout.'|trans }}
+                                                        {{ 'company.create.trial_used'|trans }}
+                                                        {{ 'company.create.checkout_after_create'|trans }}
                                                     {% else %}
-                                                        {{ 'Creating this company will require payment.'|trans }}
+                                                        {{ 'company.create.payment_after_create'|trans }}
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -136,9 +136,9 @@
                                             {{ ux_icon('tabler:infinity', {width: 24, height: 24}) }}
                                         </div>
                                         <div class="flex-fill">
-                                            <div class="alert-title fw-semibold">{{ 'Self-Hosted Freedom'|trans }}</div>
+                                            <div class="alert-title fw-semibold">{{ 'company.create.self_hosted_title'|trans }}</div>
                                             <div class="text-secondary">
-                                                {{ 'Create unlimited companies at no additional cost. Your data, your control.'|trans }}
+                                                {{ 'company.create.self_hosted_text'|trans }}
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                                 <div class="card-footer bg-transparent p-4">
                                     <div class="d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary btn-lg px-5">
-                                            {{ ux_icon('tabler:rocket') }} {{ 'Create Company'|trans }}
+                                            {{ ux_icon('tabler:rocket') }} {{ 'company.create.create_button'|trans }}
                                         </button>
                                     </div>
                                 </div>
@@ -162,10 +162,10 @@
                         <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
                             <span class="text-secondary">
                                 {{ ux_icon('tabler:help-circle', {width: 16, height: 16}) }}
-                                {{ 'Need assistance?'|trans }}
+                                {{ 'company.create.need_help'|trans }}
                             </span>
                             <a href="https://solidinvoice.co/docs" target="_blank" class="link-primary text-decoration-none">
-                                {{ 'View Documentation'|trans }} {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                                {{ 'company.create.view_docs'|trans }} {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
                             </a>
                         </div>
                     </div>

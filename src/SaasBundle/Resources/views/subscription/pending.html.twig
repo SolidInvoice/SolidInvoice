@@ -23,9 +23,9 @@
                 {{ ux_icon('tabler:rocket', {width: 32, height: 32}) }}
             </div>
 
-            <h1 class="subscription-title">{{ 'Activate Your Subscription'|trans }}</h1>
+            <h1 class="subscription-title">{{ 'saas.pending.title'|trans }}</h1>
             <p class="subscription-subtitle">
-                {{ 'Pick a plan and start running your business with SolidInvoice in minutes.'|trans }}
+                {{ 'saas.pending.subtitle'|trans }}
             </p>
 
             {# Plan picker #}
@@ -36,13 +36,13 @@
 
                 <p class="text-secondary small mt-3 mb-0">
                     {{ ux_icon('tabler:lock', {width: 14, height: 14, class: 'me-1'}) }}
-                    {{ 'Secure checkout · Cancel anytime · No hidden fees'|trans }}
+                    {{ 'saas.pending.secure_checkout'|trans }}
                 </p>
             {% else %}
                 {# Fallback when no plans are configured — keep the original CTA so the user can still complete activation. #}
                 <div class="subscription-actions mt-4">
                     <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-primary btn-lg">
-                        {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }} {{ 'Activate Subscription'|trans }}
+                        {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }} {{ 'saas.pending.activate'|trans }}
                     </a>
                 </div>
             {% endif %}
@@ -52,10 +52,8 @@
                 <div class="d-flex align-items-start gap-2">
                     {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
                     <div>
-                        <strong>{{ 'Just completed checkout?'|trans }}</strong><br>
-                        {% trans %}
-                            If you just completed the payment process, your subscription may take a moment to activate. You can refresh this page or wait a few seconds.
-                        {% endtrans %}
+                        <strong>{{ 'saas.pending.just_completed_title'|trans }}</strong><br>
+                        {{ 'saas.pending.just_completed_message'|trans }}
                     </div>
                 </div>
             </twig:Ui:Alert>
@@ -66,9 +64,9 @@
                     <div class="d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
                         <div>
-                            {{ 'Already activated?'|trans }}
+                            {{ 'saas.pending.already_activated'|trans }}
                             <a href="{{ path('_switch_company', {'id': availableCompanies|first.id}) }}" class="alert-link">
-                                {{ 'Switch to another company'|trans }}
+                                {{ 'saas.pending.switch_company'|trans }}
                             </a>
                         </div>
                     </div>
@@ -77,9 +75,9 @@
 
             {# Help #}
             <p class="text-secondary small mt-4 mb-0">
-                {{ 'Need a hand?'|trans }}
+                {{ 'saas.pending.need_help'|trans }}
                 <a href="https://solidinvoice.co/contact" target="_blank" rel="external noreferrer noopener">
-                    {{ 'Contact support'|trans }}
+                    {{ 'saas.action.contact_support_short'|trans }}
                 </a>
             </p>
         </div>

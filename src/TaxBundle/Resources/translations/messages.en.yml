@@ -15,6 +15,19 @@ tax:
         form:
             subtitle: 'Configure tax rates for invoices and quotes'
             description: 'Set up the tax rate details and calculation method'
+    direction:
+        additive: Additive
+        deductive: Deductive
+        informational: Informational
+    invoice_tax:
+        tax:
+            placeholder: 'Select a tax'
+        note:
+            label: Note
+            placeholder: 'Optional note (e.g. reverse-charge VAT notice)'
+    line_tax:
+        tax:
+            placeholder: 'No Tax'
     inclusive: Inclusive
     exclusive: Exclusive
     grid:

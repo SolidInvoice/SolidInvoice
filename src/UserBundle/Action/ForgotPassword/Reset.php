@@ -85,7 +85,7 @@ final class Reset extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            $this->addFlash('success', 'Your password has been changed successfully. You can now log in.');
+            $this->addFlash('success', 'forgot_password.reset.flash.success');
 
             return $this->redirectToRoute('_login_main');
         }

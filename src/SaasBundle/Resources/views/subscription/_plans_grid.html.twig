@@ -43,12 +43,12 @@
                 {% if isCurrent %}
                     <div class="plan-card-banner bg-success">
                         {{ ux_icon('tabler:check', {width: 14, height: 14, class: 'me-1'}) }}
-                        {{ 'Current plan'|trans }}
+                        {{ 'saas.plan.current'|trans }}
                     </div>
                 {% elseif isRecommended %}
                     <div class="plan-card-banner">
                         {{ ux_icon('tabler:star-filled', {width: 14, height: 14, class: 'me-1'}) }}
-                        {{ 'Recommended'|trans }}
+                        {{ 'saas.plan.recommended'|trans }}
                     </div>
                 {% endif %}
                 <div class="card-body d-flex flex-column text-start">
@@ -56,7 +56,7 @@
 
                     <div class="plan-card-price mb-3">
                         <span class="display-5 fw-bold">{{ plan.price|formatCurrency('USD') }}</span>
-                        <span class="text-secondary">{{ '/month'|trans }}</span>
+                        <span class="text-secondary">{{ 'saas.plan.per_month'|trans }}</span>
                     </div>
 
                     {% if plan.description is not empty %}
@@ -67,7 +67,7 @@
 
                     {% if isCurrent %}
                         <button type="button" class="btn btn-outline-success w-100 mt-auto" disabled>
-                            {{ 'Current plan'|trans }}
+                            {{ 'saas.plan.current'|trans }}
                         </button>
                     {% else %}
                         <form method="post" action="{{ path(actionRoute) }}" class="mt-auto">
@@ -75,7 +75,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
                             <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
                                 {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
-                                {{ 'Choose plan'|trans }}
+                                {{ 'saas.plan.choose'|trans }}
                             </button>
                         </form>
                     {% endif %}
@@ -94,11 +94,11 @@
                     <div class="d-flex flex-column flex-lg-row gap-4 align-items-lg-center">
                         <div class="text-lg-start text-center plan-card-free-header">
                             <div class="text-uppercase text-secondary small fw-semibold mb-1">
-                                {{ freeIsCurrent ? 'Your current plan'|trans : 'Just getting started?'|trans }}
+                                {{ freeIsCurrent ? 'saas.plan.your_current_plan'|trans : 'saas.plan.just_getting_started'|trans }}
                             </div>
                             <h3 class="h4 mb-1">{{ freePlan.name }}</h3>
                             <div class="text-secondary small">
-                                {{ 'No credit card required'|trans }}
+                                {{ 'saas.plan.no_credit_card'|trans }}
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@
                         <div class="plan-card-free-cta">
                             {% if freeIsCurrent %}
                                 <button type="button" class="btn btn-outline-success" disabled>
-                                    {{ 'Current plan'|trans }}
+                                    {{ 'saas.plan.current'|trans }}
                                 </button>
                             {% else %}
                                 <form method="post" action="{{ path(actionRoute) }}">
@@ -117,7 +117,7 @@
                                     <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
                                     <button type="submit" class="btn btn-outline-secondary">
                                         {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
-                                        {{ 'Continue with Free'|trans }}
+                                        {{ 'saas.plan.continue_free'|trans }}
                                     </button>
                                 </form>
                             {% endif %}
@@ -185,7 +185,7 @@
     {% elseif value is iterable %}
         <strong>{{ label }}:</strong> {{ value|join(', ') }}
     {% elseif value == -1 %}
-        <strong>{{ 'Unlimited'|trans }} {{ label }}</strong>
+        <strong>{{ 'saas.plan.unlimited'|trans }} {{ label }}</strong>
     {% else %}
         <strong>{{ label }}:</strong> {{ value }}
     {% endif %}

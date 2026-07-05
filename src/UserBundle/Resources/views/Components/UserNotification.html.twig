@@ -14,9 +14,9 @@
                     {{ ux_icon('tabler:bell-ringing', {width: 28, height: 28}) }}
                 </div>
                 <div>
-                    <h1 class="form-page-title">{{ 'Notification Preferences'|trans }}</h1>
+                    <h1 class="form-page-title">{{ 'notifications.title'|trans }}</h1>
                     <p class="form-page-subtitle">
-                        {{ 'Choose which events trigger notifications and where you receive them'|trans }}
+                        {{ 'notifications.subtitle'|trans }}
                     </p>
                 </div>
             </div>
@@ -30,18 +30,18 @@
                     {{ ux_icon('tabler:plug-connected', {width: 20, height: 20}) }}
                 </div>
                 <div class="integration-management-info">
-                    <h2 class="integration-management-title">{{ 'Notification Channels'|trans }}</h2>
+                    <h2 class="integration-management-title">{{ 'notifications.notification_channels'|trans }}</h2>
                     <p class="integration-management-description">
                         {% if availableTransports|length > 0 %}
-                            {{ 'You have %count% integration(s) configured'|trans({'%count%': availableTransports|length + 1}) }}
+                            {{ 'notifications.integrations_count'|trans({'%count%': availableTransports|length + 1}) }}
                         {% else %}
-                            {{ 'Email notifications are always available. Add integrations to receive notifications via other channels.'|trans }}
+                            {{ 'notifications.email_always_available'|trans }}
                         {% endif %}
                     </p>
                 </div>
                 <a href="{{ path('_notification_integration') }}" class="btn btn-primary">
                     {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                    {{ 'Manage Integrations'|trans }}
+                    {{ 'notifications.manage_integrations'|trans }}
                 </a>
             </div>
 
@@ -49,7 +49,7 @@
                 <div class="integration-management-list">
                     <div class="integration-badge">
                         {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
-                        <span>{{ 'Email'|trans }}</span>
+                        <span>{{ 'notifications.email_channel'|trans }}</span>
                     </div>
                     {% for transport in availableTransports %}
                         <div class="integration-badge">
@@ -103,8 +103,8 @@
                 <div class="empty-icon">
                     {{ ux_icon('tabler:bell-off', {width: 48, height: 48}) }}
                 </div>
-                <p class="empty-title">{{ 'No Notifications Available'|trans }}</p>
-                <p class="empty-subtitle text-secondary">{{ 'Notification events will appear here when they are available in the system'|trans }}</p>
+                <p class="empty-title">{{ 'notifications.empty.title'|trans }}</p>
+                <p class="empty-subtitle text-secondary">{{ 'notifications.empty.description'|trans }}</p>
             </div>
         {% endif %}
 
@@ -113,11 +113,11 @@
             <div class="form-page-actions-inner form-page-actions-inner--medium">
                 <a href="{{ path('_profile') }}" class="btn btn-ghost">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
-                    {{ 'Cancel'|trans }}
+                    {{ 'action.cancel'|trans }}
                 </a>
                 <button type="submit" class="btn btn-primary btn-save">
                     {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
-                    {{ 'Save Preferences'|trans }}
+                    {{ 'notifications.save_preferences'|trans }}
                 </button>
             </div>
         </div>

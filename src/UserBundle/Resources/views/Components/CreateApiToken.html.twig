@@ -22,7 +22,7 @@
                 {% if not createdToken %}
                     {# Create Form #}
                     {{ form_row(form.name) }}
-                    {{ form_row(form.description) }}
+                    {{ form_row(form.description, {attr: {rows: 3, placeholder: 'profile.api.form.description_placeholder'|trans}}) }}
                 {% else %}
                     {# Success - Show Token Once #}
                     <twig:Ui:Alert type="warning" icon="tabler:alert-triangle" :dismissible="false">

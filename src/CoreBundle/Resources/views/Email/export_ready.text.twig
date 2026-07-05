@@ -6,17 +6,17 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{{ 'Your data export is ready'|trans|upper }}
+{{ 'export.email.ready'|trans|upper }}
 
-{{ 'The full data export you requested has completed. The archive contains one file per entity type plus a manifest describing the contents.'|trans }}
+{{ 'export.email.ready_body'|trans }}
 
-{{ 'Details'|trans }}:
+{{ 'export.email.details'|trans }}:
 ----------------
-{{ 'Format'|trans }}: {{ job.format.value|upper }}
-{{ 'Requested'|trans }}: {{ job.createdAt|date('Y-m-d H:i') }}
-{% if job.fileSize %}{{ 'Archive size'|trans }}: {{ (job.fileSize / 1024 / 1024)|number_format(2) }} MB
+{{ 'export.format'|trans }}: {{ job.format.value|upper }}
+{{ 'export.email.requested'|trans }}: {{ job.createdAt|date('Y-m-d H:i') }}
+{% if job.fileSize %}{{ 'export.email.archive_size'|trans }}: {{ (job.fileSize / 1024 / 1024)|number_format(2) }} MB
 {% endif %}
 
-{{ 'Download your export'|trans }}: {{ downloadUrl }}
+{{ 'export.email.download_link'|trans }}: {{ downloadUrl }}
 
-{{ 'This download link requires authentication as the user who requested the export.'|trans }}
+{{ 'export.email.auth_note'|trans }}

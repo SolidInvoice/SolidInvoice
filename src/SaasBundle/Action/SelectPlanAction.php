@@ -50,7 +50,7 @@ final class SelectPlanAction extends AbstractController
         $plans = $this->planRepository->findAllOrdered();
 
         if ($plans === []) {
-            $this->addFlash('error', 'No subscription plans are available.');
+            $this->addFlash('error', 'saas.flash.no_plans_available');
 
             return $this->redirectToRoute('_dashboard');
         }

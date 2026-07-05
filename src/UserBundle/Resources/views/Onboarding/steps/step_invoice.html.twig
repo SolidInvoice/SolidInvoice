@@ -12,9 +12,9 @@
         {{ ux_icon('tabler:file-invoice', {width: 32, height: 32, class: 'text-white'}) }}
     </div>
 
-    <h2 class="h2 text-center mb-2">{{ 'onboarding.invoice.title'|trans({}, 'onboarding') }}</h2>
+    <h2 class="h2 text-center mb-2">{{ 'onboarding.invoice.title'|trans({}) }}</h2>
     <p class="text-muted text-center lead mb-4">
-        {{ 'onboarding.invoice.description'|trans({}, 'onboarding') }}
+        {{ 'onboarding.invoice.description'|trans({}) }}
     </p>
 
     {# Benefits Box #}
@@ -22,15 +22,15 @@
         <div class="d-flex align-items-start gap-2">
             {{ ux_icon('tabler:rocket', {width: 20, height: 20, class: 'text-success mt-1'}) }}
             <div>
-                <strong class="d-block mb-1">{{ 'onboarding.invoice.aha_title'|trans({}, 'onboarding') }}</strong>
+                <strong class="d-block mb-1">{{ 'onboarding.invoice.aha_title'|trans({}) }}</strong>
                 <ul class="mb-0">
-                    {% for benefit in 'onboarding.invoice.benefits'|trans({}, 'onboarding')|trim|split("\n") %}
+                    {% for benefit in 'onboarding.invoice.benefits'|trans({})|trim|split("\n") %}
                         <li>{{ benefit }}</li>
                     {% endfor %}
                 </ul>
                 <p class="text-muted small mb-0 mt-2">
                     {{ ux_icon('tabler:clock', {width: 14, height: 14}) }}
-                    {{ 'onboarding.invoice.time'|trans({}, 'onboarding') }}
+                    {{ 'onboarding.invoice.time'|trans({}) }}
                 </p>
             </div>
         </div>
@@ -71,7 +71,7 @@
     <div class="text-center mt-3">
         <small class="text-muted">
             {{ ux_icon('tabler:shield-check', {width: 14, height: 14}) }}
-            {{ 'onboarding.invoice.security'|trans({}, 'onboarding') }}
+            {{ 'onboarding.invoice.security'|trans({}) }}
         </small>
     </div>
 </div>

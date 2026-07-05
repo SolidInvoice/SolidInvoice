@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class IncompatibleTaxConfiguration extends Constraint
 {
-    public string $inclusiveCompoundMessage = 'A tax cannot be both inclusive and compound.';
+    public string $inclusiveCompoundMessage = 'tax.constraint.incompatible.inclusive_compound';
 
-    public string $flatRateCompoundMessage = 'A flat-rate tax cannot be compound.';
+    public string $flatRateCompoundMessage = 'tax.constraint.incompatible.flat_rate_compound';
 
     #[Override]
     public function getTargets(): string|array

@@ -12,14 +12,14 @@
     <div class="welcome-section">
         <div class="welcome-badge">
             {{ ux_icon('tabler:sparkles', {width: 16, height: 16}) }}
-            {{ 'Welcome to %app_name%!'|trans({'%app_name%': app_name}) }}
+            {{ 'onboarding.company.welcome'|trans({'%app_name%': app_name}) }}
         </div>
         <div class="step-icon">
             {{ ux_icon('tabler:building', {width: 32, height: 32, class: 'text-white'}) }}
         </div>
-        <h2 class="h2 mb-2">{{ 'onboarding.company.title'|trans({}, 'onboarding') }}</h2>
+        <h2 class="h2 mb-2">{{ 'onboarding.company.title'|trans({}) }}</h2>
         <p class="text-muted lead mb-0">
-            {{ 'onboarding.company.description'|trans({}, 'onboarding') }}
+            {{ 'onboarding.company.description'|trans({}) }}
         </p>
     </div>
 
@@ -28,9 +28,9 @@
         <div class="d-flex align-items-start gap-2 mb-2">
             {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'text-primary mt-1'}) }}
             <div>
-                <strong class="d-block mb-1">{{ 'onboarding.company.setup_title'|trans({}, 'onboarding') }}</strong>
+                <strong class="d-block mb-1">{{ 'onboarding.company.setup_title'|trans({}) }}</strong>
                 <ul class="mb-0">
-                    {% for benefit in 'onboarding.company.benefits'|trans({}, 'onboarding')|trim|split("\n") %}
+                    {% for benefit in 'onboarding.company.benefits'|trans({})|trim|split("\n") %}
                         <li>{{ benefit }}</li>
                     {% endfor %}
                 </ul>
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <h3 class="h4 mb-3">{{ 'onboarding.company.subtitle'|trans({}, 'onboarding') }}</h3>
+    <h3 class="h4 mb-3">{{ 'onboarding.company.subtitle'|trans({}) }}</h3>
 
     {{ form_start(form) }}
         <div class="mb-4">

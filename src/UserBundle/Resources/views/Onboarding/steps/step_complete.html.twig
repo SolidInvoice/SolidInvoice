@@ -15,9 +15,9 @@
         </div>
     </div>
 
-    <h1 class="h1 mb-3">{{ 'onboarding.complete.title'|trans({}, 'onboarding') }}</h1>
+    <h1 class="h1 mb-3">{{ 'onboarding.complete.title'|trans({}) }}</h1>
     <p class="lead text-muted mb-4">
-        {{ 'onboarding.complete.description'|trans({}, 'onboarding') }}
+        {{ 'onboarding.complete.description'|trans({}) }}
     </p>
 
     {# Next Steps #}
@@ -25,9 +25,9 @@
         <div class="d-flex align-items-start gap-2">
             {{ ux_icon('tabler:checklist', {width: 20, height: 20, class: 'text-primary mt-1'}) }}
             <div>
-                <strong class="d-block mb-2">{{ 'onboarding.complete.next_title'|trans({}, 'onboarding') }}</strong>
+                <strong class="d-block mb-2">{{ 'onboarding.complete.next_title'|trans({}) }}</strong>
                 <ul class="mb-0">
-                    {% for step in 'onboarding.complete.next_steps'|trans({}, 'onboarding')|trim|split("\n") %}
+                    {% for step in 'onboarding.complete.next_steps'|trans({})|trim|split("\n") %}
                         <li>{{ step }}</li>
                     {% endfor %}
                 </ul>
@@ -39,7 +39,7 @@
     <div class="alert alert-info d-flex align-items-start gap-3 mb-4" role="alert">
         {{ ux_icon('tabler:bulb', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
         <div class="text-start">
-            <strong>{{ 'onboarding.complete.pro_tip_title'|trans({}, 'onboarding') }}</strong> {{ 'onboarding.complete.pro_tip_text'|trans({}, 'onboarding') }}
+            <strong>{{ 'onboarding.complete.pro_tip_title'|trans({}) }}</strong> {{ 'onboarding.complete.pro_tip_text'|trans({}) }}
         </div>
     </div>
 
@@ -47,7 +47,7 @@
         {# Client exists but no invoice yet — direct them to create one #}
         <div class="d-grid gap-3 mb-3">
             <a href="{{ path('_invoices_create') }}" class="btn btn-primary btn-lg">
-                {{ 'onboarding.complete.cta_create_invoice'|trans({}, 'onboarding') }}
+                {{ 'onboarding.complete.cta_create_invoice'|trans({}) }}
             </a>
         </div>
         {{ form_start(form) }}
@@ -58,19 +58,19 @@
     {% else %}
         {# No client or invoice — show next-step mini checklist #}
         <div class="mb-4">
-            <p class="fw-semibold mb-2">{{ 'onboarding.complete.next_steps_title'|trans({}, 'onboarding') }}</p>
+            <p class="fw-semibold mb-2">{{ 'onboarding.complete.next_steps_title'|trans({}) }}</p>
             <div class="list-group text-start">
                 <a href="{{ path('_clients_add') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     {{ ux_icon('tabler:users', {width: 18, height: 18, class: 'text-primary flex-shrink-0'}) }}
-                    {{ 'onboarding.complete.next_add_client'|trans({}, 'onboarding') }}
+                    {{ 'onboarding.complete.next_add_client'|trans({}) }}
                 </a>
                 <a href="{{ path('_invoices_create') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     {{ ux_icon('tabler:file-invoice', {width: 18, height: 18, class: 'text-primary flex-shrink-0'}) }}
-                    {{ 'onboarding.complete.next_send_invoice'|trans({}, 'onboarding') }}
+                    {{ 'onboarding.complete.next_send_invoice'|trans({}) }}
                 </a>
                 <a href="{{ path('_payment_settings_index') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                     {{ ux_icon('tabler:credit-card', {width: 18, height: 18, class: 'text-primary flex-shrink-0'}) }}
-                    {{ 'onboarding.complete.next_connect_payment'|trans({}, 'onboarding') }}
+                    {{ 'onboarding.complete.next_connect_payment'|trans({}) }}
                 </a>
             </div>
         </div>
@@ -84,11 +84,11 @@
     <div class="mt-4 pt-3 border-top">
         <p class="text-muted small mb-2">
             {{ ux_icon('tabler:heart', {width: 16, height: 16, class: 'text-danger'}) }}
-            {{ 'Thanks for choosing %app_name%'|trans({'%app_name%': app_name}) }}
+            {{ 'onboarding.complete.thanks'|trans({'%app_name%': app_name}) }}
         </p>
         <p class="text-muted small mb-0">
-            {{ 'Need help? Check out our'|trans }}
-            <a href="https://solidinvoice.co/docs" target="_blank" rel="noopener" class="text-primary">{{ 'onboarding.complete.docs_link'|trans({}, 'onboarding') }}</a>
+            {{ 'onboarding.complete.need_help'|trans }}
+            <a href="https://solidinvoice.co/docs" target="_blank" rel="noopener" class="text-primary">{{ 'onboarding.complete.docs_link'|trans({}) }}</a>
         </p>
     </div>
 </div>

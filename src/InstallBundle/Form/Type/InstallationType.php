@@ -59,7 +59,7 @@ final class InstallationType extends AbstractFlowType
                     new Callback(function (array $data, ExecutionContextInterface $context): void {
                         if (count($this->appRequirements->getFailedRequirements()) > 0) {
                             $context
-                                ->buildViolation('Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.')
+                                ->buildViolation('install.requirements.not_met')
                                 ->atPath('systemRequirements')
                                 ->addViolation();
                         }

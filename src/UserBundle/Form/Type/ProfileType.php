@@ -36,7 +36,7 @@ class ProfileType extends AbstractType
             ->add('email', EmailType::class)
             ->add('mobile')
             ->add('current_password', PasswordType::class, [
-                'label' => 'Current Password',
+                'label' => 'change_password.form.current_password',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank(),

@@ -21,6 +21,7 @@ use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -67,7 +68,8 @@ final class NotificationMarketplace extends AbstractController
     public function __construct(
         #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private readonly ServiceLocator $transportConfigurations,
-        private readonly TransportSettingRepository $repository
+        private readonly TransportSettingRepository $repository,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -216,9 +218,9 @@ final class NotificationMarketplace extends AbstractController
             $configurator = $this->transportConfigurations->get($transportName);
             $type = $configurator::getType();
 
-            return $type === 'texter' ? 'SMS' : 'Chat';
+            return $this->translator->trans($type === 'texter' ? 'notification.type.sms' : 'notification.type.chat');
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
-            return 'Unknown';
+            return $this->translator->trans('notification.type.unknown');
         }
     }
 
@@ -244,32 +246,36 @@ final class NotificationMarketplace extends AbstractController
 
     private function getIntegrationDescription(string $name, string $type): string
     {
-        $typeLabel = $type === 'texter' ? 'SMS' : 'chat';
-
-        return match ($name) {
-            // Popular SMS providers
-            'Twilio' => 'Send SMS notifications with Twilio',
-            'Vonage' => 'Reliable SMS messaging via Vonage (formerly Nexmo)',
-            'AmazonSns' => 'Send SMS and push notifications with Amazon SNS',
-            'MessageBird' => 'Global SMS messaging platform',
-            'Sinch' => 'Cloud communications for SMS delivery',
-
-            // Popular Chat providers
-            'Slack' => 'Send notifications to Slack channels',
-            'Discord' => 'Send messages to Discord servers',
-            'Telegram' => 'Send notifications via Telegram bots',
-            'MicrosoftTeams' => 'Post messages to Microsoft Teams channels',
-            'GoogleChat' => 'Send notifications to Google Chat spaces',
-            'Mattermost' => 'Self-hosted team communication',
-            'RocketChat' => 'Open-source team chat platform',
-
-            // Testing providers
-            'FakeSms' => 'Test SMS notifications without sending real messages',
-            'FakeChat' => 'Test chat notifications in development',
-
-            // Generic fallback
-            default => sprintf('Send %s notifications via %s', $typeLabel, $this->humanizeIntegrationName($name)),
+        $descriptionKey = match ($name) {
+            'Twilio' => 'notification.provider.twilio',
+            'Vonage' => 'notification.provider.vonage',
+            'AmazonSns' => 'notification.provider.amazon_sns',
+            'MessageBird' => 'notification.provider.message_bird',
+            'Sinch' => 'notification.provider.sinch',
+            'Slack' => 'notification.provider.slack',
+            'Discord' => 'notification.provider.discord',
+            'Telegram' => 'notification.provider.telegram',
+            'MicrosoftTeams' => 'notification.provider.microsoft_teams',
+            'GoogleChat' => 'notification.provider.google_chat',
+            'Mattermost' => 'notification.provider.mattermost',
+            'RocketChat' => 'notification.provider.rocket_chat',
+            'FakeSms' => 'notification.provider.fake_sms',
+            'FakeChat' => 'notification.provider.fake_chat',
+            default => null,
         };
+
+        if ($descriptionKey !== null) {
+            return $this->translator->trans($descriptionKey);
+        }
+
+        $typeLabel = $type === 'texter'
+            ? $this->translator->trans('notification.type.sms')
+            : $this->translator->trans('notification.provider.type_chat');
+
+        return $this->translator->trans('notification.provider.generic', [
+            '%type%' => $typeLabel,
+            '%name%' => $this->humanizeIntegrationName($name),
+        ]);
     }
 
     private function isPopularIntegration(string $name): bool

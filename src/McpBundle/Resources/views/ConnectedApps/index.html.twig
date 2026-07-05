@@ -11,19 +11,19 @@
 
 {% set menuItem = 'connected-apps' %}
 
-{% block title %}{{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}{% endblock %}
+{% block title %}{{ 'mcp.connected_apps.title'|trans({}) }}{% endblock %}
 
 {% block profile_content %}
     <div class="page-header">
         <h2 class="page-title">
             {{ ux_icon('tabler:plug-connected', {width: 24, height: 24, class: 'me-2'}) }}
-            {{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}
+            {{ 'mcp.connected_apps.title'|trans({}) }}
         </h2>
     </div>
 
     {% if connected_apps is empty %}
         <div class="empty">
-            <p class="empty-title">{{ 'mcp.connected_apps.empty'|trans({}, 'SolidInvoiceMcpBundle') }}</p>
+            <p class="empty-title">{{ 'mcp.connected_apps.empty'|trans({}) }}</p>
         </div>
     {% else %}
         <div class="row row-cards">
@@ -36,7 +36,7 @@
                                     <h3 class="card-title">{{ app.client.name }}</h3>
 
                                     <div class="mb-2 text-muted small">
-                                        {{ 'mcp.connected_apps.scopes'|trans({}, 'SolidInvoiceMcpBundle') }}:
+                                        {{ 'mcp.connected_apps.scopes'|trans({}) }}:
                                         {% for scope in app.scopes %}
                                             <span class="badge bg-blue-lt">{{ scope }}</span>
                                         {% endfor %}
@@ -48,10 +48,10 @@
 
                                     <div class="text-muted small">
                                         {% if app.last_used %}
-                                            {{ 'mcp.connected_apps.last_used'|trans({}, 'SolidInvoiceMcpBundle') }}:
+                                            {{ 'mcp.connected_apps.last_used'|trans({}) }}:
                                             {{ app.last_used|date('Y-m-d H:i') }}
                                         {% else %}
-                                            {{ 'mcp.connected_apps.never_used'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                            {{ 'mcp.connected_apps.never_used'|trans({}) }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('mcp_connected_apps_revoke') }}">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                         {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'me-1'}) }}
-                                        {{ 'mcp.connected_apps.revoke'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                        {{ 'mcp.connected_apps.revoke'|trans({}) }}
                                     </button>
                                 </form>
                             </div>

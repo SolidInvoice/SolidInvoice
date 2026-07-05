@@ -1,0 +1,16 @@
+user:
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'
+    password:
+        not_blank: 'Please enter a password'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        mismatch: "The passwords doesn't match"
+        fields_match: 'The password fields must match.'
+    email:
+        not_blank: 'Please enter your email'
+        invalid: 'The email {{ value }} is not a valid email.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'

@@ -78,6 +78,8 @@ quote:
             note: Note
     totals:
         title: 'Summary'
+    custom_fields:
+        title: 'Custom fields'
     terms_notes:
         title: 'Terms & Notes'
         toggle: 'Toggle terms and notes section'

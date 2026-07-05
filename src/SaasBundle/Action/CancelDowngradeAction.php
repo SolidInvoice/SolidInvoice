@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CancelDowngradeAction extends AbstractController
 {
@@ -31,13 +32,14 @@ final class CancelDowngradeAction extends AbstractController
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
         if (! $this->isCsrfTokenValid('cancel_downgrade', (string) $request->request->get('_token', ''))) {
-            $this->addFlash('error', 'Invalid security token, please try again.');
+            $this->addFlash('error', 'saas.flash.invalid_token');
 
             return $this->redirectToRoute('billing_index');
         }
@@ -50,9 +52,12 @@ final class CancelDowngradeAction extends AbstractController
 
         try {
             $this->subscriptionManager->cancelScheduledDowngrade($subscription);
-            $this->addFlash('success', 'Scheduled plan change cancelled.');
+            $this->addFlash('success', 'saas.flash.downgrade_cancelled');
         } catch (PaymentIntegrationException $e) {
-            $this->addFlash('error', sprintf('Could not cancel the scheduled change: %s', $e->getMessage()));
+            $this->addFlash('error', $this->translator->trans(
+                'saas.flash.downgrade_cancel_failed',
+                ['%error%' => $e->getMessage()],
+            ));
         }
 
         return $this->redirectToRoute('billing_index');

@@ -36,11 +36,11 @@
 
                 <div class="client-form-actions">
                     <button type="button" class="btn btn-ghost" data-model="edit" data-value="false" data-action="live#update:prevent">
-                        {{ 'Cancel'|trans }}
+                        {{ 'action.cancel'|trans }}
                     </button>
                     <button type="submit" class="btn btn-primary">
                         {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
-                        {{ 'Save'|trans }}
+                        {{ 'action.save'|trans }}
                     </button>
                 </div>
                 {{ form_end(form) }}
@@ -64,19 +64,19 @@
     </div>
 
     {% if this.canDelete %}
-        <twig:Ui:Modal id="delete-contact-{{ computed.contact.id }}" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+        <twig:Ui:Modal id="delete-contact-{{ computed.contact.id }}" title="{{ 'action.confirm'|trans }}" status="danger" :centered="true">
             <div class="text-center py-3">
                 <div class="mb-3">
                     {{ ux_icon('tabler:user-minus', {width: 48, height: 48, class: 'text-danger'}) }}
                 </div>
-                <p>{{ 'Are you sure you want to delete the contact?'|trans }}</p>
+                <p>{{ 'client.contact.delete_confirm_inline'|trans }}</p>
             </div>
 
             <twig:block name="footer">
-                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'action.cancel'|trans }}</button>
                 <button type="button" class="btn btn-danger" data-action="live#action:prevent" data-live-action-param="delete">
                     {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                    {{ 'Confirm'|trans }}
+                    {{ 'action.confirm'|trans }}
                 </button>
             </twig:block>
         </twig:Ui:Modal>

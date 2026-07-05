@@ -18,6 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -29,21 +30,22 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
     private ObjectManager $manager;
 
     /**
-     * Status colors matching the design system.
+     * Status colors and translation keys matching the design system.
      *
      * @var array<string, array{color: string, label: string}>
      */
     private const array STATUS_CONFIG = [
-        InvoiceStatus::Paid->value => ['color' => 'rgb(16, 185, 129)', 'label' => 'Paid'],
-        InvoiceStatus::Pending->value => ['color' => 'rgb(59, 130, 246)', 'label' => 'Pending'],
-        InvoiceStatus::Overdue->value => ['color' => 'rgb(239, 68, 68)', 'label' => 'Overdue'],
-        InvoiceStatus::Draft->value => ['color' => 'rgb(148, 163, 184)', 'label' => 'Draft'],
-        InvoiceStatus::Cancelled->value => ['color' => 'rgb(100, 116, 139)', 'label' => 'Cancelled'],
+        InvoiceStatus::Paid->value => ['color' => 'rgb(16, 185, 129)', 'label' => 'dashboard.distribution.status.paid'],
+        InvoiceStatus::Pending->value => ['color' => 'rgb(59, 130, 246)', 'label' => 'dashboard.distribution.status.pending'],
+        InvoiceStatus::Overdue->value => ['color' => 'rgb(239, 68, 68)', 'label' => 'dashboard.distribution.status.overdue'],
+        InvoiceStatus::Draft->value => ['color' => 'rgb(148, 163, 184)', 'label' => 'dashboard.distribution.status.draft'],
+        InvoiceStatus::Cancelled->value => ['color' => 'rgb(100, 116, 139)', 'label' => 'dashboard.distribution.status.cancelled'],
     ];
 
     public function __construct(
         ManagerRegistry $registry,
         private ChartBuilderInterface $chartBuilder,
+        private TranslatorInterface $translator,
     ) {
         $this->manager = $registry->getManager();
     }
@@ -74,7 +76,7 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
             $count = $statusCounts[$status->value] ?? 0;
             if ($count > 0 || $status === InvoiceStatus::Pending) {
                 $config = self::STATUS_CONFIG[$status->value];
-                $labels[] = $config['label'];
+                $labels[] = $this->translator->trans($config['label']);
                 $data[] = $count;
                 $colors[] = $config['color'];
             }
