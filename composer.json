@@ -179,7 +179,7 @@
         "symfony/webhook": "^7.1",
         "symfony/webpack-encore-bundle": "^2.0",
         "symfony/workflow": "^7.1",
-        "symfony/yaml": "^7.1",
+        "symfony/yaml": "^8.1",
         "symfony/yunpian-notifier": "^7.1",
         "symfony/zulip-notifier": "^7.1",
         "symfonycasts/dynamic-forms": "^0.2.0",
