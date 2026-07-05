@@ -42,7 +42,7 @@
         "chart.js": "^3.4.1 || ^4.0",
         "cloudinary": "^2.1.0",
         "eslint": "^9.38.0",
-        "eslint-webpack-plugin": "^5.0.2",
+        "eslint-webpack-plugin": "^6.0.0",
         "postcss": "^8.4.38",
         "postcss-scss": "^4.0.6",
         "sass": "^1.63.3",
