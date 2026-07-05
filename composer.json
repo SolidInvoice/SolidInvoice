@@ -103,7 +103,7 @@
         "symfony/flex": "^2.4",
         "symfony/form": "^7.4",
         "symfony/framework-bundle": "^7.1",
-        "symfony/free-mobile-notifier": "^7.1",
+        "symfony/free-mobile-notifier": "^8.1",
         "symfony/gateway-api-notifier": "^7.1",
         "symfony/gitter-notifier": "^7.1",
         "symfony/google-chat-notifier": "^7.1",
