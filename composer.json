@@ -152,7 +152,7 @@
         "symfony/security-bundle": "^7.3",
         "symfony/sendgrid-mailer": "^7.1",
         "symfony/serializer": "^7.1",
-        "symfony/sinch-notifier": "^7.1",
+        "symfony/sinch-notifier": "^8.1",
         "symfony/slack-notifier": "^7.1",
         "symfony/sms-biuras-notifier": "^7.1",
         "symfony/sms77-notifier": "^7.1",
