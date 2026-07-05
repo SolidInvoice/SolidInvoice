@@ -82,7 +82,7 @@
         "symfony/amazon-mailer": "^7.1",
         "symfony/amazon-sns-notifier": "^7.1",
         "symfony/amazon-sqs-messenger": "^7.1",
-        "symfony/brevo-notifier": "^7.1",
+        "symfony/brevo-notifier": "^8.1",
         "symfony/clickatell-notifier": "^7.1",
         "symfony/config": "^7.1",
         "symfony/console": "^7.1",
