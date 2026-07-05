@@ -157,7 +157,7 @@
         "symfony/sms-biuras-notifier": "^7.1",
         "symfony/sms77-notifier": "^7.1",
         "symfony/smsapi-notifier": "^7.1",
-        "symfony/smsc-notifier": "^7.1",
+        "symfony/smsc-notifier": "^8.1",
         "symfony/spot-hit-notifier": "^7.1",
         "symfony/stimulus-bundle": "^2.15",
         "symfony/telegram-notifier": "^7.1",
