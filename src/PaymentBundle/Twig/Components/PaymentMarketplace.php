@@ -58,13 +58,36 @@ final class PaymentMarketplace extends AbstractController
     }
 
     /**
+     * Memoised gateway rows. availableGateways() is reached several times per
+     * render (directly, and via filteredGateways()/gatewayGroups()), so it is
+     * computed once with a single configured-gateway lookup.
+     *
+     * @var list<GatewayRow>|null
+     */
+    private ?array $gatewaysCache = null;
+
+    /**
      * @return list<GatewayRow>
      */
     #[ExposeInTemplate]
     public function availableGateways(): array
     {
+        if ($this->gatewaysCache !== null) {
+            return $this->gatewaysCache;
+        }
+
         $factories = $this->factories->getFactories() ?? [];
         unset($factories['credit']); // Exclude internal credit system
+
+        // Preload every configured gateway name in a single query rather than
+        // querying once per gateway below.
+        $configuredNames = [];
+        foreach ($this->repository->findAll() as $method) {
+            $gatewayName = $method->getGatewayName();
+            if ($gatewayName !== null) {
+                $configuredNames[$gatewayName] = true;
+            }
+        }
 
         $gateways = [];
         foreach (array_keys($factories) as $name) {
@@ -79,7 +102,7 @@ final class PaymentMarketplace extends AbstractController
                 'recommended' => $info->recommended,
                 'advanced' => $info->isAdvanced(),
                 'legacy' => $info->legacy,
-                'isConfigured' => $this->isGatewayConfigured($name),
+                'isConfigured' => isset($configuredNames[$name]),
             ];
         }
 
@@ -91,7 +114,7 @@ final class PaymentMarketplace extends AbstractController
                     ?: ($a['displayName'] <=> $b['displayName'])
         );
 
-        return $gateways;
+        return $this->gatewaysCache = $gateways;
     }
 
     /**
@@ -148,11 +171,6 @@ final class PaymentMarketplace extends AbstractController
     public function iconFor(string $name): string
     {
         return $this->metadata->icon($name);
-    }
-
-    private function isGatewayConfigured(string $name): bool
-    {
-        return $this->repository->findOneBy(['gatewayName' => $name]) instanceof PaymentMethod;
     }
 
     #[LiveAction]
