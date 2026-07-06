@@ -15,6 +15,7 @@ namespace SolidInvoice\NotificationBundle\Notification;
 
 use Psr\Log\LoggerInterface;
 use ReflectionObject;
+use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
@@ -41,11 +42,16 @@ class NotificationManager
         private readonly ServiceLocator $transportConfigurations,
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,
+        private readonly DemoMode $demoMode,
     ) {
     }
 
     public function sendNotification(NotificationMessage $message): void
     {
+        if ($this->demoMode->isEnabled()) {
+            return;
+        }
+
         $attributes = new ReflectionObject($message)->getAttributes(AsNotification::class);
 
         if ($attributes === []) {
