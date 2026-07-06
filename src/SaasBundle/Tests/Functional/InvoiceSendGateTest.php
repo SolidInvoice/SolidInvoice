@@ -93,7 +93,8 @@ final class InvoiceSendGateTest extends KernelTestCase
             ->willReturn('/invoices/view/123');
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')->willReturn($gated);
+        $gate->method('isGated')
+            ->willReturn($gated);
 
         $workflow = $container->get('state_machine.invoice');
         self::assertInstanceOf(WorkflowInterface::class, $workflow);
@@ -116,6 +117,6 @@ final class InvoiceSendGateTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        return $invoice->_real();
+        return $invoice;
     }
 }

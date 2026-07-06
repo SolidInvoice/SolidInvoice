@@ -49,7 +49,7 @@ final class Register extends AbstractController
         if ($request->query->has('invitation')) {
             $invitationId = $request->query->getString('invitation');
 
-            if (! Ulid::isValid($invitationId)) {
+            if (! Ulid::isValid($invitationId, Ulid::FORMAT_BASE_32)) {
                 throw $this->createNotFoundException('Invitation is not valid');
             }
 
@@ -95,7 +95,6 @@ final class Register extends AbstractController
 
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
             $user->setEnabled(true);
-            $user->eraseCredentials();
             $this->userRepository->save($user);
 
             // Auto-login and redirect

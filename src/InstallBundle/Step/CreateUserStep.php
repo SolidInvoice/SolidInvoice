@@ -18,11 +18,13 @@ use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\CreateUserStepTest
  */
+#[AsTaggedItem('Creating admin user', priority: 5)]
 final readonly class CreateUserStep implements InstallationStepInterface
 {
     public function __construct(

@@ -23,10 +23,12 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function assert;
 use function random_int;
 use function substr;
 
+#[AsTaggedItem(priority: 90)]
 final readonly class ClientDummyDataLoader implements DummyDataLoaderInterface
 {
     private Generator $faker;
@@ -47,7 +49,7 @@ final readonly class ClientDummyDataLoader implements DummyDataLoaderInterface
         $em = $this->registry->getManager();
         assert($em instanceof EntityManagerInterface);
 
-        //$currencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD'];
+        // $currencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD'];
         $currencies = ['USD'];
 
         for ($i = 0; $i < 10; ++$i) {

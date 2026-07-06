@@ -23,7 +23,6 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
-use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\MappedSuperclass]
@@ -45,8 +44,7 @@ abstract class BaseInvoice
     protected BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -59,8 +57,7 @@ abstract class BaseInvoice
     protected BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -73,8 +70,7 @@ abstract class BaseInvoice
     protected BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'object',
@@ -114,13 +110,11 @@ abstract class BaseInvoice
     protected Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $terms = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $notes = null;
 
     #[ORM\Column(name: 'withholding_amount', type: BigIntegerType::NAME, options: ['default' => 0])]

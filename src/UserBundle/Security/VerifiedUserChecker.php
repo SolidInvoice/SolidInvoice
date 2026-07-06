@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Security;
 use Override;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Toggler\ToggleInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -39,9 +40,9 @@ final class VerifiedUserChecker extends UserChecker
     }
 
     #[Override]
-    public function checkPostAuth(UserInterface $user): void
+    public function checkPostAuth(UserInterface $user, ?TokenInterface $token = null): void
     {
-        parent::checkPostAuth($user);
+        parent::checkPostAuth($user, $token);
 
         if (! $this->toggle->isActive('saas_enabled')) {
             return;

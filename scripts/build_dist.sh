@@ -157,7 +157,6 @@ fi
 
 composer config --no-plugins allow-plugins.symfony/flex true
 composer install -o -n --no-dev -a --ignore-platform-reqs # Platform requirements can be ignored since it's not needed on the build server
-#composer require runtime/frankenphp-symfony
 bun install
 bun run build
 rm -Rf node_modules .env .git

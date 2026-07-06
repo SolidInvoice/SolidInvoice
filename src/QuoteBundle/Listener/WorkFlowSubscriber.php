@@ -55,6 +55,11 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     */
     public function onQuoteAccepted(Event $event): void
     {
         $quote = $event->getSubject();
@@ -65,6 +70,10 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     *
      * @throws JsonException|InvalidTransitionException|TransportExceptionInterface
      */
     public function onWorkflowTransitionApplied(Event $event): void

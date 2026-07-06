@@ -111,7 +111,8 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
             return null;
         }
 
-        $companyId = $accessToken->getCompany()->getId();
+        $companyId = $accessToken->getCompany()
+            ->getId();
 
         $this->companySelector->switchCompany($companyId);
 
@@ -119,9 +120,6 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
         $decision = new AccessDecision();
 
-        // Symfony 7.3+ accepts an AccessDecision as a third optional argument;
-        // the interface declaration still describes it via comment-only signature.
-        // @phpstan-ignore arguments.count
         if (! $this->authorizationChecker->isGranted(Attribute::ACCESS, null, $decision)) {
             return $this->buildAccessDeniedResponse($this->extractReason($decision));
         }

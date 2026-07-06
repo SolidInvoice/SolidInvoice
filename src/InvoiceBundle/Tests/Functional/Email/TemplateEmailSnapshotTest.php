@@ -118,7 +118,8 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
                 'due' => new DateTimeImmutable('2024-02-15', new DateTimeZone('UTC')),
                 'terms' => 'Payment due within 30 days.',
                 'notes' => 'Thank you for your business.',
-                'discount' => new Discount()->setType(null),
+                'discount' => new Discount()
+                    ->setType(null),
                 'lines' => [
                     new Line()
                         ->setDescription('Sample line item')
@@ -127,8 +128,7 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
                         ->updateTotal(),
                 ],
                 'users' => [$contact],
-            ])
-            ->_real();
+            ]);
 
         $invoice
             ->setId(Ulid::fromString(self::INVOICE_ID))

@@ -18,6 +18,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
+use SolidInvoice\CoreBundle\Test\Traits\ConsoleTesterTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\MarkOverdueInvoicesCommand;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -29,7 +30,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Symfony\Component\Console\Tester\TesterTrait;
 use Zenstruck\Foundry\Test\Factories;
 use function rewind;
 use function str_replace;
@@ -40,7 +40,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
-    use TesterTrait;
+    use ConsoleTesterTrait;
 
     public function testCommandDispatchesMessageForOverdueInvoices(): void
     {
@@ -78,7 +78,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'client' => ClientFactory::createOne(['company' => $company1]),
         ]);
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
         self::assertStringContainsString('Processed 2 overdue invoices', $output);
         self::assertStringContainsString('Errors: 0', $output);
     }
@@ -95,7 +95,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'client' => ClientFactory::createOne(['company' => $company]),
         ]);
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertStringContainsString('Processed 0 overdue invoices', $output);
         self::assertStringContainsString('Errors: 0', $output);
@@ -129,7 +129,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'client' => ClientFactory::createOne(['company' => $company3]),
         ]);
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertStringContainsString('Processed 3 overdue invoices', $output);
     }
@@ -156,8 +156,14 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'company' => $company,
             'client' => $client,
             'lines' => [
-                new Line()->setDescription('Service A')->setQty(1)->setPrice(5000),
-                new Line()->setDescription('Service B')->setQty(2)->setPrice(2500),
+                new Line()
+                    ->setDescription('Service A')
+                    ->setQty(1)
+                    ->setPrice(5000),
+                new Line()
+                    ->setDescription('Service B')
+                    ->setQty(2)
+                    ->setPrice(2500),
             ],
         ]);
 
@@ -167,17 +173,20 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'company' => $company,
             'client' => $client,
             'lines' => [
-                new Line()->setDescription('Service C')->setQty(1)->setPrice(7500),
+                new Line()
+                    ->setDescription('Service C')
+                    ->setQty(1)
+                    ->setPrice(7500),
             ],
         ]);
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertStringContainsString('Processed 2 overdue invoices', $output);
         self::assertStringContainsString('Errors: 0', $output);
     }
 
-    private function runCommand(): string
+    private function runTestCommand(): string
     {
         $application = new Application(self::bootKernel());
 

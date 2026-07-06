@@ -65,7 +65,7 @@ final class NotificationTransportConfiguration extends AbstractController
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private readonly ServiceLocator $transportConfigurations,
         private readonly TransportSettingRepository $repository,
         private readonly EntityManagerInterface $entityManager,
@@ -121,7 +121,8 @@ final class NotificationTransportConfiguration extends AbstractController
     #[ExposeInTemplate]
     public function isNewSetting(): bool
     {
-        return ! $this->transportSetting()->getId() instanceof Ulid;
+        return ! $this->transportSetting()
+            ->getId() instanceof Ulid;
     }
 
     /**
@@ -134,7 +135,8 @@ final class NotificationTransportConfiguration extends AbstractController
 
         // For existing integrations (with an ID), get the type from the transport if not provided
         if (($this->type === null || $this->type === '') && ! $this->isNewSetting()) {
-            $this->type = $this->transportConfigurations->get($setting->getTransport())->getType();
+            $this->type = $this->transportConfigurations->get($setting->getTransport())
+                ->getType();
         }
 
         // Ensure type is set for new integrations
@@ -165,7 +167,8 @@ final class NotificationTransportConfiguration extends AbstractController
             $session = $this->requestStack->getSession();
             assert($session instanceof Session);
 
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
+            $session->getFlashBag()
+                ->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
 
             return $this->redirectToRoute('_notification_integration');
         }
@@ -182,10 +185,11 @@ final class NotificationTransportConfiguration extends AbstractController
 
         $session = $this->requestStack->getSession();
         assert($session instanceof Session);
-        $session->getFlashBag()->add(
-            FlashResponse::FLASH_SUCCESS,
-            $isNew ? 'Integration added' : 'Integration updated'
-        );
+        $session->getFlashBag()
+            ->add(
+                FlashResponse::FLASH_SUCCESS,
+                $isNew ? 'Integration added' : 'Integration updated'
+            );
         return $this->redirectToRoute('_notification_integration');
     }
 
@@ -209,21 +213,24 @@ final class NotificationTransportConfiguration extends AbstractController
         $setting = $this->transportSetting();
         // Check if the integration exists in the database (new entities don't have an ID)
         if ($this->isNewSetting()) {
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Integration does not exist');
+            $session->getFlashBag()
+                ->add(FlashResponse::FLASH_ERROR, 'Integration does not exist');
 
             return $this->redirectToRoute('_notification_integration');
         }
 
         // Verify ownership before deleting
         if ($setting->getUser() !== $this->getUser()) {
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'You do not have permission to delete this integration');
+            $session->getFlashBag()
+                ->add(FlashResponse::FLASH_ERROR, 'You do not have permission to delete this integration');
 
             return $this->redirectToRoute('_notification_integration');
         }
 
         $this->entityManager->remove($setting);
         $this->entityManager->flush();
-        $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Integration deleted');
+        $session->getFlashBag()
+            ->add(FlashResponse::FLASH_INFO, 'Integration deleted');
         return $this->redirectToRoute('_notification_integration');
     }
 }

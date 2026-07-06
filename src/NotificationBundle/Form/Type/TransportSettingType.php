@@ -36,7 +36,7 @@ final class TransportSettingType extends AbstractType
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private readonly ServiceLocator $transportConfigurations
     ) {
     }

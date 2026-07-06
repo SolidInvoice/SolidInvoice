@@ -20,8 +20,10 @@ use Faker\Generator;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function assert;
 
+#[AsTaggedItem(priority: 100)]
 final readonly class TaxDummyDataLoader implements DummyDataLoaderInterface
 {
     private Generator $faker;

@@ -54,28 +54,33 @@ class UserAccountStep extends AbstractType
                 'help' => 'The URL where this SolidInvoice instance is accessible. Include the protocol (http:// or https://).',
                 'constraints' => [
                     new NotBlank(),
-                    new Url(protocols: ['http', 'https']),
+                    // requireTld defaults to true in Symfony 8, but installing on
+                    // http://localhost or a plain IP address must remain possible.
+                    new Url(protocols: ['http', 'https'], requireTld: false),
                 ],
             ],
         );
 
-        $builder->get('applicationUrl')->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event): void {
-                if ($event->getData() !== null && $event->getData() !== '') {
-                    return;
-                }
+        $builder->get('applicationUrl')
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                function (FormEvent $event): void {
+                    if ($event->getData() !== null && $event->getData() !== '') {
+                        return;
+                    }
 
-                $root = $event->getForm()->getRoot()->getData();
+                    $root = $event->getForm()
+                        ->getRoot()
+                        ->getData();
 
-                if ($root instanceof Installation && $root->applicationUrl !== null && $root->applicationUrl !== '') {
-                    $event->setData($root->applicationUrl);
-                    return;
-                }
+                    if ($root instanceof Installation && $root->applicationUrl !== null && $root->applicationUrl !== '') {
+                        $event->setData($root->applicationUrl);
+                        return;
+                    }
 
-                $event->setData($this->requestStack->getCurrentRequest()?->getSchemeAndHttpHost());
-            },
-        );
+                    $event->setData($this->requestStack->getCurrentRequest()?->getSchemeAndHttpHost());
+                },
+            );
 
         $builder->add(
             'telemetryEnabled',
@@ -89,25 +94,34 @@ class UserAccountStep extends AbstractType
             ],
         );
 
-        $builder->get('telemetryEnabled')->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            static function (FormEvent $event): void {
-                $root = $event->getForm()->getRoot()->getData();
+        $builder->get('telemetryEnabled')
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                static function (FormEvent $event): void {
+                    $root = $event->getForm()
+                        ->getRoot()
+                        ->getData();
 
-                if ($root instanceof Installation) {
-                    $event->setData($root->telemetryEnabled);
-                }
-            },
-        );
+                    if ($root instanceof Installation) {
+                        $event->setData($root->telemetryEnabled);
+                    }
+                },
+            );
 
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
             static function (FormEvent $event): void {
-                $root = $event->getForm()->getRoot()->getData();
+                $root = $event->getForm()
+                    ->getRoot()
+                    ->getData();
 
                 if ($root instanceof Installation) {
-                    $root->applicationUrl = $event->getForm()->get('applicationUrl')->getData();
-                    $root->telemetryEnabled = (bool) $event->getForm()->get('telemetryEnabled')->getData();
+                    $root->applicationUrl = $event->getForm()
+                        ->get('applicationUrl')
+                        ->getData();
+                    $root->telemetryEnabled = (bool) $event->getForm()
+                        ->get('telemetryEnabled')
+                        ->getData();
                 }
             },
         );

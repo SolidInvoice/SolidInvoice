@@ -29,7 +29,7 @@ final class ContactCollectionTest extends LiveComponentTest
 
     public function testSaveNewContactPersistsCustomFieldValue(): void
     {
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $component = $this->createLiveComponent(
             name: ContactCollection::class,

@@ -21,6 +21,7 @@ use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Twig\Components\CreateQuote;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
 final class CreateQuoteTest extends LiveComponentTest
@@ -116,7 +117,7 @@ final class CreateQuoteTest extends LiveComponentTest
         ]);
 
         $dto = new QuoteFormDTO();
-        $dto->client = $client->_real();
+        $dto->client = $client;
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
@@ -124,7 +125,8 @@ final class CreateQuoteTest extends LiveComponentTest
             data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
-        $rendered = $component->render()->toString();
+        $rendered = $component->render()
+            ->toString();
 
         // Verify both contacts are displayed
         self::assertStringContainsString('John Doe', $rendered);
@@ -155,7 +157,7 @@ final class CreateQuoteTest extends LiveComponentTest
         ]);
 
         $dto = new QuoteFormDTO();
-        $dto->client = $client->_real();
+        $dto->client = $client;
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,

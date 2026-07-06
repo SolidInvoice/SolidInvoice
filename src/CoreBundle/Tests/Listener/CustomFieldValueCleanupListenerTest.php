@@ -35,7 +35,7 @@ final class CustomFieldValueCleanupListenerTest extends KernelTestCase
     public function testValuesDeletedWhenClientIsRemoved(): void
     {
         $company = CompanyFactory::createOne();
-        $client = ClientFactory::createOne(['company' => $company])->_real();
+        $client = ClientFactory::createOne(['company' => $company]);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $field = new CustomField()
@@ -43,14 +43,14 @@ final class CustomFieldValueCleanupListenerTest extends KernelTestCase
             ->setLabel('Department')
             ->setFieldKey('department')
             ->setType(CustomFieldType::TEXT)
-            ->setCompany($company->_real());
+            ->setCompany($company);
         $em->persist($field);
         $value = new CustomFieldValue()
             ->setField($field)
             ->setTarget(CustomFieldTarget::CLIENT)
             ->setTargetId($client->getId())
             ->setValue('Sales')
-            ->setCompany($company->_real());
+            ->setCompany($company);
         $em->persist($value);
         $em->flush();
 

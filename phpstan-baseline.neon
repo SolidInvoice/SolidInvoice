@@ -745,12 +745,6 @@ parameters:
 			path: src/DataGridBundle/GridBuilder/Filter/EntityFilter.php
 
 		-
-			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Formatter\\CurrencyFormatter\:\:format\(\) never returns Symfony\\Component\\Translation\\TranslatableMessage so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/DataGridBundle/GridBuilder/Formatter/CurrencyFormatter.php
-
-		-
 			message: '#^Method SolidInvoice\\DataGridBundle\\GridBuilder\\Formatter\\MoneyFormatter\:\:format\(\) never returns Symfony\\Component\\Translation\\TranslatableMessage so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -1369,12 +1363,6 @@ parameters:
 			path: src/PaymentBundle/Action/Prepare.php
 
 		-
-			message: '#^Using nullsafe method call on non\-nullable type Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/PaymentBundle/DependencyInjection/Configuration.php
-
-		-
 			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\Payment\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
@@ -1813,6 +1801,42 @@ parameters:
 			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
 
 		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\AddFirstClientStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\CustomizeLogoStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\RecurringBillingStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\SendFirstInvoiceStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\TurnInvoicesIntoPaymentsStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\WelcomeStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
@@ -2041,14 +2065,14 @@ parameters:
 			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\InvoiceTaxFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/InvoiceTaxFactory.php
 
@@ -2119,14 +2143,14 @@ parameters:
 			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\LineTaxFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/LineTaxFactory.php
 
@@ -2275,16 +2299,22 @@ parameters:
 			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:many\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:many\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
 
 		-
-			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:sequence\(\) return type contains generic class Zenstruck\\Foundry\\FactoryCollection but does not specify its types\: T, TFactory$#'
-			identifier: missingType.generics
+			message: '#^PHPDoc tag @method for method SolidInvoice\\TaxBundle\\Test\\Factory\\TaxIdentifierFactory\:\:sequence\(\) return type contains unresolvable type\.$#'
+			identifier: methodTag.unresolvableType
 			count: 1
 			path: src/TaxBundle/Test/Factory/TaxIdentifierFactory.php
+
+		-
+			message: '#^Method SolidInvoice\\TaxBundle\\Tests\\Listener\\SnapshotTaxesOnIssueListenerTest\:\:makeEvent\(\) return type with generic class Symfony\\Component\\Workflow\\Event\\Event does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/TaxBundle/Tests/Listener/SnapshotTaxesOnIssueListenerTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\TaxBundle\\\\Entity\\\\InvoiceTax'' and SolidInvoice\\TaxBundle\\Entity\\InvoiceTax will always evaluate to true\.$#'

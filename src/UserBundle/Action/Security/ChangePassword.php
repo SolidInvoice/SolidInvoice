@@ -46,7 +46,7 @@ final readonly class ChangePassword
      * @return array{form: FormView}|Response
      */
     #[Template('@SolidInvoiceUser/ChangePassword/change_password.html.twig')]
-    public function __invoke(Request $request): array | Response
+    public function __invoke(Request $request): array|Response
     {
         $changePasswordDTO = new ChangePasswordDTO();
         $form = $this->formFactory->create(ChangePasswordType::class, $changePasswordDTO, ['confirm_password' => true]);
@@ -69,13 +69,12 @@ final readonly class ChangePassword
                 $user->setPassword($hashedPassword);
             }
 
-            $user->eraseCredentials();
-
             $this->userRepository->save($user);
 
             $session = $request->getSession();
             assert($session instanceof Session);
-            $session->getFlashBag()->add('success', 'profile.password_change.success');
+            $session->getFlashBag()
+                ->add('success', 'profile.password_change.success');
 
             return new RedirectResponse($this->router->generate('_profile'));
         }

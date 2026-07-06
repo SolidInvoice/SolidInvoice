@@ -31,10 +31,12 @@ use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function array_rand;
 use function assert;
 use function random_int;
 
+#[AsTaggedItem(priority: 80)]
 final readonly class QuoteDummyDataLoader implements DummyDataLoaderInterface
 {
     private Generator $faker;
@@ -122,7 +124,8 @@ final readonly class QuoteDummyDataLoader implements DummyDataLoaderInterface
                         $line->addTax($lineTax);
 
                         if ($tax->getType() === Tax::TYPE_EXCLUSIVE) {
-                            $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);
+                            $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())
+                                ->dividedBy(100, 0, RoundingMode::HalfUp);
                             $taxTotal = $taxTotal->plus($taxAmount);
                         }
                     }
@@ -136,7 +139,8 @@ final readonly class QuoteDummyDataLoader implements DummyDataLoaderInterface
                     ->setTax($taxTotal)
                     ->setTotal($total);
 
-                $firstContact = $client->getContacts()->first();
+                $firstContact = $client->getContacts()
+                    ->first();
                 if (false !== $firstContact) {
                     $quote->addUser($firstContact);
                 }

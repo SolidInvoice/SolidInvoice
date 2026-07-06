@@ -47,7 +47,7 @@ class ClientType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
-        $builder->add('website', UrlType::class, ['required' => false]);
+        $builder->add('website', UrlType::class, ['required' => false, 'default_protocol' => 'http']);
 
         if ($this->featureGate->isEnabled(Feature::MultiCurrency->value)) {
             $builder->add(
@@ -149,7 +149,8 @@ class ClientType extends AbstractType
     private function resolveDefaultCurrencyCode(): ?string
     {
         try {
-            return $this->systemConfig->getCurrency()->getCode();
+            return $this->systemConfig->getCurrency()
+                ->getCode();
         } catch (RuntimeException) {
             return null;
         }

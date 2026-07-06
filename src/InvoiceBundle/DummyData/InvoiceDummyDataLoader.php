@@ -32,10 +32,12 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function array_rand;
 use function assert;
 use function random_int;
 
+#[AsTaggedItem(priority: 70)]
 final readonly class InvoiceDummyDataLoader implements DummyDataLoaderInterface
 {
     private Generator $faker;
@@ -130,7 +132,8 @@ final readonly class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                         $line->addTax($lineTax);
 
                         if ($tax->getType() === Tax::TYPE_EXCLUSIVE && $tax->getRate() > 0.0) {
-                            $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);
+                            $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())
+                                ->dividedBy(100, 0, RoundingMode::HalfUp);
                             $taxTotal = $taxTotal->plus($taxAmount);
                         }
                     }
@@ -150,7 +153,8 @@ final readonly class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                     $invoice->setBalance($total);
                 }
 
-                $firstContact = $client->getContacts()->first();
+                $firstContact = $client->getContacts()
+                    ->first();
                 if (false !== $firstContact) {
                     $invoice->addUser($firstContact);
                 }

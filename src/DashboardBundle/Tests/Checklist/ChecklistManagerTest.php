@@ -116,7 +116,7 @@ final class ChecklistManagerTest extends KernelTestCase
     public function testIsDismissedReturnsFalseWhenUserHasNotDismissedChecklist(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
         $manager = new ChecklistManager([], $userSettingRepository);
@@ -127,7 +127,7 @@ final class ChecklistManagerTest extends KernelTestCase
     public function testDismissSetsUserSetting(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
         $manager = new ChecklistManager([], $userSettingRepository);
@@ -140,7 +140,7 @@ final class ChecklistManagerTest extends KernelTestCase
     public function testShouldShowReturnsFalseWhenDismissed(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
         $manager = new ChecklistManager([], $userSettingRepository);
@@ -153,7 +153,7 @@ final class ChecklistManagerTest extends KernelTestCase
     public function testShouldShowReturnsTrueWhenNotDismissed(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
         $manager = new ChecklistManager([], $userSettingRepository);
@@ -185,13 +185,20 @@ final class ChecklistManagerTest extends KernelTestCase
         bool $isComplete
     ): ChecklistItemInterface {
         $item = $this->createStub(ChecklistItemInterface::class);
-        $item->method('getName')->willReturn($name);
-        $item->method('getDescription')->willReturn($description);
-        $item->method('getIcon')->willReturn($icon);
-        $item->method('getRoute')->willReturn($route);
-        $item->method('getPriority')->willReturn($priority);
-        $item->method('isComplete')->willReturn($isComplete);
-        $item->method('active')->willReturn(true);
+        $item->method('getName')
+            ->willReturn($name);
+        $item->method('getDescription')
+            ->willReturn($description);
+        $item->method('getIcon')
+            ->willReturn($icon);
+        $item->method('getRoute')
+            ->willReturn($route);
+        $item->method('getPriority')
+            ->willReturn($priority);
+        $item->method('isComplete')
+            ->willReturn($isComplete);
+        $item->method('active')
+            ->willReturn(true);
 
         return $item;
     }

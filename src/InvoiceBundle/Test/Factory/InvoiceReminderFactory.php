@@ -19,48 +19,47 @@ use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method InvoiceReminder|Proxy<InvoiceReminder> create((array | callable) $attributes = [])
- * @method static InvoiceReminder|Proxy<InvoiceReminder> createOne(array $attributes = [])
- * @method static InvoiceReminder|Proxy<InvoiceReminder> find((object | array | mixed) $criteria)
- * @method static InvoiceReminder|Proxy<InvoiceReminder> findOrCreate(array $attributes)
- * @method static InvoiceReminder|Proxy<InvoiceReminder> first(string $sortedField = 'id')
- * @method static InvoiceReminder|Proxy<InvoiceReminder> last(string $sortedField = 'id')
- * @method static InvoiceReminder|Proxy<InvoiceReminder> random(array $attributes = [])
- * @method static InvoiceReminder|Proxy<InvoiceReminder> randomOrCreate(array $attributes = [])
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] all()
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] createSequence((iterable | callable) $sequence)
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] findBy(array $attributes)
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static InvoiceReminder[]|Proxy<InvoiceReminder>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(InvoiceReminder | Proxy)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(InvoiceReminder | Proxy)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<InvoiceReminder, InvoiceReminderRepository> repository()
+ * @method InvoiceReminder create((array | callable) $attributes = [])
+ * @method static InvoiceReminder createOne(array $attributes = [])
+ * @method static InvoiceReminder find((object | array | mixed) $criteria)
+ * @method static InvoiceReminder findOrCreate(array $attributes)
+ * @method static InvoiceReminder first(string $sortedField = 'id')
+ * @method static InvoiceReminder last(string $sortedField = 'id')
+ * @method static InvoiceReminder random(array $attributes = [])
+ * @method static InvoiceReminder randomOrCreate(array $attributes = [])
+ * @method static InvoiceReminder[] all()
+ * @method static InvoiceReminder[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static InvoiceReminder[] createSequence((iterable | callable) $sequence)
+ * @method static InvoiceReminder[] findBy(array $attributes)
+ * @method static InvoiceReminder[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static InvoiceReminder[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<InvoiceReminder> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<InvoiceReminder> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<InvoiceReminder, InvoiceReminderRepository> repository()
  *
- * @phpstan-method InvoiceReminder&Proxy<InvoiceReminder> create((array | callable) $attributes = [])
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> createOne(array $attributes = [])
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> find((object | array | mixed) $criteria)
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> findOrCreate(array $attributes)
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> first(string $sortedField = 'id')
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> last(string $sortedField = 'id')
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> random(array $attributes = [])
- * @phpstan-method static InvoiceReminder&Proxy<InvoiceReminder> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> all()
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> createMany(int $number, (array | callable) $attributes = [])
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> createSequence((iterable | callable) $sequence)
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> findBy(array $attributes)
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<InvoiceReminder&Proxy<InvoiceReminder>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<InvoiceReminder&Proxy<InvoiceReminder>> many(int $min, (int | null) $max = null)
- * @phpstan-method FactoryCollection<InvoiceReminder&Proxy<InvoiceReminder>> sequence((iterable | callable) $sequence)
- * @extends PersistentProxyObjectFactory<InvoiceReminder>
+ * @phpstan-method InvoiceReminder create((array | callable) $attributes = [])
+ * @phpstan-method static InvoiceReminder createOne(array $attributes = [])
+ * @phpstan-method static InvoiceReminder find((object | array | mixed) $criteria)
+ * @phpstan-method static InvoiceReminder findOrCreate(array $attributes)
+ * @phpstan-method static InvoiceReminder first(string $sortedField = 'id')
+ * @phpstan-method static InvoiceReminder last(string $sortedField = 'id')
+ * @phpstan-method static InvoiceReminder random(array $attributes = [])
+ * @phpstan-method static InvoiceReminder randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<InvoiceReminder> all()
+ * @phpstan-method static list<InvoiceReminder> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<InvoiceReminder> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<InvoiceReminder> findBy(array $attributes)
+ * @phpstan-method static list<InvoiceReminder> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<InvoiceReminder> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<InvoiceReminder> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<InvoiceReminder> sequence((iterable | callable) $sequence)
+ * @extends PersistentObjectFactory<InvoiceReminder>
  */
-final class InvoiceReminderFactory extends PersistentProxyObjectFactory
+final class InvoiceReminderFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

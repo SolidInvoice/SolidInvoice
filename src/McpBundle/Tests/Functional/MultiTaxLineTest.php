@@ -43,7 +43,7 @@ final class MultiTaxLineTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'INR'])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'INR']);
 
         $cgst = TaxFactory::createOne([
             'name' => 'CGST',
@@ -51,7 +51,7 @@ final class MultiTaxLineTest extends KernelTestCase
             'type' => Tax::TYPE_EXCLUSIVE,
             'category' => TaxCategory::Standard,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $sgst = TaxFactory::createOne([
             'name' => 'SGST',
@@ -59,13 +59,14 @@ final class MultiTaxLineTest extends KernelTestCase
             'type' => Tax::TYPE_EXCLUSIVE,
             'category' => TaxCategory::Standard,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [
                 [
                     'description' => 'Consulting',
@@ -96,7 +97,7 @@ final class MultiTaxLineTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'CAD'])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'CAD']);
 
         $gst = TaxFactory::createOne([
             'name' => 'GST',
@@ -104,7 +105,7 @@ final class MultiTaxLineTest extends KernelTestCase
             'type' => Tax::TYPE_EXCLUSIVE,
             'category' => TaxCategory::Standard,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $qst = TaxFactory::createOne([
             'name' => 'QST',
@@ -113,13 +114,14 @@ final class MultiTaxLineTest extends KernelTestCase
             'category' => TaxCategory::Standard,
             'compound' => true,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $tool = self::getContainer()->get(QuoteWriteTools::class);
         self::assertInstanceOf(QuoteWriteTools::class, $tool);
 
         $result = $tool->createQuote(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [
                 [
                     'description' => 'Service',
@@ -144,10 +146,12 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Quote::class, $quote);
-        $line = $quote->getLines()->first();
+        $line = $quote->getLines()
+            ->first();
         self::assertCount(2, $line->getTaxes());
 
-        $persistedTaxes = $line->getTaxes()->toArray();
+        $persistedTaxes = $line->getTaxes()
+            ->toArray();
         usort($persistedTaxes, static fn ($a, $b): int => $a->getSequence() <=> $b->getSequence());
         self::assertSame('GST', $persistedTaxes[0]->getNameSnapshot());
         self::assertSame('QST', $persistedTaxes[1]->getNameSnapshot());
@@ -158,19 +162,20 @@ final class MultiTaxLineTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
         $vat = TaxFactory::createOne([
             'name' => 'VAT',
             'rate' => 20.0,
             'type' => Tax::TYPE_EXCLUSIVE,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [
                 ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'tax_id' => $vat->getId()->toRfc4122()],
             ],
@@ -184,7 +189,7 @@ final class MultiTaxLineTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -193,7 +198,8 @@ final class MultiTaxLineTest extends KernelTestCase
         $this->expectExceptionMessage('tax_id is required');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [
                 ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'taxes' => [['sequence' => 0]]],
             ],

@@ -45,29 +45,21 @@ return App::config([
                 // Route onboarding emails through the async transport so the hourly
                 // scheduler returns quickly and Messenger's retry strategy handles
                 // transient mailer failures.
-                SendOnboardingEmailMessage::class => [
-                    'senders' => ['async'],
-                ],
+                SendOnboardingEmailMessage::class => ['async'],
                 // Route invoice reminder dispatch through the async transport for the same
                 // reason: the hourly cron command must return quickly (seconds), not block
                 // while sending one SMTP email per qualifying invoice.  Without this routing
                 // the handler runs synchronously and a slow/unreachable mail server causes
                 // the cron to exceed Sentry's max_runtime → perpetual "timeout" alerts.
-                SendInvoiceReminderMessage::class => [
-                    'senders' => ['async'],
-                ],
+                SendInvoiceReminderMessage::class => ['async'],
                 // Full company data exports are long-running and email the user on completion,
                 // so they must run out-of-band from the HTTP request that triggered them.
-                RequestCompanyExport::class => [
-                    'senders' => ['async'],
-                ],
+                RequestCompanyExport::class => ['async'],
                 // Telemetry signals must be fire-and-forget — routing them through the async
                 // transport keeps the triggering web request fast and lets the worker drain
                 // them out-of-band. The handler swallows all errors and always acks, so a
                 // slow or unreachable Insights server never blocks the app or retries.
-                SendTelemetryMessage::class => [
-                    'senders' => ['async'],
-                ],
+                SendTelemetryMessage::class => ['async'],
             ],
             // Configure default bus
             'default_bus' => 'messenger.bus.default',

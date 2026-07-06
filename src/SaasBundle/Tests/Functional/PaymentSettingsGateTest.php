@@ -99,7 +99,7 @@ final class PaymentSettingsGateTest extends WebTestCase
             self::getContainer()->set(FeatureGate::class, $featureGate);
         }
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
         self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 

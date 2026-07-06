@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
+use SolidInvoice\CoreBundle\Test\Traits\ConsoleTesterTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
@@ -33,7 +34,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Symfony\Component\Console\Tester\TesterTrait;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Zenstruck\Foundry\Test\Factories;
 use function rewind;
@@ -45,13 +45,13 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
-    use TesterTrait;
+    use ConsoleTesterTrait;
 
     public function testCommandExecutesSuccessfully(): void
     {
         CompanyFactory::createOne();
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
         self::assertStringContainsString('Processing pre-due reminders', $output);
@@ -63,7 +63,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         CompanyFactory::createOne();
         CompanyFactory::createOne();
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
         self::assertStringContainsString('Processing pre-due reminders', $output);
@@ -72,7 +72,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
 
     public function testCommandHandlesNoCompanies(): void
     {
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
         self::assertStringContainsString('Processing pre-due reminders', $output);
@@ -111,7 +111,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
         self::assertStringContainsString('Dispatched 1 pre-due reminder', $output);
@@ -131,7 +131,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         self::assertInstanceOf(SendInvoiceReminderMessage::class, $transport->getSent()[0]->getMessage());
     }
 
-    private function runCommand(): string
+    private function runTestCommand(): string
     {
         $application = new Application(self::bootKernel());
 

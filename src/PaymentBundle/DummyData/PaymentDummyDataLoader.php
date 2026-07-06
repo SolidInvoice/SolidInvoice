@@ -25,8 +25,10 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function assert;
 
+#[AsTaggedItem(priority: 60)]
 final readonly class PaymentDummyDataLoader implements DummyDataLoaderInterface
 {
     private Generator $faker;
@@ -73,7 +75,8 @@ final readonly class PaymentDummyDataLoader implements DummyDataLoaderInterface
             $payment->setCurrencyCode($currencyCode);
             $payment->setCreated($invoice->getPaidDate());
 
-            $firstContact = $client->getContacts()->first();
+            $firstContact = $client->getContacts()
+                ->first();
             if (false !== $firstContact) {
                 $payment->setClientEmail($firstContact->getEmail());
             }

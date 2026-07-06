@@ -37,6 +37,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Zenstruck\Foundry\Test\Factories;
+use function Zenstruck\Foundry\Persistence\save;
 
 #[CoversClass(SendInvoiceRemindersCommand::class)]
 #[CoversClass(InvoiceRepository::class)]
@@ -78,9 +79,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $this->enableReminders();
 
         // Step 1: Pre-due reminder (3 days before)
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(1, $reminders);
         self::assertSame(ReminderType::PreDue, $reminders[0]->getReminderType());
         self::assertSame(ReminderStatus::Sent, $reminders[0]->getStatus());
@@ -89,42 +90,42 @@ final class InvoiceReminderFlowTest extends KernelTestCase
 
         // Step 2: Update invoice to 1 day overdue
         $invoice->setDue(CarbonImmutable::now()->modify('-1 day'));
-        $invoice->_save();
+        save($invoice);
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(2, $reminders);
         self::assertSame(ReminderType::Overdue1, $reminders[1]->getReminderType());
 
         // Step 3: Update invoice to 7 days overdue
         $invoice->setDue(CarbonImmutable::now()->modify('-7 days'));
-        $invoice->_save();
+        save($invoice);
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(3, $reminders);
         self::assertSame(ReminderType::Overdue7, $reminders[2]->getReminderType());
 
         // Step 4: Update invoice to 14 days overdue (final automated reminder)
         $invoice->setDue(CarbonImmutable::now()->modify('-14 days'));
-        $invoice->_save();
+        save($invoice);
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(4, $reminders);
         self::assertSame(ReminderType::Overdue14, $reminders[3]->getReminderType());
 
         // Step 5: Update invoice to 30 days overdue (no more automated reminders)
         $invoice->setDue(CarbonImmutable::now()->modify('-30 days'));
-        $invoice->_save();
+        save($invoice);
 
-        $this->runCommand();
+        $this->runTestCommand();
 
         // Should still have only 4 reminders (no more automated reminders after day 14)
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(4, $reminders);
     }
 
@@ -144,9 +145,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         // Disable reminders
         $this->disableReminders();
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(0, $reminders);
     }
 
@@ -167,9 +168,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $this->enableReminders();
         $this->disablePreDueReminders();
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(0, $reminders);
     }
 
@@ -189,10 +190,10 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $this->enableReminders();
 
         // Run command twice
-        $this->runCommand();
-        $this->runCommand();
+        $this->runTestCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(1, $reminders, 'Should only send one reminder, not duplicate');
     }
 
@@ -211,9 +212,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
 
         $this->enableReminders();
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(0, $reminders);
     }
 
@@ -231,9 +232,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
 
         $this->enableReminders();
 
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(0, $reminders);
     }
 
@@ -254,21 +255,21 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $this->enableReminders();
 
         // First run should create one reminder
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(1, $reminders);
         self::assertSame(ReminderType::PreDue, $reminders[0]->getReminderType());
 
         // Second run with same invoice state should not create duplicate
         // (idempotency guard should prevent it)
-        $this->runCommand();
+        $this->runTestCommand();
 
-        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        $reminders = $this->reminderRepository->getReminderHistory($invoice);
         self::assertCount(1, $reminders, 'Idempotency guard should prevent duplicate reminder');
     }
 
-    private function runCommand(): void
+    private function runTestCommand(): void
     {
         // Get the command directly from the container
         $command = self::getContainer()->get(SendInvoiceRemindersCommand::class);

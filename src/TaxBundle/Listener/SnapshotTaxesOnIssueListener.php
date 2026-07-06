@@ -74,6 +74,11 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     */
     public function onTransition(Event $event): void
     {
         $subject = $event->getSubject();
@@ -117,6 +122,11 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     */
     private function isLeavingDraft(Event $event, BaseInvoice|Quote $subject): bool
     {
         $transition = $event->getTransition();

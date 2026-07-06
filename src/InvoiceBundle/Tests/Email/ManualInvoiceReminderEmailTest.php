@@ -53,9 +53,9 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
         ]);
 
-        $invoice->_real()->setInvoiceId('INV-2024-001');
+        $invoice->setInvoiceId('INV-2024-001');
 
-        $email = new ManualInvoiceReminderEmail($invoice->_real());
+        $email = new ManualInvoiceReminderEmail($invoice);
 
         self::assertSame('Payment Reminder: Invoice INV-2024-001', $email->getSubject());
     }
@@ -70,7 +70,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
         ]);
 
-        $email = new ManualInvoiceReminderEmail($invoice->_real());
+        $email = new ManualInvoiceReminderEmail($invoice);
 
         self::assertSame('@SolidInvoiceInvoice/Email/manual_reminder.html.twig', $email->getHtmlTemplate());
         self::assertSame('@SolidInvoiceInvoice/Email/manual_reminder.text.twig', $email->getTextTemplate());
@@ -86,11 +86,11 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
         ]);
 
-        $email = new ManualInvoiceReminderEmail($invoice->_real());
+        $email = new ManualInvoiceReminderEmail($invoice);
 
         $context = $email->getContext();
         self::assertArrayHasKey('invoice', $context);
-        self::assertSame($invoice->_real(), $context['invoice']);
+        self::assertSame($invoice, $context['invoice']);
     }
 
     public function testGetInvoiceReturnsCorrectInvoice(): void
@@ -103,9 +103,9 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
         ]);
 
-        $email = new ManualInvoiceReminderEmail($invoice->_real());
+        $email = new ManualInvoiceReminderEmail($invoice);
 
-        self::assertSame($invoice->_real(), $email->getInvoice());
+        self::assertSame($invoice, $email->getInvoice());
     }
 
     public function testHtmlTemplateRendersCorrectly(): void
@@ -136,8 +136,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                         ->updateTotal(),
                 ],
                 'tax' => 0,
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::INVOICE_ID);
         $invoice->setId($uuid)
@@ -179,8 +178,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
                         ->updateTotal(),
                 ],
                 'tax' => 0,
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::INVOICE_ID);
         $invoice->setId($uuid)

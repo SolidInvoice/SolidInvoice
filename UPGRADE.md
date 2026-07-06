@@ -1,3 +1,17 @@
+Unreleased
+==========
+
+* SolidInvoice was upgraded to **Symfony 8.1** and now requires **PHP 8.4.1 or
+  higher**.
+* The **Sms77** and **Gitter** notification transports were removed, as the
+  underlying Symfony bridges are discontinued. If you had a notification
+  transport configured for one of these services, configure a different
+  transport after upgrading.
+* All existing remember-me cookies are invalidated by the upgrade; users simply
+  need to log in again.
+* Client website URLs are now validated to require a proper domain (URLs such as
+  `http://localhost` are rejected).
+
 2.3.17
 ======
 

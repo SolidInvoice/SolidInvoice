@@ -15,9 +15,11 @@ namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Override;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AsTaggedItem(priority: 40)]
 final class UpgradeOfferStep extends AbstractOnboardingEmailStep
 {
     public function __construct(

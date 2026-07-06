@@ -37,8 +37,8 @@ final class RecordPaymentTest extends ApiTestCase
 
     public function testRecordPayment(): void
     {
-        $client = ClientFactory::createOne(['currencyCode' => 'USD'])->_real();
-        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Pending, 'client' => $client])->_real();
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Pending, 'client' => $client]);
 
         PaymentMethodFactory::createOne([
             'factoryName' => 'offline',
@@ -63,8 +63,8 @@ final class RecordPaymentTest extends ApiTestCase
 
     public function testCannotRecordPaymentForDraftInvoice(): void
     {
-        $client = ClientFactory::createOne(['currencyCode' => 'USD'])->_real();
-        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft, 'client' => $client])->_real();
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft, 'client' => $client]);
 
         PaymentMethodFactory::createOne([
             'factoryName' => 'offline',
@@ -91,8 +91,8 @@ final class RecordPaymentTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $foreignClient = ClientFactory::createOne(['company' => $otherCompany])->_real();
-        $foreignInvoice = InvoiceFactory::createOne(['client' => $foreignClient, 'status' => InvoiceStatus::Pending])->_real();
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
+        $foreignInvoice = InvoiceFactory::createOne(['client' => $foreignClient, 'status' => InvoiceStatus::Pending]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         PaymentMethodFactory::createOne([

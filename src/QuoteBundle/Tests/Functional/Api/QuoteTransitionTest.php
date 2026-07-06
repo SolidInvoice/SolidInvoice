@@ -39,9 +39,9 @@ final class QuoteTransitionTest extends ApiTestCase
 
     private function createQuoteWithContact(): Quote
     {
-        $client = ClientFactory::createOne()->_real();
-        $contact = ContactFactory::createOne(['client' => $client])->_real();
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft, 'client' => $client])->_real();
+        $client = ClientFactory::createOne();
+        $contact = ContactFactory::createOne(['client' => $client]);
+        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft, 'client' => $client]);
         $quote->addUser($contact);
         self::getContainer()->get('doctrine')->getManager()->flush();
 
@@ -83,12 +83,12 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testDeclineQuote(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPost(
             sprintf('/api/quotes/%s/transitions/decline', $quote->getId()),
@@ -100,7 +100,7 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testInvalidTransition(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft]);
 
         self::$client->request('POST', sprintf('/api/quotes/%s/transitions/accept', $quote->getId()), [
             'headers' => [
@@ -115,12 +115,12 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testConvertQuoteToInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPostExpecting(
             sprintf('/api/quotes/%s/invoice', $quote->getId()),
@@ -129,17 +129,17 @@ final class QuoteTransitionTest extends ApiTestCase
         );
 
         self::assertSame('Invoice', $result['@type']);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
     }
 
     public function testCannotConvertTwice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $quoteId = $quote->getId();
 
@@ -166,7 +166,7 @@ final class QuoteTransitionTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $foreignQuote = QuoteFactory::createOne(['company' => $otherCompany, 'status' => QuoteStatus::Draft])->_real();
+        $foreignQuote = QuoteFactory::createOne(['company' => $otherCompany, 'status' => QuoteStatus::Draft]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request('POST', sprintf('/api/quotes/%s/transitions/send', $foreignQuote->getId()), [
@@ -184,7 +184,7 @@ final class QuoteTransitionTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $foreignQuote = QuoteFactory::createOne(['company' => $otherCompany, 'status' => QuoteStatus::Draft])->_real();
+        $foreignQuote = QuoteFactory::createOne(['company' => $otherCompany, 'status' => QuoteStatus::Draft]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request('POST', sprintf('/api/quotes/%s/invoice', $foreignQuote->getId()), [

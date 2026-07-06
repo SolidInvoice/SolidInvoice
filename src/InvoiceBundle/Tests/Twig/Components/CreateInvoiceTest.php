@@ -122,7 +122,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         $dto = new InvoiceFormDTO();
         $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
-        $dto->client = $client->_real();
+        $dto->client = $client;
         $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
@@ -130,7 +130,8 @@ final class CreateInvoiceTest extends LiveComponentTest
             data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
-        $rendered = $component->render()->toString();
+        $rendered = $component->render()
+            ->toString();
 
         // Verify both contacts are displayed
         self::assertStringContainsString('John Doe', $rendered);
@@ -157,14 +158,14 @@ final class CreateInvoiceTest extends LiveComponentTest
         $client = ClientFactory::createOne([
             'name' => 'Acme Corp',
             'currencyCode' => 'USD',
-        ])->_real();
+        ]);
 
         $contact = ContactFactory::createOne([
             'firstName' => 'Alice',
             'lastName' => 'Smith',
             'email' => 'alice@example.com',
             'client' => $client,
-        ])->_real();
+        ]);
 
         // Build a persisted Pending invoice (accept transition already applied).
         $line = new Line()
@@ -240,7 +241,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         $dto = new InvoiceFormDTO();
         $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
-        $dto->client = $client->_real();
+        $dto->client = $client;
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,

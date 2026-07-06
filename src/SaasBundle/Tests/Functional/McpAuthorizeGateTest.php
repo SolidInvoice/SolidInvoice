@@ -52,7 +52,8 @@ final class McpAuthorizeGateTest extends WebTestCase
             ->willReturnCallback(static fn (string $key): string => $key === 'mcp_access'
                 ? '<div class="alert alert-warning"><strong>MCP locked</strong></div>'
                 : '');
-        $upgradeProvider->method('menuLabel')->willReturn('Business');
+        $upgradeProvider->method('menuLabel')
+            ->willReturn('Business');
 
         $client = $this->bootClient($featureGate, $upgradeProvider);
 
@@ -67,7 +68,8 @@ final class McpAuthorizeGateTest extends WebTestCase
         ]);
 
         self::assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
-        $body = (string) $client->getResponse()->getContent();
+        $body = (string) $client->getResponse()
+            ->getContent();
         self::assertStringContainsString('MCP locked', $body);
     }
 
@@ -76,17 +78,20 @@ final class McpAuthorizeGateTest extends WebTestCase
         // The plan includes mcp_access, but the tenant is not on a paid subscription
         // (e.g. a trial). MCP must still be gated behind the upgrade page.
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
 
         $upgradeProvider = $this->createStub(UpgradePromptProvider::class);
         $upgradeProvider->method('prompt')
             ->willReturnCallback(static fn (string $key): string => $key === 'mcp_access'
                 ? '<div class="alert alert-warning"><strong>MCP locked</strong></div>'
                 : '');
-        $upgradeProvider->method('menuLabel')->willReturn('Business');
+        $upgradeProvider->method('menuLabel')
+            ->willReturn('Business');
 
         $paidGate = $this->createStub(PaidSubscriptionGateInterface::class);
-        $paidGate->method('isPaid')->willReturn(false);
+        $paidGate->method('isPaid')
+            ->willReturn(false);
 
         $client = $this->bootClient($featureGate, $upgradeProvider, $paidGate);
 
@@ -142,7 +147,7 @@ final class McpAuthorizeGateTest extends WebTestCase
             self::getContainer()->set(PaidSubscriptionGateInterface::class, $paidGate);
         }
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
         self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 

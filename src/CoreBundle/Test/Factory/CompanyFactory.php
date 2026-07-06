@@ -16,48 +16,47 @@ namespace SolidInvoice\CoreBundle\Test\Factory;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method Company|Proxy<Company> create(array|callable $attributes = [])
- * @method static Company|Proxy<Company> createOne(array $attributes = [])
- * @method static Company|Proxy<Company> find(object|array|mixed $criteria)
- * @method static Company|Proxy<Company> findOrCreate(array $attributes)
- * @method static Company|Proxy<Company> first(string $sortedField = 'id')
- * @method static Company|Proxy<Company> last(string $sortedField = 'id')
- * @method static Company|Proxy<Company> random(array $attributes = [])
- * @method static Company|Proxy<Company> randomOrCreate(array $attributes = [])
- * @method static Company[]|Proxy<Company>[] all()
- * @method static Company[]|Proxy<Company>[] createMany(int $number, array|callable $attributes = [])
- * @method static Company[]|Proxy<Company>[] createSequence(iterable|callable $sequence)
- * @method static Company[]|Proxy<Company>[] findBy(array $attributes)
- * @method static Company[]|Proxy<Company>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static Company[]|Proxy<Company>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<Company|Proxy<Company>> many(int $min, int|null $max = null)
- * @method FactoryCollection<Company|Proxy<Company>> sequence(iterable|callable $sequence)
- * @method static ProxyRepositoryDecorator<Company, CompanyRepository> repository()
+ * @method Company create(array|callable $attributes = [])
+ * @method static Company createOne(array $attributes = [])
+ * @method static Company find(object|array|mixed $criteria)
+ * @method static Company findOrCreate(array $attributes)
+ * @method static Company first(string $sortedField = 'id')
+ * @method static Company last(string $sortedField = 'id')
+ * @method static Company random(array $attributes = [])
+ * @method static Company randomOrCreate(array $attributes = [])
+ * @method static Company[] all()
+ * @method static Company[] createMany(int $number, array|callable $attributes = [])
+ * @method static Company[] createSequence(iterable|callable $sequence)
+ * @method static Company[] findBy(array $attributes)
+ * @method static Company[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static Company[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Company> many(int $min, int|null $max = null)
+ * @method FactoryCollection<Company> sequence(iterable|callable $sequence)
+ * @method static RepositoryDecorator<Company, CompanyRepository> repository()
  *
- * @phpstan-method Company&Proxy<Company> create(array|callable $attributes = [])
- * @phpstan-method static Company&Proxy<Company> createOne(array $attributes = [])
- * @phpstan-method static Company&Proxy<Company> find(object|array|mixed $criteria)
- * @phpstan-method static Company&Proxy<Company> findOrCreate(array $attributes)
- * @phpstan-method static Company&Proxy<Company> first(string $sortedField = 'id')
- * @phpstan-method static Company&Proxy<Company> last(string $sortedField = 'id')
- * @phpstan-method static Company&Proxy<Company> random(array $attributes = [])
- * @phpstan-method static Company&Proxy<Company> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<Company&Proxy<Company>> all()
- * @phpstan-method static list<Company&Proxy<Company>> createMany(int $number, array|callable $attributes = [])
- * @phpstan-method static list<Company&Proxy<Company>> createSequence(iterable|callable $sequence)
- * @phpstan-method static list<Company&Proxy<Company>> findBy(array $attributes)
- * @phpstan-method static list<Company&Proxy<Company>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Company&Proxy<Company>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<Company&Proxy<Company>> many(int $min, int|null $max = null)
- * @phpstan-method FactoryCollection<Company&Proxy<Company>> sequence(iterable|callable $sequence)
- * @extends PersistentProxyObjectFactory<Company>
+ * @phpstan-method Company create(array|callable $attributes = [])
+ * @phpstan-method static Company createOne(array $attributes = [])
+ * @phpstan-method static Company find(object|array|mixed $criteria)
+ * @phpstan-method static Company findOrCreate(array $attributes)
+ * @phpstan-method static Company first(string $sortedField = 'id')
+ * @phpstan-method static Company last(string $sortedField = 'id')
+ * @phpstan-method static Company random(array $attributes = [])
+ * @phpstan-method static Company randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Company> all()
+ * @phpstan-method static list<Company> createMany(int $number, array|callable $attributes = [])
+ * @phpstan-method static list<Company> createSequence(iterable|callable $sequence)
+ * @phpstan-method static list<Company> findBy(array $attributes)
+ * @phpstan-method static list<Company> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Company> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Company> many(int $min, int|null $max = null)
+ * @phpstan-method FactoryCollection<Company> sequence(iterable|callable $sequence)
+ * @extends PersistentObjectFactory<Company>
  */
-final class CompanyFactory extends PersistentProxyObjectFactory
+final class CompanyFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

@@ -42,7 +42,7 @@ class SystemInstallation extends AbstractController
      * @param ServiceLocator<InstallationStepInterface> $steps
      */
     public function __construct(
-        #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
+        #[AutowireLocator(InstallationStepInterface::DI_TAG)]
         private readonly ServiceLocator $steps,
         #[Autowire(env: 'SOLIDINVOICE_CONFIG_DIR')]
         private readonly string $configDir,

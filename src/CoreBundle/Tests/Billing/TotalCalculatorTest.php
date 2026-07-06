@@ -50,7 +50,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(1)
@@ -69,7 +69,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -88,7 +88,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -112,7 +112,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne()->_real());
+        $invoice->setClient(ClientFactory::createOne());
 
         $item = new Line();
         $item->setQty(2)
@@ -140,7 +140,7 @@ final class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -169,7 +169,7 @@ final class TotalCalculatorTest extends KernelTestCase
             ->setRate(2);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -198,7 +198,7 @@ final class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -227,7 +227,7 @@ final class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -260,7 +260,7 @@ final class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
 
         $item = new Line();
         $item->setQty(2)
@@ -287,7 +287,7 @@ final class TotalCalculatorTest extends KernelTestCase
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
         $invoice->setTotal(30000);
         $invoice->setBaseTotal(30000);
         $invoice->setBalance(30000);

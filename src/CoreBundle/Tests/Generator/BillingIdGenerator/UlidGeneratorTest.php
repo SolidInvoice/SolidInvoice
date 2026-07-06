@@ -27,7 +27,7 @@ final class UlidGeneratorTest extends TestCase
         $generator = new UlidGenerator();
 
         $value = $generator->generate(new stdClass(), []);
-        self::assertTrue(Ulid::isValid($value));
+        self::assertTrue(Ulid::isValid($value, Ulid::FORMAT_BASE_32));
     }
 
     public function testGenerateWithLength(): void

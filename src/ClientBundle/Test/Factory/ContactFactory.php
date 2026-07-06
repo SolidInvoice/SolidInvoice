@@ -17,48 +17,47 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method Contact|Proxy<Contact> create(array|callable $attributes = [])
- * @method static Contact|Proxy<Contact> createOne(array $attributes = [])
- * @method static Contact|Proxy<Contact> find(object|array|mixed $criteria)
- * @method static Contact|Proxy<Contact> findOrCreate(array $attributes)
- * @method static Contact|Proxy<Contact> first(string $sortedField = 'id')
- * @method static Contact|Proxy<Contact> last(string $sortedField = 'id')
- * @method static Contact|Proxy<Contact> random(array $attributes = [])
- * @method static Contact|Proxy<Contact> randomOrCreate(array $attributes = [])
- * @method static Contact[]|Proxy<Contact>[] all()
- * @method static Contact[]|Proxy<Contact>[] createMany(int $number, array|callable $attributes = [])
- * @method static Contact[]|Proxy<Contact>[] createSequence(iterable|callable $sequence)
- * @method static Contact[]|Proxy<Contact>[] findBy(array $attributes)
- * @method static Contact[]|Proxy<Contact>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static Contact[]|Proxy<Contact>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<Contact|Proxy<Contact>> many(int $min, int|null $max = null)
- * @method FactoryCollection<Contact|Proxy<Contact>> sequence(iterable|callable $sequence)
- * @method static ProxyRepositoryDecorator<Contact, ContactRepository> repository()
+ * @method Contact create(array|callable $attributes = [])
+ * @method static Contact createOne(array $attributes = [])
+ * @method static Contact find(object|array|mixed $criteria)
+ * @method static Contact findOrCreate(array $attributes)
+ * @method static Contact first(string $sortedField = 'id')
+ * @method static Contact last(string $sortedField = 'id')
+ * @method static Contact random(array $attributes = [])
+ * @method static Contact randomOrCreate(array $attributes = [])
+ * @method static Contact[] all()
+ * @method static Contact[] createMany(int $number, array|callable $attributes = [])
+ * @method static Contact[] createSequence(iterable|callable $sequence)
+ * @method static Contact[] findBy(array $attributes)
+ * @method static Contact[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static Contact[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Contact> many(int $min, int|null $max = null)
+ * @method FactoryCollection<Contact> sequence(iterable|callable $sequence)
+ * @method static RepositoryDecorator<Contact, ContactRepository> repository()
  *
- * @phpstan-method Contact&Proxy<Contact> create(array|callable $attributes = [])
- * @phpstan-method static Contact&Proxy<Contact> createOne(array $attributes = [])
- * @phpstan-method static Contact&Proxy<Contact> find(object|array|mixed $criteria)
- * @phpstan-method static Contact&Proxy<Contact> findOrCreate(array $attributes)
- * @phpstan-method static Contact&Proxy<Contact> first(string $sortedField = 'id')
- * @phpstan-method static Contact&Proxy<Contact> last(string $sortedField = 'id')
- * @phpstan-method static Contact&Proxy<Contact> random(array $attributes = [])
- * @phpstan-method static Contact&Proxy<Contact> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<Contact&Proxy<Contact>> all()
- * @phpstan-method static list<Contact&Proxy<Contact>> createMany(int $number, array|callable $attributes = [])
- * @phpstan-method static list<Contact&Proxy<Contact>> createSequence(iterable|callable $sequence)
- * @phpstan-method static list<Contact&Proxy<Contact>> findBy(array $attributes)
- * @phpstan-method static list<Contact&Proxy<Contact>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Contact&Proxy<Contact>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<Contact&Proxy<Contact>> many(int $min, int|null $max = null)
- * @phpstan-method FactoryCollection<Contact&Proxy<Contact>> sequence(iterable|callable $sequence)
- * @extends PersistentProxyObjectFactory<Contact>
+ * @phpstan-method Contact create(array|callable $attributes = [])
+ * @phpstan-method static Contact createOne(array $attributes = [])
+ * @phpstan-method static Contact find(object|array|mixed $criteria)
+ * @phpstan-method static Contact findOrCreate(array $attributes)
+ * @phpstan-method static Contact first(string $sortedField = 'id')
+ * @phpstan-method static Contact last(string $sortedField = 'id')
+ * @phpstan-method static Contact random(array $attributes = [])
+ * @phpstan-method static Contact randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Contact> all()
+ * @phpstan-method static list<Contact> createMany(int $number, array|callable $attributes = [])
+ * @phpstan-method static list<Contact> createSequence(iterable|callable $sequence)
+ * @phpstan-method static list<Contact> findBy(array $attributes)
+ * @phpstan-method static list<Contact> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Contact> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Contact> many(int $min, int|null $max = null)
+ * @phpstan-method FactoryCollection<Contact> sequence(iterable|callable $sequence)
+ * @extends PersistentObjectFactory<Contact>
  */
-final class ContactFactory extends PersistentProxyObjectFactory
+final class ContactFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

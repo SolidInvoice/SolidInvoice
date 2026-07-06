@@ -92,7 +92,7 @@ final class DeleteUserInviteTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'admin@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();

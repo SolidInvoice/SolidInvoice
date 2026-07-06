@@ -32,7 +32,7 @@ final class ClientCreditTest extends LiveComponentTest
         $client = ClientFactory::createOne([
             'currencyCode' => 'USD',
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $html = $this
             ->createLiveComponent(
@@ -72,7 +72,7 @@ final class ClientCreditTest extends LiveComponentTest
         $client = ClientFactory::createOne([
             'currencyCode' => 'USD',
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $clientId = $client->getId();
         self::assertInstanceOf(Ulid::class, $clientId);
@@ -100,7 +100,8 @@ final class ClientCreditTest extends LiveComponentTest
 
         self::assertNotNull($updatedClient);
 
-        $creditValue = $updatedClient->getCredit()->getValue();
+        $creditValue = $updatedClient->getCredit()
+            ->getValue();
 
         self::assertTrue(
             BigDecimal::of(1000)->isEqualTo($creditValue),

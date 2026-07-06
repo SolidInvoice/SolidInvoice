@@ -202,7 +202,7 @@ final class OnboardingFlowTest extends WebTestCase
         $user = UserFactory::createOne([
             'email' => 'invited@example.com',
             'companies' => [$company],
-        ])->_real();
+        ]);
 
         // Hash the password
         $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
@@ -277,7 +277,7 @@ final class OnboardingFlowTest extends WebTestCase
             // Should be on client step again
             ->assertSee("Let's get you set up")
             // Data should be preserved
-            //->assertFieldEquals('onboarding[client][clientName]', 'Test Client')
+            // ->assertFieldEquals('onboarding[client][clientName]', 'Test Client')
         ;
     }
 

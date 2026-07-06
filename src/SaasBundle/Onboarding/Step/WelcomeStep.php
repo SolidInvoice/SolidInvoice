@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+
+#[AsTaggedItem(priority: 100)]
 final class WelcomeStep extends AbstractOnboardingEmailStep
 {
     public static function key(): string

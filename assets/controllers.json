@@ -32,7 +32,7 @@
         "@symfony/ux-chartjs": {
             "chart": {
                 "enabled": true,
-                "fetch": "lazy"
+                "fetch": "eager"
             }
         },
         "@symfony/ux-dropzone": {

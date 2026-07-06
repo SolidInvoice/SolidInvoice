@@ -48,6 +48,11 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     */
     public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Invoice|RecurringInvoice $invoice */

@@ -24,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => 'onKernelException',
@@ -42,9 +42,11 @@ class ExceptionListener implements EventSubscriberInterface
         $exception = $event->getThrowable();
 
         if ($exception instanceof ApplicationInstalledException) {
-            $session = $event->getRequest()->getSession();
+            $session = $event->getRequest()
+                ->getSession();
             assert($session instanceof Session);
-            $session->getFlashBag()->add('error', $this->translator->trans($exception->getMessage()));
+            $session->getFlashBag()
+                ->add('error', $this->translator->trans($exception->getMessage()));
 
             $event->setResponse(new RedirectResponse($this->router->generate('_home')));
             $event->stopPropagation();

@@ -104,7 +104,8 @@ final class UserRepositoryTest extends KernelTestCase
     public function testRefreshUser(): void
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-        $user = $executor->getReferenceRepository()->getReference('user2', User::class);
+        $user = $executor->getReferenceRepository()
+            ->getReference('user2', User::class);
         $newUser = $this->repository->refreshUser($user);
         self::assertInstanceOf(User::class, $newUser);
         self::assertSame($user->getId(), $newUser->getId());
@@ -122,10 +123,6 @@ final class UserRepositoryTest extends KernelTestCase
             public function getUserIdentifier(): string
             {
                 return 'abc';
-            }
-
-            public function eraseCredentials(): void
-            {
             }
         };
 

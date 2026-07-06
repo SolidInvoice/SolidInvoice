@@ -35,7 +35,7 @@ final class AccessTokenTouchTest extends KernelTestCase
 
     public function testTouchUpdatesLastUsedAt(): void
     {
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
         self::assertInstanceOf(User::class, $user);
 
         $container = self::getContainer();
@@ -71,7 +71,8 @@ final class AccessTokenTouchTest extends KernelTestCase
         $accessTokenRepo->touch($token);
 
         // Round-trip: reload from DB to verify the UPDATE committed.
-        $em = $container->get('doctrine')->getManager();
+        $em = $container->get('doctrine')
+            ->getManager();
         $em->clear();
 
         $reloaded = $accessTokenRepo->findByJti($token->getJti());

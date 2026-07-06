@@ -94,7 +94,8 @@ final class QuoteSendGateTest extends KernelTestCase
             ->willReturn('/quotes/view/123');
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')->willReturn($gated);
+        $gate->method('isGated')
+            ->willReturn($gated);
 
         $workflow = $container->get('state_machine.quote');
         self::assertInstanceOf(WorkflowInterface::class, $workflow);
@@ -119,6 +120,6 @@ final class QuoteSendGateTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        return $quote->_real();
+        return $quote;
     }
 }

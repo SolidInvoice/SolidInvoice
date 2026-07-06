@@ -43,13 +43,14 @@ final class InvoiceCreateTest extends KernelTestCase
         $client = ClientFactory::createOne([
             'company' => $this->company,
             'currencyCode' => 'USD',
-        ])->_real();
+        ]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [
                 ['description' => 'Consulting, 10 hours', 'price' => 10000, 'qty' => 10],
                 ['description' => 'Setup fee', 'price' => 5000, 'qty' => 1],
@@ -77,7 +78,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -92,7 +93,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -101,7 +102,8 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('description');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['price' => 1000, 'qty' => 1]],
         );
     }
@@ -110,7 +112,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Read->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -119,7 +121,8 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('mcp:write');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
         );
     }
@@ -128,13 +131,14 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Widget', 'price' => 10000, 'qty' => 1]],
             discount_type: 'percentage',
             discount_value: 10,
@@ -148,13 +152,14 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Service', 'price' => 20000, 'qty' => 1]],
             discount_type: 'money',
             discount_value: 5000,
@@ -168,7 +173,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -177,7 +182,8 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('Invalid discount_type');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
             discount_type: 'bogus',
             discount_value: 5,
@@ -188,7 +194,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -197,7 +203,8 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('discount_value is required');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
             discount_type: 'percentage',
         );
@@ -207,13 +214,14 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(QuoteWriteTools::class);
         self::assertInstanceOf(QuoteWriteTools::class, $tool);
 
         $result = $tool->createQuote(
-            $client->getId()->toRfc4122(),
+            $client->getId()
+                ->toRfc4122(),
             [['description' => 'Estimate', 'price' => 25000, 'qty' => 2]],
             due: '2026-06-01',
             notes: 'Rough estimate',

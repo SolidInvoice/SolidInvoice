@@ -37,12 +37,12 @@ final class InvoiceTransitionTest extends ApiTestCase
 
     public function testAcceptInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPost(
             sprintf('/api/invoices/%s/transitions/accept', $invoice->getId()),
@@ -54,12 +54,12 @@ final class InvoiceTransitionTest extends ApiTestCase
 
     public function testCancelInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPost(
             sprintf('/api/invoices/%s/transitions/cancel', $invoice->getId()),
@@ -71,7 +71,7 @@ final class InvoiceTransitionTest extends ApiTestCase
 
     public function testInvalidTransition(): void
     {
-        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft])->_real();
+        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft]);
 
         self::$client->request(
             'POST',
@@ -96,7 +96,7 @@ final class InvoiceTransitionTest extends ApiTestCase
         $foreignInvoice = InvoiceFactory::createOne([
             'client' => $foreignClient,
             'status' => InvoiceStatus::Draft,
-        ])->_real();
+        ]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request(

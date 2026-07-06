@@ -21,6 +21,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Test\Traits\ConsoleTesterTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Command\SendInvitationExpiryRemindersCommand;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
@@ -34,7 +35,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Symfony\Component\Console\Tester\TesterTrait;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use function rewind;
 use function str_replace;
@@ -46,7 +46,7 @@ final class SendInvitationExpiryRemindersCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use InteractsWithMailer;
-    use TesterTrait;
+    use ConsoleTesterTrait;
 
     private UserInvitationRepository $repository;
 
@@ -67,7 +67,8 @@ final class SendInvitationExpiryRemindersCommandTest extends KernelTestCase
     public function testRemindsInvitationsAboutToExpire(): void
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-        $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
+        $inviter = $executor->getReferenceRepository()
+            ->getReference('user2', User::class);
 
         /** @var ManagerRegistry $registry */
         $registry = self::getContainer()->get('doctrine');
@@ -116,25 +117,38 @@ final class SendInvitationExpiryRemindersCommandTest extends KernelTestCase
         $soonId = $expiringSoon->getId();
         $notDueId = $notDue->getId();
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertStringContainsString('Sent 1 invitation expiry reminder(s).', $output);
 
         // Exactly one reminder, addressed to the invitation expiring within the window.
-        $this->mailer()->sentEmails()->whereTo('soon@example.com')->assertCount(1);
-        $this->mailer()->sentEmails()->whereTo('later@example.com')->assertCount(0);
-        $this->mailer()->sentEmails()->whereTo('reminded@example.com')->assertCount(0);
-        $this->mailer()->sentEmails()->whereTo('expired@example.com')->assertCount(0);
+        $this->mailer()
+            ->sentEmails()
+            ->whereTo('soon@example.com')
+            ->assertCount(1);
+        $this->mailer()
+            ->sentEmails()
+            ->whereTo('later@example.com')
+            ->assertCount(0);
+        $this->mailer()
+            ->sentEmails()
+            ->whereTo('reminded@example.com')
+            ->assertCount(0);
+        $this->mailer()
+            ->sentEmails()
+            ->whereTo('expired@example.com')
+            ->assertCount(0);
 
         $registry = self::getContainer()->get('doctrine');
-        $registry->getManager()->clear();
+        $registry->getManager()
+            ->clear();
         $repository = $registry->getRepository(UserInvitation::class);
 
         self::assertNotNull($repository->find($soonId)?->getReminderSentAt());
         self::assertNull($repository->find($notDueId)?->getReminderSentAt());
     }
 
-    private function runCommand(): string
+    private function runTestCommand(): string
     {
         $application = new Application(self::bootKernel());
 

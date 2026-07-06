@@ -81,10 +81,6 @@ return [
             'package' => 'symfony/brevo-notifier',
             'dsn' => 'brevo://API_KEY@default?sender=PHONE',
         ],
-        'Sms77' => [
-            'package' => 'symfony/sms77-notifier',
-            'dsn' => 'sms77://API_KEY@default?from=FROM',
-        ],
         'Sinch' => [
             'package' => 'symfony/sinch-notifier',
             'dsn' => 'sinch://ACCOUNT_ID:AUTH_TOKEN@default?from=FROM',
@@ -142,10 +138,6 @@ return [
         'Firebase' => [
             'package' => 'symfony/firebase-notifier',
             'dsn' => 'firebase://USERNAME:PASSWORD@default',
-        ],
-        'Gitter' => [
-            'package' => 'symfony/gitter-notifier',
-            'dsn' => 'gitter://TOKEN@default?room_id=ROOM_ID',
         ],
         'GoogleChat' => [
             'package' => 'symfony/google-chat-notifier',

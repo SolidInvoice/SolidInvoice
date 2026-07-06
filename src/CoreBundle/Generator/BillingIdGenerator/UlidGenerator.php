@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Uid\Ulid;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\UlidGeneratorTest
  */
+#[AsTaggedItem('ulid')]
 final class UlidGenerator implements IdGeneratorInterface
 {
     public static function getName(): string
@@ -32,6 +34,7 @@ final class UlidGenerator implements IdGeneratorInterface
 
     public function generate(object $entity, array $options): string
     {
-        return new Ulid()->toBase32();
+        return new Ulid()
+            ->toBase32();
     }
 }

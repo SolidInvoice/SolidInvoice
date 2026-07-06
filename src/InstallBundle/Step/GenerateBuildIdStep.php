@@ -16,11 +16,13 @@ namespace SolidInvoice\InstallBundle\Step;
 use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Uid\Uuid;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\GenerateBuildIdStepTest
  */
+#[AsTaggedItem('Generating build id', priority: 25)]
 final readonly class GenerateBuildIdStep implements InstallationStepInterface
 {
     public function __construct(

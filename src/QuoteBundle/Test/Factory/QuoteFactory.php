@@ -22,48 +22,47 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method Quote|Proxy create((array | callable) $attributes = [])
- * @method static Quote|Proxy createOne(array $attributes = [])
- * @method static Quote|Proxy find((object | array | mixed) $criteria)
- * @method static Quote|Proxy findOrCreate(array $attributes)
- * @method static Quote|Proxy first(string $sortedField = 'id')
- * @method static Quote|Proxy last(string $sortedField = 'id')
- * @method static Quote|Proxy random(array $attributes = [])
- * @method static Quote|Proxy randomOrCreate(array $attributes = [])
- * @method static Quote[]|Proxy[] all()
- * @method static Quote[]|Proxy[] createMany(int $number, (array | callable) $attributes = [])
- * @method static Quote[]|Proxy[] createSequence((iterable | callable) $sequence)
- * @method static Quote[]|Proxy[] findBy(array $attributes)
- * @method static Quote[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static Quote[]|Proxy[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(Quote | Proxy)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(Quote | Proxy)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<Quote, QuoteRepository> repository()
+ * @method Quote create((array | callable) $attributes = [])
+ * @method static Quote createOne(array $attributes = [])
+ * @method static Quote find((object | array | mixed) $criteria)
+ * @method static Quote findOrCreate(array $attributes)
+ * @method static Quote first(string $sortedField = 'id')
+ * @method static Quote last(string $sortedField = 'id')
+ * @method static Quote random(array $attributes = [])
+ * @method static Quote randomOrCreate(array $attributes = [])
+ * @method static Quote[] all()
+ * @method static Quote[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Quote[] createSequence((iterable | callable) $sequence)
+ * @method static Quote[] findBy(array $attributes)
+ * @method static Quote[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static Quote[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Quote> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<Quote> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<Quote, QuoteRepository> repository()
  *
- * @phpstan-method Quote&Proxy<Quote> create((array | callable) $attributes = [])
- * @phpstan-method static Quote&Proxy<Quote> createOne(array $attributes = [])
- * @phpstan-method static Quote&Proxy<Quote> find((object | array | mixed) $criteria)
- * @phpstan-method static Quote&Proxy<Quote> findOrCreate(array $attributes)
- * @phpstan-method static Quote&Proxy<Quote> first(string $sortedField = 'id')
- * @phpstan-method static Quote&Proxy<Quote> last(string $sortedField = 'id')
- * @phpstan-method static Quote&Proxy<Quote> random(array $attributes = [])
- * @phpstan-method static Quote&Proxy<Quote> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<Quote&Proxy<Quote>> all()
- * @phpstan-method static list<Quote&Proxy<Quote>> createMany(int $number, (array | callable) $attributes = [])
- * @phpstan-method static list<Quote&Proxy<Quote>> createSequence((iterable | callable) $sequence)
- * @phpstan-method static list<Quote&Proxy<Quote>> findBy(array $attributes)
- * @phpstan-method static list<Quote&Proxy<Quote>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Quote&Proxy<Quote>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<Quote&Proxy<Quote>> many(int $min, (int | null) $max = null)
- * @phpstan-method FactoryCollection<Quote&Proxy<Quote>> sequence((iterable | callable) $sequence)
- * @extends PersistentProxyObjectFactory<Quote>
+ * @phpstan-method Quote create((array | callable) $attributes = [])
+ * @phpstan-method static Quote createOne(array $attributes = [])
+ * @phpstan-method static Quote find((object | array | mixed) $criteria)
+ * @phpstan-method static Quote findOrCreate(array $attributes)
+ * @phpstan-method static Quote first(string $sortedField = 'id')
+ * @phpstan-method static Quote last(string $sortedField = 'id')
+ * @phpstan-method static Quote random(array $attributes = [])
+ * @phpstan-method static Quote randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Quote> all()
+ * @phpstan-method static list<Quote> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Quote> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Quote> findBy(array $attributes)
+ * @phpstan-method static list<Quote> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Quote> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Quote> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Quote> sequence((iterable | callable) $sequence)
+ * @extends PersistentObjectFactory<Quote>
  */
-final class QuoteFactory extends PersistentProxyObjectFactory
+final class QuoteFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

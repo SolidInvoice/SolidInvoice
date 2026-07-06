@@ -68,13 +68,15 @@ final class UserInvitationRepository extends EntityRepository
                 ->getOneOrNullResult();
 
             if ($invitation instanceof UserInvitation) {
-                $this->getEntityManager()->remove($invitation);
+                $this->getEntityManager()
+                    ->remove($invitation);
                 ++$deleted;
             }
         }
 
         if ($deleted > 0) {
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()
+                ->flush();
         }
 
         return $deleted;
@@ -82,8 +84,10 @@ final class UserInvitationRepository extends EntityRepository
 
     public function delete(UserInvitation $invitation): void
     {
-        $this->getEntityManager()->remove($invitation);
-        $this->getEntityManager()->flush();
+        $this->getEntityManager()
+            ->remove($invitation);
+        $this->getEntityManager()
+            ->flush();
     }
 
     /**
@@ -136,7 +140,8 @@ final class UserInvitationRepository extends EntityRepository
             ->setParameter('status', InvitationStatus::Pending);
 
         try {
-            return (int) $qb->getQuery()->getSingleScalarResult();
+            return (int) $qb->getQuery()
+                ->getSingleScalarResult();
         } catch (NoResultException|NonUniqueResultException|Exception) {
             return 0;
         }
@@ -158,7 +163,8 @@ final class UserInvitationRepository extends EntityRepository
             ->setParameter('companyId', $company->getId(), UlidType::NAME);
 
         try {
-            return (int) $qb->getQuery()->getSingleScalarResult();
+            return (int) $qb->getQuery()
+                ->getSingleScalarResult();
         } catch (NoResultException|NonUniqueResultException|Exception) {
             return 0;
         }

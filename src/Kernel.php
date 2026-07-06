@@ -20,9 +20,9 @@ use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidInvoice\CoreBundle\Doctrine\Type\ObjectType;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\BundleAdapter;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use function preg_replace;
 
@@ -55,15 +55,42 @@ class Kernel extends BaseKernel
         return \dirname(__DIR__);
     }
 
+    /**
+     * The platform Kernel overrides initializeBundles() without the BundleAdapter wrapping
+     * that Symfony's HttpKernel-based kernels apply to new-style (DependencyInjection
+     * component) bundles such as ServicesBundle. Re-apply the wrapping here, otherwise
+     * building the container fails on Symfony 8.1 (getNamespace() does not exist on
+     * new-style bundles). Remove once solidworx/platform restores the wrapping upstream.
+     */
     #[Override]
-    protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
+    protected function initializeBundles(): void
     {
-        parent::configureContainer($container, $loader, $builder);
+        parent::initializeBundles();
+
+        foreach ($this->bundles as $name => $bundle) {
+            if (! $bundle instanceof BundleInterface) {
+                $this->bundles[$name] = new BundleAdapter($bundle);
+            }
+        }
+    }
+
+    /**
+     * The default configureContainer() became private in Symfony 8 (it lives in the
+     * DependencyInjection component's KernelTrait now), so the default imports are
+     * replicated here instead of calling the parent method.
+     */
+    protected function configureContainer(ContainerConfigurator $container): void
+    {
+        $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
+
+        $container->import($configDir . '/{packages}/*.{php,yaml}');
+        $container->import($configDir . '/{packages}/' . $this->environment . '/*.{php,yaml}');
+        $container->import($configDir . '/{services}.php');
+        $container->import($configDir . '/{services}_' . $this->environment . '.php');
 
         $bundles = $this->getBundles();
 
         if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
-            $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
             $container->import($configDir . '/{packages}/saas/*.{php,yaml}');
         }
     }

@@ -31,7 +31,7 @@ final readonly class BillingIdGenerator
      * @param ServiceLocator<IdGeneratorInterface> $generators
      */
     public function __construct(
-        #[AutowireLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(IdGeneratorInterface::class)]
         private ServiceLocator $generators,
         private SystemConfig $config,
     ) {
@@ -59,7 +59,8 @@ final readonly class BillingIdGenerator
         $options['prefix'] = $prefix;
         $options['suffix'] = $suffix;
 
-        $invoiceId = $this->generators->get($strategy ?? 'auto_increment')->generate($entity, $options);
+        $invoiceId = $this->generators->get($strategy ?? 'auto_increment')
+            ->generate($entity, $options);
 
         return sprintf(
             '%s%s%s',

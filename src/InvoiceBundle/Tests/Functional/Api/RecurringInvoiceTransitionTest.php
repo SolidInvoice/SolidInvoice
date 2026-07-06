@@ -38,12 +38,12 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
 
     public function testActivateRecurringInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPost(
             sprintf('/api/recurring-invoices/%s/transitions/activate', $recurringInvoice->getId()),
@@ -55,12 +55,12 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
 
     public function testCancelRecurringInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Draft,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPost(
             sprintf('/api/recurring-invoices/%s/transitions/cancel', $recurringInvoice->getId()),
@@ -72,7 +72,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
 
     public function testInvalidTransition(): void
     {
-        $recurringInvoice = RecurringInvoiceFactory::createOne(['status' => RecurringInvoiceStatus::Draft])->_real();
+        $recurringInvoice = RecurringInvoiceFactory::createOne(['status' => RecurringInvoiceStatus::Draft]);
 
         self::$client->request(
             'POST',
@@ -91,12 +91,12 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
 
     public function testGenerateInvoice(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Active,
             'users' => $contacts,
-        ])->_real();
+        ]);
 
         $result = $this->requestPostExpecting(
             sprintf('/api/recurring-invoices/%s/generate', $recurringInvoice->getId()),
@@ -116,7 +116,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
         $foreignRecurringInvoice = RecurringInvoiceFactory::createOne([
             'client' => $foreignClient,
             'status' => RecurringInvoiceStatus::Draft,
-        ])->_real();
+        ]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request(
@@ -142,7 +142,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
         $foreignRecurringInvoice = RecurringInvoiceFactory::createOne([
             'client' => $foreignClient,
             'status' => RecurringInvoiceStatus::Active,
-        ])->_real();
+        ]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request(

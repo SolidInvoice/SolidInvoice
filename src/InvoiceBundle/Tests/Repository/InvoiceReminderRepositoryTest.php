@@ -52,7 +52,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'reminderType' => ReminderType::PreDue,
         ]);
 
-        $result = $this->repository->hasReminderBeenSent($invoice->_real(), ReminderType::PreDue);
+        $result = $this->repository->hasReminderBeenSent($invoice, ReminderType::PreDue);
 
         self::assertTrue($result);
     }
@@ -62,7 +62,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne(['company' => $company]);
 
-        $result = $this->repository->hasReminderBeenSent($invoice->_real(), ReminderType::PreDue);
+        $result = $this->repository->hasReminderBeenSent($invoice, ReminderType::PreDue);
 
         self::assertFalse($result);
     }
@@ -78,7 +78,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'reminderType' => ReminderType::PreDue,
         ]);
 
-        $result = $this->repository->hasReminderBeenSent($invoice->_real(), ReminderType::Overdue1);
+        $result = $this->repository->hasReminderBeenSent($invoice, ReminderType::Overdue1);
 
         self::assertFalse($result);
     }
@@ -106,7 +106,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'reminderType' => ReminderType::Overdue7,
         ]);
 
-        $history = $this->repository->getReminderHistory($invoice->_real());
+        $history = $this->repository->getReminderHistory($invoice);
 
         self::assertCount(3, $history);
         self::assertContainsOnlyInstancesOf(InvoiceReminder::class, $history);
@@ -117,7 +117,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne(['company' => $company]);
 
-        $history = $this->repository->getReminderHistory($invoice->_real());
+        $history = $this->repository->getReminderHistory($invoice);
 
         self::assertCount(0, $history);
     }
@@ -141,7 +141,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'sentAt' => CarbonImmutable::parse('2024-01-10'),
         ]);
 
-        $history = $this->repository->getReminderHistory($invoice->_real());
+        $history = $this->repository->getReminderHistory($invoice);
 
         self::assertCount(2, $history);
         self::assertSame($reminder2->getId()->toBase32(), $history[0]->getId()->toBase32());
@@ -166,7 +166,7 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
             'reminderType' => ReminderType::PreDue,
         ]);
 
-        $history = $this->repository->getReminderHistory($invoice1->_real());
+        $history = $this->repository->getReminderHistory($invoice1);
 
         self::assertCount(1, $history);
     }

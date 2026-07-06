@@ -85,7 +85,8 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
         $invoice = $this->createPendingInvoice();
 
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
 
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::once())->method('send');
@@ -186,6 +187,6 @@ final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        return $invoice->_real();
+        return $invoice;
     }
 }

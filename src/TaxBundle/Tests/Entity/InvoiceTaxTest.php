@@ -112,8 +112,8 @@ final class InvoiceTaxTest extends KernelTestCase
 
     public function testCompanyIsInheritedFromParentInvoiceOnPersist(): void
     {
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
-        $invoice = InvoiceFactory::createOne(['company' => $this->company, 'client' => $client])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
+        $invoice = InvoiceFactory::createOne(['company' => $this->company, 'client' => $client]);
 
         $invoiceTax = $this->buildInvoiceTax();
         $invoice->addInvoiceTax($invoiceTax);
@@ -124,15 +124,18 @@ final class InvoiceTaxTest extends KernelTestCase
         $em->flush();
 
         self::assertSame(
-            $this->company->getId()->toRfc4122(),
-            $invoiceTax->getCompany()->getId()->toRfc4122(),
+            $this->company->getId()
+                ->toRfc4122(),
+            $invoiceTax->getCompany()
+                ->getId()
+                ->toRfc4122(),
         );
     }
 
     public function testCompanyIsInheritedFromParentQuoteOnPersist(): void
     {
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
-        $quote = QuoteFactory::createOne(['company' => $this->company, 'client' => $client])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
+        $quote = QuoteFactory::createOne(['company' => $this->company, 'client' => $client]);
 
         $invoiceTax = $this->buildInvoiceTax();
         $quote->addInvoiceTax($invoiceTax);
@@ -143,8 +146,11 @@ final class InvoiceTaxTest extends KernelTestCase
         $em->flush();
 
         self::assertSame(
-            $this->company->getId()->toRfc4122(),
-            $invoiceTax->getCompany()->getId()->toRfc4122(),
+            $this->company->getId()
+                ->toRfc4122(),
+            $invoiceTax->getCompany()
+                ->getId()
+                ->toRfc4122(),
         );
     }
 

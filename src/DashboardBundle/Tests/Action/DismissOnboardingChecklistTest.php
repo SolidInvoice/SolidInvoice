@@ -37,16 +37,18 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
     public function testInvokeRedirectsBackToDashboard(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn($user);
+        $security->method('getUser')
+            ->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
         $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
-        $csrfTokenManager->method('isTokenValid')->willReturn(true);
+        $csrfTokenManager->method('isTokenValid')
+            ->willReturn(true);
 
         $session = new Session(new MockArraySessionStorage());
         $request = new Request();
@@ -65,16 +67,18 @@ final class DismissOnboardingChecklistTest extends KernelTestCase
     public function testInvokeCallsChecklistManagerDismiss(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn($user);
+        $security->method('getUser')
+            ->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
         $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
-        $csrfTokenManager->method('isTokenValid')->willReturn(true);
+        $csrfTokenManager->method('isTokenValid')
+            ->willReturn(true);
 
         self::assertFalse($manager->isDismissed($user));
 

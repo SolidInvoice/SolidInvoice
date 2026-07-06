@@ -53,11 +53,12 @@ final class InvoiceTypeTest extends FormTestCase
         $notes = $this->faker->text;
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $formData = [
             'clientMode' => 'existing',
-            'client' => $client->getId()->toString(),
+            'client' => $client->getId()
+                ->toString(),
             'discount' => [
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
@@ -161,7 +162,8 @@ final class InvoiceTypeTest extends FormTestCase
             ->andReturn('random_number');
 
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
 
         $invoiceType = new InvoiceType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string

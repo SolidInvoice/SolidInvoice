@@ -15,6 +15,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'zenstruck_foundry' => [
+        'enable_auto_refresh_with_lazy_objects' => false,
+        'persistence' => [
+            'flush_once' => false,
+        ],
         'faker' => [
             'seed' => 91847,
         ],

@@ -43,7 +43,7 @@ final class TaxIdentifierTest extends ApiTestCase
         $result = $this->requestPost('/api/tax-identifiers', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         self::assertSame('VAT', $result['label']);
         self::assertSame('GB123456789', $result['value']);
         self::assertTrue($result['primary']);
@@ -67,7 +67,7 @@ final class TaxIdentifierTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $identifier = TaxIdentifierFactory::createOne(['company' => $otherCompany])->_real();
+        $identifier = TaxIdentifierFactory::createOne(['company' => $otherCompany]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         self::$client->request('GET', $this->getIriFromResource($identifier), [

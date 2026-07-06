@@ -50,7 +50,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
     public function testHandler(): void
     {
         $recurringInvoice = $this->createMock(RecurringInvoice::class);
-        $company = CompanyFactory::createOne()->_real();
+        $company = CompanyFactory::createOne();
         $recurringInvoiceId = new Ulid();
         $invoice = new Invoice();
         $configuration = new Configuration();
@@ -62,7 +62,9 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
         $recurringInvoiceRepository = $this->createMock(RecurringInvoiceRepository::class);
         $clock = $this->createMock(ClockInterface::class);
 
-        $entityManager->expects($this->once())->method('getConnection')->willReturn(new Connection([], new Driver()));
+        $entityManager->expects($this->once())
+            ->method('getConnection')
+            ->willReturn(new Connection([], new Driver()));
 
         $configuration->addFilter('company', CompanyFilter::class);
 
@@ -127,7 +129,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
     public function testHandlerSkipsWhenInvoiceAlreadyExistsForDay(): void
     {
         $recurringInvoice = $this->createMock(RecurringInvoice::class);
-        $company = CompanyFactory::createOne()->_real();
+        $company = CompanyFactory::createOne();
         $recurringInvoiceId = new Ulid();
         $configuration = new Configuration();
 
@@ -138,7 +140,9 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
         $invoiceManager = $this->createMock(InvoiceManager::class);
         $invoiceStateMachine = $this->createMock(StateMachine::class);
 
-        $entityManager->expects($this->once())->method('getConnection')->willReturn(new Connection([], new Driver()));
+        $entityManager->expects($this->once())
+            ->method('getConnection')
+            ->willReturn(new Connection([], new Driver()));
         $configuration->addFilter('company', CompanyFilter::class);
 
         $recurringInvoiceRepository->expects(self::once())

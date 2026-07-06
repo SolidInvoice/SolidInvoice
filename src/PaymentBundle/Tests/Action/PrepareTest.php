@@ -77,7 +77,7 @@ final class PrepareTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-        ])->_real();
+        ]);
 
         $invoiceRepository = $this->createMock(InvoiceRepository::class);
         $invoiceRepository->expects(self::once())
@@ -138,7 +138,7 @@ final class PrepareTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
-        ])->_real();
+        ]);
 
         $invoiceRepository = $this->createMock(InvoiceRepository::class);
         $invoiceRepository->expects(self::once())
@@ -224,7 +224,7 @@ final class PrepareTest extends KernelTestCase
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Paid,
-        ])->_real();
+        ]);
 
         $invoiceRepository = $this->createMock(InvoiceRepository::class);
         $invoiceRepository->expects(self::once())

@@ -5,7 +5,7 @@ includes:
 parameters:
     scanFiles:
         - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
-    scanDirectories:
-        - var/cache/test/Symfony/Config
+    # Note: the generated Symfony/Config config-builder classes no longer exist in Symfony 8,
+    # so the var/cache/test/Symfony/Config scan directory was removed.
     symfony:
         containerXmlPath: var/cache/test/SolidInvoice_KernelTestDebugContainer.xml

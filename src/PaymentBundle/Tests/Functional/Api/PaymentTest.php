@@ -36,13 +36,13 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForInvoiceWithClient(): void
     {
-        $client = ClientFactory::createOne()->_real();
-        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
+        $client = ClientFactory::createOne();
+        $invoice = InvoiceFactory::createOne(['client' => $client]);
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'client' => $client,
             'status' => PaymentStatus::Captured,
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
         unset($data['search'], $data['view']);
@@ -56,11 +56,11 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForInvoice(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
+        $invoice = InvoiceFactory::createOne();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'status' => PaymentStatus::Captured,
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
         unset($data['search'], $data['view']);
@@ -74,14 +74,17 @@ final class PaymentTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($payment),
                     '@type' => 'Payment',
-                    'id' => $payment->getId()->toString(),
-                    'companyId' => $this->company->getId()->toBase58(),
+                    'id' => $payment->getId()
+                        ->toString(),
+                    'companyId' => $this->company->getId()
+                        ->toBase58(),
                     'invoice' => $this->getIriFromResource($invoice),
                     'client' => null,
                     'method' => null,
                     'status' => 'captured',
                     'message' => $payment->getMessage(),
-                    'completed' => $payment->getCompleted()->format('c'),
+                    'completed' => $payment->getCompleted()
+                        ->format('c'),
                     'reference' => null,
                     'notes' => null,
                     'number' => $payment->getNumber(),
@@ -94,10 +97,14 @@ final class PaymentTest extends ApiTestCase
                     'creditCard' => null,
                     'bankAccount' => null,
                     'amount' => [
-                        'amount' => $payment->getAmount()->getAmount(),
-                        'currency' => $payment->getAmount()->getCurrency()->getCode(),
+                        'amount' => $payment->getAmount()
+                            ->getAmount(),
+                        'currency' => $payment->getAmount()
+                            ->getCurrency()
+                            ->getCode(),
                     ],
-                    'total' => $payment->getAmount()->getAmount() / 100,
+                    'total' => $payment->getAmount()
+                        ->getAmount() / 100,
                 ],
             ],
         ], $data);
@@ -105,11 +112,11 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForClient(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'status' => PaymentStatus::Captured,
-        ])->_real();
+        ]);
 
         // Create multiple additional payments to ensure we only receive the payments for the specified client
         PaymentFactory::createMany(5, ['client' => ClientFactory::new()]);
@@ -126,30 +133,38 @@ final class PaymentTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($payment),
                     '@type' => 'Payment',
-                    'id' => $payment->getId()->toString(),
-                    'companyId' => $this->company->getId()->toBase58(),
+                    'id' => $payment->getId()
+                        ->toString(),
+                    'companyId' => $this->company->getId()
+                        ->toBase58(),
                     'invoice' => null,
                     'client' => $this->getIriFromResource($client),
                     'method' => null,
                     'status' => 'captured',
                     'message' => $payment->getMessage(),
-                    'completed' => $payment->getCompleted()->format('c'),
+                    'completed' => $payment->getCompleted()
+                        ->format('c'),
                     'reference' => null,
                     'notes' => null,
                     'number' => $payment->getNumber(),
                     'description' => $payment->getDescription(),
                     'clientEmail' => $payment->getClientEmail(),
-                    'clientId' => $client->getId()->toString(),
+                    'clientId' => $client->getId()
+                        ->toString(),
                     'totalAmount' => $payment->getTotalAmount(),
                     'currencyCode' => $payment->getCurrencyCode(),
                     'details' => [],
                     'creditCard' => null,
                     'bankAccount' => null,
                     'amount' => [
-                        'amount' => $payment->getAmount()->getAmount(),
-                        'currency' => $payment->getAmount()->getCurrency()->getCode(),
+                        'amount' => $payment->getAmount()
+                            ->getAmount(),
+                        'currency' => $payment->getAmount()
+                            ->getCurrency()
+                            ->getCode(),
                     ],
-                    'total' => $payment->getAmount()->getAmount() / 100,
+                    'total' => $payment->getAmount()
+                        ->getAmount() / 100,
                 ],
             ],
         ], $data);
@@ -160,7 +175,7 @@ final class PaymentTest extends ApiTestCase
      */
     public function testGetPaymentsForArchivedClient(): void
     {
-        $client = ClientFactory::createOne(['archived' => true])->_real();
+        $client = ClientFactory::createOne(['archived' => true]);
 
         PaymentFactory::createOne(['client' => $client]);
 
@@ -183,7 +198,7 @@ final class PaymentTest extends ApiTestCase
     {
         $company = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($company->getId());
-        $client = ClientFactory::createOne(['company' => $company])->_real();
+        $client = ClientFactory::createOne(['company' => $company]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         PaymentFactory::createOne(['client' => $client]);
@@ -202,13 +217,13 @@ final class PaymentTest extends ApiTestCase
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne()->_real();
-        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
+        $client = ClientFactory::createOne();
+        $invoice = InvoiceFactory::createOne(['client' => $client]);
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'invoice' => $invoice,
             'status' => PaymentStatus::Captured,
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($payment));
 
@@ -216,30 +231,38 @@ final class PaymentTest extends ApiTestCase
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($payment),
             '@type' => 'Payment',
-            'id' => $payment->getId()->toString(),
-            'companyId' => $this->company->getId()->toBase58(),
+            'id' => $payment->getId()
+                ->toString(),
+            'companyId' => $this->company->getId()
+                ->toBase58(),
             'invoice' => $this->getIriFromResource($invoice),
             'client' => $this->getIriFromResource($client),
             'method' => null,
             'status' => 'captured',
             'message' => $payment->getMessage(),
-            'completed' => $payment->getCompleted()->format('c'),
+            'completed' => $payment->getCompleted()
+                ->format('c'),
             'reference' => null,
             'notes' => null,
             'number' => $payment->getNumber(),
             'description' => $payment->getDescription(),
             'clientEmail' => $payment->getClientEmail(),
-            'clientId' => $client->getId()->toString(),
+            'clientId' => $client->getId()
+                ->toString(),
             'totalAmount' => $payment->getTotalAmount(),
             'currencyCode' => $payment->getCurrencyCode(),
             'details' => [],
             'creditCard' => null,
             'bankAccount' => null,
             'amount' => [
-                'amount' => $payment->getAmount()->getAmount(),
-                'currency' => $payment->getAmount()->getCurrency()->getCode(),
+                'amount' => $payment->getAmount()
+                    ->getAmount(),
+                'currency' => $payment->getAmount()
+                    ->getCurrency()
+                    ->getCode(),
             ],
-            'total' => $payment->getAmount()->getAmount() / 100,
+            'total' => $payment->getAmount()
+                ->getAmount() / 100,
         ], $data);
     }
 

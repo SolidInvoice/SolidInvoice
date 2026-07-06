@@ -35,7 +35,7 @@ final class ContactTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         ContactFactory::createMany(3, ['client' => $client]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/contacts');
@@ -50,7 +50,7 @@ final class ContactTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $foreignClient = ClientFactory::createOne(['company' => $otherCompany])->_real();
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         // ContactPersistProcessor uses findOneBy() which applies the CompanyFilter,
@@ -64,7 +64,7 @@ final class ContactTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $data = [
             'client' => $this->getIriFromResource($client),
@@ -74,7 +74,7 @@ final class ContactTest extends ApiTestCase
 
         $result = $this->requestPost($this->getIriFromResource($client) . '/contacts', $data);
 
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
@@ -91,8 +91,8 @@ final class ContactTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne()->_real();
-        $contact = ContactFactory::createOne(['client' => $client])->_real();
+        $client = ClientFactory::createOne();
+        $contact = ContactFactory::createOne(['client' => $client]);
 
         $this->requestDelete($this->getIriFromResource($contact));
     }
@@ -103,13 +103,13 @@ final class ContactTest extends ApiTestCase
         $lastName = $this->faker->firstName();
         $email = $this->faker->email();
 
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contact = ContactFactory::createOne([
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
             'client' => $client,
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($contact));
 
@@ -117,7 +117,8 @@ final class ContactTest extends ApiTestCase
             '@context' => '/api/contexts/Contact',
             '@id' => $this->getIriFromResource($contact),
             '@type' => 'Contact',
-            'id' => $contact->getId()->toString(),
+            'id' => $contact->getId()
+                ->toString(),
             'firstName' => $firstName,
             'lastName' => $lastName,
             'client' => $this->getIriFromResource($client),
@@ -128,12 +129,12 @@ final class ContactTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contact = ContactFactory::createOne([
             'lastName' => null,
             'email' => 'test@example.com',
             'client' => $client,
-        ])->_real();
+        ]);
 
         $data = $this->requestPatch($this->getIriFromResource($contact), ['firstName' => 'New Test']);
 
@@ -141,7 +142,8 @@ final class ContactTest extends ApiTestCase
             '@context' => '/api/contexts/Contact',
             '@id' => $this->getIriFromResource($contact),
             '@type' => 'Contact',
-            'id' => $contact->getId()->toString(),
+            'id' => $contact->getId()
+                ->toString(),
             'firstName' => 'New Test',
             'lastName' => null,
             'client' => $this->getIriFromResource($client),
