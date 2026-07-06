@@ -25,7 +25,10 @@ return App::config([
             'connections' => [
                 'default' => [
                     'url' => env('SOLIDINVOICE_DATABASE_URL')->resolve(),
-                    'server_version' => '3',
+                    // No hardcoded server_version: it forces the platform for every driver
+                    // (e.g. MariaDB was detected as plain MySQL, breaking schema introspection
+                    // and the doctrine/migrations metadata check). DBAL detects the server
+                    // version at runtime, and SQLite does not need one at all.
                     'charset' => 'UTF8',
                 ],
             ],
