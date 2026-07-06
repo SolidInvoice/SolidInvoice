@@ -418,7 +418,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         enabled?: bool|Param, // Default: true
  *     },
  *     lock?: bool|string|array{ // Lock configuration
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *         resources?: string|array<string, string|list<scalar|Param|null>>,
  *     },
  *     semaphore?: bool|string|array{ // Semaphore configuration
