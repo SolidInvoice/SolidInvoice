@@ -58,9 +58,14 @@
     {% if parent_label_class is not defined %}
         {# This is a standalone checkbox - render as switch toggle #}
         {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-switch-field')|trim}) %}
+        {%- set widget_options = {parent_label_class: 'checkbox-switch'} -%}
+        {%- if help is not empty -%}
+            {# Link the switch input to its help text for assistive technology #}
+            {%- set widget_options = widget_options|merge({attr: {'aria-describedby': id ~ '_help'}}) -%}
+        {%- endif %}
         <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
             <div class="form-switch-wrapper">
-                {{- form_widget(form, {parent_label_class: 'checkbox-switch'}) -}}
+                {{- form_widget(form, widget_options) -}}
             </div>
             {{- form_help(form) -}}
             {{- form_errors(form) -}}
