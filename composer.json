@@ -204,6 +204,7 @@
         "liip/test-fixtures-bundle": "^3.9",
         "matthiasnoback/symfony-dependency-injection-test": "^6.3",
         "mockery/mockery": "^1.6.12",
+        "nikic/php-parser": "^5.6",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.55",
         "phpstan/phpstan-doctrine": "^2.0.22",

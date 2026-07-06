@@ -35,6 +35,13 @@ final class SampleMenu
             ['label' => 'sample.menu.add.label', 'route' => '_sample_add'],
         );
 
+        // Named arguments, in and out of declaration order.
+        $section->addChild(child: 'sample.menu.named');
+        $section->addChild(options: ['route' => '_reordered'], child: 'sample.menu.reordered');
+
+        // Class constant resolved to its string value.
+        $section->addChild(SampleMenuLabels::DASHBOARD, ['route' => '_sample_dashboard']);
+
         // Dynamic label (e.g. a username) — neither the name nor the label is a static
         // string, so nothing translatable should be extracted from this call.
         $username = 'jane';

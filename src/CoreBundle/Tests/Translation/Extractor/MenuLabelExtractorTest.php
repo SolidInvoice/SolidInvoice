@@ -44,6 +44,28 @@ final class MenuLabelExtractorTest extends TestCase
         self::assertArrayNotHasKey('dynamic', $messages);
     }
 
+    public function testItExtractsLabelsFromNamedArguments(): void
+    {
+        $catalogue = new MessageCatalogue('en');
+
+        $this->extractor->extract(__DIR__ . '/../../Fixtures/Menu/SampleMenu.php', $catalogue);
+
+        $messages = $catalogue->all('messages');
+
+        // Named arguments, both in and out of declaration order.
+        self::assertArrayHasKey('sample.menu.named', $messages);
+        self::assertArrayHasKey('sample.menu.reordered', $messages);
+    }
+
+    public function testItResolvesClassConstantLabels(): void
+    {
+        $catalogue = new MessageCatalogue('en');
+
+        $this->extractor->extract(__DIR__ . '/../../Fixtures/Menu/SampleMenu.php', $catalogue);
+
+        self::assertArrayHasKey('sample.menu.dashboard', $catalogue->all('messages'));
+    }
+
     public function testItPrefixesNewMessagesWithTheirOwnValue(): void
     {
         $catalogue = new MessageCatalogue('en');
