@@ -1609,24 +1609,6 @@ parameters:
 			path: src/PaymentBundle/Tests/Search/PaymentResultFormatterTest.php
 
 		-
-			message: '#^Parameter \#1 \$array of function usort contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: src/PaymentBundle/Twig/Components/PaymentMarketplace.php
-
-		-
-			message: '#^Parameter \#2 \$callback of function usort contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: src/PaymentBundle/Twig/Components/PaymentMarketplace.php
-
-		-
-			message: '#^Property SolidInvoice\\PaymentBundle\\Twig\\Components\\PaymentSettings\:\:\$method \(string\) on left side of \?\? is not nullable\.$#'
-			identifier: nullCoalesce.property
-			count: 1
-			path: src/PaymentBundle/Twig/Components/PaymentSettings.php
-
-		-
 			message: '#^Method SolidInvoice\\QuoteBundle\\DataGrid\\QuoteGrid\:\:getCreateLabel\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -1798,42 +1780,6 @@ parameters:
 			message: '#^Method SolidInvoice\\SaasBundle\\Tests\\Email\\OnboardingEmailSnapshotTest\:\:createKernel\(\) has parameter \$options with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\AddFirstClientStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\CustomizeLogoStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\RecurringBillingStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\SendFirstInvoiceStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\TurnInvoicesIntoPaymentsStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
-			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\WelcomeStep" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
 			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
 
 		-

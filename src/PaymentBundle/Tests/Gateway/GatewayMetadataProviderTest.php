@@ -77,7 +77,6 @@ final class GatewayMetadataProviderTest extends TestCase
     {
         $info = $this->provider->get('my-custom-wallet');
 
-        self::assertInstanceOf(GatewayInfo::class, $info);
         self::assertSame('my-custom-wallet', $info->name);
         self::assertSame('My Custom Wallet', $info->displayName);
         self::assertSame('tabler:credit-card', $info->icon);
