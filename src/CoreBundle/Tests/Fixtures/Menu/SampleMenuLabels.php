@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\CoreBundle\Tests\Fixtures\Menu;
+
+/**
+ * Holds menu-label constants referenced by {@see SampleMenu}, so the extractor's
+ * class-constant resolution path is exercised against a real (named) class.
+ */
+final class SampleMenuLabels
+{
+    public const DASHBOARD = 'sample.menu.dashboard';
+}

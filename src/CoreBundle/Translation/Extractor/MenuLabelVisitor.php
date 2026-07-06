@@ -24,7 +24,6 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitor;
 use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\Translation\Extractor\Visitor\AbstractVisitor;
 
 /**
@@ -63,9 +62,11 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
             return null;
         }
 
+        // KnpMenu's signature is addChild(string|ItemInterface $child, array $options = []),
+        // so resolve by position *or* name to tolerate named-argument call styles.
         $args = $node->getArgs();
 
-        [$labelOptionPresent, $labelOptionValue] = $this->resolveLabelOption($args[1]->value ?? null);
+        [$labelOptionPresent, $labelOptionValue] = $this->resolveLabelOption($this->resolveArgument($args, 1, 'options'));
 
         if ($labelOptionPresent) {
             // An explicit `label` option overrides the name. Only extract it when static.
@@ -76,8 +77,37 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
             return null;
         }
 
-        if (null !== $name = $this->getStringValue($args[0]->value ?? null)) {
+        if (null !== $name = $this->getStringValue($this->resolveArgument($args, 0, 'child'))) {
             $this->addMessageToCatalogue($name, self::DOMAIN, $node->getStartLine());
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolves a call argument by its positional index or its parameter name, so both
+     * `addChild('x', [...])` and `addChild(child: 'x', options: [...])` are understood.
+     *
+     * @param Node\Arg[] $args
+     */
+    private function resolveArgument(array $args, int $position, string $name): ?Node
+    {
+        $positionalIndex = 0;
+
+        foreach ($args as $arg) {
+            if ($arg->name instanceof Identifier) {
+                if ($arg->name->toString() === $name) {
+                    return $arg->value;
+                }
+
+                continue;
+            }
+
+            if ($positionalIndex === $position) {
+                return $arg->value;
+            }
+
+            ++$positionalIndex;
         }
 
         return null;
@@ -125,13 +155,16 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
 
         if ($node instanceof ClassConstFetch && $node->class instanceof Name && $node->name instanceof Identifier) {
             try {
+                // Resolving a class constant autoloads the referenced class. Catch any
+                // failure (not just ReflectionException) so a single broken/incompatible
+                // class elsewhere can never abort the whole translation:extract run.
                 $constant = new ReflectionClass($node->class->toString())->getReflectionConstant($node->name->toString());
-            } catch (ReflectionException) {
-                return null;
-            }
 
-            if (false !== $constant && \is_string($value = $constant->getValue())) {
-                return $value;
+                if (false !== $constant && \is_string($value = $constant->getValue())) {
+                    return $value;
+                }
+            } catch (\Throwable) {
+                return null;
             }
         }
 

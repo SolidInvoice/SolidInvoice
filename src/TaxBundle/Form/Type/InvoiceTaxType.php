@@ -64,7 +64,7 @@ final class InvoiceTaxType extends AbstractType
                 'required' => true,
                 'placeholder' => false,
                 'empty_data' => TaxDirection::Additive->value,
-                'choice_label' => static fn (TaxDirection $direction): string => $direction->getLabel(),
+                'choice_label' => static fn (TaxDirection $direction): string => $direction->translationKey(),
                 'attr' => [
                     'data-invoice-tax-target' => 'direction',
                 ],

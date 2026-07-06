@@ -39,7 +39,7 @@ final class ClientSetupStep extends AbstractType
             'label' => 'onboarding.client.fields.email.label',
             'required' => false,
             'attr' => [
-                'placeholder' => 'client@example.com',
+                'placeholder' => 'onboarding.client.fields.email.placeholder',
             ],
             'help' => 'onboarding.client.fields.email.help',
         ]);
