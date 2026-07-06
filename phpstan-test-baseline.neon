@@ -1,2 +1,37 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\AddFirstClientStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\CustomizeLogoStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\RecurringBillingStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\SendFirstInvoiceStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\TurnInvoicesIntoPaymentsStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\WelcomeStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
