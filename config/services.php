@@ -40,6 +40,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SITE_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)', null);
 
+    $parameters->set('env(SOLIDINVOICE_DEMO)', '0');
+    $parameters->set('env(SOLIDINVOICE_DEMO_USERNAME)', '');
+    $parameters->set('env(SOLIDINVOICE_DEMO_PASSWORD)', '');
+    $parameters->set('env(SOLIDINVOICE_DEMO_SIGNUP_URL)', '');
+
     $parameters->set('env(SOLIDINVOICE_SENTRY_DSN)', null);
     $parameters->set('env(SOLIDINVOICE_SENTRY_RELEASE)', '');
     $parameters->set('env(SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII)', '0');
