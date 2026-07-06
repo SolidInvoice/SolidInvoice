@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
+use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\UserBundle\DTO\Registration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
@@ -37,6 +38,7 @@ final class Register extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly Security $security,
         private readonly ToggleInterface $toggle,
+        private readonly DemoMode $demoMode,
         #[Autowire('%env(SOLIDINVOICE_TURNSTILE_SITE_KEY)%')]
         private readonly ?string $turnstileSiteKey = null,
     ) {
@@ -66,7 +68,7 @@ final class Register extends AbstractController
             }
         }
 
-        if (! $request->query->has('invitation') && ! $this->toggle->isActive('allow_registration')) {
+        if (! $request->query->has('invitation') && ($this->demoMode->isEnabled() || ! $this->toggle->isActive('allow_registration'))) {
             throw $this->createNotFoundException('Registration is disabled');
         }
 

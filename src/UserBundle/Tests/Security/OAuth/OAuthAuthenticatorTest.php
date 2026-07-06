@@ -21,6 +21,7 @@ use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -60,6 +61,8 @@ final class OAuthAuthenticatorTest extends TestCase
 
     private OAuth2ClientInterface | MockObject $client;
 
+    private DemoMode $demoMode;
+
     protected function setUp(): void
     {
         $this->clientRegistry = $this->createMock(ClientRegistry::class);
@@ -71,13 +74,20 @@ final class OAuthAuthenticatorTest extends TestCase
         $this->userRepository = $this->createMock(UserRepository::class);
         $this->client = $this->createMock(OAuth2ClientInterface::class);
 
+        // DemoMode is a final class and cannot be mocked/stubbed directly; construct a real
+        // instance wrapping a mocked ToggleInterface instead (defaults to demo mode disabled).
+        $demoToggle = $this->createStub(ToggleInterface::class);
+        $demoToggle->method('isActive')->willReturn(false);
+        $this->demoMode = new DemoMode($demoToggle);
+
         $this->authenticator = new OAuthAuthenticator(
             $this->clientRegistry,
             $this->entityManager,
             $this->router,
             $this->toggle,
             $this->propertyAccessor,
-            $this->security
+            $this->security,
+            $this->demoMode,
         );
     }
 
@@ -459,6 +469,90 @@ final class OAuthAuthenticatorTest extends TestCase
             ->method('isActive')
             ->with('allow_registration')
             ->willReturn(false);
+
+        // Execute the authenticate method
+        $passport = $this->authenticator->authenticate($request);
+
+        // Extract and execute the user loader
+        $userBadge = $passport->getBadge(UserBadge::class);
+        $this->expectException(UserNotFoundException::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+        $userBadge->getUser();
+    }
+
+    public function testAuthenticateWithNewUserAndDemoModeEnabled(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'google');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+
+        $googleUser = new GoogleUser([
+            'sub' => '123456789',
+            'email' => 'test@example.com',
+            'email_verified' => true,
+        ]);
+
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+
+        // Demo mode short-circuits the check, so the allow_registration toggle is never consulted.
+        $this->toggle->expects($this->never())->method('isActive');
+
+        $demoToggle = $this->createStub(ToggleInterface::class);
+        $demoToggle->method('isActive')->willReturn(true);
+        $this->demoMode = new DemoMode($demoToggle);
+
+        $this->authenticator = new OAuthAuthenticator(
+            $this->clientRegistry,
+            $this->entityManager,
+            $this->router,
+            $this->toggle,
+            $this->propertyAccessor,
+            $this->security,
+            $this->demoMode,
+        );
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('google')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($googleUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(User::class)
+            ->willReturn($this->userRepository);
+
+        // Both findOneBy calls return null (no existing user)
+        $this->userRepository
+            ->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->willReturnCallback(function ($criteria) {
+                if ((isset($criteria['googleId']) && $criteria['googleId'] === '123456789') ||
+                    (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
+                    return null;
+                }
+
+                return null;
+            });
+
+        // No current user
+        $this->security->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
 
         // Execute the authenticate method
         $passport = $this->authenticator->authenticate($request);

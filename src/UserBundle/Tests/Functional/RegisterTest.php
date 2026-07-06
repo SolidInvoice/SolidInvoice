@@ -74,6 +74,25 @@ final class RegisterTest extends WebTestCase
         self::assertSame(0, $this->userCount());
     }
 
+    /**
+     * In demo mode registration is force-denied (404) regardless of the allow_registration toggle,
+     * and no User is created.
+     */
+    public function testRegistrationDeniedInDemoMode(): void
+    {
+        $this->setEnv('SOLIDINVOICE_ALLOW_REGISTRATION', '1');
+        $this->setEnv('SOLIDINVOICE_DEMO', '1');
+        $this->setEnv('SOLIDINVOICE_DEMO_USERNAME', 'demo@example.com');
+        $this->setEnv('SOLIDINVOICE_DEMO_PASSWORD', 'demo-password');
+
+        $client = $this->bootClient();
+
+        $client->request(Request::METHOD_GET, '/register');
+
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        self::assertSame(0, $this->userCount());
+    }
+
     #[After]
     public function resetEnvOverrides(): void
     {
