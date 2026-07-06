@@ -22,6 +22,7 @@ return App::config([
                 'turnstile_captcha' => '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null',
                 'saas_enabled' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'',
                 'meilisearch_search' => '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""',
+                'demo_enabled' => '@=env("SOLIDINVOICE_DEMO") && env("SOLIDINVOICE_DEMO_USERNAME") !== "" && env("SOLIDINVOICE_DEMO_PASSWORD") !== "" && env("SOLIDINVOICE_PLATFORM") !== \'saas\'',
             ],
         ],
     ],
