@@ -119,7 +119,14 @@ $bundles = [
     McpBundle::class => ['all' => true],
 ];
 
-if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+$platform = $_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null;
+$demoEnabled = (bool) ($_ENV['SOLIDINVOICE_DEMO'] ?? $_SERVER['SOLIDINVOICE_DEMO'] ?? false);
+
+if ($demoEnabled && $platform === 'saas') {
+    throw new RuntimeException('Demo mode (SOLIDINVOICE_DEMO) cannot be enabled together with the SaaS platform (SOLIDINVOICE_PLATFORM=saas). These modes are mutually exclusive.');
+}
+
+if ($platform === 'saas') {
     $bundles[SolidWorxPlatformSaasBundle::class] = ['all' => true];
     $bundles[SolidInvoiceSaasBundle::class] = ['all' => true];
 }
