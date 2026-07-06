@@ -18,6 +18,7 @@ use Doctrine\Migrations\Configuration\Configuration as MigrationsConfiguration;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Metadata\MigrationPlanList;
 use Doctrine\Migrations\Metadata\Storage\MetadataStorage;
+use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
 use Doctrine\Migrations\Version\AliasResolver;
 use Doctrine\Migrations\Version\MigrationPlanCalculator;
 use Doctrine\Migrations\Version\Version;
@@ -80,6 +81,16 @@ use function uniqid;
  * (`CompanyRepository`, `UserRepository`, `UserPasswordHasherInterface`, the
  * `DummyDataLoaderInterface` loader) is a Mockery mock with real
  * expectations on the final user/company state.
+ *
+ * Known, accepted limitation: because there are zero mapped entities, the
+ * ORM metadata passed to `Migration::migrate()` is always empty, so
+ * `SchemaTool::getUpdateSchemaSql()` always returns `[]` and `migrate()`'s
+ * actual SQL-execution branch (`if ($updateSchemaSql !== [])`) is never
+ * exercised here -- only the "already up to date, generator drains cleanly"
+ * branch is. Proving the execution branch would require a real mapped
+ * entity (so the diff produces actual DDL), which is a materially bigger
+ * setup than this unit-level test warrants; that branch is left to be
+ * covered at the integration/functional level instead.
  */
 
 final class DemoResetCommandTest extends TestCase
@@ -172,8 +183,32 @@ final class DemoResetCommandTest extends TestCase
             $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true], $ormConfig);
             $em = new EntityManager($connection, $ormConfig);
 
+            // Seed a real table so dropDatabase() has something to actually drop, making
+            // that call a falsifiable assertion instead of the permanent no-op it is with
+            // zero mapped entities (dropDatabase() always introspects an empty schema and
+            // produces no SQL unless there is at least one real table present).
+            //
+            // The table is deliberately named after the migrations metadata storage table
+            // (see below) rather than something arbitrary like "probe". With zero mapped
+            // entities, `Migration::migrate()`'s own schema diffing (see the big comment in
+            // Migration.php) treats *any* unmapped table as an orphan and emits a DROP for
+            // it too -- so an arbitrarily-named probe table gets removed by migrate() even
+            // if dropDatabase() is skipped entirely, making the mutation undetectable (this
+            // was verified by hand: commenting out dropDatabase() in the command still left
+            // the test green). migrate() explicitly excludes the migrations table name from
+            // its own diffing (to avoid dropping its own bookkeeping table), so a table with
+            // that exact name is the one candidate that only dropDatabase() -- never
+            // migrate() -- will remove, making its disappearance proof that dropDatabase()
+            // specifically ran.
+            $migrationsTableName = (new TableMetadataStorageConfiguration())->getTableName();
+            $connection->executeStatement("CREATE TABLE {$migrationsTableName} (id INTEGER)");
+            self::assertContains($migrationsTableName, $connection->createSchemaManager()->listTableNames());
+
             $registry = M::mock(ManagerRegistry::class);
             $registry->shouldReceive('getManager')->andReturn($em);
+
+            $migrationsConfiguration = new MigrationsConfiguration();
+            $migrationsConfiguration->setMetadataStorageConfiguration(new TableMetadataStorageConfiguration());
 
             // Migration is final; DependencyFactory is not, so it's mockable. Its
             // internals are stubbed to produce an empty, already-up-to-date plan so
@@ -192,7 +227,7 @@ final class DemoResetCommandTest extends TestCase
             $dependencyFactory->shouldReceive('getMetadataStorage')->once()->andReturn($metadataStorage);
             $dependencyFactory->shouldReceive('getMigrationPlanCalculator')->once()->andReturn($planCalculator);
             $dependencyFactory->shouldReceive('getVersionAliasResolver')->once()->andReturn($aliasResolver);
-            $dependencyFactory->shouldReceive('getConfiguration')->once()->andReturn(new MigrationsConfiguration());
+            $dependencyFactory->shouldReceive('getConfiguration')->once()->andReturn($migrationsConfiguration);
 
             $migration = new Migration($dependencyFactory, $registry);
 
@@ -266,6 +301,12 @@ final class DemoResetCommandTest extends TestCase
 
             self::assertSame(Command::SUCCESS, $this->invokeHandle($command));
             self::assertStringContainsString('Demo environment reset successfully', $output->fetch());
+
+            // Falsifiable assertion that dropDatabase() actually ran: the seeded table
+            // above must be gone. migrate() deliberately never touches a table with this
+            // name (see the comment where it's created above), so this can only have
+            // been removed by the command's own dropDatabase() call.
+            self::assertNotContains($migrationsTableName, $connection->createSchemaManager()->listTableNames());
         } finally {
             $filesystem->remove($emptyEntitiesDir);
         }
