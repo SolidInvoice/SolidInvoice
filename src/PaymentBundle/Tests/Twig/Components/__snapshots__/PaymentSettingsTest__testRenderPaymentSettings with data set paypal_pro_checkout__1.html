@@ -71,7 +71,7 @@
 </div>
                                                 <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
-<input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1">
+<input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" aria-describedby="payment_methods_enabled_help" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_enabled_help">Turn this on to make the payment method available. Leave it off while you finish setting it up.</div>
@@ -79,7 +79,7 @@
     
                                                                     <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
-<input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" value="1">
+<input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" aria-describedby="payment_methods_internal_help" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_internal">Internal use only</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_internal_help">Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</div>
@@ -110,7 +110,7 @@
                                 <label class="control-label required form-label required" for="payment_methods_config_vendor">Vendor / merchant login</label><input type="text" id="payment_methods_config_vendor" name="payment_methods[config][vendor]" data-required="required" aria-describedby="payment_methods_config_vendor_help" class="form-control"><div class="form-text text-muted mb-0" id="payment_methods_config_vendor_help">Your Payflow merchant login (vendor) ID.</div>
 </div>                                <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
-<input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" value="1">
+<input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" aria-describedby="payment_methods_config_sandbox_help" class="form-check-input" value="1">
         <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_config_sandbox">Test (sandbox) mode</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_config_sandbox_help">Use the gateway's test environment with test credentials - no real money changes hands. Turn this off to accept live payments.</div>
