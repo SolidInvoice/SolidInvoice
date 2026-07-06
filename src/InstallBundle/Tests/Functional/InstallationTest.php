@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\AppRequirements;
 use Symfony\Component\Filesystem\Filesystem;
@@ -53,10 +55,29 @@ final class InstallationTest extends PantherTestCase
         // Clear users and companies tables to ensure installation test starts fresh.
         // Other tests may have created data that persists due to Panther using
         // a real server process with its own database connection.
+        //
+        // Unlike SQLite (which does not enforce foreign keys by default), MySQL/MariaDB
+        // and PostgreSQL reject deleting referenced parent rows, and nearly every table
+        // references companies, so the deletes need platform-specific handling.
         /** @var Connection $connection */
         $connection = self::getContainer()->get('doctrine')->getConnection();
-        $connection->executeStatement('DELETE FROM users');
-        $connection->executeStatement('DELETE FROM companies');
+        $platform = $connection->getDatabasePlatform();
+
+        if ($platform instanceof PostgreSQLPlatform) {
+            $connection->executeStatement('TRUNCATE TABLE users, companies CASCADE');
+        } elseif ($platform instanceof AbstractMySQLPlatform) {
+            $connection->executeStatement('SET FOREIGN_KEY_CHECKS=0');
+
+            try {
+                $connection->executeStatement('DELETE FROM users');
+                $connection->executeStatement('DELETE FROM companies');
+            } finally {
+                $connection->executeStatement('SET FOREIGN_KEY_CHECKS=1');
+            }
+        } else {
+            $connection->executeStatement('DELETE FROM users');
+            $connection->executeStatement('DELETE FROM companies');
+        }
 
         $this->browser = $this->pantherBrowser();
     }
