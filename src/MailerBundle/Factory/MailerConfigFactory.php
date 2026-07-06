@@ -15,6 +15,7 @@ namespace SolidInvoice\MailerBundle\Factory;
 
 use JsonException;
 use RuntimeException;
+use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
@@ -34,7 +35,8 @@ final readonly class MailerConfigFactory
     public function __construct(
         private Transport $inner,
         private SystemConfig $config,
-        private iterable $transports
+        private iterable $transports,
+        private DemoMode $demoMode,
     ) {
     }
 
@@ -43,6 +45,10 @@ final readonly class MailerConfigFactory
      */
     public function fromStrings(array $dsns = []): ?TransportInterface
     {
+        if ($this->demoMode->isEnabled()) {
+            return $this->inner->fromStrings($dsns);
+        }
+
         try {
             $mailerConfig = $this->config->get(self::CONFIG_KEY);
 
