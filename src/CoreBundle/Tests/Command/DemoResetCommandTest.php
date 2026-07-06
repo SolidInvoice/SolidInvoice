@@ -13,7 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Command;
 
+use Doctrine\DBAL\DriverManager;
+use Doctrine\Migrations\Configuration\Configuration as MigrationsConfiguration;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Metadata\MigrationPlanList;
+use Doctrine\Migrations\Metadata\Storage\MetadataStorage;
+use Doctrine\Migrations\Version\AliasResolver;
+use Doctrine\Migrations\Version\MigrationPlanCalculator;
+use Doctrine\Migrations\Version\Version;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -22,18 +31,25 @@ use ReflectionMethod;
 use SolidInvoice\CoreBundle\Command\DemoResetCommand;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
+use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use SolidWorx\Platform\PlatformBundle\Console\IO;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\SharedLockInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function sys_get_temp_dir;
+use function uniqid;
 
 /**
  * `Migration`, `DummyDataLoader`, `CompanySelector` and `IO` are all `final`
@@ -44,6 +60,26 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  * needed. None of these real objects have their methods invoked in the
  * "lock not acquired" path under test, since the command returns before
  * reaching them.
+ *
+ * The happy-path test below (`testHandleRunsFullResetSequenceWhenDemoModeEnabledAndLockAcquired`)
+ * does exercise `Migration::migrate()` and the command's own
+ * `(new SchemaTool($em))->dropDatabase()` call for real: those two operations
+ * are so deeply intertwined with Doctrine ORM/DBAL/Migrations internals
+ * (schema introspection, connection platforms, metadata storage) that
+ * mocking them at the unit level would either be impossible (several of the
+ * classes involved, e.g. `Doctrine\Migrations\Metadata\MigrationPlanList`
+ * and `Doctrine\Migrations\Version\Version`, are `final`) or so deep that the
+ * mocks would just re-implement Doctrine's internals and verify nothing
+ * real. Instead, a real `Doctrine\ORM\EntityManager` backed by an in-memory
+ * SQLite connection with zero mapped entities is used for the
+ * command's/`Migration`'s/`CompanySelector`'s shared `ManagerRegistry`
+ * (mirroring production, where all three receive the same `doctrine`
+ * service): this makes `dropDatabase()`, `migrate()`'s schema diffing, and
+ * the `company` Doctrine filter enable/disable run their real code paths
+ * against a trivial, empty database, while every business-logic collaborator
+ * (`CompanyRepository`, `UserRepository`, `UserPasswordHasherInterface`, the
+ * `DummyDataLoaderInterface` loader) is a Mockery mock with real
+ * expectations on the final user/company state.
  */
 
 final class DemoResetCommandTest extends TestCase
@@ -117,6 +153,122 @@ final class DemoResetCommandTest extends TestCase
 
         self::assertSame(Command::SUCCESS, $this->invokeHandle($command));
         self::assertStringContainsString('Another demo reset is already running', $output->fetch());
+    }
+
+    public function testHandleRunsFullResetSequenceWhenDemoModeEnabledAndLockAcquired(): void
+    {
+        $filesystem = new Filesystem();
+        $emptyEntitiesDir = sys_get_temp_dir() . '/solidinvoice-demo-reset-test-' . uniqid();
+        $filesystem->mkdir($emptyEntitiesDir);
+
+        try {
+            // A real EntityManager backed by an in-memory SQLite connection with no
+            // mapped entities. See the class docblock for why this is used instead of
+            // mocking SchemaTool/Migration's internals. It is shared by the command,
+            // Migration and CompanySelector below, exactly as the `doctrine` service
+            // is shared by all three in production.
+            $ormConfig = ORMSetup::createAttributeMetadataConfiguration(paths: [$emptyEntitiesDir], isDevMode: true);
+            $ormConfig->addFilter('company', CompanyFilter::class);
+            $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true], $ormConfig);
+            $em = new EntityManager($connection, $ormConfig);
+
+            $registry = M::mock(ManagerRegistry::class);
+            $registry->shouldReceive('getManager')->andReturn($em);
+
+            // Migration is final; DependencyFactory is not, so it's mockable. Its
+            // internals are stubbed to produce an empty, already-up-to-date plan so
+            // that migrate()'s generator drains without needing real migration files,
+            // while the schema-diffing it performs runs for real against $em above.
+            $metadataStorage = M::mock(MetadataStorage::class);
+            $metadataStorage->shouldReceive('ensureInitialized')->once();
+
+            $planCalculator = M::mock(MigrationPlanCalculator::class);
+            $planCalculator->shouldReceive('getPlanUntilVersion')->once()->andReturn(new MigrationPlanList([], 'up'));
+
+            $aliasResolver = M::mock(AliasResolver::class);
+            $aliasResolver->shouldReceive('resolveVersionAlias')->once()->with('latest')->andReturn(new Version('1'));
+
+            $dependencyFactory = M::mock(DependencyFactory::class);
+            $dependencyFactory->shouldReceive('getMetadataStorage')->once()->andReturn($metadataStorage);
+            $dependencyFactory->shouldReceive('getMigrationPlanCalculator')->once()->andReturn($planCalculator);
+            $dependencyFactory->shouldReceive('getVersionAliasResolver')->once()->andReturn($aliasResolver);
+            $dependencyFactory->shouldReceive('getConfiguration')->once()->andReturn(new MigrationsConfiguration());
+
+            $migration = new Migration($dependencyFactory, $registry);
+
+            // CompanySelector is final; ManagerRegistry is mockable, but here the real
+            // shared $em is used instead (see class docblock) so switchCompany()/reset()
+            // exercise the real 'company' Doctrine filter enable/disable.
+            $companySelector = new CompanySelector($registry);
+
+            $dummyDataLoaderInner = M::mock(DummyDataLoaderInterface::class);
+            $dummyDataLoaderInner->shouldReceive('load')->once()->with(M::on(
+                static fn (Company $company): bool => 'Demo Company' === $company->getName() && 'USD' === $company->currency
+            ));
+            $dummyDataLoader = new DummyDataLoader([$dummyDataLoaderInner]);
+
+            $userPasswordHasher = M::mock(UserPasswordHasherInterface::class);
+            $userPasswordHasher->shouldReceive('hashPassword')
+                ->once()
+                ->with(M::type(User::class), 'demo-password')
+                ->andReturn('hashed-demo-password');
+
+            $companyRepository = M::mock(CompanyRepository::class);
+            $companyRepository->shouldReceive('save')
+                ->once()
+                ->ordered()
+                ->with(M::on(
+                    static fn (Company $company): bool => 'Demo Company' === $company->getName() && 'USD' === $company->currency
+                ));
+
+            $userRepository = M::mock(UserRepository::class);
+            $userRepository->shouldReceive('save')
+                ->once()
+                ->ordered()
+                ->with(M::on(
+                    static fn (User $user): bool => 'demo@example.com' === $user->getEmail()
+                        && 'hashed-demo-password' === $user->getPassword()
+                        && true === $user->isEnabled()
+                        && true === $user->isVerified()
+                        && in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)
+                        && 1 === $user->getCompanies()->count()
+                        && $user->getCompanies()->exists(
+                            static fn (int $key, Company $company): bool => 'Demo Company' === $company->getName() && 'USD' === $company->currency
+                        )
+                ));
+
+            $lock = M::mock(SharedLockInterface::class);
+            $lock->shouldReceive('acquire')->once()->andReturnTrue();
+            $lock->shouldReceive('release')->once();
+
+            $lockFactory = M::mock(LockFactory::class);
+            $lockFactory->shouldReceive('createLock')->once()->andReturn($lock);
+
+            $toggle = M::mock(ToggleInterface::class);
+            $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturn(true);
+            $demoMode = new DemoMode($toggle, 'demo@example.com', 'demo-password', 'https://signup.example.com');
+
+            $output = new BufferedOutput();
+            $io = new IO(new ArrayInput([]), $output);
+
+            $command = $this->createCommand(
+                registry: $registry,
+                companySelector: $companySelector,
+                dummyDataLoader: $dummyDataLoader,
+                userPasswordHasher: $userPasswordHasher,
+                migration: $migration,
+                companyRepository: $companyRepository,
+                userRepository: $userRepository,
+                lockFactory: $lockFactory,
+                demoMode: $demoMode,
+            );
+            $command->setIo($io);
+
+            self::assertSame(Command::SUCCESS, $this->invokeHandle($command));
+            self::assertStringContainsString('Demo environment reset successfully', $output->fetch());
+        } finally {
+            $filesystem->remove($emptyEntitiesDir);
+        }
     }
 
     private function createCommand(
