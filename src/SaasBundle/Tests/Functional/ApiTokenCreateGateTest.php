@@ -46,7 +46,8 @@ final class ApiTokenCreateGateTest extends WebTestCase
         $client->request(Request::METHOD_GET, '/profile/api');
 
         self::assertResponseIsSuccessful();
-        $body = (string) $client->getResponse()->getContent();
+        $body = (string) $client->getResponse()
+            ->getContent();
         self::assertStringContainsString(self::GATED_HEADLINE, $body);
         // Confirm the live component (and its create-button) is NOT in the gated page
         self::assertStringNotContainsString('id="api-token-', $body);
@@ -59,7 +60,8 @@ final class ApiTokenCreateGateTest extends WebTestCase
         $client->request(Request::METHOD_GET, '/profile/api');
 
         self::assertResponseIsSuccessful();
-        $body = (string) $client->getResponse()->getContent();
+        $body = (string) $client->getResponse()
+            ->getContent();
         self::assertStringNotContainsString(self::GATED_HEADLINE, $body);
     }
 
@@ -104,7 +106,7 @@ final class ApiTokenCreateGateTest extends WebTestCase
             self::getContainer()->set(FeatureGate::class, $featureGate);
         }
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
         self::assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 

@@ -166,7 +166,8 @@ final class TemplatesRenderingTest extends KernelTestCase
             'total' => BigInteger::of(150000),
             'baseTotal' => BigInteger::of(150000),
             'tax' => BigInteger::of(0),
-            'discount' => new Discount()->setType(null),
+            'discount' => new Discount()
+                ->setType(null),
             'lines' => [
                 new Line()
                     ->setDescription('Sample line item')
@@ -175,6 +176,6 @@ final class TemplatesRenderingTest extends KernelTestCase
                     ->setTotal(BigInteger::of(150000)),
             ],
             'users' => [$contact],
-        ])->_real();
+        ]);
     }
 }

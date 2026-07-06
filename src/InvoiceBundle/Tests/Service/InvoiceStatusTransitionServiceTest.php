@@ -38,7 +38,7 @@ final class InvoiceStatusTransitionServiceTest extends KernelTestCase
     public function testApplyTransition(): void
     {
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne()->_real());
+        $invoice->setClient(ClientFactory::createOne());
         $invoice->setStatus(InvoiceStatus::Pending);
 
         $stateMachine = M::mock(StateMachine::class);
@@ -97,10 +97,12 @@ final class InvoiceStatusTransitionServiceTest extends KernelTestCase
         $invoice->setStatus(InvoiceStatus::Pending);
 
         $transition1 = M::mock(Transition::class);
-        $transition1->shouldReceive('getName')->andReturn(Graph::TRANSITION_OVERDUE);
+        $transition1->shouldReceive('getName')
+            ->andReturn(Graph::TRANSITION_OVERDUE);
 
         $transition2 = M::mock(Transition::class);
-        $transition2->shouldReceive('getName')->andReturn(Graph::TRANSITION_PAY);
+        $transition2->shouldReceive('getName')
+            ->andReturn(Graph::TRANSITION_PAY);
 
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('getEnabledTransitions')

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Security;
 
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,7 +37,7 @@ class UserChecker implements UserCheckerInterface
         }
     }
 
-    public function checkPostAuth(UserInterface $user): void
+    public function checkPostAuth(UserInterface $user, ?TokenInterface $token = null): void
     {
         // No-op: disabled accounts are rejected in checkPreAuth().
     }

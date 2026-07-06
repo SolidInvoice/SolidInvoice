@@ -33,7 +33,7 @@ final class CompanyRepositoryTest extends KernelTestCase
     public function testDeleteCompanyAlsoRemovesOrphanedSecurityTokens(): void
     {
         $companyId = $this->company->getId();
-        $payment = PaymentFactory::createOne()->_real();
+        $payment = PaymentFactory::createOne();
 
         $token = new SecurityToken();
         $token->setDetails(new Identity($payment->getId()->toString(), $payment));

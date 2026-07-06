@@ -37,7 +37,7 @@ final class ApiUserCheckerTest extends ApiTestCase
 
     public function testDisabledUserIsBlockedFromApi(): void
     {
-        $disabled = UserFactory::createOne(['companies' => [$this->company], 'enabled' => false])->_real();
+        $disabled = UserFactory::createOne(['companies' => [$this->company], 'enabled' => false]);
 
         $manager = self::getContainer()->get(ApiTokenManager::class);
         self::assertInstanceOf(ApiTokenManager::class, $manager);

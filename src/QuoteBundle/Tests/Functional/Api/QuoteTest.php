@@ -27,7 +27,6 @@ use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
@@ -43,12 +42,13 @@ final class QuoteTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         QuoteFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()
+                ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/quotes');
@@ -62,12 +62,13 @@ final class QuoteTest extends ApiTestCase
 
     public function testGetQuotesForClient(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         QuoteFactory::createMany(2, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()
+                ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/quotes');
@@ -83,7 +84,7 @@ final class QuoteTest extends ApiTestCase
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
         $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
-        $foreignQuote = QuoteFactory::createOne(['client' => $foreignClient, 'company' => $otherCompany])->_real();
+        $foreignQuote = QuoteFactory::createOne(['client' => $foreignClient, 'company' => $otherCompany]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($foreignQuote), [
@@ -94,10 +95,10 @@ final class QuoteTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $contacts = array_map(
-            fn (Proxy $contact) => $this->getIriFromResource($contact->_real()),
+            $this->getIriFromResource(...),
             ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
@@ -119,9 +120,9 @@ final class QuoteTest extends ApiTestCase
 
         $result = $this->requestPost('/api/quotes', $data);
 
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
+        self::assertTrue(Ulid::isValid($result['lines'][0]['id'], Ulid::FORMAT_BASE_32));
 
         self::assertJsonContains([
             '@context' => $this->getContextForResource($this->getResourceClass()),
@@ -154,7 +155,7 @@ final class QuoteTest extends ApiTestCase
     public function testDelete(): void
     {
         $client = ClientFactory::createOne();
-        $quote = QuoteFactory::createOne(['client' => $client])->_real();
+        $quote = QuoteFactory::createOne(['client' => $client]);
 
         $this->requestDelete($this->getIriFromResource($quote));
     }
@@ -179,7 +180,7 @@ final class QuoteTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($quote));
 
@@ -187,9 +188,11 @@ final class QuoteTest extends ApiTestCase
             '@context' => '/api/contexts/Quote',
             '@id' => $this->getIriFromResource($quote),
             '@type' => 'Quote',
-            'id' => $quote->getId()->toString(),
+            'id' => $quote->getId()
+                ->toString(),
             'quoteId' => '',
-            'uuid' => $quote->getUuid()->toString(),
+            'uuid' => $quote->getUuid()
+                ->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
             'total' => 100,
@@ -206,7 +209,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->first()),
                     '@type' => 'QuoteLine',
-                    'id' => $quote->getLines()->first()->getId()->toString(),
+                    'id' => $quote->getLines()
+                        ->first()
+                        ->getId()
+                        ->toString(),
                     'description' => 'Test Item',
                     'price' => 100,
                     'qty' => 1,
@@ -214,7 +220,7 @@ final class QuoteTest extends ApiTestCase
                     'taxes' => [],
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
+            'users' => array_map($this->getIriFromResource(...), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
             'payableAmount' => 100,
@@ -243,7 +249,7 @@ final class QuoteTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($quote),
@@ -271,9 +277,11 @@ final class QuoteTest extends ApiTestCase
             '@context' => '/api/contexts/Quote',
             '@id' => $this->getIriFromResource($quote),
             '@type' => 'Quote',
-            'id' => $quote->getId()->toString(),
+            'id' => $quote->getId()
+                ->toString(),
             'quoteId' => '',
-            'uuid' => $quote->getUuid()->toString(),
+            'uuid' => $quote->getUuid()
+                ->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
             'total' => 11250,
@@ -290,7 +298,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->get(0)),
                     '@type' => 'QuoteLine',
-                    'id' => $quote->getLines()->get(0)->getId()->toString(),
+                    'id' => $quote->getLines()
+                        ->get(0)
+                        ->getId()
+                        ->toString(),
                     'description' => 'Foo Item',
                     'price' => 10000,
                     'qty' => 1,
@@ -300,7 +311,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->get(1)),
                     '@type' => 'QuoteLine',
-                    'id' => $quote->getLines()->get(1)->getId()->toString(),
+                    'id' => $quote->getLines()
+                        ->get(1)
+                        ->getId()
+                        ->toString(),
                     'description' => 'Foo Items',
                     'price' => 500,
                     'qty' => 5,
@@ -308,7 +322,7 @@ final class QuoteTest extends ApiTestCase
                     'taxes' => [],
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
+            'users' => array_map($this->getIriFromResource(...), $contacts),
             'invoice' => null,
             'withholdingAmount' => 0,
             'payableAmount' => 11250,

@@ -49,7 +49,7 @@ final class Install extends AbstractController
      * @param ServiceLocator<InstallationStepInterface> $steps
      */
     public function __construct(
-        #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
+        #[AutowireLocator(InstallationStepInterface::DI_TAG)]
         private readonly ServiceLocator $steps,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly ConfigWriter $configWriter,
@@ -116,7 +116,10 @@ final class Install extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $action = u($request->query->get('action'))->replace('_', ' ')->title()->toString();
+        $action = u($request->query->get('action'))
+            ->replace('_', ' ')
+            ->title()
+            ->toString();
 
         if (! $this->steps->has($action)) {
             throw new BadRequestException('Invalid action: ' . $action);

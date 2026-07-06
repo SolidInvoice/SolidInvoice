@@ -17,48 +17,47 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method Tax|Proxy<Tax> create((array | callable) $attributes = [])
- * @method static Tax|Proxy<Tax> createOne(array $attributes = [])
- * @method static Tax|Proxy<Tax> find((object | array | mixed) $criteria)
- * @method static Tax|Proxy<Tax> findOrCreate(array $attributes)
- * @method static Tax|Proxy<Tax> first(string $sortedField = 'id')
- * @method static Tax|Proxy<Tax> last(string $sortedField = 'id')
- * @method static Tax|Proxy<Tax> random(array $attributes = [])
- * @method static Tax|Proxy<Tax> randomOrCreate(array $attributes = [])
- * @method static Tax[]|Proxy<Tax>[] all()
- * @method static Tax[]|Proxy<Tax>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static Tax[]|Proxy<Tax>[] createSequence((iterable | callable) $sequence)
- * @method static Tax[]|Proxy<Tax>[] findBy(array $attributes)
- * @method static Tax[]|Proxy<Tax>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static Tax[]|Proxy<Tax>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(Tax | Proxy<Tax>)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(Tax | Proxy<Tax>)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<Tax, TaxRepository> repository()
+ * @method Tax create((array | callable) $attributes = [])
+ * @method static Tax createOne(array $attributes = [])
+ * @method static Tax find((object | array | mixed) $criteria)
+ * @method static Tax findOrCreate(array $attributes)
+ * @method static Tax first(string $sortedField = 'id')
+ * @method static Tax last(string $sortedField = 'id')
+ * @method static Tax random(array $attributes = [])
+ * @method static Tax randomOrCreate(array $attributes = [])
+ * @method static Tax[] all()
+ * @method static Tax[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Tax[] createSequence((iterable | callable) $sequence)
+ * @method static Tax[] findBy(array $attributes)
+ * @method static Tax[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static Tax[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Tax> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<Tax> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<Tax, TaxRepository> repository()
  *
- * @phpstan-method Tax&Proxy<Tax> create((array | callable) $attributes = [])
- * @phpstan-method static Tax&Proxy<Tax> createOne(array $attributes = [])
- * @phpstan-method static Tax&Proxy<Tax> find((object | array | mixed) $criteria)
- * @phpstan-method static Tax&Proxy<Tax> findOrCreate(array $attributes)
- * @phpstan-method static Tax&Proxy<Tax> first(string $sortedField = 'id')
- * @phpstan-method static Tax&Proxy<Tax> last(string $sortedField = 'id')
- * @phpstan-method static Tax&Proxy<Tax> random(array $attributes = [])
- * @phpstan-method static Tax&Proxy<Tax> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<Tax&Proxy<Tax>> all()
- * @phpstan-method static list<Tax&Proxy<Tax>> createMany(int $number, (array | callable) $attributes = [])
- * @phpstan-method static list<Tax&Proxy<Tax>> createSequence((iterable | callable) $sequence)
- * @phpstan-method static list<Tax&Proxy<Tax>> findBy(array $attributes)
- * @phpstan-method static list<Tax&Proxy<Tax>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Tax&Proxy<Tax>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<Tax&Proxy<Tax>> many(int $min, (int | null) $max = null)
- * @phpstan-method FactoryCollection<Tax&Proxy<Tax>> sequence((iterable | callable) $sequence)
- * @extends PersistentProxyObjectFactory<Tax>
+ * @phpstan-method Tax create((array | callable) $attributes = [])
+ * @phpstan-method static Tax createOne(array $attributes = [])
+ * @phpstan-method static Tax find((object | array | mixed) $criteria)
+ * @phpstan-method static Tax findOrCreate(array $attributes)
+ * @phpstan-method static Tax first(string $sortedField = 'id')
+ * @phpstan-method static Tax last(string $sortedField = 'id')
+ * @phpstan-method static Tax random(array $attributes = [])
+ * @phpstan-method static Tax randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Tax> all()
+ * @phpstan-method static list<Tax> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Tax> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Tax> findBy(array $attributes)
+ * @phpstan-method static list<Tax> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Tax> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Tax> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Tax> sequence((iterable | callable) $sequence)
+ * @extends PersistentObjectFactory<Tax>
  */
-final class TaxFactory extends PersistentProxyObjectFactory
+final class TaxFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

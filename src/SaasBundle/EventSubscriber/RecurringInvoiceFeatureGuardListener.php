@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -39,6 +40,9 @@ final readonly class RecurringInvoiceFeatureGuardListener
     ) {
     }
 
+    /**
+     * @param GuardEvent<RecurringInvoice> $event
+     */
     #[AsEventListener('workflow.recurring_invoice.guard.activate')]
     public function onGuardActivate(GuardEvent $event): void
     {

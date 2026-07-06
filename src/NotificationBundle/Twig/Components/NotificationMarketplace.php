@@ -65,7 +65,7 @@ final class NotificationMarketplace extends AbstractController
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
     public function __construct(
-        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private readonly ServiceLocator $transportConfigurations,
         private readonly TransportSettingRepository $repository
     ) {
@@ -95,7 +95,7 @@ final class NotificationMarketplace extends AbstractController
                     'isPopular' => $this->isPopularIntegration($name),
                     'isConfigured' => $this->isIntegrationConfigured($name),
                 ];
-            } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
+            } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
                 continue;
             }
         }
@@ -200,7 +200,6 @@ final class NotificationMarketplace extends AbstractController
             'GoogleChat' => 'tabler:brand-google',
             'Mattermost' => 'tabler:message-circle-2',
             'RocketChat' => 'tabler:rocket',
-            'Gitter' => 'tabler:brand-github',
             'LinkedIn' => 'tabler:brand-linkedin',
             'Firebase' => 'tabler:brand-firebase',
             'Mercure' => 'tabler:speakerphone',
@@ -218,7 +217,7 @@ final class NotificationMarketplace extends AbstractController
             $type = $configurator::getType();
 
             return $type === 'texter' ? 'SMS' : 'Chat';
-        } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
             return 'Unknown';
         }
     }
@@ -230,7 +229,7 @@ final class NotificationMarketplace extends AbstractController
             $configurator = $this->transportConfigurations->get($transportName);
 
             return $configurator::getType();
-        } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
             return 'texter';
         }
     }

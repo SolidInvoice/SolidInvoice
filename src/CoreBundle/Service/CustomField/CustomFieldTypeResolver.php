@@ -59,7 +59,7 @@ final class CustomFieldTypeResolver
                 'input_format' => 'Y-m-d',
             ]],
             CustomFieldType::EMAIL => [EmailType::class, []],
-            CustomFieldType::URL => [UrlType::class, []],
+            CustomFieldType::URL => [UrlType::class, ['default_protocol' => 'http']],
             CustomFieldType::CHECKBOX => [CheckboxType::class, []],
             CustomFieldType::SELECT => [ChoiceType::class, [
                 'choices' => $this->choices($field),

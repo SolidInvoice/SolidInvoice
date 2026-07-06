@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
 use Random\RandomException;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\RandomNumberGeneratorTest
  */
+#[AsTaggedItem('random_number')]
 final class RandomNumberGenerator implements IdGeneratorInterface
 {
     public const int MIN_VALUE = 100000;

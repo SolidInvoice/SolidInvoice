@@ -29,14 +29,14 @@ final class ContactInfoTest extends LiveComponentTest
 
     public function testSaveExistingContactPersistsCustomFieldValue(): void
     {
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
         $contact = ContactFactory::createOne([
             'firstName' => 'Jane',
             'lastName' => 'Smith',
             'email' => 'jane@example.com',
             'client' => $client,
             'company' => $this->company,
-        ])->_real();
+        ]);
 
         $component = $this->createLiveComponent(
             name: ContactInfo::class,

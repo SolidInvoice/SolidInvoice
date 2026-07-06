@@ -19,34 +19,33 @@ use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxType;
 use SolidInvoice\TaxBundle\Repository\LineTaxRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method LineTax|Proxy<LineTax> create((array | callable) $attributes = [])
- * @method static LineTax|Proxy<LineTax> createOne(array $attributes = [])
- * @method static LineTax|Proxy<LineTax> find((object | array | mixed) $criteria)
- * @method static LineTax|Proxy<LineTax> findOrCreate(array $attributes)
- * @method static LineTax|Proxy<LineTax> first(string $sortedField = 'id')
- * @method static LineTax|Proxy<LineTax> last(string $sortedField = 'id')
- * @method static LineTax|Proxy<LineTax> random(array $attributes = [])
- * @method static LineTax|Proxy<LineTax> randomOrCreate(array $attributes = [])
- * @method static LineTax[]|Proxy<LineTax>[] all()
- * @method static LineTax[]|Proxy<LineTax>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static LineTax[]|Proxy<LineTax>[] createSequence((iterable | callable) $sequence)
- * @method static LineTax[]|Proxy<LineTax>[] findBy(array $attributes)
- * @method static LineTax[]|Proxy<LineTax>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static LineTax[]|Proxy<LineTax>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(LineTax | Proxy<LineTax>)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(LineTax | Proxy<LineTax>)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<LineTax, LineTaxRepository> repository()
+ * @method LineTax create((array | callable) $attributes = [])
+ * @method static LineTax createOne(array $attributes = [])
+ * @method static LineTax find((object | array | mixed) $criteria)
+ * @method static LineTax findOrCreate(array $attributes)
+ * @method static LineTax first(string $sortedField = 'id')
+ * @method static LineTax last(string $sortedField = 'id')
+ * @method static LineTax random(array $attributes = [])
+ * @method static LineTax randomOrCreate(array $attributes = [])
+ * @method static LineTax[] all()
+ * @method static LineTax[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static LineTax[] createSequence((iterable | callable) $sequence)
+ * @method static LineTax[] findBy(array $attributes)
+ * @method static LineTax[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static LineTax[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<LineTax> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<LineTax> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<LineTax, LineTaxRepository> repository()
  *
- * @phpstan-method LineTax&Proxy<LineTax> create((array | callable) $attributes = [])
- * @phpstan-method static LineTax&Proxy<LineTax> createOne(array $attributes = [])
- * @extends PersistentProxyObjectFactory<LineTax>
+ * @phpstan-method LineTax create((array | callable) $attributes = [])
+ * @phpstan-method static LineTax createOne(array $attributes = [])
+ * @extends PersistentObjectFactory<LineTax>
  */
-final class LineTaxFactory extends PersistentProxyObjectFactory
+final class LineTaxFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

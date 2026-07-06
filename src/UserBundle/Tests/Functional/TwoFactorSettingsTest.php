@@ -50,7 +50,7 @@ final class TwoFactorSettingsTest extends WebTestCase
             'enabled' => true,
             'verified' => true,
             'companies' => [$this->company],
-        ])->_real();
+        ]);
 
         // Ensure no 2FA is enabled initially
         $user->enableEmailAuth(false);

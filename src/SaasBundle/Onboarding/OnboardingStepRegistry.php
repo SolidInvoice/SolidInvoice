@@ -32,7 +32,7 @@ final readonly class OnboardingStepRegistry
      * @param iterable<OnboardingEmailStepInterface> $steps
      */
     public function __construct(
-        #[AutowireIterator(OnboardingEmailStepInterface::DI_TAG, defaultPriorityMethod: 'priority')]
+        #[AutowireIterator(OnboardingEmailStepInterface::DI_TAG)]
         iterable $steps,
     ) {
         $this->steps = array_values(iterator_to_array($steps, false));

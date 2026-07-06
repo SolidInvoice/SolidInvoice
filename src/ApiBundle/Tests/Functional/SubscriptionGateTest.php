@@ -115,7 +115,7 @@ final class SubscriptionGateTest extends KernelTestCase
     {
         $container = self::getContainer();
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
 
         $manager = $container->get(ApiTokenManager::class);
         self::assertInstanceOf(ApiTokenManager::class, $manager);
@@ -126,7 +126,8 @@ final class SubscriptionGateTest extends KernelTestCase
 
         $registry = $container->get('doctrine');
         self::assertInstanceOf(ManagerRegistry::class, $registry);
-        $registry->getManager()->flush();
+        $registry->getManager()
+            ->flush();
 
         return $generated;
     }

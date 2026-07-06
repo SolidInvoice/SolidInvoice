@@ -22,48 +22,47 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method Invoice|Proxy<Invoice> create((array | callable) $attributes = [])
- * @method static Invoice|Proxy<Invoice> createOne(array $attributes = [])
- * @method static Invoice|Proxy<Invoice> find((object | array | mixed) $criteria)
- * @method static Invoice|Proxy<Invoice> findOrCreate(array $attributes)
- * @method static Invoice|Proxy<Invoice> first(string $sortedField = 'id')
- * @method static Invoice|Proxy<Invoice> last(string $sortedField = 'id')
- * @method static Invoice|Proxy<Invoice> random(array $attributes = [])
- * @method static Invoice|Proxy<Invoice> randomOrCreate(array $attributes = [])
- * @method static Invoice[]|Proxy<Invoice>[] all()
- * @method static Invoice[]|Proxy<Invoice>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static Invoice[]|Proxy<Invoice>[] createSequence((iterable | callable) $sequence)
- * @method static Invoice[]|Proxy<Invoice>[] findBy(array $attributes)
- * @method static Invoice[]|Proxy<Invoice>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static Invoice[]|Proxy<Invoice>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(Invoice | Proxy)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(Invoice | Proxy)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<Invoice, InvoiceRepository> repository()
+ * @method Invoice create((array | callable) $attributes = [])
+ * @method static Invoice createOne(array $attributes = [])
+ * @method static Invoice find((object | array | mixed) $criteria)
+ * @method static Invoice findOrCreate(array $attributes)
+ * @method static Invoice first(string $sortedField = 'id')
+ * @method static Invoice last(string $sortedField = 'id')
+ * @method static Invoice random(array $attributes = [])
+ * @method static Invoice randomOrCreate(array $attributes = [])
+ * @method static Invoice[] all()
+ * @method static Invoice[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Invoice[] createSequence((iterable | callable) $sequence)
+ * @method static Invoice[] findBy(array $attributes)
+ * @method static Invoice[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static Invoice[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Invoice> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<Invoice> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<Invoice, InvoiceRepository> repository()
  *
- * @phpstan-method Invoice&Proxy<Invoice> create((array | callable) $attributes = [])
- * @phpstan-method static Invoice&Proxy<Invoice> createOne(array $attributes = [])
- * @phpstan-method static Invoice&Proxy<Invoice> find((object | array | mixed) $criteria)
- * @phpstan-method static Invoice&Proxy<Invoice> findOrCreate(array $attributes)
- * @phpstan-method static Invoice&Proxy<Invoice> first(string $sortedField = 'id')
- * @phpstan-method static Invoice&Proxy<Invoice> last(string $sortedField = 'id')
- * @phpstan-method static Invoice&Proxy<Invoice> random(array $attributes = [])
- * @phpstan-method static Invoice&Proxy<Invoice> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<Invoice&Proxy<Invoice>> all()
- * @phpstan-method static list<Invoice&Proxy<Invoice>> createMany(int $number, (array | callable) $attributes = [])
- * @phpstan-method static list<Invoice&Proxy<Invoice>> createSequence((iterable | callable) $sequence)
- * @phpstan-method static list<Invoice&Proxy<Invoice>> findBy(array $attributes)
- * @phpstan-method static list<Invoice&Proxy<Invoice>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Invoice&Proxy<Invoice>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<Invoice&Proxy<Invoice>> many(int $min, (int | null) $max = null)
- * @phpstan-method FactoryCollection<Invoice&Proxy<Invoice>> sequence((iterable | callable) $sequence)
- * @extends PersistentProxyObjectFactory<Invoice>
+ * @phpstan-method Invoice create((array | callable) $attributes = [])
+ * @phpstan-method static Invoice createOne(array $attributes = [])
+ * @phpstan-method static Invoice find((object | array | mixed) $criteria)
+ * @phpstan-method static Invoice findOrCreate(array $attributes)
+ * @phpstan-method static Invoice first(string $sortedField = 'id')
+ * @phpstan-method static Invoice last(string $sortedField = 'id')
+ * @phpstan-method static Invoice random(array $attributes = [])
+ * @phpstan-method static Invoice randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Invoice> all()
+ * @phpstan-method static list<Invoice> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Invoice> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Invoice> findBy(array $attributes)
+ * @phpstan-method static list<Invoice> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Invoice> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Invoice> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Invoice> sequence((iterable | callable) $sequence)
+ * @extends PersistentObjectFactory<Invoice>
  */
-final class InvoiceFactory extends PersistentProxyObjectFactory
+final class InvoiceFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

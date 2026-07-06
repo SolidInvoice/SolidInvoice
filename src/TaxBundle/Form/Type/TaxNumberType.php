@@ -23,13 +23,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class TaxNumberType extends AbstractType
 {
     #[Override]
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }
 
     #[Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'tax_number';
     }

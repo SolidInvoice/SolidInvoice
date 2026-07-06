@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
+use SolidInvoice\CoreBundle\Test\Traits\ConsoleTesterTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendRecurringInvoicesCommand;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
@@ -25,7 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Symfony\Component\Console\Tester\TesterTrait;
 use Zenstruck\Foundry\Test\Factories;
 use function rewind;
 use function str_replace;
@@ -36,7 +36,7 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
-    use TesterTrait;
+    use ConsoleTesterTrait;
 
     public function testCommandExecutesSuccessfully(): void
     {
@@ -60,7 +60,7 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
             'company' => $company1,
         ]);
 
-        $this->runCommand();
+        $this->runTestCommand();
         self::assertThat($this->statusCode, new CommandIsSuccessful());
     }
 
@@ -74,7 +74,7 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
             'company' => $company,
         ]);
 
-        $this->runCommand();
+        $this->runTestCommand();
         self::assertThat($this->statusCode, new CommandIsSuccessful());
     }
 
@@ -100,11 +100,11 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
             'company' => $company3,
         ]);
 
-        $this->runCommand();
+        $this->runTestCommand();
         self::assertThat($this->statusCode, new CommandIsSuccessful());
     }
 
-    private function runCommand(): string
+    private function runTestCommand(): string
     {
         $application = new Application(self::bootKernel());
 

@@ -40,7 +40,7 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;

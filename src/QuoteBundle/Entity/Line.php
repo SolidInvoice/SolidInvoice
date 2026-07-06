@@ -39,7 +39,6 @@ use SolidInvoice\TaxBundle\Entity\LineTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
@@ -107,8 +106,7 @@ class Line implements LineInterface, Stringable
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
-    #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[Groups(['quote_api', 'client_api', 'create_quote_api', 'quote_api:read', 'quote_api:write'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -264,7 +262,9 @@ class Line implements LineInterface, Stringable
     #[ORM\PrePersist]
     public function updateTotal(): static
     {
-        $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty !== null ? (string) $this->qty : 1);
+        $this->total = $this->getPrice()
+            ->toBigDecimal()
+            ->multipliedBy($this->qty !== null ? (string) $this->qty : 1);
 
         return $this;
     }

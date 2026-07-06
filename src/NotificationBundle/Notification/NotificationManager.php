@@ -37,7 +37,7 @@ class NotificationManager
     public function __construct(
         private readonly NotifierInterface $notifier,
         private readonly UserNotificationRepository $userNotificationRepository,
-        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private readonly ServiceLocator $transportConfigurations,
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,
@@ -46,7 +46,8 @@ class NotificationManager
 
     public function sendNotification(NotificationMessage $message): void
     {
-        $attributes = new ReflectionObject($message)->getAttributes(AsNotification::class);
+        $attributes = new ReflectionObject($message)
+            ->getAttributes(AsNotification::class);
 
         if ($attributes === []) {
             throw new InvalidNotificationMessageException(sprintf(
@@ -79,7 +80,8 @@ class NotificationManager
                         'chatter' => 'chat',
                         default => $transportConfiguration::getType(),
                     },
-                    $transport->getId()->toString(),
+                    $transport->getId()
+                        ->toString(),
                 );
             }
 

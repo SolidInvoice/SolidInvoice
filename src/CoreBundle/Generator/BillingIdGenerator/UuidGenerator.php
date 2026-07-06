@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Uid\UuidV7;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\UuidGeneratorTest
  */
+#[AsTaggedItem('uuid')]
 final class UuidGenerator implements IdGeneratorInterface
 {
     public static function getName(): string

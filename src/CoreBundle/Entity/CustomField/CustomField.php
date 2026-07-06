@@ -33,7 +33,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Uid\Ulid;
@@ -164,7 +164,10 @@ class CustomField
     public function setLabel(string $label): self
     {
         $this->label = $label;
-        $this->fieldKey = new AsciiSlugger()->slug($label, '_')->lower()->toString();
+        $this->fieldKey = new AsciiSlugger()
+            ->slug($label, '_')
+            ->lower()
+            ->toString();
 
         return $this;
     }

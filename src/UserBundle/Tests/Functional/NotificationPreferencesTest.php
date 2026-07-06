@@ -33,7 +33,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();
@@ -50,7 +50,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();
@@ -67,7 +67,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
 
@@ -98,7 +98,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();
@@ -116,7 +116,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();
@@ -134,7 +134,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
 
@@ -162,7 +162,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
 
@@ -197,7 +197,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $user = UserFactory::createOne([
             'companies' => [$this->company],
             'email' => 'test@example.com',
-        ])->_real();
+        ]);
 
         self::ensureKernelShutdown();
         $client = self::createClient();

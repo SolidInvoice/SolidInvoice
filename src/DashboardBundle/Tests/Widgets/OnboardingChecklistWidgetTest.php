@@ -30,7 +30,8 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
     public function testGetDataReturnsShowFalseWhenNoUserIsLoggedIn(): void
     {
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn(null);
+        $security->method('getUser')
+            ->willReturn(null);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $widget = new OnboardingChecklistWidget($manager, $security);
@@ -44,13 +45,14 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
     public function testGetDataReturnsShowFalseWhenChecklistIsDismissed(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $manager->dismiss($user);
 
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn($user);
+        $security->method('getUser')
+            ->willReturn($user);
 
         $widget = new OnboardingChecklistWidget($manager, $security);
         $data = $widget->getData();
@@ -62,10 +64,11 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
     public function testGetDataReturnsProgressWhenChecklistShouldBeShown(): void
     {
         $company = CompanyFactory::createOne();
-        $user = UserFactory::createOne(['companies' => [$company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$company]]);
 
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn($user);
+        $security->method('getUser')
+            ->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
         $widget = new OnboardingChecklistWidget($manager, $security);

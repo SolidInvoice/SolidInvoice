@@ -81,8 +81,10 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         $this->company = new Company();
         $this->company->setName('SolidInvoice');
         $this->company->currency = 'USD';
-        $registry->getManager()->persist($this->company);
-        $registry->getManager()->flush();
+        $registry->getManager()
+            ->persist($this->company);
+        $registry->getManager()
+            ->flush();
 
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
@@ -102,7 +104,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
         $this->faker = Factory::create();
 
-        $this->user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $this->user = UserFactory::createOne(['companies' => [$this->company]]);
 
         $tokenManager = self::getContainer()->get(ApiTokenManager::class);
         $generated = $tokenManager->getOrCreate($this->user, 'Functional Test');

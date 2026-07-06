@@ -33,7 +33,7 @@ final class ConsentGrantTest extends KernelTestCase
 
     public function testRememberAndLookupConsent(): void
     {
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
 
         $container = self::getContainer();
 
@@ -69,7 +69,7 @@ final class ConsentGrantTest extends KernelTestCase
 
     public function testRememberMergesScopes(): void
     {
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
 
         $container = self::getContainer();
 

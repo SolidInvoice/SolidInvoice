@@ -58,6 +58,19 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
     }
 
     /**
+     * Ensure the plain-text password is never serialized (e.g. into the session).
+     *
+     * @return array<string, mixed>
+     */
+    public function __serialize(): array
+    {
+        $data = (array) $this;
+        unset($data['plainPassword']);
+
+        return $data;
+    }
+
+    /**
      * @return Collection<int, ApiToken>
      */
     public function getApiTokens(): Collection

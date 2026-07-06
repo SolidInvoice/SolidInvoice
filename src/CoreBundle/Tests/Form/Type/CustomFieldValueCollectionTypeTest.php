@@ -37,7 +37,7 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
     public function testSubmitCreatesValue(): void
     {
         $company = CompanyFactory::createOne();
-        $client = ClientFactory::createOne(['company' => $company])->_real();
+        $client = ClientFactory::createOne(['company' => $company]);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $field = new CustomField()
@@ -45,7 +45,7 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
             ->setLabel('Department')
             ->setFieldKey('department')
             ->setType(CustomFieldType::TEXT)
-            ->setCompany($company->_real());
+            ->setCompany($company);
         $em->persist($field);
         $em->flush();
 
@@ -72,7 +72,8 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
         $company = CompanyFactory::createOne();
         // CRITICAL: do NOT persist the client first — simulate the form-submit-then-persist flow.
         $client = new Client();
-        $client->setName('Test')->setStatus(ClientStatus::Active)->setCompany($company->_real());
+        $client->setName('Test')
+            ->setStatus(ClientStatus::Active)->setCompany($company);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
         $field = new CustomField()
@@ -80,7 +81,7 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
             ->setLabel('Department')
             ->setFieldKey('department')
             ->setType(CustomFieldType::TEXT)
-            ->setCompany($company->_real());
+            ->setCompany($company);
         $em->persist($field);
         $em->flush();
 
@@ -107,7 +108,8 @@ final class CustomFieldValueCollectionTypeTest extends KernelTestCase
     {
         $company = CompanyFactory::createOne();
         $client = new Client();
-        $client->setName('Test')->setStatus(ClientStatus::Active)->setCompany($company->_real());
+        $client->setName('Test')
+            ->setStatus(ClientStatus::Active)->setCompany($company);
 
         // Constructor pre-assigns a Ulid so getId() is non-null immediately.
         self::assertInstanceOf(Ulid::class, $client->getId());

@@ -32,7 +32,8 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
     public function testBlocksTransitionWhenFeatureDisabledWithPlanLabel(): void
     {
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(false);
+        $featureGate->method('isEnabled')
+            ->willReturn(false);
 
         $upgradePromptProvider = $this->createStub(UpgradePromptProvider::class);
         $upgradePromptProvider->method('menuLabel')
@@ -57,7 +58,8 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
     public function testBlocksTransitionWhenFeatureDisabledWithoutPlanLabel(): void
     {
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(false);
+        $featureGate->method('isEnabled')
+            ->willReturn(false);
 
         $event = $this->buildEvent();
         $listener = new RecurringInvoiceFeatureGuardListener(
@@ -77,7 +79,8 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
     public function testAllowsTransitionWhenFeatureEnabled(): void
     {
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
 
         $upgradePromptProvider = $this->createMock(UpgradePromptProvider::class);
         $upgradePromptProvider->expects(self::never())->method('menuLabel');
@@ -108,6 +111,9 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
         self::assertFalse($event->isBlocked());
     }
 
+    /**
+     * @return GuardEvent<RecurringInvoice>
+     */
     private function buildEvent(): GuardEvent
     {
         return new GuardEvent(

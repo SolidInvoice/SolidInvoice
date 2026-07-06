@@ -20,10 +20,12 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\RunMigrationsStepTest
  */
+#[AsTaggedItem('Creating database schema', priority: 10)]
 final readonly class RunMigrationsStep implements InstallationStepInterface
 {
     public function __construct(

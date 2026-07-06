@@ -16,8 +16,10 @@ namespace SolidInvoice\SaasBundle\Onboarding\Step;
 use Override;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AsTaggedItem(priority: 80)]
 final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
 {
     public function __construct(

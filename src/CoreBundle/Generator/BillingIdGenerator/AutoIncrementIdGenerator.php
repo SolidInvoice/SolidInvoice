@@ -17,11 +17,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function assert;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\AutoIncrementIdGeneratorTest
  */
+#[AsTaggedItem('auto_increment')]
 final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
 {
     public function __construct(

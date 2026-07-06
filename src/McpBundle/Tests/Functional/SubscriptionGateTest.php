@@ -128,7 +128,7 @@ final class SubscriptionGateTest extends KernelTestCase
     {
         $container = self::getContainer();
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $user = UserFactory::createOne(['companies' => [$this->company]]);
         self::assertInstanceOf(User::class, $user);
 
         $clientRepo = $container->get(OAuthClientRepository::class);
@@ -213,17 +213,20 @@ final class SubscriptionGateTest extends KernelTestCase
     private function buildMockServerFactory(string $jti, string $userId): ServerFactoryInterface
     {
         $validatedRequest = $this->createStub(ServerRequestInterface::class);
-        $validatedRequest->method('getAttribute')->willReturnMap([
-            ['oauth_access_token_id', null, $jti],
-            ['oauth_user_id', null, $userId],
-            ['oauth_scopes', null, ['mcp:read']],
-        ]);
+        $validatedRequest->method('getAttribute')
+            ->willReturnMap([
+                        ['oauth_access_token_id', null, $jti],
+                        ['oauth_user_id', null, $userId],
+                        ['oauth_scopes', null, ['mcp:read']],
+                    ]);
 
         $resourceServer = $this->createStub(ResourceServer::class);
-        $resourceServer->method('validateAuthenticatedRequest')->willReturn($validatedRequest);
+        $resourceServer->method('validateAuthenticatedRequest')
+            ->willReturn($validatedRequest);
 
         $factory = $this->createStub(ServerFactoryInterface::class);
-        $factory->method('createResourceServer')->willReturn($resourceServer);
+        $factory->method('createResourceServer')
+            ->willReturn($resourceServer);
 
         return $factory;
     }

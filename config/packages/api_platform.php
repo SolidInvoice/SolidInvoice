@@ -81,6 +81,9 @@ return App::config([
         ],
         'defaults' => [
             'stateless' => true,
+            // Note: `deduplicate_resource_short_names` is deliberately NOT enabled: several
+            // entities intentionally share a shortName (e.g. Address), and enabling it renames
+            // resources (Address -> Address2), breaking the public API contract.
             'extra_properties' => ['standard_put' => true, 'rfc_7807_compliant_errors' => true],
             'cache_headers' => [['Content-Type', 'Authorization', 'Origin']],
         ],

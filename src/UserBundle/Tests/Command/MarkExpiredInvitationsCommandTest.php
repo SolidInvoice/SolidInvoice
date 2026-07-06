@@ -21,6 +21,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Test\Traits\ConsoleTesterTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Command\MarkExpiredInvitationsCommand;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
@@ -34,7 +35,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Symfony\Component\Console\Tester\TesterTrait;
 use function rewind;
 use function str_replace;
 use function stream_get_contents;
@@ -44,7 +44,7 @@ use function stream_get_contents;
 final class MarkExpiredInvitationsCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use TesterTrait;
+    use ConsoleTesterTrait;
 
     private UserInvitationRepository $repository;
 
@@ -65,7 +65,8 @@ final class MarkExpiredInvitationsCommandTest extends KernelTestCase
     public function testCommandMarksExpiredInvitations(): void
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-        $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
+        $inviter = $executor->getReferenceRepository()
+            ->getReference('user2', User::class);
 
         /** @var ManagerRegistry $registry */
         $registry = self::getContainer()->get('doctrine');
@@ -91,20 +92,21 @@ final class MarkExpiredInvitationsCommandTest extends KernelTestCase
         $expiredId = $expired->getId();
         $validId = $valid->getId();
 
-        $output = $this->runCommand();
+        $output = $this->runTestCommand();
 
         self::assertStringContainsString('Marked 1 invitation(s) as expired.', $output);
 
         // The command runs a bulk UPDATE, so refresh from the database before asserting.
         $registry = self::getContainer()->get('doctrine');
-        $registry->getManager()->clear();
+        $registry->getManager()
+            ->clear();
         $repository = $registry->getRepository(UserInvitation::class);
 
         self::assertSame(InvitationStatus::Expired, $repository->find($expiredId)?->getStatus());
         self::assertSame(InvitationStatus::Pending, $repository->find($validId)?->getStatus());
     }
 
-    private function runCommand(): string
+    private function runTestCommand(): string
     {
         $application = new Application(self::bootKernel());
 

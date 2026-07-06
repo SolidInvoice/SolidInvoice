@@ -42,13 +42,14 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $client = ClientFactory::createOne([
             'company' => $this->company,
             'currencyCode' => 'USD',
-        ])->_real();
+        ]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
 
         $result = $tool->createRecurringInvoice(
-            client_id: $client->getId()->toRfc4122(),
+            client_id: $client->getId()
+                ->toRfc4122(),
             lines: [['description' => 'Monthly retainer', 'price' => 250000, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: [
@@ -75,13 +76,14 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
 
         $result = $tool->createRecurringInvoice(
-            client_id: $client->getId()->toRfc4122(),
+            client_id: $client->getId()
+                ->toRfc4122(),
             lines: [['description' => 'Weekly cleanup', 'price' => 5000, 'qty' => 1]],
             date_start: '2026-04-30',
             schedule: ['type' => 'weekly', 'end_type' => 'never'],
@@ -97,7 +99,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
@@ -106,7 +108,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('Invalid schedule.type');
 
         $tool->createRecurringInvoice(
-            client_id: $client->getId()->toRfc4122(),
+            client_id: $client->getId()
+                ->toRfc4122(),
             lines: [['description' => 'Bad', 'price' => 1, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'hourly'],
@@ -117,7 +120,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
@@ -126,7 +129,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('end_date');
 
         $tool->createRecurringInvoice(
-            client_id: $client->getId()->toRfc4122(),
+            client_id: $client->getId()
+                ->toRfc4122(),
             lines: [['description' => 'Lines', 'price' => 100, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly', 'end_type' => 'on'],
@@ -149,7 +153,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Read->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company])->_real();
+        $client = ClientFactory::createOne(['company' => $this->company]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
@@ -158,7 +162,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessage('mcp:write');
 
         $tool->createRecurringInvoice(
-            client_id: $client->getId()->toRfc4122(),
+            client_id: $client->getId()
+                ->toRfc4122(),
             lines: [['description' => 'x', 'price' => 1, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly'],

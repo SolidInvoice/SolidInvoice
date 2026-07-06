@@ -16,8 +16,8 @@ namespace SolidInvoice\MailerBundle\DependencyInjection;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SolidInvoiceMailerExtension extends Extension
 {

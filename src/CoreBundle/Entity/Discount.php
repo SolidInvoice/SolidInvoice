@@ -20,7 +20,7 @@ use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute as Serialize;
 
 #[ORM\Embeddable]
 class Discount
@@ -85,7 +85,7 @@ class Discount
         return $this;
     }
 
-    public function getValue(): float | BigNumber
+    public function getValue(): float|BigNumber
     {
         return match ($this->getType()) {
             self::TYPE_PERCENTAGE => $this->getValuePercentage() ?? 0.0,

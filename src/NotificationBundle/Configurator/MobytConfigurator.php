@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Configurator;
 
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MobytType;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 use function urlencode;
@@ -23,6 +24,7 @@ use function urlencode;
 /**
  * @codeCoverageIgnore
  */
+#[AsTaggedItem('Mobyt')]
 final class MobytConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

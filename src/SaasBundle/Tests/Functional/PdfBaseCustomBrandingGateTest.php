@@ -83,7 +83,8 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::bootKernel();
 
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
 
         $this->reloadCompany();
@@ -101,7 +102,8 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::bootKernel();
 
         $featureGate = $this->createStub(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->method('isEnabled')
+            ->willReturn(true);
         self::getContainer()->set(FeatureGate::class, $featureGate);
 
         $this->reloadCompany();
@@ -211,7 +213,8 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
             'total' => BigInteger::of(150000),
             'baseTotal' => BigInteger::of(150000),
             'tax' => BigInteger::of(0),
-            'discount' => new Discount()->setType(null),
+            'discount' => new Discount()
+                ->setType(null),
             'lines' => [
                 new Line()
                     ->setDescription('Sample line item')
@@ -220,6 +223,6 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
                     ->setTotal(BigInteger::of(150000)),
             ],
             'users' => [$contact],
-        ])->_real();
+        ]);
     }
 }

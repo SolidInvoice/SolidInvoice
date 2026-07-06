@@ -93,7 +93,7 @@ final class ApiTokenTest extends ApiTestCase
 
     public function testCannotAccessTokenFromDifferentUser(): void
     {
-        $secondUser = UserFactory::createOne(['companies' => [$this->company]])->_real();
+        $secondUser = UserFactory::createOne(['companies' => [$this->company]]);
 
         /** @var ApiTokenManager $apiTokenManager */
         $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
@@ -119,6 +119,7 @@ final class ApiTokenTest extends ApiTestCase
         /** @var ApiTokenManager $apiTokenManager */
         $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
 
-        return $apiTokenManager->create($this->user, $name, $description)->token;
+        return $apiTokenManager->create($this->user, $name, $description)
+            ->token;
     }
 }

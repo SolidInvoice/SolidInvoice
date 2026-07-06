@@ -16,8 +16,10 @@ namespace SolidInvoice\SaasBundle\Onboarding\Step;
 use Override;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AsTaggedItem(priority: 60)]
 final class CustomizeLogoStep extends AbstractOnboardingEmailStep
 {
     public function __construct(

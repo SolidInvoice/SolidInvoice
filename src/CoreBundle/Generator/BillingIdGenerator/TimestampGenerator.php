@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\TimestampGeneratorTest
  */
+#[AsTaggedItem('timestamp')]
 final class TimestampGenerator implements IdGeneratorInterface
 {
     private const string DEFAULT_FORMAT = 'YmdHis';

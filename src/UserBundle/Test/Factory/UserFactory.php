@@ -19,48 +19,47 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method User|Proxy<User> create((array | callable) $attributes = [])
- * @method static User|Proxy<User> createOne(array $attributes = [])
- * @method static User|Proxy<User> find((object | array | mixed) $criteria)
- * @method static User|Proxy<User> findOrCreate(array $attributes)
- * @method static User|Proxy<User> first(string $sortedField = 'id')
- * @method static User|Proxy<User> last(string $sortedField = 'id')
- * @method static User|Proxy<User> random(array $attributes = [])
- * @method static User|Proxy<User> randomOrCreate(array $attributes = [])
- * @method static User[]|Proxy<User>[] all()
- * @method static User[]|Proxy<User>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static User[]|Proxy<User>[] createSequence((iterable | callable) $sequence)
- * @method static User[]|Proxy<User>[] findBy(array $attributes)
- * @method static User[]|Proxy<User>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static User[]|Proxy<User>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(User | Proxy)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(User | Proxy)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<User, UserRepository> repository()
+ * @method User create((array | callable) $attributes = [])
+ * @method static User createOne(array $attributes = [])
+ * @method static User find((object | array | mixed) $criteria)
+ * @method static User findOrCreate(array $attributes)
+ * @method static User first(string $sortedField = 'id')
+ * @method static User last(string $sortedField = 'id')
+ * @method static User random(array $attributes = [])
+ * @method static User randomOrCreate(array $attributes = [])
+ * @method static User[] all()
+ * @method static User[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static User[] createSequence((iterable | callable) $sequence)
+ * @method static User[] findBy(array $attributes)
+ * @method static User[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static User[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<User> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<User> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<User, UserRepository> repository()
  *
- * @phpstan-method User&Proxy<User> create((array | callable) $attributes = [])
- * @phpstan-method static User&Proxy<User> createOne(array $attributes = [])
- * @phpstan-method static User&Proxy<User> find((object | array | mixed) $criteria)
- * @phpstan-method static User&Proxy<User> findOrCreate(array $attributes)
- * @phpstan-method static User&Proxy<User> first(string $sortedField = 'id')
- * @phpstan-method static User&Proxy<User> last(string $sortedField = 'id')
- * @phpstan-method static User&Proxy<User> random(array $attributes = [])
- * @phpstan-method static User&Proxy<User> randomOrCreate(array $attributes = [])
- * @phpstan-method static list<User&Proxy<User>> all()
- * @phpstan-method static list<User&Proxy<User>> createMany(int $number, (array | callable) $attributes = [])
- * @phpstan-method static list<User&Proxy<User>> createSequence((iterable | callable) $sequence)
- * @phpstan-method static list<User&Proxy<User>> findBy(array $attributes)
- * @phpstan-method static list<User&Proxy<User>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<User&Proxy<User>> randomSet(int $number, array $attributes = [])
- * @phpstan-method FactoryCollection<User&Proxy<User>> many(int $min, (int | null) $max = null)
- * @phpstan-method FactoryCollection<User&Proxy<User>> sequence((iterable | callable) $sequence)
- * @extends PersistentProxyObjectFactory<User>
+ * @phpstan-method User create((array | callable) $attributes = [])
+ * @phpstan-method static User createOne(array $attributes = [])
+ * @phpstan-method static User find((object | array | mixed) $criteria)
+ * @phpstan-method static User findOrCreate(array $attributes)
+ * @phpstan-method static User first(string $sortedField = 'id')
+ * @phpstan-method static User last(string $sortedField = 'id')
+ * @phpstan-method static User random(array $attributes = [])
+ * @phpstan-method static User randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<User> all()
+ * @phpstan-method static list<User> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<User> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<User> findBy(array $attributes)
+ * @phpstan-method static list<User> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<User> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<User> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<User> sequence((iterable | callable) $sequence)
+ * @extends PersistentObjectFactory<User>
  */
-final class UserFactory extends PersistentProxyObjectFactory
+final class UserFactory extends PersistentObjectFactory
 {
     private readonly PasswordHasherInterface $passwordHasher;
 

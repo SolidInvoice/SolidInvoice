@@ -18,11 +18,13 @@ use Generator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function str_replace;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\GenerateSecretStepTest
  */
+#[AsTaggedItem('Generating secret', priority: 30)]
 final readonly class GenerateSecretStep implements InstallationStepInterface
 {
     public function __construct(

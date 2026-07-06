@@ -34,7 +34,7 @@ final class BillingIdConfigurationType extends AbstractType
      * @param ServiceLocator<IdGeneratorInterface> $generators
      */
     public function __construct(
-        #[AutowireLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(IdGeneratorInterface::class)]
         private readonly ServiceLocator $generators,
     ) {
     }

@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class AjaxResponseListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => 'onController',

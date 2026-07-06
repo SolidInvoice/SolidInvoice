@@ -44,7 +44,7 @@ final class AddressTest extends ApiTestCase
         $address2 = new Address();
         $client = ClientFactory::createOne([
             'addresses' => [$address1, $address2],
-        ])->_real();
+        ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/addresses');
 
@@ -62,7 +62,7 @@ final class AddressTest extends ApiTestCase
         $foreignClient = ClientFactory::createOne([
             'company' => $otherCompany,
             'addresses' => [$foreignAddress],
-        ])->_real();
+        ]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($foreignAddress), [
@@ -82,18 +82,19 @@ final class AddressTest extends ApiTestCase
             'country' => 'US',
         ];
 
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $result = $this->requestPost($this->getIriFromResource($client) . '/addresses', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($this->getResourceClass()),
             '@type' => 'Address',
-            'companyId' => $this->company->getId()->toBase58(),
+            'companyId' => $this->company->getId()
+                ->toBase58(),
             'street1' => 'foo',
             'street2' => 'foo',
             'city' => 'foo',
@@ -118,7 +119,7 @@ final class AddressTest extends ApiTestCase
             'addresses' => [
                 $address = new Address(),
             ],
-        ])->_real();
+        ]);
 
         $this->requestDelete($this->getIriFromResource($address));
     }
@@ -139,7 +140,7 @@ final class AddressTest extends ApiTestCase
                     ->setCountry('US')
                     ->setZip('1234'),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($address));
 
@@ -147,7 +148,8 @@ final class AddressTest extends ApiTestCase
             '@context' => $this->getContextForResource($this->getResourceClass()),
             '@id' => $this->getIriFromResource($address),
             '@type' => 'Address',
-            'id' => $address->getId()->toString(),
+            'id' => $address->getId()
+                ->toString(),
             'street1' => 'street 1',
             'street2' => 'street 2',
             'city' => 'city',
@@ -178,7 +180,7 @@ final class AddressTest extends ApiTestCase
                     ->setCountry('US')
                     ->setZip('1234'),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($address),
@@ -193,7 +195,8 @@ final class AddressTest extends ApiTestCase
             '@context' => $this->getContextForResource($this->getResourceClass()),
             '@id' => $this->getIriFromResource($address),
             '@type' => 'Address',
-            'id' => $address->getId()->toString(),
+            'id' => $address->getId()
+                ->toString(),
             'street1' => 'street2',
             'street2' => 'street1',
             'city' => 'city',

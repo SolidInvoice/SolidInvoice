@@ -133,7 +133,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(InspectUuidCommand::class);
 
     $services->set(DummyDataLoader::class)
-        ->arg('$loaders', tagged_iterator('solidinvoice.dummy_data_loader', defaultPriorityMethod: 'getPriority'));
+        ->arg('$loaders', tagged_iterator('solidinvoice.dummy_data_loader'));
 
     $services->set(MultiSearchService::class)
         ->arg('$formatters', tagged_iterator('solidinvoice.search.result_formatter'))

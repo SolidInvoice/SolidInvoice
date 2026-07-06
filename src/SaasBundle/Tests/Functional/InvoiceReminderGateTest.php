@@ -96,7 +96,8 @@ final class InvoiceReminderGateTest extends KernelTestCase
             ->willReturn('/invoices/view/123');
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')->willReturn($gated);
+        $gate->method('isGated')
+            ->willReturn($gated);
 
         $action = new SendManualReminder($mailer, $router, $this->createStub(LoggerInterface::class), $gate);
         $action->setContainer($container);
@@ -116,7 +117,7 @@ final class InvoiceReminderGateTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        return $invoice->_real();
+        return $invoice;
     }
 
     private function createRequestWithCsrfToken(): Request

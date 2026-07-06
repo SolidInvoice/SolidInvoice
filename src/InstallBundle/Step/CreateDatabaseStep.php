@@ -17,11 +17,13 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use function in_array;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\CreateDatabaseStepTest
  */
+#[AsTaggedItem('Creating database', priority: 20)]
 final readonly class CreateDatabaseStep implements InstallationStepInterface
 {
     public function __construct(

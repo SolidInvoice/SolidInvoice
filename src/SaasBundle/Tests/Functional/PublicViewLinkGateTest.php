@@ -72,10 +72,12 @@ final class PublicViewLinkGateTest extends KernelTestCase
         $container = self::getContainer();
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isCompanyGated')->willReturn($gated);
+        $gate->method('isCompanyGated')
+            ->willReturn($gated);
 
         $authChecker = $this->createStub(AuthorizationCheckerInterface::class);
-        $authChecker->method('isGranted')->willReturn(false);
+        $authChecker->method('isGranted')
+            ->willReturn(false);
 
         return new ViewBilling(
             $container->get('doctrine'),
@@ -99,6 +101,6 @@ final class PublicViewLinkGateTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
         ]);
 
-        return $invoice->_real();
+        return $invoice;
     }
 }

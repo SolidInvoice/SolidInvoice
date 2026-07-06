@@ -32,8 +32,9 @@ final class InvoiceLineTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
-        $invoiceId = $invoice->getId()->toString();
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
 
         $lineData = [
             'description' => 'Item 1',
@@ -44,7 +45,7 @@ final class InvoiceLineTest extends ApiTestCase
         $result = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', $lineData);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         self::assertSame('Item 1', $result['description']);
         self::assertEquals(2.0, $result['qty']);
         self::assertArrayHasKey('total', $result);
@@ -52,8 +53,9 @@ final class InvoiceLineTest extends ApiTestCase
 
     public function testGet(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
-        $invoiceId = $invoice->getId()->toString();
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
 
         $lineData = [
             'description' => 'Test Item',
@@ -73,8 +75,9 @@ final class InvoiceLineTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
-        $invoiceId = $invoice->getId()->toString();
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
 
         $lineData = [
             'description' => 'Original Item',
@@ -96,8 +99,9 @@ final class InvoiceLineTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
-        $invoiceId = $invoice->getId()->toString();
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
 
         $lineData = [
             'description' => 'Item To Delete',
@@ -113,8 +117,9 @@ final class InvoiceLineTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        $invoice = InvoiceFactory::createOne()->_real();
-        $invoiceId = $invoice->getId()->toString();
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
 
         $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
             'description' => 'Collection Item 1',

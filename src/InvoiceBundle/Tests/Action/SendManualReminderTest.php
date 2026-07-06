@@ -41,7 +41,8 @@ final class SendManualReminderTest extends KernelTestCase
     private function createOpenGate(): EmailVerificationGateInterface
     {
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')->willReturn(false);
+        $gate->method('isGated')
+            ->willReturn(false);
 
         return $gate;
     }
@@ -49,7 +50,8 @@ final class SendManualReminderTest extends KernelTestCase
     private function createClosedGate(): EmailVerificationGateInterface
     {
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')->willReturn(true);
+        $gate->method('isGated')
+            ->willReturn(true);
 
         return $gate;
     }
@@ -117,7 +119,7 @@ final class SendManualReminderTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        return $action($request, $invoice->_real());
+        return $action($request, $invoice);
     }
 
     public function testSendManualReminderSuccess(): void
@@ -150,7 +152,7 @@ final class SendManualReminderTest extends KernelTestCase
         ]);
 
         $request = $this->createRequestWithCsrfToken();
-        $response = $action($request, $invoice->_real());
+        $response = $action($request, $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -188,7 +190,7 @@ final class SendManualReminderTest extends KernelTestCase
         ]);
 
         $request = $this->createRequestWithCsrfToken();
-        $response = $action($request, $invoice->_real());
+        $response = $action($request, $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -231,7 +233,7 @@ final class SendManualReminderTest extends KernelTestCase
         ]);
 
         $request = $this->createRequestWithCsrfToken();
-        $response = $action($request, $invoice->_real());
+        $response = $action($request, $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -282,7 +284,7 @@ final class SendManualReminderTest extends KernelTestCase
 
         $request->request->set('_token', 'invalid_token');
 
-        $response = $action($request, $invoice->_real());
+        $response = $action($request, $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);

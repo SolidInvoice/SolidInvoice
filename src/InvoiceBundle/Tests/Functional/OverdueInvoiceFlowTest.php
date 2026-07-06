@@ -33,6 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
+use function Zenstruck\Foundry\Persistence\save;
 
 /**
  * Comprehensive functional test for the overdue invoice feature.
@@ -72,8 +73,8 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         ]);
 
         // Add contact to invoice
-        $invoice->_real()->addUser($contact->_real());
-        $invoice->_save();
+        $invoice->addUser($contact);
+        save($invoice);
 
         // Step 1: Dispatch message (simulating command execution)
         $bus = self::getContainer()->get(MessageBusInterface::class);
@@ -121,8 +122,8 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
                 'currencyCode' => 'USD',
             ]),
         ]);
-        $invoice1->_real()->addUser($contact1->_real());
-        $invoice1->_save();
+        $invoice1->addUser($contact1);
+        save($invoice1);
 
         $invoice2 = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
@@ -135,8 +136,8 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
                 'currencyCode' => 'EUR',
             ]),
         ]);
-        $invoice2->_real()->addUser($contact2->_real());
-        $invoice2->_save();
+        $invoice2->addUser($contact2);
+        save($invoice2);
 
         // Dispatch messages for both invoices
         $bus = self::getContainer()->get(MessageBusInterface::class);
@@ -171,8 +172,8 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
             'due' => CarbonImmutable::yesterday(),
             'company' => $this->company
         ]);
-        $invoice->_real()->addUser($contact->_real());
-        $invoice->_save();
+        $invoice->addUser($contact);
+        save($invoice);
 
         $bus = self::getContainer()->get(MessageBusInterface::class);
         $message = new MarkInvoiceOverdue($invoice->getId(), $this->company->getId());

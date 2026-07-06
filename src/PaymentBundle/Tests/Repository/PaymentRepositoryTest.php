@@ -57,7 +57,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice->_real())
+                ->getTotalPaidForInvoice($invoice)
                 ->isEqualTo(500123)
         );
     }
@@ -80,7 +80,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice->_real())
+                ->getTotalPaidForInvoice($invoice)
                 ->isEqualTo(0)
         );
     }
@@ -103,7 +103,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice[1]->_real())
+                ->getTotalPaidForInvoice($invoice[1])
                 ->isEqualTo(0)
         );
     }
@@ -127,7 +127,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalIncomeForClient($client->_real())
+                ->getTotalIncomeForClient($client)
                 ->isEqualTo(500123)
         );
     }
@@ -151,7 +151,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalIncomeForClient($client->_real())
+                ->getTotalIncomeForClient($client)
                 ->isZero()
         );
     }
@@ -182,7 +182,8 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         self::assertSame(
             $client,
-            $queryBuilder->getParameter('client')->getValue()
+            $queryBuilder->getParameter('client')
+                ->getValue()
         );
 
         $invoice = new Invoice();
@@ -199,7 +200,8 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         self::assertSame(
             $invoice,
-            $queryBuilder->getParameter('invoice')->getValue()
+            $queryBuilder->getParameter('invoice')
+                ->getValue()
         );
 
         $invoice = new Invoice();
@@ -217,12 +219,14 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         self::assertSame(
             $client,
-            $queryBuilder->getParameter('client')->getValue()
+            $queryBuilder->getParameter('client')
+                ->getValue()
         );
 
         self::assertSame(
             $invoice,
-            $queryBuilder->getParameter('invoice')->getValue()
+            $queryBuilder->getParameter('invoice')
+                ->getValue()
         );
     }
 
@@ -233,10 +237,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
 
-        $invoice = InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-FOO'])->_disableAutoRefresh();
+        $invoice = InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-FOO']);
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
-            'client' => $client->_real(),
+            'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
             'status' => PaymentStatus::Captured,
@@ -258,13 +262,14 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
-                    'invoice_ulid' => $payment->getInvoice()->getId(),
+                    'invoice_ulid' => $payment->getInvoice()
+                        ->getId(),
                 ]
             ],
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getPaymentsForClient($client->_real())
+                ->getPaymentsForClient($client)
         );
     }
 
@@ -351,8 +356,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         $invoice = InvoiceFactory::new(['client' => $client, 'invoiceId' => 'INV-FOO'])
-            ->create()
-            ->_disableAutoRefresh();
+            ->create();
 
         $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -381,13 +385,14 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
-                    'invoice_ulid' => $payment->getInvoice()->getId(),
+                    'invoice_ulid' => $payment->getInvoice()
+                        ->getId(),
                 ]
             ],
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getPaymentsForInvoice($invoice->_real())
+                ->getPaymentsForInvoice($invoice)
         );
     }
 
@@ -416,7 +421,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         /** @var Payment $payment */
         $payment = PaymentFactory::createOne([
             'status' => PaymentStatus::Pending,
-        ])->_real();
+        ]);
 
         $this
             ->em
@@ -438,8 +443,7 @@ final class PaymentRepositoryTest extends KernelTestCase
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
         $invoice = InvoiceFactory::new(['client' => $client, 'invoiceId' => 'INV-FOO'])
-            ->create()
-            ->_disableAutoRefresh();
+            ->create();
 
         $created = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', Carbon::now()->format('Y-m-d'));
@@ -471,7 +475,8 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'client' => $client->getName(),
                     'message' => 'test',
                     'amount' => BigInteger::of(500123),
-                    'invoice_ulid' => $payment->getInvoice()->getId(),
+                    'invoice_ulid' => $payment->getInvoice()
+                        ->getId(),
                 ]
             ],
             $this

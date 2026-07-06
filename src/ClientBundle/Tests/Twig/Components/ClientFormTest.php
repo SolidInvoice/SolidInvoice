@@ -43,7 +43,7 @@ final class ClientFormTest extends LiveComponentTest
             'website' => 'https://example.com',
             'currencyCode' => 'SBD',
             'company' => $this->company
-        ])->_real();
+        ]);
 
         $client->setId(Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'));
 

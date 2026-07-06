@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\TransitionBlocker;
@@ -28,6 +29,9 @@ final readonly class RecurringInvoiceVerificationGuardListener
     ) {
     }
 
+    /**
+     * @param GuardEvent<RecurringInvoice> $event
+     */
     #[AsEventListener('workflow.recurring_invoice.guard.activate')]
     public function onGuardActivate(GuardEvent $event): void
     {

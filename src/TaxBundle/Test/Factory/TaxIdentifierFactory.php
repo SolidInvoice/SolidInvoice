@@ -17,34 +17,33 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method TaxIdentifier|Proxy<TaxIdentifier> create((array | callable) $attributes = [])
- * @method static TaxIdentifier|Proxy<TaxIdentifier> createOne(array $attributes = [])
- * @method static TaxIdentifier|Proxy<TaxIdentifier> find((object | array | mixed) $criteria)
- * @method static TaxIdentifier|Proxy<TaxIdentifier> findOrCreate(array $attributes)
- * @method static TaxIdentifier|Proxy<TaxIdentifier> first(string $sortedField = 'id')
- * @method static TaxIdentifier|Proxy<TaxIdentifier> last(string $sortedField = 'id')
- * @method static TaxIdentifier|Proxy<TaxIdentifier> random(array $attributes = [])
- * @method static TaxIdentifier|Proxy<TaxIdentifier> randomOrCreate(array $attributes = [])
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] all()
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] createSequence((iterable | callable) $sequence)
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] findBy(array $attributes)
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static TaxIdentifier[]|Proxy<TaxIdentifier>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(TaxIdentifier | Proxy<TaxIdentifier>)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(TaxIdentifier | Proxy<TaxIdentifier>)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<TaxIdentifier, TaxIdentifierRepository> repository()
+ * @method TaxIdentifier create((array | callable) $attributes = [])
+ * @method static TaxIdentifier createOne(array $attributes = [])
+ * @method static TaxIdentifier find((object | array | mixed) $criteria)
+ * @method static TaxIdentifier findOrCreate(array $attributes)
+ * @method static TaxIdentifier first(string $sortedField = 'id')
+ * @method static TaxIdentifier last(string $sortedField = 'id')
+ * @method static TaxIdentifier random(array $attributes = [])
+ * @method static TaxIdentifier randomOrCreate(array $attributes = [])
+ * @method static TaxIdentifier[] all()
+ * @method static TaxIdentifier[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static TaxIdentifier[] createSequence((iterable | callable) $sequence)
+ * @method static TaxIdentifier[] findBy(array $attributes)
+ * @method static TaxIdentifier[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static TaxIdentifier[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<TaxIdentifier> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<TaxIdentifier> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<TaxIdentifier, TaxIdentifierRepository> repository()
  *
- * @phpstan-method TaxIdentifier&Proxy<TaxIdentifier> create((array | callable) $attributes = [])
- * @phpstan-method static TaxIdentifier&Proxy<TaxIdentifier> createOne(array $attributes = [])
- * @extends PersistentProxyObjectFactory<TaxIdentifier>
+ * @phpstan-method TaxIdentifier create((array | callable) $attributes = [])
+ * @phpstan-method static TaxIdentifier createOne(array $attributes = [])
+ * @extends PersistentObjectFactory<TaxIdentifier>
  */
-final class TaxIdentifierFactory extends PersistentProxyObjectFactory
+final class TaxIdentifierFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

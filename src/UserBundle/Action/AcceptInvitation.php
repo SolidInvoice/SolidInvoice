@@ -38,7 +38,7 @@ final readonly class AcceptInvitation
 
     public function __invoke(string $id): RedirectResponse
     {
-        if (! Ulid::isValid($id)) {
+        if (! Ulid::isValid($id, Ulid::FORMAT_BASE_32)) {
             throw new NotFoundHttpException('Invitation is not valid');
         }
 

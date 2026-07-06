@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -28,7 +29,6 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
@@ -53,7 +53,7 @@ final class ClientTest extends ApiTestCase
         $result = $this->requestPost('/api/clients', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([
@@ -92,7 +92,7 @@ final class ClientTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $foreignClient = ClientFactory::createOne(['company' => $otherCompany])->_real();
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($foreignClient), [
@@ -109,7 +109,7 @@ final class ClientTest extends ApiTestCase
      */
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $this->requestDelete($this->getIriFromResource($client));
     }
@@ -124,11 +124,12 @@ final class ClientTest extends ApiTestCase
             'addresses' => [
                 $address = new Address(),
             ],
-        ])->_real();
+        ]);
 
         $contacts = ContactFactory::new([
             'client' => $client,
-        ])->many(1, 5)->create();
+        ])->many(1, 5)
+            ->create();
 
         $data = $this->requestGet($this->getIriFromResource($client));
 
@@ -136,13 +137,14 @@ final class ClientTest extends ApiTestCase
             '@context' => $this->getContextForResource($client),
             '@id' => $this->getIriFromResource($client),
             '@type' => 'https://schema.org/Corporation',
-            'id' => $client->getId()->toString(),
+            'id' => $client->getId()
+                ->toString(),
             'name' => $client->getName(),
             'website' => $client->getWebsite(),
             'status' => $client->getStatus()?->value,
             'currencyCode' => $client->getCurrencyCode(),
             'taxIdentifiers' => [],
-            'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->_real(), $contacts)),
+            'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Contact $proxy) => $proxy, $contacts)),
             'quotes' => [],
             'invoices' => [],
             'recurringInvoices' => [],
@@ -164,14 +166,15 @@ final class ClientTest extends ApiTestCase
      */
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         self::assertInstanceOf(Client::class, $client);
 
         $contacts = ContactFactory::new([
             'client' => $client,
-        ])->many(4, 15)->create();
+        ])->many(4, 15)
+            ->create();
 
-        $contactInfo = array_map(fn (Proxy $proxy): string => $this->getIriFromResource($proxy->_real()), $contacts);
+        $contactInfo = array_map($this->getIriFromResource(...), $contacts);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($client),
@@ -185,7 +188,8 @@ final class ClientTest extends ApiTestCase
             '@context' => $this->getContextForResource($client),
             '@id' => $this->getIriFromResource($client),
             '@type' => 'https://schema.org/Corporation',
-            'id' => $client->getId()->toString(),
+            'id' => $client->getId()
+                ->toString(),
             'name' => 'New Test',
             'website' => $client->getWebsite(),
             'status' => $client->getStatus()?->value,

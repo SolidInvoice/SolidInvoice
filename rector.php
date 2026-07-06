@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
+use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Doctrine\TypedCollections\Rector\ClassMethod\RemoveNewArrayCollectionOutsideConstructorRector;
@@ -19,6 +20,7 @@ use Rector\PHPUnit\CodeQuality\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
@@ -92,6 +94,10 @@ return RectorConfig::configure()
         AddSeeTestAnnotationRector::class,
     ])
     ->withSkip([
+        // The secrets vault directory contains generated (gitignored) files that are
+        // rewritten at runtime, e.g. by the installer and its tests.
+        __DIR__ . '/config/env',
+
         // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions
         // to twig attributes, but some twig extensions still extend the AbstractExtension which is prohibited
         GetFunctionsToAsTwigFunctionAttributeRector::class,
@@ -127,5 +133,16 @@ return RectorConfig::configure()
         AttributeKeyToClassConstFetchRector::class => [
             'src/PaymentBundle/Entity/PaymentMethod.php',
             'src/UserBundle/Entity/ApiTokenHistory.php',
+        ],
+
+        // The Kernel re-applies Symfony's BundleAdapter wrapping that the platform kernel's
+        // initializeBundles() override skips. The instanceof check must target the legacy
+        // HttpKernel BundleInterface (renaming it to the DI one inverts the logic), and
+        // configureContainer() must stay protected so the kernel dispatch can invoke it.
+        RenameClassRector::class => [
+            'src/Kernel.php',
+        ],
+        MakeInheritedMethodVisibilitySameAsParentRector::class => [
+            'src/Kernel.php',
         ],
     ]);

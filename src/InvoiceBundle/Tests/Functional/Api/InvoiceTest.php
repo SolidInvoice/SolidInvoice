@@ -27,7 +27,6 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
@@ -43,12 +42,13 @@ final class InvoiceTest extends ApiTestCase
 
     public function testGetCollection(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         InvoiceFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()
+                ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/invoices');
@@ -62,12 +62,13 @@ final class InvoiceTest extends ApiTestCase
 
     public function testGetInvoicesForClient(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
         InvoiceFactory::createMany(2, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => new Discount()->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
+            'discount' => new Discount()
+                ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/invoices');
@@ -83,7 +84,7 @@ final class InvoiceTest extends ApiTestCase
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
         $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
-        $foreignInvoice = InvoiceFactory::createOne(['client' => $foreignClient])->_real();
+        $foreignInvoice = InvoiceFactory::createOne(['client' => $foreignClient]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($foreignInvoice), [
@@ -94,10 +95,10 @@ final class InvoiceTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->_real();
+        $client = ClientFactory::createOne();
 
         $contacts = array_map(
-            fn (Proxy $contact) => $this->getIriFromResource($contact->_real()),
+            $this->getIriFromResource(...),
             ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
@@ -119,9 +120,9 @@ final class InvoiceTest extends ApiTestCase
 
         $result = $this->requestPost('/api/invoices', $data);
 
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
+        self::assertTrue(Ulid::isValid($result['lines'][0]['id'], Ulid::FORMAT_BASE_32));
 
         self::assertJsonContains([
             '@context' => $this->getContextForResource($this->getResourceClass()),
@@ -157,7 +158,7 @@ final class InvoiceTest extends ApiTestCase
     public function testDelete(): void
     {
         $client = ClientFactory::createOne();
-        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
+        $invoice = InvoiceFactory::createOne(['client' => $client]);
 
         $this->requestDelete($this->getIriFromResource($invoice));
     }
@@ -172,6 +173,11 @@ final class InvoiceTest extends ApiTestCase
             'client' => $client,
             'users' => $contacts,
             'due' => CarbonImmutable::parse('2005-01-20'),
+            // The DATE_IMMUTABLE column truncates the time when persisting. Without
+            // Foundry's proxy auto-refresh (unavailable on Symfony 8), the in-memory
+            // entity keeps whatever time it was created with, so use an explicit
+            // midnight value to stay consistent with the database round-trip.
+            'invoiceDate' => CarbonImmutable::today(),
             'paidDate' => null,
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)
@@ -182,7 +188,7 @@ final class InvoiceTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($invoice));
 
@@ -190,9 +196,11 @@ final class InvoiceTest extends ApiTestCase
             '@context' => '/api/contexts/Invoice',
             '@id' => $this->getIriFromResource($invoice),
             '@type' => 'Invoice',
-            'id' => $invoice->getId()->toString(),
+            'id' => $invoice->getId()
+                ->toString(),
             'invoiceId' => '',
-            'uuid' => $invoice->getUuid()->toString(),
+            'uuid' => $invoice->getUuid()
+                ->toString(),
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => 100,
             'due' => '2005-01-20T00:00:00+02:00',
@@ -204,7 +212,10 @@ final class InvoiceTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
                     '@type' => 'InvoiceLine',
-                    'id' => $invoice->getLines()->first()->getId()->toString(),
+                    'id' => $invoice->getLines()
+                        ->first()
+                        ->getId()
+                        ->toString(),
                     'description' => 'Test Item',
                     'price' => 100,
                     'qty' => 1,
@@ -212,13 +223,14 @@ final class InvoiceTest extends ApiTestCase
                     'taxes' => [],
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
+            'users' => array_map($this->getIriFromResource(...), $contacts),
             'status' => $invoice->getStatus()?->value,
             'total' => 100,
             'baseTotal' => 100,
             'tax' => 0,
             'discount' => [
-                'type' => $invoice->getDiscount()->getType(),
+                'type' => $invoice->getDiscount()
+                    ->getType(),
                 'value' => 0,
             ],
             'terms' => $invoice->getTerms(),
@@ -251,7 +263,7 @@ final class InvoiceTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->_real();
+        ]);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($invoice),
@@ -274,9 +286,11 @@ final class InvoiceTest extends ApiTestCase
             '@context' => '/api/contexts/Invoice',
             '@id' => $this->getIriFromResource($invoice),
             '@type' => 'Invoice',
-            'id' => $invoice->getId()->toString(),
+            'id' => $invoice->getId()
+                ->toString(),
             'invoiceId' => '',
-            'uuid' => $invoice->getUuid()->toString(),
+            'uuid' => $invoice->getUuid()
+                ->toString(),
             'client' => $this->getIriFromResource($invoice->getClient()),
             'balance' => 9000,
             'due' => '2005-01-20T00:00:00+02:00',
@@ -288,7 +302,10 @@ final class InvoiceTest extends ApiTestCase
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
                     '@type' => 'InvoiceLine',
-                    'id' => $invoice->getLines()->first()->getId()->toString(),
+                    'id' => $invoice->getLines()
+                        ->first()
+                        ->getId()
+                        ->toString(),
                     'description' => 'Foo Item',
                     'price' => 10000,
                     'qty' => 1,
@@ -296,13 +313,14 @@ final class InvoiceTest extends ApiTestCase
                     'taxes' => [],
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
+            'users' => array_map($this->getIriFromResource(...), $contacts),
             'status' => $invoice->getStatus()?->value,
             'total' => 9000,
             'baseTotal' => 10000,
             'tax' => 0,
             'discount' => [
-                'type' => $invoice->getDiscount()->getType(),
+                'type' => $invoice->getDiscount()
+                    ->getType(),
                 'value' => 10,
             ],
             'terms' => $invoice->getTerms(),

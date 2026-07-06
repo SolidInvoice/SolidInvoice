@@ -65,7 +65,7 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-        ])->_real();
+        ]);
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Quote $quote */
@@ -88,8 +88,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
                 'tax' => 0,
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
@@ -98,7 +97,8 @@ final class ViewTest extends KernelTestCase
 
         $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -132,7 +132,7 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-        ])->_real();
+        ]);
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         $discount = new Discount();
@@ -159,8 +159,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => $discount,
                 'tax' => 0,
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
@@ -169,7 +168,8 @@ final class ViewTest extends KernelTestCase
 
         $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -191,7 +191,7 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-        ])->_real();
+        ]);
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Quote $quote */
@@ -214,8 +214,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
                 'tax' => '15.00',
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
@@ -224,7 +223,8 @@ final class ViewTest extends KernelTestCase
 
         $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -247,7 +247,7 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-        ])->_real();
+        ]);
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         // Create a related invoice
@@ -279,8 +279,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
                 'tax' => 0,
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
@@ -290,7 +289,8 @@ final class ViewTest extends KernelTestCase
 
         $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -317,7 +317,7 @@ final class ViewTest extends KernelTestCase
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
-        ])->_real();
+        ]);
         $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Quote $quote */
@@ -341,8 +341,7 @@ final class ViewTest extends KernelTestCase
                 'discount' => new Discount(),
                 'tax' => 0,
                 'users' => [$contact],
-            ])
-            ->_real();
+            ]);
 
         $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
@@ -351,7 +350,8 @@ final class ViewTest extends KernelTestCase
 
         $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }

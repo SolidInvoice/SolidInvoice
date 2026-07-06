@@ -361,8 +361,9 @@ func setupCommands() {
 					return fmt.Errorf("worker script not found: %s (error: %v)", workerScript, err)
 				}
 
-				// Set Symfony runtime for FrankenPHP worker mode
-				must(os.Setenv("APP_RUNTIME", "Runtime\\FrankenPhpSymfony\\Runtime"))
+				// Symfony's default runtime detects FrankenPHP worker mode automatically
+				// (via the FRANKENPHP_WORKER server variable) since symfony/runtime 7.4,
+				// so no APP_RUNTIME override is needed.
 
 				// FrankenPHP worker syntax: worker <script> <num_threads>
 				frankenphpConfig := fmt.Sprintf("worker %s %d", workerScript, workerThreads)

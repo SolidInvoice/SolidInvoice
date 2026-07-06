@@ -43,7 +43,7 @@ final class ColumnTest extends TestCase
     {
         $label = $this->column->getLabel();
         self::assertInstanceOf(TranslatableMessage::class, $label);
-        self::assertSame('Test Field', (string) $label);
+        self::assertSame('Test Field', $label->getMessage());
     }
 
     public function testGetLabelReturnsCustomLabel(): void
@@ -51,7 +51,7 @@ final class ColumnTest extends TestCase
         $this->column->label('Custom Label');
         $label = $this->column->getLabel();
         self::assertInstanceOf(TranslatableMessage::class, $label);
-        self::assertSame('Custom Label', (string) $label);
+        self::assertSame('Custom Label', $label->getMessage());
     }
 
     public function testGetLabelWithTranslatableInterface(): void

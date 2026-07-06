@@ -19,34 +19,33 @@ use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Repository\InvoiceTaxRepository;
 use Zenstruck\Foundry\FactoryCollection;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Persistence\Proxy;
-use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\RepositoryDecorator;
 
 /**
- * @method InvoiceTax|Proxy<InvoiceTax> create((array | callable) $attributes = [])
- * @method static InvoiceTax|Proxy<InvoiceTax> createOne(array $attributes = [])
- * @method static InvoiceTax|Proxy<InvoiceTax> find((object | array | mixed) $criteria)
- * @method static InvoiceTax|Proxy<InvoiceTax> findOrCreate(array $attributes)
- * @method static InvoiceTax|Proxy<InvoiceTax> first(string $sortedField = 'id')
- * @method static InvoiceTax|Proxy<InvoiceTax> last(string $sortedField = 'id')
- * @method static InvoiceTax|Proxy<InvoiceTax> random(array $attributes = [])
- * @method static InvoiceTax|Proxy<InvoiceTax> randomOrCreate(array $attributes = [])
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] all()
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] createMany(int $number, (array | callable) $attributes = [])
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] createSequence((iterable | callable) $sequence)
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] findBy(array $attributes)
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] randomRange(int $min, int $max, array $attributes = [])
- * @method static InvoiceTax[]|Proxy<InvoiceTax>[] randomSet(int $number, array $attributes = [])
- * @method FactoryCollection<(InvoiceTax | Proxy<InvoiceTax>)> many(int $min, (int | null) $max = null)
- * @method FactoryCollection<(InvoiceTax | Proxy<InvoiceTax>)> sequence((iterable | callable) $sequence)
- * @method static ProxyRepositoryDecorator<InvoiceTax, InvoiceTaxRepository> repository()
+ * @method InvoiceTax create((array | callable) $attributes = [])
+ * @method static InvoiceTax createOne(array $attributes = [])
+ * @method static InvoiceTax find((object | array | mixed) $criteria)
+ * @method static InvoiceTax findOrCreate(array $attributes)
+ * @method static InvoiceTax first(string $sortedField = 'id')
+ * @method static InvoiceTax last(string $sortedField = 'id')
+ * @method static InvoiceTax random(array $attributes = [])
+ * @method static InvoiceTax randomOrCreate(array $attributes = [])
+ * @method static InvoiceTax[] all()
+ * @method static InvoiceTax[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static InvoiceTax[] createSequence((iterable | callable) $sequence)
+ * @method static InvoiceTax[] findBy(array $attributes)
+ * @method static InvoiceTax[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static InvoiceTax[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<InvoiceTax> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<InvoiceTax> sequence((iterable|callable) $sequence)
+ * @method static RepositoryDecorator<InvoiceTax, InvoiceTaxRepository> repository()
  *
- * @phpstan-method InvoiceTax&Proxy<InvoiceTax> create((array | callable) $attributes = [])
- * @phpstan-method static InvoiceTax&Proxy<InvoiceTax> createOne(array $attributes = [])
- * @extends PersistentProxyObjectFactory<InvoiceTax>
+ * @phpstan-method InvoiceTax create((array | callable) $attributes = [])
+ * @phpstan-method static InvoiceTax createOne(array $attributes = [])
+ * @extends PersistentObjectFactory<InvoiceTax>
  */
-final class InvoiceTaxFactory extends PersistentProxyObjectFactory
+final class InvoiceTaxFactory extends PersistentObjectFactory
 {
     /**
      * @return array<string, mixed>

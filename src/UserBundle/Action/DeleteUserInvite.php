@@ -33,7 +33,7 @@ final readonly class DeleteUserInvite
 
     public function __invoke(string $id): RedirectResponse
     {
-        if (Ulid::isValid($id)) {
+        if (Ulid::isValid($id, Ulid::FORMAT_BASE_32)) {
             // deleteInvitations() loads each invitation through a company-scoped
             // query, so only invitations belonging to the current company are removed.
             $this->invitationRepository->deleteInvitations([$id]);

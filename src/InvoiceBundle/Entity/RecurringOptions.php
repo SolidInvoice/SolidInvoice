@@ -24,7 +24,7 @@ use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Repository\RecurringOptionsRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -120,7 +120,7 @@ class RecurringOptions
         if ($this->type->isDaily()) {
             $this->days = [];
         } else {
-            $this->days = array_map(static function (int | WeekDay $day) {
+            $this->days = array_map(static function (int|WeekDay $day) {
                 if ($day instanceof WeekDay) {
                     return $day->value;
                 }

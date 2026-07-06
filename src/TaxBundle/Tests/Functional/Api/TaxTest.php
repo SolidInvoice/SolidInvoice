@@ -43,7 +43,7 @@ final class TaxTest extends ApiTestCase
         $result = $this->requestPost('/api/taxes', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([
@@ -63,7 +63,7 @@ final class TaxTest extends ApiTestCase
             'name' => 'GST',
             'rate' => 10.0,
             'type' => Tax::TYPE_EXCLUSIVE,
-        ])->_real();
+        ]);
 
         $data = $this->requestGet($this->getIriFromResource($tax));
 
@@ -71,11 +71,13 @@ final class TaxTest extends ApiTestCase
             '@context' => $this->getContextForResource($tax),
             '@id' => $this->getIriFromResource($tax),
             '@type' => 'Tax',
-            'id' => $tax->getId()->toString(),
+            'id' => $tax->getId()
+                ->toString(),
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),
-            'category' => $tax->getCategory()->value,
+            'category' => $tax->getCategory()
+                ->value,
             'compound' => $tax->isCompound(),
         ], $data);
     }
@@ -86,7 +88,7 @@ final class TaxTest extends ApiTestCase
             'name' => 'OldTax',
             'rate' => 5.0,
             'type' => Tax::TYPE_FLAT_RATE,
-        ])->_real();
+        ]);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($tax),
@@ -100,18 +102,20 @@ final class TaxTest extends ApiTestCase
             '@context' => $this->getContextForResource($tax),
             '@id' => $this->getIriFromResource($tax),
             '@type' => 'Tax',
-            'id' => $tax->getId()->toString(),
+            'id' => $tax->getId()
+                ->toString(),
             'name' => 'NewTax',
             'rate' => 7.5,
             'type' => Tax::TYPE_FLAT_RATE,
-            'category' => $tax->getCategory()->value,
+            'category' => $tax->getCategory()
+                ->value,
             'compound' => $tax->isCompound(),
         ], $data);
     }
 
     public function testDelete(): void
     {
-        $tax = TaxFactory::createOne()->_real();
+        $tax = TaxFactory::createOne();
 
         $this->requestDelete($this->getIriFromResource($tax));
     }
@@ -133,7 +137,7 @@ final class TaxTest extends ApiTestCase
     {
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        $tax = TaxFactory::createOne(['company' => $otherCompany])->_real();
+        $tax = TaxFactory::createOne(['company' => $otherCompany]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($tax), [

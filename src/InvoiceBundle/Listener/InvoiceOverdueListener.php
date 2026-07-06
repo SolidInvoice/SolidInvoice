@@ -43,6 +43,11 @@ final readonly class InvoiceOverdueListener implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     */
     public function onInvoiceOverdue(Event $event): void
     {
         $invoice = $event->getSubject();

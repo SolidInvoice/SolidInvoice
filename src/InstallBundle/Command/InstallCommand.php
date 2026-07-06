@@ -73,7 +73,7 @@ class InstallCommand extends Command
         private readonly ConfigWriter $configWriter,
         private readonly ManagerRegistry $registry,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
-        #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
+        #[AutowireLocator(InstallationStepInterface::DI_TAG)]
         private readonly ServiceLocator $installationSteps,
         private readonly KernelInterface $kernel,
         private readonly Telemetry $telemetry,
@@ -122,7 +122,8 @@ class InstallCommand extends Command
             $this->telemetry->event(TelemetryEvent::InstallCompleted, ['method' => 'cli'], true);
         }
 
-        $success = new FormatterHelper()->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
+        $success = new FormatterHelper()
+            ->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
         $output->writeln('');
         $output->writeln($success);
         $output->writeln('');

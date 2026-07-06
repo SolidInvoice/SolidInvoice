@@ -42,6 +42,10 @@ class InvoicePaidListener implements EventSubscriberInterface
     }
 
     /**
+     * @template TSubject of object
+     *
+     * @param Event<TSubject> $event
+     *
      * @throws MathException
      */
     public function onInvoicePaid(Event $event): void
@@ -56,7 +60,8 @@ class InvoicePaidListener implements EventSubscriberInterface
 
         $em->persist($invoice);
 
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice)->toBigDecimal();
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice)
+            ->toBigDecimal();
 
         if ($totalPaid->isGreaterThan($invoice->getTotal())) {
             /** @var Client $client */

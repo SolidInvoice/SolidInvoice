@@ -36,7 +36,7 @@ final readonly class NotificationTransportFactory
     public function __construct(
         private Transport $transport,
         private TransportSettingRepository $transportSettingRepository,
-        #[AutowireLocator(services: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        #[AutowireLocator(ConfiguratorInterface::DI_TAG)]
         private ServiceLocator $transportConfigurations,
     ) {
     }

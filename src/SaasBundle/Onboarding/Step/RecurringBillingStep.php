@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+
+#[AsTaggedItem(priority: 65)]
 final class RecurringBillingStep extends AbstractOnboardingEmailStep
 {
     public static function key(): string
