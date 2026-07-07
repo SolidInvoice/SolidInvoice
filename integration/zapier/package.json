@@ -1,0 +1,33 @@
+{
+  "name": "solidinvoice-zapier",
+  "version": "1.0.2",
+  "description": "SolidInvoice is an open-source billing platform for freelancers and small businesses. Manage clients, invoices, quotes, and payments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --testTimeout 10000",
+    "validate": "zapier-platform validate",
+    "push": "zapier-platform push",
+    "describe": "zapier-platform describe",
+    "versions": "zapier-platform versions",
+    "logs": "zapier-platform logs",
+    "invoke": "zapier-platform invoke",
+    "promote": "zapier-platform promote",
+    "deploy": "npm run validate && npm test && npm run push",
+    "check": "npm run validate && npm test"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=8"
+  },
+  "dependencies": {
+    "zapier-platform-core": "18.5.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nock": "^13.5.5"
+  },
+  "private": true,
+  "zapier": {
+    "convertedByCLIVersion": "18.5.0"
+  }
+}
