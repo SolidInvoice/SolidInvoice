@@ -110,6 +110,7 @@ The following table lists the major configurable parameters. For the full list s
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `replicaCount` | Number of app replicas | `1` |
 | `app.secret` | `SOLIDINVOICE_APP_SECRET` — auto-generated if empty | `""` |
+| `app.url` | `SOLIDINVOICE_APPLICATION_URL` — public URL of the installation (optional) | `""` |
 | `app.locale` | Application locale | `en` |
 | `app.allowRegistration` | Allow public user registration | `false` |
 | `app.workerMode` | Enable FrankenPHP persistent worker mode | `false` |

@@ -11,6 +11,9 @@ data:
   SOLIDINVOICE_CONFIG_DIR: "/etc/solidinvoice"
   SOLIDINVOICE_LOCALE: {{ .Values.app.locale | quote }}
   SOLIDINVOICE_ALLOW_REGISTRATION: {{ .Values.app.allowRegistration | toString | quote }}
+  {{- if .Values.app.url }}
+  SOLIDINVOICE_APPLICATION_URL: {{ .Values.app.url | quote }}
+  {{- end }}
   SOLIDINVOICE_MAILER_SENDER: {{ .Values.mailer.sender | quote }}
   {{- if .Values.sentry.enabled }}
   SOLIDINVOICE_SENTRY_RELEASE: {{ default .Chart.AppVersion .Values.image.tag | quote }}

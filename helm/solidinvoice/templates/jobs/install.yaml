@@ -54,7 +54,7 @@ spec:
               fi
 
               # Run the CLI installer
-              /usr/local/bin/solidinvoice console app:install \
+              /usr/local/bin/solidinvoice console solidinvoice:install \
                 {{- if .Values.mysql.enabled }}
                 --database-driver=pdo_mysql \
                 --database-host={{ include "solidinvoice.mysql.host" . }} \

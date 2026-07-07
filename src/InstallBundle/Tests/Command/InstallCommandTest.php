@@ -16,13 +16,18 @@ namespace SolidInvoice\InstallBundle\Tests\Command;
 use Doctrine\DBAL\Connection;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Generator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\InstallBundle\Command\InstallCommand;
+use SolidInvoice\InstallBundle\DTO\Installation;
+use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
@@ -210,12 +215,129 @@ final class InstallCommandTest extends TestCase
         self::assertSame('Disable sending anonymous usage statistics', $option->getDescription());
     }
 
+    public function testSaveConfigWritesDatabaseUrlForSqlite(): void
+    {
+        $configDir = sys_get_temp_dir() . '/solidinvoice-install-test';
+        $expectedDsn = sprintf('sqlite:///%s/db/solidinvoice.db', $configDir);
+
+        $sealed = [];
+        $vault = M::mock(AbstractVault::class);
+        $vault->shouldReceive('generateKeys')->andReturnTrue();
+        $vault->shouldReceive('seal')->andReturnUsing(
+            static function (string $name, string $value) use (&$sealed): void {
+                $sealed[$name] = $value;
+            }
+        );
+
+        $configWriter = new ConfigWriter($vault, $configDir);
+
+        $input = M::mock(InputInterface::class);
+        $input->shouldReceive('getOption')->with('database-driver')->andReturn('pdo_sqlite');
+        // No path provided, so the default location is used.
+        $input->shouldReceive('getOption')->with('database-name')->andReturnNull();
+        $input->shouldReceive('getOption')->with('database-host')->andReturnNull();
+        $input->shouldReceive('getOption')->with('database-port')->andReturnNull();
+        $input->shouldReceive('getOption')->with('database-user')->andReturnNull();
+        $input->shouldReceive('getOption')->with('database-password')->andReturnNull();
+        $input->shouldReceive('getOption')->with('locale')->andReturn('en');
+        $input->shouldReceive('getOption')->with('application-url')->andReturn('https://example.com');
+        $input->shouldReceive('getOption')->with('disable-telemetry')->andReturnTrue();
+
+        $command = $this->createCommand(M::mock(ManagerRegistry::class), null, $configWriter, $configDir);
+
+        $method = new ReflectionMethod(InstallCommand::class, 'saveConfig');
+        $method->invoke($command, $input);
+
+        self::assertArrayHasKey('SOLIDINVOICE_DATABASE_URL', $sealed);
+        self::assertSame($expectedDsn, $sealed['SOLIDINVOICE_DATABASE_URL']);
+        self::assertDirectoryExists($configDir . '/db');
+    }
+
+    public function testValidateDoesNotRequireHostUserOrApplicationUrlForSqlite(): void
+    {
+        $input = M::mock(InputInterface::class);
+        $input->shouldReceive('getOption')->with('database-driver')->andReturn('pdo_sqlite');
+        $input->shouldReceive('getOption')->with('skip-user')->andReturnTrue();
+        $input->shouldReceive('getOption')->with('locale')->andReturn('en');
+        // database-host / database-user / application-url are intentionally never
+        // provided: host/user do not apply to SQLite and the application URL is optional.
+        $input->shouldReceive('getOption')->with('application-url')->andReturnNull();
+
+        $command = $this->createCommand(M::mock(ManagerRegistry::class));
+
+        $method = new ReflectionMethod(InstallCommand::class, 'validate');
+
+        // Should not throw for missing host/user/application-url when using SQLite.
+        self::assertSame($command, $method->invoke($command, $input));
+    }
+
+    public function testInstallIteratesStepGenerators(): void
+    {
+        // Regression: installation steps implement execute() as generators. If the
+        // returned generator is not iterated, the step body never runs — which meant
+        // the database schema was never created and installs failed with
+        // "no such table: users" while creating the admin user.
+        $ran = (object) ['value' => false];
+
+        $step = new readonly class($ran) implements InstallationStepInterface {
+            public function __construct(
+                private object $ran
+            ) {
+            }
+
+            public static function priority(): int
+            {
+                return 100;
+            }
+
+            public function execute(Installation $installationData, ?callable $callback = null): Generator
+            {
+                $this->ran->value = true;
+
+                yield;
+            }
+
+            public static function getLabel(): string
+            {
+                return 'Spy step';
+            }
+        };
+
+        $versionRepository = M::mock(VersionRepository::class);
+        $versionRepository->shouldReceive('updateVersion')->once();
+
+        $entityManager = M::mock(ObjectManager::class);
+        $entityManager->shouldReceive('getRepository')->with(Version::class)->andReturn($versionRepository);
+
+        $registry = M::mock(ManagerRegistry::class);
+        $registry->shouldReceive('getManager')->andReturn($entityManager);
+
+        $input = M::mock(InputInterface::class);
+        $input->shouldReceive('getOption')->with('skip-user')->andReturnTrue();
+
+        $output = M::mock(OutputInterface::class);
+        $output->shouldReceive('writeln');
+
+        $steps = new ServiceLocator(['Spy step' => static fn (): InstallationStepInterface => $step]);
+
+        $command = $this->createCommand($registry, null, null, '/tmp/test-config', $steps);
+
+        new ReflectionMethod(InstallCommand::class, 'install')->invoke($command, $input, $output);
+
+        self::assertTrue($ran->value, 'The installation step generator should have been executed.');
+    }
+
+    /**
+     * @param ServiceLocator<InstallationStepInterface>|null $steps
+     */
     private function createCommand(
         ManagerRegistry $registry,
         ?UserPasswordHasherInterface $passwordHasher = null,
+        ?ConfigWriter $configWriter = null,
+        string $configDir = '/tmp/test-config',
+        ?ServiceLocator $steps = null,
     ): InstallCommand {
-        $vault = $this->createStub(AbstractVault::class);
-        $configWriter = new ConfigWriter($vault, '/tmp/test-secrets');
+        $configWriter ??= new ConfigWriter($this->createStub(AbstractVault::class), '/tmp/test-secrets');
 
         // Telemetry is disabled here (null build ID), so it no-ops and never
         // touches the message bus or connection during the command tests.
@@ -235,10 +357,10 @@ final class InstallCommandTest extends TestCase
             $configWriter,
             $registry,
             $passwordHasher ?? M::mock(UserPasswordHasherInterface::class),
-            new ServiceLocator([]),
+            $steps ?? new ServiceLocator([]),
             $this->createStub(KernelInterface::class),
             $telemetry,
-            '/tmp/test',
+            $configDir,
             null
         );
     }

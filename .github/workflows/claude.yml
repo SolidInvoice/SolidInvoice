@@ -31,7 +31,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           track_progress: true
           use_sticky_comment: true
-          allowed_bots: dependabot[bot],github-actions[bot],renovate[bot],claude-code-action[bot]
+          allowed_bots: dependabot[bot],github-actions[bot],renovate[bot],claude-code-action[bot],seer-by-sentry[bot]
 
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
@@ -40,15 +40,15 @@ jobs:
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
-    
+
             Please review this pull request with a focus on:
             - Code quality and best practices
             - Potential bugs or issues
             - Security implications
             - Performance considerations
-    
+
             Note: The PR branch is already checked out in the current working directory.
-    
+
             Use `gh pr comment` for top-level feedback.
             Use `mcp__github_inline_comment__create_inline_comment` (with `confirmed: true`) to highlight specific code issues.
             Only post GitHub comments - don't submit review text as messages.

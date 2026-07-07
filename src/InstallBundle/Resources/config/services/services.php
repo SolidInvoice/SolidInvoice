@@ -26,7 +26,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$projectDir', param('kernel.project_dir'))
         ->bind('$installed', env('SOLIDINVOICE_INSTALLED'))
         ->bind('$debug', param('kernel.debug'))
         ->bind('$vault', service('secrets.vault'))
