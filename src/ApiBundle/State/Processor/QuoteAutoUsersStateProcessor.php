@@ -17,6 +17,7 @@ use ApiPlatform\Doctrine\Common\State\PersistProcessor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\ProcessorInterface;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
@@ -29,6 +30,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
  * specify a client but omit the users field.
  *
  * @implements ProcessorInterface<object, object>
+ * @see \SolidInvoice\ApiBundle\Tests\State\Processor\QuoteAutoUsersStateProcessorTest
  */
 #[AsDecorator(decorates: PersistProcessor::class)]
 final readonly class QuoteAutoUsersStateProcessor implements ProcessorInterface
@@ -43,7 +45,7 @@ final readonly class QuoteAutoUsersStateProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        if ($data instanceof Quote && $operation instanceof Post && $data->getUsers()->isEmpty() && $data->getClient() !== null) {
+        if ($data instanceof Quote && $operation instanceof Post && $data->getUsers()->isEmpty() && $data->getClient() instanceof Client) {
             foreach ($data->getClient()->getContacts() as $contact) {
                 assert($contact instanceof Contact);
                 $data->addUser($contact);
