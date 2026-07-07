@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:custom-fields:check-orphans', description: 'Find (and optionally clean) custom_field_value rows whose target record is gone.')]
+#[AsCommand(name: 'solidinvoice:custom-fields:check-orphans', description: 'Find (and optionally clean) custom_field_value rows whose target record is gone.')]
 final class CustomFieldOrphanCheckCommand extends Command
 {
     public function __construct(

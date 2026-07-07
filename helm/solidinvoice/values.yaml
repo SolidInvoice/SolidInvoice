@@ -20,6 +20,8 @@ replicaCount: 1
 app:
   ## @param app.secret SOLIDINVOICE_APP_SECRET. Auto-generated if empty (not recommended for production).
   secret: ""
+  ## @param app.url Public URL of the installation (SOLIDINVOICE_APPLICATION_URL), e.g. https://invoices.example.com. Optional.
+  url: ""
   ## @param app.locale Application locale
   locale: "en"
   ## @param app.allowRegistration Allow public user registration
