@@ -62,7 +62,7 @@ class TransportSetting implements Stringable
     private array $settings = [];
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    private User $user;
+    private ?User $user = null;
 
     public function getId(): ?Ulid
     {
@@ -99,7 +99,7 @@ class TransportSetting implements Stringable
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }

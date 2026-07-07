@@ -156,7 +156,7 @@ final class NotificationTransportConfiguration extends AbstractController
     #[LiveAction]
     public function save(): Response
     {
-        if ($this->setting !== null && $this->setting->getUser() !== $this->getUser()) {
+        if ($this->setting !== null && $this->setting->getId() !== null && $this->setting->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }
 
