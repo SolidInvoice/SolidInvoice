@@ -52,7 +52,7 @@ class DiscountTransformer implements DataTransformerInterface
     public function reverseTransform(mixed $value): BigNumber
     {
         if ($value === null || $value === '') {
-            return BigNumber::zero();
+            return BigNumber::of('0.0');
         }
 
         $value = is_float($value) ? (string) $value : $value;
