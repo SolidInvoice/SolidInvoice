@@ -106,6 +106,17 @@ jobs:
           BUILD_VERSION: ${{ needs.prepare.outputs.ref }}
         run: "./scripts/build_dist.sh ${BUILD_BRANCH} ${BUILD_VERSION}"
 
+      - name: Generate SHA256 checksums
+        working-directory: build/dist
+        env:
+          # Use the resolved release ref only. Falling back to github.ref
+          # produces invalid filenames (e.g. "refs/heads/main") on non-tag
+          # runs — the actual tarball is named after prepare.outputs.ref.
+          REF: ${{ needs.prepare.outputs.ref }}
+        run: |
+          sha256sum "SolidInvoice-${REF}.tar.gz" > "SolidInvoice-${REF}.tar.gz.sha256"
+          sha256sum "SolidInvoice-${REF}.zip" > "SolidInvoice-${REF}.zip.sha256"
+
       - name: Upload TAR archive
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
@@ -117,6 +128,24 @@ jobs:
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
+
+      - name: Upload SHA256 checksums
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}-sha256
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.*.sha256
+
+      - name: Upload SHA256 to release
+        if: needs.prepare.outputs.release == '1'
+        working-directory: build/dist
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          REF: ${{ needs.prepare.outputs.ref }}
+        run: |
+          gh release upload "${REF}" \
+            "SolidInvoice-${REF}.tar.gz.sha256" \
+            "SolidInvoice-${REF}.zip.sha256" \
+            --repo solidinvoice/solidinvoice --clobber
 
   build-mac:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries

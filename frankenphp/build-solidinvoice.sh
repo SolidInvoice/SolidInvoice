@@ -132,6 +132,27 @@ mkdir -p "${EMBED_DIR}"
 tar -xzf "${SCRIPT_DIR}/app.tar.gz" -C "${EMBED_DIR}"
 export EMBED="${EMBED_DIR}"
 echo "Application extracted to: ${EMBED_DIR}"
+
+# Generate companion files embedded alongside app.tar.gz. These are required by
+# the auto-update logic in app.go: app_checksum.txt (legacy md5 directory
+# disambiguator), app_sha256.txt (trust root for verifying downloaded updates
+# against the embedded fallback), and app_version.txt (current version for
+# semver comparison without parsing PHP source).
+echo "Generating embedded companion files..."
+if command -v md5sum >/dev/null 2>&1; then
+    md5sum "${SCRIPT_DIR}/app.tar.gz" | awk '{print $1}' > "${SCRIPT_DIR}/app_checksum.txt"
+else
+    md5 -q "${SCRIPT_DIR}/app.tar.gz" > "${SCRIPT_DIR}/app_checksum.txt"
+fi
+if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "${SCRIPT_DIR}/app.tar.gz" | awk '{print $1}' > "${SCRIPT_DIR}/app_sha256.txt"
+else
+    shasum -a 256 "${SCRIPT_DIR}/app.tar.gz" | awk '{print $1}' > "${SCRIPT_DIR}/app_sha256.txt"
+fi
+echo "${SOLIDINVOICE_VERSION}" > "${SCRIPT_DIR}/app_version.txt"
+echo "  app_checksum.txt: $(cat "${SCRIPT_DIR}/app_checksum.txt")"
+echo "  app_sha256.txt:   $(cat "${SCRIPT_DIR}/app_sha256.txt")"
+echo "  app_version.txt:  $(cat "${SCRIPT_DIR}/app_version.txt")"
 echo ""
 
 # ============================================================================

@@ -35,6 +35,8 @@ package-lock.json
 /frankenphp/app.tar
 /frankenphp/app.tar.gz
 /frankenphp/app_checksum.txt
+/frankenphp/app_sha256.txt
+/frankenphp/app_version.txt
 /helm/solidinvoice/charts
 /docs/superpowers
 
