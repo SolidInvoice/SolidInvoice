@@ -103,7 +103,11 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
         with:
           php-version: ${{ matrix.php }}
-          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
+          # opcache.jit is disabled because setup-php enables it by default and
+          # PHP 8.4's JIT segfaults on its stack-limit check when the panther
+          # web server (php -S) renders deeply nested pages like /install.
+          # PHP 8.5 is not affected. See PR #2540.
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1, opcache.jit=disable, opcache.jit_buffer_size=0
           extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
