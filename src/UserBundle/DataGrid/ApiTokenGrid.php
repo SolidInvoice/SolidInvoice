@@ -66,7 +66,7 @@ final class ApiTokenGrid extends Grid
             StringColumn::new('usageCount')
                 ->label('Usage Count')
                 ->searchable(false)
-                ->sortable(true)
+                ->sortable(false)
                 ->formatValue(static fn ($value, ApiToken $token) => $token->getUsageCount()),
             RelativeDateColumn::new('lastUsed')
                 ->label('Last Used')
