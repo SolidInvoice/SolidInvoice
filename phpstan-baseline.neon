@@ -1321,12 +1321,6 @@ parameters:
 			path: src/MoneyBundle/Twig/Extension/MoneyFormatterExtension.php
 
 		-
-			message: '#^Property SolidInvoice\\NotificationBundle\\Entity\\TransportSetting\:\:\$user type mapping mismatch\: database can contain SolidInvoice\\UserBundle\\Entity\\User\|null but property expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
-			identifier: doctrine.associationType
-			count: 1
-			path: src/NotificationBundle/Entity/TransportSetting.php
-
-		-
 			message: '#^Property SolidInvoice\\NotificationBundle\\Entity\\UserNotification\:\:\$user type mapping mismatch\: database can contain SolidInvoice\\UserBundle\\Entity\\User\|null but property expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
 			identifier: doctrine.associationType
 			count: 1
