@@ -12,7 +12,11 @@ declare(strict_types=1);
  */
 
 use Payum\Core\Registry\RegistryInterface;
+use SolidInvoice\PaymentBundle\PaymentAction\CaptureAction;
+use SolidInvoice\PaymentBundle\PaymentAction\ExecuteSameRequestWithPaymentDetailsAction;
 use SolidInvoice\PaymentBundle\PaymentAction\Offline\StatusAction;
+use SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\CapturePaymentAction;
+use SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\NotifyPaymentAction;
 use SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\PaymentDetailsStatusAction;
 use SolidInvoice\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension;
 use SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle;
@@ -37,6 +41,22 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load('SolidInvoice\\PaymentBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
+
+    $services
+        ->set(CaptureAction::class)
+        ->public();
+
+    $services
+        ->set(ExecuteSameRequestWithPaymentDetailsAction::class)
+        ->public();
+
+    $services
+        ->set(CapturePaymentAction::class)
+        ->public();
+
+    $services
+        ->set(NotifyPaymentAction::class)
+        ->public();
 
     $services
         ->set(PaymentDetailsStatusAction::class)
