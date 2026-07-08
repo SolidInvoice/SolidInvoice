@@ -182,12 +182,11 @@ class InstallCommand extends Command
      */
     private function install(InputInterface $input, OutputInterface $output): void
     {
-        $progress = static function (string $content) use ($output): Generator {
-            $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE);
-
-            yield;
+        $progress = static function (string $content): Generator {
+            yield $content;
         };
 
+        /** @var InstallationStepInterface $step */
         foreach ($this->installationSteps as $step) {
             // The CLI creates the admin user from the command options (see
             // createAdminUser() below), which also re-enables disabled users, so
@@ -199,7 +198,9 @@ class InstallCommand extends Command
             $output->writeln(sprintf('<info>Running step: %s</info>', $step->getLabel()));
 
             // execute() returns a Generator; it must be iterated for the step body to run.
-            iterator_to_array($step->execute(new Installation(), $progress), false);
+            foreach ($step->execute(new Installation(), $progress) as $content) {
+                $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE & OutputInterface::OUTPUT_RAW);
+            }
         }
 
         if (! $input->getOption('skip-user')) {

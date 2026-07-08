@@ -37,10 +37,12 @@ final readonly class GenerateBuildIdStep implements InstallationStepInterface
 
     public function execute(Installation $installationData, ?callable $callback = null): Generator
     {
-        $this->configWriter->save(['BUILD_ID' => (string) Uuid::v7()]);
+        $buildId = (string) Uuid::v7();
+
+        $this->configWriter->save(['BUILD_ID' => $buildId]);
 
         if ($callback !== null) {
-            yield from $callback('Build ID generated');
+            yield from $callback(sprintf('Build ID generated: %s', $buildId));
         }
     }
 
