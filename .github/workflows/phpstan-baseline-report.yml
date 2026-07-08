@@ -6,7 +6,7 @@ on:
       - 'phpstan-baseline.neon'
   push:
     branches:
-      - 3.0.x
+      - 3.1.x
     paths:
       - 'phpstan-baseline.neon'
 

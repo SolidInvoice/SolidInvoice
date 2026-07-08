@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Branch to release from (e.g. 3.0.x)"
+        description: "Branch to release from (e.g. 3.1.x)"
         required: true
         type: string
       version:

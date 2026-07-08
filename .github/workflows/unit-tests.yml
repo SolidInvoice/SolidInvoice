@@ -6,8 +6,8 @@ on:
             - 'docs/**'
     push:
         branches:
-            - 2.3.x
             - 3.0.x
+            - 3.1.x
         paths-ignore:
             - 'docs/**'
 
