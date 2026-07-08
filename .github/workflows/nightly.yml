@@ -56,7 +56,7 @@ jobs:
           ini-values: memory_limit=-1
           php-version-file: .php-version
 
-      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
 
       - name: Build Release Artifact
         run: "./scripts/build_dist.sh ${{ github.ref_name }} ${{ needs.prepare.outputs.ref }}"
