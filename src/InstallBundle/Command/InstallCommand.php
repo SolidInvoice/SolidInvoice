@@ -324,14 +324,24 @@ class InstallCommand extends Command
         try {
             // The database name is intentionally omitted: the target database
             // may not exist yet (CreateDatabaseStep creates it later), so we
-            // connect to the server only to read its version.
-            $nativeConnection = DriverManager::getConnection([
+            // connect to the server only to read its version. PostgreSQL has no
+            // concept of a database-less connection though - libpq falls back to
+            // a database named after the connecting user, which may not exist -
+            // so point it at the "postgres" maintenance database instead.
+            $params = [
                 'driver' => $driver,
                 'host' => $input->getOption('database-host'),
                 'port' => $input->getOption('database-port'),
                 'user' => $input->getOption('database-user'),
                 'password' => $input->getOption('database-password'),
-            ])->getNativeConnection();
+                'driverOptions' => [PDO::ATTR_TIMEOUT => 5],
+            ];
+
+            if ($driver === 'pdo_pgsql') {
+                $params['dbname'] = 'postgres';
+            }
+
+            $nativeConnection = DriverManager::getConnection($params)->getNativeConnection();
         } catch (\Doctrine\DBAL\Exception $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
