@@ -49,7 +49,7 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
             $dbName = $params['dbname'];
             unset($params['dbname']);
         } else {
-            $dbName = ltrim(str_replace($this->projectDir, '', $params['path']), '/');
+            $dbName = str_replace($this->projectDir . '/', './', $params['path']);
         }
 
         $tmpConnection = DriverManager::getConnection(
