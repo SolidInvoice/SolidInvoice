@@ -52,7 +52,7 @@ final class DatabaseConfig
             return sprintf(
                 '%s:///%s',
                 $params['driver'],
-                $params['name']
+                self::encodeDsnPath((string) $params['name'])
             );
         }
 
@@ -67,13 +67,24 @@ final class DatabaseConfig
         return sprintf(
             '%s://%s%s%s%s%s/%s?serverVersion=%s',
             $params['driver'],
-            $params['user'] ?? '',
-            ($params['password'] ?? '') !== '' ? ':' . $params['password'] : '',
+            rawurlencode((string) ($params['user'] ?? '')),
+            ($params['password'] ?? '') !== '' ? ':' . rawurlencode((string) $params['password']) : '',
             ($params['user'] ?? '') !== '' ? '@' : '',
             $params['host'],
             (string) ($params['port'] ?? '') !== '' ? ':' . $params['port'] : '',
-            $params['name'],
+            self::encodeDsnPath((string) $params['name']),
             $params['version'] ?? ''
         );
+    }
+
+    /**
+     * Percent-encodes reserved URL characters (spaces, `#`, `?`, `%`, ...) in a
+     * database name or SQLite file path, while preserving literal `/` separators,
+     * so that Doctrine's DsnParser (which round-trips path segments through
+     * rawurldecode) can parse the resulting DSN unambiguously.
+     */
+    private static function encodeDsnPath(string $path): string
+    {
+        return str_replace('%2F', '/', rawurlencode($path));
     }
 }

@@ -294,7 +294,9 @@ final class InstallCommandTest extends TestCase
             {
                 $this->ran->value = true;
 
-                yield;
+                if ($callback !== null) {
+                    yield from $callback('Spy step executed');
+                }
             }
 
             public static function getLabel(): string
