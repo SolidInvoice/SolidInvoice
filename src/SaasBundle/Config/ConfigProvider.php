@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Config;
 
+use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SaasBundle\Form\Type\CustomDomainType;
+use SolidInvoice\SaasBundle\Form\Type\InvoiceTemplateType;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -46,6 +49,13 @@ final class ConfigProvider implements ProviderInterface
                     'feature_gated' => Feature::CustomDomain->value,
                     'trial_restricted' => true,
                 ],
+            ),
+            new Config(
+                BillingTemplateResolver::TEMPLATE_SETTING_KEY,
+                BillingTemplateRegistry::DEFAULT_SLUG,
+                'Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.',
+                InvoiceTemplateType::class,
+                ['feature_gated' => Feature::CustomTemplates->value],
             ),
         ];
     }

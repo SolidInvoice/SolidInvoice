@@ -1,0 +1,232 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Shared macros for quote templates. Used by every template under
+ # `Templates/{slug}/{pdf,email,preview}.html.twig` to keep markup consistent.
+ # Mirrors the invoice macros with quote semantics: no payments/balance and a
+ # validity indicator instead of a due date.
+ #}
+
+{% macro bill_to_block(quote, label='quote.to') %}
+    <div>
+        <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
+            {{ label|trans }}
+        </div>
+        <div style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+            {{ quote.client }}
+        </div>
+        <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
+            {% for identifier in tax_identifiers(quote.client) %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+            {% endfor %}
+
+            {% for clientAddress in quote.client.addresses %}
+                <div>{{ clientAddress|replace({"\n": ", "}) }}</div>
+            {% endfor %}
+
+            {% set primary = quote.users|first %}
+            {% if primary is not empty and primary.email is not empty %}
+                <div style="margin-top: 4px;">{{ primary.email }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro from_block(label='quote.from') %}
+    <div>
+        <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
+            {{ label|trans }}
+        </div>
+        <div style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+            {{ company_name() }}
+        </div>
+        <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
+            {% for identifier in tax_identifiers() %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+            {% endfor %}
+
+            {% set companyEmail = setting('system/company/contact_details/email') %}
+            {% if companyEmail is not empty %}
+                <div>{{ companyEmail }}</div>
+            {% endif %}
+
+            {% set companyPhone = setting('system/company/contact_details/phone_number') %}
+            {% if companyPhone is not empty %}
+                <div>{{ companyPhone }}</div>
+            {% endif %}
+
+            {% set companyAddress = setting('system/company/contact_details/address', null, true) %}
+            {% if companyAddress is not empty %}
+                <div>{{ address(companyAddress)|replace({"\n": ", "}) }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro meta_pair(label, value, mono=false) %}
+    <div style="margin-bottom: 6px;">
+        <div style="font-size: 8pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">{{ label }}</div>
+        <div style="font-size: 10pt; color: #1e293b; font-weight: 500;{% if mono %} font-family: 'Courier New', monospace;{% endif %}">{{ value }}</div>
+    </div>
+{% endmacro %}
+
+{#
+ # validity_indicator
+ #
+ # Renders the "expired" / "expires today" / "valid for N days" hint when the
+ # quote has an expiry date and is still awaiting a decision.
+ #}
+{% macro validity_indicator(quote) %}
+    {% if quote.due %}
+        {% set daysDiff = ((quote.due|date("U") - "now"|date("U")) / 86400)|round(0, 'floor') %}
+        {% if quote.status not in [
+            enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Accepted,
+            enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Declined,
+            enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Cancelled,
+        ] %}
+            {% if daysDiff < 0 %}
+                <span style="font-size: 8pt; font-weight: bold; color: #dc2626; text-transform: uppercase; letter-spacing: 0.5px;">
+                    {{ 'quote.pdf.expired'|trans }}
+                </span>
+            {% elseif daysDiff == 0 %}
+                <span style="font-size: 8pt; font-weight: bold; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px;">
+                    {{ 'quote.pdf.expires_today'|trans }}
+                </span>
+            {% elseif daysDiff <= 7 %}
+                <span style="font-size: 8pt; font-weight: 600; color: #f59e0b;">
+                    {{ 'quote.pdf.valid_for_days'|trans({'%days%': daysDiff}) }}
+                </span>
+            {% else %}
+                <span style="font-size: 8pt; color: #64748b;">
+                    {{ 'quote.pdf.valid_for_days'|trans({'%days%': daysDiff}) }}
+                </span>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{#
+ # totals_block
+ #
+ # palette keys: subtotalColor, labelColor, discountColor, totalBg, totalColor,
+ # totalLabelColor, mono
+ #}
+{% macro totals_block(quote, currency, palette={}) %}
+    {% set p = {
+        subtotalColor: '#1e293b',
+        labelColor: '#475569',
+        discountColor: '#ef4444',
+        totalBg: '#eff6ff',
+        totalColor: '#1d4ed8',
+        totalLabelColor: '#1e293b',
+        mono: 'Courier New, monospace'
+    }|merge(palette) %}
+
+    <table cellpadding="0" cellspacing="0" style="width: 280px; border-collapse: collapse; margin-left: auto;">
+        <tr>
+            <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; font-weight: 600; color: {{ p.subtotalColor }};">
+                {{ 'quote.subtotal'|trans }}
+            </td>
+            <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                {{ quote.baseTotal|formatCurrency(currency) }}
+            </td>
+        </tr>
+        {% set _tb = tax_breakdown(quote) %}
+        {% if quote.tax.positive %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'quote.line_tax'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                    {{ quote.tax|formatCurrency(currency) }}
+                </td>
+            </tr>
+            {% for row in _tb.lineTaxRows %}
+                <tr>
+                    <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #475569;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        {% for row in _tb.additiveRows %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ row.name }} ({{ row.rate }}%)
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                    {{ row.amount|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for row in _tb.informationalRows %}
+            <tr>
+                <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}
+                </td>
+                <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #64748b;">
+                    {{ 'quote.invoice_taxes.informational'|trans }}
+                </td>
+            </tr>
+        {% endfor %}
+        {% if quote.discount.type is not empty %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'quote.discount'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.discountColor }};">
+                    -{{ discount(quote)|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+        <tr><td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"></td></tr>
+        <tr style="background-color: {{ p.totalBg }};">
+            <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.totalLabelColor }};">
+                {{ 'quote.total'|trans }}
+            </td>
+            <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
+                {{ quote.total|formatCurrency(currency) }}
+            </td>
+        </tr>
+        {% if quote.withholdingAmount.positive %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'quote.withholding'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.discountColor }};">
+                    -{{ quote.withholdingAmount|formatCurrency(currency) }}
+                </td>
+            </tr>
+            <tr style="background-color: {{ p.totalBg }};">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.totalLabelColor }};">
+                    {{ 'quote.amount_payable'|trans }}
+                </td>
+                <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
+                    {{ payable_amount(quote)|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endmacro %}
+
+{% macro terms_block(quote, palette={}) %}
+    {% if quote.terms is not empty %}
+        {% set p = {labelColor: '#64748b', textColor: '#475569', borderColor: '#e2e8f0'}|merge(palette) %}
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid {{ p.borderColor }};">
+            <div style="font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: {{ p.labelColor }}; margin-bottom: 8px;">
+                {{ 'quote.terms'|trans }}
+            </div>
+            <div style="font-size: 9pt; color: {{ p.textColor }}; line-height: 1.6;">
+                {{ quote.terms|nl2br }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}

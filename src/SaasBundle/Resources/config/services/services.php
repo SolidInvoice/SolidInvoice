@@ -40,6 +40,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Message,Resources,Tests}');
 
+    $services
+        ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
+        ->tag('controller.service_arguments');
+
+    $services
+        ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\Controller\\', dirname(__DIR__, 3) . '/Controller')
+        ->tag('controller.service_arguments');
+
     $services->alias(
         EmailVerificationGateInterface::class,
         SaasEmailVerificationGate::class,

@@ -32,6 +32,9 @@
                                     </div>
                                 </td>
                                 <td style="vertical-align: top; text-align: right;">
+                                    {% if setting('system/company/logo') is not empty %}
+                                        <div style="margin-bottom: 8px;">{{ app_logo(40) }}</div>
+                                    {% endif %}
                                     <div style="font-size: 8pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b;">
                                         {{ company_name() }}
                                     </div>

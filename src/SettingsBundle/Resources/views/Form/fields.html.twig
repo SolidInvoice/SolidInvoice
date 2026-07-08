@@ -143,6 +143,36 @@
     </div>
 {% endblock image_upload_widget %}
 
+{# Invoice/Quote design template picker - card gallery with live previews.
+   Self-contained styling (see settings.scss) — no Tabler form-imagecheck dependency. #}
+{% block invoice_template_widget %}
+    <div id="{{ id }}" class="row g-3 template-picker{% if disabled %} template-picker-disabled{% endif %}">
+        {% for child in form %}
+            {% set previewUrl = path('saas_template_preview', {slug: child.vars.value}) %}
+            <div class="col-sm-6 col-xl-4">
+                <div class="template-picker-card card h-100">
+                    <label class="template-picker-option" for="{{ child.vars.id }}">
+                        {{ form_widget(child, {attr: {class: 'template-picker-input'}}) }}
+                        <span class="template-picker-thumb">
+                            <iframe src="{{ previewUrl }}" loading="lazy" tabindex="-1" scrolling="no" title="{{ child.vars.label }}" aria-hidden="true"></iframe>
+                        </span>
+                        <span class="template-picker-check" aria-hidden="true">
+                            {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                        </span>
+                    </label>
+                    <div class="card-footer d-flex align-items-center justify-content-between py-2 px-3">
+                        <span class="fw-medium">{{ child.vars.label }}</span>
+                        <a href="{{ previewUrl }}" target="_blank" rel="noopener" class="btn btn-sm btn-ghost" title="{{ 'Open full preview'|trans }}">
+                            {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
+                            {{ 'Preview'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock invoice_template_widget %}
+
 {# Mail Transport Type - provider selector with config panels #}
 {% block mail_transport_widget %}
     <div {{ stimulus_controller('mailsettings') }}>

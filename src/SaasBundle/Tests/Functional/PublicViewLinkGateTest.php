@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Action\ViewBilling;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -87,6 +88,7 @@ final class PublicViewLinkGateTest extends KernelTestCase
             $container->get(Generator::class),
             $container->get(Environment::class),
             $gate,
+            $container->get(BillingTemplateResolver::class),
         );
     }
 

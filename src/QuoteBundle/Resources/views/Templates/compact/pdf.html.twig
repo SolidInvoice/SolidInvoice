@@ -1,0 +1,72 @@
+{#
+ # Compact Dense — information-rich, zebra rows, dark header, green left rail.
+ #}
+{% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
+{% set currency = quote.client.currency %}
+
+{% block body %}
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <tr>
+        <td style="background-color: #2e963a; width: 6px;"></td>
+        <td style="background-color: #0f172a; padding: 14px 18px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tr>
+                    <td style="vertical-align: middle; color: #ffffff;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                {% if setting('system/company/logo') is not empty %}
+                                    <td style="vertical-align: middle; padding-right: 12px;">{{ app_logo(36) }}</td>
+                                {% endif %}
+                                <td style="vertical-align: middle; color: #ffffff;">
+                                    <div style="font-size: 16pt; font-weight: bold;">{{ company_name() }}</div>
+                                    <div style="font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">{{ 'quote.pdf.title'|trans }} #{{ quote.quoteId }}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="vertical-align: middle; text-align: right; color: #ffffff;">
+                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'quote.pdf.date'|trans }}: {{ quote.created|date('Y-m-d') }}{% if quote.due %} · {{ 'quote.pdf.valid_until'|trans }}: {{ quote.due|date('Y-m-d') }}{% endif %}</div>
+                        <div style="font-size: 16pt; font-weight: bold;">{{ quote.total|formatCurrency(currency) }}</div>
+                        <div style="margin-top: 2px;">{{ q.validity_indicator(quote) }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 12px;">
+    <tr>
+        <td style="width: 50%; vertical-align: top;">{{ q.from_block() }}</td>
+        <td style="width: 50%; vertical-align: top;">{{ q.bill_to_block(quote) }}</td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <thead>
+        <tr style="background-color: #334155; color: #ffffff;">
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: center; width: 32px;">#</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: left;">{{ 'quote.item.heading.description'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 60px;">{{ 'quote.item.heading.qty'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 90px;">{{ 'quote.item.heading.price'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 100px;">{{ 'quote.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in quote.lines %}
+            <tr{% if loop.index0 is divisible by(2) %} style="background-color: #f8fafc;"{% endif %}>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: center; color: #64748b;">{{ loop.index }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; color: #1e293b;">{{ line.description|nl2br }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.qty }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ q.totals_block(quote, currency, {totalBg: '#1e293b', totalColor: '#fbbf24', totalLabelColor: '#e2e8f0'}) }}
+{{ q.terms_block(quote) }}
+{% endblock %}

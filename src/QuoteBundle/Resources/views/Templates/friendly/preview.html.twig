@@ -1,0 +1,89 @@
+{# Freelancer Friendly preview #}
+{% set currency = quote.client.currency %}
+{% set primary = quote.users|first %}
+{% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap">
+
+<div class="quote-template quote-template-friendly" style="background: #fffaf3;">
+    <div class="card border-0 shadow-sm" style="background: #fffaf3;">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    {% if app_logo() is not empty %}{{ app_logo(40) }}{% endif %}
+                    <div class="fs-5 fw-bold mt-2">{{ company_name() }}</div>
+                </div>
+                <div class="text-end">
+                    <div class="text-uppercase small" style="color: #94704a; letter-spacing: 2px;">{{ 'quote.pdf.title'|trans }}</div>
+                    <div class="fs-3 fw-bold">#{{ quote.quoteId }}</div>
+                </div>
+            </div>
+
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; line-height: 1.2;" class="mb-2">
+                {{ 'quote.template.friendly.greeting'|trans({'%name%': greeting}) }}
+            </div>
+            <p class="text-muted mb-4">{{ 'quote.template.friendly.intro'|trans }}</p>
+
+            <div class="mb-4">
+                <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'quote.to'|trans }}</div>
+                <strong>{{ quote.client }}</strong>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4 mb-2">
+                    <div class="p-3 rounded" style="background: #fff1e0;">
+                        <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'quote.pdf.date'|trans }}</div>
+                        <strong>{{ quote.created|date('M j, Y') }}</strong>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="p-3 rounded" style="background: #fff1e0;">
+                        <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'quote.pdf.valid_until'|trans }}</div>
+                        <strong>{% if quote.due %}{{ quote.due|date('M j, Y') }}{% else %}—{% endif %}</strong>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="p-3 rounded" style="background: #ecf7ee;">
+                        <div class="text-uppercase small mb-1" style="color: #2e963a; letter-spacing: 1px;">{{ 'quote.pdf.total'|trans }}</div>
+                        <strong style="color: #166534;" class="fs-5">{{ quote.total|formatCurrency(currency) }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e8d7b8;">
+                        <th class="text-uppercase small" style="color: #94704a;">{{ 'quote.item.heading.description'|trans }}</th>
+                        <th class="text-uppercase small text-end" style="color: #94704a;">{{ 'quote.item.heading.qty'|trans }}</th>
+                        <th class="text-uppercase small text-end" style="color: #94704a;">{{ 'quote.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in quote.lines %}
+                        <tr style="border-bottom: 1px solid #f1eada;">
+                            <td>{{ line.description|nl2br }}</td>
+                            <td class="text-end text-muted">{{ line.qty }}</td>
+                            <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-between mb-2"><span>{{ 'quote.subtotal'|trans }}</span><span>{{ quote.baseTotal|formatCurrency(currency) }}</span></div>
+                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.discount'|trans }}</span><span class="text-danger">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
+                    <div class="d-flex justify-content-between p-3 rounded" style="background: #ecf7ee;">
+                        <strong>{{ 'quote.total'|trans }}</strong>
+                        <strong style="color: #166534;" class="fs-4">{{ quote.total|formatCurrency(currency) }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4" style="font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; color: #475569;">
+                {{ 'quote.template.friendly.signoff'|trans }}
+            </div>
+        </div>
+    </div>
+</div>

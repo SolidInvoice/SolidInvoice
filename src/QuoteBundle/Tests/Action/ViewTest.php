@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -58,7 +59,8 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -125,7 +127,8 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -184,7 +187,8 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -239,7 +243,8 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         /** @var Client $client */
@@ -305,7 +310,8 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $contact = new Contact();

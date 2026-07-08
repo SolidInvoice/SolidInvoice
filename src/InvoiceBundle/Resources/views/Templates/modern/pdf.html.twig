@@ -13,6 +13,9 @@
 
 {% block body %}
 <div style="padding: 30mm 0 12mm 0;">
+    {% if setting('system/company/logo') is not empty %}
+        <div style="margin-bottom: 16px;">{{ app_logo(50) }}</div>
+    {% endif %}
     <div style="font-size: 9pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">
         {{ 'invoice.pdf.title'|trans }} · #{{ invoice.invoiceId }}
     </div>

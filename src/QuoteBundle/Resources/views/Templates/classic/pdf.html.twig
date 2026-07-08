@@ -1,0 +1,69 @@
+{#
+ # Classic Professional — utilitarian, bordered masthead, neutral palette,
+ # green accent on totals.
+ #}
+{% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
+{% set currency = quote.client.currency %}
+
+{% block body %}
+<table cellpadding="0" cellspacing="0" style="width: 100%; border: 2px solid #1e293b; margin-bottom: 24px;">
+    <tr>
+        <td style="padding: 16px 20px; border-right: 1px solid #cbd5e1; vertical-align: top; width: 50%;">
+            {% if setting('system/company/logo') is not empty %}
+                <div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>
+            {% endif %}
+            <div style="font-size: 16pt; font-weight: bold; color: #1e293b;">{{ company_name() }}</div>
+        </td>
+        <td style="padding: 16px 20px; vertical-align: top; text-align: right; width: 50%;">
+            <div style="font-size: 9pt; color: #64748b; text-transform: uppercase; letter-spacing: 2px;">
+                {{ 'quote.pdf.title'|trans }}
+            </div>
+            <div style="font-size: 22pt; font-weight: bold; color: #1e293b;">#{{ quote.quoteId }}</div>
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+    <tr>
+        <td style="width: 33%; vertical-align: top; padding-right: 16px;">
+            {{ q.from_block() }}
+        </td>
+        <td style="width: 33%; vertical-align: top; padding-right: 16px;">
+            {{ q.bill_to_block(quote) }}
+        </td>
+        <td style="width: 34%; vertical-align: top;">
+            {{ q.meta_pair('quote.pdf.date'|trans, quote.created|date('F j, Y')) }}
+            {% if quote.due %}
+                {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
+                <div style="margin-bottom: 6px;">{{ q.validity_indicator(quote) }}</div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+    <thead>
+        <tr style="background-color: #f8fafc;">
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: left; border-bottom: 2px solid #e2e8f0;">{{ 'quote.item.heading.description'|trans }}</th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: right; border-bottom: 2px solid #e2e8f0;">{{ 'quote.item.heading.price'|trans }}</th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: right; border-bottom: 2px solid #e2e8f0;">{{ 'quote.item.heading.qty'|trans }}</th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: right; border-bottom: 2px solid #e2e8f0;">{{ 'quote.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in quote.lines %}
+            <tr>
+                <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9;">{{ line.description|nl2br }}</td>
+                <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace;">{{ line.qty }}</td>
+                <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ q.totals_block(quote, currency, {totalBg: '#f0fdf4', totalColor: '#166534'}) }}
+{{ q.terms_block(quote) }}
+{% endblock %}

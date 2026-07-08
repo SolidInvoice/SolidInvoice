@@ -1,0 +1,34 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Standalone page that renders a single design-template fragment with sample
+ # data. Loaded in an <iframe> by the settings-page template picker and
+ # openable in a new tab for a full-size preview.
+ #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ 'Template preview'|trans }}</title>
+    {{ encore_entry_link_tags('_platform_ui') }}
+    {{ encore_entry_link_tags('app') }}
+    <style>
+        body {
+            background: #f1f5f9;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-xl">
+        {% include documentTemplate %}
+    </div>
+</body>
+</html>

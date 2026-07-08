@@ -6,6 +6,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-body p-5">
             <div class="mb-5">
+                {% if app_logo() is not empty %}<div class="mb-3">{{ app_logo(48) }}</div>{% endif %}
                 <div class="text-muted text-uppercase mb-2" style="font-size: 12px; letter-spacing: 4px;">{{ 'invoice.pdf.title'|trans }} · #{{ invoice.invoiceId }}</div>
                 <div class="text-muted text-uppercase mb-2" style="font-size: 13px; letter-spacing: 2px;">
                     {% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}

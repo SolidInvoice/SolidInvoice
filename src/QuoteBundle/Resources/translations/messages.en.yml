@@ -11,6 +11,11 @@ quote:
         expired: 'EXPIRED'
         expires_today: 'EXPIRES TODAY'
         valid_for_days: 'Valid for %days% days'
+    template:
+        friendly:
+            greeting: 'Hi %name%,'
+            intro: 'Thanks again for your interest in working together. Here''s the quote covering the work — happy to chat if anything looks off.'
+            signoff: 'Cheers, and talk soon.'
     list:
         status_legend: 'Quote Status Legend'
         title: Quotes

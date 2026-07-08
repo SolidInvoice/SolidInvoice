@@ -1,0 +1,29 @@
+{% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
+{% set accent = '#d4a94a' %}
+
+{% block intro %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <table role="presentation" style="width: 100%; background: #0b0b0b; border-radius: 8px; padding: 24px;">
+                    <tr>
+                        <td>
+                            <p style="color: #d4a94a; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                                {{ 'quote.pdf.title'|trans }}
+                            </p>
+                            <p style="color: #f5f1e8; font-family: Georgia, serif; font-size: 36px; line-height: 1.0; margin: 0; Margin: 0;">
+                                {{ quote.quoteId }}
+                            </p>
+                            <p style="color: #d4a94a; font-family: Georgia, serif; font-size: 22px; margin: 12px 0 0 0; Margin: 12px 0 0 0;">
+                                {{ quote.total|formatCurrency(quote.client.currency) }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 16px 0 0 0; Margin: 16px 0 0 0;">
+                    {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}

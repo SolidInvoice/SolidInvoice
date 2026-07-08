@@ -21,6 +21,7 @@
             </div>
         </td>
         <td style="padding: 12mm 16mm; vertical-align: top;">
+            {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
             <div style="font-family: Georgia, serif; font-size: 28pt; color: #2a2418; line-height: 1.0; margin-bottom: 4px;">{{ company_name() }}</div>
             <div style="font-size: 9pt; color: #7a6a4a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">{{ 'invoice.template.photographer.subtitle'|trans }}</div>
 

@@ -1,0 +1,73 @@
+{# Monochrome Luxury preview #}
+{% set currency = quote.client.currency %}
+
+<div class="quote-template quote-template-monochrome" style="background: #0b0b0b; padding: 32px; border-radius: 8px;">
+    <div class="card border-0" style="background: #f5f1e8;">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between text-uppercase mb-4" style="font-size: 11px; letter-spacing: 4px;">
+                <div>{{ 'quote.pdf.title'|trans }}</div>
+                <div class="text-end">
+                    {% if app_logo() is not empty %}<div class="mb-2">{{ app_logo(40) }}</div>{% endif %}
+                    <div>{{ company_name() }}</div>
+                </div>
+            </div>
+            <div style="font-family: Georgia, serif; font-size: 64px; line-height: 1.05; letter-spacing: -1px; color: #1a1a1a; margin-bottom: 24px;">
+                {{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}
+            </div>
+            <div class="row pt-3 border-top border-dark">
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'quote.to'|trans }}</div>
+                    <div class="fw-bold">{{ quote.client }}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'quote.pdf.date'|trans }}</div>
+                    <div>{{ quote.created|date('M j, Y') }}</div>
+                    {% if quote.due %}
+                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 2px;">{{ 'quote.pdf.valid_until'|trans }}</div>
+                        <div>{{ quote.due|date('M j, Y') }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'quote.pdf.total'|trans }}</div>
+                    <div style="font-family: Georgia, serif; font-size: 28px; color: #d4a94a; font-weight: bold;">
+                        {{ quote.total|formatCurrency(currency) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mt-2" style="background: #ffffff;">
+        <div class="card-body p-5">
+            <table class="table">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e0d8c8;">
+                        <th scope="col" class="text-uppercase small text-muted">{{ 'quote.item.heading.description'|trans }}</th>
+                        <th scope="col" class="text-uppercase small text-muted text-end">{{ 'quote.item.heading.qty'|trans }} × {{ 'quote.item.heading.price'|trans }}</th>
+                        <th scope="col" class="text-uppercase small text-muted text-end">{{ 'quote.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in quote.lines %}
+                        <tr style="border-bottom: 1px solid #e0d8c8;">
+                            <td>{{ line.description|nl2br }}</td>
+                            <td class="text-muted text-end">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</td>
+                            <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-between mb-2"><span>{{ 'quote.subtotal'|trans }}</span><span>{{ quote.baseTotal|formatCurrency(currency) }}</span></div>
+                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.discount'|trans }}</span><span class="text-danger">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
+                    <div class="d-flex justify-content-between p-3" style="background: #1a1a1a;">
+                        <strong style="color: #f5f1e8;">{{ 'quote.total'|trans }}</strong>
+                        <strong style="font-family: Georgia, serif; color: #d4a94a;">{{ quote.total|formatCurrency(currency) }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

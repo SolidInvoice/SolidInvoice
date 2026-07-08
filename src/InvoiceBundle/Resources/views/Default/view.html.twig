@@ -202,6 +202,9 @@
     <div class="doc-view-content">
         {# Invoice Document (Main Area) #}
         <div class="doc-view-document">
+            {% if documentTemplate|default(null) is not empty %}
+                {% include documentTemplate %}
+            {% else %}
             <div class="doc-card">
                 {# Document Header - From/To #}
                 <div class="doc-header-from-to">
@@ -401,6 +404,7 @@
                     </div>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
 
         {# Sidebar #}

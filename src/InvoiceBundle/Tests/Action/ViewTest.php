@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -64,7 +65,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -127,7 +129,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -209,7 +212,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -274,7 +278,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -335,7 +340,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([
@@ -418,7 +424,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $contact = new Contact();
@@ -485,7 +492,8 @@ final class ViewTest extends KernelTestCase
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
             new Generator('', new NullLogger()),
-            $twig
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
         );
 
         $client = ClientFactory::createOne([

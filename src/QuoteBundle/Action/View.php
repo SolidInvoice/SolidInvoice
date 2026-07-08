@@ -16,6 +16,8 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,21 +33,25 @@ final readonly class View
 {
     public function __construct(
         private Generator $pdfGenerator,
-        private Environment $engine
+        private Environment $engine,
+        private BillingTemplateResolver $templateResolver,
     ) {
     }
 
     /**
-     * @return array{quote: Quote}|PdfResponse
+     * @return array{quote: Quote, documentTemplate: string|null}|PdfResponse
      * @throws MpdfException|LoaderError|RuntimeError|SyntaxError
      */
     #[Template('@SolidInvoiceQuote/Default/view.html.twig')]
     public function __invoke(Request $request, Quote $quote): array | PdfResponse
     {
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            return new PdfResponse($this->pdfGenerator->generate($this->engine->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote])), sprintf('quote_%s.pdf', $quote->getQuoteId()));
+            return new PdfResponse($this->pdfGenerator->generate($this->engine->render($this->templateResolver->resolve($quote, BillingTemplateChannel::Pdf), ['quote' => $quote])), sprintf('quote_%s.pdf', $quote->getQuoteId()));
         }
 
-        return ['quote' => $quote];
+        return [
+            'quote' => $quote,
+            'documentTemplate' => $this->templateResolver->customTemplate($quote, BillingTemplateChannel::View),
+        ];
     }
 }

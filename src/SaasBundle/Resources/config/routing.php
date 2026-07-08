@@ -17,6 +17,7 @@ use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\SaasBundle\Action\ConfirmPlanChangeAction;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
 use SolidInvoice\SaasBundle\Action\SubscriptionOverviewAction;
+use SolidInvoice\SaasBundle\Action\TemplatePreviewAction;
 use SolidInvoice\SaasBundle\Controller\PaymentSuccess;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -51,4 +52,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('saas_subscription_cancel_downgrade', '/subscription/cancel-downgrade')
         ->controller(CancelDowngradeAction::class)
         ->methods(['POST']);
+
+    $routingConfigurator->add('saas_template_preview', '/templates/preview/{slug}')
+        ->controller(TemplatePreviewAction::class)
+        ->requirements(['slug' => '[a-z0-9-_]+'])
+        ->methods(['GET']);
 };

@@ -1,0 +1,36 @@
+{% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
+{% set accent = '#a2492b' %}
+{% set headingFont = "Georgia, 'Times New Roman', serif" %}
+
+{% block intro %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <table role="presentation" style="width: 100%; background: #faf3e6; border-left: 4px solid #a2492b; border-radius: 4px; padding: 20px;">
+                    <tr>
+                        <td>
+                            <p style="color: #a2492b; font-family: Georgia, serif; font-size: 24px; line-height: 1.2; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                                {{ 'invoice.template.photographer.intro_title'|trans }}
+                            </p>
+                            <p style="color: #2a2418; font-family: Georgia, serif; font-size: 15px; line-height: 1.6; margin: 0; Margin: 0;">
+                                {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}
+
+{% block signoff %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #a2492b; font-family: Georgia, serif; font-style: italic; font-size: 14px; margin: 24px 0 0 0; Margin: 24px 0 0 0;">
+                    {{ 'invoice.template.photographer.signoff'|trans }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}

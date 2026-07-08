@@ -1,0 +1,65 @@
+{#
+ # Editorial — magazine-like premium feel, italic display serif,
+ # I./II./III. section markers.
+ #}
+{% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
+{% set currency = quote.client.currency %}
+
+{% block extra_styles %}
+    body { font-family: Georgia, 'Times New Roman', serif; color: #2a2a2a; }
+    .editorial-marker { font-style: italic; font-size: 11pt; color: #94704a; letter-spacing: 1px; }
+{% endblock %}
+
+{% block body %}
+<div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; margin-bottom: 28px;">
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td style="vertical-align: bottom;">
+                {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
+                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #94704a;">{{ 'quote.pdf.title'|trans }}</div>
+                <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}</div>
+            </td>
+            <td style="vertical-align: bottom; text-align: right;">
+                <div style="font-style: italic; font-size: 14pt; color: #2a2a2a;">{{ company_name() }}</div>
+                <div style="font-size: 9pt; color: #6b6b6b;">{{ quote.created|date('F j, Y') }}</div>
+                {% if quote.due %}
+                    <div style="font-size: 9pt; color: #6b6b6b;">
+                        {{ 'quote.pdf.valid_until'|trans }} {{ quote.due|date('F j, Y') }}
+                        {{ q.validity_indicator(quote) }}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 28px;">
+    <tr>
+        <td style="width: 8%; vertical-align: top;"><span class="editorial-marker">I.</span></td>
+        <td style="width: 46%; vertical-align: top;">{{ q.from_block() }}</td>
+        <td style="width: 8%; vertical-align: top;"><span class="editorial-marker">II.</span></td>
+        <td style="width: 38%; vertical-align: top;">{{ q.bill_to_block(quote) }}</td>
+    </tr>
+</table>
+
+<div class="editorial-marker" style="margin-bottom: 12px;">III. {{ 'quote.item.heading.description'|trans }}</div>
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
+    {% for line in quote.lines %}
+        <tr>
+            <td style="padding: 14px 0; font-size: 11pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; vertical-align: top;">
+                <em>{{ line.description|nl2br }}</em>
+                <div style="font-size: 9pt; color: #6b6b6b; margin-top: 2px;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+            </td>
+            <td style="padding: 14px 0; font-size: 13pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; text-align: right; vertical-align: top; width: 25%;">
+                {{ line.total|formatCurrency(currency) }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'quote.total'|trans }}</div>
+{{ q.totals_block(quote, currency, {totalBg: '#f5ebd9', totalColor: '#94704a', totalLabelColor: '#1a1a1a', mono: 'Georgia, serif'}) }}
+{{ q.terms_block(quote, {labelColor: '#94704a', borderColor: '#e8dcc4'}) }}
+{% endblock %}

@@ -45,17 +45,6 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
-    private const array SLUGS = [
-        'classic',
-        'modern',
-        'compact',
-        'editorial',
-        'monochrome',
-        'photographer',
-        'studio',
-        'friendly',
-    ];
-
     private Environment $twig;
 
     protected function setUp(): void
@@ -65,12 +54,20 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
     }
 
     /**
+     * Slugs are discovered from the filesystem so a newly added template
+     * directory is covered automatically (its snapshot is created on the
+     * first `--update-snapshots` run).
+     *
      * @return iterable<string, array{string}>
      */
     public static function templateProvider(): iterable
     {
-        foreach (self::SLUGS as $slug) {
-            yield $slug => [$slug];
+        foreach (glob(dirname(__DIR__, 3) . '/Resources/views/Templates/*', GLOB_ONLYDIR) ?: [] as $directory) {
+            $slug = basename($directory);
+
+            if (! str_starts_with($slug, '_')) {
+                yield $slug => [$slug];
+            }
         }
     }
 

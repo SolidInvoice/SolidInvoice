@@ -20,6 +20,8 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -48,6 +50,7 @@ class ViewBilling
         private readonly Generator $pdfGenerator,
         private readonly Environment $twig,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
+        private readonly BillingTemplateResolver $templateResolver,
     ) {
     }
 
@@ -104,7 +107,7 @@ class ViewBilling
 
         $entity = $repository->findOneBy(['uuid' => $options['uuid']]);
 
-        if (null === $entity) {
+        if (! $entity instanceof Invoice && ! $entity instanceof Quote) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
 
@@ -119,19 +122,13 @@ class ViewBilling
         } catch (AuthenticationCredentialsNotFoundException) {
         }
 
-        $entityId = null;
-
-        if ($entity instanceof Invoice) {
-            $entityId = $entity->getInvoiceId();
-        } elseif ($entity instanceof Quote) {
-            $entityId = $entity->getQuoteId();
-        }
+        $entityId = $entity instanceof Invoice ? $entity->getInvoiceId() : $entity->getQuoteId();
 
         $this->companySelector->switchCompany($entity->getCompany()->getId());
 
         // Handle PDF format
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            $html = $this->twig->render($options['pdfTemplate'], [$options['entity'] => $entity]);
+            $html = $this->twig->render($this->templateResolver->resolve($entity, BillingTemplateChannel::Pdf), [$options['entity'] => $entity]);
             $filename = sprintf('%s_%s.pdf', $options['entity'], $entityId);
 
             return new PdfResponse($this->pdfGenerator->generate($html), $filename);
@@ -141,6 +138,7 @@ class ViewBilling
             $options['entity'] => $entity,
             'title' => $options['entity'] . ' #' . $entityId,
             'template' => $options['template'],
+            'documentTemplate' => $this->templateResolver->customTemplate($entity, BillingTemplateChannel::View),
         ];
     }
 }

@@ -17,6 +17,7 @@
     <table cellpadding="0" cellspacing="0" style="width: 100%;">
         <tr>
             <td style="vertical-align: bottom;">
+                {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
                 <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #94704a;">{{ 'invoice.template.editorial.heading'|trans }}</div>
                 <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
             </td>

@@ -14,7 +14,8 @@
     'system': {'title': 'Company'|trans, 'icon': 'tabler:building'},
     'invoice': {'title': 'Invoices'|trans, 'icon': 'tabler:file-invoice'},
     'quote': {'title': 'Quotes'|trans, 'icon': 'tabler:file-text'},
-    'email': {'title': 'Email'|trans, 'icon': 'tabler:mail'}
+    'email': {'title': 'Email'|trans, 'icon': 'tabler:mail'},
+    'design': {'title': 'Design'|trans, 'icon': 'tabler:palette'}
 } %}
 
 <div class="settings-page"{{ attributes }}>
@@ -437,6 +438,23 @@
                     </div>
                 {% endif %}
 
+            {% elseif section == 'design' and form.template is defined %}
+                {# Design Settings - Invoice/Quote template picker (SaaS only) #}
+                <div>
+                    <h3 class="d-flex align-items-center gap-2 mb-3">
+                        {{ ux_icon('tabler:palette', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+                        {{ 'Invoice & Quote Template'|trans }}
+                    </h3>
+                    <p class="text-muted small mb-3">
+                        {{ 'Choose the design used for your invoices and quotes everywhere clients see them — PDF downloads, emails and the client portal.'|trans }}
+                    </p>
+
+                    {% if form.template.vars.feature_gated_active|default(false) %}
+                        {{ upgrade_prompt(constant('SolidInvoice\\SaasBundle\\Feature\\Feature::CustomTemplates').value) }}
+                    {% endif %}
+
+                    {{ form_widget(form.template) }}
+                </div>
             {% else %}
                 {# Default Rendering for Other Sections #}
                 {{ form_widget(form) }}

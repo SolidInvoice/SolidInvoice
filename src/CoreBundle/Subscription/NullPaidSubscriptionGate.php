@@ -29,4 +29,10 @@ final class NullPaidSubscriptionGate implements PaidSubscriptionGateInterface
     {
         return true;
     }
+
+    #[Override]
+    public function isActive(Company $company): bool
+    {
+        return true;
+    }
 }
