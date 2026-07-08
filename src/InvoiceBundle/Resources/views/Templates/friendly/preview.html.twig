@@ -11,7 +11,7 @@
         <div class="card-body p-5">
             <div class="d-flex justify-content-between mb-4">
                 <div>
-                    {% if app_logo() is not empty %}{{ app_logo(40) }}{% endif %}
+                    {% if setting('system/company/logo') is not empty %}{{ app_logo(40) }}{% endif %}
                     <div class="fs-5 fw-bold mt-2">{{ company_name() }}</div>
                 </div>
                 <div class="text-end">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-md-4 mb-2">
                     <div class="p-3 rounded" style="background: #ecf7ee;">
-                        <div class="text-uppercase small mb-1" style="color: #2e963a; letter-spacing: 1px;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>
+                        <div class="text-uppercase small mb-1" style="color: #166534; letter-spacing: 1px;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>
                         <strong style="color: #166534;" class="fs-5">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</strong>
                     </div>
                 </div>

@@ -5,7 +5,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-body p-5">
             <div class="d-flex justify-content-between mb-4">
-                <div>{% if app_logo() is not empty %}{{ app_logo(40) }}{% endif %}</div>
+                <div>{% if setting('system/company/logo') is not empty %}{{ app_logo(40) }}{% endif %}</div>
                 <div class="text-end">
                     <div class="text-muted small text-uppercase" style="letter-spacing: 2px;">{{ 'quote.pdf.title'|trans }}</div>
                     <div class="fs-5 fw-bold">#{{ quote.quoteId }}</div>
