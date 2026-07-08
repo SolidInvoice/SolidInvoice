@@ -48,6 +48,10 @@
           "type": "string",
           "description": "Application secret key"
         },
+        "url": {
+          "type": "string",
+          "description": "Public URL of the installation (SOLIDINVOICE_APPLICATION_URL). Optional."
+        },
         "locale": {
           "type": "string",
           "minLength": 1,
