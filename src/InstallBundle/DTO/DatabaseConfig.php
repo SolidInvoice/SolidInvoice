@@ -54,6 +54,15 @@ final class DatabaseConfig
                 $params['driverOptions'] = [
                     PDO::ATTR_TIMEOUT => 5,
                 ];
+
+                // PostgreSQL has no concept of a database-less connection - libpq
+                // falls back to a database named after the connecting user, which
+                // may not exist yet - so point it at the "postgres" maintenance
+                // database instead.
+                if ($params['driver'] === 'pdo_pgsql') {
+                    $params['dbname'] = 'postgres';
+                }
+
                 DriverManager::getConnection($params)->getNativeConnection();
             } catch (Throwable $e) {
                 $executionContext->addViolation($e->getMessage());
