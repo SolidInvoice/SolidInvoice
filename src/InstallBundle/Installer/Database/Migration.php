@@ -20,14 +20,18 @@ use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\SqlFormatter\SqlFormatter;
 use Generator;
 
 final readonly class Migration
 {
+    private SqlFormatter $sqlFormatter;
+
     public function __construct(
         private DependencyFactory $migrationDependencyFactory,
         private ManagerRegistry $registry,
     ) {
+        $this->sqlFormatter = new SqlFormatter();
     }
 
     public function isUpToDate(): bool
@@ -93,7 +97,7 @@ final readonly class Migration
                 $conn->executeStatement($sql);
 
                 if (null !== $callback) {
-                    yield from $callback($sql);
+                    yield from $callback($this->sqlFormatter->format($sql));
                 }
             }
         } elseif (null !== $callback) {

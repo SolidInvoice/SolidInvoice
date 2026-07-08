@@ -18,7 +18,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use function in_array;
+use function str_replace;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\CreateDatabaseStepTest
@@ -27,7 +29,9 @@ use function in_array;
 final readonly class CreateDatabaseStep implements InstallationStepInterface
 {
     public function __construct(
-        private ManagerRegistry $doctrine
+        private ManagerRegistry $doctrine,
+        #[Autowire(param: 'kernel.project_dir')]
+        private string $projectDir,
     ) {
     }
 
@@ -41,11 +45,11 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         $connection = $this->doctrine->getConnection();
         $params = $connection->getParams();
 
-        $dbName = '';
-
         if ($params['driver'] !== 'pdo_sqlite') {
             $dbName = $params['dbname'];
             unset($params['dbname']);
+        } else {
+            $dbName = ltrim(str_replace($this->projectDir, '', $params['path']), '/');
         }
 
         $tmpConnection = DriverManager::getConnection(
@@ -60,12 +64,12 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
             $tmpConnection->close();
         } else {
             $schemaManager = $tmpConnection->createSchemaManager();
-            if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
+            if (! in_array($dbName, $schemaManager->introspectDatabaseNames(), true)) {
                 $schemaManager->createDatabase($dbName);
             }
         }
 
-        yield from $callback(sprintf('Database %s created', $dbName));
+        yield from $callback(sprintf('Database "%s" created', $dbName));
     }
 
     public static function getLabel(): string
