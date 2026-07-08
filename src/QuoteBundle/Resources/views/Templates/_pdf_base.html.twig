@@ -1,0 +1,51 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Base layout for all quote PDF templates. Provides watermark, page footer,
+ # and the standard pdf.css import. Templates extend this and override
+ # `body` and (optionally) `extra_styles` and `body_attrs`.
+ #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style type="text/css">
+        {{ file(asset('static/pdf.css')) }}
+
+        @page {
+            margin-top: 20mm;
+            margin-bottom: 25mm;
+            margin-left: 15mm;
+            margin-right: 15mm;
+            footer: footer;
+        }
+
+        {% block extra_styles %}{% endblock %}
+    </style>
+</head>
+<body{% block body_attrs %}{% endblock %}>
+
+{% if setting('quote/watermark') %}
+    <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
+{% endif %}
+
+{# Suppression of "Powered by" only takes effect when the `custom_branding` feature is on
+   for the current plan; without it, we render the line regardless of the stored value. #}
+{% set hide_powered_by_value = setting('system/general/hide_powered_by') is same as ('1') %}
+{% set hide_powered_by = hide_powered_by_value and feature_enabled('custom_branding') %}
+<pagefooter
+    name="footer"
+    content-left="{{ not hide_powered_by ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
+    content-right="{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}"
+    line="on"
+    footer-style="border-top: 1px solid #e2e8f0; font-size: 8pt; color: #64748b; padding-top: 8px;"
+/>
+
+{% block body %}{% endblock %}
+</body>
+</html>

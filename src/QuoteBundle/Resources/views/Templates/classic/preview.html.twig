@@ -1,0 +1,69 @@
+{# Classic Professional preview — Bootstrap 5.3 / Tabler #}
+{% set currency = quote.client.currency %}
+
+<div class="quote-template quote-template-classic">
+    <div class="card border border-2 border-dark shadow-sm">
+        <div class="card-body p-4">
+            <div class="row border-bottom border-dark pb-3 mb-4">
+                <div class="col-6">
+                    {% if app_logo() is not empty %}<div class="mb-2">{{ app_logo(48) }}</div>{% endif %}
+                    <h2 class="mb-0">{{ company_name() }}</h2>
+                </div>
+                <div class="col-6 text-end">
+                    <div class="text-uppercase small text-muted" style="letter-spacing: 2px;">{{ 'quote.pdf.title'|trans }}</div>
+                    <div class="display-6 fw-bold">#{{ quote.quoteId }}</div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="text-uppercase small text-muted mb-2">{{ 'quote.to'|trans }}</div>
+                    <div class="fw-bold fs-5">{{ quote.client }}</div>
+                    {% for addr in quote.client.addresses %}<div class="text-muted small">{{ addr }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <div><span class="text-muted small">{{ 'quote.pdf.date'|trans }}:</span> <strong>{{ quote.created|date('M j, Y') }}</strong></div>
+                    {% if quote.due %}<div><span class="text-muted small">{{ 'quote.pdf.valid_until'|trans }}:</span> <strong>{{ quote.due|date('M j, Y') }}</strong></div>{% endif %}
+                </div>
+            </div>
+
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th class="text-uppercase small">{{ 'quote.item.heading.description'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.price'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.qty'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in quote.lines %}
+                        <tr>
+                            <td>{{ line.description|nl2br }}</td>
+                            <td class="text-end font-monospace">{{ line.price|formatCurrency(currency) }}</td>
+                            <td class="text-end">{{ line.qty }}</td>
+                            <td class="text-end font-monospace fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><span>{{ 'quote.subtotal'|trans }}</span><span class="font-monospace">{{ quote.baseTotal|formatCurrency(currency) }}</span></div>
+                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ 'quote.tax'|trans }}</span><span class="font-monospace">{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ 'quote.discount'|trans }}</span><span class="font-monospace text-danger">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
+                    <div class="d-flex justify-content-between bg-success-lt p-3 rounded">
+                        <span class="fw-bold">{{ 'quote.total'|trans }}</span>
+                        <span class="fw-bold fs-4 text-success font-monospace">{{ quote.total|formatCurrency(currency) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if quote.terms is not empty %}
+                <hr class="my-4">
+                <div><strong class="text-uppercase small">{{ 'quote.terms'|trans }}</strong><div class="text-muted">{{ quote.terms|nl2br }}</div></div>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -9,9 +9,12 @@
                 <div style="background: #2e963a; width: 8px;"></div>
                 <div class="flex-grow-1 p-3 text-white" style="background: #0f172a;">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="fs-5 fw-bold mb-0">{{ company_name() }}</div>
-                            <div class="text-secondary small" style="letter-spacing: 1px;">{{ 'invoice.template.compact.label'|trans }} #{{ invoice.invoiceId }}</div>
+                        <div class="d-flex align-items-center">
+                            {% if app_logo() is not empty %}<div class="me-2">{{ app_logo(36) }}</div>{% endif %}
+                            <div>
+                                <div class="fs-5 fw-bold mb-0">{{ company_name() }}</div>
+                                <div class="text-secondary small" style="letter-spacing: 1px;">{{ 'invoice.template.compact.label'|trans }} #{{ invoice.invoiceId }}</div>
+                            </div>
                         </div>
                         <div class="text-end">
                             <div class="text-secondary small">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>

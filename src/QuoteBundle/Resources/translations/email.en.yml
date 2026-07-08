@@ -8,6 +8,8 @@ quote:
     tax: 'Tax'
     discount: 'Discount'
     total: 'Total'
+    withholding: 'Withholding'
+    amount_payable: 'Amount payable'
     terms: 'Terms & Conditions'
     status:
         subject: 'Quote Status Change'

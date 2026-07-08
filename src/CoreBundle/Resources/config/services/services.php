@@ -26,6 +26,8 @@ use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Subscription\NullPaidSubscriptionGate;
+use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -110,6 +112,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         PaidSubscriptionGateInterface::class,
         NullPaidSubscriptionGate::class,
     );
+
+    // Design template slugs are discovered from the filesystem so a new
+    // template directory is picked up without any code changes.
+    $services->set(BillingTemplateRegistry::class)
+        ->arg('$templateDirectories', [
+            BillingDocumentType::Invoice->value => '%kernel.project_dir%/src/InvoiceBundle/Resources/views/Templates',
+            BillingDocumentType::Quote->value => '%kernel.project_dir%/src/QuoteBundle/Resources/views/Templates',
+        ]);
 
     $services
         ->set(TimestampableListener::class)

@@ -1,0 +1,49 @@
+{% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
+{% set accent = '#2e963a' %}
+
+{% set primary = quote.users|first %}
+{% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
+
+{% block intro %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-family: Georgia, serif; font-size: 22px; line-height: 1.3; margin: 0 0 12px 0; Margin: 0 0 12px 0;">
+                    {{ 'quote.template.friendly.greeting'|trans({'%name%': greeting}) }}
+                </p>
+                <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0; Margin: 0 0 20px 0;">
+                    {{ 'quote.template.friendly.intro'|trans }}
+                </p>
+                <table role="presentation" style="width: 100%; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                    <tr>
+                        <td style="background: #fff1e0; padding: 12px 14px; border-radius: 6px;">
+                            <p style="color: #94704a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">{{ 'quote.pdf.valid_until'|trans }}</p>
+                            <p style="color: #1e293b; font-size: 14px; font-weight: 600; margin: 0; Margin: 0;">{% if quote.due %}{{ quote.due|date }}{% else %}—{% endif %}</p>
+                        </td>
+                        <td style="width: 8px;"></td>
+                        <td style="background: #ecf7ee; padding: 12px 14px; border-radius: 6px;">
+                            <p style="color: #2e963a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">
+                                {{ 'quote.pdf.total'|trans }}
+                            </p>
+                            <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0; Margin: 0;">
+                                {{ quote.total|formatCurrency(quote.client.currency) }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}
+
+{% block signoff %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #475569; font-family: Georgia, serif; font-style: italic; font-size: 14px; margin: 24px 0 0 0; Margin: 24px 0 0 0;">
+                    {{ 'quote.template.friendly.signoff'|trans }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}

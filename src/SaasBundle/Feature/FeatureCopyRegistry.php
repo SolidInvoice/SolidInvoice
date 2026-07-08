@@ -167,6 +167,16 @@ final readonly class FeatureCopyRegistry
                     'Auto-copied on recurring invoices and quote→invoice conversion',
                 ],
             ),
+            Feature::CustomTemplates => new FeatureCopy(
+                icon: 'tabler:layout-2',
+                headline: 'Stand out with designer templates',
+                description: 'Pick a professionally designed template for your invoices and quotes — applied everywhere your clients see them: PDFs, emails and the client portal.',
+                bullets: [
+                    'A growing gallery of designer templates',
+                    'One choice applies to invoices and quotes alike',
+                    'Consistent across PDF, email and web view',
+                ],
+            ),
         };
     }
 }

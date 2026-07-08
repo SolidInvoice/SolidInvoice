@@ -16,6 +16,8 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Mpdf\MpdfException;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -34,12 +36,13 @@ final readonly class View
     public function __construct(
         private PaymentRepository $paymentRepository,
         private Generator $pdfGenerator,
-        private Environment $twig
+        private Environment $twig,
+        private BillingTemplateResolver $templateResolver,
     ) {
     }
 
     /**
-     * @return array{invoice: Invoice, payments: array<string, mixed>}|Response
+     * @return array{invoice: Invoice, payments: array<string, mixed>, documentTemplate: string|null}|Response
      * @throws LoaderError
      * @throws MpdfException
      * @throws RuntimeError
@@ -49,12 +52,13 @@ final readonly class View
     public function __invoke(Request $request, Invoice $invoice): array | Response
     {
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            return new PdfResponse($this->pdfGenerator->generate($this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])), sprintf('invoice_%s.pdf', $invoice->getInvoiceId()));
+            return new PdfResponse($this->pdfGenerator->generate($this->twig->render($this->templateResolver->resolve($invoice, BillingTemplateChannel::Pdf), ['invoice' => $invoice])), sprintf('invoice_%s.pdf', $invoice->getInvoiceId()));
         }
 
         return [
             'invoice' => $invoice,
             'payments' => $this->paymentRepository->getPaymentsForInvoice($invoice),
+            'documentTemplate' => $this->templateResolver->customTemplate($invoice, BillingTemplateChannel::View),
         ];
     }
 }

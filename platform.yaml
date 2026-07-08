@@ -80,6 +80,10 @@ saas:
             type: boolean
             default: true
             description: 'Capture and display custom fields on clients, contacts, invoices, quotes and recurring invoices.'
+        custom_templates:
+            type: boolean
+            default: true
+            description: 'Choose a custom design template for invoices and quotes across PDFs, emails and the client portal.'
 
 ui:
     templates:

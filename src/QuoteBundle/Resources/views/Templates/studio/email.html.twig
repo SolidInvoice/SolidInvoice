@@ -1,0 +1,26 @@
+{% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
+{% set accent = '#2e963a' %}
+
+{% block intro %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <table role="presentation" style="width: 100%; background: #f8fafc; border-left: 4px solid #2e963a; padding: 18px; border-radius: 4px;">
+                    <tr>
+                        <td>
+                            <p style="color: #64748b; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 4px 0; Margin: 0 0 4px 0;">
+                                {{ 'invoice.template.studio.project_label'|trans }}
+                            </p>
+                            <p style="color: #0f172a; font-size: 22px; font-weight: 700; line-height: 1.2; margin: 0; Margin: 0;">
+                                {{ quote.client }} {{ 'invoice.template.studio.engagement'|trans }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 16px 0 0 0; Margin: 16px 0 0 0;">
+                    {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}

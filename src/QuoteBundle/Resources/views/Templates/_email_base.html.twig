@@ -1,0 +1,126 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Shared base for all template-variant quote email renderings. Each template
+ # provides a few colour/copy variables and (optionally) overrides the
+ # `intro` and `signoff` blocks.
+ #}
+{% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
+{% set accent = accent|default('#2e963a') %}
+{% set headingFont = headingFont|default('helvetica, Arial, sans-serif') %}
+{# JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT — keep dynamic
+ # values inside the JSON-LD script tag from breaking out via `</script>`. #}
+{% set jsonFlags = constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT') %}
+
+{%- block title -%}
+    {{ "quote.title"|trans({"%id%" : quote.quoteId}, 'email') }}
+{%- endblock -%}
+
+{%- block header -%}
+    {{ email.view_online_link(quotePath) }}
+{%- endblock -%}
+
+{%- block head_extra -%}
+    <script type="application/ld+json">
+        [
+            {
+                "@context": "https://schema.org",
+                "@type": "EmailMessage",
+                "description": "View quote",
+                "potentialAction": {
+                    "@type": "ViewAction",
+                    "name": "View quote",
+                    "target": {{ quotePath|json_encode(jsonFlags)|raw }}
+                }
+            }
+        ]
+    </script>
+{%- endblock head_extra -%}
+
+{%- block content -%}
+    {% block intro %}
+        {% apply inky_to_html %}
+            <row>
+                <columns>
+                    <p style="color: #1e293b; font-size: 16px; line-height: 1.5; font-family: {{ headingFont }}; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                        {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                    </p>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endblock %}
+
+    {{ email.spacer('sm') }}
+
+    {{ email.info_row('quote.number'|trans({}, 'email'), quote.quoteId) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|date) }}
+    {% if quote.due %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|date) }}
+    {% endif %}
+
+    {{ email.divider('md') }}
+
+    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.client.currency)) }}
+    {% set _tb = tax_breakdown(quote) %}
+    {% if quote.tax.positive %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.client.currency)) }}
+        {% for row in _tb.lineTaxRows %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.client.currency)) }}
+        {% endfor %}
+        {% for row in _tb.additiveRows %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.client.currency)) }}
+        {% endfor %}
+    {% endif %}
+    {% if quote.discount.type is not empty %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.client.currency)) }}
+    {% endif %}
+
+    {{ email.spacer('sm') }}
+
+    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.client.currency), true) }}
+    {% if quote.withholdingAmount.positive %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.withholding'|trans({}, 'email'), '-' ~ quote.withholdingAmount|formatCurrency(quote.client.currency)) }}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.amount_payable'|trans({}, 'email'), payable_amount(quote)|formatCurrency(quote.client.currency), true) }}
+    {% endif %}
+
+    {% if quote.terms is not empty %}
+        {{ email.divider('md') }}
+        {% apply inky_to_html %}
+            <row>
+                <columns small="12">
+                    <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">{{ 'quote.terms'|trans({}, 'email') }}</p>
+                    <div style="color: #626976; font-size: 14px; line-height: 1.6;">
+                        {{ quote.terms|nl2br }}
+                    </div>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
+    {{ email.divider('lg') }}
+    {{ email.button('quote.view'|trans([], 'email'), quotePath, 'primary', 'large') }}
+
+    {% block signoff %}{% endblock %}
+
+    {{ email.spacer('md') }}
+{%- endblock -%}
+
+{%- block footer -%}
+    {{ email.footer(true, false) }}
+{%- endblock footer -%}

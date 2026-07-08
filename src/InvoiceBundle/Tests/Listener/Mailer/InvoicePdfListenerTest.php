@@ -16,10 +16,16 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoicePdfListener;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\MailerInterface;
@@ -51,7 +57,7 @@ final class InvoicePdfListenerTest extends TestCase
             ->with('<p>Invoice #1</p>')
             ->andReturn('PDF: Invoice #1');
 
-        $listener = new InvoicePdfListener($pdf, $twig);
+        $listener = new InvoicePdfListener($pdf, $twig, $this->createTemplateResolver());
 
         $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
@@ -65,5 +71,23 @@ final class InvoicePdfListenerTest extends TestCase
     public function testEvents(): void
     {
         self::assertSame([MessageEvent::class], \array_keys(InvoicePdfListener::getSubscribedEvents()));
+    }
+
+    /**
+     * A resolver with the SaaS toggle off, which always resolves the built-in
+     * default template.
+     */
+    private function createTemplateResolver(): BillingTemplateResolver
+    {
+        $toggle = M::mock(ToggleInterface::class);
+        $toggle->allows('isActive')->with('saas_enabled')->andReturnFalse();
+
+        return new BillingTemplateResolver(
+            new BillingTemplateRegistry([]),
+            M::mock(SystemConfig::class),
+            M::mock(FeatureGate::class),
+            M::mock(PaidSubscriptionGateInterface::class),
+            $toggle,
+        );
     }
 }

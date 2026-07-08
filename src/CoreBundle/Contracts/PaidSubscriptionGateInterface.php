@@ -25,4 +25,11 @@ use SolidInvoice\CoreBundle\Entity\Company;
 interface PaidSubscriptionGateInterface
 {
     public function isPaid(Company $company): bool;
+
+    /**
+     * Looser than {@see self::isPaid()}: an in-progress trial also counts,
+     * as does a cancelled/expired subscription whose paid term has not yet
+     * elapsed. Self-hosted always returns true.
+     */
+    public function isActive(Company $company): bool;
 }

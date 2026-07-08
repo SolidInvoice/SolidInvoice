@@ -15,8 +15,17 @@
             <table cellpadding="0" cellspacing="0" style="width: 100%;">
                 <tr>
                     <td style="vertical-align: middle; color: #ffffff;">
-                        <div style="font-size: 16pt; font-weight: bold;">{{ company_name() }}</div>
-                        <div style="font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.pdf.title'|trans }} #{{ invoice.invoiceId }}</div>
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                {% if setting('system/company/logo') is not empty %}
+                                    <td style="vertical-align: middle; padding-right: 12px;">{{ app_logo(36) }}</td>
+                                {% endif %}
+                                <td style="vertical-align: middle; color: #ffffff;">
+                                    <div style="font-size: 16pt; font-weight: bold;">{{ company_name() }}</div>
+                                    <div style="font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.pdf.title'|trans }} #{{ invoice.invoiceId }}</div>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td style="vertical-align: middle; text-align: right; color: #ffffff;">
                         <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>

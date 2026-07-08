@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Templates;
 
 use Brick\Math\BigInteger;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -27,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension;
+use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
 use Zenstruck\Foundry\Test\Factories;
@@ -37,25 +39,39 @@ final class TemplatesRenderingTest extends KernelTestCase
     use EnsureApplicationInstalled;
     use Factories;
 
-    private const array SLUGS = [
-        'classic',
-        'modern',
-        'compact',
-        'editorial',
-        'monochrome',
-        'photographer',
-        'studio',
-        'friendly',
-    ];
-
     private const array CHANNELS = ['pdf', 'email', 'preview'];
+
+    /**
+     * Slugs are discovered from the filesystem so a newly added template
+     * directory is covered automatically.
+     *
+     * @return list<string>
+     */
+    private static function slugs(): array
+    {
+        $slugs = [];
+
+        foreach (glob(dirname(__DIR__, 3) . '/Resources/views/Templates/*', GLOB_ONLYDIR) ?: [] as $directory) {
+            $slug = basename($directory);
+
+            if (! str_starts_with($slug, '_')) {
+                $slugs[] = $slug;
+            }
+        }
+
+        sort($slugs);
+
+        self::assertNotEmpty($slugs, 'No invoice design templates found');
+
+        return $slugs;
+    }
 
     /**
      * @return iterable<string, array{string, string}>
      */
     public static function templateProvider(): iterable
     {
-        foreach (self::SLUGS as $slug) {
+        foreach (self::slugs() as $slug) {
             foreach (self::CHANNELS as $channel) {
                 yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
@@ -80,11 +96,11 @@ final class TemplatesRenderingTest extends KernelTestCase
         self::assertStringContainsString((string) $invoice->getClient(), $output);
 
         match ($channel) {
-            // PDF and preview render every line item — assert the description
-            // surfaces so a regression that drops `{% for line in invoice.lines %}`
-            // is caught.
-            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item']),
-            'preview' => self::assertStringContainsString('Sample line item', $output),
+            // PDF and preview render every line item and the company logo —
+            // assert both surface so a regression that drops
+            // `{% for line in invoice.lines %}` or the logo block is caught.
+            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item', 'data:image/png;base64']),
+            'preview' => $this->assertChannelContains($output, ['Sample line item', 'data:image/png;base64']),
             // Email is a summary (totals only, no per-line breakdown), so we
             // verify the schema.org payload + the displayed total instead.
             'email' => $this->assertChannelContains($output, ['schema.org', '$1,500.00']),
@@ -131,13 +147,30 @@ final class TemplatesRenderingTest extends KernelTestCase
      */
     public static function pdfTemplateProvider(): iterable
     {
-        foreach (self::SLUGS as $slug) {
+        foreach (self::slugs() as $slug) {
             yield $slug => [$slug];
         }
     }
 
+    /**
+     * A 1x1 transparent PNG so every template's guarded logo block renders.
+     */
+    private function seedCompanyLogo(): void
+    {
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        self::assertInstanceOf(EntityManagerInterface::class, $em);
+
+        $setting = $em->getRepository(Setting::class)->findOneBy(['key' => 'system/company/logo']);
+        self::assertInstanceOf(Setting::class, $setting, 'system/company/logo setting not seeded');
+
+        $setting->setValue('png|iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==');
+        $em->flush();
+    }
+
     private function createFixtureInvoice(): Invoice
     {
+        $this->seedCompanyLogo();
+
         $client = ClientFactory::createOne([
             'company' => $this->company,
             'name' => 'Acme Corp',

@@ -1,0 +1,69 @@
+{#
+ # Photographer — industry-flavored, terracotta rail, serif headings, cream body.
+ #}
+{% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
+{% set currency = quote.client.currency %}
+
+{% block extra_styles %}
+    body { background-color: #faf3e6; color: #2a2418; }
+{% endblock %}
+
+{% block body_attrs %} style="background-color: #faf3e6;"{% endblock %}
+
+{% block body %}
+<table cellpadding="0" cellspacing="0" style="width: 100%; min-height: 240mm;">
+    <tr>
+        <td style="background-color: #a2492b; width: 14mm; vertical-align: top;">
+            <div style="padding: 20mm 0; color: #faf3e6; font-family: Georgia, serif; font-size: 9pt; letter-spacing: 4px; text-align: center;">
+                {{ 'quote.pdf.title'|trans|upper }}
+            </div>
+        </td>
+        <td style="padding: 12mm 16mm; vertical-align: top;">
+            {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
+            <div style="font-family: Georgia, serif; font-size: 28pt; color: #2a2418; line-height: 1.0; margin-bottom: 4px;">{{ company_name() }}</div>
+            <div style="font-size: 9pt; color: #7a6a4a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">{{ 'invoice.template.photographer.subtitle'|trans }}</div>
+
+            <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+                <tr>
+                    <td style="vertical-align: top;">
+                        <div style="font-family: Georgia, serif; font-size: 18pt; color: #a2492b;">{{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}</div>
+                    </td>
+                    <td style="vertical-align: top; text-align: right;">
+                        {{ q.meta_pair('quote.pdf.date'|trans, quote.created|date('F j, Y')) }}
+                        {% if quote.due %}
+                            {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
+                            {{ q.validity_indicator(quote) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+                <tr>
+                    <td style="width: 50%; vertical-align: top;">{{ q.bill_to_block(quote, 'invoice.template.photographer.client_label') }}</td>
+                    <td style="width: 50%; vertical-align: top;">{{ q.from_block('invoice.template.photographer.studio_label') }}</td>
+                </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                {% for line in quote.lines %}
+                    <tr>
+                        <td style="padding: 12px 0; font-size: 10pt; color: #2a2418; border-bottom: 1px solid #e8d7b8; vertical-align: top;">
+                            <div style="font-family: Georgia, serif; font-size: 11pt;">{{ line.description|nl2br }}</div>
+                            <div style="font-size: 8pt; color: #7a6a4a; margin-top: 2px;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+                        </td>
+                        <td style="padding: 12px 0; font-size: 12pt; color: #a2492b; border-bottom: 1px solid #e8d7b8; text-align: right; font-family: Georgia, serif; font-weight: bold; width: 28%;">
+                            {{ line.total|formatCurrency(currency) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {{ q.totals_block(quote, currency, {totalBg: '#a2492b', totalColor: '#faf3e6', totalLabelColor: '#faf3e6', mono: 'Georgia, serif', discountColor: '#a2492b'}) }}
+            {{ q.terms_block(quote, {labelColor: '#a2492b', borderColor: '#e8d7b8'}) }}
+        </td>
+    </tr>
+</table>
+{% endblock %}

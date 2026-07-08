@@ -238,3 +238,99 @@
         }
     }
 }
+
+// ============================================================================
+// Design template picker (Settings > Design)
+//
+// Self-contained: does not rely on Tabler's form-imagecheck component. The
+// radio is visually hidden and toggled through its wrapping <label>; the
+// selected state shows as a primary border on the card plus a check badge.
+// ============================================================================
+
+.template-picker {
+    .template-picker-card {
+        overflow: hidden;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+        &:has(.template-picker-input:checked) {
+            border-color: var(--tblr-primary, #206bc4);
+            box-shadow: 0 0 0 2px rgba(var(--tblr-primary-rgb, 32, 107, 196), 0.25);
+        }
+
+        &:has(.template-picker-input:focus-visible) {
+            box-shadow: 0 0 0 3px rgba(var(--tblr-primary-rgb, 32, 107, 196), 0.5);
+        }
+    }
+
+    .template-picker-option {
+        display: block;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    // Visually hidden, but still form-submittable and focusable; clicks on
+    // the label (thumbnail) toggle it natively.
+    .template-picker-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .template-picker-thumb {
+        display: block;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: var(--tblr-bg-surface-secondary, #f1f5f9);
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 400%;
+            height: 400%;
+            border: 0;
+            transform: scale(0.25);
+            transform-origin: 0 0;
+            // The iframe must never swallow clicks meant for the label.
+            pointer-events: none;
+        }
+    }
+
+    // Check badge in the thumbnail corner, only while selected.
+    .template-picker-check {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background: var(--tblr-primary, #206bc4);
+        color: #fff;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+    }
+
+    .template-picker-option:has(.template-picker-input:checked) .template-picker-check {
+        display: flex;
+    }
+
+    &.template-picker-disabled {
+        .template-picker-option {
+            cursor: not-allowed;
+        }
+
+        .template-picker-thumb {
+            opacity: 0.6;
+        }
+    }
+}

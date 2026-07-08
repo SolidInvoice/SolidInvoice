@@ -1,0 +1,70 @@
+{# Studio / Agency preview #}
+{% set currency = quote.client.currency %}
+
+<div class="quote-template quote-template-studio">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between mb-4">
+                <div>{% if app_logo() is not empty %}{{ app_logo(40) }}{% endif %}</div>
+                <div class="text-end">
+                    <div class="text-muted small text-uppercase" style="letter-spacing: 2px;">{{ 'quote.pdf.title'|trans }}</div>
+                    <div class="fs-5 fw-bold">#{{ quote.quoteId }}</div>
+                </div>
+            </div>
+
+            <div class="p-4 mb-4 rounded" style="background: #f8fafc; border-left: 4px solid #2e963a;">
+                <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'invoice.template.studio.project_label'|trans }}</div>
+                <div class="display-6 fw-bold text-dark mb-0">{{ quote.client }} {{ 'invoice.template.studio.engagement'|trans }}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'invoice.template.studio.studio'|trans }}</div>
+                    <strong>{{ company_name() }}</strong>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'invoice.template.studio.client'|trans }}</div>
+                    <strong>{{ quote.client }}</strong>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'quote.pdf.date'|trans }}</div>
+                    <div>{{ quote.created|date('M j, Y') }}</div>
+                    {% if quote.due %}
+                        <div class="text-muted small text-uppercase mb-1 mt-2">{{ 'quote.pdf.valid_until'|trans }}</div>
+                        <div>{{ quote.due|date('M j, Y') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <table class="table">
+                <thead style="background: #0f172a; color: #ffffff;">
+                    <tr>
+                        <th class="text-uppercase small">{{ 'invoice.template.studio.deliverable'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.qty'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.price'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'quote.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in quote.lines %}
+                        <tr>
+                            <td>{{ line.description|nl2br }}</td>
+                            <td class="text-end">{{ line.qty }}</td>
+                            <td class="text-end">{{ line.price|formatCurrency(currency) }}</td>
+                            <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="p-4 rounded mt-4" style="background: linear-gradient(135deg, #2e963a 0%, #166534 100%); color: #ffffff;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small text-uppercase" style="letter-spacing: 2px; opacity: 0.85;">{{ 'quote.pdf.total'|trans }}</div>
+                        <div class="display-5 fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

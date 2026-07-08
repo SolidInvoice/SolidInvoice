@@ -15,8 +15,11 @@ namespace SolidInvoice\SaasBundle\Tests\Config;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
+use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\SaasBundle\Config\ConfigProvider;
 use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SaasBundle\Form\Type\InvoiceTemplateType;
 use SolidInvoice\SettingsBundle\DTO\Config;
 
 #[CoversClass(ConfigProvider::class)]
@@ -68,6 +71,32 @@ final class ConfigProviderTest extends TestCase
 
         self::assertNotNull($customDomain);
         self::assertTrue($customDomain->formOptions['trial_restricted'] ?? false);
+    }
+
+    public function testDesignTemplateIsRegistered(): void
+    {
+        $configs = new ConfigProvider()->provide([]);
+
+        $template = $this->findConfigByKey($configs, BillingTemplateResolver::TEMPLATE_SETTING_KEY);
+
+        self::assertNotNull($template, 'design/template config not registered');
+        self::assertSame(BillingTemplateRegistry::DEFAULT_SLUG, $template->value);
+        self::assertSame(InvoiceTemplateType::class, $template->formType);
+    }
+
+    public function testDesignTemplateIsGatedByCustomTemplatesFeature(): void
+    {
+        $configs = new ConfigProvider()->provide([]);
+
+        $template = $this->findConfigByKey($configs, BillingTemplateResolver::TEMPLATE_SETTING_KEY);
+
+        self::assertNotNull($template);
+        self::assertSame(Feature::CustomTemplates->value, $template->formOptions['feature_gated'] ?? null);
+        self::assertArrayNotHasKey(
+            'trial_restricted',
+            $template->formOptions,
+            'Trial users should be able to try custom templates; the render-time subscription gate handles expiry.',
+        );
     }
 
     /**

@@ -53,6 +53,9 @@
                 </div>
 
                 {# Main Quote Card #}
+                {% if documentTemplate|default(null) is not empty %}
+                    {% include documentTemplate %}
+                {% else %}
                 <div class="card card-lg">
                     <div class="card-body">
                         {# Header with Logo and Quote Info #}
@@ -252,6 +255,7 @@
                         {% endif %}
                     </div>
                 </div>
+                {% endif %}
 
                 {% if setting('system/general/hide_powered_by') is not same as('1') %}
                     {# Footer #}
