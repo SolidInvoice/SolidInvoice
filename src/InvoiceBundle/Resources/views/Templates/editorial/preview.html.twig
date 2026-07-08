@@ -8,7 +8,7 @@
         <div class="card-body p-5">
             <div class="d-flex justify-content-between align-items-end pb-3 mb-4 border-bottom border-dark">
                 <div>
-                    {% if app_logo() is not empty %}<div class="mb-2">{{ app_logo(48) }}</div>{% endif %}
+                    {% if setting('system/company/logo') is not empty %}<div class="mb-2">{{ app_logo(48) }}</div>{% endif %}
                     <div class="text-uppercase mb-1" style="color: #94704a; letter-spacing: 4px; font-size: 12px;">{{ 'invoice.template.editorial.heading'|trans }}</div>
                     <div style="font-size: 56px; font-style: italic; line-height: 1;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
                 </div>

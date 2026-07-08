@@ -10,7 +10,7 @@
                 <div class="flex-grow-1 p-3 text-white" style="background: #0f172a;">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            {% if app_logo() is not empty %}<div class="me-2">{{ app_logo(36) }}</div>{% endif %}
+                            {% if setting('system/company/logo') is not empty %}<div class="me-2">{{ app_logo(36) }}</div>{% endif %}
                             <div>
                                 <div class="fs-5 fw-bold mb-0">{{ company_name() }}</div>
                                 <div class="text-secondary small" style="letter-spacing: 1px;">{{ 'invoice.template.compact.label'|trans }} #{{ invoice.invoiceId }}</div>

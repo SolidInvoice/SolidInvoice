@@ -7,7 +7,7 @@
         <div class="card-body p-4">
             <div class="row border-bottom border-dark pb-3 mb-4">
                 <div class="col-6">
-                    {% if app_logo() is not empty %}<div class="mb-2">{{ app_logo(48) }}</div>{% endif %}
+                    {% if setting('system/company/logo') is not empty %}<div class="mb-2">{{ app_logo(48) }}</div>{% endif %}
                     <h2 class="mb-0">{{ company_name() }}</h2>
                 </div>
                 <div class="col-6 text-end">

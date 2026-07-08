@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-between text-uppercase mb-4" style="font-size: 11px; letter-spacing: 4px;">
                 <div>{{ 'quote.pdf.title'|trans }}</div>
                 <div class="text-end">
-                    {% if app_logo() is not empty %}<div class="mb-2">{{ app_logo(40) }}</div>{% endif %}
+                    {% if setting('system/company/logo') is not empty %}<div class="mb-2">{{ app_logo(40) }}</div>{% endif %}
                     <div>{{ company_name() }}</div>
                 </div>
             </div>
