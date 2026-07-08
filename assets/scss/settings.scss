@@ -241,13 +241,13 @@
 
 // ============================================================================
 // Design template picker (Settings > Design)
-//
 // Self-contained: does not rely on Tabler's form-imagecheck component. The
 // radio is visually hidden and toggled through its wrapping <label>; the
 // selected state shows as a primary border on the card plus a check badge.
 // ============================================================================
 
 .template-picker {
+
     .template-picker-card {
         overflow: hidden;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -271,6 +271,7 @@
 
     // Visually hidden, but still form-submittable and focusable; clicks on
     // the label (thumbnail) toggle it natively.
+
     .template-picker-input {
         position: absolute;
         width: 1px;
@@ -299,12 +300,14 @@
             border: 0;
             transform: scale(0.25);
             transform-origin: 0 0;
+
             // The iframe must never swallow clicks meant for the label.
             pointer-events: none;
         }
     }
 
     // Check badge in the thumbnail corner, only while selected.
+
     .template-picker-check {
         position: absolute;
         top: 0.5rem;
@@ -316,8 +319,8 @@
         height: 1.75rem;
         border-radius: 50%;
         background: var(--tblr-primary, #206bc4);
-        color: #fff;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+        color: #ffffff;
+        box-shadow: 0 1px 3px rgb(15 23 42 / 25%);
     }
 
     .template-picker-option:has(.template-picker-input:checked) .template-picker-check {
@@ -325,6 +328,7 @@
     }
 
     &.template-picker-disabled {
+
         .template-picker-option {
             cursor: not-allowed;
         }
