@@ -199,7 +199,7 @@ class InstallCommand extends Command
 
             // execute() returns a Generator; it must be iterated for the step body to run.
             foreach ($step->execute(new Installation(), $progress) as $content) {
-                $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE & OutputInterface::OUTPUT_RAW);
+                $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE | OutputInterface::OUTPUT_RAW);
             }
         }
 
