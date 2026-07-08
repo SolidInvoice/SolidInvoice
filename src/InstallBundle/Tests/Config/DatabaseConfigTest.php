@@ -207,6 +207,25 @@ final class DatabaseConfigTest extends TestCase
             ],
             'mysql://user:password@localhost:3306/test_db?serverVersion=',
         ];
+        yield 'reserved_characters_in_credentials' => [
+            [
+                'driver' => 'mysql',
+                'user' => 'user',
+                'password' => 'p@ss:word/with#reserved?chars',
+                'host' => 'localhost',
+                'port' => 3306,
+                'name' => 'test_db',
+                'version' => '5.7',
+            ],
+            'mysql://user:p%40ss%3Aword%2Fwith%23reserved%3Fchars@localhost:3306/test_db?serverVersion=5.7',
+        ];
+        yield 'sqlite_with_reserved_characters_in_path' => [
+            [
+                'driver' => 'sqlite',
+                'name' => '/tmp/my db #1.sqlite',
+            ],
+            'sqlite:////tmp/my%20db%20%231.sqlite',
+        ];
         yield 'no_driver' => [
             [
                 'driver' => '',

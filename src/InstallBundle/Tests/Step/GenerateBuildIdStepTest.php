@@ -89,7 +89,8 @@ final class GenerateBuildIdStepTest extends TestCase
         iterator_to_array($step->execute(new Installation(), $callback));
 
         self::assertCount(1, $callbackMessages);
-        self::assertSame('Build ID generated', $callbackMessages[0]);
+        self::assertMatchesRegularExpression('/^Build ID generated: (.+)$/', $callbackMessages[0]);
+        self::assertTrue(Uuid::isValid(substr($callbackMessages[0], strlen('Build ID generated: '))));
     }
 
     public function testExecuteWithoutCallback(): void
