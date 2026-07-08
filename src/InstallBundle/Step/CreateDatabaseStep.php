@@ -69,7 +69,9 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
             }
         }
 
-        yield from $callback(sprintf('Database "%s" created', $dbName));
+        if ($callback !== null) {
+            yield from $callback(sprintf('Database "%s" created', $dbName));
+        }
     }
 
     public static function getLabel(): string
