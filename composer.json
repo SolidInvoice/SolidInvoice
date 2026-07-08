@@ -39,6 +39,7 @@
         "doctrine/migrations": "^3.9",
         "doctrine/orm": "^3.6",
         "doctrine/persistence": "^4.0",
+        "doctrine/sql-formatter": "^1.5",
         "dragonmantank/cron-expression": "^3.6",
         "egulias/email-validator": "^4.0",
         "fakerphp/faker": "^1.24",
