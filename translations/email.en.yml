@@ -1,0 +1,322 @@
+client:
+    create:
+        contacts:
+            heading: Contacts
+            name: Name
+        details:
+            email: Email
+            id: ID
+            name: 'Client Name'
+            vat_number: 'VAT Number'
+            website: Website
+        heading: 'A new client has been created.'
+        message: 'A new client has been added.'
+        subject: 'A new client has been created'
+        view_client: 'View Client'
+email:
+    confirmation:
+        alternative: "If the button above doesn't work, copy and paste this link into your browser:"
+        button: 'Confirm Email Address'
+        message: 'Please confirm your email address by clicking the button below. This helps us ensure the security of your account.'
+        security: "If you didn't create an account, you can safely ignore this email."
+        title: 'Please confirm your email address'
+invitation:
+    accept: 'Accept Invitation'
+    alternative: "If the button above doesn't work, copy and paste this link into your browser:"
+    company: Company
+    email: 'Your Email'
+    info: "If you weren't expecting this invitation, you can safely ignore this email."
+    instructions: 'Click the button below to set your password and join the team.'
+    message: 'You have been invited to join %company% on SolidInvoice.'
+    reminder:
+        expires: Expires
+        info: 'If you no longer wish to join, you can safely ignore this email and the invitation will expire automatically.'
+        instructions: 'Click the button below to accept your invitation before it expires.'
+        message: 'Your invitation to join %company% on SolidInvoice will expire in 2 days.'
+        title: 'Your invitation to join %company% is about to expire'
+    title: 'Invitation to join %company%'
+invoice:
+    amount_payable: 'Amount payable'
+    balance: 'Balance Due'
+    created: Created
+    discount: Discount
+    due: 'Due Date'
+    info: 'You have received an invoice from %company% generated on %created%'
+    line_tax: 'Line taxes'
+    notification_overdue:
+        alert: 'Invoice Marked as Overdue'
+        client: Client
+        due_date: 'Due Date'
+        heading: 'Invoice Overdue Alert'
+        invoice_number: 'Invoice Number'
+        message: 'An invoice has been automatically marked as overdue because the due date has passed without full payment.'
+        outstanding_balance: 'Outstanding Balance'
+        status: Status
+        view_invoice: 'View Invoice Details'
+    number: 'Invoice #'
+    overdue:
+        action_required: 'Please take action to settle this invoice at your earliest convenience.'
+        alert: 'Invoice Payment Overdue'
+        amount_due: 'Total Amount'
+        contact_info: 'If you have any questions or believe this notice was sent in error, please contact us immediately.'
+        due_date: 'Original Due Date'
+        heading: 'Payment Overdue Notice'
+        invoice_number: 'Invoice Number'
+        message: 'This invoice is now overdue. Please arrange payment as soon as possible to avoid any late fees or service interruptions.'
+        outstanding_balance: 'Outstanding Balance'
+        view_and_pay: 'View Invoice & Make Payment'
+    pay_now: 'Pay Now'
+    payment_method: 'Payment (%method%)'
+    status:
+        subject: 'Invoice Status Change'
+    status_change:
+        client: Client
+        heading: 'An Invoice status has changed'
+        id: Invoice
+        message: 'An invoice status has been updated.'
+        new_status: 'New Status'
+        old_status: 'Original Status'
+        status: Status
+        view_invoice: 'View Invoice'
+    subtotal: Subtotal
+    tax: Tax
+    terms: 'Terms & Conditions'
+    title: 'Invoice %id%'
+    total: Total
+    view:
+        online: 'View this online at %url%'
+    withholding: Withholding
+notification:
+    preferences: 'Notification Preferences'
+    settings:
+        info: 'You can update your notification settings'
+        link: here
+onboarding:
+    add_first_client:
+        cta: 'Add your first client'
+        eyebrow: 'Step 1 · Your first client'
+        heading: "No client, no invoice. Let's fix that."
+        lede: 'Your client list is where everything starts. Add one client and you can immediately create quotes, invoices, and track every payment they owe — all in one place.'
+        mock:
+            client1:
+                name: 'Northbeam Design Studio'
+                sub: 'hello@northbeam.co · 3 invoices'
+            client2:
+                name: 'Maple & Knox LLC'
+                sub: 'billing@mapleknox.com · 1 invoice'
+            empty:
+                name: 'Your next client appears here'
+                sub: 'name, email, and billing address'
+            header: 'Your clients'
+            url: solidinvoice.app/clients
+        needs:
+            1: 'Client name or company name'
+            2: 'An email address for invoices'
+            3: 'Billing currency'
+        needs_heading: "What you'll need"
+        needs_intro: 'Three fields to get started. You can fill in the rest later.'
+        subject: 'Add your first client — 60 seconds to get started'
+    customize_logo:
+        after_brand: 'Your Studio'
+        after_label: After
+        before_label: Before
+        cta: 'Brand your invoices'
+        eyebrow: 'Step 5 · Make it yours'
+        heading: 'Your logo. Your brand. Your invoices.'
+        lede: 'Clients judge professionalism before they read a single line item. A branded invoice — your logo, your name — signals that you run a real business.'
+        ps: 'on the paid plan, you can disable SolidInvoice branding in Settings — your clients will see only your name.'
+        step:
+            1:
+                desc: 'PNG, SVG, or JPG. Appears on every invoice and quote you send.'
+                title: 'Upload your logo'
+            2:
+                desc: 'Customize the name clients see when your invoices land in their inbox.'
+                title: 'Set your sender name'
+        steps_heading: 'Two things to customize'
+        subject: 'Put your brand on your invoices'
+    footer:
+        reason: "You're receiving this because you signed up for SolidInvoice."
+        tagline: 'Invoicing for freelancers and small businesses.'
+    recurring_billing:
+        after:
+            1: 'Automatic invoices sent on your schedule'
+            2: 'Dashboard shows every outstanding amount'
+            3: 'Reminders sent automatically on your behalf'
+        after_heading: 'With SolidInvoice'
+        before:
+            1: 'Manual invoicing every billing cycle'
+            2: 'Tracking who owes what in a spreadsheet'
+            3: 'Chasing late payments yourself'
+        before_heading: 'Without recurring billing'
+        compare_heading: 'Stop doing this manually'
+        cta: 'Set up recurring billing'
+        eyebrow: 'Step 4 · Recurring billing'
+        heading: 'Your best clients pay you every month. Automate it.'
+        how:
+            1: 'Create an invoice and mark it as recurring — set the frequency and start date.'
+            2: 'SolidInvoice sends it automatically on schedule. Your client receives it and pays it.'
+            3: 'Enable reminders and overdue invoices get followed up automatically — no chasing required.'
+        how_heading: 'How it works'
+        lede: 'Create an invoice once and SolidInvoice sends it automatically on your schedule. Set up payment reminders and overdue invoices get followed up — without you lifting a finger.'
+        ps: "even one recurring client makes this worth doing — you'll save hours every month."
+        subject: 'Set up once, get paid every month'
+    send_first_invoice:
+        cta: 'Create your first invoice'
+        eyebrow: 'Step 2 · Your first invoice'
+        heading: 'Time to send your first invoice.'
+        included_body: "Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a 'Pay now' button too."
+        included_heading: 'Included on every invoice, nothing extra to configure'
+        lede: 'Sending a professional invoice takes under five minutes. Pick your client, add line items, set a due date — SolidInvoice handles the formatting, delivery, and tracking.'
+        mock:
+            billed_to: 'Billed to'
+            client_email: hello@northbeam.co
+            client_name: 'Northbeam Design Studio'
+            col_amount: Amount
+            col_desc: Description
+            col_qty: Qty
+            col_rate: Rate
+            due: Due
+            due_date: 'May 8, 2026'
+            due_terms: 'Net 14 days'
+            item1: 'Brand identity · discovery'
+            item2: 'Logo design & revisions'
+            label: Invoice
+            status_sent: Sent
+            total_due: 'Total due'
+        ps: "tip: connect a payment method before sending and your client will see a 'Pay now' button. Online invoices get paid much faster."
+        subject: 'Your first invoice is one click away'
+    signature:
+        greeting: 'See you inside,'
+        team: '— The SolidInvoice team'
+    trial_about_to_end:
+        body_intro: 'Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden.'
+        cta:
+            upgrade: 'Subscribe and keep going'
+        days_label: 'Days remaining'
+        eyebrow: 'Heads up · Trial ending'
+        fine_print: 'Questions about billing or what to expect? Reply to this email — we read every one.'
+        heading: 'Your trial ends tomorrow.|Your trial ends in %days% days.'
+        if_not:
+            1: "Your account locks — you won't be able to log in or access any data."
+            2: "Pending invoices won't be delivered. Recurring billing pauses."
+            3: 'Clients can still pay existing invoices via their direct payment links.'
+            4: 'Reactivate any time — everything restores immediately on subscription.'
+        if_not_heading: 'What happens when your trial ends'
+        lede: "When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe."
+        ps: 'use code <b>%coupon_code%</b> at checkout for 30% off your first three months. Offer expires when your trial does.'
+        subject: 'Your trial ends tomorrow|Your trial ends in %days% days'
+        trial_ends: 'Trial ends <b style="color: #475569;">%date%</b>'
+        usage:
+            clients: 'Clients added'
+            collected: Collected
+            invoices: 'Invoices sent'
+        usage_heading: 'Your workspace so far'
+    turn_invoices_into_payments:
+        callout:
+            sub: 'When paying is easy, clients pay. Make it easy.'
+            title: 'Invoices with an online payment option get paid significantly faster than bank-transfer-only invoices'
+        cta: 'Connect a payment method'
+        eyebrow: 'Step 3 · Online payments'
+        heading: "Invoices don't pay themselves."
+        how:
+            1: 'Go to Settings → Payment methods and connect Stripe or PayPal (30 seconds).'
+            2: "Every invoice you send automatically includes a 'Pay now' button."
+            3: 'Your client pays. You''re notified immediately. Invoice status flips to <b style="color: #2e963a;">Paid</b>.'
+        how_heading: 'How it works'
+        lede: "Connect Stripe or PayPal once and every invoice you send gets a 'Pay now' button. Your client pays from any device in seconds — you're notified the moment it goes through."
+        method:
+            bank: Bank
+            cards: Cards
+            eu_bank: 'EU bank'
+            wallet: Wallet
+        ps: 'SolidInvoice adds zero fees on top of your payment provider. You pay only what Stripe or PayPal charge.'
+        subject: 'Let your clients pay with one click'
+    upgrade_offer:
+        coupon_desc: '30% off your first three months. Enter this code at checkout.'
+        coupon_heading: 'Your discount code'
+        cta: 'Subscribe now'
+        eyebrow: 'Last chance'
+        feature:
+            1: 'Unlimited clients and invoices'
+            2: 'Recurring billing on any schedule'
+            3: 'Automatic payment reminders'
+            4: 'Online payments via your own Stripe or PayPal account'
+            5: 'Multiple team members on one account'
+            6: 'Backups, updates, and SolidInvoice branding removed from your invoices'
+        fine_print: 'Cancel anytime. No surprise fees. Your data restores immediately on subscription.'
+        heading: 'One last thing before your trial closes.'
+        lede: "When your trial ends, your account locks. Before that happens — here's an offer to make subscribing an easy decision."
+        per: '/ month'
+        ps: 'your account locks when the trial ends. Subscribe before that happens to keep sending without interruption.'
+        subject: 'Your special offer expires with your trial'
+    welcome:
+        closing: 'Start with the first step: add a client. Everything else builds from there.'
+        cta: 'Open your dashboard'
+        eyebrow: 'Your trial just started'
+        feature:
+            clients:
+                desc: 'The foundation. Name, email, currency — takes sixty seconds.'
+                title: 'Add your first client'
+            dashboard:
+                desc: 'Set up recurring billing and automatic reminders. Get paid every month without lifting a finger.'
+                title: 'Automate recurring work'
+            invoices:
+                desc: 'Line items, taxes, discounts, and a due date — all built in.'
+                title: 'Send a professional invoice'
+            payments:
+                desc: "Stripe or PayPal — clients pay in two clicks, you're notified instantly."
+                title: 'Connect online payments'
+        heading: 'Good to have you, %name%.'
+        intro: "Here's what we'll cover together:"
+        lede: "Your trial is live. Over the next few emails we'll walk you through getting your first invoice paid — step by step, starting now."
+        ps: 'questions? Hit reply — a real person answers.'
+        subject: "Welcome to SolidInvoice — let's get you paid"
+payment:
+    capture:
+        subject: 'A Payment has been made'
+    description: 'A new payment has been made'
+    details:
+        amount: Amount
+        client: Client
+        currency: Currency
+        date: Date
+        invoice: Invoice
+        method: 'Payment Method'
+        status: Status
+    notification:
+        message: 'A payment has been received.'
+    view_invoice: 'View Invoice'
+powered_by: 'Powered by'
+quote:
+    amount_payable: 'Amount payable'
+    created: Created
+    discount: Discount
+    expires: Expires
+    info: 'You have received a quote from %company% generated on %created%'
+    number: 'Quote #'
+    status:
+        subject: 'Quote Status Change'
+    status_change:
+        client: Client
+        heading: 'A Quote status has changed'
+        id: Quote
+        message: 'A quote status has been updated.'
+        new_status: 'New Status'
+        old_status: 'Original Status'
+        status: Status
+        view_quote: 'View Quote'
+    subtotal: Subtotal
+    tax: Tax
+    terms: 'Terms & Conditions'
+    title: 'Quote %id%'
+    total: Total
+    view: 'View Quote'
+    withholding: Withholding
+reset_password:
+    alternative: "If the button above doesn't work, copy and paste this link into your browser:"
+    button_text: 'Reset Password'
+    expires: 'This link will expire in %resetTimestamp%.'
+    message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
+    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
+    security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
+    subject: 'Reset your password for %username%'

@@ -1,0 +1,2431 @@
+action:
+    add: Add
+    back: 'Go back'
+    cancel: Cancel
+    close: Close
+    confirm: Confirm
+    create: Create
+    delete: Delete
+    edit: Edit
+    save: Save
+    submit: Submit
+    update: Update
+active_clients: 'Active Clients'
+add_client: 'Add Client'
+add_info: 'Add Info'
+address: Address
+all_clients: 'All Clients'
+billing:
+    discount: Discount
+    due_date: 'Due Date'
+    notes_help: 'Notes will not be visible to the client'
+    subtotal: SubTotal
+    tax: Tax
+    total: Total
+    withholding: 'Withholding & adjustments'
+change: Change
+change_password:
+    form:
+        confirm_password: 'Confirm New Password'
+        current_password: 'Current Password'
+        new_password: 'New Password'
+        repeat_password: 'Repeat Password'
+    requirements:
+        breach: 'Avoid passwords that have been compromised in data breaches'
+        length: 'At least 8 characters long'
+        mix: 'Use a mix of letters, numbers, and symbols for better security'
+        title: 'Password Requirements'
+    section:
+        description: 'Enter your current password and choose a new one'
+        title: 'Update Your Password'
+    submit: Save
+    subtitle: 'Update your password to keep your account secure'
+client:
+    address:
+        add: 'Add Address'
+        city: City
+        country:
+            label: Country
+            select: 'Select Country'
+        delete: 'Delete Address'
+        delete_confirm: 'Are you sure you want to delete this address?'
+        delete_confirm_inline: 'Are you sure you want to delete the address?'
+        edit: 'Edit Address'
+        empty_hint: 'No addresses added yet. Click the button below to add one.'
+        info: 'Address Info'
+        label: Address
+        state: State
+        street1: 'Street 1'
+        street2: 'Street 2'
+        view_map: 'View Map'
+        zip: Zip
+    addresses:
+        empty:
+            description: "Add an address for this client's billing or shipping needs."
+            title: 'No addresses yet'
+    archive:
+        success: 'Client Successfully Archived'
+    cancel: Cancel
+    confirm_delete: 'Are you sure you want to delete this client?'
+    contact:
+        add: 'Add Contact'
+        at_least_1: 'This client needs to have at least 1 contact'
+        delete: 'Delete Contact'
+        delete_confirm: 'Are you sure you want to delete this contact?'
+        delete_confirm_inline: 'Are you sure you want to delete the contact?'
+        details:
+            choose: Choose
+            email: Email
+            extra: 'Additional Contact Details'
+        email:
+            label: Email
+        empty_hint: 'Click the button below to add your first contact'
+        firstName:
+            label: 'First name'
+            placeholder: John
+        info: 'Contact Info'
+        label: Contact
+        lastName:
+            label: 'Last name'
+            placeholder: Doe
+    contacts:
+        empty:
+            description: 'Add contacts to send invoices and quotes to this client.'
+            title: 'No contacts yet'
+        info:
+            list: 'Select contacts to send %type% to'
+    create:
+        success: 'Client Successfully Saved!'
+    custom_fields: 'Custom fields'
+    delete:
+        confirm:
+            message: 'This will permanently delete this client and all associated data including invoices, quotes, and payments. This action cannot be undone.'
+            title: 'Delete %name%?'
+    delete_success: 'The client was deleted successfully'
+    form:
+        address_description: 'Add billing or shipping addresses for this client'
+        contact_description: 'Add at least one contact person for this client'
+        currency:
+            empty_value: 'System Default'
+        currency_code:
+            label: 'Currency code'
+        feature_gated:
+            generic: 'This feature requires a higher plan. Upgrade now to unlock it.'
+            upgrade: 'Upgrade Now'
+            with_plan: 'This feature is available on the %plan% plan. Upgrade to unlock it.'
+        info_description: "Basic information about your client's business"
+        name:
+            label: Name
+            placeholder: 'Acme Corporation'
+        subtitle: 'Add a new client to start creating invoices and quotes'
+        tax_identifiers_description: "The client's tax registration numbers (VAT, GSTIN, TIN, ABN, etc.). These appear on invoices and quotes issued to this client."
+        website:
+            label: Website
+    grid:
+        actions:
+            delete: Delete
+            edit: Edit
+            view: View
+        create: 'Create Client'
+        currency: Currency
+        outstanding_balance: 'Outstanding Balance'
+        total_balance: 'Total Balance'
+    heading:
+        addresses: Addresses
+        contacts: Contacts
+        payments: Payments
+    info: 'Client Info'
+    invoices:
+        empty:
+            description: "Create an invoice when you're ready to bill this client."
+            title: 'No invoices yet'
+    menu:
+        add: 'Add Client'
+        create:
+            invoice: 'Create Invoice'
+            quote: 'Create Quote'
+        list: 'List Clients'
+        main: Clients
+        view: 'View Client'
+    modal:
+        action:
+            close: Close
+            save: Save
+        add_contact: 'Add Contact'
+        add_credit: 'Add Credit'
+        credit:
+            amount: Amount
+            tip: "<strong>Tip:</strong> To subtract an amount, add a '-' before the amount, E.G <code>%amount%</code>"
+        edit_address: 'Edit Address'
+        edit_contact: 'Edit Contact'
+    name: 'Client Name'
+    quotes:
+        empty:
+            description: 'Create a quote to propose pricing to this client.'
+            title: 'No quotes yet'
+    restore:
+        success: 'Client Successfully Restored'
+    save: 'Save Client'
+    stats:
+        active_clients: 'Active Clients'
+        archived_clients: 'Archived Clients'
+        credit: 'Credit Balance'
+        income: 'Total Income'
+        invoices: Invoices
+        number_invoices: '{0} Invoices|{1} Invoice|]1,Inf] Invoices'
+        number_quotes: '{0} Quotes|{1} Quote|]1,Inf] Quotes'
+        outstanding: Outstanding
+        outstanding_balance: 'Outstanding Balance'
+        outstanding_invoices: 'Outstanding Invoices'
+        paid_invoices: 'Paid Invoices'
+        quotes: Quotes
+        tooltip:
+            total_invoices: 'Total invoices for this client'
+            total_outstanding: 'Total number of outstanding invoices for this client'
+            total_paid: 'Total number of paid invoices for this client'
+            total_quotes: 'Total quotes for this client'
+        total_contacts: 'Total Contacts'
+    tabs:
+        active: Active
+        archived: Archived
+    tax_identifiers:
+        add: 'Add tax identifier'
+        empty_hint: 'No tax identifiers added yet. Add one if this client has a VAT, GST or other registered tax number.'
+        info: 'Tax Identifiers'
+        remove: 'Remove tax identifier'
+    view:
+        actions:
+            add_contact: 'Add Contact'
+            add_credit: 'Add Credit'
+            create_invoice: 'Create Invoice'
+            create_quote: 'Create Quote'
+            delete: Delete
+            edit: Edit
+        currency: 'Currency:'
+        more_actions: 'More actions'
+        tabs:
+            info: Info
+            invoices: Invoices
+            payments: Payments
+            quotes: Quotes
+client_create: 'Create Client'
+clients: Clients
+close: Close
+company:
+    create:
+        back: Back
+        cancel_anytime: 'Cancel anytime'
+        checkout_after_create: "After creating this company, you'll choose a plan and proceed to checkout."
+        create_button: 'Create Company'
+        currency_help: 'All invoices and payments will use this currency'
+        month: month
+        name_help: 'This will be displayed on your invoices and quotes'
+        name_placeholder: 'e.g., Acme Corporation'
+        need_help: 'Need assistance?'
+        payment_after_create: 'Creating this company will require payment.'
+        payment_required_title: 'Payment Required'
+        self_hosted_text: 'Create unlimited companies at no additional cost. Your data, your control.'
+        self_hosted_title: 'Self-Hosted Freedom'
+        subtitle: 'Set up your workspace and start managing your business in minutes'
+        then: Then
+        title: 'Create Your Company'
+        trial_title: 'Start Your Free Trial'
+        trial_used: 'You have already used your free trial.'
+        view_docs: 'View Documentation'
+    select:
+        click_to_access: 'Click to access'
+        create_button: 'Create Company'
+        create_new: 'Create New Company'
+        create_new_help: 'Set up another workspace to manage a different business'
+        subtitle: 'Select a company to continue'
+        welcome_back: 'Welcome Back %name%'
+contact:
+    email: Email
+    firstName: 'First Name'
+    lastName: 'Last Name'
+contact_delete: 'Delete Contact'
+contact_delete_success: 'The contact was deleted successfully'
+contact_details: 'Contact Details'
+contact_edit: 'Edit Contact'
+contact_saved: 'The contact was saved successfully'
+create_new: 'Create New'
+create_now: 'Create one now.'
+created: Created
+custom_field:
+    add: 'Add field'
+    badge:
+        client_visible: Client-visible
+        internal: Internal
+    delete_confirm: 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'
+    empty: 'No custom fields yet — click Add field to create one.'
+    flash:
+        created: 'Custom field created.'
+        deleted: 'Custom field deleted.'
+        updated: 'Custom field updated.'
+    form:
+        default_value:
+            help: 'Optional — pre-fills new records. Leave empty for no default.'
+            label: 'Default value'
+            placeholder: 'No default'
+        field_label:
+            label: Label
+        option:
+            add: 'Add option'
+            delete: 'Delete option'
+            hint: '(used for single- and multi-select)'
+            placeholder: 'Option label'
+        required:
+            label: Required
+        target:
+            help: 'Choose where this field should appear.'
+            label: 'Applies to'
+        type:
+            label: Type
+            locked: 'This field has %count% values; type cannot be changed. Delete and recreate to change type.'
+        visibility:
+            help: 'Internal fields appear only on admin views. Client-visible fields also appear on PDF and online views.'
+            label: Visibility
+    reorder:
+        handle: 'Drag to reorder'
+        hint: 'Drag the handle on the left of each row to reorder fields.'
+    tab:
+        client: 'Client fields'
+        contact: 'Contact fields'
+        invoice: 'Invoice fields'
+        quote: 'Quote fields'
+    title: 'Custom fields'
+    values: values
+custom_fields:
+    label: 'Custom fields'
+dashboard:
+    actions:
+        add_client: 'Add Client'
+        create_invoice: 'New Invoice'
+        create_quote: 'New Quote'
+        title: 'Quick Actions'
+        view_payments: Payments
+    active_clients: 'Active Clients'
+    activity:
+        generated_from_recurring: 'generated automatically'
+        invoice_created: 'created for'
+        invoice_sent: 'sent to'
+        label:
+            invoice: Invoice
+            payment: Payment
+            quote: Quote
+            recurring: Recurring
+        no_activity: 'No recent activity'
+        payment_for_invoice: 'received for'
+        payment_received: 'Payment from %client%'
+        quote_accepted: 'accepted by'
+        quote_declined: 'declined by'
+        recurring_generated: 'generated from recurring'
+        sent_to_client: 'sent to client'
+        title: 'Recent Activity'
+        view_all: 'View All'
+        view_invoice: 'View Invoice'
+        view_quote: 'View Quote'
+        was_accepted: 'was accepted'
+        was_created: 'was created'
+        was_declined: 'was declined'
+    attention:
+        draft_invoices: 'Draft Invoices'
+        no_items: 'All caught up! Nothing needs your attention.'
+        overdue_invoices: 'Overdue Invoices'
+        pending_quotes: 'Pending Quotes'
+        title: 'Attention Required'
+        upcoming_recurring: 'Upcoming Recurring'
+    charts:
+        distribution_title: 'Invoice Status'
+        invoices: Invoices
+        no_data: 'No revenue data yet'
+        no_data_hint: 'Payments will appear here once received'
+        no_invoices: 'No invoices yet'
+        revenue_subtitle: 'Last 12 months'
+        revenue_title: 'Revenue Trend'
+    checklist:
+        action_required: 'Action Required'
+        activate_subscription:
+            description: 'Unlock full access and continue using SolidInvoice'
+            name: 'Activate Your Subscription'
+        add_tax_rate:
+            description: 'Configure tax rates for your invoices'
+            name: 'Add a Tax Rate'
+        all_complete_message: "All setup complete! You're ready to go."
+        banner_description: 'Unlock the full power of SolidInvoice by completing these essential setup tasks. Each step helps you maximize efficiency and streamline your invoicing workflow.'
+        banner_title: 'Complete Your Setup'
+        complete: Complete
+        completed: Completed
+        configure_payment_gateway:
+            description: 'Accept online payments from clients'
+            name: 'Configure Payment Gateway'
+        create_client:
+            description: 'Add a client to start invoicing'
+            name: 'Create Your First Client'
+        customize_settings:
+            description: 'Set up your business details and preferences'
+            name: 'Customize Company Settings'
+        dismiss: Dismiss
+        dismiss_confirm: 'Are you sure you want to dismiss this checklist? You can always access these features from the menu.'
+        dismiss_confirm_title: 'Dismiss Setup Checklist?'
+        dismissed_message: 'Onboarding checklist has been dismissed.'
+        items_title: 'Setup Tasks'
+        remaining: Remaining
+        send_invoice:
+            description: 'Create and send an invoice to a client'
+            name: 'Send Your First Invoice'
+        subtitle: '%completed% of %total% tasks complete'
+        success_message: "You're ready to invoice like a pro! Your account is fully configured and you're all set to manage clients, send invoices, and track payments."
+        success_title: '🎉 Setup Complete!'
+        tasks_remaining: '{1} %count% task remaining to unlock full functionality|]1,Inf[ %count% tasks remaining to unlock full functionality'
+        title: 'Get Started with SolidInvoice'
+        upload_logo:
+            description: 'Add your logo to invoices and quotes'
+            name: 'Upload Company Logo'
+        view_checklist: 'View setup checklist'
+        view_progress: 'View onboarding progress'
+        view_tasks: 'View tasks'
+    client:
+        actions:
+            create:
+                invoice: 'Create Invoice'
+                quote: 'Create Quote'
+            created: 'Created:'
+            edit: Edit
+            view: View
+        create: 'Create New Client'
+        empty: 'There are no clients available'
+        recent: 'Recent Clients'
+        view_all: 'View All Clients'
+    create:
+        client: Client
+        invoice: Invoice
+        new: 'Create New'
+        quote: Quote
+    distribution:
+        status:
+            cancelled: Cancelled
+            draft: Draft
+            overdue: Overdue
+            paid: Paid
+            pending: Pending
+    hero:
+        outstanding: Outstanding
+        overdue: Overdue
+        this_month: 'This Month'
+        total_revenue: 'Total Revenue'
+    income_received: 'Income Received'
+    invoice:
+        actions:
+            created: 'Created:'
+            edit: Edit
+            pay: 'Pay Now'
+            view: View
+        create: 'Create New Invoice'
+        empty: 'There are no invoices available'
+        recent: 'Recent Invoices'
+        view_all: 'View All Invoices'
+    outstanding_invoices: 'Outstanding Invoices'
+    payment:
+        actions:
+            created: 'Created:'
+            invoice: 'Invoice:'
+        no_payments: 'There are no recent payments available'
+        recent: 'Recent Payments'
+        view_all: 'View All Payments'
+    pending_quotes: 'Pending Quotes'
+    quick_nav:
+        clients: Clients
+        invoices: Invoices
+        profile: Profile
+        quotes: Quotes
+        settings: Settings
+        title: 'Quick Nav'
+    quote:
+        actions:
+            created: 'Created:'
+            edit: Edit
+            view: View
+        create: 'Create New Quote'
+        empty: 'There are no quotes available'
+        recent: 'Recent Quotes'
+        view_all: 'View All Quotes'
+    title: Dashboard
+datagrid:
+    actions: Actions
+    all: All
+    apply: Apply
+    bulk_actions: 'Bulk actions'
+    clear: Clear
+    clear_selection: 'Clear selection'
+    columns:
+        label: Columns
+        reset: 'Reset to default'
+        toggle: 'Show/Hide Columns'
+    confirm:
+        batch: 'Are you sure you want to perform this action on the selected items?'
+        single: 'Are you sure you want to perform this action?'
+    expand: Expand
+    expand_row: 'Expand row'
+    export:
+        format:
+            csv:
+                hint: Spreadsheet-friendly
+                label: CSV
+            json:
+                hint: Machine-readable
+                label: JSON
+            xml:
+                hint: 'Structured markup'
+                label: XML
+        label: Export
+        subtitle: 'Choose a format to download the filtered results.'
+    filter:
+        remove: 'Click to remove'
+    filters: Filters
+    flash:
+        not_found: 'Action not found.'
+        not_implemented: 'Action not implemented.'
+        select_one: 'Please select at least one item.'
+        success: Success
+    footer:
+        showing: 'Showing %start% - %end% of %total% results'
+    items_per_page: 'Items per page'
+    more_actions: 'More actions'
+    no_results:
+        empty: 'Get started by creating your first item.'
+        filtered: "Try adjusting your search or filters to find what you're looking for."
+        label: 'No results found'
+    per_page: Show
+    search:
+        label: Search
+        placeholder: Search...
+    select_all: 'Select all'
+    select_row: 'Select row'
+    selected: selected
+delete_client: 'Delete Client'
+edit_client: 'Edit Client'
+email: Email
+email_verification:
+    banner:
+        message: 'Some features (sending invoices, activating recurring invoices) are disabled until you verify your email address. Check your inbox for the verification link.'
+        title: 'Verify your email'
+    flash:
+        send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
+        send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
+        send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
+    gate:
+        reason: 'Please verify your email address before %action%.'
+exception:
+    403:
+        text: "You don't have permission to view this page."
+        title: 'Access denied'
+    404:
+        text: "We couldn't find the page you were looking for."
+        title: 'Page not found'
+    500:
+        text: 'Something went wrong on our end. Please try again in a moment.'
+        title: 'Internal server error'
+    action:
+        back: 'Go back'
+        dashboard: 'Go to dashboard'
+        sign_in: 'Sign in'
+    error:
+        text: 'The following error occurred:'
+    generic:
+        text: 'An unexpected error occurred. Please try again.'
+        title: 'Oops, something went wrong'
+    not_found:
+        text: 'Sorry, but the page you were trying to view does not exist.'
+exclusive: Exclusive
+export:
+    actions: Actions
+    completed: Completed
+    download: Download
+    email:
+        archive_size: 'Archive size'
+        auth_note: 'This download link requires authentication as the user who requested the export.'
+        details: Details
+        download_export: 'Download Export'
+        download_link: 'Download your export'
+        ready: 'Your data export is ready'
+        ready_body: 'The full data export you requested has completed. The archive contains one file per entity type plus a manifest describing the contents.'
+        ready_heading: 'Export ready for download'
+        requested: Requested
+    empty: 'You have not requested any exports yet.'
+    format: Format
+    history_title: 'Export history'
+    request_button: 'Request Export'
+    request_help: 'Exports run in the background. You will receive an email with a download link once the archive is ready.'
+    request_title: 'Request a new export'
+    requested: Requested
+    size: Size
+    status: Status
+    title: 'Data Export'
+feature:
+    available_on_plan: 'Available on the %plan% plan and higher.'
+    contact_admin: 'Contact your administrator to enable this feature.'
+    upgrade_required: 'This feature requires an upgrade'
+    upgrade_to: 'Upgrade to %plan%'
+    view_all_plans: 'View all plans'
+flash:
+    company_deleted: 'Company deleted successfully.'
+forgot_password:
+    check_email:
+        content: "An email has been sent. It contains a link you must click to reset your password.\n\nIf you don't get an email check your spam folder or try again.\n"
+        expiry: 'This link will expire in %tokenLifetime%'
+        heading: 'Check your email'
+        title: 'Email Sent'
+    request:
+        back_to_login: 'Back to login'
+        description: 'Forgot your password? Enter your email to reset your password.'
+        heading: 'Forgot your password?'
+        submit: 'Reset Password'
+        title: 'Forgot your password?'
+        username: 'Email address'
+    reset:
+        flash:
+            success: 'Your password has been changed successfully. You can now log in.'
+        heading: 'Reset your password'
+        title: 'Reset Password'
+form:
+    address: Address
+    placeholder:
+        address_line: 'Apartment, suite, unit, etc.'
+        choose: Choose...
+        choose_currency: 'Choose Currency'
+        city: City
+        postal_code: 'Postal Code'
+        state_province: State/Province
+        street: '123 Main Street'
+        vat_example: 'e.g. GB123456789'
+    validate: Validate
+    validate_vat: 'Validate VAT Number (EU Countries Only)'
+id: Id
+inactive_clients: 'In-Active Clients'
+inclusive: Inclusive
+installation:
+    action:
+        next: Next
+        previous: Previous
+        refresh: Refresh
+        restart: Restart
+        restart_process: 'Restart the installation process'
+    already_installed: 'The application is already installed'
+    config:
+        title:
+            database_config: 'Database Config'
+            email_settings: 'Email Settings'
+            requirements_check: 'System Requirements Check'
+    database:
+        name: 'Database Name'
+        recommended: Recommended
+        select_driver: 'Select Database Driver'
+        type: 'Database Type'
+    finish:
+        login: 'Log In Now'
+        success: Success
+        success_message: 'You have successfully installed SolidInvoice!'
+    finish_page:
+        add_clients:
+            description: 'Start by adding your clients and their contact information'
+            title: 'Add Clients'
+        all_set: "You're all set! Ready to start managing your invoices?"
+        configure_settings:
+            description: 'Customize your company details and preferences'
+            title: 'Configure Settings'
+        create_invoice:
+            description: 'Generate your first professional invoice in seconds'
+            title: 'Create Invoice'
+        launch: 'Launch SolidInvoice'
+        subtitle: 'Congratulations! SolidInvoice has been successfully installed and configured.'
+        summary:
+            admin: 'Your administrator account is ready to use'
+            database: 'Database has been created and configured'
+            migrations: 'All required migrations have been applied'
+            secret: 'Application is secured with a unique secret key'
+            title: 'Installation Summary'
+        title: 'Installation Complete!'
+        whats_next: "What's Next?"
+    label: Installation
+    process:
+        step:
+            createdb: 'Creating database'
+            migrations: 'Creating database schema'
+        title:
+            busy: Installing...
+            done: Done
+    process_page:
+        retry: Retry
+        view_logs: 'View logs'
+    progress:
+        step:
+            config: 'Database Config'
+            finish: Finish
+            process: 'Installation Process'
+            setup: 'System Setup'
+            system_check: 'Requirements Check'
+    progress_complete: '%progress%% Complete'
+    requirements:
+        all_met: 'All system requirements are met'
+        all_met_message: 'You can proceed with the installation.'
+        mandatory: Required
+        message: 'Please ensure your system meets the minimum requirements before proceeding.'
+        not_met: 'Some requirements were not met'
+        optional: Recommended
+    requirements_page:
+        cache_directory: 'Cache Directory'
+        config_directory: 'Config Directory'
+        current_user: 'Current User'
+        edit_config_hint: 'Edit this file to modify PHP settings'
+        log_directory: 'Log Directory'
+        max_execution_time: 'Max Execution Time'
+        memory_limit: 'Memory Limit'
+        operating_system: 'Operating System'
+        php_config_file: 'PHP Config File'
+        php_version: 'PHP Version'
+        recommended: Recommended
+        required: Required
+        status:
+            failed: Failed
+            passed: Passed
+            warning: Warning
+        system_information: 'System Information'
+        upload_max_size: 'Upload Max Size'
+        web_server: 'Web Server'
+    setup:
+        notice: Notice
+        title:
+            admin_user: 'Admin User'
+            system_settings: 'System Settings'
+        user_exists: 'The database already contains an admin user.'
+    start:
+        begin: 'Begin Installation'
+        feature:
+            clients:
+                description: 'Keep track of clients, contacts, and communication history'
+                title: 'Client Management'
+            insights:
+                description: 'Track payments, expenses, and get detailed financial reports'
+                title: 'Financial Insights'
+            invoicing:
+                description: 'Create beautiful, customized invoices and quotes in seconds'
+                title: 'Professional Invoicing'
+            payments:
+                description: 'Accept payments online with multiple payment gateway integrations'
+                title: 'Online Payments'
+        intro: "You're about to set up a powerful, open-source invoicing platform that will help you manage your business finances with ease."
+        ready: 'Ready to get started?'
+        screenshot_placeholder: '[Screenshot Placeholder - Dashboard Preview]'
+        setup:
+            line1: 'This installation wizard will guide you through the setup process.'
+            line2: 'It will only take a few minutes to configure your database, set up your account, and get started with SolidInvoice.'
+            title: 'Quick & Easy Setup'
+        tagline: 'Your complete invoicing and billing solution'
+        thank_you: 'Thank you for choosing SolidInvoice!'
+        welcome: 'Welcome to'
+    step:
+        database_configuration: 'Database Configuration'
+        info:
+            company: 'Company Information'
+            user: 'Admin User Information'
+        license_agreement: 'License Agreement'
+        system_check: 'System Check'
+        system_information: 'System Information'
+    title: '%app_name% Installation'
+    user_account:
+        application_url: 'Application URL'
+        application_url_help: 'The URL where this SolidInvoice instance is accessible. Include the protocol (http:// or https://).'
+        locale_help: 'The only currently supported locale is "en". To choose a different locale, please install the ''intl'' extension'
+        locale_placeholder: 'Please select a locale'
+        telemetry: 'Send anonymous usage statistics'
+        telemetry_help: 'Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.'
+invalid_file: 'Invalid File'
+invoice:
+    action:
+        create: 'Create Invoice'
+        create_recurring: 'Create Recurring Invoice'
+        edit: 'Edit Invoice'
+        pay_now: 'Pay Now'
+        pdf: PDF
+        print: Print
+        view: 'View Invoice'
+    add_payment: 'Add Payment'
+    amount_payable: 'Amount payable'
+    archive:
+        success: 'Invoice has been archived'
+    balance: 'Outstanding Balance'
+    balance_due: 'Balance Due'
+    capture_payment: 'Capture Payment'
+    client:
+        choose: 'Choose a client'
+        create: 'Please add one now'
+        create_new: 'New Client Details'
+        empty: 'You have not created any clients yet.'
+        inline:
+            currency_note: 'The system default currency will be used for this client.'
+        mode:
+            existing: 'Select existing client'
+            new: 'Create new client'
+        title: Client
+    clone:
+        success: 'Invoice cloned successfully'
+    create:
+        new: 'Create Invoice'
+        subtitle: 'Build professional invoices for your clients'
+        success: 'Invoice created successfully'
+        title: 'Create Invoice'
+    created: Created
+    custom_fields: 'Custom fields'
+    date: 'Invoice Date'
+    discount: Discount
+    due_date: 'Due Date'
+    edit:
+        paid: "You can't edit invoices that is already paid"
+        success: 'Invoice updated successfully'
+        title: 'Edit Invoice'
+    email:
+        send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'
+    external:
+        footer:
+            description: 'Open-source invoicing software for freelancers and small businesses'
+            github: GitHub
+            powered_by: 'Powered by'
+            visit_website: 'Visit SolidInvoice.co'
+        tagline: 'Professional Invoicing Made Simple'
+    from: From
+    grid:
+        actions:
+            delete: Delete
+            edit: Edit
+            view: View
+    id:
+        cancel: 'Cancel editing invoice ID'
+        edit: 'Edit invoice ID'
+        save: 'Save invoice ID'
+    invoice_status:
+        overdue: Overdue
+    invoice_taxes:
+        add: 'Add invoice tax'
+        heading:
+            direction: Direction
+            note: Note
+            tax: Tax
+        informational: Informational
+        remove: 'Remove invoice tax'
+        subtitle: 'Add invoice-level taxes such as withholding tax (TDS) or flat surcharges.'
+        title: 'Withholding & adjustments'
+    item:
+        add: 'Add Item'
+        description:
+            placeholder: 'Describe the service or product...'
+        heading:
+            description: Description
+            price: Price
+            qty: Qty
+            tax: Tax
+            total: Total
+        number: 'Item %number%'
+        remove: 'Remove Item'
+        tax:
+            add: '+ Add tax'
+            remove: 'Remove tax'
+    items:
+        empty:
+            description: 'Add your first item to get started'
+            title: 'No items yet'
+        title: 'Line Items'
+    label: 'Invoice #'
+    line_tax: 'Line taxes'
+    list:
+        income: Income
+        outstanding: Outstanding
+        recurring_title: 'Recurring Invoices'
+        status_legend: 'Invoice Status Legend'
+        title: Invoices
+    manual_reminder:
+        error:
+            invalid_csrf: 'Invalid CSRF token'
+            no_contacts: 'Cannot send reminder: invoice has no contacts'
+            send_failed: 'Failed to send payment reminder'
+        success: 'Payment reminder sent successfully'
+    mark_paid: 'Mark Paid'
+    menu:
+        create: 'Create Invoice'
+        list: 'List Invoices'
+        main: Invoices
+        recurring:
+            create: 'Create Recurring Invoice'
+            list: 'List Recurring Invoices'
+            main: 'Recurring Invoices'
+            view: 'View Recurring Invoice'
+        view: 'View Invoice'
+    modal:
+        send_paid:
+            confirm: 'Send Invoice'
+            heading: 'Send invoice receipt?'
+            message: 'This will resend the invoice email for invoice %invoice_id% to the contacts listed below.'
+            recipients: 'Email will be sent to:'
+            title: 'Send Paid Invoice'
+        send_reminder:
+            confirm: 'Send Reminder'
+            heading: 'Send payment reminder?'
+            message: 'This will send a payment reminder email for invoice %invoice_id% to the contacts listed below.'
+            recipients: 'Email will be sent to:'
+            title: 'Send Payment Reminder'
+    notes: Notes
+    number_prefix: No.
+    paid_date: 'Paid Date'
+    payment:
+        capture: 'Do you want to capture a payment for this invoice?'
+        label: Payment
+    pdf:
+        due_in_days: 'Due in %days% days'
+        due_today: 'DUE TODAY'
+        overdue_by: 'OVERDUE BY %days% DAYS'
+        payment_description: 'Click the button or visit the URL below to pay securely online.'
+        payment_title: 'Pay This Invoice Online'
+        payment_url_label: 'Payment URL'
+        title: INVOICE
+    recurring:
+        activate: Activate
+        activate_start: 'Activate and Start'
+        create:
+            subtitle: 'Set up automated invoice generation'
+            title: 'Create Recurring Invoice'
+        date_end: 'End Date'
+        date_end_info: 'If no end date is specified, the invoice will recur indefinitely'
+        date_start: 'Start Date'
+        day_of_month:
+            label: 'Day of month'
+            placeholder: 'Select day'
+        days:
+            friday: Friday
+            monday: Monday
+            saturday: Saturday
+            sunday: Sunday
+            thursday: Thursday
+            tuesday: Tuesday
+            wednesday: Wednesday
+        days_of_month: 'Days of the month'
+        edit:
+            title: 'Edit Recurring Invoice'
+        end_after_occurrences: 'End After Occurrences'
+        end_date: 'End Date'
+        end_occurrence_placeholder: 'Number of invoices'
+        end_type: 'End Recurrence'
+        frequency: Frequency
+        generated: 'Generated Invoices'
+        months:
+            april: April
+            august: August
+            december: December
+            february: February
+            january: January
+            july: July
+            june: June
+            march: March
+            may: May
+            november: November
+            october: October
+            september: September
+        pause: Pause
+        repeats_in_months: 'Repeats in months'
+        repeats_on: 'Repeats on'
+        resume: Resume
+        schedule:
+            description: 'Configure when invoices are automatically generated'
+            title: 'Recurring Schedule'
+            toggle: 'Toggle recurring schedule section'
+        start_date: 'Start Date'
+        total_generated: 'Total Generated'
+        type:
+            label: 'Recurring Type'
+            placeholder: 'Select a recurring type'
+        upcoming: 'Upcoming Occurrences'
+        variables:
+            day: 'The day of the invoice (e.g. "15")'
+            day_name: 'The name of the day (e.g. "Wednesday")'
+            example_input: 'Subscription for {month}'
+            example_label: Example
+            example_output: 'Subscription for %month%'
+            help_button: 'Available variables for descriptions'
+            month: 'The name of the month (e.g. "January")'
+            text: 'You can use the following placeholders in item descriptions that will be replaced when invoices are generated:'
+            year: 'The year (e.g. "2026")'
+        view:
+            ending: 'ending on'
+            label: Recurring
+            starting: starting
+            title: 'Recurring Invoice #%id%'
+        view_all: 'View all %count% invoices'
+    save:
+        cancel: Cancel
+        draft: 'Save as Draft'
+        enable: 'Save and Enable'
+        publish: Publish
+        send: 'Save and Send'
+        update: Update
+    send:
+        no_recipients: 'Cannot send invoice: no contacts with email addresses found'
+    send_to: 'Send invoice to:'
+    stats:
+        active_recurring: 'Active Recurring'
+        count:
+            cancelled: '{0} Cancelled Invoices|{1} Cancelled Invoice|]1,Inf] Cancelled Invoices'
+            draft: '{0} Draft Invoices|{1} Draft Invoice|]1,Inf] Draft Invoices'
+            overdue: '{0} Overdue Invoices|{1} Overdue Invoice|]1,Inf] Overdue Invoices'
+            paid: '{0} Paid Invoices|{1} Paid Invoice|]1,Inf] Paid Invoices'
+            pending: '{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices'
+        outstanding_balance: Outstanding
+        overdue: overdue
+        pending_invoices: Pending
+        status_breakdown: 'Status Breakdown'
+        status_format: '%active% active, %draft% draft, %paused% paused'
+        total_generated: 'Total Generated'
+        total_income: 'Total Income'
+        total_invoices: 'Total Invoices'
+        upcoming_7_days: 'Upcoming in 7 Days'
+    status: Status
+    subtotal: Sub-Total
+    summary: 'Invoice Summary'
+    tabs:
+        active: Active
+        archived: Archived
+        label: 'Invoice list navigation'
+        recurring_active: Active
+        recurring_archived: Archived
+        recurring_completed: Completed
+    tax: Tax
+    template:
+        compact:
+            label: INVOICE
+        editorial:
+            heading: 'Statement of Account'
+            signoff: 'With gratitude,'
+        friendly:
+            greeting: 'Hi %name%,'
+            intro: "Thanks again for working with us. Here's the invoice covering the work — happy to chat if anything looks off."
+            signoff: 'Cheers, and talk soon.'
+        modern:
+            label: Statement
+        photographer:
+            client_label: For
+            intro_title: 'Thank you for the collaboration'
+            signoff: 'Looking forward to our next chapter,'
+            studio_label: 'From the studio of'
+            subtitle: 'Photography & Visual Storytelling'
+        studio:
+            client: Client
+            deliverable: Deliverable
+            engagement: engagement
+            project_label: Project
+            studio: Studio
+    terms: Terms
+    terms_notes:
+        title: 'Terms & Notes'
+        toggle: 'Toggle terms and notes section'
+    title: 'Invoice #%id%'
+    to: To
+    total: Total
+    total_due: 'Total Due'
+    totals:
+        title: Summary
+    transition:
+        action:
+            accept: 'Invoice has been accepted'
+            activate: 'Invoice has been activated'
+            archive: 'Invoice has been archived'
+            cancel: 'Invoice has been cancelled'
+            pause: 'Recurring invoice has been paused'
+            pay: 'Invoice has been paid'
+            reopen: 'Invoice has been re-opened'
+            resume: 'Recurring invoice has been resumed'
+            sent: 'Invoice has been sent'
+        exception:
+            accept: 'Invoice cannot be accepted'
+            archive: 'Invoice cannot be archived'
+            cancel: 'Invoice cannot be cancelled'
+            pay: 'Invoice cannot be paid'
+            reopen: 'Invoice cannot be re-opened'
+            sent: 'Invoice cannot be sent'
+    view:
+        online: 'View this invoice online at: %url%'
+        payments: Payments
+        related_quote: 'Related Quote'
+        toolbar:
+            archive: Archive
+            cancel: Cancel
+            clone: Clone
+            edit: Edit
+            mark_paid: 'Mark Paid'
+            more_actions: 'More Actions'
+            pay_now: 'Pay Now'
+            publish_and_send: 'Publish and Send'
+            reopen: Re-Open
+            send: Send
+            send_reminder: 'Send Reminder'
+            toggle_dropdown: 'Toggle Dropdown'
+            view_quote: 'View Quote'
+    withholding: Withholding
+invoice_status_update: 'Invoice Status Update'
+invoices: Invoices
+label:
+    client: Client
+    invoice: Invoice
+    'no': 'No'
+    optional: Optional
+    options: Options
+    quote: Quote
+    required: Required
+    search: Search
+    status: Status
+    'yes': 'Yes'
+layout:
+    add_company: 'Add Company'
+    api_keys: 'API Keys'
+    aria:
+        logo: Tabler
+        open_create_menu: 'Open create menu'
+        open_user_menu: 'Open user menu'
+        toggle_navigation: 'Toggle navigation'
+    data_export: 'Data Export'
+    profile: Profile
+    unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
+    user_image: 'User Image'
+mcp:
+    connected_apps:
+        empty: "You haven't connected any AI agents yet."
+        last_used: 'Last used'
+        never_used: 'Never used'
+        revoke: Revoke
+        scopes: Scopes
+        title: 'Connected apps'
+    consent:
+        authorize: Authorize
+        cancel: Cancel
+        company: Company
+        heading: '%client% wants to access your SolidInvoice account'
+        permissions: 'Permissions requested'
+        redirect: 'Callback: %uri%'
+        remember: "Don't ask me again for this app + company"
+        revoke_hint: 'You can revoke this app at any time from your'
+        revoke_hint_link: 'connected apps'
+        scope:
+            read: 'Read your invoices, quotes, clients, payments, taxes and analytics'
+            write: 'Create and modify invoices, quotes, clients, payments and taxes'
+        title: 'Authorize application'
+    error:
+        title: 'Authorization error'
+    upgrade:
+        contact_admin: 'Contact your administrator to upgrade your plan and enable MCP access.'
+        description: 'Your current plan does not include MCP access. Upgrade your subscription to authorize AI agents and tools.'
+        title: 'MCP access not available'
+menu:
+    button:
+        create: Create
+    top:
+        api: 'API Tokens'
+        custom_fields: 'Custom Fields'
+        dashboard: Dashboard
+        integrations: Integrations
+        logout: Logout
+        profile: Profile
+        settings: Settings
+        system: System
+        tax: 'Tax Rates'
+        users: Users
+name: Name
+no_invoices: 'This client does not have any invoices yet.'
+no_quotes: 'This client does not have any quotes yet.'
+notification:
+    flash:
+        added: 'Integration added'
+        deleted: 'Integration deleted'
+        no_delete_permission: 'You do not have permission to delete this integration'
+        not_exist: 'Integration does not exist'
+        updated: 'Integration updated'
+        validation_errors: 'Please correct the validation errors'
+    integration:
+        add: 'Add %type% Integration'
+        configure_credentials: 'Configure notification integration credentials'
+        delete: 'Delete integration'
+        delete_confirm: 'Are you sure you want to delete'
+        delete_title: 'Delete Integration'
+        delete_undone: 'This action cannot be undone'
+        delete_warning: 'This will remove the notification integration and cannot be reversed.'
+        save: 'Save integration'
+        save_button: 'Save Integration'
+    marketplace:
+        all_providers: 'All Providers'
+        browse: 'Browse Integrations'
+        clear_search: 'Clear search'
+        close_esc: 'Close (Esc)'
+        configure: Configure
+        configured: Configured
+        configured_title: 'Configured Integrations'
+        edit: 'Edit %name%'
+        empty_subtitle: 'Configure your first notification integration to start sending SMS or chat notifications.'
+        empty_title: 'No integrations configured'
+        featured_providers: 'Featured Providers'
+        heading: 'Notification Integrations'
+        modal_title: 'Configure Notification Integration'
+        no_results: 'No integrations found matching your search'
+        search_aria: 'Search notification integrations'
+        search_placeholder: 'Search integrations...'
+        subtitle: 'Send notifications via SMS or chat platforms'
+        title: Marketplace
+    provider:
+        amazon_sns: 'Send SMS and push notifications with Amazon SNS'
+        discord: 'Send messages to Discord servers'
+        fake_chat: 'Test chat notifications in development'
+        fake_sms: 'Test SMS notifications without sending real messages'
+        generic: 'Send %type% notifications via %name%'
+        google_chat: 'Send notifications to Google Chat spaces'
+        mattermost: 'Self-hosted team communication'
+        message_bird: 'Global SMS messaging platform'
+        microsoft_teams: 'Post messages to Microsoft Teams channels'
+        rocket_chat: 'Open-source team chat platform'
+        sinch: 'Cloud communications for SMS delivery'
+        slack: 'Send notifications to Slack channels'
+        telegram: 'Send notifications via Telegram bots'
+        twilio: 'Send SMS notifications with Twilio'
+        type_chat: chat
+        vonage: 'Reliable SMS messaging via Vonage (formerly Nexmo)'
+    send_failed: 'Failed to send notification. Please verify your email configuration in Settings.'
+    type:
+        chat: Chat
+        sms: SMS
+        unknown: Unknown
+notifications:
+    add_integration: 'Add Integration'
+    available_channels: 'Available Channels'
+    categories:
+        client: 'Client Notifications'
+        invoice: 'Invoice Notifications'
+        payment: 'Payment Notifications'
+        quote: 'Quote Notifications'
+    email_always_available: 'Email notifications are always available. Add integrations to receive notifications via other channels.'
+    email_channel: Email
+    empty:
+        description: 'Notification events will appear here when they are available in the system'
+        title: 'No Notifications Available'
+    events:
+        client_created:
+            description: 'When a new client is added to your account'
+            title: 'Client Created'
+        invoice_status_changed:
+            description: 'When an invoice status changes (draft, sent, paid, etc.)'
+            title: 'Invoice Status Changed'
+        payment_received:
+            description: 'When a payment is received for an invoice'
+            title: 'Payment Received'
+        quote_status_changed:
+            description: 'When a quote status changes (draft, sent, accepted, etc.)'
+            title: 'Quote Status Changed'
+    flash:
+        saved: 'Notification saved!'
+    integrations_count: 'You have %count% integration(s) configured'
+    manage_integrations: 'Manage Integrations'
+    notification_channels: 'Notification Channels'
+    notify_via: 'Notify via:'
+    save_preferences: 'Save Preferences'
+    subtitle: 'Choose which events trigger notifications and where you receive them'
+    title: 'Notification Preferences'
+onboarding:
+    client:
+        benefits: "Create your first invoice in the next step\nKeep all client info organized in one place\nTrack payment history and outstanding invoices\nSend invoices directly via email\n"
+        description: 'Who will you be invoicing? This step is optional, but recommended'
+        fields:
+            email:
+                help: "We'll use this to send them invoices"
+                label: 'Email Address'
+                placeholder: client@example.com
+            name:
+                help: 'Can be a person or company name'
+                label: 'Client Name'
+                placeholder: 'John Doe or Acme Corp'
+        title: 'Add your first client'
+        why_title: 'Why add a client now?'
+    company:
+        benefits: "Your business details - This appears on all your invoices\nYour first client - Optional, but gets you started faster\nYour first invoice - See how easy it is to get paid\n"
+        description: "First, we'll need a bit of information about your business. This helps us customize your experience and ensures your invoices look professional."
+        fields:
+            currency:
+                help: "The currency you'll use for invoices and quotes"
+                label: Currency
+            name:
+                help: 'This is how your business will appear on invoices and quotes'
+                label: 'Company Name'
+                placeholder: 'Acme Corporation'
+        setup_title: "What we're setting up:"
+        subtitle: 'First, tell us about your business'
+        time: 'Takes less than 2 minutes'
+        title: "Let's get you set up"
+        welcome: 'Welcome to %app_name%!'
+    complete:
+        cta_create_invoice: 'Create Your First Invoice →'
+        dashboard_link: 'Go to Dashboard'
+        description: "Congratulations! Your account is ready and you're good to go. You can start creating invoices, managing clients, and tracking payments."
+        docs_link: 'View Documentation'
+        need_help: 'Need help? Check out our'
+        next_add_client: 'Add your first client'
+        next_connect_payment: 'Connect a payment gateway'
+        next_send_invoice: 'Send your first invoice'
+        next_steps: "Create and send professional invoices\nTrack payments and outstanding balances\nManage your clients and contacts\nGenerate reports on your business\n"
+        next_steps_title: "Here's what to do next:"
+        next_title: 'What happens next?'
+        pro_tip_text: 'You can customize your invoice templates, add your logo, and configure payment gateways in Settings.'
+        pro_tip_title: 'Pro tip:'
+        subtitle: "Your account is ready and you're good to go"
+        thanks: 'Thanks for choosing %app_name%'
+        title: "You're all set!"
+    flash:
+        invoice_created: '🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF.'
+        onboarding_complete: "Welcome to SolidInvoice! You're all set up and ready to go."
+    invoice:
+        aha_title: 'Send your first invoice:'
+        benefits: "See exactly what your invoices will look like\nSend it immediately or save as draft\nTrack when it's paid\nGet paid faster with online payments\n"
+        description: 'Experience how easy it is to get paid.'
+        fields:
+            amount:
+                help: "Don't worry about perfection - you can edit this later"
+                label: Amount
+                placeholder: '1000.00'
+            description:
+                help: 'What service or product are you invoicing for?'
+                label: 'Service Description'
+                placeholder: 'e.g., Website Design Services, Consulting, Monthly Retainer'
+        security: 'Your invoice will be saved as a draft - nothing is sent automatically'
+        time: 'Takes just 30 seconds to create'
+        title: 'Create your first invoice'
+    navigation:
+        back: Back
+        continue: Continue
+        create_invoice: 'Create & View My Invoice'
+        finish: 'Go to Dashboard'
+        skip: "I'll do this later"
+        skip_client: "Skip — I'll add clients & invoices from the dashboard"
+    progress:
+        client: 'First Client'
+        company: 'Your Business'
+        complete: Ready!
+        invoice: 'First Invoice'
+        label: Progress
+optional: Optional
+payment:
+    action:
+        pay: 'Pay Now'
+    amount:
+        help: 'Enter the amount you wish to pay'
+        label: 'Payment Amount'
+    balance_remaining: 'Balance remaining'
+    capture_online:
+        help: 'When enabled, you will be redirected to the payment gateway to complete the payment'
+        label: 'Process payment online'
+    client: Client
+    create:
+        balance: 'Outstanding balance'
+        base_total: 'Base Total'
+        cancel: Cancel
+        credit: 'Credit:'
+        discount: Discount
+        exception:
+            amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
+            invoice_cannot_be_paid: 'This invoice cannot be paid'
+            no_payment_methods: 'No payment methods are currently available'
+            not_enough_credit: 'Not have enough credit available'
+        force: 'Force payment status (Optional)'
+        invoice_date: 'Invoice Date'
+        payment_label: Payment
+        subtitle: 'Complete your payment securely'
+        tite: 'Payment for invoice #%id%'
+        title: 'Pay Invoice #%id%'
+        total: Total
+    details: 'Payment Details'
+    flash:
+        status:
+            authorized: 'Payment has been authorized'
+            cancelled: 'Payment has been cancelled'
+            expired: 'Payment has expired'
+            failed: 'Payment failed'
+            new: 'New payment created'
+            pending: 'Payment is pending'
+            refunded: 'Payment has been refunded'
+            success: 'Payment has been completed'
+            suspended: 'Payment has been suspended'
+            unknown: 'An unknown error occurred'
+    form:
+        help:
+            internal: "Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment."
+        label:
+            internal: 'Internal use only'
+        payment_method:
+            placeholder: 'Choose Payment Method'
+    gateway:
+        _fallback:
+            tagline: 'Accept payments through this gateway.'
+        about:
+            title: 'About this gateway'
+        authorize_net_aim:
+            display_name: 'Authorize.Net (AIM)'
+            tagline: 'Legacy Authorize.Net AIM integration.'
+        badge:
+            advanced: Advanced
+            recommended: Recommended
+        bank_transfer:
+            display_name: 'Bank Transfer'
+            overview: 'Record payments clients send by bank transfer (EFT). Share your banking details on invoices so clients know where to pay, then mark the invoice as paid once the funds arrive.'
+            tagline: 'Record payments made by direct bank transfer.'
+        be2bill_direct:
+            display_name: 'Be2Bill Direct'
+            tagline: 'Legacy Be2Bill direct integration.'
+        be2bill_offsite:
+            display_name: 'Be2Bill Offsite'
+            tagline: 'Legacy Be2Bill hosted integration.'
+        cash:
+            display_name: Cash
+            overview: 'Record cash you receive from clients. Nothing is charged online - you mark the invoice as paid once the cash is in hand.'
+            tagline: 'Record cash payments received in person.'
+        compare:
+            title: 'Not sure which one to choose?'
+        custom:
+            display_name: 'Custom Method'
+            overview: "Set up a payment method of your own - for example a local wallet or a gateway SolidInvoice doesn't list. Payments are recorded manually."
+            tagline: 'Create your own manually-recorded payment method.'
+        field:
+            enabled:
+                help: 'Turn this on to make the payment method available. Leave it off while you finish setting it up.'
+                label: Enabled
+            name:
+                help: 'A label to help you recognise this method inside SolidInvoice - only you see it, not your clients. For example "Stripe - main account".'
+                label: 'Display name'
+                placeholder: 'e.g. Stripe - main account'
+            paypal:
+                partner:
+                    help: 'Your Payflow partner, usually "PayPal".'
+                    label: Partner
+                password:
+                    help: 'From the same PayPal API credentials screen. Leave empty when editing to keep the saved value.'
+                    label: 'API password'
+                signature:
+                    help: 'The long signature string listed with your PayPal API credentials.'
+                    label: 'API signature'
+                username:
+                    help: 'From your PayPal account under Account Settings > API access > NVP/SOAP API credentials.'
+                    label: 'API username'
+                vendor:
+                    help: 'Your Payflow merchant login (vendor) ID.'
+                    label: 'Vendor / merchant login'
+            sandbox:
+                help: "Use the gateway's test environment with test credentials - no real money changes hands. Turn this off to accept live payments."
+                label: 'Test (sandbox) mode'
+            stripe:
+                publishable_key:
+                    help: 'Starts with "pk_". This key is safe to share publicly - it only identifies your Stripe account in the browser.'
+                    label: 'Publishable key'
+                secret_key:
+                    help: 'Starts with "sk_". Keep this private - it authorises charges on your account. Never share it.'
+                    label: 'Secret key'
+        klarna_checkout:
+            display_name: 'Klarna Checkout'
+            tagline: 'Legacy Klarna checkout integration.'
+        klarna_invoice:
+            display_name: 'Klarna Invoice'
+            tagline: 'Legacy Klarna invoice integration.'
+        marketplace:
+            subtitle: 'Choose how you want to accept payments from your clients, or record payments you receive offline.'
+        offline:
+            display_name: 'Offline Payment'
+            overview: 'Use this to record payments you receive outside the app - a cheque, a card taken in person, or any other method. Nothing is charged automatically; you simply mark the invoice as paid.'
+            tagline: 'Record a payment made outside SolidInvoice.'
+        payex:
+            display_name: PayEx
+            tagline: 'Legacy PayEx integration.'
+        paypal:
+            comparison: 'PayPal Express Checkout (recommended): works with a standard PayPal Business account and is the right choice for almost everyone. PayPal Pro (Payflow): keeps customers on your site but needs a paid PayPal Payments Pro / Payflow account. Only choose Pro if PayPal has specifically set you up with it.'
+            setup_label: 'Get your PayPal API credentials'
+        paypal_express_checkout:
+            display_name: 'PayPal Express Checkout'
+            overview: 'PayPal Express Checkout sends your client to PayPal to approve the payment, then returns them to SolidInvoice. Clients can pay with their PayPal balance or a credit/debit card - no PayPal account required for card payments.'
+            tagline: 'Let clients pay with their PayPal account or a card.'
+        paypal_pro_checkout:
+            display_name: 'PayPal Pro (Payflow)'
+            overview: "PayPal Pro (Payflow) processes card payments without sending customers to PayPal. It requires a paid PayPal Payments Pro or Payflow account. If you don't have one, use PayPal Express Checkout instead."
+            tagline: 'Take card payments on-site (needs a PayPal Pro account).'
+        section:
+            credentials:
+                subtitle: "Connect your account. You'll find these keys in your provider's dashboard."
+                title: Credentials
+            details:
+                subtitle: 'How this payment method is identified inside SolidInvoice.'
+                title: Details
+            more:
+                subtitle: 'Additional and legacy processors. Only use these if you already have an account with them.'
+                title: 'More gateways'
+            offline:
+                subtitle: 'Record payments you receive outside SolidInvoice, such as cash or a bank transfer.'
+                title: 'Offline & manual methods'
+            online:
+                subtitle: 'Charge cards automatically - your client pays through a secure checkout.'
+                title: 'Online payment gateways'
+        setup:
+            default_label: 'How to get your API keys'
+        stripe:
+            comparison: "Stripe Checkout (recommended): Stripe hosts the payment page - it's the simplest to set up and the most secure, with no extra compliance work for you. Stripe.js: the card fields are embedded directly in SolidInvoice for a more seamless look, but you take on more PCI-compliance responsibility. If you're unsure, choose Stripe Checkout."
+            setup_label: 'Get your Stripe API keys'
+        stripe_checkout:
+            display_name: 'Stripe Checkout'
+            overview: "Stripe redirects your client to a secure payment page hosted by Stripe, then brings them back once they've paid. It's the quickest and safest way to accept cards, because Stripe handles all the sensitive card data for you."
+            tagline: 'Accept cards on a secure, Stripe-hosted payment page.'
+        stripe_js:
+            display_name: Stripe.js
+            overview: 'Stripe.js embeds the card input fields directly inside SolidInvoice instead of redirecting to Stripe. It gives a more seamless checkout, but you take on more responsibility for PCI compliance. Most businesses should use Stripe Checkout instead.'
+            tagline: 'Embed card fields directly in SolidInvoice (advanced).'
+    history:
+        title: 'Payment History'
+    invoice_details: 'Invoice Details'
+    invoice_summary: 'Invoice Summary'
+    line_items: 'Line Items'
+    list:
+        grid:
+            amount: Amount
+            currency: Currency
+            invoice: Invoice
+            method: 'Payment Method'
+            payment_date: 'Payment Date'
+            payment_id: 'Payment Id'
+            status: Status
+        status_legend: 'Payment Status Legend'
+        title: Payments
+    marketplace:
+        action:
+            configure: Configure
+        active:
+            title: 'Active Payment Methods'
+        badge:
+            configured: Configured
+            disabled: Disabled
+            enabled: Enabled
+            popular: Popular
+            test_mode: 'Test Mode'
+        edit_aria: 'Edit %name%'
+        empty:
+            browse: 'Browse Payment Gateways'
+            no_gateways: 'No gateways found matching your search'
+            no_methods: 'No payment methods configured'
+            no_methods_hint: 'Get started by selecting a gateway from the marketplace on the left.'
+        gateways:
+            subtitle: 'Choose from popular payment processors or add custom gateways'
+            title: 'Payment Gateways'
+        modal:
+            close_title: 'Close (Esc)'
+            title: 'Configure Payment Gateway'
+        search:
+            aria: 'Search payment gateways'
+            clear: 'Clear search'
+            placeholder: 'Search gateways...'
+        tab:
+            active: Active
+            marketplace: Marketplace
+    menu:
+        main: Payments
+        methods: 'Payment Methods'
+    method:
+        add: 'Add Payment Method'
+        added: 'Payment Method Successfully Added!'
+        credit: Credit
+        label: 'Payment Method'
+        offline: Offline
+        online: Online
+        updated: 'Payment Method Successfully Updated!'
+    method_settings:
+        choice:
+            placeholder: 'Please Choose'
+    methods:
+        available: 'Available Payment Methods'
+        title: 'Payment Methods'
+    notes:
+        help: 'These notes are for internal use only'
+        label: Notes
+        placeholder: 'Add any additional notes about this payment...'
+    reference:
+        help: 'Optional reference number for this payment'
+        label: Reference
+        placeholder: 'e.g. Transaction ID, Check Number'
+    settings:
+        configure_gateway: 'Configure %method%'
+        delete_aria: 'Delete payment method'
+        delete_modal:
+            confirm_prefix: 'Are you sure you want to delete'
+            confirm_suffix: 'This will remove the payment method and cannot be reversed.'
+            subtitle: 'This action cannot be undone'
+            title: 'Delete Payment Method'
+        password:
+            hint: 'Keep this empty to keep the existing value'
+        save: 'Save Payment Method'
+        save_aria: 'Save payment method'
+        subtitle: 'Configure payment gateway settings and credentials'
+    stats:
+        failed: Failed
+        pending: Pending
+        this_month: 'This Month'
+        total_received: 'Total Received'
+payment_made: 'Payment has been received'
+pdf:
+    additional_information: 'Additional information'
+    'no': 'No'
+    of: of
+    page: Page
+    'yes': 'Yes'
+powered_by: 'Powered By'
+profile:
+    api:
+        create: 'Create Token'
+        doc_link: 'API documentation'
+        doc_notice: 'To view the API documentation, visit the %link% page.'
+        flash:
+            created: 'API Token created successfully'
+            revoked: 'API Token revoked successfully'
+        form:
+            actions:
+                close: Close
+                save: Save
+            description_placeholder: 'Optional description for this token...'
+            title: 'Create API Token'
+            token_confirmed: 'I have copied the token'
+            token_copy: Copy
+            token_copy_warning: 'Copy this token now. For security reasons, it will not be shown again.'
+            token_important: Important!
+            token_name: 'Token Name'
+            token_usage: 'Use this token in the X-API-TOKEN header for API requests.'
+            token_value: 'Token Value'
+        history:
+            actions:
+                close: Close
+            last_calls_shown: 'Only the last 100 calls are shown'
+            last_calls_shown_note: 'Note:'
+            list:
+                date: Date
+                ip: 'IP Address'
+                resource: Resource
+                user_agent: 'User Agent'
+            title: 'API History'
+        stats:
+            active_tokens: 'Active Tokens'
+            calls_month: 'API Calls This Month'
+            last_activity: 'Last Activity'
+            most_used: 'Most Used Token'
+        title: 'API Tokens'
+        tokens:
+            created:
+                done: Done
+                title: 'Your new API token'
+                warning:
+                    body: 'For security reasons it will not be shown again. If you lose it, revoke this token and create a new one.'
+                    title: 'Copy this token now.'
+            empty: "You don't have any API tokens"
+            history: 'View History'
+            revoke: Revoke
+            revoke_message: 'Are you sure you want to revoke this token? This is irreversible, and all applications using the token will be affected'
+            used:
+                last: 'Last Used:'
+                never: Never
+                text: '%date% from %ip%'
+    edit:
+        cancel: Cancel
+        section:
+            personal:
+                description: 'Your name and contact information'
+                title: 'Personal Details'
+        submit: Save
+        subtitle: 'Update your personal information and contact details'
+        success: 'Your profile has been updated'
+        title: 'Update Profile'
+    nav:
+        api_keys: 'API Keys'
+        change_password: 'Change Password'
+        connected_apps: 'Connected Apps'
+        data_export: 'Data Export'
+        notifications: Notifications
+        preferences: Preferences
+        profile: Profile
+        two_factor: 'Two-Factor Authentication'
+    password_change:
+        success: 'Your password has been updated'
+    show:
+        change_password: 'Change Password'
+        email: Email
+        enabled: Enabled
+        expired: Expired
+        first_name: 'First Name'
+        last_login: 'Last Login'
+        last_name: 'Last Name'
+        locked: Locked
+        mobile: Mobile
+        'no': 'No'
+        personal:
+            description: 'Your contact details and account information'
+            title: 'Personal Information'
+        roles: Roles
+        security:
+            2fa_enabled: 'Two-factor authentication is enabled'
+            description: 'Manage your account security settings'
+            enable: Enable
+            google:
+                badge: Linked
+                link: 'Link your account with Google for easier sign-in'
+                linked: 'Your account is linked with Google'
+                sign_in: 'Sign in with Google'
+                title: 'Google Account'
+            manage: Manage
+            password:
+                description: 'Change your password to keep your account secure'
+                title: Password
+            title: Security
+        title: 'Profile - %username%'
+        update_profile: 'Update Profile'
+        username: Username
+        'yes': 'Yes'
+quote:
+    accepted: 'Quote Accepted and invoice created'
+    action:
+        create:
+            success: 'Quote created successfully'
+        edit:
+            success: 'Quote updated successfully'
+        pdf: PDF
+        print: Print
+    amount_payable: 'Amount payable'
+    archive:
+        success: 'Quote Archived'
+    cancelled: 'Quote Cancelled'
+    client:
+        choose: 'Choose a client'
+        create: 'Please add one now'
+        create_new: 'New Client Details'
+        empty: 'You have not created any clients yet.'
+        inline:
+            currency_note: 'The system default currency will be used for this client.'
+        mode:
+            existing: 'Select existing client'
+            new: 'Create new client'
+        title: Client
+    clone:
+        success: 'Quote cloned successfully'
+    create:
+        new: 'Create Quote'
+        subtitle: 'Build professional quotes for your clients'
+        success: 'Quote created successfully'
+        title: 'Create Quote'
+    created: Created
+    custom_fields:
+        title: 'Custom fields'
+    declined: 'Quote Declined'
+    discount: Discount
+    edit:
+        success: 'Quote updated successfully'
+        title: 'Edit Quote'
+    email:
+        send_failed: 'Failed to send quote email. Please verify your email configuration in Settings.'
+    external:
+        footer:
+            description: 'Open-source invoicing software for freelancers and small businesses'
+            github: GitHub
+            powered_by: 'Powered by'
+            visit_website: 'Visit SolidInvoice.co'
+        tagline: 'Professional Invoicing Made Simple'
+    from: From
+    grid:
+        actions:
+            delete: Delete
+            edit: Edit
+            view: View
+    id:
+        cancel: 'Cancel editing quote ID'
+        edit: 'Edit quote ID'
+        save: 'Save quote ID'
+    invoice_taxes:
+        add: 'Add tax'
+        heading:
+            direction: Direction
+            note: Note
+            tax: Tax
+        informational: Informational
+        remove: 'Remove tax'
+        subtitle: 'Add document-level taxes such as withholding tax or flat surcharges.'
+        title: 'Withholding & adjustments'
+    item:
+        add: 'Add Item'
+        description:
+            placeholder: 'Describe the service or product...'
+        heading:
+            description: Description
+            price: Price
+            qty: Qty
+            tax: Tax
+            total: Total
+        number: 'Item %number%'
+        remove: 'Remove Item'
+        tax:
+            add: '+ Add tax'
+            remove: 'Remove tax'
+    items:
+        empty:
+            description: 'Add your first item to get started'
+            title: 'No items yet'
+        title: 'Line Items'
+    label: 'Quote #'
+    line_tax: 'Line taxes'
+    list:
+        status_legend: 'Quote Status Legend'
+        title: Quotes
+    menu:
+        create: 'Create Quote'
+        list: 'List Quotes'
+        main: Quotes
+        view: 'View Quote'
+    notes: Notes
+    pdf:
+        date: 'Quote Date'
+        expired: EXPIRED
+        expires_today: 'EXPIRES TODAY'
+        prepared_for: 'Prepared For'
+        title: QUOTE
+        total: 'Quote Total'
+        valid_for_days: 'Valid for %days% days'
+        valid_until: 'Valid Until'
+    reopened: 'Quote Re-Opened'
+    save:
+        cancel: Cancel
+        draft: 'Save as Draft'
+        publish: Publish
+        send: 'Save and Send'
+        update: Update
+    send_to: 'Send quote to:'
+    sent: 'Quote Sent'
+    stats:
+        accepted_quotes: Accepted
+        count:
+            accepted: '{0} Accepted Quotes|{1} Accepted Quote|]1,Inf] Accepted Quotes'
+            cancelled: '{0} Cancelled Quotes|{1} Cancelled Quote|]1,Inf] Cancelled Quotes'
+            declined: '{0} Declined Quotes|{1} Declined Quote|]1,Inf] Declined Quotes'
+            draft: '{0} Draft Quotes|{1} Draft Quote|]1,Inf] Draft Quotes'
+            pending: '{0} Pending Quotes|{1} Pending Quote|]1,Inf] Pending Quotes'
+        declined_quotes: Declined
+        pending_quotes: Pending
+        total_quotes: 'Total Quotes'
+    subtotal: Sub-Total
+    summary: 'Quote Summary'
+    tabs:
+        active: Active
+        archived: Archived
+        label: 'Quote list navigation'
+    tax: Tax
+    template:
+        friendly:
+            greeting: 'Hi %name%,'
+            intro: "Thanks again for your interest in working together. Here's the quote covering the work — happy to chat if anything looks off."
+            signoff: 'Cheers, and talk soon.'
+    terms: Terms
+    terms_notes:
+        title: 'Terms & Notes'
+        toggle: 'Toggle terms and notes section'
+    title: 'Quote #%id%'
+    to: To
+    total: Total
+    totals:
+        title: Summary
+    transition:
+        action:
+            accept: 'Quote Accepted and invoice created'
+            archive: 'Quote has been Archived'
+            cancel: 'Quote Cancelled'
+            decline: 'Quote Declined'
+            publish: 'Quote Published'
+            reopen: 'Quote Re-Opened'
+            send: 'Quote Sent'
+            sent: 'Quote Sent'
+        exception:
+            accept: 'Quote cannot be accepted'
+            archive: 'Quote cannot be archived'
+    view:
+        online: 'View this quote online at: %url%'
+        related_invoice: 'Related Invoice'
+        toolbar:
+            accept: Accept
+            archive: Archive
+            cancel: Cancel
+            clone: Clone
+            decline: Decline
+            edit: Edit
+            more_actions: 'More Actions'
+            publish_and_send: 'Publish and Send'
+            reopen: Re-Open
+            send: Send
+            toggle_dropdown: 'Toggle Dropdown'
+            view_invoice: 'View Invoice'
+    withholding: Withholding
+quote_status_update: 'Quote Status Update'
+quotes: Quotes
+rate: Rate
+required: Required
+saas:
+    action:
+        back: Back
+        contact_support: 'Contact Support'
+        contact_support_short: 'Contact support'
+        switch_company: 'Switch company'
+    cancelled:
+        changed_mind: 'Changed your mind?'
+        data_safe: "We'd love to have you back! Your data is safe and will be waiting for you when you reactivate."
+        feature_clients: 'Client and contact management'
+        feature_history: 'Access to payment history and reports'
+        feature_invoices: 'Create new invoices and quotes'
+        feature_payments: 'Accept online payments from clients'
+        feature_recurring: 'Recurring invoices and subscriptions'
+        features_heading: 'Features requiring reactivation:'
+        reactivate: 'Reactivate Subscription'
+        subtitle: "Your subscription has been cancelled. We'd love to have you back at %price%/month whenever you're ready."
+        title: "We're sorry to see you go"
+    change:
+        description: 'Pick a different plan. Upgrades take effect immediately. Downgrades to the free plan apply at the end of your current billing period.'
+        heading: 'Change your plan'
+        title: 'Change plan'
+    company:
+        access_other: 'You have access to other companies.'
+        switch_to: 'Switch to %company%'
+    confirm:
+        feature: Feature
+        free_notice: 'Your paid plan will keep working until the end of your current billing period, then switch to the free plan automatically.'
+        heading: 'Confirm downgrade to %plan%'
+        paid_notice: 'Your plan will switch to %plan% immediately. The change is processed by our payment provider and any proration will be applied to your next invoice.'
+        title: 'Confirm downgrade'
+        what_changes: 'What changes'
+    feature:
+        approaching_limit: 'Approaching plan limit'
+        available_on_plan: 'This feature is available on the %plan% plan.'
+        remaining: '%remaining% of %total% remaining.'
+        upgrade_required: 'Upgrade required'
+        upgrade_to: 'Upgrade to %plan%'
+    flash:
+        checkout_failed: 'Unable to create checkout session. Please try again later.'
+        downgrade_cancel_failed: 'Could not cancel the scheduled change: %error%'
+        downgrade_cancelled: 'Scheduled plan change cancelled.'
+        downgrade_scheduled: 'Your plan will be downgraded at the end of the current billing period.'
+        free_plan_active: 'Your free plan is now active.'
+        invalid_plan: 'The selected plan is invalid.'
+        invalid_token: 'Invalid security token, please try again.'
+        no_plans_available: 'No subscription plans are available.'
+        no_subscription: 'No subscription found.'
+        no_subscription_short: 'No subscription found'
+        plan_changed: 'Your plan has been changed.'
+        plan_update_failed: 'Could not update your plan: %error%'
+        plan_updated: 'Your plan has been updated.'
+        subscription_activated: 'Your subscription has been activated.'
+    menu:
+        billing: Subscription
+    overview:
+        cancel_change: 'Cancel change'
+        change_plan: 'Change plan'
+        choose_to_continue: 'Choose a plan to continue.'
+        current_plan: 'Current plan'
+        free: Free
+        manage_payment_method: 'Manage payment method'
+        next_renewal: 'Next renewal'
+        past_due_message: 'Please update your payment details to keep your subscription active.'
+        past_due_title: 'Payment past due'
+        paused_message: 'Your subscription is currently paused.'
+        pending_change_message: 'You will be moved to the %plan% plan on %date%.'
+        pending_change_title: 'Plan change scheduled'
+        plan_features: 'Plan features'
+        renewal: Renewal
+        renewal_none: —
+        started: Started
+        status:
+            active: Active
+            cancelled: Cancelled
+            expired: Expired
+            inactive: Inactive
+            past_due: 'Past due'
+            paused: Paused
+            pending: Pending
+            trial: Trial
+            unpaid: Unpaid
+        title: Subscription
+        trial_days_left: '%count% days left in your trial'
+        trial_ended: 'Your trial has ended.'
+        trial_ends: 'Trial ends'
+        trial_keep_features: 'Pick a paid plan to keep using all features after the trial ends.'
+    paused:
+        feature_clients: 'Client and contact management'
+        feature_invoices: 'Unlimited invoices and quotes'
+        feature_payments: 'Professional payment processing'
+        feature_recurring: 'Recurring invoices and subscriptions'
+        feature_reports: 'Financial reports and insights'
+        features_heading: 'Resume to access these features:'
+        resume: 'Resume Subscription'
+        subtitle: "You won't be charged while your subscription is paused. Resume anytime at %price%/month to regain access to all features."
+        title: 'Your Subscription is Paused'
+        while_paused: 'While paused'
+        while_paused_message: "Your data is safe and will be waiting for you. You won't be charged during this time, but you won't have access to features until you resume."
+    pending:
+        activate: 'Activate Subscription'
+        already_activated: 'Already activated?'
+        just_completed_message: 'If you just completed the payment process, your subscription may take a moment to activate. You can refresh this page or wait a few seconds.'
+        just_completed_title: 'Just completed checkout?'
+        need_help: 'Need a hand?'
+        secure_checkout: 'Secure checkout · Cancel anytime · No hidden fees'
+        subtitle: 'Pick a plan and start running your business with SolidInvoice in minutes.'
+        switch_company: 'Switch to another company'
+        title: 'Activate Your Subscription'
+    plan:
+        choose: 'Choose plan'
+        continue_free: 'Continue with Free'
+        current: 'Current plan'
+        included: Included
+        just_getting_started: 'Just getting started?'
+        no_credit_card: 'No credit card required'
+        not_included: 'Not included'
+        per_month: /month
+        recommended: Recommended
+        unlimited: Unlimited
+        your_current_plan: 'Your current plan'
+    pricing:
+        subtitle: 'Pick the plan that fits your needs. You can change it later.'
+        title: 'Choose your plan'
+    recurring:
+        feature_blocked: 'Recurring invoices are not available on your current plan.'
+        feature_blocked_upgrade: 'Recurring invoices are not available on your current plan. Upgrade to %plan% to activate this recurring invoice.'
+    settings:
+        template_preview:
+            title: 'Template preview'
+    trial_expired:
+        activate: 'Activate Subscription'
+        activate_save: 'Activate & Save 20%'
+        feature_clients: 'Client and contact management'
+        feature_invoices: 'Unlimited invoices and quotes'
+        feature_payments: 'Professional payment processing'
+        feature_recurring: 'Recurring invoices and subscriptions'
+        feature_reports: 'Financial reports and insights'
+        features_heading: 'Continue enjoying these features:'
+        promo_code: 'Promo code'
+        promo_heading: "Don't go just yet — here's 20% off"
+        promo_message: 'Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>20%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.'
+        subtitle: 'Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.'
+        title: 'Your trial has ended'
+save: Save
+search:
+    and: and
+    applies_to: 'Applies to'
+    at_least: 'at least'
+    at_most: 'at most'
+    available_qualifiers: 'Available Qualifiers'
+    between_range: 'between a range'
+    comparison_operators: 'Comparison Operators'
+    description: Description
+    exact_match: 'exact match'
+    example_overdue: 'All overdue records across every section'
+    example_paid: 'Paid invoices with an amount over 500'
+    example_payments: 'Payments sorted from highest to lowest amount'
+    example_pending: 'Pending items linked to Acme Corp'
+    example_queries: 'Example Queries'
+    example_quotes: 'Quotes created after January 1, 2024'
+    filter_amount: 'Filter by amount'
+    filter_client: 'Filter by client name'
+    filter_created: 'Filter by creation date'
+    filter_status: 'Filter by record status'
+    greater_than: 'greater than'
+    guide: 'Search guide'
+    guide_title: 'Search Guide'
+    intro: 'Type to search across all sections. Use qualifiers to narrow and filter your results. Multiple qualifiers can be combined in a single query.'
+    less_than: 'less than'
+    limit_section: 'Limit search to a specific section'
+    placeholder: Search...
+    qualifier: Qualifier
+    searching: Searching...
+    sort_results: 'Sort results'
+    supports_operators: 'Supports comparison operators and ranges — see below'
+    values_syntax: 'Values / Syntax'
+security:
+    login:
+        forgot_password: 'Forgot Password'
+        login: Login
+        login_with_google: 'Login with Google'
+        no_account: "Don't have an account yet?"
+        or: or
+        password: Password
+        register_now: 'Register Now'
+        remember: 'Keep me logged in'
+        username: 'Email Address'
+    register:
+        cta: 'Create your free account'
+        email: 'Email Address'
+        features:
+            clients:
+                description: 'Keep all your client information organized in one place'
+                title: 'Client Management'
+            invoices:
+                description: 'Create beautiful, customizable invoices in seconds'
+                title: 'Professional Invoices'
+            payments:
+                description: 'Accept payments online and track every transaction'
+                title: 'Payment Tracking'
+            subtitle: 'Join thousands of freelancers and small businesses managing their finances with SolidInvoice'
+            tax:
+                description: 'Automatic tax calculations and detailed reporting'
+                title: 'Tax Management'
+            title: 'Start invoicing in minutes'
+        heading: 'Create your free account'
+        links:
+            google: 'Sign up with Google'
+            login: 'Already have an account?'
+            signin: 'Sign in'
+        password: Password
+        password_confirm: 'Confirm Password'
+        placeholders:
+            company: 'Your Company Name'
+            email: your@email.com
+            password: 'Create a strong password'
+        show_password: 'Show password'
+        strength:
+            label: 'At least 8 characters'
+            medium: 'Medium strength'
+            strong: 'Strong password'
+            weak: 'Weak password'
+        subheading: 'Get started with SolidInvoice today'
+        submit: Register
+        success: 'Your account has been created. Please verify your email address before logging in.'
+        terms_agreement: 'I agree to the Terms & Conditions and Privacy Policy'
+        terms_agreement_html: 'I agree to the  <a href="https://solidinvoice.co/terms-of-service" target="_blank" class="link-primary" rel="external noreferrer noopener">Terms & Conditions</a> and <a href="https://solidinvoice.co/privacy-policy" target="_blank" class="link-primary" rel="external noreferrer noopener">Privacy Policy</a>'
+        title: Register
+        trust:
+            control: 'Your data, your control'
+            encryption: 'Bank-level encryption'
+            opensource: 'Open Source'
+    two_factor:
+        backup_code: 'backup code'
+        code_aria_label: 'Enter 6-digit verification code'
+        code_placeholder: '000000'
+        email:
+            check_inbox: 'Check your inbox and spam folder'
+            description: 'We sent a 6-digit verification code to your email address'
+            expires: 'Code expires in 10 minutes'
+            no_code: "Didn't receive the code?"
+            resend: 'Resend code'
+            title: 'Email Verification'
+        instead: instead
+        lost_authenticator: 'Lost your authenticator? Use a'
+        security_notice: 'This is an additional security step to protect your account'
+        settings:
+            backup:
+                available: 'codes available'
+                description: 'Use these codes when you lose access to your authentication device'
+                download: Download
+                download_text: 'Download as Text File'
+                important: 'Important:'
+                regenerate: 'Regenerate Codes'
+                save_notice: 'Save these codes in a secure place. Each code can only be used once.'
+                store_safely: 'Store these safely - each can only be used once'
+                title: 'Backup Codes'
+                view: 'View Codes'
+            disable: Disable
+            email:
+                codes_sent_to: 'Codes will be sent to'
+                description: 'Receive verification codes via email when logging in'
+                title: 'Email Authentication'
+            enable: Enable
+            modal:
+                enter_code: 'Enter the 6-digit code from your app'
+                manual_entry: "Can't scan? Enter manually"
+                manual_instruction: 'Enter this code in your authenticator app:'
+                qr_alt: 'QR Code'
+                scan_instruction: 'Scan this QR code with your authenticator app'
+                scan_qr: 'Scan QR Code'
+                setup_title: 'Set Up Authenticator App'
+                verify_code: 'Verify Code'
+                verify_enable: 'Verify & Enable'
+            set_up: 'Set Up'
+            status:
+                disabled: Disabled
+                enabled: Enabled
+            totp:
+                configured: 'Your authenticator app is configured and ready to use'
+                description: 'Use Google Authenticator, Authy, or similar apps for verification'
+                not_configured: 'Set up an authenticator app for enhanced security'
+                title: 'Authenticator App'
+            trusted:
+                badge: 'Device Trusted'
+                description: "This device is trusted and won't require 2FA verification"
+                note: "You won't be asked for verification codes on this device"
+                revoke: 'Revoke Trust'
+                title: 'Trusted Device'
+        subtitle: 'Add an extra layer of security to your account'
+        title: 'Two-Factor Authentication'
+        totp:
+            description: 'Enter the verification code from your authenticator app'
+        trust_device: 'Trust this device for 30 days'
+        try_another_method: 'Try another verification method'
+        verification_code: 'Verification Code'
+        verify_continue: 'Verify & Continue'
+    verify_email:
+        flash:
+            invalid: 'The email verification link is invalid.'
+            success: 'Your email address has been verified.'
+settings:
+    address:
+        city: City
+        city_placeholder: City
+        country: Country
+        state: 'State / Province'
+        state_placeholder: 'State or province'
+        street1: 'Street Address'
+        street1_placeholder: 'Street address line 1'
+        street2: 'Street Address 2'
+        street2_placeholder: 'Apartment, suite, unit, etc. (optional)'
+        zip: 'Postal Code'
+        zip_placeholder: 'ZIP / Postal code'
+    bcc_address:
+        help: 'Receive a blind carbon copy of every %type% email sent.'
+    email_subject:
+        help: 'Use {id} to include the %type% number. Example: "New %type% - #{id}"'
+        placeholder: 'New %type% - #{id}'
+    logo:
+        help: 'Recommended: Square image, at least 200x200px. PNG or JPG format.'
+    mail_transport:
+        provider:
+            label: 'Mail Provider'
+            placeholder: 'Choose Mail Provider'
+    numbering:
+        description: 'Configure how %type% numbers are generated.'
+    numbering_strategy:
+        help: 'Choose how %type% IDs are generated.'
+    page:
+        company:
+            business_address: 'Business Address'
+            business_details: 'Business Details'
+            contact_details: 'Contact Details'
+            contact_email: 'Contact Email'
+            contact_email_placeholder: contact@yourcompany.com
+            contact_help: 'This information will appear on your invoices and quotes.'
+            currency: 'Default Currency'
+            currency_help: 'The default currency used for new invoices and quotes.'
+            logo: 'Company Logo'
+            name: 'Company Name'
+            name_placeholder: 'Your company name'
+            phone: 'Phone Number'
+            phone_placeholder: '+1 (555) 123-4567'
+            profile: 'Company Profile'
+        danger:
+            delete: 'Delete Company'
+            delete_help: 'Permanently delete your company and all associated data. This action cannot be undone.'
+            modal:
+                company_name_aria: 'Company name to type'
+                confirm_prompt: 'To confirm deletion, please type the company name exactly as shown below:'
+                input_placeholder: 'Enter company name to confirm'
+                title: 'Confirm Company Deletion'
+                warning: Warning!
+                warning_help: 'This action will permanently delete your company and all associated data including invoices, quotes, clients, and payments. This cannot be undone.'
+            title: 'Danger Zone'
+        design:
+            template:
+                preview: Preview
+                preview_full: 'Open full preview'
+                subtitle: 'Choose the design used for your invoices and quotes everywhere clients see them — PDF downloads, emails and the client portal.'
+                title: 'Invoice & Quote Template'
+        display:
+            title: 'Display Settings'
+            watermark: 'Show Status Watermark'
+        domain:
+            custom_domain: 'Custom Domain'
+            dns_footer: 'Once the CNAME is in place, your custom domain will resolve to SolidInvoice automatically — no further action required.'
+            dns_help: 'After saving, add a CNAME record at your DNS provider so your domain points to SolidInvoice. DNS changes can take up to 24 hours to propagate.'
+            dns_name: 'Name / Host'
+            dns_title: 'DNS setup required'
+            dns_type: Type
+            dns_value: 'Value / Target'
+            subtitle: 'Serve SolidInvoice from your own domain (e.g. invoices.yourcompany.com) instead of the default URL.'
+            title: Domain
+        email:
+            bcc: 'BCC Email Address'
+            delivery:
+                subtitle: 'Choose and configure your email delivery service.'
+                title: 'Email Delivery'
+            notifications: 'Email Notifications'
+            sender:
+                from_address: 'From Email Address'
+                from_address_help: 'Replies will be sent to this address.'
+                from_name: 'From Name'
+                from_name_help: 'The name that appears in the "From" field.'
+                from_name_placeholder: 'Your Company Name'
+                subtitle: 'Configure how your emails appear to recipients.'
+                title: 'Sender Information'
+            subject: 'Email Subject Line'
+        general:
+            title: 'General Settings'
+        numbering:
+            example: 'Example:'
+            prefix: 'ID Prefix'
+            prefix_help: 'Added before the number. E.g., "INV-" results in INV-001'
+            strategy: 'Numbering Strategy'
+            suffix: 'ID Suffix'
+            suffix_help: 'Added after the number. E.g., "-2024" results in 001-2024'
+            title: 'Numbering Scheme'
+        reminder:
+            enable: 'Enable Automatic Reminders'
+            enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'
+            how_help: "Reminders are sent daily at 9:00 AM. Each invoice receives a maximum of 4 automated reminders (1 pre-due + 3 overdue). After the final reminder, you'll receive an escalation notification to handle the invoice manually. Paid invoices will not receive reminders."
+            how_label: 'How It Works:'
+            overdue:
+                subtitle: 'Automatic reminders are sent at 1, 7, and 14 days after the invoice becomes overdue. After the final (14-day) reminder, an escalation notification is sent to internal users for manual follow-up.'
+                title: 'Overdue Reminder Schedule'
+                tone_help: 'Reminder messages become progressively more urgent: polite at 1 day, firm at 7 days, and urgent at 14 days overdue.'
+                tone_label: 'Escalating Tone:'
+            pre_due:
+                days: 'Days Before Due Date'
+                days_help: 'Send the reminder this many days before the invoice is due (0 to send on due date).'
+                enable: 'Enable Pre-Due Reminders'
+                subtitle: 'Send a friendly reminder before the invoice due date to help clients pay on time.'
+                title: 'Pre-Due Reminder'
+            subtitle: 'Automatically send payment reminders to clients for pending invoices. Reminders are sent before the due date and at intervals after the invoice becomes overdue.'
+            title: 'Payment Reminders'
+        save: 'Save Settings'
+        tab:
+            design: Design
+            email: Email
+            invoice: Invoices
+            quote: Quotes
+            system: Company
+    save: Save
+    saved:
+        success: 'Settings saved successfully!'
+    upgrade:
+        activate: 'Activate subscription'
+        activate_tooltip: 'Activate your subscription to unlock this feature'
+        label: 'Upgrade plan'
+        label_plan: 'Upgrade to %plan%'
+        tooltip: 'Upgrade your plan to unlock this feature'
+        tooltip_plan: 'Upgrade to %plan% to unlock this feature'
+    watermark:
+        help: 'Display a visual watermark (e.g., PAID, DRAFT) on the %type% document.'
+status:
+    accepted: Accepted
+    active: Active
+    archived: Archived
+    authorized: Authorized
+    cancelled: Cancelled
+    captured: Captured
+    complete: Complete
+    credit: Credit
+    declined: Declined
+    draft: Draft
+    expired: Expired
+    failed: Failed
+    inactive: Inactive
+    new: New
+    overdue: Overdue
+    paid: Paid
+    paused: Paused
+    pending: Pending
+    refunded: Refunded
+    suspended: Suspended
+    unknown: Unknown
+success: Success
+tax:
+    company_identifiers:
+        add: 'Add tax identifier'
+        description: 'Add the tax identifiers (VAT, GST, TIN, ABN, etc.) for your own business — these will appear on the invoices and quotes you issue.'
+        empty: 'No tax identifiers configured. Add one to display it on your invoices.'
+        label: Type
+        primary: Primary
+        remove: 'Remove tax identifier'
+        save: 'Save tax identifiers'
+        title: 'Company Tax Identifiers'
+        value: Number
+    direction:
+        additive: Additive
+        deductive: Deductive
+        informational: Informational
+    exclusive: Exclusive
+    form:
+        input:
+            validate: Validate
+    grid:
+        actions:
+            edit: Edit
+    inclusive: Inclusive
+    invoice_tax:
+        note:
+            label: Note
+            placeholder: 'Optional note (e.g. reverse-charge VAT notice)'
+        tax:
+            placeholder: 'Select a tax'
+    line_tax:
+        tax:
+            placeholder: 'No Tax'
+    rates:
+        add: 'Add Tax Rate'
+        cancel: Cancel
+        details: 'Tax Details'
+        edit: 'Edit Tax Rate'
+        explanation: "<b>Inclusive</b>: The Tax is already included in the item price<br />\n<b>Exclusive</b>: Tax is calculated on top of the item price<br />\n<b>Flat Rate</b>: A fixed amount is charged regardless of the item price<br />\n"
+        form:
+            description: 'Set up the tax rate details and calculation method'
+            subtitle: 'Configure tax rates for invoices and quotes'
+        save: Save
+        title: 'Tax Rates'
+        type:
+            select: Select
+    vat_number: 'Vat Number:'
+title: messages
+type: Type
+users:
+    add: 'Add User'
+    create:
+        generate_password: 'Generate Random Password'
+        success: 'User created successfully!'
+    edit: 'Edit User'
+    empty:
+        description: 'Get started by inviting your first team member to collaborate.'
+        title: 'No users yet'
+    grid:
+        actions:
+            delete: Delete
+            edit: Edit
+        invitation:
+            actions:
+                resend: 'Resend Invitation'
+    invitation:
+        accept:
+            success: 'Invitation accepted successfully! You can now log in.'
+        delete:
+            success: 'Invitation deleted successfully!'
+        exists: 'There is already an existing invitation for this email address'
+        success: 'Invitation sent successfully!'
+    invitations:
+        empty:
+            description: 'All invitations have been accepted or there are no pending invitations.'
+            title: 'No pending invitations'
+    invite:
+        details:
+            description: 'Enter the email address of the person you want to invite'
+            title: 'Invitation Details'
+        email:
+            help: 'The user will receive an invitation email with instructions to set up their account'
+            label: 'Email Address'
+        info: 'The invited user will receive an email with a link to accept the invitation and set up their account. The invitation link will expire after 7 days.'
+        send: 'Send Invitation'
+        subtitle: 'Send an invitation to a new user to join your organization'
+        title: 'Invite User'
+    invite_user: 'Invite User'
+    save: Save
+    stats:
+        active_users: 'Active Users'
+        pending_invitations: 'Pending Invitations'
+        recently_joined: 'Recently Joined (30d)'
+    tabs:
+        active_users: 'Active Users'
+        pending_invitations: 'Pending Invitations'
+    title: Users
+view: View
+website: Website

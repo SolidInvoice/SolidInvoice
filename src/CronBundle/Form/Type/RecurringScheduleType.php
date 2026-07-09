@@ -119,7 +119,7 @@ final class RecurringScheduleType extends AbstractType
                     'placeholder' => 'invoice.recurring.day_of_month.placeholder',
                     'multiple' => false,
                     'expanded' => false,
-                    'label' => 'invoice.recurring.day_of_month',
+                    'label' => 'invoice.recurring.day_of_month.label',
                     'attr' => ['class' => 'form-select'],
                 ]);
             }

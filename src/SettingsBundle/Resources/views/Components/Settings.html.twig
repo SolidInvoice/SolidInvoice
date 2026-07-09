@@ -211,7 +211,7 @@
                     {% if form.watermark is defined %}
                         {{ form_row(form.watermark, {
                             label: 'settings.page.display.watermark'|trans,
-                            help: 'settings.watermark.help'|trans({'%type%': section|trans})
+                            help: 'settings.watermark.help'|trans({'%type%': ('label.' ~ section)|trans})
                         }) }}
                     {% endif %}
                 </div>
@@ -227,8 +227,8 @@
                             <div class="col-12">
                                 {{ form_row(form.email_subject, {
                                     label: 'settings.page.email.subject'|trans,
-                                    help: 'settings.email_subject.help'|trans({'%type%': section|trans}),
-                                    attr: {placeholder: 'settings.email_subject.placeholder'|trans({'%type%': section|trans|title})}
+                                    help: 'settings.email_subject.help'|trans({'%type%': ('label.' ~ section)|trans}),
+                                    attr: {placeholder: 'settings.email_subject.placeholder'|trans({'%type%': ('label.' ~ section)|trans|title})}
                                 }) }}
                             </div>
                         {% endif %}
@@ -236,7 +236,7 @@
                             <div class="col-12">
                                 {{ form_row(form.bcc_address, {
                                     label: 'settings.page.email.bcc'|trans,
-                                    help: 'settings.bcc_address.help'|trans({'%type%': section|trans}),
+                                    help: 'settings.bcc_address.help'|trans({'%type%': ('label.' ~ section)|trans}),
                                     attr: {placeholder: 'bcc@yourcompany.com'}
                                 }) }}
                             </div>
@@ -252,14 +252,14 @@
                             {{ 'settings.page.numbering.title'|trans }}
                         </h3>
                         <p class="text-muted small mb-3">
-                            {{ 'settings.numbering.description'|trans({'%type%': section|trans}) }}
+                            {{ 'settings.numbering.description'|trans({'%type%': ('label.' ~ section)|trans}) }}
                         </p>
                         <div class="row g-3">
                             {% if form.id_generation.strategy is defined %}
                                 <div class="col-12">
                                     {{ form_row(form.id_generation.strategy, {
                                         label: 'settings.page.numbering.strategy'|trans,
-                                        help: 'settings.numbering_strategy.help'|trans({'%type%': section|trans})
+                                        help: 'settings.numbering_strategy.help'|trans({'%type%': ('label.' ~ section)|trans})
                                     }) }}
                                 </div>
                             {% endif %}

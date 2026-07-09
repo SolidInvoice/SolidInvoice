@@ -1,5 +1,0 @@
-tax:
-    constraint:
-        incompatible:
-            inclusive_compound: 'A tax cannot be both inclusive and compound.'
-            flat_rate_compound: 'A flat-rate tax cannot be compound.'
