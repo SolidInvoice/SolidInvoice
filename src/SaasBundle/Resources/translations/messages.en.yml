@@ -1,4 +1,7 @@
 saas:
+    settings:
+        template_preview:
+            title: 'Template preview'
     action:
         back: Back
         contact_support: Contact Support

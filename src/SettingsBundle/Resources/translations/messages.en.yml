@@ -80,6 +80,8 @@ settings:
             template:
                 title: 'Invoice & Quote Template'
                 subtitle: 'Choose the design used for your invoices and quotes everywhere clients see them — PDF downloads, emails and the client portal.'
+                preview: 'Preview'
+                preview_full: 'Open full preview'
         email:
             notifications: 'Email Notifications'
             subject: 'Email Subject Line'

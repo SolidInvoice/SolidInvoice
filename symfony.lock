@@ -602,15 +602,6 @@
             "ref": "4e79d806089a216019f093cdded4eebc282cb46c"
         }
     },
-    "symfony/gitter-notifier": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "a2ef7103fc75e8d8b146645bf6193e13ae20a5ed"
-        }
-    },
     "symfony/google-chat-notifier": {
         "version": "5.4",
         "recipe": {
@@ -995,15 +986,6 @@
             "branch": "main",
             "version": "5.3",
             "ref": "f0f33ad43a7251696e9893d05e044c661f36460a"
-        }
-    },
-    "symfony/sms77-notifier": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.4",
-            "ref": "4d0884a335890898a906cc13a56171368059b1bb"
         }
     },
     "symfony/smsapi-notifier": {

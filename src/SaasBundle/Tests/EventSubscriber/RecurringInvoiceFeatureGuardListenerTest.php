@@ -131,7 +131,7 @@ final class RecurringInvoiceFeatureGuardListenerTest extends TestCase
         $translator->addLoader('yaml', new YamlFileLoader());
         $translator->addResource(
             'yaml',
-            dirname(__DIR__, 3) . '/Resources/translations/messages.en.yml',
+            dirname(__DIR__, 2) . '/Resources/translations/messages.en.yml',
             'en',
             'messages',
         );
