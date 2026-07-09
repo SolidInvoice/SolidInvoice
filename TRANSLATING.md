@@ -12,11 +12,33 @@ default, but any Symfony translation provider works).
 
 ### Catalogs
 
-Translation files are YAML, one per bundle, under:
+All translations live in a single, app-level directory — **one file per domain + locale**:
 
 ```
-src/<Bundle>/Resources/translations/<domain>.<locale>.yml
+translations/<domain>.<locale>.yml      e.g. translations/messages.en.yml
 ```
+
+They are **not** split per bundle. Centralising them keeps shared keys in one place (no
+cross-bundle duplication), and it matches where the translation provider round-trips:
+`translation:pull` writes every locale back into this same `translations/` directory.
+
+Keys are stored **nested** (each dot in the id is a level in the tree), sorted
+alphabetically at every level:
+
+```yaml
+client:
+    info: 'Client Info'
+label:
+    invoice: Invoice
+    status: Status
+```
+
+> **No leaf/namespace clashes.** A key can't be *both* a value and a parent — e.g. you may
+> not have `invoice: Invoice` (a value) alongside `invoice.list.title` (a namespace),
+> because YAML can't nest under a scalar. When a word is needed as a standalone label, put
+> it under a namespace: a generic label goes in `label.*` (`label.invoice`,
+> `label.status`), and a feature-specific one nests as `<feature>.…​.label`
+> (`datagrid.search.label`). Never introduce a bare top-level word key.
 
 English (`en`) is the **source/reference** locale; every other locale falls back to it.
 
@@ -44,8 +66,8 @@ There is a small, fixed set of domains — pick the one that fits:
   - `billing.*` — `subtotal`, `tax`, `discount`, `total`, `withholding`, `notes_help`, `due_date`
   - `status.*` — invoice/quote/payment/client status badge labels (keyed by enum value)
 
-Because Symfony merges every bundle's catalog for a domain, a key defined in `CoreBundle`
-is available everywhere.
+Every key lives in the one shared catalog per domain, so a shared key (e.g. `action.save`)
+is defined once and available everywhere.
 
 ## Using translations in code
 
@@ -86,17 +108,27 @@ $this->addFlash('success', 'custom_field.flash.created');
 2. Provide the translated catalogs (or let the translation provider pull them — see below).
    Missing strings fall back to English automatically.
 
-## Extracting strings
+## Keeping the English catalog in sync
 
-Symfony's extractor plus a custom **menu-label extractor**
-(`SolidInvoice\CoreBundle\Translation\Extractor\MenuLabelExtractor`, which surfaces the
-labels passed to KnpMenu `addChild()` calls that the built-in extractor skips) keep the
-catalogs in sync with the code:
+The English source catalog is **maintained by hand**: when you add a `'x.y'|trans` call,
+add the `x.y` key to `translations/messages.en.yml` (or the relevant domain) in the same
+change. Add it in the correct alphabetical position.
+
+Do **not** run `translation:extract` with `--force`/`--clean` to prune the catalog. Its
+static analysis only detects `->trans()`/`t()`/`TranslatableMessage`/constraint messages —
+it does **not** see form `label`/`help`/`placeholder` options, `addFlash()`, DataGrid
+`->label()` calls, menu labels, enum `translationKey()`, or dynamically built keys. Running
+it with cleaning enabled therefore **deletes live strings**.
+
+Use it only in read-only mode to discover keys you referenced but forgot to define:
 
 ```bash
-bin/console translation:extract en SolidInvoiceInvoiceBundle --domain=messages --dump-messages
-bin/console debug:translation en SolidInvoiceInvoiceBundle --domain=messages --only-missing
+bin/console translation:extract en --dump-messages --no-fill   # list, don't write
 ```
+
+There is also a custom **menu-label extractor**
+(`SolidInvoice\CoreBundle\Translation\Extractor\MenuLabelExtractor`) that surfaces the
+labels passed to KnpMenu `addChild()` calls, which the built-in extractor skips.
 
 ## Pushing / pulling with a provider
 
@@ -111,9 +143,12 @@ SOLIDINVOICE_TRANSLATION_DSN=crowdin://PROJECT_ID:API_TOKEN@ORGANIZATION_DOMAIN.
 Then:
 
 ```bash
-bin/console translation:push   crowdin --force            # upload source strings
+bin/console translation:push   crowdin --force               # upload the English source
 bin/console translation:pull   crowdin --force --format=yml   # download translations
 ```
 
+`translation:pull` writes every locale into the `translations/` directory alongside the
+English source, so the round-trip stays in one place.
+
 External contributors who prefer not to run the app can translate directly in the
-provider's UI, or edit the `*.<locale>.yml` catalog files and open a pull request.
+provider's UI, or edit `translations/<domain>.<locale>.yml` and open a pull request.

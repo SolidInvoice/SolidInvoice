@@ -1,5 +1,0 @@
-quote:
-    lines:
-        min: 'You need to add at least 1 line to the Quote'
-    users:
-        min: 'You need to select at least 1 user to attach to the Quote'
