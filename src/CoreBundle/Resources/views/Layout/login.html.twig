@@ -28,7 +28,7 @@
             </div>
 
             <div class="text-center text-muted mt-3">
-                {{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a> - {{ app_version }}
+                {{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %}
             </div>
         </div>
     </div>

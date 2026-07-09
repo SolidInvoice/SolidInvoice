@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -49,7 +50,8 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         private readonly SystemConfig $systemConfig,
         private readonly RequestStack $requestStack,
         private readonly CompanySelector $companySelector,
-        private readonly ?string $installed
+        private readonly ?string $installed,
+        private readonly ToggleInterface $toggler,
     ) {
     }
 
@@ -62,7 +64,10 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         return [
             'query' => $this->getQuery(),
-            'app_version' => SolidInvoiceCoreBundle::VERSION,
+            // Hide the version in SaaS mode: hosted deployments often run dev builds,
+            // and exposing "3.1.x-dev" in footers/emails looks unprofessional. Self-hosted
+            // installs (saas_enabled inactive) keep showing the version.
+            'app_version' => $this->toggler->isActive('saas_enabled') ? null : SolidInvoiceCoreBundle::VERSION,
             'app_name' => SolidInvoiceCoreBundle::APP_NAME,
         ];
     }
