@@ -46,7 +46,7 @@
             </div>
 
             <div class="text-center text-muted mt-5">
-                <small>{{ 'powered_by'|trans }} <a href="https://solidinvoice.co">{{ app_name }}</a> - {{ app_version }}</small>
+                <small>{{ 'powered_by'|trans }} <a href="https://solidinvoice.co">{{ app_name }}</a>{% if app_version %} - {{ app_version }}{% endif %}</small>
             </div>
 
         </div>

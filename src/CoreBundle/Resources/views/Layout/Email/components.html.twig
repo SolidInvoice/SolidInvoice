@@ -245,7 +245,7 @@
                 <center>
                     {% if show_powered_by and setting('system/general/hide_powered_by') is not same as('1') %}
                         <p style="font-size: 14px; color: #626976; margin: 0; Margin: 0;">
-                            {{ "powered_by"|trans({}, 'email') }} <a href="https://solidinvoice.co" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a> - {{ app_version }}
+                            {{ "powered_by"|trans({}, 'email') }} <a href="https://solidinvoice.co" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a>{% if app_version %} - {{ app_version }}{% endif %}
                         </p>
                     {% endif %}
 
