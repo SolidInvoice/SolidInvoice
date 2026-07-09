@@ -25,6 +25,7 @@ use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeVisitor;
 use ReflectionClass;
 use Symfony\Component\Translation\Extractor\Visitor\AbstractVisitor;
+use Throwable;
 
 /**
  * Collects translatable labels from KnpMenu `addChild()` calls.
@@ -163,7 +164,7 @@ final class MenuLabelVisitor extends AbstractVisitor implements NodeVisitor
                 if (false !== $constant && \is_string($value = $constant->getValue())) {
                     return $value;
                 }
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 return null;
             }
         }

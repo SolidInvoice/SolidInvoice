@@ -37,7 +37,7 @@ final class SampleMenu
 
         // Named arguments, in and out of declaration order.
         $section->addChild(child: 'sample.menu.named');
-        $section->addChild(options: ['route' => '_reordered'], child: 'sample.menu.reordered');
+        $section->addChild(child: 'sample.menu.reordered', options: ['route' => '_reordered']);
 
         // Class constant resolved to its string value.
         $section->addChild(SampleMenuLabels::DASHBOARD, ['route' => '_sample_dashboard']);
