@@ -19,5 +19,5 @@ namespace SolidInvoice\CoreBundle\Tests\Fixtures\Menu;
  */
 final class SampleMenuLabels
 {
-    public const DASHBOARD = 'sample.menu.dashboard';
+    public const string DASHBOARD = 'sample.menu.dashboard';
 }
