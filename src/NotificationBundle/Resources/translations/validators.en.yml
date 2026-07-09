@@ -1,0 +1,4 @@
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'

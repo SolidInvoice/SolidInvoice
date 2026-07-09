@@ -17,6 +17,7 @@ reset_password:
     button_text: 'Reset Password'
     alternative: 'If the button above doesn''t work, copy and paste this link into your browser:'
     security: 'If you didn''t request a password reset, you can safely ignore this email. Your password won''t be changed.'
+    expires: 'This link will expire in %resetTimestamp%.'
 
 email:
     confirmation:
