@@ -49,10 +49,10 @@ final class GlobalExtensionTest extends TestCase
 
         return new GlobalExtension(
             new Calculator(),
-            $this->createMock(Generator::class),
-            $this->createMock(SystemConfig::class),
+            $this->createStub(Generator::class),
+            $this->createStub(SystemConfig::class),
             new RequestStack(),
-            new CompanySelector($this->createMock(ManagerRegistry::class)),
+            new CompanySelector($this->createStub(ManagerRegistry::class)),
             'default',
             $toggler,
         );
