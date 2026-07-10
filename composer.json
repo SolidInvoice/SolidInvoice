@@ -212,7 +212,7 @@
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-symfony": "^2.0.18",
         "phpunit/phpunit": "^13.1.11",
-        "rector/rector": "2.4.6",
+        "rector/rector": "2.5.5",
         "roave/security-advisories": "dev-latest",
         "spatie/phpunit-snapshot-assertions": "^5.4",
         "symfony/ai-mate": "^0.8.0",
