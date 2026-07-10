@@ -1,0 +1,68 @@
+name: Translations Pull
+
+concurrency:
+  group: translations-pull
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pull:
+    name: Pull translations from Crowdin
+    runs-on: ubuntu-latest
+    if: github.repository == 'SolidInvoice/SolidInvoice'
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    env:
+      SOLIDINVOICE_ENV: dev
+      SOLIDINVOICE_DEBUG: 1
+      SOLIDINVOICE_TRANSLATION_DSN: ${{ secrets.SOLIDINVOICE_TRANSLATION_DSN }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          ref: 3.1.x
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
+          extensions: intl, gd, mysql, pdo_mysql, :xdebug
+          coverage: none
+
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
+
+      - name: Pull translations from Crowdin
+        run: bin/console translation:pull crowdin --force --format=yml --as-tree=10 -v
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          commit-message: 'Update translations from Crowdin'
+          branch: translations/crowdin-pull
+          delete-branch: true
+          title: 'Update translations from Crowdin'
+          body: >
+            Automated pull of the latest translations from Crowdin,
+            triggered by the `Translations Pull` workflow.
+          labels: translations
+          add-paths: |
+            translations/**
