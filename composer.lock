@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4570718660b385f88d8fb2a3ff1f79d",
+    "content-hash": "c61d31ead42de2d9855f9e274249efcf",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -27459,16 +27459,16 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "13.2.3",
+            "version": "13.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecsphp/ecs.git",
-                "reference": "94f56bce0420d4e837a85c4b2c6501293a5974eb"
+                "reference": "47114ce652240df25763417eeab89d815323050b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/94f56bce0420d4e837a85c4b2c6501293a5974eb",
-                "reference": "94f56bce0420d4e837a85c4b2c6501293a5974eb",
+                "url": "https://api.github.com/repos/ecsphp/ecs/zipball/47114ce652240df25763417eeab89d815323050b",
+                "reference": "47114ce652240df25763417eeab89d815323050b",
                 "shasum": ""
             },
             "require": {
@@ -27503,9 +27503,9 @@
                 "static analysis"
             ],
             "support": {
-                "source": "https://github.com/ecsphp/ecs/tree/13.2.3"
+                "source": "https://github.com/ecsphp/ecs/tree/13.2.6"
             },
-            "time": "2026-06-15T22:08:41+00:00"
+            "time": "2026-07-04T21:15:32+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -27975,5 +27975,5 @@
     "platform-overrides": {
         "php": "8.4.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

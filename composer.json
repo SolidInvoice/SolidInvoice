@@ -222,7 +222,7 @@
         "symfony/maker-bundle": "^1.33",
         "symfony/panther": "^2.4",
         "symfony/web-profiler-bundle": "^8.1",
-        "symplify/easy-coding-standard": "13.2.3",
+        "symplify/easy-coding-standard": "13.2.6",
         "zenstruck/browser": "^1.10",
         "zenstruck/foundry": "^2.10",
         "zenstruck/mailer-test": "^1.5"
