@@ -26,7 +26,7 @@ jobs:
     env:
       SOLIDINVOICE_ENV: dev
       SOLIDINVOICE_DEBUG: 1
-      SOLIDINVOICE_TRANSLATION_DSN: ${{ secrets.SOLIDINVOICE_TRANSLATION_DSN }}
+      SOLIDINVOICE_TRANSLATION_DSN: ${{ secrets.CROWDIN_DSN }}
 
     steps:
       - name: Harden Runner
