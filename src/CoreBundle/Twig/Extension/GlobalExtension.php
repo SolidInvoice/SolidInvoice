@@ -68,8 +68,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return [
             'query' => $this->getQuery(),
             // Hide the version in SaaS mode: hosted deployments often run dev builds,
-            // and exposing "3.1.x-dev" in footers/emails looks unprofessional. Self-hosted
-            // installs (saas_enabled inactive) keep showing the version.
+            // and exposing "3.1.x-dev" in footers/emails looks unprofessional
             'app_version' => $this->toggler->isActive('saas_enabled') ? null : SolidInvoiceCoreBundle::VERSION,
             'app_name' => SolidInvoiceCoreBundle::APP_NAME,
         ];
