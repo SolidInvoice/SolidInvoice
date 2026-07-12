@@ -43,7 +43,9 @@ final class GlobalExtensionTest extends TestCase
     private function createExtension(bool $saasEnabled): GlobalExtension
     {
         $toggler = $this->createMock(ToggleInterface::class);
-        $toggler->method('isActive')
+        $toggler
+            ->expects(self::once())
+            ->method('isActive')
             ->with('saas_enabled')
             ->willReturn($saasEnabled);
 
