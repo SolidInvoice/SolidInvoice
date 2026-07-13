@@ -43,12 +43,14 @@
 
     {{ parent() }}
 
-    <div class="text-center text-secondary mt-3 bg-white p-2">
-        {{ 'security.login.no_account'|trans }}
-        <a href="{{ path('_register') }}" tabindex="-1">
-            {{ 'security.login.register_now'|trans }}
-        </a>
-    </div>
+    {% toggle 'allow_registration' %}
+        <div class="text-center text-secondary mt-3 bg-white p-2">
+            {{ 'security.login.no_account'|trans }}
+            <a href="{{ path('_register') }}" tabindex="-1">
+                {{ 'security.login.register_now'|trans }}
+            </a>
+        </div>
+    {% endtoggle %}
 
     <a class="text-decoration-none position-absolute bottom-0 end-0 p-2 bg-dark text-white rounded-start" style="font-size: 12px;" href="https://unsplash.com/@julian_zett?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="external noopener noreferrer" title="Download free do whatever you want high-resolution photos from Julian Zett">
         <span class="d-inline-block p-1">
