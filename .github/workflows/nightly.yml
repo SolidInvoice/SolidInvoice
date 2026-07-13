@@ -165,7 +165,7 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
 
       - name: Setup Blacksmith Builder
-        uses: useblacksmith/setup-docker-builder@v1
+        uses: useblacksmith/setup-docker-builder@5fe3b77775f1dd55595beb998036fe1f2cf47118 # v1.10.0
 
       - name: Copy binary to Docker context
         run: cp frankenphp/dist/solidinvoice-linux-${{ matrix.arch }} docker/solidinvoice
@@ -219,7 +219,7 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
 
       - name: Setup Blacksmith Builder
-        uses: useblacksmith/setup-docker-builder@v1
+        uses: useblacksmith/setup-docker-builder@5fe3b77775f1dd55595beb998036fe1f2cf47118 # v1.10.0
 
       - name: Download digests
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
