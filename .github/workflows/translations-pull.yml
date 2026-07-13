@@ -47,7 +47,7 @@ jobs:
           extensions: intl, gd, mysql, pdo_mysql, :xdebug
           coverage: none
 
-      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
 
       - name: Pull translations from Crowdin
         run: bin/console translation:pull crowdin --force --format=yml --as-tree=10 -v
