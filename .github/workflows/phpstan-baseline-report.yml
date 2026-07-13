@@ -19,7 +19,7 @@ jobs:
     name: PHPStan Baseline PR Report
     if: github.event_name == 'pull_request'
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       GH_TOKEN: ${{ github.token }}
@@ -200,7 +200,7 @@ jobs:
     name: Update Baseline History
     if: github.event_name == 'push'
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       GH_TOKEN: ${{ github.token }}
