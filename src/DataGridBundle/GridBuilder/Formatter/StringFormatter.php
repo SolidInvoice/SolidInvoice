@@ -41,7 +41,7 @@ final readonly class StringFormatter implements FormatterInterface
     /**
      * @throws SyntaxError|LoaderError
      */
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         assert($column instanceof StringColumn);
 

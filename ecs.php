@@ -28,7 +28,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
+use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveDeadVarThisFixer;
+use Symplify\CodingStandard\Fixer\Commenting\TypeToVarTagFixer;
+use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
@@ -55,7 +58,6 @@ return ECSConfig::configure()
         SetList::SPACES,
         SetList::DOCBLOCK,
         SetList::COMMENTS,
-        // SetList::PHPUNIT,
         SetList::NAMESPACES,
         SetList::CLEAN_CODE,
     ])
@@ -75,6 +77,7 @@ return ECSConfig::configure()
     ->withConfiguredRule(SingleClassElementPerStatementFixer::class, ['elements' => ['const', 'property']])
     ->withConfiguredRule(ClassDefinitionFixer::class, ['single_line' => true])
     ->withConfiguredRule(OrderedImportsFixer::class, ['imports_order' => ['const', 'class', 'function']])
+    ->withConfiguredRule(TypesSpacesFixer::class, ['space' => 'single', 'space_multiple_catch' => 'single'])
     ->withConfiguredRule(HeaderCommentFixer::class, [
         'comment_type' => 'comment',
         'header' => trim($header),
@@ -82,14 +85,17 @@ return ECSConfig::configure()
         'separate' => 'both',
     ])
     ->withSkip([
+        __DIR__ . '/config/env',
         MethodChainingIndentationFixer::class => [
             __DIR__ . '/src/PaymentBundle/DependencyInjection/Configuration.php',
-            __DIR__ . '/src/DataGridBundle/DependencyInjection/GridConfiguration.php',
         ],
         HeaderCommentFixer::class => [
             __DIR__ . '/config/reference.php',
         ],
-        __DIR__ . '/config/env',
+        TypeToVarTagFixer::class => [
+            __DIR__ . '/config/reference.php',
+        ],
+        MethodChainingNewlineFixer::class,
         PhpdocLineSpanFixer::class,
         RemoveDeadVarThisFixer::class,
     ]);

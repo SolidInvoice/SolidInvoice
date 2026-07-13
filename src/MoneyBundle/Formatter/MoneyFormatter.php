@@ -47,7 +47,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     ) {
         try {
             $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        } catch (MethodArgumentValueNotImplementedException|MethodArgumentNotImplementedException) {
+        } catch (MethodArgumentValueNotImplementedException | MethodArgumentNotImplementedException) {
             $this->numberFormatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
         }
 
@@ -64,7 +64,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @throws Throwable
      */
-    public function getCurrencySymbol(Currency|string|null $currency = null, bool $catch = false): string
+    public function getCurrencySymbol(Currency | string | null $currency = null, bool $catch = false): string
     {
         try {
             return Currencies::getSymbol($this->getCurrency($currency), $this->locale);
@@ -108,7 +108,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
             ->toFloat();
     }
 
-    private function getCurrency(Currency|string|null $currency): string
+    private function getCurrency(Currency | string | null $currency): string
     {
         if ($currency instanceof Currency) {
             return $currency->getCode();

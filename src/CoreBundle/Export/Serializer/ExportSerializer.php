@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final readonly class ExportSerializer
 {
     public function __construct(
-        private SerializerInterface&NormalizerInterface&EncoderInterface $inner,
+        private SerializerInterface & NormalizerInterface & EncoderInterface $inner,
     ) {
     }
 

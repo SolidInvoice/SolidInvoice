@@ -43,7 +43,7 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    public function calculateTotals(BaseInvoice|Quote $entity): void
+    public function calculateTotals(BaseInvoice | Quote $entity): void
     {
         $this->updateTotal($entity);
 
@@ -59,7 +59,7 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    private function updateTotal(BaseInvoice|Quote $entity): void
+    private function updateTotal(BaseInvoice | Quote $entity): void
     {
         $result = $this->taxCalculator->calculate($entity);
 
@@ -83,7 +83,7 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    private function applyDiscount(BaseInvoice|Quote $entity, BigDecimal|BigInteger $total): BigNumber
+    private function applyDiscount(BaseInvoice | Quote $entity, BigDecimal | BigInteger $total): BigNumber
     {
         return $total->minus($this->calculator->calculateDiscount($entity));
     }

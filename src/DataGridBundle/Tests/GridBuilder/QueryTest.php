@@ -25,7 +25,7 @@ final class QueryTest extends TestCase
 {
     private Query $query;
 
-    private QueryBuilder&Stub $queryBuilder;
+    private QueryBuilder & Stub $queryBuilder;
 
     protected function setUp(): void
     {

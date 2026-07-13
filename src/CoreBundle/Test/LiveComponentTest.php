@@ -38,7 +38,7 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected KernelBrowser $client;
 
-    protected Stub&CsrfTokenManagerInterface $csrfTokenManager;
+    protected Stub & CsrfTokenManagerInterface $csrfTokenManager;
 
     protected function setUp(): void
     {

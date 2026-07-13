@@ -50,7 +50,7 @@ final class InvoiceTaxCalculator
      * @throws MathException
      */
     public function calculateInvoiceLevel(
-        BaseInvoice|Quote $document,
+        BaseInvoice | Quote $document,
         BigDecimal $subTotal,
         BigDecimal $totalLineTax,
         Rounder $rounder,
@@ -143,7 +143,7 @@ final class InvoiceTaxCalculator
     /**
      * @return list<InvoiceTax>
      */
-    private function orderedTaxes(BaseInvoice|Quote $document): array
+    private function orderedTaxes(BaseInvoice | Quote $document): array
     {
         $collection = match (true) {
             $document instanceof Invoice,

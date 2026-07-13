@@ -26,7 +26,7 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 // The mcp-bundle reads these values at compile time, so env() placeholders
 // can't be used here — read $_ENV / $_SERVER directly (symfony/runtime has
 // already loaded .env by the time this config runs).
-$env = static fn (string $name, string|int $default): string|int => $_ENV[$name] ?? $_SERVER[$name] ?? $default;
+$env = static fn (string $name, string | int $default): string | int => $_ENV[$name] ?? $_SERVER[$name] ?? $default;
 
 return App::config([
     'mcp' => [

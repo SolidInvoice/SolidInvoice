@@ -88,7 +88,7 @@ final readonly class QuoteWriteTools
         array $lines,
         ?string $due = null,
         ?string $discount_type = null,
-        int|float|null $discount_value = null,
+        int | float | null $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],

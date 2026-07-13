@@ -39,13 +39,13 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 #[CoversClass(WithinPlanInvoiceLimitValidator::class)]
 final class WithinPlanInvoiceLimitValidatorTest extends ConstraintValidatorTestCase
 {
-    private Stub&InvoiceRepository $invoiceRepository;
+    private Stub & InvoiceRepository $invoiceRepository;
 
-    private MockObject&FeatureGate $featureGate;
+    private MockObject & FeatureGate $featureGate;
 
-    private MockObject&ToggleInterface $toggle;
+    private MockObject & ToggleInterface $toggle;
 
-    private Stub&EntityManagerInterface $entityManager;
+    private Stub & EntityManagerInterface $entityManager;
 
     protected function createValidator(): WithinPlanInvoiceLimitValidator
     {

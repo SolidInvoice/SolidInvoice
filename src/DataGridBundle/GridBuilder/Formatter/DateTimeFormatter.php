@@ -24,7 +24,7 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class DateTimeFormatter implements FormatterInterface
 {
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         if (null === $value) {
             return '';

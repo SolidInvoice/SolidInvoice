@@ -28,9 +28,6 @@
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
-    "composer/package-versions-deprecated": {
-        "version": "1.10.99"
-    },
     "dbrekelmans/bdi": {
         "version": "1.0"
     },
@@ -282,9 +279,6 @@
     },
     "php-http/message": {
         "version": "1.8.0"
-    },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
     },
     "php-webdriver/webdriver": {
         "version": "1.8.2"

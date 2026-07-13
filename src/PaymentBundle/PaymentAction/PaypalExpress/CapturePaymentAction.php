@@ -116,7 +116,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
     {
         @trigger_error('This ' . self::class . ' is not used anymore and will be removed in a future version', E_USER_DEPRECATED);
 
-        if (! ($request instanceof Capture && $request->getModel() instanceof Payment)) {
+        if (! $request instanceof Capture || ! $request->getModel() instanceof Payment) {
             return false;
         }
 

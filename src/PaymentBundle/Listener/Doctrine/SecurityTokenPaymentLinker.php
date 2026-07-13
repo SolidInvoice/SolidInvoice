@@ -40,7 +40,7 @@ final class SecurityTokenPaymentLinker
         $this->link($token, $args);
     }
 
-    private function link(SecurityToken $token, PrePersistEventArgs|PreUpdateEventArgs $args): void
+    private function link(SecurityToken $token, PrePersistEventArgs | PreUpdateEventArgs $args): void
     {
         $details = $token->getDetails();
 

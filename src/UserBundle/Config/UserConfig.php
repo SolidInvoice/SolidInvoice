@@ -35,7 +35,6 @@ readonly class UserConfig
     {
         $user ??= $this->security->getUser();
         /** @var User|null $user */
-
         if (! $user instanceof UserInterface) {
             return null;
         }
@@ -47,7 +46,6 @@ readonly class UserConfig
     {
         $user ??= $this->security->getUser();
         /** @var User|null $user */
-
         if (! $user instanceof UserInterface) {
             return;
         }
@@ -59,7 +57,6 @@ readonly class UserConfig
     {
         $user ??= $this->security->getUser();
         /** @var User|null $user */
-
         if (! $user instanceof UserInterface) {
             return false;
         }
@@ -71,7 +68,6 @@ readonly class UserConfig
     {
         $user ??= $this->security->getUser();
         /** @var User|null $user */
-
         if (! $user instanceof UserInterface) {
             return;
         }
@@ -86,7 +82,6 @@ readonly class UserConfig
     {
         $user ??= $this->security->getUser();
         /** @var User|null $user */
-
         if (! $user instanceof UserInterface) {
             return [];
         }

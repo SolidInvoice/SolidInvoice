@@ -48,7 +48,7 @@ final readonly class InvoiceCloner
      * @throws InvalidTransitionException
      * @throws MathException
      */
-    public function clone(Invoice|RecurringInvoice $invoice): Invoice|RecurringInvoice
+    public function clone(Invoice | RecurringInvoice $invoice): Invoice | RecurringInvoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
@@ -94,7 +94,7 @@ final readonly class InvoiceCloner
 
         $newInvoice->setTax($invoice->getTax());
 
-        array_map(static fn (Line $item): Invoice|RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
+        array_map(static fn (Line $item): Invoice | RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
 
         if ($newInvoice instanceof Invoice) {
             foreach ($invoice->getInvoiceTaxes() as $sourceInvoiceTax) {
@@ -111,7 +111,7 @@ final readonly class InvoiceCloner
      * @return Traversable<Line|RecurringInvoiceLine>
      * @throws MathException
      */
-    private function addLine(Invoice|RecurringInvoice $invoice, Carbon $now): Traversable
+    private function addLine(Invoice | RecurringInvoice $invoice, Carbon $now): Traversable
     {
         foreach ($invoice->getLines() as $line) {
             if ($invoice instanceof RecurringInvoice) {

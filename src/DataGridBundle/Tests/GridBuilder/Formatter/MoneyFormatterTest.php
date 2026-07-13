@@ -30,9 +30,9 @@ final class MoneyFormatterTest extends TestCase
 
     private MoneyFormatter $formatter;
 
-    private SystemConfig&M\MockInterface $config;
+    private SystemConfig & M\MockInterface $config;
 
-    private MoneyFormatterInterface&M\MockInterface $moneyFormatter;
+    private MoneyFormatterInterface & M\MockInterface $moneyFormatter;
 
     protected function setUp(): void
     {

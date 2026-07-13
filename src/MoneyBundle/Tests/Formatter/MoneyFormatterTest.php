@@ -81,7 +81,7 @@ final class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return Iterator<(int | string), array<string>>
+     * @return Iterator<(int|string), array<string>>
      */
     public static function localeProvider(): Iterator
     {
@@ -100,7 +100,7 @@ final class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return Iterator<(int | string), array<string>>
+     * @return Iterator<(int|string), array<string>>
      */
     public static function symbolProvider(): Iterator
     {
@@ -119,7 +119,7 @@ final class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return Iterator<(int | string), array<string>>
+     * @return Iterator<(int|string), array<string>>
      */
     public static function thousandSeparatorProvider(): Iterator
     {
@@ -138,7 +138,7 @@ final class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return Iterator<(int | string), array<string>>
+     * @return Iterator<(int|string), array<string>>
      */
     public static function decimalSeparatorProvider(): Iterator
     {
@@ -157,7 +157,7 @@ final class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return Iterator<(int | string), array<string>>
+     * @return Iterator<(int|string), array<string>>
      */
     public static function patternProvider(): Iterator
     {

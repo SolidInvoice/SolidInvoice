@@ -45,7 +45,7 @@ final readonly class ColumnFormatter implements ServiceSubscriberInterface, Form
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         if (! $this->locator->has($column::class)) {
             // @phpstan-ignore-next-line

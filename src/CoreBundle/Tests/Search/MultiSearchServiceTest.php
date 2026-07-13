@@ -35,7 +35,7 @@ final class MultiSearchServiceTest extends TestCase
         $this->companyId = new Ulid();
     }
 
-    private function makeFormatter(string $indexName, SearchResult|null $result = null): ResultFormatterInterface
+    private function makeFormatter(string $indexName, SearchResult | null $result = null): ResultFormatterInterface
     {
         $formatter = $this->createStub(ResultFormatterInterface::class);
         $formatter->method('getIndexName')->willReturn($indexName);

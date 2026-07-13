@@ -48,7 +48,7 @@ final class ColumnFormatterTest extends TestCase
     /**
      * @var ServiceLocator<string>&Stub
      */
-    private ServiceLocator&Stub $locator;
+    private ServiceLocator & Stub $locator;
 
     protected function setUp(): void
     {

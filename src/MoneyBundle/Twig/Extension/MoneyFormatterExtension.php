@@ -54,7 +54,7 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('formatCurrency', function (BigNumber|int|float|string $value, Currency|string|null $currency = null): string {
+            new TwigFilter('formatCurrency', function (BigNumber | int | float | string $value, Currency | string | null $currency = null): string {
                 if (is_string($currency) && $currency !== '') {
                     $currency = new Currency($currency);
                 } elseif (is_string($currency) && $currency === '') {

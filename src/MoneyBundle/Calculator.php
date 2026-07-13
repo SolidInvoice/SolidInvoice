@@ -30,7 +30,7 @@ final class Calculator
     /**
      * @throws MathException
      */
-    public function calculateDiscount(Quote|BaseInvoice $entity): BigNumber
+    public function calculateDiscount(Quote | BaseInvoice $entity): BigNumber
     {
         $discount = $entity->getDiscount();
 
@@ -46,7 +46,7 @@ final class Calculator
     /**
      * @throws MathException
      */
-    public function calculatePercentage(BigNumber|int|string $amount, float $percentage = 0.0): float
+    public function calculatePercentage(BigNumber | int | string $amount, float $percentage = 0.0): float
     {
         if ($percentage > 100) {
             $percentage /= 100;

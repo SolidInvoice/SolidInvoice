@@ -69,7 +69,7 @@ final readonly class LineItemBuilder
      * @param string|null     $type  "percentage" or "money" (or null for no discount)
      * @param int|float|null  $value Numeric discount value (required if $type is set)
      */
-    public function buildDiscount(?string $type, int|float|null $value): Discount
+    public function buildDiscount(?string $type, int | float | null $value): Discount
     {
         $discount = new Discount();
 
@@ -173,7 +173,7 @@ final readonly class LineItemBuilder
      *
      * @param array<string, mixed> $data
      */
-    private function attachTaxes(InvoiceLine|QuoteLine|RecurringInvoiceLine $line, array $data, int $index): void
+    private function attachTaxes(InvoiceLine | QuoteLine | RecurringInvoiceLine $line, array $data, int $index): void
     {
         $taxesInput = $data['taxes'] ?? null;
 

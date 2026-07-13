@@ -43,7 +43,7 @@ final class TaxGrid extends Grid
         return [
             StringColumn::new('name'),
             StringColumn::new('rate')
-                ->formatValue(static fn (string|float $value) => (string) $value . '%'),
+                ->formatValue(static fn (string | float $value) => (string) $value . '%'),
             StringColumn::new('type'),
             StringColumn::new('category')
                 ->formatValue(static fn (mixed $value) => $value instanceof TaxCategory ? $value->getLabel() : (string) $value)

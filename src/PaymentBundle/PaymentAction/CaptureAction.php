@@ -45,7 +45,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 
     public function supports($request)
     {
-        if (! ($request instanceof Capture && $request->getModel() instanceof Payment)) {
+        if (! $request instanceof Capture || ! $request->getModel() instanceof Payment) {
             return false;
         }
 

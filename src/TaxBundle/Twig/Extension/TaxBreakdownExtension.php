@@ -65,7 +65,7 @@ final class TaxBreakdownExtension extends AbstractExtension
      *
      * @return list<TaxIdentifier>
      */
-    public function taxIdentifiers(Client|Company|null $owner = null): array
+    public function taxIdentifiers(Client | Company | null $owner = null): array
     {
         $identifiers = $owner instanceof Client
             ? $this->forClient($owner)
@@ -100,7 +100,7 @@ final class TaxBreakdownExtension extends AbstractExtension
      *
      * @return array<string, mixed>
      */
-    public function taxBreakdown(BaseInvoice|Quote $document): array
+    public function taxBreakdown(BaseInvoice | Quote $document): array
     {
         $result = $this->cache[$document] ?? null;
 
@@ -157,7 +157,7 @@ final class TaxBreakdownExtension extends AbstractExtension
      * `total - withholding` recomputed when the document has not been saved
      * since US-008 (e.g., a draft never run through TotalCalculator).
      */
-    public function payableAmount(BaseInvoice|Quote $document): BigNumber
+    public function payableAmount(BaseInvoice | Quote $document): BigNumber
     {
         $persisted = $document->getPayableAmount();
 

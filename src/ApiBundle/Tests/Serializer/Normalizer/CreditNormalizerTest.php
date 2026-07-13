@@ -28,7 +28,7 @@ final class CreditNormalizerTest extends TestCase
     public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | ArrayObject | null
             {
                 return $object;
             }
@@ -64,7 +64,7 @@ final class CreditNormalizerTest extends TestCase
     public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | ArrayObject | null
             {
                 return $object;
             }
@@ -104,7 +104,7 @@ final class CreditNormalizerTest extends TestCase
     public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | ArrayObject | null
             {
                 return $object->toFloat();
             }
@@ -142,7 +142,7 @@ final class CreditNormalizerTest extends TestCase
     public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | ArrayObject | null
             {
                 return $object;
             }

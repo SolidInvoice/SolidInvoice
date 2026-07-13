@@ -26,7 +26,7 @@ interface LineInterface
 
     public function getDescription(): ?string;
 
-    public function setPrice(BigNumber|int|string $price): self;
+    public function setPrice(BigNumber | int | string $price): self;
 
     public function getPrice(): BigNumber;
 
@@ -34,7 +34,7 @@ interface LineInterface
 
     public function getQty(): ?float;
 
-    public function setTotal(BigNumber|int|string $total): self;
+    public function setTotal(BigNumber | int | string $total): self;
 
     public function getTotal(): BigNumber;
 

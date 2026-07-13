@@ -76,7 +76,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (RecurringInvoiceStatus $s) => [$s->value, $s->name], RecurringInvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
-                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
                     if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
@@ -85,7 +85,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     return new Money((string) $value, $client->getCurrency());
                 }),
             MoneyColumn::new('tax')
-                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();
                     if (! $client instanceof Client) {
                         throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));

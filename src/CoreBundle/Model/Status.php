@@ -17,8 +17,6 @@ namespace SolidInvoice\CoreBundle\Model;
  * This class converts a status into a label for use with twitter bootstrap.
  *
  * E.G it will convert 'active' into 'success', so it can be used with then class 'badge-success'
- *
- * @author Pierre du Plessis
  */
 abstract class Status
 {

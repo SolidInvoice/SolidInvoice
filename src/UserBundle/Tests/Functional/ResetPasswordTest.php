@@ -91,7 +91,7 @@ final class ResetPasswordTest extends WebTestCase
             ->assertRedirectedTo('/forgot-password/reset')
             ->followRedirect()
             ->assertOn('/forgot-password/reset')
-            //->assertSeeIn('title', 'Reset Password')
+            // ->assertSeeIn('title', 'Reset Password')
             ->fillField('change_password_form[plainPassword][first]', 'newStrongPassword')
             ->fillField('change_password_form[plainPassword][second]', 'newStrongPassword')
             ->click('Reset Password')

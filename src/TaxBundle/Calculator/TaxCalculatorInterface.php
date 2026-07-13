@@ -19,5 +19,5 @@ use SolidInvoice\TaxBundle\Calculator\Result\CalculationResult;
 
 interface TaxCalculatorInterface
 {
-    public function calculate(BaseInvoice|Quote $document, ?CalculationOptions $options = null): CalculationResult;
+    public function calculate(BaseInvoice | Quote $document, ?CalculationOptions $options = null): CalculationResult;
 }

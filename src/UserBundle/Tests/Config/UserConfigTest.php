@@ -29,9 +29,9 @@ final class UserConfigTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private m\MockInterface&UserSettingRepositoryInterface $repository;
+    private m\MockInterface & UserSettingRepositoryInterface $repository;
 
-    private m\MockInterface&Security $security;
+    private m\MockInterface & Security $security;
 
     private User $user;
 

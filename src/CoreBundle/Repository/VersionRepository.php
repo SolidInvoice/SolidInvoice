@@ -63,7 +63,7 @@ class VersionRepository extends EntityRepository
 
         try {
             return $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception) {
+        } catch (NoResultException | NonUniqueResultException | Exception) {
             return '0.0.0';
         }
     }

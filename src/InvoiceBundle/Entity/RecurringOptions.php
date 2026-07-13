@@ -120,7 +120,7 @@ class RecurringOptions
         if ($this->type->isDaily()) {
             $this->days = [];
         } else {
-            $this->days = array_map(static function (int|WeekDay $day) {
+            $this->days = array_map(static function (int | WeekDay $day) {
                 if ($day instanceof WeekDay) {
                     return $day->value;
                 }

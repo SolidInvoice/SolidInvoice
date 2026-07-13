@@ -29,7 +29,7 @@ use Symfony\Component\Uid\Ulid;
 
 final class SearchTest extends TestCase
 {
-    private MockObject&Client $client;
+    private MockObject & Client $client;
 
     private CompanySelector $companySelector;
 

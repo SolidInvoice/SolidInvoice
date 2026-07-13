@@ -36,7 +36,7 @@ final class CurrencyFormatter implements FormatterInterface
         $this->currencyList = Currencies::getNames($locale);
     }
 
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         $systemDefault = new TranslatableMessage('System Default (%currency%)', ['%currency%' => $this->config->getCurrency()->getCode()]);
 

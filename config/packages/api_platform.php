@@ -175,6 +175,7 @@ SolidInvoice's API is compatible with popular automation platforms:
 
 All monetary amounts are represented as **integers in the smallest currency unit** (e.g., cents for USD/EUR).
 For example, `1000` represents `\$10.00`.
-DESC,
+DESC
+,
     ],
 ]);

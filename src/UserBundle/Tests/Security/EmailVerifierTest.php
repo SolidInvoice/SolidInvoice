@@ -36,11 +36,11 @@ final class EmailVerifierTest extends TestCase
 
     private VerifyEmailHelper $verifyEmailHelper;
 
-    private MailerInterface|MockObject $mailer;
+    private MailerInterface | MockObject $mailer;
 
-    private UserRepository|MockObject $userRepository;
+    private UserRepository | MockObject $userRepository;
 
-    private UrlGeneratorInterface|MockObject $urlGenerator;
+    private UrlGeneratorInterface | MockObject $urlGenerator;
 
     protected function setUp(): void
     {

@@ -115,7 +115,7 @@ class OAuthClient implements ClientEntityInterface
         return $this;
     }
 
-    public function getRedirectUri(): string|array
+    public function getRedirectUri(): string | array
     {
         return $this->redirectUris;
     }

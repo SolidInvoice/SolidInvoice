@@ -39,7 +39,7 @@ final readonly class DownloadExport
     ) {
     }
 
-    public function __invoke(string $id): BinaryFileResponse|RedirectResponse
+    public function __invoke(string $id): BinaryFileResponse | RedirectResponse
     {
         $ulid = $this->parseUlid($id);
 

@@ -594,7 +594,7 @@ final class Version30000_9 extends AbstractMigration
         }
     }
 
-    private function normaliseRate(float|int|string $rate): string
+    private function normaliseRate(float | int | string $rate): string
     {
         // tax_rates.rate is float in the legacy schema; force 4-decimal text representation.
         return number_format((float) $rate, 4, '.', '');

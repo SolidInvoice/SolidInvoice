@@ -23,7 +23,7 @@ final class ExactlyOneDocument extends Constraint
     public string $message = 'Exactly one of invoice, quote, or recurring invoice must be set on an InvoiceTax.';
 
     #[Override]
-    public function getTargets(): string|array
+    public function getTargets(): string | array
     {
         return self::CLASS_CONSTRAINT;
     }

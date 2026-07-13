@@ -36,7 +36,7 @@ class CreditRepository extends EntityRepository
     /**
      * @throws MathException
      */
-    public function addCredit(Client $client, BigNumber|float|int|string $amount): Credit
+    public function addCredit(Client $client, BigNumber | float | int | string $amount): Credit
     {
         $credit = $client->getCredit();
 
@@ -53,7 +53,7 @@ class CreditRepository extends EntityRepository
     /**
      * @throws MathException
      */
-    public function deductCredit(Client $client, BigNumber|float|int|string $amount): Credit
+    public function deductCredit(Client $client, BigNumber | float | int | string $amount): Credit
     {
         $credit = $client->getCredit();
 

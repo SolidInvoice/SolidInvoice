@@ -127,7 +127,7 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
      *
      * @param Event<TSubject> $event
      */
-    private function isLeavingDraft(Event $event, BaseInvoice|Quote $subject): bool
+    private function isLeavingDraft(Event $event, BaseInvoice | Quote $subject): bool
     {
         $transition = $event->getTransition();
 

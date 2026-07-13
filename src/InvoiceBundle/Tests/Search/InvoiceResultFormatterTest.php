@@ -27,11 +27,11 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class InvoiceResultFormatterTest extends TestCase
 {
-    private MockObject&RouterInterface $router;
+    private MockObject & RouterInterface $router;
 
-    private MockObject&MoneyFormatterInterface $moneyFormatter;
+    private MockObject & MoneyFormatterInterface $moneyFormatter;
 
-    private Stub&SystemConfig $systemConfig;
+    private Stub & SystemConfig $systemConfig;
 
     private InvoiceResultFormatter $formatter;
 

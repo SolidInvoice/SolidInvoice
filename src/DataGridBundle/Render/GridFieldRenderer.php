@@ -79,7 +79,7 @@ class GridFieldRenderer
             foreach ($column->getLinkParameters() as $key => $field) {
                 try {
                     $parameters[$key] = $this->propertyAccessor->getValue($entity, $field);
-                } catch (NoSuchPropertyException|UnexpectedTypeException) {
+                } catch (NoSuchPropertyException | UnexpectedTypeException) {
                     $parameters[$key] = $field;
                 }
             }

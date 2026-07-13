@@ -42,22 +42,22 @@ class StatusExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'invoice_label',
-                fn (Environment $environment, InvoiceStatus|RecurringInvoiceStatus|null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, InvoiceStatus | RecurringInvoiceStatus | null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                fn (Environment $environment, QuoteStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip),
+                fn (Environment $environment, QuoteStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                fn (Environment $environment, PaymentStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip),
+                fn (Environment $environment, PaymentStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                fn (Environment $environment, ClientStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip),
+                fn (Environment $environment, ClientStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];
@@ -69,7 +69,7 @@ class StatusExtension extends AbstractExtension
      *
      * @return string|array<string, string>
      */
-    private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass, ?string $tooltip = null): string|array
+    private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass, ?string $tooltip = null): string | array
     {
         if (! $status instanceof HasStatusLabel) {
             return $this->getAllStatusLabels($environment, $enumClass);
@@ -81,7 +81,7 @@ class StatusExtension extends AbstractExtension
     /**
      * @return string|array<string, string>
      */
-    public function renderInvoiceStatusLabel(Environment $environment, InvoiceStatus|RecurringInvoiceStatus|null $status = null, ?string $tooltip = null): string|array
+    public function renderInvoiceStatusLabel(Environment $environment, InvoiceStatus | RecurringInvoiceStatus | null $status = null, ?string $tooltip = null): string | array
     {
         if ($status === null) {
             return array_merge(

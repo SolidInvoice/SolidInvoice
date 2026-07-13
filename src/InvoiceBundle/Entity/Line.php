@@ -182,7 +182,7 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setPrice(BigNumber|int|string $price): static
+    public function setPrice(BigNumber | int | string $price): static
     {
         $this->price = BigNumber::of($price);
 
@@ -221,7 +221,7 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|int|string $total): static
+    public function setTotal(BigNumber | int | string $total): static
     {
         $this->total = BigNumber::of($total);
 

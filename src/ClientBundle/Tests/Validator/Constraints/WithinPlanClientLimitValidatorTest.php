@@ -37,13 +37,13 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 #[CoversClass(WithinPlanClientLimitValidator::class)]
 final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCase
 {
-    private Stub&ClientRepository $clientRepository;
+    private Stub & ClientRepository $clientRepository;
 
-    private MockObject&FeatureGate $featureGate;
+    private MockObject & FeatureGate $featureGate;
 
-    private MockObject&ToggleInterface $toggle;
+    private MockObject & ToggleInterface $toggle;
 
-    private Stub&EntityManagerInterface $entityManager;
+    private Stub & EntityManagerInterface $entityManager;
 
     protected function createValidator(): WithinPlanClientLimitValidator
     {

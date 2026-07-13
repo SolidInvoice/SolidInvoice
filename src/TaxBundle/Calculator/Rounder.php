@@ -40,7 +40,7 @@ final readonly class Rounder
     /**
      * @throws MathException
      */
-    public function round(BigNumber|int|string|float $value, int $scale = 0): BigDecimal
+    public function round(BigNumber | int | string | float $value, int $scale = 0): BigDecimal
     {
         $normalised = is_float($value) ? (string) $value : $value;
 

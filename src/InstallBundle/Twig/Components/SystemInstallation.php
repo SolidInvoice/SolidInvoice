@@ -77,7 +77,7 @@ class SystemInstallation extends AbstractController
         return $this->steps;
     }
 
-    public function iniGet(string $name): false|string
+    public function iniGet(string $name): false | string
     {
         return ini_get($name);
     }

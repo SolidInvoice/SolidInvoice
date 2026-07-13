@@ -26,7 +26,7 @@ final class StatusFormatterTest extends TestCase
 {
     private StatusFormatter $formatter;
 
-    private TranslatorInterface&Stub $translator;
+    private TranslatorInterface & Stub $translator;
 
     protected function setUp(): void
     {

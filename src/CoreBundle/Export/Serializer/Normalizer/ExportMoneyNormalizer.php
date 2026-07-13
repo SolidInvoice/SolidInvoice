@@ -43,7 +43,7 @@ final readonly class ExportMoneyNormalizer implements NormalizerInterface
     /**
      * @return array{amount: string, currency: string}|string
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = []): array|string
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array | string
     {
         if ($object instanceof Money) {
             return [

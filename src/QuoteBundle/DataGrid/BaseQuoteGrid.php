@@ -67,7 +67,7 @@ abstract class BaseQuoteGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(function (float|BigNumber $value, Quote $quote): Money {
+                ->formatValue(function (float | BigNumber $value, Quote $quote): Money {
                     $discountAmount = $this->calculator->calculateDiscount($quote);
 
                     return new Money((string) $discountAmount, $quote->getClient()?->getCurrency());

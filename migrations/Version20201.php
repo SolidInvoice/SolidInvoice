@@ -401,7 +401,6 @@ final class Version20201 extends AbstractMigration
                 }
 
                 /** @var Ulid $uuid */
-
                 $this->connection->update(
                     $fk['table'],
                     [

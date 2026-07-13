@@ -161,7 +161,7 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|float|int|string $total): self
+    public function setTotal(BigNumber | float | int | string $total): self
     {
         $this->total = BigNumber::of($total);
 
@@ -176,7 +176,7 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setBaseTotal(BigNumber|float|int|string $baseTotal): self
+    public function setBaseTotal(BigNumber | float | int | string $baseTotal): self
     {
         $this->baseTotal = BigNumber::of($baseTotal);
 
@@ -237,7 +237,7 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setTax(BigNumber|float|int|string $tax): self
+    public function setTax(BigNumber | float | int | string $tax): self
     {
         $this->tax = BigNumber::of($tax);
 
@@ -252,7 +252,7 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setWithholdingAmount(BigNumber|float|int|string $withholdingAmount): self
+    public function setWithholdingAmount(BigNumber | float | int | string $withholdingAmount): self
     {
         $this->withholdingAmount = BigNumber::of($withholdingAmount);
 
@@ -267,7 +267,7 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setPayableAmount(BigNumber|float|int|string $payableAmount): self
+    public function setPayableAmount(BigNumber | float | int | string $payableAmount): self
     {
         $this->payableAmount = BigNumber::of($payableAmount);
 

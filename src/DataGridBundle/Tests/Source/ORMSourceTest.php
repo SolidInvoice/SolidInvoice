@@ -29,9 +29,9 @@ final class ORMSourceTest extends TestCase
 {
     private ORMSource $source;
 
-    private ManagerRegistry&Stub $registry;
+    private ManagerRegistry & Stub $registry;
 
-    private GridInterface&Stub $grid;
+    private GridInterface & Stub $grid;
 
     protected function setUp(): void
     {

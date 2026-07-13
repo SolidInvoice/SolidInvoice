@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ExportEnumNormalizer implements NormalizerInterface
 {
-    public function normalize(mixed $object, ?string $format = null, array $context = []): int|string
+    public function normalize(mixed $object, ?string $format = null, array $context = []): int | string
     {
         assert($object instanceof BackedEnum);
 

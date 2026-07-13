@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ClientResultFormatterTest extends TestCase
 {
-    private Stub&RouterInterface $router;
+    private Stub & RouterInterface $router;
 
     private ClientResultFormatter $formatter;
 

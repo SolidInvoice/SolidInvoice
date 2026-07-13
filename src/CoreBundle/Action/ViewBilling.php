@@ -61,7 +61,7 @@ class ViewBilling
      * @throws InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException|LoaderError|MpdfException|RuntimeError|SyntaxError
      */
     #[Template('@SolidInvoiceCore/View/quote.html.twig')]
-    public function quoteAction(Request $request, string $uuid): array|Response
+    public function quoteAction(Request $request, string $uuid): array | Response
     {
         $options = [
             'repository' => Quote::class,
@@ -82,7 +82,7 @@ class ViewBilling
      * @throws InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException|LoaderError|MpdfException|RuntimeError|SyntaxError
      */
     #[Template('@SolidInvoiceCore/View/invoice.html.twig')]
-    public function invoiceAction(Request $request, string $uuid): array|Response
+    public function invoiceAction(Request $request, string $uuid): array | Response
     {
         $options = [
             'repository' => Invoice::class,
@@ -101,7 +101,7 @@ class ViewBilling
      * @return array<string, mixed>|Response
      * @throws NotFoundHttpException|InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException|LoaderError|MpdfException|RuntimeError|SyntaxError
      */
-    private function createResponse(Request $request, array $options): array|Response
+    private function createResponse(Request $request, array $options): array | Response
     {
         $repository = $this->registry->getRepository($options['repository']);
 

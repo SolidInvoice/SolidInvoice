@@ -609,7 +609,7 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setWithholdingAmount(BigNumber|float|int|string $withholdingAmount): self
+    public function setWithholdingAmount(BigNumber | float | int | string $withholdingAmount): self
     {
         $this->withholdingAmount = BigNumber::of($withholdingAmount);
 
@@ -624,7 +624,7 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setPayableAmount(BigNumber|float|int|string $payableAmount): self
+    public function setPayableAmount(BigNumber | float | int | string $payableAmount): self
     {
         $this->payableAmount = BigNumber::of($payableAmount);
 

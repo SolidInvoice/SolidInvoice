@@ -18,5 +18,5 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 interface FormatterInterface
 {
-    public function format(Column $column, mixed $value): string|TranslatableMessage;
+    public function format(Column $column, mixed $value): string | TranslatableMessage;
 }

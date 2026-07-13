@@ -84,7 +84,7 @@ final readonly class RecurringInvoiceWriteTools
         array $schedule,
         ?string $date_end = null,
         ?string $discount_type = null,
-        int|float|null $discount_value = null,
+        int | float | null $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],

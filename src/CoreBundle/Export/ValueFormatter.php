@@ -56,7 +56,7 @@ final class ValueFormatter
      * formatting applies (Money / BigNumber are caller-specific and handled by
      * the caller, not here).
      */
-    public static function formatScalar(mixed $value): int|float|string|bool|null
+    public static function formatScalar(mixed $value): int | float | string | bool | null
     {
         if ($value === null) {
             return null;

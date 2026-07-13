@@ -25,7 +25,7 @@ final class SortFilterTest extends TestCase
 {
     private SortFilter $filter;
 
-    private QueryBuilder&MockObject $queryBuilder;
+    private QueryBuilder & MockObject $queryBuilder;
 
     protected function setUp(): void
     {

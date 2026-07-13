@@ -32,7 +32,7 @@ final readonly class UrlFormatter implements FormatterInterface
     /**
      * @throws SyntaxError|LoaderError
      */
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         return $this->twig->createTemplate('<a href="{{ value }}" target="_blank">{{ value }}</a>')->render(['value' => $value ?? '']);
     }

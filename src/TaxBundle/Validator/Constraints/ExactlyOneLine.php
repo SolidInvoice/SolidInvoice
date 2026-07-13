@@ -23,7 +23,7 @@ final class ExactlyOneLine extends Constraint
     public string $message = 'Exactly one of invoiceLine or quoteLine must be set on a LineTax.';
 
     #[Override]
-    public function getTargets(): string|array
+    public function getTargets(): string | array
     {
         return self::CLASS_CONSTRAINT;
     }

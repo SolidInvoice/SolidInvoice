@@ -43,7 +43,7 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception) {
+        } catch (NoResultException | NonUniqueResultException | Exception) {
             return 0;
         }
     }
@@ -65,7 +65,7 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception) {
+        } catch (NoResultException | NonUniqueResultException | Exception) {
             return 0;
         }
     }
@@ -91,7 +91,7 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception) {
+        } catch (NoResultException | NonUniqueResultException | Exception) {
             return 0;
         }
     }

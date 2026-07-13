@@ -205,7 +205,7 @@ class InvoiceTax
     /**
      * @throws MathException
      */
-    public function setRateSnapshot(BigNumber|string|float|int $rateSnapshot): self
+    public function setRateSnapshot(BigNumber | string | float | int $rateSnapshot): self
     {
         $normalised = is_float($rateSnapshot) ? (string) $rateSnapshot : $rateSnapshot;
         $this->rateSnapshot = BigDecimal::of($normalised)->toScale(4)->__toString();
@@ -245,7 +245,7 @@ class InvoiceTax
     /**
      * @throws MathException
      */
-    public function setAmount(BigNumber|int|string|float $amount): self
+    public function setAmount(BigNumber | int | string | float $amount): self
     {
         $this->amount = BigNumber::of(is_float($amount) ? (string) $amount : $amount);
 

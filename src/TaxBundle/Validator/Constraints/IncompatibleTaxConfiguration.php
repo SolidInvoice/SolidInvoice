@@ -25,7 +25,7 @@ final class IncompatibleTaxConfiguration extends Constraint
     public string $flatRateCompoundMessage = 'tax.constraint.incompatible.flat_rate_compound';
 
     #[Override]
-    public function getTargets(): string|array
+    public function getTargets(): string | array
     {
         return self::CLASS_CONSTRAINT;
     }

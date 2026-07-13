@@ -88,7 +88,7 @@ final class CustomFieldsDenormalizer implements DenormalizerAwareInterface, Deno
             throw new UnexpectedValueException('Unknown custom field keys: ' . implode(', ', $unknown));
         }
 
-        $isNew = ! (method_exists($object, 'getId') && $object->getId() !== null);
+        $isNew = ! method_exists($object, 'getId') || $object->getId() === null;
 
         $staged = [];
         foreach ($defs as $key => $def) {

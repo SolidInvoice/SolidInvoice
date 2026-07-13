@@ -36,7 +36,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
     /**
      * @throws MathException
      */
-    public function calculate(BaseInvoice|Quote $document, ?CalculationOptions $options = null): CalculationResult
+    public function calculate(BaseInvoice | Quote $document, ?CalculationOptions $options = null): CalculationResult
     {
         $options ??= CalculationOptions::defaults();
         $rounder = new Rounder($options->rounding);

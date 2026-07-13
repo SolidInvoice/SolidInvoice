@@ -35,7 +35,7 @@ final readonly class InvoiceTaxBuilder
     /**
      * @param list<array<string, mixed>> $payload
      */
-    public function attach(Invoice|Quote $document, array $payload): void
+    public function attach(Invoice | Quote $document, array $payload): void
     {
         foreach (array_values($payload) as $index => $data) {
             if (! \is_array($data)) {

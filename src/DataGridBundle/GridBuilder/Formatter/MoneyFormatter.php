@@ -30,7 +30,7 @@ final readonly class MoneyFormatter implements FormatterInterface
     ) {
     }
 
-    public function format(Column $column, mixed $value): string|TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableMessage
     {
         if (! $value instanceof Money) {
             $value = new Money((string) $value, $this->config->getCurrency());

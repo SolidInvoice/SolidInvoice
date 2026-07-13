@@ -26,7 +26,7 @@ final class DateRangeFilterTest extends TestCase
 
     private DateRangeFilter $filter;
 
-    private QueryBuilder&MockObject $queryBuilder;
+    private QueryBuilder & MockObject $queryBuilder;
 
     protected function setUp(): void
     {

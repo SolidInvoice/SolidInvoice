@@ -28,7 +28,7 @@ final class QueryAdapter extends BaseQueryAdapter
      * @param QueryBuilder|Query<mixed, mixed> $query
      */
     public function __construct(
-        Query|QueryBuilder $query,
+        Query | QueryBuilder $query,
         bool $fetchJoinCollection = true,
         ?bool $useOutputWalkers = null,
         private readonly ?Closure $beforeQuery = null,

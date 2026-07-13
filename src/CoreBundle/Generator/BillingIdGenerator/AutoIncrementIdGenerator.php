@@ -73,7 +73,7 @@ final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
                 ->select(sprintf('MAX(ABS(TO_NUMBER(%s)))', $field))
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (NonUniqueResultException|NoResultException) {
+        } catch (NonUniqueResultException | NoResultException) {
             $lastId = 0;
         } finally {
             $filters->enable('archivable');

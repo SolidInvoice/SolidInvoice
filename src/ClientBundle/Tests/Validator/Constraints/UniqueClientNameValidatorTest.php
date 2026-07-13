@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 #[CoversClass(UniqueClientNameValidator::class)]
 final class UniqueClientNameValidatorTest extends ConstraintValidatorTestCase
 {
-    private MockObject&ClientRepository $clientRepository;
+    private MockObject & ClientRepository $clientRepository;
 
     protected function createValidator(): UniqueClientNameValidator
     {

@@ -49,7 +49,7 @@ final class ViewTransformerTest extends TestCase
      * @throws RoundingNecessaryException
      */
     #[DataProvider('transformDataProvider')]
-    public function testTransformsMoneyObjectToFloat(BigNumber|string|int|float|null $money, float | int $expected): void
+    public function testTransformsMoneyObjectToFloat(BigNumber | string | int | float | null $money, float | int $expected): void
     {
         $value = $this->viewTransformer->transform($money);
 

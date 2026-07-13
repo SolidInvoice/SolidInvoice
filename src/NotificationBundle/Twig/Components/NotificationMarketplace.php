@@ -97,7 +97,7 @@ final class NotificationMarketplace extends AbstractController
                     'isPopular' => $this->isPopularIntegration($name),
                     'isConfigured' => $this->isIntegrationConfigured($name),
                 ];
-            } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
+            } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
                 continue;
             }
         }
@@ -219,7 +219,7 @@ final class NotificationMarketplace extends AbstractController
             $type = $configurator::getType();
 
             return $this->translator->trans($type === 'texter' ? 'notification.type.sms' : 'notification.type.chat');
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
             return $this->translator->trans('notification.type.unknown');
         }
     }
@@ -231,7 +231,7 @@ final class NotificationMarketplace extends AbstractController
             $configurator = $this->transportConfigurations->get($transportName);
 
             return $configurator::getType();
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
             return 'texter';
         }
     }

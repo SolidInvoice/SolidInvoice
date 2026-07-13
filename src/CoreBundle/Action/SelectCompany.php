@@ -37,7 +37,7 @@ final readonly class SelectCompany
      * @return array{companies: Collection<int, Company>}|Response
      */
     #[Template('@SolidInvoiceCore/Company/select.html.twig')]
-    public function __invoke(Request $request): array|Response
+    public function __invoke(Request $request): array | Response
     {
         $user = $this->security->getUser();
 

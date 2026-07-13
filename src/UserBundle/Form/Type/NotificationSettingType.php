@@ -68,7 +68,7 @@ final class NotificationSettingType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        //$resolver->setDefault('data_class', UserNotification::class);
+        // $resolver->setDefault('data_class', UserNotification::class);
         $resolver->setRequired('event');
         $resolver->setAllowedTypes('event', 'string');
     }

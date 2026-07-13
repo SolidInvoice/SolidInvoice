@@ -16,7 +16,6 @@ use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsPar
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Doctrine\TypedCollections\Rector\ClassMethod\RemoveNewArrayCollectionOutsideConstructorRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -29,7 +28,6 @@ use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
-use Rector\Symfony\Symfony73\Rector\Class_\GetFunctionsToAsTwigFunctionAttributeRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
@@ -91,16 +89,12 @@ return RectorConfig::configure()
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,
-        AddSeeTestAnnotationRector::class,
     ])
     ->withSkip([
         // The secrets vault directory contains generated (gitignored) files that are
         // rewritten at runtime, e.g. by the installer and its tests.
         __DIR__ . '/config/env',
 
-        // GetFunctionsToAsTwigFunctionAttributeRector cannot be used yet, since it only migrates some functions
-        // to twig attributes, but some twig extensions still extend the AbstractExtension which is prohibited
-        GetFunctionsToAsTwigFunctionAttributeRector::class,
         ServiceSetStringNameToClassNameRector::class,
         ServiceSettersToSettersAutodiscoveryRector::class,
         ControllerMethodInjectionToConstructorRector::class => [

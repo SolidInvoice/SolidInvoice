@@ -76,7 +76,7 @@ class PaymentMethodType extends AbstractType
         $resolver->setDefaults(
             [
                 'internal' => false,
-                'validation_groups' => function (FormInterface $form): bool|string {
+                'validation_groups' => function (FormInterface $form): bool | string {
                     // If the method is disabled, don't use any constraints
                     if (false === $form->get('enabled')->getData()) {
                         return false;

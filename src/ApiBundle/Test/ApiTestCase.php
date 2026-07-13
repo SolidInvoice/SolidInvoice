@@ -355,7 +355,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         self::assertEmpty($response->getContent(false));
     }
 
-    protected function getContextForResource(object|string $resource): string
+    protected function getContextForResource(object | string $resource): string
     {
         /** @var ContextBuilderInterface $contextBuilder */
         $contextBuilder = static::getContainer()->get('api_platform.jsonld.context_builder');
