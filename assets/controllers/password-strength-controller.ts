@@ -57,8 +57,8 @@ export default class extends Controller {
         if (/[0-9]/.test(password)) score += 15; // numbers
         if (/[^a-zA-Z0-9]/.test(password)) score += 15; // special chars
 
-        let label = '';
-        let strength = '';
+        let label: string;
+        let strength: string;
 
         if (score < 40) {
             label = 'Weak password';
