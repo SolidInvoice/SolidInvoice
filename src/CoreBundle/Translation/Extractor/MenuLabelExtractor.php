@@ -54,7 +54,7 @@ final class MenuLabelExtractor extends AbstractFileExtractor implements Extracto
         $this->parser = new ParserFactory()->createForHostVersion();
     }
 
-    public function extract(iterable|string $resource, MessageCatalogue $catalogue): void
+    public function extract(iterable | string $resource, MessageCatalogue $catalogue): void
     {
         foreach ($this->extractFiles($resource) as $file) {
             $traverser = new NodeTraverser();
@@ -90,7 +90,7 @@ final class MenuLabelExtractor extends AbstractFileExtractor implements Extracto
      *
      * @return iterable<SplFileInfo>
      */
-    protected function extractFromDirectory(array|string $resource): iterable
+    protected function extractFromDirectory(array | string $resource): iterable
     {
         return new Finder()->files()->name('*.php')->in($resource);
     }

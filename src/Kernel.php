@@ -88,6 +88,12 @@ class Kernel extends BaseKernel
         $container->import($configDir . '/{services}.php');
         $container->import($configDir . '/{services}_' . $this->environment . '.php');
 
+        if ('staging' === $this->environment) {
+            // Staging should mirror production, so load all prod config
+            $container->import($configDir . '/{packages}/prod/*.{php,yaml}');
+            $container->import($configDir . '/{services}_prod.php');
+        }
+
         $bundles = $this->getBundles();
 
         if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
