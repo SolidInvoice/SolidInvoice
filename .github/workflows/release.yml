@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   prepare:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       ref: ${{ steps.check.outputs.ref }}
       branch: ${{ steps.check.outputs.branch }}
@@ -79,7 +79,7 @@ jobs:
       contents: write  # for actions/create-release to create a release
     name: Build Assets
     needs: [prepare]
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
@@ -130,7 +130,7 @@ jobs:
           - platform: arm64
             os: macos-latest
           - platform: x86_64
-            os: macos-15-intel
+            os: blacksmith-6vcpu-macos-15
     runs-on: ${{ matrix.os }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
@@ -214,7 +214,7 @@ jobs:
             runner: ubuntu-24.04
           - arch: arm64
             platform: linux/arm64
-            runner: ubuntu-24.04-arm
+            runner: blacksmith-4vcpu-ubuntu-2404-arm
     runs-on: ${{ matrix.runner }}
     env:
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -297,9 +297,9 @@ jobs:
           username: ${{ vars.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Set up Docker Buildx
         if: needs.prepare.outputs.release == '1'
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Setup Blacksmith Builder
+        uses: useblacksmith/setup-docker-builder@v1
 
       - name: Copy binary to Docker context
         if: needs.prepare.outputs.release == '1'
@@ -343,7 +343,7 @@ jobs:
     permissions:
       contents: read
     if: needs.prepare.outputs.release == '1'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Harden the runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
@@ -356,8 +356,8 @@ jobs:
           username: ${{ vars.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Setup Blacksmith Builder
+        uses: useblacksmith/setup-docker-builder@v1
 
       - name: Download digests
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -397,7 +397,7 @@ jobs:
     permissions:
       contents: write
       packages: write
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Harden the runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2

@@ -6,7 +6,7 @@ jobs:
   security-checker:
     name: Symfony Security Checker
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Harden Runner

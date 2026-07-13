@@ -20,7 +20,7 @@ jobs:
   unit:
     name: Unit ( PHP ${{ matrix.php }} )
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     strategy:
       matrix:

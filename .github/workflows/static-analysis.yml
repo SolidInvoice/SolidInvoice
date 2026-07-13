@@ -9,7 +9,7 @@ jobs:
   phpstan:
     name: PHPStan
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       SOLIDINVOICE_ENV: test
@@ -88,7 +88,7 @@ jobs:
 
   rector:
     name: Rector
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     if: github.event.pull_request.head.repo.full_name == 'SolidInvoice/SolidInvoice'
 
     steps:
