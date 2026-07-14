@@ -133,9 +133,9 @@
     {% import _self as macros %}
     {% if features|length > 0 %}
         <ul class="list-unstyled mb-4 plan-card-features">
-            {% for feature in features %}
+            {% for feature in features|sort((a, b) => b.featureKey <=> a.featureKey)|sort((a, b) => b.toFeatureValue.enabled <=> a.toFeatureValue.enabled) %}
                 {% set isBool = feature.type.value == 'boolean' %}
-                {% set isEnabled = feature.value matches '/^(1|true)$/i' or feature.value is same as(true) %}
+                {% set isEnabled = feature.toFeatureValue.enabled %}
                 <li class="d-flex align-items-start gap-2 mb-2">
                     {% if isBool and isEnabled %}
                         {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success mt-1 flex-shrink-0'}) }}
@@ -155,9 +155,9 @@
     {% import _self as macros %}
     {% if features|length > 0 %}
         <ul class="list-unstyled mb-0 plan-card-features-inline">
-            {% for feature in features %}
+            {% for feature in features|sort((a, b) => b.featureKey <=> a.featureKey)|sort((a, b) => b.toFeatureValue.enabled <=> a.toFeatureValue.enabled) %}
                 {% set isBool = feature.type.value == 'boolean' %}
-                {% set isEnabled = feature.value matches '/^(1|true)$/i' or feature.value is same as(true) %}
+                {% set isEnabled = feature.toFeatureValue.enabled %}
                 <li>
                     {% if isBool and isEnabled %}
                         {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success flex-shrink-0'}) }}
