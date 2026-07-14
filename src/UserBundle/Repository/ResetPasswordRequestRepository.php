@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Repository;
 
 use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\ResetPasswordRequest;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
@@ -80,7 +81,7 @@ class ResetPasswordRequestRepository extends EntityRepository implements ResetPa
     /**
      * @param User $user
      */
-    public function createResetPasswordRequest(object $user, DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
+    public function createResetPasswordRequest(object $user, DateTimeInterface $expiresAt, string $selector, #[SensitiveParameter] string $hashedToken): ResetPasswordRequestInterface
     {
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);
     }

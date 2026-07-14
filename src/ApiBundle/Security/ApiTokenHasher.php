@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security;
 
+use SensitiveParameter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -28,12 +29,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 final readonly class ApiTokenHasher
 {
     public function __construct(
+        #[SensitiveParameter]
         #[Autowire('%kernel.secret%')]
         private string $appSecret,
     ) {
     }
 
-    public function hash(string $plaintextToken): string
+    public function hash(#[SensitiveParameter] string $plaintextToken): string
     {
         return hash_hmac('sha256', $plaintextToken, $this->appSecret);
     }

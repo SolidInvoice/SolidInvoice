@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use Doctrine\Persistence\ManagerRegistry;
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,7 +39,7 @@ final class Reset extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, ?string $token = null): Response
+    public function __invoke(Request $request, #[SensitiveParameter] ?string $token = null): Response
     {
         if ($token) {
             // We store the token in session and remove it from the URL, to avoid the URL being

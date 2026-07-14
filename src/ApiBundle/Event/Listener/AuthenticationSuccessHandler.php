@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +29,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     ) {
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
+    public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token): ?Response
     {
         /** @var User $user */
         $user = $token->getUser();

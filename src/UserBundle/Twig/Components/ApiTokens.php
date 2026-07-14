@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
@@ -38,7 +39,7 @@ final class ApiTokens extends AbstractController
     }
 
     #[LiveAction]
-    public function revoke(#[LiveArg] ApiToken $token): void
+    public function revoke(#[SensitiveParameter] #[LiveArg] ApiToken $token): void
     {
         $currentUser = $this->security->getUser();
 

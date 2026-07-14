@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Group;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -281,7 +282,7 @@ final class OnboardingFlowTest extends WebTestCase
         ;
     }
 
-    private function createUser(string $email, string $password): User
+    private function createUser(string $email, #[SensitiveParameter] string $password): User
     {
         $user = new User();
         $user->setEmail($email);

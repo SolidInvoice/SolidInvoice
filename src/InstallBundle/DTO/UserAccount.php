@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\DTO;
 
+use SensitiveParameter;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -31,6 +32,7 @@ final class UserAccount
             Email(mode: Email::VALIDATION_MODE_STRICT, groups: ['user_account']),
         ]
         public ?string $emailAddress = null,
+        #[SensitiveParameter]
         #[
             NotBlank(message: 'install.user_account.password.not_blank', groups: ['user_account']),
             Length(min: 6, groups: ['user_account']),

@@ -25,6 +25,7 @@ use Mockery as M;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -56,7 +57,7 @@ final class ApiTokenAuthenticatorTest extends TestCase
     }
 
     #[DataProvider('emptyTokenProvider')]
-    public function testSupportsRejectsEmptyToken(string $token): void
+    public function testSupportsRejectsEmptyToken(#[SensitiveParameter] string $token): void
     {
         self::assertFalse($this->authenticator()->supports($this->requestWithToken($token)));
     }
@@ -67,7 +68,7 @@ final class ApiTokenAuthenticatorTest extends TestCase
     }
 
     #[DataProvider('emptyTokenProvider')]
-    public function testAuthenticateRejectsEmptyToken(string $token): void
+    public function testAuthenticateRejectsEmptyToken(#[SensitiveParameter] string $token): void
     {
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('No API token provided');
@@ -195,7 +196,7 @@ final class ApiTokenAuthenticatorTest extends TestCase
         yield 'whitespace' => ['   '];
     }
 
-    private function requestWithToken(string $token): Request
+    private function requestWithToken(#[SensitiveParameter] string $token): Request
     {
         $request = new Request(server: ['REMOTE_ADDR' => '127.0.0.1', 'HTTP_USER_AGENT' => 'phpunit']);
         $request->headers->set('X-API-TOKEN', $token);

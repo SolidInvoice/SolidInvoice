@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Security;
 
 use Override;
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -40,7 +41,7 @@ final class VerifiedUserChecker extends UserChecker
     }
 
     #[Override]
-    public function checkPostAuth(UserInterface $user, ?TokenInterface $token = null): void
+    public function checkPostAuth(UserInterface $user, #[SensitiveParameter] ?TokenInterface $token = null): void
     {
         parent::checkPostAuth($user, $token);
 

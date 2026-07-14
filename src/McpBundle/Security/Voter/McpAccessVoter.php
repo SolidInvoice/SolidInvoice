@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Security\Voter;
 
+use SensitiveParameter;
 use SolidInvoice\McpBundle\Security\Attribute;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Toggler\ToggleInterface;
@@ -46,7 +47,7 @@ final class McpAccessVoter extends Voter
         return $attribute === Attribute::ACCESS && ! $this->toggler->isActive('saas_enabled');
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, #[SensitiveParameter] TokenInterface $token, ?Vote $vote = null): bool
     {
         if (! $this->featureGate->isEnabled('mcp_access')) {
             $vote?->addReason('MCP access is not available on the current plan.');

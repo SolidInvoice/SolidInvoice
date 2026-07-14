@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Security\OAuth;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\OAuth\OAuthUser;
@@ -102,7 +103,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
         );
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token, string $firewallName): ?Response
     {
         $targetUrl = $this->router->generate('_select_company');
 

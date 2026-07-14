@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Security\Turnstile;
 
+use SensitiveParameter;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
@@ -40,7 +41,7 @@ final readonly class TurnstileVerifier
      * Returns true when the feature is disabled (never blocks), otherwise validates the token
      * against Cloudflare and fails closed on any missing data or transport error.
      */
-    public function verify(?string $token, ?string $remoteIp): bool
+    public function verify(#[SensitiveParameter] ?string $token, ?string $remoteIp): bool
     {
         if (! $this->toggle->isActive('turnstile_captcha')) {
             return true;

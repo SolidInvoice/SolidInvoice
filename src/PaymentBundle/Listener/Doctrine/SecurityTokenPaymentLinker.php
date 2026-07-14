@@ -18,6 +18,7 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Payum\Core\Model\Identity;
+use SensitiveParameter;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use Symfony\Component\Uid\Ulid;
@@ -30,17 +31,17 @@ use Throwable;
 #[AsEntityListener(event: Events::preUpdate, entity: SecurityToken::class)]
 final class SecurityTokenPaymentLinker
 {
-    public function prePersist(SecurityToken $token, PrePersistEventArgs $args): void
+    public function prePersist(#[SensitiveParameter] SecurityToken $token, PrePersistEventArgs $args): void
     {
         $this->link($token, $args);
     }
 
-    public function preUpdate(SecurityToken $token, PreUpdateEventArgs $args): void
+    public function preUpdate(#[SensitiveParameter] SecurityToken $token, PreUpdateEventArgs $args): void
     {
         $this->link($token, $args);
     }
 
-    private function link(SecurityToken $token, PrePersistEventArgs | PreUpdateEventArgs $args): void
+    private function link(#[SensitiveParameter] SecurityToken $token, PrePersistEventArgs | PreUpdateEventArgs $args): void
     {
         $details = $token->getDetails();
 
