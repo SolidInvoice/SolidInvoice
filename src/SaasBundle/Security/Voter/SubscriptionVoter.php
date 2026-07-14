@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Security\Voter;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -63,7 +64,7 @@ final class SubscriptionVoter extends Voter
         return $attribute === McpAttribute::ACCESS || $attribute === ApiAttribute::ACCESS;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, #[SensitiveParameter] TokenInterface $token, ?Vote $vote = null): bool
     {
         try {
             // Without a resolved company we can't check the subscription state. Fail closed

@@ -19,6 +19,7 @@ use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Psr\Http\Message\ServerRequestInterface;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
@@ -159,7 +160,7 @@ final class SubscriptionGateTest extends KernelTestCase
         return $token;
     }
 
-    private function buildAuthenticator(McpAccessToken $token, AuthorizationCheckerInterface $authorizationChecker): McpOAuthAuthenticator
+    private function buildAuthenticator(#[SensitiveParameter] McpAccessToken $token, AuthorizationCheckerInterface $authorizationChecker): McpOAuthAuthenticator
     {
         $container = self::getContainer();
 

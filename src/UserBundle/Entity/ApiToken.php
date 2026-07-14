@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenCollectionProvider;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenItemProvider;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
@@ -125,7 +126,7 @@ class ApiToken
         return $this->token;
     }
 
-    public function setToken(string $token): self
+    public function setToken(#[SensitiveParameter] string $token): self
     {
         $this->token = $token;
 

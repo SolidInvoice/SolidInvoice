@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security\Voter;
 
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\Attribute;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Toggler\ToggleInterface;
@@ -46,7 +47,7 @@ final class ApiAccessVoter extends Voter
         return $attribute === Attribute::ACCESS && ! $this->toggler->isActive('saas_enabled');
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, #[SensitiveParameter] TokenInterface $token, ?Vote $vote = null): bool
     {
         if (! $this->featureGate->isEnabled('rest_api_access')) {
             $vote?->addReason('REST API access is not available on the current plan.');

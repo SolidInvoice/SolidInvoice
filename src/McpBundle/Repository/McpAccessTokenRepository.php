@@ -22,6 +22,7 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use LogicException;
+use SensitiveParameter;
 use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -128,7 +129,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
      * Record that the token was used now. Uses a direct UPDATE to avoid flushing
      * unrelated pending changes on the EM and to keep the happy-path cheap.
      */
-    public function touch(McpAccessToken $token): void
+    public function touch(#[SensitiveParameter] McpAccessToken $token): void
     {
         $this->getEntityManager()->createQueryBuilder()
             ->update(McpAccessToken::class, 't')
@@ -140,7 +141,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
             ->execute();
     }
 
-    private function bindCompanyIfMissing(McpAccessToken $accessToken): void
+    private function bindCompanyIfMissing(#[SensitiveParameter] McpAccessToken $accessToken): void
     {
         if ($accessToken->hasCompany()) {
             return;

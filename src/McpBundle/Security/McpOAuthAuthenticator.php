@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Security;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\OAuth\ServerFactoryInterface;
@@ -103,7 +104,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         return new SelfValidatingPassport(new UserBadge($userId));
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token, string $firewallName): ?Response
     {
         $accessToken = $request->attributes->get(self::ATTR_ACCESS_TOKEN);
 

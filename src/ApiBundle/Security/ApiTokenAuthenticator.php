@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Security;
 
 use Doctrine\Persistence\ManagerRegistry;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
@@ -57,7 +58,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         return null !== $this->extractToken($request);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token, string $firewallName): ?Response
     {
         $apiToken = $this->extractToken($request);
 

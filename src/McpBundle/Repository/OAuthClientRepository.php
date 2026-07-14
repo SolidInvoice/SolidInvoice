@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use SensitiveParameter;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
@@ -47,7 +48,7 @@ final class OAuthClientRepository extends EntityRepository implements ClientRepo
         return $this->findOneBy(['id' => $ulid]);
     }
 
-    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
+    public function validateClient(string $clientIdentifier, #[SensitiveParameter] ?string $clientSecret, ?string $grantType): bool
     {
         $client = $this->getClientEntity($clientIdentifier);
 

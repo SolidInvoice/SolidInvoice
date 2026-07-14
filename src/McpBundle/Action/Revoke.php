@@ -21,6 +21,7 @@ use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use RuntimeException;
+use SensitiveParameter;
 use SolidInvoice\McpBundle\OAuth\KeyManager;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\McpBundle\Repository\McpRefreshTokenRepository;
@@ -58,7 +59,7 @@ final readonly class Revoke
         return new Response('', Response::HTTP_OK);
     }
 
-    private function tryRevokeAccessToken(string $token): bool
+    private function tryRevokeAccessToken(#[SensitiveParameter] string $token): bool
     {
         try {
             $signer = new Sha256();

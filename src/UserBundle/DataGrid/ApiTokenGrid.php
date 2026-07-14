@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
+use SensitiveParameter;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
@@ -67,12 +68,12 @@ final class ApiTokenGrid extends Grid
                 ->label('Usage Count')
                 ->searchable(false)
                 ->sortable(false)
-                ->formatValue(static fn ($value, ApiToken $token) => $token->getUsageCount()),
+                ->formatValue(static fn ($value, #[SensitiveParameter] ApiToken $token) => $token->getUsageCount()),
             RelativeDateColumn::new('lastUsed')
                 ->label('Last Used')
                 ->searchable(false)
                 ->sortable(false)
-                ->formatValue(static function ($value, ApiToken $token) {
+                ->formatValue(static function ($value, #[SensitiveParameter] ApiToken $token) {
                     $history = $token->getHistory();
                     return $history->count() > 0 ? $history->first()->getCreated() : null;
                 }),

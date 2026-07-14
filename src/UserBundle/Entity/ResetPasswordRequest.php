@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Repository\ResetPasswordRequestRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -40,6 +41,7 @@ class ResetPasswordRequest implements ResetPasswordRequestInterface
         private ?User $user,
         DateTimeInterface $expiresAt,
         string $selector,
+        #[SensitiveParameter]
         string $hashedToken
     ) {
         $this->initialize($expiresAt, $selector, $hashedToken);

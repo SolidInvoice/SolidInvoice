@@ -15,6 +15,7 @@ namespace SolidInvoice\InstallBundle\DTO;
 
 use Doctrine\DBAL\DriverManager;
 use PDO;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Doctrine\Drivers;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -37,6 +38,7 @@ final class DatabaseConfig
         #[Type(type: 'integer', groups: ['database_config_mysql', 'database_config_mariadb', 'database_config_pgsql'])]
         public ?int $port = null,
         public ?string $user = null,
+        #[SensitiveParameter]
         public ?string $password = null,
         public ?string $version = null,
         #[NotBlank(groups: ['database_config_mysql', 'database_config_mariadb', 'database_config_pgsql'])]

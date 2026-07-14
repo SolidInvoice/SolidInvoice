@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\Repository\McpRefreshTokenRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -75,7 +76,7 @@ class McpRefreshToken implements RefreshTokenEntityInterface
         return $this->accessToken;
     }
 
-    public function setAccessToken(AccessTokenEntityInterface $accessToken): void
+    public function setAccessToken(#[SensitiveParameter] AccessTokenEntityInterface $accessToken): void
     {
         if (! $accessToken instanceof McpAccessToken) {
             throw new InvalidArgumentException('Expected McpAccessToken instance.');

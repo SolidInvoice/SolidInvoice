@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\DTO;
 
+use SensitiveParameter;
 use Symfony\Component\Validator\Constraints\Valid;
 
 final class Installation
@@ -25,6 +26,7 @@ final class Installation
         public ?string $applicationUrl = null,
         public bool $telemetryEnabled = true,
         public string $currentStep = 'start',
+        #[SensitiveParameter]
         public ?string $token = '',
     ) {
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle;
 
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 
 /**
@@ -22,6 +23,7 @@ use SolidInvoice\UserBundle\Entity\ApiToken;
 final readonly class GeneratedApiToken
 {
     public function __construct(
+        #[SensitiveParameter]
         public ApiToken $token,
         public string $plaintext,
     ) {

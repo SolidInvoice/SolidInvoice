@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Export\Security\Voter;
 
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
 use SolidInvoice\UserBundle\Entity\User;
@@ -39,7 +40,7 @@ final class ExportJobVoter extends Voter
         return $attribute === self::DOWNLOAD && $subject instanceof ExportJob;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, #[SensitiveParameter] TokenInterface $token, ?Vote $vote = null): bool
     {
         $user = $token->getUser();
         if (! $user instanceof User) {

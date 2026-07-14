@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Email;
 
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
@@ -21,6 +22,7 @@ final class ResetPasswordEmail extends TemplatedEmail
 {
     public function __construct(
         User $user,
+        #[SensitiveParameter]
         ResetPasswordToken $resetToken,
     ) {
         parent::__construct();

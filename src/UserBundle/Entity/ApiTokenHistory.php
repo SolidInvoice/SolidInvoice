@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SensitiveParameter;
 use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -139,7 +140,7 @@ class ApiTokenHistory
         return $this->token;
     }
 
-    public function setToken(ApiToken $token): self
+    public function setToken(#[SensitiveParameter] ApiToken $token): self
     {
         $this->token = $token;
 

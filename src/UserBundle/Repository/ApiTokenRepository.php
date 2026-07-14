@@ -18,6 +18,7 @@ use DateTimeInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
@@ -46,7 +47,7 @@ class ApiTokenRepository extends EntityRepository
      * Looks up the username for a given plaintext API token. The token is
      * hashed before the query so the database only ever sees the hash.
      */
-    public function getUsernameForToken(string $plaintextToken): ?string
+    public function getUsernameForToken(#[SensitiveParameter] string $plaintextToken): ?string
     {
         $q = $this
             ->createQueryBuilder('t')
@@ -68,7 +69,7 @@ class ApiTokenRepository extends EntityRepository
      * Finds an ApiToken entity by its plaintext value. Returns null when no
      * matching token exists.
      */
-    public function findOneByPlaintext(string $plaintextToken): ?ApiToken
+    public function findOneByPlaintext(#[SensitiveParameter] string $plaintextToken): ?ApiToken
     {
         return $this->findOneBy(['token' => $this->hasher->hash($plaintextToken)]);
     }
@@ -100,7 +101,7 @@ class ApiTokenRepository extends EntityRepository
 
         $historyMap = array_combine(array_column($history, 'token_id'), $history);
 
-        return array_map(static fn (array $token) => [
+        return array_map(static fn (#[SensitiveParameter] array $token) => [
             'id' => $token['id'],
             'name' => $token['name'],
             'ip' => $historyMap[$token['id']->toBinary()]['ip'] ?? null,
@@ -108,7 +109,7 @@ class ApiTokenRepository extends EntityRepository
         ], $tokens);
     }
 
-    public function revoke(ApiToken $token): void
+    public function revoke(#[SensitiveParameter] ApiToken $token): void
     {
         $em = $this->getEntityManager();
 

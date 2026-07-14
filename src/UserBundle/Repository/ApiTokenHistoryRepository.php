@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
+use SensitiveParameter;
 use SolidInvoice\ApiBundle\Security\ApiTokenHasher;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
@@ -33,7 +34,7 @@ class ApiTokenHistoryRepository extends EntityRepository
         parent::__construct($registry, ApiTokenHistory::class);
     }
 
-    public function addHistory(ApiTokenHistory $history, string $plaintextToken): void
+    public function addHistory(ApiTokenHistory $history, #[SensitiveParameter] string $plaintextToken): void
     {
         $entityManager = $this->getEntityManager();
 
@@ -75,7 +76,7 @@ class ApiTokenHistoryRepository extends EntityRepository
     /**
      * @return iterable<int, ApiTokenHistory>
      */
-    public function getHistoryForToken(ApiToken $apiToken): iterable
+    public function getHistoryForToken(#[SensitiveParameter] ApiToken $apiToken): iterable
     {
         return $this->createQueryBuilder('h')
             ->where('h.token = :token')

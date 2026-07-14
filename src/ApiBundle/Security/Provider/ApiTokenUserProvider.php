@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Security\Provider;
 
+use SensitiveParameter;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
@@ -32,7 +33,7 @@ class ApiTokenUserProvider implements UserProviderInterface
     ) {
     }
 
-    public function getUsernameForToken(string $token): ?string
+    public function getUsernameForToken(#[SensitiveParameter] string $token): ?string
     {
         return $this->tokenRepository->getUsernameForToken($token);
     }
