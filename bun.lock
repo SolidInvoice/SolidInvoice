@@ -19,7 +19,7 @@
         "baseline-browser-mapping": "^2.10.43",
         "caniuse-lite": "^1.0.30001805",
         "intl-messageformat": "^11.2.11",
-        "jquery": "^4.0.0",
+        "jquery": "^3.7.1",
         "regenerator-runtime": "^0.14.1",
         "sortablejs": "^1.15.7",
       },
@@ -37,7 +37,7 @@
         "@symfony/ux-toggle-password": "file:vendor/symfony/ux-toggle-password/assets",
         "@symfony/webpack-encore": "^7.1.0",
         "@types/bootstrap": "^5.2.11",
-        "@types/jquery": "^4.0.1",
+        "@types/jquery": "^3.5.29",
         "@types/sortablejs": "^1.15.9",
         "bootstrap": "^5.3.8",
         "chart.js": "^4.5.1",
@@ -625,7 +625,7 @@
 
     "@types/istanbul-reports": ["@types/istanbul-reports@3.0.4", "", { "dependencies": { "@types/istanbul-lib-report": "*" } }, "sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ=="],
 
-    "@types/jquery": ["@types/jquery@4.0.1", "", {}, "sha512-9a59A/tycXgYuPABcp6/3spSShn0NT2UOM4EfHvMumjYi4lJWTsK5SZWjhx3yRm9IHGCeWXdV2YfNsrWrft/CA=="],
+    "@types/jquery": ["@types/jquery@3.5.34", "", { "dependencies": { "@types/sizzle": "*" } }, "sha512-3m3939S3erqmTLJANS/uy0B6V7BorKx7RorcGZVjZ62dF5PAGbKEDZK1CuLtKombJkFA2T1jl8LAIIs7IV6gBQ=="],
 
     "@types/jsesc": ["@types/jsesc@2.5.1", "", {}, "sha512-9VN+6yxLOPLOav+7PwjZbxiID2bVaeq0ED4qSQmdQTdjnXJSaCVKTR58t15oqH1H5t8Ng2ZX1SabJVoN9Q34bw=="],
 
@@ -634,6 +634,8 @@
     "@types/node": ["@types/node@25.0.3", "", { "dependencies": { "undici-types": "~7.16.0" } }, "sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA=="],
 
     "@types/node-fetch": ["@types/node-fetch@2.6.13", "", { "dependencies": { "@types/node": "*", "form-data": "^4.0.4" } }, "sha512-QGpRVpzSaUs30JBSGPjOg4Uveu384erbHBoT1zeONvyCfwQxIkUshLAOqN/k9EjGviPRmWTTe6aH2qySWKTVSw=="],
+
+    "@types/sizzle": ["@types/sizzle@2.3.10", "", {}, "sha512-TC0dmN0K8YcWEAEfiPi5gJP14eJe30TTGjkvek3iM/1NdHHsdCA/Td6GvNndMOo/iSnIsZ4HuuhrYPDAmbxzww=="],
 
     "@types/sortablejs": ["@types/sortablejs@1.15.9", "", {}, "sha512-7HP+rZGE2p886PKV9c9OJzLBI6BBJu1O7lJGYnPyG3fS4/duUCcngkNCjsLwIMV+WMqANe3tt4irrXHSIe68OQ=="],
 
@@ -1097,7 +1099,7 @@
 
     "jest-worker": ["jest-worker@29.7.0", "", { "dependencies": { "@types/node": "*", "jest-util": "^29.7.0", "merge-stream": "^2.0.0", "supports-color": "^8.0.0" } }, "sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw=="],
 
-    "jquery": ["jquery@4.0.0", "", {}, "sha512-TXCHVR3Lb6TZdtw1l3RTLf8RBWVGexdxL6AC8/e0xZKEpBflBsjh9/8LXw+dkNFuOyW9B7iB3O1sP7hS0Kiacg=="],
+    "jquery": ["jquery@3.7.1", "", {}, "sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg=="],
 
     "js-tokens": ["js-tokens@4.0.0", "", {}, "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="],
 
@@ -1710,8 +1712,6 @@
     "@solidworx/platform/@symfony/webpack-encore": ["@symfony/webpack-encore@5.3.1", "", { "dependencies": { "@nuxt/friendly-errors-webpack-plugin": "^2.5.1", "babel-loader": "^9.1.3 || ^10.0.0", "css-loader": "^7.1.0", "css-minimizer-webpack-plugin": "^7.0.0", "fastest-levenshtein": "^1.0.16", "mini-css-extract-plugin": "^2.6.0", "picocolors": "^1.1.0", "pretty-error": "^4.0.0", "resolve-url-loader": "^5.0.0", "semver": "^7.3.2", "style-loader": "^3.3.0 || ^4.0.0", "tapable": "^2.2.1", "terser-webpack-plugin": "^5.3.0", "tmp": "^0.2.5", "webpack-manifest-plugin": "^5.0.1", "yargs-parser": "^21.0.0" }, "peerDependencies": { "@babel/core": "^7.17.0", "@babel/plugin-transform-react-jsx": "^7.12.11", "@babel/preset-env": "^7.16.0", "@babel/preset-react": "^7.9.0", "@babel/preset-typescript": "^7.0.0", "@symfony/stimulus-bridge": "^3.0.0 || ^4.0.0", "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0", "@vue/babel-plugin-jsx": "^1.0.0", "@vue/babel-preset-jsx": "^1.0.0", "@vue/compiler-sfc": "^2.6 || ^3.0.2", "file-loader": "^6.0.0", "fork-ts-checker-webpack-plugin": "^7.0.0 || ^8.0.0 || ^9.0.0", "handlebars": "^4.7.7", "handlebars-loader": "^1.7.0", "less": "^4.0.0", "less-loader": "^11.0.0 || ^12.2.0", "postcss": "^8.3.0", "postcss-loader": "^7.0.0 || ^8.1.0", "sass": "^1.17.0", "sass-loader": "^16.0.1", "stylus-loader": "^7.0.0 || ^8.1.0", "svelte": "^3.50.0 || ^4.2.2 || ^5.0.0", "svelte-loader": "^3.1.0", "ts-loader": "^9.0.0", "typescript": "^5.0.0", "vue": "^3.2.14", "vue-loader": "^17.0.0", "webpack": "^5.72", "webpack-cli": "^5.1.4 || ^6.0.0", "webpack-notifier": "^1.15.0" }, "optionalPeers": ["@babel/plugin-transform-react-jsx", "@babel/preset-react", "@babel/preset-typescript", "@symfony/stimulus-bridge", "@vue/babel-helper-vue-jsx-merge-props", "@vue/babel-plugin-jsx", "@vue/babel-preset-jsx", "@vue/compiler-sfc", "file-loader", "fork-ts-checker-webpack-plugin", "handlebars", "handlebars-loader", "less", "less-loader", "postcss", "postcss-loader", "sass", "sass-loader", "stylus-loader", "svelte", "svelte-loader", "ts-loader", "typescript", "vue", "vue-loader", "webpack-notifier"], "bin": { "encore": "bin/encore.js" } }, "sha512-fNevCvcFMWrY63b901F2mvuECFUqwrQUUEJ9TZkO42lc81F0D6yiTMCFpzTKNrUIO7JSoD8aQxAWJbI5Kly4yg=="],
 
     "@solidworx/platform/eslint-webpack-plugin": ["eslint-webpack-plugin@5.0.2", "", { "dependencies": { "@types/eslint": "^9.6.1", "flatted": "^3.3.3", "jest-worker": "^29.7.0", "micromatch": "^4.0.8", "normalize-path": "^3.0.0", "schema-utils": "^4.3.0" }, "peerDependencies": { "eslint": "^8.0.0 || ^9.0.0", "webpack": "^5.0.0" } }, "sha512-cB7EO2o+4gPUzK6zxgegSet8uu/hHwzOiG+2976MHWiwWFj9mmPbTrzlW0InFl6hl89S1D9MPKK5F7vNFpZc4g=="],
-
-    "@solidworx/platform/jquery": ["jquery@3.7.1", "", {}, "sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg=="],
 
     "@solidworx/platform/sass": ["sass@1.97.1", "", { "dependencies": { "chokidar": "^4.0.0", "immutable": "^5.0.2", "source-map-js": ">=0.6.2 <2.0.0" }, "optionalDependencies": { "@parcel/watcher": "^2.4.1" }, "bin": { "sass": "sass.js" } }, "sha512-uf6HoO8fy6ClsrShvMgaKUn14f2EHQLQRtpsZZLeU/Mv0Q1K5P0+x2uvH6Cub39TVVbWNSrraUhDAoFph6vh0A=="],
 

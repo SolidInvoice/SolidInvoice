@@ -37,7 +37,7 @@
         "@symfony/ux-toggle-password": "file:vendor/symfony/ux-toggle-password/assets",
         "@symfony/webpack-encore": "^7.1.0",
         "@types/bootstrap": "^5.2.11",
-        "@types/jquery": "^4.0.1",
+        "@types/jquery": "^3.5.29",
         "@types/sortablejs": "^1.15.9",
         "bootstrap": "^5.3.8",
         "chart.js": "^4.5.1",
@@ -74,7 +74,7 @@
         "baseline-browser-mapping": "^2.10.43",
         "caniuse-lite": "^1.0.30001805",
         "intl-messageformat": "^11.2.11",
-        "jquery": "^4.0.0",
+        "jquery": "^3.7.1",
         "regenerator-runtime": "^0.14.1",
         "sortablejs": "^1.15.7"
     },
