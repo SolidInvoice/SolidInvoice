@@ -41,6 +41,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Uid\Ulid;
 use function strtoupper;
 
@@ -211,15 +212,20 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 
-    public function testItSwitchesToTheResolvedCompanyOnACustomDomainAndSkipsRedirect(): void
+    public function testItSwitchesToTheResolvedCompanyOnACustomDomainForAnAnonymousUserAndSkipsRedirect(): void
     {
+        // Anonymous visitors (e.g. hitting the login page on a company's custom
+        // domain) have no membership to check, so the switch is allowed through.
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
 
         $companySelector = new CompanySelector($registry);
 
-        $security->shouldNotReceive('getUser');
+        $security
+            ->shouldReceive('getUser')
+            ->once()
+            ->andReturn(null);
         $router->shouldNotReceive('generate');
 
         $company = new Company();
@@ -243,6 +249,97 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertSame($company->getId(), $companySelector->getCompany());
         self::assertSame($company->getId(), $session->get('company'));
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+    }
+
+    public function testItSwitchesToTheResolvedCompanyOnACustomDomainForAMemberAndSkipsRedirect(): void
+    {
+        $router = M::mock(RouterInterface::class);
+        $registry = M::mock(ManagerRegistry::class);
+        $security = M::mock(Security::class);
+
+        $companySelector = new CompanySelector($registry);
+
+        $company = new Company();
+        $this->setCompanyId($company, new Ulid());
+
+        $user = new User();
+        $user->addCompany($company);
+
+        $security
+            ->shouldReceive('getUser')
+            ->once()
+            ->andReturn($user);
+        $router->shouldNotReceive('generate');
+
+        $filter = $this->expectSwitchCompanyCalls($registry, $company);
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = new Request();
+        $request->setSession($session);
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $company)
+        );
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertSame($company->getId(), $companySelector->getCompany());
+        self::assertSame($company->getId(), $session->get('company'));
+        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+    }
+
+    public function testItDeniesAccessWhenAnAuthenticatedUserIsNotAMemberOfTheCustomDomainCompany(): void
+    {
+        // Regression test for GHSA-55q8-pvw3-5gfr / GHSA-fxf4-3h4c-rqrc: an
+        // authenticated user who is a member of company A must not be able to
+        // switch their active tenant to company B just by sending a request
+        // with company B's custom domain as the Host header.
+        $router = M::mock(RouterInterface::class);
+        $registry = M::mock(ManagerRegistry::class);
+        $security = M::mock(Security::class);
+
+        $companySelector = new CompanySelector($registry);
+
+        $victimCompany = new Company();
+        $this->setCompanyId($victimCompany, new Ulid());
+
+        $ownCompany = new Company();
+        $this->setCompanyId($ownCompany, new Ulid());
+
+        $user = new User();
+        $user->addCompany($ownCompany);
+
+        $security
+            ->shouldReceive('getUser')
+            ->once()
+            ->andReturn($user);
+        $router->shouldNotReceive('generate');
+        $registry->shouldNotReceive('getManager');
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = new Request();
+        $request->setSession($session);
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'victim.example', 'https', 443, $victimCompany)
+        );
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+
+        $this->expectException(AccessDeniedException::class);
+
+        try {
+            $listener->onKernelRequest($event);
+        } finally {
+            self::assertNull($companySelector->getCompany());
+            self::assertFalse($session->has('company'));
+        }
     }
 
     public function testItSkipsWhenCompanySelectorAlreadyHasACompany(): void

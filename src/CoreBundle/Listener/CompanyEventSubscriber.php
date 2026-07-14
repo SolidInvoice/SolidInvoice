@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 use function assert;
@@ -70,6 +71,20 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 
         if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company instanceof Company) {
             $companyId = $resolved->company->getId();
+            $user = $this->security->getUser();
+
+            // A logged-in user must belong to the company that owns this custom
+            // domain: the Host header is attacker-controlled, so without this
+            // check any authenticated user could switch their session's active
+            // tenant to another company just by sending a different Host value.
+            if ($user instanceof UserInterface) {
+                assert($user instanceof User);
+
+                if (! $user->getCompanies()->exists(static fn (int $key, Company $company): bool => $company->getId()->equals($companyId))) {
+                    throw new AccessDeniedException('You do not have access to this company.');
+                }
+            }
+
             $this->companySelector->switchCompany($companyId);
             $session->set('company', $companyId);
             return;
