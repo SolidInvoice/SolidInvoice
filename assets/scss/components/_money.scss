@@ -44,12 +44,14 @@
 
 // Currency code or symbol. Dimmed relative to the amount, but it is meaningful
 // text rather than decoration, so it holds AA on every surface in the system.
+
 .money-currency {
     color: var(--swp-money-currency);
 }
 
 // The amount. Weight is normalised here so that the UA default of 700 on
 // `<strong>` does not pre-empt the `.money--total` step up to 600.
+
 .money-amount {
     color: var(--swp-money-neutral);
     font-weight: var(--swp-font-medium);
@@ -61,11 +63,13 @@
 
 // Paid. Colour is amplification here, never the carrier of meaning - a green
 // amount without an accompanying "Paid" label is a bug, not a style choice.
+
 .money--paid .money-amount {
     color: var(--swp-money-paid);
 }
 
 // Overdue. Same rule: always rendered with an explicit "Overdue" label.
+
 .money--overdue .money-amount {
     color: var(--swp-money-overdue);
 }
@@ -73,6 +77,7 @@
 // Total. Heavier, and one size step up relative to the inherited context.
 // The currency keeps its inherited weight so the dimmed-prefix relationship
 // survives the step up.
+
 .money--total .money-amount {
     font-size: calc(1em * var(--swp-money-total-scale));
     font-weight: var(--swp-font-semibold);
@@ -84,6 +89,7 @@
 // equal words. Scoped to `--total` deliberately. At body size (a table row, an
 // activity feed) the same reduction would put the code near 10px, which is the
 // legibility problem rather than the fix, so the code stays full size there.
+
 .money--total .money-currency {
     font-size: var(--swp-money-currency-scale);
 }
