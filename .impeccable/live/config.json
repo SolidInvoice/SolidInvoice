@@ -1,6 +1,0 @@
-{
-  "files": ["src/CoreBundle/Resources/views/Layout/base.html.twig"],
-  "insertBefore": "{% endblock javascripts %}",
-  "commentSyntax": "html",
-  "cspChecked": true
-}
