@@ -45,4 +45,16 @@ final class ClientGrid extends BaseClientGrid
     {
         return new TranslatableMessage('client.grid.create');
     }
+
+    #[Override]
+    public function getEmptyTitle(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.client.title');
+    }
+
+    #[Override]
+    public function getEmptyDescription(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.client.description');
+    }
 }

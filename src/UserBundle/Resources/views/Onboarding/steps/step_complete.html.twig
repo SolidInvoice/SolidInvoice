@@ -11,7 +11,7 @@
     {# Success Animation #}
     <div class="celebration-icon mb-4">
         <div class="success-checkmark">
-            {{ ux_icon('tabler:circle-check', {width: 96, height: 96, class: 'text-success'}) }}
+            {{ ux_icon('tabler:check', {width: 48, height: 48}) }}
         </div>
     </div>
 
@@ -36,9 +36,9 @@
     </div>
 
     {# Quick Tips #}
-    <div class="alert alert-info d-flex align-items-start gap-3 mb-4" role="alert">
-        {{ ux_icon('tabler:bulb', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
-        <div class="text-start">
+    <div class="onboarding-tip mb-4" role="note">
+        {{ ux_icon('tabler:bulb', {width: 20, height: 20}) }}
+        <div>
             <strong>{{ 'onboarding.complete.pro_tip_title'|trans({}) }}</strong> {{ 'onboarding.complete.pro_tip_text'|trans({}) }}
         </div>
     </div>
@@ -92,51 +92,3 @@
         </p>
     </div>
 </div>
-
-<style>
-    .celebration-icon {
-        animation: celebrate 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    @keyframes celebrate {
-        0% {
-            transform: scale(0) rotate(-180deg);
-            opacity: 0;
-        }
-        50% {
-            transform: scale(1.1) rotate(10deg);
-        }
-        100% {
-            transform: scale(1) rotate(0deg);
-            opacity: 1;
-        }
-    }
-
-    .success-checkmark {
-        position: relative;
-    }
-
-    .success-checkmark::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: rgba(40, 167, 69, 0.1);
-        animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 0.5;
-        }
-        50% {
-            transform: translate(-50%, -50%) scale(1.1);
-            opacity: 0.3;
-        }
-    }
-</style>

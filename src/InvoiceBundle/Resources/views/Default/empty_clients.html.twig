@@ -12,10 +12,11 @@
 {% block title %}{{ "invoice.action.create"|trans }}{% endblock %}
 
 {% block content %}
-    <div class="alert alert-warning">
-        <h4>
-            {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, class: 'me-1'}) }}
-            {{ "invoice.client.empty"|trans }} <a href="{{ url('_clients_add') }}">{{ "invoice.client.create"|trans }}</a>
-        </h4>
-    </div>
+    {% include '@SolidInvoiceDataGrid/Components/_empty_state.html.twig' with {
+        icon: 'tabler:users',
+        title: 'datagrid.empty.client.title',
+        message: 'invoice.client.empty',
+        action_route: '_clients_add',
+        action_label: 'invoice.client.create',
+    } only %}
 {% endblock %}

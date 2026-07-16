@@ -69,4 +69,16 @@ final class QuoteGrid extends BaseQuoteGrid
     {
         return new TranslatableMessage('Create Quote');
     }
+
+    #[Override]
+    public function getEmptyTitle(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.quote.title');
+    }
+
+    #[Override]
+    public function getEmptyDescription(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.quote.description');
+    }
 }

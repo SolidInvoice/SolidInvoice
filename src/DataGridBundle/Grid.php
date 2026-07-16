@@ -119,6 +119,24 @@ abstract class Grid implements GridInterface
     }
 
     /**
+     * Generic default. Override in a grid to give its first-run empty state
+     * entity-specific copy.
+     */
+    public function getEmptyTitle(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.no_results.label');
+    }
+
+    /**
+     * Generic default. Override in a grid to give its first-run empty state
+     * entity-specific copy.
+     */
+    public function getEmptyDescription(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.no_results.empty');
+    }
+
+    /**
      * Returns true if this grid supports expandable row details.
      */
     public function hasRowDetails(): bool
