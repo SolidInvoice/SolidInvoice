@@ -17,6 +17,8 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Service\TrialBanner;
+use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
@@ -31,6 +33,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use function in_array;
 
@@ -71,6 +74,8 @@ final readonly class RequestListener implements EventSubscriberInterface
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
         private ClockInterface $clock,
+        private TrialBannerResolver $trialBannerResolver,
+        private TranslatorInterface $translator,
         #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private string $onboardingCouponCode = '',
     ) {
@@ -151,52 +156,34 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        $subscription = $this->getSubscription($event->getRequest());
+        $subscription = $this->getSubscription($request);
         if (! $subscription instanceof Subscription) {
             return;
         }
 
-        if (($subscription->getStatus() !== SubscriptionStatus::TRIAL && $subscription->getStatus() !== SubscriptionStatus::CANCELLED) || $subscription->getEndDate() <= $this->clock->now()) {
+        $banner = $this->trialBannerResolver->resolve($subscription);
+        if (! $banner instanceof TrialBanner) {
             return;
         }
 
         $content = $response->getContent();
-
         if ($content === false || $content === '') {
             return;
         }
 
-        $checkoutUrl = $this->urlGenerator->generate('saas_subscription_checkout');
-
-        [$type, $icon, $title, $message, $ctaLabel] = match ($subscription->getStatus()) {
-            SubscriptionStatus::CANCELLED => [
-                'danger',
-                'tabler:alert-circle',
-                'Subscription Cancelled',
-                'Your subscription has been cancelled. Your access will be revoked on ' . $subscription->getEndDate()->format('F j, Y') . '.',
-                'Renew Subscription',
-            ],
-            SubscriptionStatus::TRIAL => [
-                'warning',
-                'tabler:clock-hour-4',
-                'Trial Ending Soon',
-                'Your trial is active until ' . $subscription->getEndDate()->format('F j, Y') . '. Please activate your subscription to continue.',
-                'Activate Subscription',
-            ],
-        };
-
-        $banner = $this->twig->render('@SolidInvoiceSaas/_alert_banner.html.twig', [
-            'type' => $type,
-            'icon' => $icon,
-            'title' => $title,
-            'message' => $message,
-            'cta_label' => $ctaLabel,
-            'cta_url' => $checkoutUrl,
+        $html = $this->twig->render('@SolidInvoiceSaas/_alert_banner.html.twig', [
+            'type' => $banner->type,
+            'icon' => $banner->icon,
+            'title' => $this->translator->trans($banner->titleKey, $banner->params),
+            'message' => $this->translator->trans($banner->messageKey, $banner->params),
+            'cta_label' => $this->translator->trans($banner->ctaLabelKey, $banner->params),
+            'cta_url' => $this->urlGenerator->generate('saas_subscription_checkout'),
+            'code' => $banner->code,
         ]);
 
         $content = preg_replace(
             '/<div class="page-wrapper">/',
-            '<div class="page-wrapper">' . $banner,
+            '<div class="page-wrapper">' . $html,
             $content,
             1
         );
