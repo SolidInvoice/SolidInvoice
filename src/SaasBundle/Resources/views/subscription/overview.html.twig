@@ -91,29 +91,32 @@
                     <div class="d-flex align-items-baseline gap-3 mb-3">
                         <h2 class="mb-0">{{ plan.name }}</h2>
                         {% if isFree %}
-                            <span class="text-secondary">{{ 'saas.overview.free'|trans }}</span>
+                            <span class="text-subtle">{{ 'saas.overview.free'|trans }}</span>
                         {% else %}
-                            <span class="text-secondary">
-                                <strong>{{ plan.price|formatCurrency('USD') }}</strong>{{ 'saas.plan.per_month'|trans }}
+                            <span class="text-subtle">
+                                <span class="money money--total">
+                                    <span class="money-currency">USD</span>
+                                    <strong class="money-amount">{{ plan.price|formatCurrencyAmount('USD') }}</strong>
+                                </span>{{ 'saas.plan.per_month'|trans }}
                             </span>
                         {% endif %}
                     </div>
                     {% if plan.description is not empty %}
-                        <p class="text-secondary">{{ plan.description }}</p>
+                        <p class="text-subtle">{{ plan.description }}</p>
                     {% endif %}
 
                     <dl class="row mb-0">
-                        <dt class="col-sm-4 text-secondary">{{ 'saas.overview.started'|trans }}</dt>
+                        <dt class="col-sm-4 text-subtle">{{ 'saas.overview.started'|trans }}</dt>
                         <dd class="col-sm-8">{{ subscription.startDate|date('M j, Y') }}</dd>
 
                         {% if isTrial %}
-                            <dt class="col-sm-4 text-secondary">{{ 'saas.overview.trial_ends'|trans }}</dt>
+                            <dt class="col-sm-4 text-subtle">{{ 'saas.overview.trial_ends'|trans }}</dt>
                             <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
                         {% elseif isFree %}
-                            <dt class="col-sm-4 text-secondary">{{ 'saas.overview.renewal'|trans }}</dt>
+                            <dt class="col-sm-4 text-subtle">{{ 'saas.overview.renewal'|trans }}</dt>
                             <dd class="col-sm-8">{{ 'saas.overview.renewal_none'|trans }}</dd>
                         {% else %}
-                            <dt class="col-sm-4 text-secondary">{{ 'saas.overview.next_renewal'|trans }}</dt>
+                            <dt class="col-sm-4 text-subtle">{{ 'saas.overview.next_renewal'|trans }}</dt>
                             <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
                         {% endif %}
                     </dl>

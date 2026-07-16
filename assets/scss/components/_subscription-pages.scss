@@ -1,9 +1,13 @@
 /**
  * SolidInvoice - Subscription Pages Styles
  *
- * Modern, conversion-focused subscription state pages.
- * States: trial expired, cancelled, pending
- * Uses design system tokens for consistent styling.
+ * Billing, plan-picker, and subscription-state pages (pricing, overview,
+ * change, cancelled, paused, pending, trial expired).
+ *
+ * All values are `--swp-*` design tokens. State is carried by a soft icon
+ * medallion + heading, never by a decorative accent stripe, a colored glow, or
+ * a looping animation. Colour stays on the brand: Trust Green is the only
+ * accent; there is no Tabler blue and no amber-by-accident here.
  */
 
 // ============================================================================
@@ -24,7 +28,7 @@
     width: 100%;
     text-align: center;
     padding: var(--swp-space-10);
-    background: linear-gradient(to bottom, #ffffff, #fafbfc);
+    background: var(--swp-surface);
     border: none;
     border-radius: var(--swp-radius-xl);
     box-shadow: var(--swp-shadow-xl);
@@ -61,6 +65,9 @@
     }
 }
 
+// Soft medallion, flat tint + tinted glyph (the same language the dashboard
+// empty states and onboarding wizard use). No gradient disc.
+
 .subscription-icon {
     display: flex;
     align-items: center;
@@ -69,7 +76,6 @@
     height: 56px;
     border-radius: var(--swp-radius-xl);
     margin: 0 auto var(--swp-space-8);
-    transition: transform var(--swp-transition-base);
 
     svg {
         width: 32px;
@@ -78,22 +84,22 @@
 }
 
 .subscription-icon-warning {
-    background: linear-gradient(135deg, var(--swp-warning-light) 0%, var(--swp-warning-lighter) 100%);
+    background: var(--swp-warning-light);
     color: var(--swp-warning);
 }
 
 .subscription-icon-danger {
-    background: linear-gradient(135deg, var(--swp-danger-light) 0%, var(--swp-danger-lighter) 100%);
+    background: var(--swp-danger-light);
     color: var(--swp-danger);
 }
 
 .subscription-icon-info {
-    background: linear-gradient(135deg, var(--swp-info-light) 0%, var(--swp-info-lighter) 100%);
+    background: var(--swp-info-light);
     color: var(--swp-info);
 }
 
 .subscription-icon-paused {
-    background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-50) 100%);
+    background: var(--swp-gray-100);
     color: var(--swp-text-secondary);
 }
 
@@ -107,7 +113,7 @@
 }
 
 .subscription-subtitle {
-    font-size: 1.125rem;
+    font-size: var(--swp-text-lg);
     color: var(--swp-text-secondary);
     margin: 0 0 var(--swp-space-10);
     line-height: 1.7;
@@ -127,7 +133,7 @@
     box-shadow: var(--swp-shadow-xs);
 
     h3 {
-        font-size: 1rem;
+        font-size: var(--swp-text-md);
         font-weight: 600;
         color: var(--swp-text-primary);
         margin: 0 0 var(--swp-space-4);
@@ -145,7 +151,7 @@
         gap: var(--swp-space-3);
         padding: var(--swp-space-2-5) 0;
         color: var(--swp-text-secondary);
-        font-size: 0.9375rem;
+        font-size: var(--swp-text-base);
 
         svg {
             width: 20px;
@@ -156,10 +162,11 @@
     }
 }
 
-// Cancelled page: red icons for locked features
+// Cancelled page: locked features are muted, not alarmed in red. Losing access
+// to a feature you chose to cancel is information, not an error.
 
 .subscription-cancelled-page .subscription-benefits li svg {
-    color: var(--swp-danger);
+    color: var(--swp-text-muted);
 }
 
 // ============================================================================
@@ -174,10 +181,10 @@
 
     .btn-lg {
         padding: var(--swp-space-3-5) var(--swp-space-6);
-        font-size: 1rem;
+        font-size: var(--swp-text-md);
         font-weight: 600;
-        box-shadow: var(--swp-shadow-primary);
-        transition: all var(--swp-transition-base);
+        box-shadow: var(--swp-shadow-sm);
+        transition: box-shadow var(--swp-transition-base);
 
         svg {
             width: 20px;
@@ -185,17 +192,12 @@
         }
 
         &:hover {
-            box-shadow: var(--swp-shadow-primary-lg);
-            transform: translateY(-3px);
+            box-shadow: var(--swp-shadow-md);
         }
 
         &:focus-visible {
             outline: none;
-            box-shadow: var(--swp-shadow-primary-lg), var(--swp-ring-primary);
-        }
-
-        &:active {
-            transform: translateY(0);
+            box-shadow: var(--swp-shadow-md), var(--swp-ring-primary);
         }
     }
 
@@ -217,84 +219,18 @@
     }
 }
 
-// Add subtle pulse animation to CTA on trial/cancelled/pending/paused pages
-
-.subscription-expired-page .subscription-actions .btn-primary,
-.subscription-cancelled-page .subscription-actions .btn-primary,
-.subscription-pending-page .subscription-actions .btn-primary,
-.subscription-paused-page .subscription-actions .btn-primary {
-    animation: cta-pulse 2s ease-in-out infinite;
-}
-
-@keyframes cta-pulse {
-
-    0%, 100% {
-        box-shadow: var(--swp-shadow-primary);
-    }
-
-    50% {
-        box-shadow: var(--swp-shadow-primary-lg);
-    }
-}
-
 // ============================================================================
 // STATE-SPECIFIC PAGES
 // ============================================================================
-
-// Trial Expired - Orange/Warning theme
-
-.subscription-expired-page {
-
-    .subscription-container {
-        border-top: 4px solid var(--swp-warning);
-    }
-}
-
-// Cancelled - Red/Danger theme
-
-.subscription-cancelled-page {
-
-    .subscription-container {
-        border-top: 4px solid var(--swp-danger);
-    }
-
-    .subscription-countdown {
-        background: var(--swp-danger-lighter);
-        border: 1px solid var(--swp-danger-light);
-        border-radius: var(--swp-radius-md);
-        padding: var(--swp-space-4);
-        margin-bottom: var(--swp-space-6);
-
-        .countdown-label {
-            font-size: 0.875rem;
-            color: var(--swp-text-muted);
-            margin-bottom: var(--swp-space-1);
-        }
-
-        .countdown-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--swp-danger);
-        }
-    }
-}
-
-// Pending - Blue/Info theme (activation required)
-
-.subscription-pending-page {
-
-    .subscription-container {
-        border-top: 4px solid var(--swp-info);
-    }
-}
-
-// Paused - Gray/Neutral theme
+// State is carried by the icon medallion + heading + copy. The previous 4px
+// top accent stripes on `.subscription-container` were the accent-stripe
+// anti-pattern (the ">1px coloured border" rule) rotated to the top edge, and
+// the red danger framing on the cancelled page scolded a user for a choice
+// they made; both are gone.
 
 .subscription-paused-page {
-
-    .subscription-container {
-        border-top: 4px solid var(--swp-text-secondary);
-    }
+    // Paused benefits are neither achievements (green) nor losses (red) - they
+    // are simply on hold.
 
     .subscription-benefits li svg {
         color: var(--swp-text-secondary);
@@ -338,7 +274,7 @@
 
         .btn-warning {
             background: var(--swp-warning);
-            color: #ffffff;
+            color: var(--swp-text-inverse);
             border: none;
 
             &:hover {
@@ -356,7 +292,7 @@
 
         .btn-danger {
             background: var(--swp-danger);
-            color: #ffffff;
+            color: var(--swp-text-inverse);
             border: none;
 
             &:hover {
@@ -382,13 +318,22 @@
     position: relative;
     overflow: hidden;
     transition:
-        transform var(--swp-transition-base),
         box-shadow var(--swp-transition-base),
         border-color var(--swp-transition-base);
 
+    // Hover lifts by shadow only (no transform), per the design system's card
+    // rules.
+
     &:hover {
-        transform: translateY(-2px);
         box-shadow: var(--swp-shadow-md);
+    }
+
+    // Reserve the banner's height on every paid card so the price baseline is
+    // the same whether or not the card carries a banner (the banner itself is
+    // taken out of flow below).
+
+    > .card-body {
+        padding-top: var(--swp-space-9);
     }
 }
 
@@ -397,23 +342,30 @@
     box-shadow: var(--swp-shadow-md);
 
     &:hover {
-        transform: translateY(-4px);
         box-shadow: var(--swp-shadow-xl);
     }
 }
 
+// Ribbon across the top of the card. Absolutely positioned so it never pushes
+// the price down (the card body reserves matching top padding above), and in
+// Trust Green - not the Tabler-blue it used to fall back to.
+
 .plan-card-banner {
+    position: absolute;
+    top: 0;
+    inset-inline: 0;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--swp-space-1);
     padding: var(--swp-space-2) var(--swp-space-3);
-    font-size: 0.75rem;
+    font-size: var(--swp-text-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #ffffff;
-    background: var(--tblr-primary, #206bc4);
+    color: var(--swp-text-inverse);
+    background: var(--swp-primary);
 
     svg {
         flex-shrink: 0;
@@ -423,16 +375,16 @@
 // Free plan: presented as a slim secondary card below the main grid.
 
 .plan-card-free {
-    background: var(--swp-gray-50, #f8f9fa);
-    border: 1px dashed var(--swp-border, #dee2e6);
+    background: var(--swp-gray-50);
+    border: 1px dashed var(--swp-border);
     box-shadow: none;
     transition:
         border-color var(--swp-transition-base),
         background var(--swp-transition-base);
 
     &:hover {
-        border-color: var(--tblr-primary, #206bc4);
-        background: var(--swp-surface, #ffffff);
+        border-color: var(--swp-primary);
+        background: var(--swp-surface);
     }
 
     .card-body {
@@ -440,7 +392,7 @@
     }
 
     .plan-card-features {
-        font-size: 0.875rem;
+        font-size: var(--swp-text-sm);
 
         li {
             margin-bottom: var(--swp-space-1);
@@ -463,7 +415,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--swp-space-2) var(--swp-space-4);
-    font-size: 0.875rem;
+    font-size: var(--swp-text-sm);
 
     li {
         display: inline-flex;
@@ -473,12 +425,38 @@
     }
 }
 
+// The display price renders through the `.money` component (`money--total`),
+// which inherits its size from here; the interval sits quietly beside it.
+
 .plan-card-price {
-    line-height: 1;
+    font-size: var(--swp-text-4xl);
+    line-height: 1.1;
+}
+
+.plan-card-interval {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-normal);
 }
 
 .plan-card-features {
     text-align: start;
+}
+
+// A coupon / promo card (trial-expired page). Tokenised green-tint panel,
+// replacing the off-system Tabler `azure` utilities.
+
+.subscription-coupon {
+    background: var(--swp-primary-lighter);
+    border: 1px solid var(--swp-primary-light);
+    border-radius: var(--swp-radius-lg);
+
+    // The coupon code itself, in solid Trust Green so it reads as the one thing
+    // to copy. Without this a bare `.badge` falls back to the theme's amber.
+
+    .badge {
+        background: var(--swp-primary);
+        color: var(--swp-text-inverse);
+    }
 }
 
 // ============================================================================
@@ -527,7 +505,7 @@
     }
 
     .subscription-subtitle {
-        font-size: 1rem;
+        font-size: var(--swp-text-md);
     }
 
     .subscription-benefits {
@@ -561,6 +539,25 @@
     .subscription-container {
         max-width: 600px;
         padding: var(--swp-space-8);
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+// Reduced motion: drop the container reveal and the hover shadow transitions.
+// There is no looping/pulsing animation left in this file to guard.
+@media (prefers-reduced-motion: reduce) {
+
+    .subscription-container {
+        animation: none;
+    }
+
+    .plan-card,
+    .plan-card-free,
+    .subscription-actions .btn-lg {
+        transition: none;
     }
 }
 

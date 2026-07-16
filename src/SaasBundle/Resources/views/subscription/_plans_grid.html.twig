@@ -55,12 +55,15 @@
                     <h2 class="card-title mb-3">{{ plan.name }}</h2>
 
                     <div class="plan-card-price mb-3">
-                        <span class="display-5 fw-bold">{{ plan.price|formatCurrency('USD') }}</span>
-                        <span class="text-secondary">{{ 'saas.plan.per_month'|trans }}</span>
+                        <span class="money money--total">
+                            <span class="money-currency">USD</span>
+                            <strong class="money-amount">{{ plan.price|formatCurrencyAmount('USD') }}</strong>
+                        </span>
+                        <span class="plan-card-interval text-subtle">{{ 'saas.plan.per_month'|trans }}</span>
                     </div>
 
                     {% if plan.description is not empty %}
-                        <p class="text-secondary">{{ plan.description }}</p>
+                        <p class="text-subtle">{{ plan.description }}</p>
                     {% endif %}
 
                     {{ macros.feature_list(plan.features) }}
@@ -93,11 +96,11 @@
                 <div class="card-body">
                     <div class="d-flex flex-column flex-lg-row gap-4 align-items-lg-center">
                         <div class="text-lg-start text-center plan-card-free-header">
-                            <div class="text-uppercase text-secondary small fw-semibold mb-1">
+                            <div class="text-uppercase text-subtle small fw-semibold mb-1">
                                 {{ freeIsCurrent ? 'saas.plan.your_current_plan'|trans : 'saas.plan.just_getting_started'|trans }}
                             </div>
                             <h3 class="h4 mb-1">{{ freePlan.name }}</h3>
-                            <div class="text-secondary small">
+                            <div class="text-subtle small">
                                 {{ 'saas.plan.no_credit_card'|trans }}
                             </div>
                         </div>
@@ -115,7 +118,7 @@
                                 <form method="post" action="{{ path(actionRoute) }}">
                                     <input type="hidden" name="plan" value="{{ freePlan.planId }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
-                                    <button type="submit" class="btn btn-outline-secondary">
+                                    <button type="submit" class="btn btn-ghost">
                                         {{ ux_icon('tabler:gift', {width: 18, height: 18}) }}
                                         {{ 'saas.plan.continue_free'|trans }}
                                     </button>
@@ -140,7 +143,7 @@
                     {% if isBool and isEnabled %}
                         {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success mt-1 flex-shrink-0'}) }}
                     {% elseif isBool %}
-                        {{ ux_icon('tabler:x', {width: 18, height: 18, class: 'text-secondary mt-1 flex-shrink-0'}) }}
+                        {{ ux_icon('tabler:x', {width: 18, height: 18, class: 'text-subtle mt-1 flex-shrink-0'}) }}
                     {% else %}
                         {{ ux_icon('tabler:check', {width: 18, height: 18, class: 'text-success mt-1 flex-shrink-0'}) }}
                     {% endif %}
@@ -162,7 +165,7 @@
                     {% if isBool and isEnabled %}
                         {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success flex-shrink-0'}) }}
                     {% elseif isBool %}
-                        {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'text-secondary flex-shrink-0'}) }}
+                        {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'text-subtle flex-shrink-0'}) }}
                     {% else %}
                         {{ ux_icon('tabler:check', {width: 16, height: 16, class: 'text-success flex-shrink-0'}) }}
                     {% endif %}
@@ -180,7 +183,7 @@
         {% if isEnabled %}
             <strong>{{ label }}</strong>
         {% else %}
-            <span class="text-secondary">{{ label }}</span>
+            <span class="text-subtle">{{ label }}</span>
         {% endif %}
     {% elseif value is iterable %}
         <strong>{{ label }}:</strong> {{ value|join(', ') }}

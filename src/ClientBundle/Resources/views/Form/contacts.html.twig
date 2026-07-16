@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        {% if form.customFields|length > 0 %}
+        {% if form.customFields is defined and form.customFields|length > 0 %}
         <div class="mt-2">
             <strong class="d-block mb-1">{{ 'client.custom_fields'|trans }}</strong>
             {{ form_widget(form.customFields) }}

@@ -58,23 +58,23 @@
 
             {# Limited-time promo to entice activation #}
             {% if coupon_code|default('') is not empty %}
-                <div class="subscription-promo card border-azure bg-azure-lt mb-4 text-start">
+                <div class="card subscription-coupon mb-4 text-start">
                     <div class="card-body">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="subscription-promo-icon text-azure">
+                            <div class="subscription-promo-icon text-primary">
                                 {{ ux_icon('tabler:gift', {width: 32, height: 32}) }}
                             </div>
                             <div class="flex-grow-1">
                                 <div class="fw-bold fs-3 mb-1">
                                     {{ 'saas.trial_expired.promo_heading'|trans }}
                                 </div>
-                                <div class="text-secondary">
+                                <div class="text-subtle">
                                     {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code})|raw }}
                                 </div>
                             </div>
                             <div class="subscription-promo-code text-center">
-                                <div class="text-uppercase text-secondary small mb-1">{{ 'saas.trial_expired.promo_code'|trans }}</div>
-                                <span class="badge bg-azure text-white fs-2 px-3 py-2 font-monospace">{{ coupon_code }}</span>
+                                <div class="text-uppercase text-subtle small mb-1">{{ 'saas.trial_expired.promo_code'|trans }}</div>
+                                <span class="badge fs-2 px-3 py-2 font-monospace">{{ coupon_code }}</span>
                             </div>
                         </div>
                     </div>
