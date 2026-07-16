@@ -2026,6 +2026,19 @@ saas:
     settings:
         template_preview:
             title: 'Template preview'
+    trial_banner:
+        cancelled:
+            cta: 'Renew Subscription'
+            message: 'Your subscription has been cancelled. Your access will be revoked on %date%.'
+            title: 'Subscription Cancelled'
+        coupon:
+            cta: 'Extend & save %percent%%'
+            message: 'Add your card now to keep going %days% more days free, then take %percent%% off your first 3 months with code %code%.'
+            title: '%days% more days + %percent%% off'
+        extend:
+            cta: 'Extend my trial'
+            message: "Add your payment details before your trial ends and we'll extend it by %days% days. No charge today, cancel anytime."
+            title: 'Get %days% more days, free'
     trial_expired:
         activate: 'Activate Subscription'
         activate_save: 'Activate & Save 20%'

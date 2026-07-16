@@ -15,6 +15,7 @@
  # @param string message - main message text
  # @param string|null cta_label - optional button text (omit for no CTA)
  # @param string|null cta_url - optional button URL (omit for no CTA)
+ # @param string|null code - optional coupon code, rendered as a badge
  #}
 
 <div class="alert alert-{{ type }} alert-banner mb-0" role="alert">
@@ -24,6 +25,9 @@
         </div>
         <div class="flex-grow-1">
             <strong>{{ title }}</strong> - {{ message }}
+            {% if code is defined and code %}
+                <span class="badge bg-{{ type }} text-white ms-2 px-2 py-1 font-monospace">{{ code }}</span>
+            {% endif %}
         </div>
         {% if cta_label is defined and cta_url is defined and cta_label and cta_url %}
             <a href="{{ cta_url }}" class="btn btn-{{ type }} btn-sm">

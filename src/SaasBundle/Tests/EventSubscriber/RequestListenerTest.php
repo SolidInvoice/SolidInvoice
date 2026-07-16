@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
+use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -39,6 +40,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[CoversClass(RequestListener::class)]
@@ -274,6 +276,90 @@ final class RequestListenerTest extends KernelTestCase
         self::assertNull($event->getResponse());
     }
 
+    public function testOnResponseInjectsExtendBannerWithinWindow(): void
+    {
+        // now = 2024-01-01, endDate 5 days out -> extend variant
+        $now = CarbonImmutable::parse('2024-01-01');
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-06'));
+
+        $captured = null;
+        $listener = $this->createListener(
+            new User(),
+            $now,
+            $subscription,
+            onBannerRender: static function (array $context) use (&$captured): void {
+                $captured = $context;
+            },
+        );
+
+        $response = new Response('<div class="page-wrapper">content</div>');
+        $event = $this->responseEvent($response);
+
+        $listener->onResponse($event);
+
+        self::assertIsArray($captured);
+        self::assertSame('info', $captured['type']);
+        self::assertStringContainsString('extend it by 14 days', (string) $captured['message']);
+        self::assertStringContainsString('14 more days', (string) $captured['title']);
+        self::assertStringContainsString('Extend', (string) $captured['cta_label']);
+        self::assertArrayHasKey('code', $captured);
+        self::assertNull($captured['code']);
+        self::assertStringContainsString('<div class="alert">Banner</div>', (string) $response->getContent());
+    }
+
+    public function testOnResponseInjectsCouponBannerInFinalDays(): void
+    {
+        // now = 2024-01-01, endDate 2 days out + coupon code -> coupon variant
+        $now = CarbonImmutable::parse('2024-01-01');
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-03'));
+
+        $captured = null;
+        $listener = $this->createListener(
+            new User(),
+            $now,
+            $subscription,
+            couponCode: 'SAVE30',
+            onBannerRender: static function (array $context) use (&$captured): void {
+                $captured = $context;
+            },
+        );
+
+        $listener->onResponse($this->responseEvent(new Response('<div class="page-wrapper">x</div>')));
+
+        self::assertIsArray($captured);
+        self::assertSame('SAVE30', $captured['code']);
+        self::assertStringContainsString('30% off', (string) $captured['message']);
+        self::assertStringContainsString('30% off', (string) $captured['title']);
+        self::assertStringContainsString('save', (string) $captured['cta_label']);
+    }
+
+    public function testOnResponseInjectsNothingWhenOutsideWindow(): void
+    {
+        // 9 days out -> resolver returns null -> no injection
+        $now = CarbonImmutable::parse('2024-01-01');
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-10'));
+
+        $listener = $this->createListener(new User(), $now, $subscription);
+
+        $response = new Response('<div class="page-wrapper">x</div>');
+        $listener->onResponse($this->responseEvent($response));
+
+        self::assertStringNotContainsString('<div class="alert">Banner</div>', (string) $response->getContent());
+    }
+
+    private function responseEvent(Response $response): ResponseEvent
+    {
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        return new ResponseEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST,
+            $response,
+        );
+    }
+
     /**
      * @return iterable<array<string>>
      */
@@ -293,6 +379,7 @@ final class RequestListenerTest extends KernelTestCase
         ?Subscription $subscription = null,
         string $couponCode = '',
         ?callable $onTrialExpiredRender = null,
+        ?callable $onBannerRender = null,
     ): RequestListener {
         // Get real services from container
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -333,7 +420,13 @@ final class RequestListenerTest extends KernelTestCase
             }))
             ->andReturn('<html>Trial Expired Page</html>');
         $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/_alert_banner\.html\.twig/'), M::any())
+            ->with(M::pattern('/@SolidInvoiceSaas\/_alert_banner\.html\.twig/'), M::on(static function (array $context) use ($onBannerRender): bool {
+                if ($onBannerRender !== null) {
+                    $onBannerRender($context);
+                }
+
+                return true;
+            }))
             ->andReturn('<div class="alert">Banner</div>');
 
         // Mock Security
@@ -344,6 +437,17 @@ final class RequestListenerTest extends KernelTestCase
         $clock = M::mock(ClockInterface::class);
         $clock->shouldReceive('now')->andReturn($now ?? CarbonImmutable::now());
 
+        $translator = self::getContainer()->get(TranslatorInterface::class);
+
+        $trialBannerResolver = new TrialBannerResolver(
+            $clock,
+            couponCode: $couponCode,
+            couponPercent: 30,
+            bannerDays: 7,
+            couponDays: 2,
+            extensionDays: 14,
+        );
+
         return new RequestListener(
             $companySelector,
             $companyRepository,
@@ -353,6 +457,8 @@ final class RequestListenerTest extends KernelTestCase
             $security,
             $urlGenerator,
             $clock,
+            $trialBannerResolver,
+            $translator,
             $couponCode,
         );
     }
