@@ -18,7 +18,7 @@ permissions:
 jobs:
   build:
     name: Build Docusaurus site
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     defaults:
       run:

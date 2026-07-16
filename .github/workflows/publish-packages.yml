@@ -23,7 +23,7 @@ jobs:
   # ============================================================================
   prepare:
     name: Prepare
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     if: >-
       github.event_name == 'workflow_dispatch' ||
       github.event.workflow_run.conclusion == 'success'
@@ -70,7 +70,7 @@ jobs:
   build-packages:
     name: Build ${{ matrix.format }} (${{ matrix.arch }})
     needs: [prepare]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -131,7 +131,7 @@ jobs:
   upload-release:
     name: Upload to GitHub Release
     needs: [prepare, build-packages]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
@@ -165,7 +165,7 @@ jobs:
   publish-cloudsmith:
     name: Publish to Cloudsmith
     needs: [prepare, build-packages]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     if: vars.CLOUDSMITH_ENABLED == 'true'
     steps:
       - name: Harden the runner
@@ -242,7 +242,7 @@ jobs:
   publish-snap:
     name: Publish to Snap Store
     needs: [prepare]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -304,7 +304,7 @@ jobs:
   publish-aur:
     name: Publish to AUR
     needs: [prepare]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     if: |
       vars.AUR_ENABLED == 'true' &&
       needs.prepare.outputs.prerelease == 'false'
@@ -335,7 +335,7 @@ jobs:
   update-homebrew:
     name: Update Homebrew tap
     needs: [prepare]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     if: |
       vars.HOMEBREW_TAP_ENABLED == 'true' &&
       needs.prepare.outputs.prerelease == 'false'
