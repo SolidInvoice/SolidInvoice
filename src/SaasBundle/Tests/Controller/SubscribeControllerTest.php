@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Controller;
 
+use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
 use RuntimeException;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -29,6 +32,8 @@ use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Integration\Options;
 use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
@@ -109,6 +114,55 @@ final class SubscribeControllerTest extends TestCase
         self::assertSame('pro', $this->bus->messages[0]->payload['properties']['plan']);
     }
 
+    public function testActiveTrialCheckoutGrantsLemonSqueezyTrial(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::TRIAL,
+            CarbonImmutable::parse('2024-01-10'),
+        );
+
+        $options = $this->captureCheckoutOptions($subscription, CarbonImmutable::parse('2024-01-01'));
+
+        self::assertFalse($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    public function testExpiredTrialCheckoutSkipsTrial(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::TRIAL,
+            CarbonImmutable::parse('2023-12-30'),
+        );
+
+        $options = $this->captureCheckoutOptions($subscription, CarbonImmutable::parse('2024-01-01'));
+
+        self::assertTrue($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    public function testExternallyBilledTrialSkipsTrial(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::TRIAL,
+            CarbonImmutable::parse('2024-01-10'),
+            'ls_existing_1',
+        );
+
+        $options = $this->captureCheckoutOptions($subscription, CarbonImmutable::parse('2024-01-01'));
+
+        self::assertTrue($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    public function testCancelledCheckoutSkipsTrial(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::CANCELLED,
+            CarbonImmutable::parse('2024-01-10'),
+        );
+
+        $options = $this->captureCheckoutOptions($subscription, CarbonImmutable::parse('2024-01-01'));
+
+        self::assertTrue($options->getValue(Options::SKIP_TRIAL));
+    }
+
     /**
      * @return array{0: RedirectResponse, 1: array<string, list<string|Stringable>>}
      */
@@ -145,6 +199,9 @@ final class SubscribeControllerTest extends TestCase
         $companyRepository = $this->createMock(CompanyRepository::class);
         $companyRepository->method('find')->willReturn(new Company());
 
+        $clock = $this->createStub(ClockInterface::class);
+        $clock->method('now')->willReturn(CarbonImmutable::parse('2024-01-01'));
+
         $controller = new SubscribeController(
             $subscriptionManager,
             $companyRepository,
@@ -152,6 +209,7 @@ final class SubscribeControllerTest extends TestCase
             $this->createStub(PlanRepositoryInterface::class),
             $this->createStub(EntityManagerInterface::class),
             $this->makeTelemetry(),
+            $clock,
         );
 
         $session = new Session(new MockArraySessionStorage());
@@ -201,5 +259,95 @@ final class SubscribeControllerTest extends TestCase
             'en',
             null,
         );
+    }
+
+    private function trialSubscription(
+        SubscriptionStatus $status,
+        DateTimeImmutable $endDate,
+        ?string $subscriptionId = null,
+    ): Subscription {
+        $plan = new Plan();
+        $plan->setName('Pro');
+        $plan->setPlanId('variant-123');
+        $plan->setPrice(1000);
+
+        $subscription = new Subscription();
+        $subscription->setPlan($plan);
+        $subscription->setStatus($status);
+        $subscription->setStartDate(CarbonImmutable::parse('2024-01-01'));
+        $subscription->setEndDate($endDate);
+        $subscription->setSubscriptionId($subscriptionId);
+
+        return $subscription;
+    }
+
+    private function captureCheckoutOptions(Subscription $subscription, DateTimeImmutable $now): Options
+    {
+        $capturedOptions = null;
+
+        $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
+        $paymentIntegration->method('checkout')->willReturnCallback(
+            static function (Subscription $s, ?Options $options) use (&$capturedOptions): string {
+                $capturedOptions = $options;
+
+                return 'https://checkout.lemonsqueezy.com/buy/abc';
+            }
+        );
+
+        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+
+        $subscriptionManager = new SubscriptionManager(
+            $subscriptionRepository,
+            $this->createStub(PlanRepositoryInterface::class),
+            $paymentIntegration,
+        );
+
+        $companySelector = $this->createMock(CompanySelectorInterface::class);
+        $companySelector->method('getCompany')->willReturn(new Ulid());
+
+        $companyRepository = $this->createMock(CompanyRepository::class);
+        $companyRepository->method('find')->willReturn(new Company());
+
+        $clock = $this->createStub(ClockInterface::class);
+        $clock->method('now')->willReturn($now);
+
+        $controller = new SubscribeController(
+            $subscriptionManager,
+            $companyRepository,
+            $companySelector,
+            $this->createStub(PlanRepositoryInterface::class),
+            $this->createStub(EntityManagerInterface::class),
+            $this->makeTelemetry(),
+            $clock,
+        );
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = Request::create('/billing/subscription/activate');
+        $request->setSession($session);
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->method('generate')->willReturn('/billing/');
+
+        $user = new User();
+        $user->setEmail('test@example.com');
+
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn($user);
+
+        $tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $tokenStorage->method('getToken')->willReturn($token);
+
+        $container = new Container();
+        $container->set('request_stack', new RequestStack([$request]));
+        $container->set('router', $router);
+        $container->set('security.token_storage', $tokenStorage);
+
+        $controller->setContainer($container);
+        $controller(new Request());
+
+        self::assertInstanceOf(Options::class, $capturedOptions);
+
+        return $capturedOptions;
     }
 }

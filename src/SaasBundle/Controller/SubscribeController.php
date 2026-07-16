@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -23,6 +24,7 @@ use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Integration\Options;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
@@ -46,6 +48,7 @@ class SubscribeController extends AbstractController
         private readonly PlanRepositoryInterface $planRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly Telemetry $telemetry,
+        private readonly ClockInterface $clock,
     ) {
     }
 
@@ -60,10 +63,18 @@ class SubscribeController extends AbstractController
             return $this->redirectToRoute('_dashboard');
         }
 
+        // Grant Lemon Squeezy's built-in trial (skip_trial: false) only for a
+        // user who is still actively trialling and has not yet added a card.
+        // This is what makes the "extend your trial" offer real. Every other
+        // path (expired trial, cancelled, free-plan upgrade, plan change) is
+        // charged immediately and must not receive a second free trial.
+        $grantsTrialExtension = $subscription->getStatus() === SubscriptionStatus::TRIAL
+            && ! $subscription->isExternallyBilled()
+            && $subscription->getEndDate() > $this->clock->now();
+
         $options = Options::new()
             ->withEmail($user->getEmail())
-            // @TODO: If status is trial, and we want to allow the trial to be extended, skipTrial should be false.
-            ->withSkipTrial(true);
+            ->withSkipTrial(! $grantsTrialExtension);
 
         // The chosen plan id (LS variant) is passed in via query parameter
         // from ChoosePlanAction / ConfirmPlanChangeAction. We swap it onto the
