@@ -121,7 +121,7 @@
         "symfony/mailgun-mailer": "^8.1",
         "symfony/mailjet-notifier": "^8.1",
         "symfony/mattermost-notifier": "^8.1",
-        "symfony/mcp-bundle": "^0.10",
+        "symfony/mcp-bundle": "^0.11",
         "symfony/mercure-notifier": "^8.1",
         "symfony/message-bird-notifier": "^8.1",
         "symfony/message-media-notifier": "^8.1",
