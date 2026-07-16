@@ -19,12 +19,14 @@
 // is the dismiss button inside), so it gets no hover state - a lift here would
 // be a false affordance. A flat success tint plus a full 1px border carries
 // the state; the card keeps Tabler's resting `shadow-sm`.
+
 .card.card-active {
     border-color: var(--swp-success);
     background: var(--swp-success-lighter);
 }
 
 // Decorative watermark behind the card title (Tabler `.card-stamp`).
+
 .card-stamp-icon {
     opacity: 0.15;
 }
@@ -41,6 +43,7 @@
 
 // Renders as <a> while incomplete and <span> once complete, so every
 // interactive style is gated behind `:not(.completed)`.
+
 .checklist-item {
     display: flex;
     align-items: flex-start;
@@ -59,6 +62,7 @@
 
     // Hover and focus resolve to the same surface so pointer and keyboard
     // users are shown the same target; focus adds the halo below.
+
     &:not(.completed):is(:hover, :focus-visible) {
         background: var(--swp-primary-lighter);
         border-color: var(--swp-primary);
@@ -71,6 +75,7 @@
     // Focus Halo. `--swp-ring-primary` is a 15%-alpha green (~1.1:1 on white)
     // and cannot carry a focus indicator on its own, so the border shifts to
     // full `--swp-primary` alongside it to meet WCAG 2.1 SC 2.4.11.
+
     &:not(.completed):focus-visible {
         outline: none;
         box-shadow: var(--swp-ring-primary);
@@ -79,6 +84,7 @@
     // Done. Signalled by tint + strikethrough + weight drop + de-emphasis, so
     // it survives without hue. The programmatic signal is A5's
     // visually-hidden status text, not anything in here.
+
     &.completed {
         background: var(--swp-success-lighter);
         border-color: var(--swp-success-light);
@@ -95,6 +101,7 @@
         }
 
         // Nothing left to navigate to.
+
         .checklist-item-action {
             display: none;
         }
@@ -102,6 +109,7 @@
 }
 
 // Completion marker. Green check when done; a neutral ring when not.
+
 .checklist-item-icon {
     width: 20px;
     height: 20px;
@@ -130,6 +138,7 @@
 }
 
 // Scoped to the row: `item-icon` / `item-name` are too generic to own globally.
+
 .checklist-item .item-icon {
     display: flex;
     align-items: center;
@@ -151,6 +160,7 @@
 
 // Always visible, not hover-revealed: hover never fires on touch, so a
 // hover-only affordance is invisible to half the users who need it.
+
 .checklist-item-action {
     display: flex;
     align-items: center;
@@ -174,6 +184,7 @@
 // Progress summary card at the top of the panel. Scoped to this widget - the
 // unscoped `.offcanvas-body .card` it replaces would restyle every card in
 // every offcanvas in the app.
+
 .onboarding-offcanvas .offcanvas-body .card {
     border: 1px solid var(--swp-border-light);
     background: var(--swp-primary-lighter);

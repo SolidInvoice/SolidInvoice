@@ -44,7 +44,6 @@
 
     // State is carried by the icon tint, the value colour and the surface tint.
     // Never a side stripe, never a glow.
-    //
     // The tint lives on --danger alone, never on --urgent. --urgent is applied
     // unconditionally to hold the grid track, so tinting it would paint a red
     // card for a user with zero overdue invoices: the same defect as rendering
@@ -60,7 +59,6 @@
     // is room for an asymmetric row, and a full type step larger at every width.
 
     &--urgent {
-
         @media (width >= 1201px) {
             grid-column: span 3;
         }
@@ -146,10 +144,10 @@
     // the card. `.money--total` stepping it up another 12.5% on top of that is what
     // pushed "USD 120,882.19" past the card edge on a span-2 tile. The modifier is
     // kept for its weight, which the tile still wants; only the size step is undone.
-    //
     // `.money` is `white-space: nowrap` by design (a currency code must never be
     // orphaned from its number), so an amount that does not fit overflows rather
     // than wrapping. Width has to be won back here, not absorbed at render time.
+
     .money--total .money-amount {
         font-size: 1em;
     }
@@ -235,7 +233,6 @@
 }
 
 .dashboard-chart-empty-icon {
-
     // Was `--swp-text-light` (2.56:1 on surface): technically decoration, but
     // close enough to invisible that it read as a rendering fault. `--text-muted`
     // clears 1.4.11 for a meaningful graphic and still sits a step lighter than
@@ -264,7 +261,6 @@
 }
 
 .dashboard-chart-error-icon {
-
     // Contained in a tinted medallion, unlike the empty state's bare icon. This
     // is the same "state medallion" shape `.attention-empty-icon` already uses,
     // so the two states are told apart by form before colour is read at all.
@@ -285,7 +281,6 @@
 }
 
 .dashboard-chart-error-title {
-
     // Heavier and darker than `.dashboard-chart-empty-text`: a statement of what
     // went wrong, not a shrug.
     font-size: var(--swp-text-base);
@@ -373,7 +368,6 @@
 }
 
 .attention-badge {
-
     // Was 11px, off-ramp. Badge text is the documented Label step (12px).
     font-size: var(--swp-text-xs);
     padding: 2px 6px;
@@ -712,7 +706,6 @@
 }
 
 .activity-separator {
-
     // This is text, not a rule or a graphic. `--swp-text-light` is 2.56:1 on the
     // card surface and fails AA outright.
     color: var(--swp-text-muted);
