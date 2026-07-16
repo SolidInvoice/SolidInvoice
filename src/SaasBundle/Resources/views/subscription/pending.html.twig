@@ -34,7 +34,7 @@
                     {% include '@SolidInvoiceSaas/subscription/_plans_grid.html.twig' with { plans: plans } only %}
                 </div>
 
-                <p class="text-secondary small mt-3 mb-0">
+                <p class="text-subtle small mt-3 mb-0">
                     {{ ux_icon('tabler:lock', {width: 14, height: 14, class: 'me-1'}) }}
                     {{ 'saas.pending.secure_checkout'|trans }}
                 </p>
@@ -74,7 +74,7 @@
             {% endif %}
 
             {# Help #}
-            <p class="text-secondary small mt-4 mb-0">
+            <p class="text-subtle small mt-4 mb-0">
                 {{ 'saas.pending.need_help'|trans }}
                 <a href="https://solidinvoice.co/contact" target="_blank" rel="external noreferrer noopener">
                     {{ 'saas.action.contact_support_short'|trans }}

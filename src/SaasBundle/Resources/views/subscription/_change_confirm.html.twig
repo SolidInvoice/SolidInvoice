@@ -14,7 +14,7 @@
 
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.confirm.title'|trans }}{% endblock %}
+{% block title %}{{ ux_icon('tabler:arrow-down', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.confirm.title'|trans }}{% endblock %}
 
 {% import _self as macros %}
 
@@ -24,10 +24,10 @@
 {% block content %}
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card border-warning">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title mb-0">
-                        {{ ux_icon('tabler:alert-triangle', {width: 22, height: 22, class: 'text-warning me-2'}) }}
+                        {{ ux_icon('tabler:arrow-down', {width: 22, height: 22, class: 'me-2'}) }}
                         {{ 'saas.confirm.heading'|trans({'%plan%': newPlan.name}) }}
                     </h3>
                 </div>
@@ -57,7 +57,7 @@
                                     <tr>
                                         <td>{{ label }}</td>
                                         <td>{{ macros.format_value(current) }}</td>
-                                        <td class="{{ new is null ? 'text-danger' : '' }}">
+                                        <td class="{{ new is null ? 'text-subtle' : '' }}">
                                             {{ new is null ? 'saas.plan.not_included'|trans : macros.format_value(new) }}
                                         </td>
                                     </tr>
@@ -74,7 +74,7 @@
                         <input type="hidden" name="plan" value="{{ newPlan.planId }}">
                         <input type="hidden" name="confirmed" value="1">
                         <input type="hidden" name="_token" value="{{ csrf_token('change_plan') }}">
-                        <button type="submit" class="btn btn-warning">
+                        <button type="submit" class="btn btn-primary">
                             {{ ux_icon('tabler:arrow-down-circle', {width: 18, height: 18}) }}
                             {{ 'saas.confirm.title'|trans }}
                         </button>

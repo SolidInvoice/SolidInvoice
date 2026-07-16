@@ -332,7 +332,7 @@
         </div>
 
         {# Custom Fields - Collapsible Section #}
-        {% if form.customFields|length > 0 %}
+        {% if form.customFields is defined and form.customFields|length > 0 %}
             <details class="billing-terms-section" open>
                 <summary class="terms-summary" aria-label="{{ 'invoice.custom_fields'|trans }}">
                     <span class="terms-summary-icon">

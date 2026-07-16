@@ -200,7 +200,7 @@
                 </div>
             </section>
             {# Section 4: Custom Fields (Optional) #}
-            {% if form.customFields|length > 0 %}
+            {% if form.customFields is defined and form.customFields|length > 0 %}
             <section class="form-page-section client-form-section-optional" id="client-custom-fields">
                 <div class="section-header">
                     <div class="section-icon">
