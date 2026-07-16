@@ -330,11 +330,14 @@ dashboard:
         was_declined: 'was declined'
     attention:
         draft_invoices: 'Draft Invoices'
+        draft_label: Draft
         no_items: 'All caught up! Nothing needs your attention.'
         overdue_invoices: 'Overdue Invoices'
         pending_quotes: 'Pending Quotes'
+        showing: '%shown% of %total%'
         title: 'Attention Required'
         upcoming_recurring: 'Upcoming Recurring'
+        view_all: 'View all'
     charts:
         distribution_title: 'Invoice Status'
         invoices: Invoices
@@ -346,14 +349,14 @@ dashboard:
     checklist:
         action_required: 'Action Required'
         activate_subscription:
-            description: 'Unlock full access and continue using SolidInvoice'
+            description: 'Pick a plan to keep your account active'
             name: 'Activate Your Subscription'
         add_tax_rate:
             description: 'Configure tax rates for your invoices'
             name: 'Add a Tax Rate'
         all_complete_message: "All setup complete! You're ready to go."
-        banner_description: 'Unlock the full power of SolidInvoice by completing these essential setup tasks. Each step helps you maximize efficiency and streamline your invoicing workflow.'
-        banner_title: 'Complete Your Setup'
+        banner_description: 'These steps set up your company details, logo, tax rates and payment methods. You can skip any of them and come back later.'
+        banner_title: 'A few things to set up'
         complete: Complete
         completed: Completed
         configure_payment_gateway:
@@ -365,19 +368,23 @@ dashboard:
         customize_settings:
             description: 'Set up your business details and preferences'
             name: 'Customize Company Settings'
-        dismiss: Dismiss
-        dismiss_confirm: 'Are you sure you want to dismiss this checklist? You can always access these features from the menu.'
-        dismiss_confirm_title: 'Dismiss Setup Checklist?'
-        dismissed_message: 'Onboarding checklist has been dismissed.'
+        dismiss: 'Hide checklist'
+        dismiss_confirm: 'This hides the checklist permanently, so it will not come back. The setup pages stay in your settings if you want them later.'
+        dismiss_confirm_title: 'Hide the setup checklist?'
+        dismissed_message: 'Setup checklist hidden.'
         items_title: 'Setup Tasks'
+        percent_complete: '%percentage% percent complete'
         remaining: Remaining
         send_invoice:
             description: 'Create and send an invoice to a client'
             name: 'Send Your First Invoice'
+        status:
+            completed: Completed
+            not_started: 'Not started'
         subtitle: '%completed% of %total% tasks complete'
-        success_message: "You're ready to invoice like a pro! Your account is fully configured and you're all set to manage clients, send invoices, and track payments."
-        success_title: '🎉 Setup Complete!'
-        tasks_remaining: '{1} %count% task remaining to unlock full functionality|]1,Inf[ %count% tasks remaining to unlock full functionality'
+        success_message: "That's everything set up. Your details are saved, so from here it's just invoicing."
+        success_title: "You're all set"
+        tasks_remaining: '{1} %count% step left, whenever you have a minute|]1,Inf] %count% steps left, whenever you have a minute'
         title: 'Get Started with SolidInvoice'
         upload_logo:
             description: 'Add your logo to invoices and quotes'
@@ -409,7 +416,12 @@ dashboard:
             overdue: Overdue
             paid: Paid
             pending: Pending
+    error:
+        body: "We couldn't load this data, so the numbers here aren't complete. Your invoices and payments are safe. Try again in a moment; if it keeps failing, your server logs will have the details."
+        retry: 'Try again'
+        title: "This didn't load"
     hero:
+        currency_breakdown: '{1} in 1 currency|]1,Inf] shown separately, one line per currency'
         outstanding: Outstanding
         overdue: Overdue
         this_month: 'This Month'

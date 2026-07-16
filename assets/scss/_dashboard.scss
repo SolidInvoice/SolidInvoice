@@ -9,17 +9,22 @@
 // HERO STATS
 // =============================================================================
 
+// Four tiles, but deliberately not four equal tiles. The row is laid out on a
+// nine-track grid: ordinary tiles span two tracks, the urgent one spans three.
+// Spans are used instead of positional column sizes so the emphasis follows the
+// `--urgent` class rather than the tile's position in the markup.
+
 .dashboard-hero-stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: var(--swp-space-4);
+    grid-template-columns: 1fr;
 
-    @media (width <= 1200px) {
+    @media (width >= 577px) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (width <= 576px) {
-        grid-template-columns: 1fr;
+    @media (width >= 1201px) {
+        grid-template-columns: repeat(9, 1fr);
     }
 }
 
@@ -29,29 +34,39 @@
     border-radius: var(--swp-radius-lg);
     box-shadow: var(--swp-shadow-sm);
     padding: var(--swp-space-6);
-    transition: transform var(--swp-transition-fast),
-                box-shadow var(--swp-transition-fast),
-                border-color var(--swp-transition-fast);
 
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--swp-shadow-md);
+    // No hover treatment: the tile is an inert div with no link and no handler.
+    // Nothing here transitions, so there is nothing for reduced-motion to undo.
+
+    @media (width >= 1201px) {
+        grid-column: span 2;
     }
 
-    // State carried by icon tint + value color; the surface stays calm.
-    // Overdue gets a faint warm tint to draw the eye without a side stripe.
+    // State is carried by the icon tint, the value colour and the surface tint.
+    // Never a side stripe, never a glow.
+    //
+    // The tint lives on --danger alone, never on --urgent. --urgent is applied
+    // unconditionally to hold the grid track, so tinting it would paint a red
+    // card for a user with zero overdue invoices: the same defect as rendering
+    // a $0.00 total in success green, mirrored.
 
     &--danger {
         background: var(--swp-danger-lighter);
         border-color: var(--swp-danger-light);
     }
 
-    @media (prefers-reduced-motion: reduce) {
+    // "Overdue" is the only actionable number in the row, so it must not read as
+    // interchangeable with the totals beside it: half again as wide where there
+    // is room for an asymmetric row, and a full type step larger at every width.
 
-        &,
-        &:hover {
-            transition: none;
-            transform: none;
+    &--urgent {
+
+        @media (width >= 1201px) {
+            grid-column: span 3;
+        }
+
+        .stat-value {
+            font-size: var(--swp-text-3xl);
         }
     }
 }
@@ -120,12 +135,23 @@
     letter-spacing: var(--swp-tracking-tight);
     font-variant-numeric: tabular-nums;
 
-    &--success {
-        color: var(--swp-success-hover);
-    }
+    // Green means "Paid". A lifetime revenue aggregate is not a payment state,
+    // so there is no `--success` here; paid semantics live in `.money--paid`.
 
     &--danger {
         color: var(--swp-danger-hover);
+    }
+
+    // The tile already carries the emphasis: `.stat-value` is the largest text in
+    // the card. `.money--total` stepping it up another 12.5% on top of that is what
+    // pushed "USD 120,882.19" past the card edge on a span-2 tile. The modifier is
+    // kept for its weight, which the tile still wants; only the size step is undone.
+    //
+    // `.money` is `white-space: nowrap` by design (a currency code must never be
+    // orphaned from its number), so an amount that does not fit overflows rather
+    // than wrapping. Width has to be won back here, not absorbed at render time.
+    .money--total .money-amount {
+        font-size: 1em;
     }
 }
 
@@ -164,7 +190,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -60%);
+
+    // Chart.js paints the legend inside the canvas along its bottom edge, so the
+    // ring's centre sits a little above the container's midpoint. This nudge
+    // compensates. It is a fixed distance rather than a percentage of this
+    // element's own height, so changing the total's type size or wrapping its
+    // label can no longer drag the number off the ring's centre.
+    transform: translate(-50%, calc(-50% - var(--swp-space-1-5)));
     text-align: center;
     pointer-events: none;
     z-index: 1;
@@ -172,7 +204,10 @@
 
 .dashboard-donut-total {
     display: block;
-    font-size: 2rem;
+
+    // Demoted from 32px: the least actionable widget on the page should not own
+    // its largest number. That now belongs to the overdue count.
+    font-size: var(--swp-text-2xl);
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     line-height: 1;
@@ -200,13 +235,70 @@
 }
 
 .dashboard-chart-empty-icon {
-    color: var(--swp-text-light);
+
+    // Was `--swp-text-light` (2.56:1 on surface): technically decoration, but
+    // close enough to invisible that it read as a rendering fault. `--text-muted`
+    // clears 1.4.11 for a meaningful graphic and still sits a step lighter than
+    // the text below it, so the icon supports the message instead of leading it.
+    color: var(--swp-text-muted);
     margin-bottom: var(--swp-space-3);
 }
 
 .dashboard-chart-empty-text {
     color: var(--swp-text-secondary);
     margin-bottom: var(--swp-space-2);
+}
+
+// A failed query is not an empty account, and must never impersonate one. The
+// empty state above is calm and encouraging; this one names a problem and offers
+// a way out of it. Colour amplifies the distinction, it never carries it alone:
+// the text label does that.
+
+.dashboard-chart-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--swp-space-8);
+    text-align: center;
+}
+
+.dashboard-chart-error-icon {
+
+    // Contained in a tinted medallion, unlike the empty state's bare icon. This
+    // is the same "state medallion" shape `.attention-empty-icon` already uses,
+    // so the two states are told apart by form before colour is read at all.
+    width: 64px;
+    height: 64px;
+    border-radius: var(--swp-radius-full);
+    background: var(--swp-danger-light);
+    color: var(--swp-danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--swp-space-3);
+
+    svg {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.dashboard-chart-error-title {
+
+    // Heavier and darker than `.dashboard-chart-empty-text`: a statement of what
+    // went wrong, not a shrug.
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-1);
+}
+
+.dashboard-chart-error-text {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin: 0 0 var(--swp-space-4);
+    max-width: 42ch;
 }
 
 // =============================================================================
@@ -281,10 +373,12 @@
 }
 
 .attention-badge {
-    font-size: 0.6875rem;
+
+    // Was 11px, off-ramp. Badge text is the documented Label step (12px).
+    font-size: var(--swp-text-xs);
     padding: 2px 6px;
     border-radius: var(--swp-radius-full);
-    font-weight: 600;
+    font-weight: var(--swp-font-semibold);
 
     &--danger {
         background: var(--swp-danger-light);
@@ -476,8 +570,8 @@
 }
 
 .quick-action-label {
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
     text-align: center;
 }
 
@@ -497,17 +591,9 @@
     gap: var(--swp-space-3);
     padding: var(--swp-space-4) 0;
     border-bottom: 1px solid var(--swp-border-light);
-    transition: background-color var(--swp-transition-fast);
 
     &:last-child {
         border-bottom: none;
-    }
-
-    &:hover {
-
-        .activity-action-btn {
-            opacity: 1;
-        }
     }
 }
 
@@ -567,7 +653,11 @@
 
 .activity-text {
     color: var(--swp-text-secondary);
-    font-size: 0.875rem;
+
+    // Was 14px, off-ramp. Body is 15px, and it pairs with the 13px mono doc-link
+    // nested inside it exactly as the ramp intends. It also keeps this row a step
+    // above `.activity-details` below, which the 13px step would have flattened.
+    font-size: var(--swp-text-base);
 }
 
 .activity-doc-link {
@@ -594,7 +684,7 @@
     align-items: center;
     gap: var(--swp-space-2);
     flex-wrap: wrap;
-    font-size: 0.8125rem;
+    font-size: var(--swp-text-sm);
 }
 
 .activity-client-link {
@@ -622,7 +712,10 @@
 }
 
 .activity-separator {
-    color: var(--swp-text-light);
+
+    // This is text, not a rule or a graphic. `--swp-text-light` is 2.56:1 on the
+    // card surface and fails AA outright.
+    color: var(--swp-text-muted);
 }
 
 .activity-amount {
@@ -633,29 +726,5 @@
 
 .activity-time {
     color: var(--swp-text-muted);
-}
-
-.activity-action {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-}
-
-.activity-action-btn {
-    opacity: 0.4;
-    transition: opacity var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
-    padding: var(--swp-space-2);
-
-    &:hover {
-        opacity: 1;
-        background: var(--swp-surface-hover);
-    }
-
-    &:focus-visible {
-        opacity: 1;
-        outline: none;
-        box-shadow: var(--swp-ring-primary);
-    }
 }
 

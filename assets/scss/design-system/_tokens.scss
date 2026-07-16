@@ -51,16 +51,23 @@
     // -------------------------------------------------------------------------
 
     // Success
+    // NOTE: `success` (2.54:1 on surface) and `success-hover` (3.77:1) are fill
+    // colours, not text colours - both fail WCAG AA as text. Use `success-dark`
+    // for any success-coloured *text*. See DESIGN.md - The Legible Status Rule.
     --swp-success: #10b981;
     --swp-success-rgb: 16, 185, 129;
     --swp-success-hover: #059669;
+    --swp-success-dark: #047857;   // Emerald-700 - AA-safe success text (5.48:1 on surface, 5.06:1 on body-bg)
     --swp-success-light: #d1fae5;
     --swp-success-lighter: #ecfdf5;
 
     // Danger
+    // NOTE: `danger` (3.76:1 on surface) is a fill colour, not a text colour.
+    // Use `danger-dark` for danger-coloured *text*.
     --swp-danger: #ef4444;
     --swp-danger-rgb: 239, 68, 68;
     --swp-danger-hover: #dc2626;
+    --swp-danger-dark: #b91c1c;    // Red-700 - AA-safe danger text (6.47:1 on surface, 5.97:1 on body-bg)
     --swp-danger-light: #fee2e2;
     --swp-danger-lighter: #fef2f2;
 
@@ -92,10 +99,17 @@
     // Text Colors
     // -------------------------------------------------------------------------
 
-    --swp-body-color: #333333;
+    // Default body text. Aliases `text-primary` rather than duplicating the
+    // literal - it was a pure #333333 gray, which the Tinted Neutrals Rule
+    // prohibits, and there is no reason for the two to ever diverge.
+    --swp-body-color: var(--swp-text-primary);
     --swp-text-primary: #1e293b;
     --swp-text-secondary: #475569;
     --swp-text-muted: #64748b;
+
+    // WARNING: 2.56:1 on surface, 2.37:1 on body-bg - FAILS WCAG AA (1.4.3).
+    // Safe ONLY for disabled text (exempt from 1.4.3) and decorative glyphs.
+    // Never use for placeholders or any other meaningful text.
     --swp-text-light: #94a3b8;
     --swp-text-inverse: #ffffff;
 
@@ -202,7 +216,6 @@
     --swp-ease-in: cubic-bezier(0.4, 0, 1, 1);
     --swp-ease-out: cubic-bezier(0, 0, 0.2, 1);
     --swp-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --swp-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     // Common transitions
     --swp-transition-fast: var(--swp-duration-fast) var(--swp-ease-in-out);
@@ -278,4 +291,20 @@
     // Alert
     --swp-alert-radius: var(--swp-radius-md);
     --swp-alert-padding: var(--swp-space-4);
+
+    // Money display (signature component - see components/_money.scss)
+    // Every colour here is AA-compliant against BOTH `surface` and `body-bg`,
+    // because money must never be misreadable on any surface it lands on.
+    --swp-money-currency: var(--swp-text-secondary);  // 7.58:1 / 6.99:1
+    --swp-money-neutral: var(--swp-text-primary);     // 14.63:1 / 13.50:1
+    --swp-money-paid: var(--swp-success-dark);        // 5.48:1 / 5.06:1
+    --swp-money-overdue: var(--swp-danger-dark);      // 6.47:1 / 5.97:1
+
+    // Relative step applied to a `.money--total` amount. Unitless multiplier so
+    // the step is correct at every inherited base size.
+    --swp-money-total-scale: 1.125;
+
+    // Relative size of the currency code against its amount. The code is a unit,
+    // not a second number, and reads as subordinate rather than competing.
+    --swp-money-currency-scale: 0.75em;
 }

@@ -1,0 +1,48 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{#
+ # Section badge + truncation notice for the Attention Required widget.
+ #
+ # These live in their own file rather than beside the markup that uses them: the
+ # default slot of a twig:Ui:Card compiles as its own template, so `{% import _self %}`
+ # from inside the slot resolves to the slot, which has no macros. Importing a real
+ # template by path is the only form that survives the slot boundary.
+ #}
+
+{#
+ # The badge used to render `items|length` - the capped count. Twelve overdue
+ # invoices displayed as "5", which is the section quietly lying about how much
+ # trouble you are in. It now renders the uncapped total from the widget, and says
+ # "5 of 12" with a way out whenever the list is shorter than the truth.
+ #
+ # `total` is null when the widget cannot count honestly (upcoming recurring), in
+ # which case the badge falls back to the shown count and no notice is rendered -
+ # an unknown total is never invented.
+ #}
+{% macro sectionBadge(items, total, variant) %}
+    <span class="attention-badge attention-badge--{{ variant }}">{{ total ?? items|length }}</span>
+{% endmacro %}
+
+{#
+ # Tabler utilities rather than a new `.attention-section-*` class: this markup is
+ # new, so there is no SCSS for it. If this is tokenised later the hook is one class
+ # on this div.
+ #}
+{% macro truncationNotice(items, total, route) %}
+    {% if total is not null and total > items|length %}
+        <div class="d-flex align-items-center justify-content-between gap-2 px-3 py-2">
+            <span class="text-secondary small">{{ 'dashboard.attention.showing'|trans({'%shown%': items|length, '%total%': total}) }}</span>
+            <a href="{{ path(route) }}" class="btn btn-sm btn-ghost">
+                {{ 'dashboard.attention.view_all'|trans }}
+                {{ ux_icon('tabler:arrow-right', {width: 14, height: 14}) }}
+            </a>
+        </div>
+    {% endif %}
+{% endmacro %}

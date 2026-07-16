@@ -7,12 +7,29 @@
  # with this source code in the file LICENSE.
  #}
 
-{% if show is defined and progress is defined and progress is not null %}
-{# Success State - All Complete #}
+{#
+ # `show: false` means dismissed or not applicable - render nothing at all.
+ #
+ # `error` is checked before anything reads `progress`, because on the failure
+ # branch the widget returns `['show' => true, 'error' => true]` and `progress` is
+ # simply absent. The old guard tested `progress is not null` and so silently
+ # swallowed a failed query into "nothing to show here".
+ #}
+{% if show|default(false) %}
+{% if error|default(false) %}
+<div class="col-12 mb-4 onboarding-widget">
+    <div class="card">
+        <div class="card-body">
+            {% include '@SolidInvoiceDashboard/Widget/_error_state.html.twig' %}
+        </div>
+    </div>
+</div>
+{% else %}
 {% if progress.allComplete %}
-<div class="col-12 mb-4">
+{# Success State - All Complete #}
+<div class="col-12 mb-4 onboarding-widget">
     <div class="card card-active">
-        <div class="card-stamp">
+        <div class="card-stamp" aria-hidden="true">
             <div class="card-stamp-icon bg-success">
                 {{ ux_icon('tabler:trophy') }}
             </div>
@@ -41,7 +58,7 @@
 </div>
 {% else %}
 {# In-Progress Onboarding Banner #}
-<div class="col-12 mb-4">
+<div class="col-12 mb-4 onboarding-widget">
     <div class="card card-link card-link-pop"
          role="button"
          tabindex="0"
@@ -49,7 +66,7 @@
          data-bs-target="#onboardingOffcanvas"
          aria-controls="onboardingOffcanvas"
          aria-label="{{ 'dashboard.checklist.view_progress'|trans }}">
-        <div class="card-stamp">
+        <div class="card-stamp" aria-hidden="true">
             <div class="card-stamp-icon bg-primary">
                 {{ ux_icon('tabler:rocket') }}
             </div>
@@ -80,7 +97,8 @@
                         aria-valuemin="0"
                         aria-valuemax="100"
                     >
-                        <span class="visually-hidden">{{ progress.percentage }}% Complete</span>
+                        {# Was a hardcoded "% Complete" - the one untranslated string in this file. #}
+                        <span class="visually-hidden">{{ 'dashboard.checklist.percent_complete'|trans({'%percentage%': progress.percentage}) }}</span>
                     </div>
                 </div>
                 <div class="text-secondary small fw-bold text-end onboarding-progress-label">
@@ -142,9 +160,20 @@
         {# Checklist Items #}
         <h4 class="text-uppercase text-primary small mb-3 fw-bold">{{ 'dashboard.checklist.items_title'|trans }}</h4>
         <div class="checklist-items-wrapper">
+            {#
+             # A completed row is a <span>, not an <a>. It used to be an anchor carrying
+             # `disabled cursor-default` - both cosmetic on an anchor, with the href left
+             # intact. A screen-reader user tabbed onto a "done, don't touch" row, heard a
+             # link, activated it, and got navigated away. `disabled` does not exist on
+             # anchors; the fix is to not emit an anchor.
+             #
+             # `text-green` went with it: colour is not this row's state carrier (the
+             # visually-hidden status text below is), and it fought A2's `.item-name` rule.
+             #}
             {% for item in progress.items %}
-            <a href="{{ path(item.route) }}" class="checklist-item {% if item.completed %}completed text-green disabled cursor-default{% endif %}">
-                <div class="checklist-item-icon">
+            {% set tag = item.completed ? 'span' : 'a' %}
+            <{{ tag }} class="checklist-item{% if item.completed %} completed{% endif %}"{% if not item.completed %} href="{{ path(item.route) }}"{% endif %}>
+                <div class="checklist-item-icon" aria-hidden="true">
                     {% if item.completed %}
                         {{ ux_icon('tabler:circle-check-filled', {width: 20, height: 20}) }}
                     {% else %}
@@ -153,15 +182,27 @@
                 </div>
                 <div class="checklist-item-content">
                     <div class="checklist-item-header">
-                        <span class="item-icon">{{ ux_icon(item.icon, {width: 16, height: 16}) }}</span>
+                        <span class="item-icon" aria-hidden="true">{{ ux_icon(item.icon, {width: 16, height: 16}) }}</span>
                         <span class="item-name">{{ item.name|trans }}</span>
+                        {#
+                         # Done-ness was signalled by an icon swap and a green tint, and the
+                         # icon is an aria-hidden SVG - so nothing programmatic distinguished
+                         # done from not-done. This is the only thing that actually tells a
+                         # screen reader which is which.
+                         #}
+                        <span class="visually-hidden">
+                            {{ (item.completed ? 'dashboard.checklist.status.completed' : 'dashboard.checklist.status.not_started')|trans }}
+                        </span>
                     </div>
                     <p class="checklist-item-description">{{ item.description|trans }}</p>
                 </div>
-                <div class="checklist-item-action">
-                    {{ ux_icon('tabler:arrow-right', {width: 18, height: 18}) }}
-                </div>
-            </a>
+                {# No arrow on a completed row: there is nowhere for it to point. #}
+                {% if not item.completed %}
+                    <div class="checklist-item-action" aria-hidden="true">
+                        {{ ux_icon('tabler:arrow-right', {width: 18, height: 18}) }}
+                    </div>
+                {% endif %}
+            </{{ tag }}>
             {% endfor %}
         </div>
     </div>
@@ -188,17 +229,34 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="modal-title">{{ 'dashboard.checklist.dismiss_confirm_title'|trans }}</div>
+                {#
+                 # ChecklistManager::dismiss() writes 'true' and nothing un-writes it, so this
+                 # is one-way. A6's rewritten `dismiss_confirm` now says so in words ("hides
+                 # the checklist permanently"), which is where it belongs - no extra line
+                 # needed here. The missing undo is a product gap; see the report. No undo
+                 # route is invented here.
+                 #}
                 <div>{{ 'dashboard.checklist.dismiss_confirm'|trans }}</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
                     {{ 'action.cancel'|trans }}
                 </button>
-                <button type="button" class="btn btn-danger" onclick="document.getElementById('dismissChecklistForm').submit()">
+                {#
+                 # Was `btn-danger`. Dismissing an encouraging checklist destroys nothing,
+                 # and danger red is reserved for destructive confirmations - it is also the
+                 # last thing a new user does here, so the parting note should not be an
+                 # alarm. This matches the `btn-outline-secondary` trigger in the offcanvas
+                 # footer that opened this modal: the same action, the same weight. Not
+                 # `btn-primary` - Trust Green would nudge toward dismissing, and not solid
+                 # `btn-secondary`, which is a filled amber CTA in this system.
+                 #}
+                <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('dismissChecklistForm').submit()">
                     {{ 'dashboard.checklist.dismiss'|trans }}
                 </button>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
 {% endif %}

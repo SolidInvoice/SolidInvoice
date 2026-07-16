@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
+use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use Carbon\CarbonImmutable;
 use DateMalformedStringException;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -36,74 +42,35 @@ final readonly class RevenueChartWidget implements WidgetInterface
         ManagerRegistry $registry,
         private ChartBuilderInterface $chartBuilder,
         private SystemConfig $systemConfig,
+        private LoggerInterface $logger,
     ) {
         $this->manager = $registry->getManager();
     }
 
     /**
      * @return array<string, mixed>
-     * @throws DateMalformedStringException
      */
     public function getData(): array
     {
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->manager->getRepository(Payment::class);
 
-        $revenueData = $paymentRepository->getRevenueByMonthGrouped(12);
-
-        // Generate labels for the last 12 months
-        $labels = [];
         $now = CarbonImmutable::now();
 
-        for ($i = 11; $i >= 0; --$i) {
-            $date = $now->modify(sprintf('-%d months', $i));
-            $labels[] = $date->format('M Y');
-        }
+        try {
+            $revenueData = $paymentRepository->getRevenueByMonthGrouped(12);
+            $labels = $this->buildLabels($now);
+            $currencies = $this->resolveCurrencies($revenueData);
+            $datasets = $this->buildDatasets($revenueData, $currencies, $now);
+        } catch (DBALException | ORMException | MathException | DateMalformedStringException | RuntimeException $e) {
+            $this->logger->error('Unable to load the revenue chart data', ['exception' => $e]);
 
-        // Get all currencies from the data
-        $currencies = [];
-        foreach ($revenueData as $monthData) {
-            foreach (array_keys($monthData) as $currency) {
-                if (! in_array($currency, $currencies, true)) {
-                    $currencies[] = $currency;
-                }
-            }
-        }
-
-        // If no data, default to a single currency placeholder
-        if ([] === $currencies) {
-            $currencies = [$this->systemConfig->getCurrency()->getCode()];
-        }
-
-        // Build datasets for each currency
-        $datasets = [];
-        $colors = [
-            ['border' => 'rgb(46, 150, 58)', 'background' => 'rgba(46, 150, 58, 0.1)'],
-            ['border' => 'rgb(59, 130, 246)', 'background' => 'rgba(59, 130, 246, 0.1)'],
-            ['border' => 'rgb(245, 158, 11)', 'background' => 'rgba(245, 158, 11, 0.1)'],
-            ['border' => 'rgb(139, 92, 246)', 'background' => 'rgba(139, 92, 246, 0.1)'],
-        ];
-
-        foreach ($currencies as $index => $currency) {
-            $data = [];
-            for ($i = 11; $i >= 0; --$i) {
-                $date = $now->modify(sprintf('-%d months', $i));
-                $monthKey = $date->format('Y-m');
-                $data[] = isset($revenueData[$monthKey][$currency])
-                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HalfEven)->toFloat() // Convert cents to currency units
-                    : 0;
-            }
-
-            $colorIndex = $index % count($colors);
-            $datasets[] = [
-                'label' => $currency,
-                'data' => $data,
-                'borderColor' => $colors[$colorIndex]['border'],
-                'backgroundColor' => $colors[$colorIndex]['background'],
-                'fill' => true,
-                'tension' => 0.4,
-                'pointRadius' => 4,
-                'pointHoverRadius' => 6,
+            // A failed query must not render as an empty chart: "no revenue yet"
+            // and "we could not read your revenue" are different statements.
+            return [
+                'chart' => null,
+                'hasError' => true,
+                'hasData' => false,
             ];
         }
 
@@ -158,12 +125,102 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         return [
             'chart' => $chart,
-            'hasData' => ! empty($revenueData),
+            'hasError' => false,
+            'hasData' => [] !== $revenueData,
         ];
     }
 
     public function getTemplate(): string
     {
         return '@SolidInvoiceDashboard/Widget/revenue_chart.html.twig';
+    }
+
+    /**
+     * Generate labels for the last 12 months.
+     *
+     * @return list<string>
+     * @throws DateMalformedStringException
+     */
+    private function buildLabels(CarbonImmutable $now): array
+    {
+        $labels = [];
+
+        for ($i = 11; $i >= 0; --$i) {
+            $labels[] = $now->modify(sprintf('-%d months', $i))->format('M Y');
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Collect every currency present in the data, falling back to the configured
+     * system currency when there is nothing to plot.
+     *
+     * @param array<string, array<string, BigInteger>> $revenueData
+     * @return list<string>
+     */
+    private function resolveCurrencies(array $revenueData): array
+    {
+        $currencies = [];
+
+        foreach ($revenueData as $monthData) {
+            foreach (array_keys($monthData) as $currency) {
+                if (! in_array($currency, $currencies, true)) {
+                    $currencies[] = $currency;
+                }
+            }
+        }
+
+        if ([] === $currencies) {
+            $currencies = [$this->systemConfig->getCurrency()->getCode()];
+        }
+
+        return $currencies;
+    }
+
+    /**
+     * Build one dataset per currency.
+     *
+     * @param array<string, array<string, BigInteger>> $revenueData
+     * @param list<string> $currencies
+     * @return list<array<string, mixed>>
+     * @throws DateMalformedStringException
+     * @throws MathException
+     */
+    private function buildDatasets(array $revenueData, array $currencies, CarbonImmutable $now): array
+    {
+        $colors = [
+            ['border' => 'rgb(46, 150, 58)', 'background' => 'rgba(46, 150, 58, 0.1)'],
+            ['border' => 'rgb(59, 130, 246)', 'background' => 'rgba(59, 130, 246, 0.1)'],
+            ['border' => 'rgb(245, 158, 11)', 'background' => 'rgba(245, 158, 11, 0.1)'],
+            ['border' => 'rgb(139, 92, 246)', 'background' => 'rgba(139, 92, 246, 0.1)'],
+        ];
+
+        $datasets = [];
+
+        foreach ($currencies as $index => $currency) {
+            $data = [];
+
+            for ($i = 11; $i >= 0; --$i) {
+                $monthKey = $now->modify(sprintf('-%d months', $i))->format('Y-m');
+                $data[] = isset($revenueData[$monthKey][$currency])
+                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HalfEven)->toFloat() // Convert cents to currency units
+                    : 0;
+            }
+
+            $colorIndex = $index % count($colors);
+            $datasets[] = [
+                'label' => $currency,
+                'data' => $data,
+                'borderColor' => $colors[$colorIndex]['border'],
+                'backgroundColor' => $colors[$colorIndex]['background'],
+                'fill' => true,
+                'tension' => 0.4,
+                'pointRadius' => 4,
+                'pointHoverRadius' => 6,
+            ];
+        }
+
+        return $datasets;
     }
 }

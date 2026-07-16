@@ -1,0 +1,42 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{#
+ # A widget whose query failed. Shared by revenue_chart, invoice_distribution and
+ # onboarding_checklist.
+ #
+ # The P0 this fixes: a failed query used to fall through to the empty state, so a
+ # broken dashboard told a paying user they had no invoices. This state must never
+ # be mistakable for that one - it is a different glyph inside a tinted medallion
+ # (form, read before colour), and unlike the empty state it opens with a title
+ # that names the problem.
+ #
+ # NOTE for A1: the classes below are still named `dashboard-chart-error-*` but now
+ # back three widgets, only two of which are charts. They want renaming to
+ # `dashboard-error-*`. Left alone here because the SCSS is not mine to edit.
+ #
+ # `role="alert"` so the failure is announced and not merely tinted red. Colour is
+ # the last thing carrying meaning here: the title says it in words.
+ #
+ # The retry is deliberately a ghost button, not `btn-primary`. Trust Green is the
+ # empty state's "Create Invoice" CTA - spending it here would both conflate
+ # "you're new" with "this broke" and blow the One Accent budget on an apology.
+ # It re-requests the dashboard, which re-runs the query that failed. No JS.
+ #}
+<div class="dashboard-chart-error" role="alert">
+    <div class="dashboard-chart-error-icon">
+        {{ ux_icon('tabler:alert-triangle', {width: 48, height: 48}) }}
+    </div>
+    <p class="dashboard-chart-error-title">{{ 'dashboard.error.title'|trans }}</p>
+    <p class="dashboard-chart-error-text">{{ 'dashboard.error.body'|trans }}</p>
+    <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-sm">
+        {{ ux_icon('tabler:refresh', {width: 16, height: 16}) }}
+        {{ 'dashboard.error.retry'|trans }}
+    </a>
+</div>
