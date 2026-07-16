@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Telemetry\Message\SendTelemetryMessage;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 
 return App::config([
     'framework' => [
@@ -60,6 +61,10 @@ return App::config([
                 // them out-of-band. The handler swallows all errors and always acks, so a
                 // slow or unreachable Insights server never blocks the app or retries.
                 SendTelemetryMessage::class => ['async'],
+                // Route the trial-downgrade notice through async so the hourly
+                // downgrade command returns quickly and Messenger retries transient
+                // mailer failures.
+                SendTrialDowngradedEmailMessage::class => ['async'],
             ],
             // Configure default bus
             'default_bus' => 'messenger.bus.default',
