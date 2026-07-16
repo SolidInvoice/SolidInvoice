@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -46,6 +49,7 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
         ManagerRegistry $registry,
         private ChartBuilderInterface $chartBuilder,
         private TranslatorInterface $translator,
+        private LoggerInterface $logger,
     ) {
         $this->manager = $registry->getManager();
     }
@@ -58,7 +62,20 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
         /** @var InvoiceRepository $invoiceRepository */
         $invoiceRepository = $this->manager->getRepository(Invoice::class);
 
-        $statusCounts = $invoiceRepository->getCountByStatusAll();
+        try {
+            $statusCounts = $invoiceRepository->getCountByStatusAll();
+        } catch (DBALException | ORMException $e) {
+            $this->logger->error('Unable to load the invoice distribution data', ['exception' => $e]);
+
+            // A failed query must not render as an empty chart: "no invoices yet"
+            // and "we could not read your invoices" are different statements.
+            return [
+                'chart' => null,
+                'hasError' => true,
+                'hasData' => false,
+                'total' => 0,
+            ];
+        }
 
         // Filter to only include statuses we want to display
         $relevantStatuses = [
@@ -126,6 +143,7 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
 
         return [
             'chart' => $chart,
+            'hasError' => false,
             'hasData' => $hasData,
             'total' => array_sum($data),
         ];

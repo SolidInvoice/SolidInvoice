@@ -1,98 +1,107 @@
 /**
- * Onboarding Checklist - Enhanced Tabler Components
- * Uses Tabler structure with custom enhancements for better UX
+ * Onboarding Checklist - Dashboard widget
+ *
+ * The first component a new user meets. Priorities, in order:
+ *   1. Convey state (todo / done / hovered / focused). Never decoration.
+ *   2. Stay on the SolidInvoice design system - `--swp-*` tokens only.
+ *   3. Read correctly whether a row is an <a> (actionable) or a <span> (done).
+ *
+ * Structure comes from Tabler (`card`, `card-stamp`, `card-link-pop`,
+ * `offcanvas`, `visually-hidden`). This file only adds what Tabler does not
+ * already provide - it does not restate or fight it.
  */
 
-/* Card entrance animation */
+// ============================================================================
+// SUCCESS CARD - all steps complete
+// ============================================================================
 
-.card[data-bs-toggle="offcanvas"],
-.card.border-success {
-    animation: fade-in-down 0.5s ease-out;
-    transition: all 0.3s ease;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    }
+// Matches `<div class="card card-active">`. Not interactive (its only control
+// is the dismiss button inside), so it gets no hover state - a lift here would
+// be a false affordance. A flat success tint plus a full 1px border carries
+// the state; the card keeps Tabler's resting `shadow-sm`.
+.card.card-active {
+    border-color: var(--swp-success);
+    background: var(--swp-success-lighter);
 }
 
-/* Success Card Specific Styling */
-
-.card.border-success {
-    border-width: 2px;
-    background: linear-gradient(135deg, rgba(var(--tblr-success-rgb), 0.03) 0%, rgba(var(--tblr-success-rgb), 0.01) 100%);
-
-    .card-stamp-icon {
-        background: var(--tblr-success);
-    }
-}
-
-@keyframes fade-in-down {
-
-    from {
-        transform: translateY(-10px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Make the card stamp icon more prominent */
-
+// Decorative watermark behind the card title (Tabler `.card-stamp`).
 .card-stamp-icon {
     opacity: 0.15;
 }
 
-/* Checklist Items - Enhanced Styling */
+// ============================================================================
+// CHECKLIST ITEMS
+// ============================================================================
 
 .checklist-items-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--swp-space-2-5);
 }
 
+// Renders as <a> while incomplete and <span> once complete, so every
+// interactive style is gated behind `:not(.completed)`.
 .checklist-item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
-    background: #ffffff;
-    border: 1px solid rgb(0 0 0 / 6%);
-    border-left: 3px solid var(--tblr-primary);
-    border-radius: 8px;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4);
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
     text-decoration: none;
     color: inherit;
-    transition: all 0.2s ease;
-    position: relative;
+    transition:
+        color var(--swp-duration-fast) var(--swp-ease-out),
+        background-color var(--swp-duration-fast) var(--swp-ease-out),
+        border-color var(--swp-duration-fast) var(--swp-ease-out),
+        box-shadow var(--swp-duration-fast) var(--swp-ease-out);
 
-    &:hover {
-        background: rgba(var(--tblr-primary-rgb), 0.02);
-        border-color: var(--tblr-primary);
-        transform: translateX(4px);
-        box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+    // Hover and focus resolve to the same surface so pointer and keyboard
+    // users are shown the same target; focus adds the halo below.
+    &:not(.completed):is(:hover, :focus-visible) {
+        background: var(--swp-primary-lighter);
+        border-color: var(--swp-primary);
 
         .checklist-item-action {
-            opacity: 1;
+            color: var(--swp-primary);
         }
     }
 
-    &.completed {
-        background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.08) 0%, rgba(var(--tblr-success-rgb), 0.02) 100%);
-        border-left-color: var(--tblr-success);
+    // Focus Halo. `--swp-ring-primary` is a 15%-alpha green (~1.1:1 on white)
+    // and cannot carry a focus indicator on its own, so the border shifts to
+    // full `--swp-primary` alongside it to meet WCAG 2.1 SC 2.4.11.
+    &:not(.completed):focus-visible {
+        outline: none;
+        box-shadow: var(--swp-ring-primary);
+    }
 
-        &:hover {
-            background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.12) 0%, rgba(var(--tblr-success-rgb), 0.06) 100%);
-        }
+    // Done. Signalled by tint + strikethrough + weight drop + de-emphasis, so
+    // it survives without hue. The programmatic signal is A5's
+    // visually-hidden status text, not anything in here.
+    &.completed {
+        background: var(--swp-success-lighter);
+        border-color: var(--swp-success-light);
+        cursor: default;
 
         .item-name {
-            color: var(--tblr-success);
+            color: var(--swp-text-muted);
+            font-weight: var(--swp-font-normal);
+            text-decoration: line-through;
+        }
+
+        .item-icon {
+            color: var(--swp-text-light);
+        }
+
+        // Nothing left to navigate to.
+        .checklist-item-action {
+            display: none;
         }
     }
 }
 
+// Completion marker. Green check when done; a neutral ring when not.
 .checklist-item-icon {
     width: 20px;
     height: 20px;
@@ -100,15 +109,12 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: 2px;
-
-    svg {
-        color: var(--tblr-success);
-    }
+    margin-top: var(--swp-space-0-5);
+    color: var(--swp-success);
 }
 
-.checklist-item:not(.completed) .checklist-item-icon svg {
-    color: var(--tblr-gray-300);
+.checklist-item:not(.completed) .checklist-item-icon {
+    color: var(--swp-gray-400);
 }
 
 .checklist-item-content {
@@ -119,29 +125,32 @@
 .checklist-item-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: var(--swp-space-2);
+    margin-bottom: var(--swp-space-1);
 }
 
-.item-icon {
+// Scoped to the row: `item-icon` / `item-name` are too generic to own globally.
+.checklist-item .item-icon {
     display: flex;
     align-items: center;
-    color: var(--tblr-primary);
+    color: var(--swp-primary);
 }
 
-.item-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--tblr-body-color);
+.checklist-item .item-name {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
 }
 
 .checklist-item-description {
-    font-size: 13px;
-    color: var(--tblr-muted);
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
     margin: 0;
-    line-height: 1.5;
+    line-height: var(--swp-leading-normal);
 }
 
+// Always visible, not hover-revealed: hover never fires on touch, so a
+// hover-only affordance is invisible to half the users who need it.
 .checklist-item-action {
     display: flex;
     align-items: center;
@@ -149,41 +158,42 @@
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    margin-top: 2px;
-    opacity: 0.3;
-    transition: opacity 0.2s;
-
-    svg {
-        color: var(--tblr-primary);
-    }
+    margin-top: var(--swp-space-0-5);
+    color: var(--swp-text-light);
 }
 
-/* Progress Summary Card Enhancement */
-
-.offcanvas-body .card {
-    border: none;
-    background: linear-gradient(135deg, rgba(var(--tblr-primary-rgb), 0.05) 0%, rgba(var(--tblr-primary-rgb), 0.02) 100%);
-}
-
-/* Onboarding Offcanvas Panel */
+// ============================================================================
+// OFFCANVAS PANEL
+// ============================================================================
 
 .onboarding-offcanvas {
     width: 420px;
     max-width: 100%;
 }
 
-/* Progress percentage label */
+// Progress summary card at the top of the panel. Scoped to this widget - the
+// unscoped `.offcanvas-body .card` it replaces would restyle every card in
+// every offcanvas in the app.
+.onboarding-offcanvas .offcanvas-body .card {
+    border: 1px solid var(--swp-border-light);
+    background: var(--swp-primary-lighter);
+    box-shadow: var(--swp-shadow-sm);
+}
 
 .onboarding-progress-label {
     min-width: 3rem;
 }
 
-/* Accessibility */
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+// No motion survives in this file - no transforms, no keyframes. What is left
+// is a 150ms colour/shadow cross-fade, which is not vestibular. This block is
+// defensive only, and is pointed at a selector that actually exists.
 @media (prefers-reduced-motion: reduce) {
 
-    .card[data-bs-toggle="offcanvas"],
     .checklist-item {
-        animation: none !important;
-        transition: none !important;
+        transition: none;
     }
 }

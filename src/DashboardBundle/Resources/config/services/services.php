@@ -26,7 +26,6 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_it
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
-    $services->defaults()->public();
 
     $services
         ->defaults()
@@ -69,7 +68,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'location' => 'top',
         ]);
 
-    // Left column - Charts and Activity
+    // Left column - Attention first, then reflection (charts and activity).
+    // AttentionRequired leads the wide column so the actionable widget is reached
+    // before the 12-month trend chart, both on desktop and in the stacked
+    // mobile order (top row, then left column, then right column).
+    $services
+        ->set(AttentionRequiredWidget::class)
+        ->tag('dashboard.widget', [
+            'priority' => 120,
+            'location' => 'left_column',
+        ]);
+
     $services
         ->set(RevenueChartWidget::class)
         ->tag('dashboard.widget', [
@@ -77,14 +86,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'location' => 'left_column',
         ]);
 
-    $services
-        ->set(RecentActivityWidget::class)
-        ->tag('dashboard.widget', [
-            'priority' => 90,
-            'location' => 'left_column',
-        ]);
-
-    // Right column - Actions, Attention, Distribution
+    // Right column - Actions, then Activity, then Distribution.
+    //
+    // Activity sits here rather than under the chart: the left column had grown
+    // long enough that the feed was being scrolled past and missed. Distribution
+    // stays last, and stays least actionable.
     $services
         ->set(QuickActionsWidget::class)
         ->tag('dashboard.widget', [
@@ -93,16 +99,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ]);
 
     $services
-        ->set(AttentionRequiredWidget::class)
+        ->set(RecentActivityWidget::class)
         ->tag('dashboard.widget', [
-            'priority' => 100,
+            'priority' => 50,
             'location' => 'right_column',
         ]);
 
     $services
         ->set(InvoiceDistributionWidget::class)
         ->tag('dashboard.widget', [
-            'priority' => 90,
+            'priority' => 10,
             'location' => 'right_column',
         ]);
 };

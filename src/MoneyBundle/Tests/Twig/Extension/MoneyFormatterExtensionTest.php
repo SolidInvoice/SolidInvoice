@@ -56,10 +56,14 @@ final class MoneyFormatterExtensionTest extends TestCase
 
         $filters = $extension->getFilters();
 
-        self::assertCount(1, $filters);
+        self::assertCount(2, $filters);
 
         self::assertInstanceOf(TwigFilter::class, $filters[0]);
         self::assertSame('formatCurrency', $filters[0]->getName());
         self::assertSame('$12.00', call_user_func($filters[0]->getCallable(), 1200));
+
+        self::assertInstanceOf(TwigFilter::class, $filters[1]);
+        self::assertSame('formatCurrencyAmount', $filters[1]->getName());
+        self::assertSame('12.00', call_user_func($filters[1]->getCallable(), 1200, 'USD'));
     }
 }

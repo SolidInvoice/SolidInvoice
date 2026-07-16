@@ -14,13 +14,9 @@
         </twig:block>
 
         <div class="dashboard-donut-container">
-            {% if hasData %}
-                <div class="dashboard-donut-center">
-                    <span class="dashboard-donut-total">{{ total }}</span>
-                    <span class="dashboard-donut-label">{{ 'dashboard.charts.invoices'|trans }}</span>
-                </div>
-                {{ render_chart(chart, {'class': 'dashboard-donut-chart'}) }}
-            {% else %}
+            {% if hasError %}
+                {% include '@SolidInvoiceDashboard/Widget/_error_state.html.twig' %}
+            {% elseif not hasData %}
                 <div class="dashboard-chart-empty">
                     <div class="dashboard-chart-empty-icon">
                         {{ ux_icon('tabler:chart-donut', {width: 48, height: 48}) }}
@@ -31,6 +27,12 @@
                         {{ 'dashboard.actions.create_invoice'|trans }}
                     </a>
                 </div>
+            {% else %}
+                <div class="dashboard-donut-center">
+                    <span class="dashboard-donut-total">{{ total }}</span>
+                    <span class="dashboard-donut-label">{{ 'dashboard.charts.invoices'|trans }}</span>
+                </div>
+                {{ render_chart(chart, {'class': 'dashboard-donut-chart'}) }}
             {% endif %}
         </div>
     </twig:Ui:Card>

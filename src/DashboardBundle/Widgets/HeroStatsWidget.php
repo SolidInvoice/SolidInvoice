@@ -15,11 +15,13 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use RuntimeException;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 /**
  * @see \SolidInvoice\DashboardBundle\Tests\Widgets\HeroStatsWidgetTest
@@ -28,8 +30,10 @@ final readonly class HeroStatsWidget implements WidgetInterface
 {
     private ObjectManager $manager;
 
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private SystemConfig $systemConfig,
+    ) {
         $this->manager = $registry->getManager();
     }
 
@@ -49,7 +53,28 @@ final readonly class HeroStatsWidget implements WidgetInterface
             'overdueAmount' => $invoiceRepository->getOverdueAmountByCurrency(),
             'paymentsThisMonth' => $paymentRepository->getPaymentsThisMonth(),
             'totalRevenue' => $paymentRepository->getTotalIncome(),
+            'defaultCurrency' => $this->defaultCurrency(),
         ];
+    }
+
+    /**
+     * The currency an empty stat should be denominated in.
+     *
+     * Every populated branch is denominated in the client's currency, which does
+     * not exist when a stat has no rows behind it. The company's configured
+     * currency is the only defensible basis in that case, so the widget states it
+     * explicitly instead of leaving the template to guess.
+     *
+     * Null when no currency is configured yet (a fresh install): callers should
+     * treat it as "unknown" rather than substituting an arbitrary currency.
+     */
+    private function defaultCurrency(): ?string
+    {
+        try {
+            return $this->systemConfig->getCurrency()->getCode();
+        } catch (RuntimeException) {
+            return null;
+        }
     }
 
     public function getTemplate(): string

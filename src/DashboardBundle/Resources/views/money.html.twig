@@ -1,0 +1,35 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{#
+ # The Money Display markup (DESIGN.md section 5). Styles live in
+ # assets/scss/components/_money.scss; this is the single place that emits the
+ # structure they bind to.
+ #
+ # NOTE: money is an application-wide concern, not a dashboard one. This macro
+ # lives here only because the dashboard is the first consumer. It should be
+ # promoted to a real UI component (`<twig:Ui:Money>`) alongside `Ui:Card` so
+ # that invoices, quotes and the data grid can render the same contract.
+ #
+ #   amount     Minor units (cents). Same contract as the `formatCurrency` filter.
+ #   currency   ISO code string, a Money\Currency, or empty to fall back to the
+ #              system currency. Both the displayed code and the formatted digits
+ #              resolve from this one value, so they can never disagree.
+ #   modifiers  Bare modifier names, e.g. ['total', 'paid'] -> `money--total money--paid`.
+ #
+ # Reminder for callers: `paid` and `overdue` are only ever valid next to a
+ # visible label that says so. A green total with no "Paid" beside it is a bug.
+ #}
+{% macro money(amount, currency, modifiers = []) %}
+    {%- set code = currency is empty ? '' : currency|trim -%}
+    <span class="money{% for modifier in modifiers %} money--{{ modifier }}{% endfor %}">
+        <span class="money-currency">{{ code ?: currencyFormatter().getCurrencySymbol(null, true) }}</span>
+        <strong class="money-amount">{{ amount|formatCurrencyAmount(code ?: null) }}</strong>
+    </span>
+{% endmacro %}

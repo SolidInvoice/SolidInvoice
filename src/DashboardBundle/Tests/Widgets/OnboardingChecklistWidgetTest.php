@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
+use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistManager;
 use SolidInvoice\DashboardBundle\Widgets\OnboardingChecklistWidget;
@@ -34,7 +35,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
             ->willReturn(null);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
-        $widget = new OnboardingChecklistWidget($manager, $security);
+        $widget = new OnboardingChecklistWidget($manager, $security, new NullLogger());
 
         $data = $widget->getData();
 
@@ -54,7 +55,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
         $security->method('getUser')
             ->willReturn($user);
 
-        $widget = new OnboardingChecklistWidget($manager, $security);
+        $widget = new OnboardingChecklistWidget($manager, $security, new NullLogger());
         $data = $widget->getData();
 
         self::assertArrayHasKey('show', $data);
@@ -71,7 +72,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
             ->willReturn($user);
 
         $manager = self::getContainer()->get(ChecklistManager::class);
-        $widget = new OnboardingChecklistWidget($manager, $security);
+        $widget = new OnboardingChecklistWidget($manager, $security, new NullLogger());
 
         $data = $widget->getData();
 
@@ -86,7 +87,7 @@ final class OnboardingChecklistWidgetTest extends KernelTestCase
         $security = $this->createStub(Security::class);
         $manager = self::getContainer()->get(ChecklistManager::class);
 
-        $widget = new OnboardingChecklistWidget($manager, $security);
+        $widget = new OnboardingChecklistWidget($manager, $security, new NullLogger());
 
         self::assertSame('@SolidInvoiceDashboard/Widget/onboarding_checklist.html.twig', $widget->getTemplate());
     }

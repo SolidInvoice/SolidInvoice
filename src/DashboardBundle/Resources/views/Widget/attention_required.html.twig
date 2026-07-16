@@ -16,6 +16,14 @@
             </div>
         </twig:block>
 
+        {#
+         # Imported here, not at the top of the file: the default slot of a
+         # twig:Ui:Card compiles as its own template, so a top-level import is out
+         # of scope by the time the sections below render.
+         #}
+        {% import '@SolidInvoiceDashboard/money.html.twig' as money %}
+        {% import '@SolidInvoiceDashboard/Widget/_attention_sections.html.twig' as section %}
+
         {% if not hasItems %}
             <div class="attention-empty">
                 <div class="attention-empty-icon">
@@ -30,7 +38,7 @@
                         <div class="attention-section-header attention-section-header--danger">
                             {{ ux_icon('tabler:alert-triangle', {width: 16, height: 16}) }}
                             <span>{{ 'dashboard.attention.overdue_invoices'|trans }}</span>
-                            <span class="attention-badge attention-badge--danger">{{ overdueInvoices|length }}</span>
+                            {{ section.sectionBadge(overdueInvoices, overdueInvoicesTotal, 'danger') }}
                         </div>
                         <div class="attention-items">
                             {% for invoice in overdueInvoices %}
@@ -40,7 +48,10 @@
                                         <span class="attention-item-client">{{ invoice.client.name }}</span>
                                     </div>
                                     <div class="attention-item-meta">
-                                        <span class="attention-item-amount">{{ invoice.total|formatCurrency(invoice.client.currency) }}</span>
+                                        {# `--overdue` is earned: the section header says "Overdue Invoices" in words. #}
+                                        <span class="attention-item-amount">
+                                            {{ money.money(invoice.total, invoice.client.currency, ['overdue']) }}
+                                        </span>
                                         {% if invoice.due %}
                                             <span class="attention-item-date text-danger">
                                                 {{ invoice.due|date('M j') }}
@@ -50,6 +61,7 @@
                                 </a>
                             {% endfor %}
                         </div>
+                        {{ section.truncationNotice(overdueInvoices, overdueInvoicesTotal, '_invoices_index') }}
                     </div>
                 {% endif %}
 
@@ -58,21 +70,38 @@
                         <div class="attention-section-header attention-section-header--warning">
                             {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
                             <span>{{ 'dashboard.attention.draft_invoices'|trans }}</span>
-                            <span class="attention-badge attention-badge--warning">{{ draftInvoices|length }}</span>
+                            {{ section.sectionBadge(draftInvoices, draftInvoicesTotal, 'warning') }}
                         </div>
                         <div class="attention-items">
                             {% for invoice in draftInvoices %}
                                 <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="attention-item">
                                     <div class="attention-item-main">
-                                        <span class="attention-item-id">#{{ invoice.invoiceId ?: 'Draft' }}</span>
+                                        {#
+                                         # An unnumbered draft has no ID yet. This used to render the
+                                         # literal `#Draft` - untranslated English in a translated
+                                         # template, and `#`-prefixed so it read like an invoice number
+                                         # that happened to be called "Draft". Dropping the `#` is the
+                                         # point: it is a state, not an identifier.
+                                         #}
+                                        <span class="attention-item-id">
+                                            {%- if invoice.invoiceId -%}
+                                                #{{ invoice.invoiceId }}
+                                            {%- else -%}
+                                                {{ 'dashboard.attention.draft_label'|trans }}
+                                            {%- endif -%}
+                                        </span>
                                         <span class="attention-item-client">{{ invoice.client.name }}</span>
                                     </div>
                                     <div class="attention-item-meta">
-                                        <span class="attention-item-amount">{{ invoice.total|formatCurrency(invoice.client.currency) }}</span>
+                                        {# Neutral: a draft is not money owed, received, or overdue. #}
+                                        <span class="attention-item-amount">
+                                            {{ money.money(invoice.total, invoice.client.currency) }}
+                                        </span>
                                     </div>
                                 </a>
                             {% endfor %}
                         </div>
+                        {{ section.truncationNotice(draftInvoices, draftInvoicesTotal, '_invoices_index') }}
                     </div>
                 {% endif %}
 
@@ -81,7 +110,7 @@
                         <div class="attention-section-header attention-section-header--info">
                             {{ ux_icon('tabler:file-description', {width: 16, height: 16}) }}
                             <span>{{ 'dashboard.attention.pending_quotes'|trans }}</span>
-                            <span class="attention-badge attention-badge--info">{{ pendingQuotes|length }}</span>
+                            {{ section.sectionBadge(pendingQuotes, pendingQuotesTotal, 'info') }}
                         </div>
                         <div class="attention-items">
                             {% for quote in pendingQuotes %}
@@ -91,12 +120,16 @@
                                         <span class="attention-item-client">{{ quote.client.name }}</span>
                                     </div>
                                     <div class="attention-item-meta">
-                                        <span class="attention-item-amount">{{ quote.total|formatCurrency(quote.client.currency) }}</span>
+                                        {# Neutral: pending. #}
+                                        <span class="attention-item-amount">
+                                            {{ money.money(quote.total, quote.client.currency) }}
+                                        </span>
                                         <span class="attention-item-date">{{ quote.created|date('M j') }}</span>
                                     </div>
                                 </a>
                             {% endfor %}
                         </div>
+                        {{ section.truncationNotice(pendingQuotes, pendingQuotesTotal, '_quotes_index') }}
                     </div>
                 {% endif %}
 
@@ -105,7 +138,8 @@
                         <div class="attention-section-header attention-section-header--primary">
                             {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
                             <span>{{ 'dashboard.attention.upcoming_recurring'|trans }}</span>
-                            <span class="attention-badge attention-badge--primary">{{ upcomingRecurring|length }}</span>
+                            {# `upcomingRecurringTotal` is null by design - see the widget. Falls back to the shown count. #}
+                            {{ section.sectionBadge(upcomingRecurring, upcomingRecurringTotal, 'primary') }}
                         </div>
                         <div class="attention-items">
                             {% for recurring in upcomingRecurring %}
@@ -114,12 +148,16 @@
                                         <span class="attention-item-client">{{ recurring.client.name }}</span>
                                     </div>
                                     <div class="attention-item-meta">
-                                        <span class="attention-item-amount">{{ recurring.total|formatCurrency(recurring.client.currency) }}</span>
+                                        {# Neutral: not yet issued. #}
+                                        <span class="attention-item-amount">
+                                            {{ money.money(recurring.total, recurring.client.currency) }}
+                                        </span>
                                         <span class="attention-item-date">{{ recurring.dateStart|date('M j') }}</span>
                                     </div>
                                 </a>
                             {% endfor %}
                         </div>
+                        {{ section.truncationNotice(upcomingRecurring, upcomingRecurringTotal, '_invoices_index') }}
                     </div>
                 {% endif %}
             </div>

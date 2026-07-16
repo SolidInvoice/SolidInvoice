@@ -62,3 +62,4 @@ yarn-error.log
 ###< phpunit/phpunit ###
 
 .context
+.gstack/

@@ -1,0 +1,89 @@
+/**
+ * SolidInvoice Design System - Money Display
+ *
+ * The signature component (DESIGN.md section 5). Every currency value in the
+ * application renders through `.money`; it is the single source of truth for
+ * money display, and raw `{{ amount }}` rendering is prohibited.
+ *
+ * Contract:
+ *   <span class="money">
+ *     <span class="money-currency">USD</span>
+ *     <strong class="money-amount">1,234.56</strong>
+ *   </span>
+ *
+ * Modifiers (on the `.money` root, combinable):
+ *   .money--paid      Amount in AA-safe success. ONLY valid alongside an
+ *                     explicit "Paid" label (the Money-Color Rule).
+ *   .money--overdue   Amount in AA-safe danger. Same labelling rule.
+ *   .money--total     Weight 600, amount one size step up.
+ *   (none)            Neutral - the default and the common case.
+ *
+ * The component never sets its own font-size. It inherits from context, so the
+ * same markup is correct inline in a table cell, in a heading, and at
+ * `.stat-value` scale in the dashboard hero tiles. Only `.money--total` steps
+ * the amount, and it steps relatively so the result is right at every base.
+ */
+
+.money {
+    // inline-flex rather than plain inline, for two reasons:
+    //  1. The gap between currency and amount is deterministic whether or not
+    //     the emitted markup happens to carry whitespace between the spans
+    //     (flex drops whitespace-only anonymous boxes).
+    //  2. `align-items: baseline` keeps a size-stepped `.money--total` amount
+    //     sharing a baseline with its currency, instead of centring against it.
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--swp-space-1);
+
+    // Money clarity: a currency code must never be orphaned from its number.
+    white-space: nowrap;
+
+    // The Tabular Figures Rule - amounts align in clean vertical columns.
+    font-variant-numeric: tabular-nums;
+}
+
+// Currency code or symbol. Dimmed relative to the amount, but it is meaningful
+// text rather than decoration, so it holds AA on every surface in the system.
+.money-currency {
+    color: var(--swp-money-currency);
+}
+
+// The amount. Weight is normalised here so that the UA default of 700 on
+// `<strong>` does not pre-empt the `.money--total` step up to 600.
+.money-amount {
+    color: var(--swp-money-neutral);
+    font-weight: var(--swp-font-medium);
+}
+
+// ============================================================================
+// MODIFIERS
+// ============================================================================
+
+// Paid. Colour is amplification here, never the carrier of meaning - a green
+// amount without an accompanying "Paid" label is a bug, not a style choice.
+.money--paid .money-amount {
+    color: var(--swp-money-paid);
+}
+
+// Overdue. Same rule: always rendered with an explicit "Overdue" label.
+.money--overdue .money-amount {
+    color: var(--swp-money-overdue);
+}
+
+// Total. Heavier, and one size step up relative to the inherited context.
+// The currency keeps its inherited weight so the dimmed-prefix relationship
+// survives the step up.
+.money--total .money-amount {
+    font-size: calc(1em * var(--swp-money-total-scale));
+    font-weight: var(--swp-font-semibold);
+}
+
+// At display size the currency code is dimmed by size as well as by colour: at a
+// shared size it competes with the amount for attention it has not earned, and
+// "USD 120,882.19" should read as a number carrying a unit rather than as two
+// equal words. Scoped to `--total` deliberately. At body size (a table row, an
+// activity feed) the same reduction would put the code near 10px, which is the
+// legibility problem rather than the fix, so the code stays full size there.
+.money--total .money-currency {
+    font-size: var(--swp-money-currency-scale);
+}

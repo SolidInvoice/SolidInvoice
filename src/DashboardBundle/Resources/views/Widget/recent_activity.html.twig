@@ -19,6 +19,13 @@
             </div>
         </twig:block>
 
+        {#
+         # Imported here, not at the top of the file: the default slot of a
+         # twig:Ui:Card compiles as its own template, so a top-level import is out
+         # of scope by the time the rows below render.
+         #}
+        {% import '@SolidInvoiceDashboard/money.html.twig' as money %}
+
         {% if not hasActivities %}
             <div class="empty">
                 <div class="empty-icon">
@@ -114,39 +121,34 @@
                                     {{ ux_icon('tabler:user', {width: 14, height: 14}) }}
                                     {{ activity.client }}
                                 </a>
-                                <span class="activity-separator">·</span>
+                                <span class="activity-separator" aria-hidden="true">·</span>
                                 <span class="activity-amount">
-                                    {{ activity.amount|formatCurrency(activity.currency) }}
+                                    {#
+                                     # `--paid` only on a payment row, and only because the
+                                     # "Payment" badge above states it in words - that badge is
+                                     # what earns the green. Every other row is money that has
+                                     # not been received (sent, created, quoted) or was never
+                                     # money at all (declined), so all of them stay neutral.
+                                     #}
+                                    {{ money.money(activity.amount, activity.currency, activity.type == 'payment' ? ['paid'] : []) }}
                                 </span>
-                                <span class="activity-separator">·</span>
+                                <span class="activity-separator" aria-hidden="true">·</span>
                                 <span class="activity-time">
                                     {{ activity.date|diff }}
                                 </span>
                             </div>
                         </div>
 
-                        {# Action button #}
-                        <div class="activity-action">
-                            {% if activity.type == 'payment' %}
-                                <a href="{{ path('_invoices_view', {id: activity.invoiceUlid}) }}"
-                                   class="btn btn-sm btn-ghost activity-action-btn"
-                                   title="{{ 'dashboard.activity.view_invoice'|trans }}">
-                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
-                                </a>
-                            {% elseif activity.type starts with 'quote' %}
-                                <a href="{{ path('_quotes_view', {id: activity.id}) }}"
-                                   class="btn btn-sm btn-ghost activity-action-btn"
-                                   title="{{ 'dashboard.activity.view_quote'|trans }}">
-                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
-                                </a>
-                            {% else %}
-                                <a href="{{ path('_invoices_view', {id: activity.id}) }}"
-                                   class="btn btn-sm btn-ghost activity-action-btn"
-                                   title="{{ 'dashboard.activity.view_invoice'|trans }}">
-                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
-                                </a>
-                            {% endif %}
-                        </div>
+                        {#
+                         # The eye button that used to sit here is gone, and the
+                         # `.activity-action` wrapper with it.
+                         #
+                         # It resolved to the exact same href as the `#INV-001` link in the
+                         # row above it, so ten rows cost twenty tab stops to reach ten
+                         # destinations. It also sat at opacity 0.4 until row hover, which
+                         # means it was invisible at rest and unreachable-feeling on touch,
+                         # where hover never fires. The row's own links are the affordance.
+                         #}
                     </div>
                 {% endfor %}
             </div>

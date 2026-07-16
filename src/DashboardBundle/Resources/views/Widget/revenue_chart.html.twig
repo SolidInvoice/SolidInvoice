@@ -19,9 +19,9 @@
         </twig:block>
 
         <div class="dashboard-chart-container">
-            {% if hasData %}
-                {{ render_chart(chart, {'class': 'dashboard-revenue-chart'}) }}
-            {% else %}
+            {% if hasError %}
+                {% include '@SolidInvoiceDashboard/Widget/_error_state.html.twig' %}
+            {% elseif not hasData %}
                 <div class="dashboard-chart-empty">
                     <div class="dashboard-chart-empty-icon">
                         {{ ux_icon('tabler:chart-line', {width: 48, height: 48}) }}
@@ -29,6 +29,8 @@
                     <p class="dashboard-chart-empty-text">{{ 'dashboard.charts.no_data'|trans }}</p>
                     <small class="text-muted">{{ 'dashboard.charts.no_data_hint'|trans }}</small>
                 </div>
+            {% else %}
+                {{ render_chart(chart, {'class': 'dashboard-revenue-chart'}) }}
             {% endif %}
         </div>
     </twig:Ui:Card>
