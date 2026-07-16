@@ -18,7 +18,7 @@ permissions:
 jobs:
   pre-release:
     name: "Bump version and create pre-release"
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:

@@ -11,7 +11,7 @@ permissions:
 jobs:
   release:
     name: "GIT tag, release & create merge-up PR"
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write

@@ -23,7 +23,7 @@ jobs:
   migrations:
     name: DB (${{ matrix.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
 
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:

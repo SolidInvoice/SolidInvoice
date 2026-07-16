@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   prepare:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     outputs:
       ref: ${{ steps.check.outputs.ref }}
     steps:
@@ -39,7 +39,7 @@ jobs:
       contents: read
     name: Build Assets
     needs: [prepare]
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
@@ -84,7 +84,7 @@ jobs:
             runner: ubuntu-24.04
           - arch: arm64
             platform: linux/arm64
-            runner: blacksmith-4vcpu-ubuntu-2404-arm
+            runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     env:
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -164,8 +164,8 @@ jobs:
           username: ${{ vars.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Setup Blacksmith Builder
-        uses: useblacksmith/setup-docker-builder@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Copy binary to Docker context
         run: cp frankenphp/dist/solidinvoice-linux-${{ matrix.arch }} docker/solidinvoice
@@ -205,7 +205,7 @@ jobs:
     needs: [prepare, build-linux]
     permissions:
       contents: read
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     steps:
       - name: Harden the runner
         uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
@@ -218,8 +218,8 @@ jobs:
           username: ${{ vars.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Setup Blacksmith Builder
-        uses: useblacksmith/setup-docker-builder@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Download digests
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
