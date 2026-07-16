@@ -69,4 +69,16 @@ final class InvoiceGrid extends BaseInvoiceGrid
     {
         return new TranslatableMessage('Create Invoice');
     }
+
+    #[Override]
+    public function getEmptyTitle(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.invoice.title');
+    }
+
+    #[Override]
+    public function getEmptyDescription(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.invoice.description');
+    }
 }

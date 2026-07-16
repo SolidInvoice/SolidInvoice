@@ -32,6 +32,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Translation\TranslatableMessage;
 use function array_key_exists;
 
 /**
@@ -110,5 +111,31 @@ final class PaymentsGrid extends Grid
         }
 
         return $query;
+    }
+
+    // Payments are not created directly - they arrive when a client pays an
+    // invoice. So the first-run CTA points at invoice creation (the actual next
+    // step) rather than leaving the empty state a dead end with no action.
+    public function getCreateRoute(): string
+    {
+        return '_invoices_create';
+    }
+
+    #[Override]
+    public function getCreateLabel(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.payment.create');
+    }
+
+    #[Override]
+    public function getEmptyTitle(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.payment.title');
+    }
+
+    #[Override]
+    public function getEmptyDescription(): TranslatableMessage
+    {
+        return new TranslatableMessage('datagrid.empty.payment.description');
     }
 }

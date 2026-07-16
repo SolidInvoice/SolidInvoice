@@ -311,29 +311,14 @@
                         {# Empty State #}
                         <tr>
                             <td colspan="{{ this.getVisibleColumns()|length + (grid.batchActions|length > 0 ? 1 : 0) + (grid.hasRowDetails() ? 1 : 0) + (grid.actions|length > 0 ? 1 : 0) }}">
-                                <div class="datagrid-empty">
-                                    <div class="datagrid-empty-icon">
-                                        {{ ux_icon('tabler:database-off', {width: 40, height: 40}) }}
-                                    </div>
-                                    <h3 class="datagrid-empty-title">{{ 'datagrid.no_results.label'|trans }}</h3>
-                                    <p class="datagrid-empty-message">
-                                        {% if search is not empty or gridFilters is not empty %}
-                                            {{ 'datagrid.no_results.filtered'|trans }}
-                                        {% else %}
-                                            {{ 'datagrid.no_results.empty'|trans }}
-                                        {% endif %}
-                                    </p>
-                                    {% block empty_state_action %}
-                                        {% if grid.getCreateRoute() %}
-                                            <div class="datagrid-empty-action">
-                                                <a href="{{ path(grid.getCreateRoute()) }}" class="btn btn-primary">
-                                                    {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                                                    {{ grid.getCreateLabel()|default('action.create')|trans }}
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                    {% endblock %}
-                                </div>
+                                {% set is_filtered = search is not empty or gridFilters is not empty %}
+                                {% include '@SolidInvoiceDataGrid/Components/_empty_state.html.twig' with {
+                                    icon: 'tabler:database-off',
+                                    title: is_filtered ? 'datagrid.no_results.label' : grid.getEmptyTitle(),
+                                    message: is_filtered ? 'datagrid.no_results.filtered' : grid.getEmptyDescription(),
+                                    action_route: is_filtered ? null : grid.getCreateRoute(),
+                                    action_label: grid.getCreateLabel(),
+                                } only %}
                             </td>
                         </tr>
                     {% else %}

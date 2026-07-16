@@ -500,6 +500,20 @@ datagrid:
         not_implemented: 'Action not implemented.'
         select_one: 'Please select at least one item.'
         success: Success
+    empty:
+        client:
+            title: 'No clients yet'
+            description: 'Add the people and companies you bill. Once a client exists, you can send them an invoice or quote in seconds.'
+        invoice:
+            title: 'No invoices yet'
+            description: 'Create your first invoice and send it in under a minute. Turn on online payments and clients can pay you straight from it.'
+        quote:
+            title: 'No quotes yet'
+            description: 'Send a polished quote to win the work. When a client accepts, it becomes an invoice in one click.'
+        payment:
+            title: 'No payments yet'
+            description: 'Payments land here once a client pays an invoice. Send an invoice to start getting paid.'
+            create: 'Create an invoice'
     footer:
         showing: 'Showing %start% - %end% of %total% results'
     items_per_page: 'Items per page'

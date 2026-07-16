@@ -1,0 +1,38 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Shared empty state - the single reusable "nothing here yet" surface. Used by
+ # the data grid (every list in the app) and by any page that lands a user on an
+ # empty collection. Consolidates what used to be several one-off markups.
+ #
+ # Parameters (all resolved through `|trans`, so each accepts a string key OR a
+ # TranslatableMessage):
+ #   icon          tabler icon name for the medallion  (default: tabler:database-off)
+ #   title         heading                             (required)
+ #   message       supporting line                     (optional - omitted if empty)
+ #   action_route  route name for the primary CTA      (optional - CTA hidden if empty)
+ #   action_label  CTA label                           (default: action.create)
+ #   action_icon   CTA icon                            (default: tabler:plus)
+ #}
+<div class="datagrid-empty">
+    <div class="datagrid-empty-icon">
+        {{ ux_icon(icon|default('tabler:database-off'), {width: 40, height: 40}) }}
+    </div>
+    <h3 class="datagrid-empty-title">{{ title|default('datagrid.no_results.label')|trans }}</h3>
+    {% if message is defined and message %}
+        <p class="datagrid-empty-message">{{ message|trans }}</p>
+    {% endif %}
+    {% if action_route is defined and action_route %}
+        <div class="datagrid-empty-action">
+            <a href="{{ path(action_route) }}" class="btn btn-primary">
+                {{ ux_icon(action_icon|default('tabler:plus'), {width: 18, height: 18}) }}
+                {{ action_label|default('action.create')|trans }}
+            </a>
+        </div>
+    {% endif %}
+</div>

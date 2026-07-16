@@ -67,6 +67,20 @@ interface GridInterface
     public function getCreateLabel(): ?TranslatableMessage;
 
     /**
+     * Returns the empty-state heading shown when the grid has no rows and no
+     * active search or filter. The base grid returns generic copy; override to
+     * make it entity-specific.
+     */
+    public function getEmptyTitle(): TranslatableMessage;
+
+    /**
+     * Returns the empty-state description shown beneath the heading on a
+     * genuinely empty (first-run) grid. The base grid returns generic copy;
+     * override to make it entity-specific.
+     */
+    public function getEmptyDescription(): TranslatableMessage;
+
+    /**
      * Returns true if this grid supports expandable row details.
      */
     public function hasRowDetails(): bool;

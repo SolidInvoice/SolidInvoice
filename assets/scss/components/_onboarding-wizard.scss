@@ -1,0 +1,284 @@
+/**
+ * Onboarding Wizard - the first-run flow (/onboarding)
+ *
+ * This is the first screen every new user meets: post-install and post-signup,
+ * a user with no company is redirected here to create their company, an
+ * optional first client, and a first invoice.
+ *
+ * It used to be styled with inline <style> blocks that contradicted the design
+ * system wholesale - Bootstrap blue (#066fd1) instead of Trust Green, gradients
+ * on the canvas / step icon / badge, a 3px `border-left` side-stripe on the
+ * benefits box (a hard ban), and a bounce/elastic celebration with an infinite
+ * pulse and no reduced-motion fallback. This file replaces all of it with
+ * `--swp-*` tokens, flat surfaces, and ease-out motion.
+ *
+ * Everything is scoped under `.onboarding-container` because the class names
+ * (`step-icon`, `step-benefits`, `welcome-badge`, ...) are generic and used
+ * nowhere else - scoping keeps them from leaking into the rest of the app.
+ *
+ * Structure (Bootstrap grid, `card`, `btn`, `form-control`, `progress`) comes
+ * from Tabler; this file only styles the custom wizard chrome.
+ */
+
+.onboarding-container {
+    // Paper-on-desk canvas: the app's own flat body background. The previous
+    // grey diagonal gradient was decoration the design system does not permit.
+    background: var(--swp-body-bg);
+
+    // ========================================================================
+    // PROGRESS HEADER
+    // ========================================================================
+
+    .onboarding-progress {
+        box-shadow: var(--swp-shadow-xs);
+    }
+
+    .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+    }
+
+    // Upcoming step at rest: neutral slate.
+
+    .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: var(--swp-radius-full);
+        background: var(--swp-gray-100);
+        color: var(--swp-text-muted);
+        transition:
+            background-color var(--swp-duration-slow) var(--swp-ease-out),
+            color var(--swp-duration-slow) var(--swp-ease-out),
+            box-shadow var(--swp-duration-slow) var(--swp-ease-out);
+    }
+
+    // Reached (the current step or an earlier one): a soft green tint.
+
+    .step-indicator.active .step-number {
+        background: var(--swp-primary-light);
+        color: var(--swp-primary-dark);
+    }
+
+    // The current step: filled Trust Green with the standard focus halo, so the
+    // user's position reads at a glance.
+
+    .step-indicator.current .step-number {
+        background: var(--swp-primary);
+        color: var(--swp-text-inverse);
+        box-shadow: var(--swp-ring-primary);
+    }
+
+    .step-label {
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-medium);
+        color: var(--swp-text-muted);
+        transition: color var(--swp-duration-slow) var(--swp-ease-out);
+    }
+
+    // primary-dark (#1f6c29) on the white header holds AA comfortably; the raw
+    // primary would not for text this small.
+
+    .step-indicator.active .step-label,
+    .step-indicator.current .step-label {
+        color: var(--swp-primary-dark);
+    }
+
+    .step-indicator.current .step-label {
+        font-weight: var(--swp-font-semibold);
+    }
+
+    .step-connector {
+        flex: 1;
+        height: 2px;
+        margin: 0 var(--swp-space-4);
+        background: var(--swp-border);
+        transition: background-color var(--swp-duration-slow) var(--swp-ease-out);
+    }
+
+    .step-connector.completed {
+        background: var(--swp-primary);
+    }
+
+    // ========================================================================
+    // STEP CARD
+    // ========================================================================
+
+    // Paper on the canvas: surface, soft resting shadow, generous radius. Not a
+    // heavier custom shadow - the design system's `shadow-sm` is the card rest.
+
+    .onboarding-step-card {
+        padding: var(--swp-space-12);
+        background: var(--swp-surface);
+        border: 1px solid var(--swp-border-light);
+        border-radius: var(--swp-radius-xl);
+        box-shadow: var(--swp-shadow-sm);
+    }
+
+    // ========================================================================
+    // STEP ICON MEDALLION
+    // ========================================================================
+
+    // Flat primary tint with a Trust Green glyph - the same soft-medallion
+    // language the dashboard empty states use. The previous saturated blue
+    // gradient disc was the AI-slop hero-icon tell.
+
+    .step-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem;
+        height: 4rem;
+        margin: 0 auto var(--swp-space-6);
+        border-radius: var(--swp-radius-full);
+        background: var(--swp-primary-light);
+        color: var(--swp-primary);
+    }
+
+    // ========================================================================
+    // WELCOME SECTION + BADGE
+    // ========================================================================
+
+    .welcome-section {
+        margin-bottom: var(--swp-space-8);
+        text-align: center;
+    }
+
+    .welcome-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        margin-bottom: var(--swp-space-4);
+        padding: var(--swp-space-2) var(--swp-space-4);
+        border-radius: var(--swp-radius-full);
+        background: var(--swp-primary-light);
+        color: var(--swp-primary-dark);
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-semibold);
+    }
+
+    // ========================================================================
+    // BENEFITS / "WHY THIS MATTERS" BOX
+    // ========================================================================
+
+    // A full 1px border plus an ambient green wash. NO side-stripe: a coloured
+    // `border-left` thicker than 1px is a hard ban, and the leading icon inside
+    // already carries the accent.
+
+    .step-benefits {
+        margin-bottom: var(--swp-space-6);
+        padding: var(--swp-space-5);
+        background: var(--swp-primary-lighter);
+        border: 1px solid var(--swp-border-light);
+        border-radius: var(--swp-radius-lg);
+
+        ul {
+            margin: 0;
+            padding-left: var(--swp-space-5);
+            color: var(--swp-text-secondary);
+        }
+
+        li + li {
+            margin-top: var(--swp-space-2);
+        }
+    }
+
+    // ========================================================================
+    // COMPLETION SCREEN
+    // ========================================================================
+
+    .celebration-icon {
+        display: flex;
+        justify-content: center;
+    }
+
+    // Success medallion: success-light disc, AA-safe success-dark check. Enters
+    // once with a gentle ease-out scale, never bounces, never loops.
+
+    .success-checkmark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 6rem;
+        height: 6rem;
+        border-radius: var(--swp-radius-full);
+        background: var(--swp-success-light);
+        color: var(--swp-success-dark);
+        animation: onboarding-celebrate var(--swp-duration-slow) var(--swp-ease-out) both;
+    }
+
+    // A quiet, neutral tip note - distinct from the green benefits box and no
+    // longer a raw Bootstrap `alert-info` blue.
+
+    .onboarding-tip {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--swp-space-3);
+        padding: var(--swp-space-4);
+        background: var(--swp-gray-50);
+        border: 1px solid var(--swp-border-light);
+        border-radius: var(--swp-radius-lg);
+        text-align: left;
+        color: var(--swp-text-secondary);
+
+        svg {
+            flex-shrink: 0;
+            margin-top: var(--swp-space-0-5);
+            color: var(--swp-secondary-dark);
+        }
+    }
+
+    // ========================================================================
+    // RESPONSIVE
+    // ========================================================================
+
+    @media (width <= 768px) {
+
+        .onboarding-step-card {
+            padding: var(--swp-space-8) var(--swp-space-6);
+        }
+
+        .step-connector {
+            margin: 0 var(--swp-space-2);
+        }
+    }
+}
+
+@keyframes onboarding-celebrate {
+
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+// Reduced motion is not optional. The progress-indicator cross-fades are
+// non-vestibular, but the celebration scale is a transform, so it is disabled
+// outright and the final state shows instantly.
+@media (prefers-reduced-motion: reduce) {
+
+    .onboarding-container {
+
+        .step-number,
+        .step-label,
+        .step-connector {
+            transition: none;
+        }
+
+        .success-checkmark {
+            animation: none;
+        }
+    }
+}
