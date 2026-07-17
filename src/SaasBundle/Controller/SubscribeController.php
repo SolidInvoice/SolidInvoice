@@ -34,6 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use function Sentry\captureException;
 use function strtolower;
 
 /**
@@ -103,7 +104,8 @@ class SubscribeController extends AbstractController
         try {
             $checkoutUrl = $this->subscriptionManager
                 ->getCheckoutUrl($subscription, $options);
-        } catch (HttpExceptionInterface | TransportExceptionInterface) {
+        } catch (HttpExceptionInterface | TransportExceptionInterface $e) {
+            captureException($e);
             $this->telemetry->event(TelemetryEvent::SaasCheckoutFailed, ['plan' => $planName]);
             $this->addFlash('error', 'saas.flash.checkout_failed');
 
