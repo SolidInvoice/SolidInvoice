@@ -42,7 +42,7 @@
                 <td style="vertical-align: middle; line-height: 1.6;">
                     <div class="onb-callout-title">{{ 'onboarding.upgrade_offer.coupon_heading'|trans({}, 'email') }}</div>
                     <div style="font-family: monospace; font-size: 22px; font-weight: 700; letter-spacing: 0.1em; color: #1e293b; margin: 8px 0; Margin: 8px 0;">{{ coupon_code }}</div>
-                    <div class="onb-callout-sub">{{ 'onboarding.upgrade_offer.coupon_desc'|trans({}, 'email') }}</div>
+                    <div class="onb-callout-sub">{{ 'onboarding.upgrade_offer.coupon_desc'|trans({'%percent%': coupon_percent}, 'email') }}</div>
                 </td>
             </tr>
         </table>

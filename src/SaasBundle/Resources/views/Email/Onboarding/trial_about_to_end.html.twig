@@ -70,6 +70,6 @@
 
 {% block ps %}
 {% if coupon_code %}
-    {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code|e}, 'email')|raw }}
+    {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code|e, '%percent%': coupon_percent}, 'email')|raw }}
 {% endif %}
 {% endblock %}

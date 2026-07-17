@@ -34,6 +34,8 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         private readonly InvoiceRepository $invoiceRepository,
         #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private readonly string $couponCode = '',
+        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
+        private readonly int $couponPercent = 30,
     ) {
         parent::__construct($translator);
     }
@@ -72,6 +74,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         return parent::templateContext($context) + [
             'days_remaining' => $daysRemaining,
             'coupon_code' => $this->couponCode,
+            'coupon_percent' => $this->couponPercent,
             'usage_clients' => $this->clientRepository->getTotalClients(),
             'usage_invoices' => $this->invoiceRepository->getTotalInvoices(),
             'usage_collected' => $this->invoiceRepository->getCountByStatus(InvoiceStatus::Paid),

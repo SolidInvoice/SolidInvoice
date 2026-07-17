@@ -14,7 +14,7 @@
 
 {% if coupon_code %}
 {{ 'onboarding.upgrade_offer.coupon_heading'|trans({}, 'email') }}: {{ coupon_code }}
-{{ 'onboarding.upgrade_offer.coupon_desc'|trans({}, 'email') }}
+{{ 'onboarding.upgrade_offer.coupon_desc'|trans({'%percent%': coupon_percent}, 'email') }}
 
 {% endif %}
 {{ 'onboarding.upgrade_offer.cta'|trans({}, 'email') }}: {{ url('saas_subscription_checkout') }}

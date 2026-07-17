@@ -21,7 +21,7 @@
 {{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}
 
 {% if coupon_code %}
-P.S. {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code}, 'email')|striptags }}
+P.S. {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code, '%percent%': coupon_percent}, 'email')|striptags }}
 
 {% endif %}
 {{ 'onboarding.signature.greeting'|trans({}, 'email') }}
