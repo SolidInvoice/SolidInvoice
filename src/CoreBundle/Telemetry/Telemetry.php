@@ -34,6 +34,7 @@ use Throwable;
 use function in_array;
 use function is_string;
 use function php_uname;
+use function Sentry\captureException;
 use function strtolower;
 
 /**
@@ -94,7 +95,8 @@ final readonly class Telemetry
                 'event' => $event->value,
                 'properties' => $properties,
             ]));
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            captureException($e);
             // Telemetry must never break the triggering request — swallow everything.
         }
     }
@@ -127,7 +129,8 @@ final readonly class Telemetry
                 'version' => $version,
                 ...$this->buildEnvironment(),
             ]));
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            captureException($e);
             // Telemetry must never break the triggering request — swallow everything.
         }
     }
