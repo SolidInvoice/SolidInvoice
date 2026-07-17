@@ -473,7 +473,7 @@ final class RequestListenerTest extends KernelTestCase
         $trialBannerResolver = new TrialBannerResolver(
             $clock,
             couponCode: $couponCode,
-            couponPercent: 30,
+            couponPercent: $couponPercent,
             bannerDays: 7,
             couponDays: 2,
             extensionDays: 14,
