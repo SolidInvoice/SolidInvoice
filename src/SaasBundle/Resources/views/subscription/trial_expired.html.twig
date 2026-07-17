@@ -69,7 +69,7 @@
                                     {{ 'saas.trial_expired.promo_heading'|trans({'%percent%': coupon_percent}) }}
                                 </div>
                                 <div class="text-subtle">
-                                    {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code, '%percent%': coupon_percent})|raw }}
+                                    {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code|e, '%percent%': coupon_percent})|raw }}
                                 </div>
                             </div>
                             <div class="subscription-promo-code text-center">
