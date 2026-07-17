@@ -26,6 +26,8 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
         TranslatorInterface $translator,
         #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private readonly string $couponCode = '',
+        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
+        private readonly int $couponPercent = 30,
     ) {
         parent::__construct($translator);
     }
@@ -45,6 +47,7 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
     {
         return parent::templateContext($context) + [
             'coupon_code' => $this->couponCode,
+            'coupon_percent' => $this->couponPercent,
         ];
     }
 }

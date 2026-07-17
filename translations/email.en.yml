@@ -203,7 +203,7 @@ onboarding:
             4: 'Reactivate any time — everything restores immediately on subscription.'
         if_not_heading: 'What happens when your trial ends'
         lede: "When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe."
-        ps: 'use code <b>%coupon_code%</b> at checkout for 30% off your first three months. Offer expires when your trial does.'
+        ps: 'use code <b>%coupon_code%</b> at checkout for %percent%% off your first three months. Offer expires when your trial does.'
         subject: 'Your trial ends tomorrow|Your trial ends in %days% days'
         trial_ends: 'Trial ends <b style="color: #475569;">%date%</b>'
         usage:
@@ -232,7 +232,7 @@ onboarding:
         ps: 'SolidInvoice adds zero fees on top of your payment provider. You pay only what Stripe or PayPal charge.'
         subject: 'Let your clients pay with one click'
     upgrade_offer:
-        coupon_desc: '30% off your first three months. Enter this code at checkout.'
+        coupon_desc: '%percent%% off your first three months. Enter this code at checkout.'
         coupon_heading: 'Your discount code'
         cta: 'Subscribe now'
         eyebrow: 'Last chance'
