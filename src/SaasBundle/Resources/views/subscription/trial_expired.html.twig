@@ -66,10 +66,10 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="fw-bold fs-3 mb-1">
-                                    {{ 'saas.trial_expired.promo_heading'|trans }}
+                                    {{ 'saas.trial_expired.promo_heading'|trans({'%percent%': coupon_percent}) }}
                                 </div>
                                 <div class="text-subtle">
-                                    {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code})|raw }}
+                                    {{ 'saas.trial_expired.promo_message'|trans({'%code%': coupon_code, '%percent%': coupon_percent})|raw }}
                                 </div>
                             </div>
                             <div class="subscription-promo-code text-center">
@@ -86,7 +86,7 @@
                 <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary btn-lg">
                     {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }}
                     {% if coupon_code|default('') is not empty %}
-                        {{ 'saas.trial_expired.activate_save'|trans }}
+                        {{ 'saas.trial_expired.activate_save'|trans({'%percent%': coupon_percent}) }}
                     {% else %}
                         {{ 'saas.trial_expired.activate'|trans }}
                     {% endif %}

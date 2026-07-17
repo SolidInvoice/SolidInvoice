@@ -78,6 +78,8 @@ final readonly class RequestListener implements EventSubscriberInterface
         private TranslatorInterface $translator,
         #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private string $onboardingCouponCode = '',
+        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
+        private int $couponPercent = 30,
     ) {
     }
 
@@ -138,6 +140,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                             $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
                                 'subscription' => $subscription,
                                 'coupon_code' => $this->onboardingCouponCode,
+                                'coupon_percent' => $this->couponPercent,
                             ]),
                         )
                     );
