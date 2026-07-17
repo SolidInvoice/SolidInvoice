@@ -184,9 +184,9 @@ final readonly class RequestListener implements EventSubscriberInterface
             'code' => $banner->code,
         ]);
 
-        $content = preg_replace(
+        $content = preg_replace_callback(
             '/<div class="page-wrapper">/',
-            '<div class="page-wrapper">' . $html,
+            static fn (): string => '<div class="page-wrapper">' . $html,
             $content,
             1
         );
