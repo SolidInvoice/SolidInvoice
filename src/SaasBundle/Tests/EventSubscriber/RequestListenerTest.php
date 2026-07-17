@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use Carbon\CarbonImmutable;
+use DateInterval;
 use DateTimeImmutable;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -476,7 +477,6 @@ final class RequestListenerTest extends KernelTestCase
             couponPercent: $couponPercent,
             bannerDays: 7,
             couponDays: 2,
-            extensionDays: 14,
         );
 
         return new RequestListener(
@@ -499,11 +499,13 @@ final class RequestListenerTest extends KernelTestCase
         SubscriptionStatus $status,
         ?DateTimeImmutable $endDate = null
     ): Subscription {
-        // Create real Plan object
+        // Create real Plan object. The trial length drives the banner's "N more
+        // days" copy; the back-office syncs this from the payment provider.
         $plan = new Plan();
         $plan->setName('Test Plan');
         $plan->setPlanId('test-plan-' . Ulid::generate());
         $plan->setPrice(1000);
+        $plan->setTrialDuration(new DateInterval('P14D'));
 
         // Create real Subscription object
         $subscription = new Subscription();

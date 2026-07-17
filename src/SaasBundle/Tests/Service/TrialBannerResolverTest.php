@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Service;
 
 use Carbon\CarbonImmutable;
+use DateInterval;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -48,6 +49,25 @@ final class TrialBannerResolverTest extends TestCase
         self::assertSame('saas.trial_banner.extend.title', $banner->titleKey);
         self::assertSame(['%days%' => 14], $banner->params);
         self::assertNull($banner->code);
+    }
+
+    public function testExtensionDaysAreDerivedFromThePlanTrialDuration(): void
+    {
+        // 5 days remaining (extend window); the plan grants a 7-day trial, so
+        // the copy must say 7 — proving the value comes from the Plan, not a constant.
+        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06', trialDuration: 'P7D');
+
+        self::assertInstanceOf(TrialBanner::class, $banner);
+        self::assertSame(['%days%' => 7], $banner->params);
+    }
+
+    public function testNoBannerWhenPlanHasNoTrialDuration(): void
+    {
+        // Within the banner window, but the plan carries no trial length — we
+        // cannot promise "N more days", so no banner is shown.
+        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06', trialDuration: '');
+
+        self::assertNull($banner);
     }
 
     public function testCouponVariantInFinalDaysWhenCodeConfigured(): void
@@ -117,6 +137,7 @@ final class TrialBannerResolverTest extends TestCase
         string $endDate,
         string $couponCode = 'SAVE30',
         ?string $subscriptionId = null,
+        string $trialDuration = 'P14D',
     ): ?TrialBanner {
         $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')->willReturn(new DateTimeImmutable(self::NOW));
@@ -127,13 +148,16 @@ final class TrialBannerResolverTest extends TestCase
             couponPercent: 30,
             bannerDays: 7,
             couponDays: 2,
-            extensionDays: 14,
         );
 
         $plan = new Plan();
         $plan->setName('Pro');
         $plan->setPlanId('variant-123');
         $plan->setPrice(1000);
+
+        if ($trialDuration !== '') {
+            $plan->setTrialDuration(new DateInterval($trialDuration));
+        }
 
         $subscription = new Subscription();
         $subscription->setPlan($plan);

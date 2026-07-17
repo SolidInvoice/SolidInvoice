@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Service;
 
+use Carbon\CarbonInterval;
+use DateInterval;
 use Psr\Clock\ClockInterface;
+use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -38,8 +41,6 @@ final readonly class TrialBannerResolver
         private int $bannerDays = 7,
         #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS')]
         private int $couponDays = 2,
-        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_EXTENSION_DAYS')]
-        private int $extensionDays = 14,
     ) {
     }
 
@@ -85,6 +86,16 @@ final readonly class TrialBannerResolver
             return null;
         }
 
+        // The trial length is synced onto the Plan from the payment provider, so
+        // the "get N more days" copy always reflects the real trial the user
+        // receives by adding a card. Without a trial length we cannot make that
+        // promise, so no banner is shown.
+        $extensionDays = $this->trialExtensionDays($subscription->getPlan());
+
+        if ($extensionDays === null) {
+            return null;
+        }
+
         if ($this->couponCode !== '' && $daysRemaining <= $this->couponDays) {
             return new TrialBanner(
                 'info',
@@ -92,7 +103,7 @@ final readonly class TrialBannerResolver
                 'saas.trial_banner.coupon.title',
                 'saas.trial_banner.coupon.message',
                 [
-                    '%days%' => $this->extensionDays,
+                    '%days%' => $extensionDays,
                     '%percent%' => $this->couponPercent,
                     '%code%' => $this->couponCode,
                 ],
@@ -106,8 +117,26 @@ final readonly class TrialBannerResolver
             'tabler:calendar-plus',
             'saas.trial_banner.extend.title',
             'saas.trial_banner.extend.message',
-            ['%days%' => $this->extensionDays],
+            ['%days%' => $extensionDays],
             'saas.trial_banner.extend.cta',
         );
+    }
+
+    /**
+     * Whole days of trial the plan grants, derived from the Plan's trial
+     * duration (synced from the payment provider by the back-office). Null when
+     * the plan has no trial configured.
+     */
+    private function trialExtensionDays(Plan $plan): ?int
+    {
+        $trialDuration = $plan->getTrialDuration();
+
+        if (! $trialDuration instanceof DateInterval) {
+            return null;
+        }
+
+        $days = (int) CarbonInterval::instance($trialDuration)->total('days');
+
+        return $days > 0 ? $days : null;
     }
 }
