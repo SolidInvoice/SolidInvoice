@@ -23,9 +23,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT)', '30');
     $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS)', '7');
     $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS)', '2');
-    // This is only the number of days shown in the banner/copy ("get N more days").
-    // It MUST be kept equal to the trial length configured on the Lemon Squeezy
-    // variant, since the actual trial granted comes from Lemon Squeezy's
-    // `trialEndsAt`, applied via SubscriptionManager::startTrial().
-    $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_EXTENSION_DAYS)', '14');
 };
