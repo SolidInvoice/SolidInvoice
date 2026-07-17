@@ -236,6 +236,36 @@ final class RequestListenerTest extends KernelTestCase
         self::assertSame('WELCOME20', $capturedContext['coupon_code']);
     }
 
+    public function testOnRequestWithExpiredTrialPassesCouponPercentToTemplate(): void
+    {
+        $now = CarbonImmutable::parse('2024-01-15');
+        $endDate = CarbonImmutable::parse('2024-01-10');
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, $endDate);
+
+        $capturedContext = null;
+        $listener = $this->createListener(
+            new User(),
+            $now,
+            $subscription,
+            'WELCOME30',
+            static function (array $context) use (&$capturedContext): void {
+                $capturedContext = $context;
+            },
+        );
+
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        $listener->onRequest(new RequestEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        ));
+
+        self::assertIsArray($capturedContext);
+        self::assertSame(30, $capturedContext['coupon_percent']);
+    }
+
     public function testOnRequestWithTrialStatusBeforeEndDate(): void
     {
         $now = CarbonImmutable::parse('2024-01-10');
@@ -380,6 +410,7 @@ final class RequestListenerTest extends KernelTestCase
         string $couponCode = '',
         ?callable $onTrialExpiredRender = null,
         ?callable $onBannerRender = null,
+        int $couponPercent = 30,
     ): RequestListener {
         // Get real services from container
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -460,6 +491,7 @@ final class RequestListenerTest extends KernelTestCase
             $trialBannerResolver,
             $translator,
             $couponCode,
+            $couponPercent,
         );
     }
 

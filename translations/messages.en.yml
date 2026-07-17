@@ -2041,7 +2041,7 @@ saas:
             title: 'Get %days% more days, free'
     trial_expired:
         activate: 'Activate Subscription'
-        activate_save: 'Activate & Save 20%'
+        activate_save: 'Activate & Save %percent%%'
         feature_clients: 'Client and contact management'
         feature_invoices: 'Unlimited invoices and quotes'
         feature_payments: 'Professional payment processing'
@@ -2049,8 +2049,8 @@ saas:
         feature_reports: 'Financial reports and insights'
         features_heading: 'Continue enjoying these features:'
         promo_code: 'Promo code'
-        promo_heading: "Don't go just yet — here's 20% off"
-        promo_message: 'Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>20%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.'
+        promo_heading: "Don't go just yet — here's %percent%% off"
+        promo_message: 'Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>%percent%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.'
         subtitle: 'Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.'
         title: 'Your trial has ended'
 save: Save
