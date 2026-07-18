@@ -19,6 +19,7 @@ use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
 use Liip\TestFixturesBundle\LiipTestFixturesBundle;
 use Meilisearch\Bundle\MeilisearchBundle;
+use Nelmio\CorsBundle\NelmioCorsBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Sentry\SentryBundle\SentryBundle;
 use SolidInvoice\ApiBundle\SolidInvoiceApiBundle;
@@ -117,6 +118,7 @@ $bundles = [
     ChartjsBundle::class => ['all' => true],
     MeilisearchBundle::class => ['all' => true],
     McpBundle::class => ['all' => true],
+    NelmioCorsBundle::class => ['all' => true],
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {

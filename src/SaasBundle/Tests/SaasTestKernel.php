@@ -23,6 +23,11 @@ final class SaasTestKernel extends Kernel
         'SOLIDINVOICE_LEMON_SQUEEZY_API_KEY' => 'test-api-key',
         'SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID' => 'test-store',
         'SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET' => 'test-secret',
+        // Enables the `google_one_tap` feature toggle and the `^/onetap/` CORS
+        // rule so the One Tap endpoints are reachable in SaaS functional tests.
+        'SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID' => 'test-one-tap-client-id.apps.googleusercontent.com',
+        'SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET' => 'test-one-tap-secret',
+        'SOLIDINVOICE_ONE_TAP_ALLOWED_ORIGINS' => 'https://marketing.example.test',
     ];
 
     /**

@@ -27,6 +27,16 @@ return App::config([
                     'limit' => 60,
                     'interval' => '1 hour',
                 ],
+                'one_tap_nonce' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 30,
+                    'interval' => '1 minute',
+                ],
+                'one_tap_verify' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 15,
+                    'interval' => '1 minute',
+                ],
             ],
         ],
     ],

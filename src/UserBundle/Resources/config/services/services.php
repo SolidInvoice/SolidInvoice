@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\UserBundle\OAuth\GoogleUserProvisioner;
+use SolidInvoice\UserBundle\OAuth\GoogleUserProvisionerInterface;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use SolidInvoice\UserBundle\Repository\UserSettingRepository;
@@ -39,6 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias(UserRepositoryInterface::class, UserRepository::class);
     $services->alias(PlatformUserRepository::class, UserRepository::class);
     $services->alias(UserSettingRepositoryInterface::class, UserSettingRepository::class);
+    $services->alias(GoogleUserProvisionerInterface::class, GoogleUserProvisioner::class);
 
     $services
         ->load(SolidInvoiceUserBundle::NAMESPACE . '\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')

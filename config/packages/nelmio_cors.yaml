@@ -1,0 +1,13 @@
+# CORS is only needed for the Google One Tap sign-in endpoints, which are part
+# of the SaaS build. The actual, origin-restricted rule for `^/onetap/` lives in
+# config/packages/saas/nelmio_cors.php so it only loads when the SaaS bundle is
+# enabled. No CORS is applied anywhere by default.
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_methods: []
+        allow_headers: []
+        expose_headers: []
+        max_age: 0
+    paths: {}
