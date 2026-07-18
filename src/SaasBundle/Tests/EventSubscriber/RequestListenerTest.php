@@ -17,6 +17,7 @@ use Carbon\CarbonImmutable;
 use DateInterval;
 use DateTimeImmutable;
 use Mockery as M;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,6 +27,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
+use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -50,6 +52,12 @@ final class RequestListenerTest extends KernelTestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
     use EnsureApplicationInstalled;
+
+    #[Override]
+    protected static function getKernelClass(): string
+    {
+        return SaasTestKernel::class;
+    }
 
     public function testGetSubscribedEvents(): void
     {

@@ -115,7 +115,9 @@ trait SymfonyKernelTrait
             $debug = true;
         }
 
-        return new Kernel($env, (bool) $debug);
+        static::$class ??= static::getKernelClass();
+
+        return new static::$class($env, (bool) $debug);
     }
 
     /**
