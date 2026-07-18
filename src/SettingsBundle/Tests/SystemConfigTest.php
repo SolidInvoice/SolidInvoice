@@ -16,13 +16,13 @@ namespace SolidInvoice\SettingsBundle\Tests;
 use const DATE_ATOM;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use function date;
 
-final class SystemConfigTest extends TestCase
+final class SystemConfigTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;

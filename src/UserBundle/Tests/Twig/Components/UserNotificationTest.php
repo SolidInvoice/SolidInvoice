@@ -15,7 +15,6 @@ namespace SolidInvoice\UserBundle\Tests\Twig\Components;
 
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
@@ -23,11 +22,12 @@ use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use SolidInvoice\UserBundle\Twig\Components\UserNotification;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Twig\Environment;
 
 #[CoversClass(UserNotification::class)]
-final class UserNotificationTest extends TestCase
+final class UserNotificationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
 
