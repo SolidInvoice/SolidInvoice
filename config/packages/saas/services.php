@@ -20,4 +20,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)', null);
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)', '');
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE)', '');
+    // Comma-separated marketing origins allowed to call the Google One Tap
+    // endpoints. Empty by default (no cross-origin access) until configured.
+    $parameters->set('env(SOLIDINVOICE_ONE_TAP_ALLOWED_ORIGINS)', '');
 };

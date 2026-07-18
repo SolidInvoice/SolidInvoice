@@ -19,6 +19,7 @@ return App::config([
             'features' => [
                 'allow_registration' => env('SOLIDINVOICE_ALLOW_REGISTRATION'),
                 'google_oauth_login' => '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null',
+                'google_one_tap' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\' && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null',
                 'turnstile_captcha' => '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null',
                 'saas_enabled' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'',
                 'meilisearch_search' => '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""',
