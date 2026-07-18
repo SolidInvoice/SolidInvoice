@@ -38,6 +38,8 @@ trait SymfonyKernelTrait
 
     protected static bool $booted = false;
 
+    protected static ?string $class = null;
+
     protected function tearDown(): void
     {
         parent::tearDown();

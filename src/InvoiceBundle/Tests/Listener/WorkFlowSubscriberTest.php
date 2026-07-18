@@ -15,19 +15,19 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class WorkFlowSubscriberTest extends TestCase
+final class WorkFlowSubscriberTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;

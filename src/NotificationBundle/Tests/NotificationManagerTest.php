@@ -17,7 +17,6 @@ use Hamcrest\Core\IsEqual;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -29,6 +28,7 @@ use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageExceptio
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\NotifierInterface;
@@ -37,7 +37,7 @@ use Symfony\Component\Notifier\Transport\Dsn;
 use Twig\Environment;
 
 #[CoversClass(NotificationManager::class)]
-final class NotificationManagerTest extends TestCase
+final class NotificationManagerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use FakerTestTrait;
