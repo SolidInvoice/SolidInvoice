@@ -16,8 +16,10 @@ namespace SolidInvoice\InvoiceBundle\Tests\Entity;
 use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 
 #[CoversClass(RecurringInvoice::class)]
 final class RecurringInvoiceTest extends TestCase
@@ -72,5 +74,35 @@ final class RecurringInvoiceTest extends TestCase
 
         self::assertTrue($recurringInvoice->hasInvoiceForDay(CarbonImmutable::parse('2024-01-16 23:59:59')));
         self::assertFalse($recurringInvoice->hasInvoiceForDay(CarbonImmutable::parse('2024-01-18 00:00:00')));
+    }
+
+    public function testGetRecurringOptionsInitializesWhenBypassingConstructor(): void
+    {
+        // Simulate Doctrine's entity hydration which bypasses the constructor
+        $recurringInvoice = (new ReflectionClass(RecurringInvoice::class))->newInstanceWithoutConstructor();
+
+        $options = $recurringInvoice->getRecurringOptions();
+
+        self::assertInstanceOf(RecurringOptions::class, $options);
+        self::assertSame($recurringInvoice, $options->getRecurringInvoice());
+    }
+
+    public function testGetRecurringOptionsReturnsSameInstanceOnSubsequentCalls(): void
+    {
+        $recurringInvoice = (new ReflectionClass(RecurringInvoice::class))->newInstanceWithoutConstructor();
+
+        $first = $recurringInvoice->getRecurringOptions();
+        $second = $recurringInvoice->getRecurringOptions();
+
+        self::assertSame($first, $second);
+    }
+
+    public function testGetRecurringOptionsReturnsSetInstance(): void
+    {
+        $recurringInvoice = new RecurringInvoice();
+        $options = new RecurringOptions();
+        $recurringInvoice->setRecurringOptions($options);
+
+        self::assertSame($options, $recurringInvoice->getRecurringOptions());
     }
 }
