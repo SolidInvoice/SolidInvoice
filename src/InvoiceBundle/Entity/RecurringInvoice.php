@@ -329,6 +329,10 @@ class RecurringInvoice extends BaseInvoice
 
     public function getRecurringOptions(): RecurringOptions
     {
+        if (! isset($this->recurringOptions)) {
+            $this->setRecurringOptions(new RecurringOptions());
+        }
+
         return $this->recurringOptions;
     }
 
