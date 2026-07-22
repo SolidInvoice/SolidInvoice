@@ -4913,16 +4913,16 @@
         },
         {
             "name": "lorisleiva/cron-translator",
-            "version": "v0.5.1",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/cron-translator.git",
-                "reference": "99e87184dc4b535c157af888782e84ba1d397b6e"
+                "reference": "61335e4329c8838a5dd8b23a5b6c3a7cb6aac176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/99e87184dc4b535c157af888782e84ba1d397b6e",
-                "reference": "99e87184dc4b535c157af888782e84ba1d397b6e",
+                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/61335e4329c8838a5dd8b23a5b6c3a7cb6aac176",
+                "reference": "61335e4329c8838a5dd8b23a5b6c3a7cb6aac176",
                 "shasum": ""
             },
             "require": {
@@ -4957,7 +4957,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/cron-translator/issues",
-                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.5.1"
+                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.5.2"
             },
             "funding": [
                 {
@@ -4965,7 +4965,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-27T10:08:36+00:00"
+            "time": "2026-07-18T13:25:58+00:00"
         },
         {
             "name": "mattketmo/email-checker",
