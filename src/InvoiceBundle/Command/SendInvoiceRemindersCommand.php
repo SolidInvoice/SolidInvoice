@@ -15,23 +15,22 @@ namespace SolidInvoice\InvoiceBundle\Command;
 
 use Carbon\CarbonImmutable;
 use DateMalformedStringException;
-use Doctrine\ORM\AbstractQuery;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
-use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Scheduler\Attribute\AsCronTask;
-use Symfony\Component\Uid\Ulid;
 use Throwable;
 use function assert;
 use function Sentry\captureException;
@@ -45,7 +44,10 @@ use function sprintf;
     name: 'solidinvoice:invoices:send-reminders',
     description: 'Send payment reminders for pending and overdue invoices',
 )]
-#[AsCronTask(expression: '#hourly', schedule: 'invoice_reminders')] // Every hour at a hashed minute to spread load
+// Every hour at a hashed minute to spread load. The hash is seeded from the full command line, so
+// the two types land on different minutes rather than contending for the same one.
+#[AsCronTask(expression: '#hourly', arguments: ['type' => 'pre-due'], schedule: 'invoice_reminders')]
+#[AsCronTask(expression: '#hourly', arguments: ['type' => 'overdue'], schedule: 'invoice_reminders')]
 final class SendInvoiceRemindersCommand extends Command
 {
     /**
@@ -62,12 +64,21 @@ final class SendInvoiceRemindersCommand extends Command
         private readonly InvoiceRepository $invoiceRepository,
         private readonly MessageBusInterface $messageBus,
         private readonly ClockInterface $clock,
-        private readonly CompanySelector $companySelector,
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
     }
 
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this->addArgument(name: 'type', mode: InputArgument::REQUIRED, suggestedValues: ['pre-due', 'overdue']);
+    }
+
+    /**
+     * @throws Throwable
+     */
     protected function handle(): int
     {
         $entityManager = $this->registry->getManagerForClass(Invoice::class);
@@ -78,29 +89,38 @@ final class SendInvoiceRemindersCommand extends Command
         $companyFilterEnabled = $filters->isEnabled('company');
 
         if ($companyFilterEnabled) {
-            $filters->disable('company');
+            $filters->suspend('company');
         }
 
         try {
-            // Dispatch pre-due reminder messages
-            $preDueCount = withMonitor('pre_due_invoice_reminders', $this->dispatchPreDueReminders(...));
-
-            // Dispatch overdue reminder messages
-            $overdueCount = $this->dispatchOverdueReminders();
+            $count = match ($this->io->getArgument('type')) {
+                'pre-due' => withMonitor('pre_due_invoice_reminders', $this->dispatchPreDueReminders(...)),
+                'overdue' => withMonitor('overdue_invoice_reminders', $this->dispatchOverdueReminders(...)),
+                default => throw new InvalidArgumentException(sprintf('Invalid type "%s"', $this->io->getArgument('type'))),
+            };
         } catch (Throwable $e) {
             captureException($e);
             throw $e;
         } finally {
-            // Re-enable company filter if it was enabled
+            // Re-enable company filter if it was enabled.
+            //
+            // The scan itself leaves the suspension intact, but SendInvoiceReminderHandler switches
+            // tenants — and switchCompany() drops the suspension — so a synchronously routed
+            // message would leave nothing for restore() to restore. It throws in that case, which
+            // in a finally block would mask any exception already on its way out.
             if ($companyFilterEnabled) {
-                $filters->enable('company');
+                if ($filters->isSuspended('company')) {
+                    $filters->restore('company');
+                } elseif (! $filters->isEnabled('company')) {
+                    $filters->enable('company');
+                }
             }
         }
 
         $this->io->success(sprintf(
-            'Dispatched %d pre-due reminder messages and %d overdue reminder messages',
-            $preDueCount,
-            $overdueCount
+            'Dispatched %d %s reminder messages',
+            $count,
+            $this->io->getArgument('type'),
         ));
 
         return self::SUCCESS;
@@ -110,39 +130,26 @@ final class SendInvoiceRemindersCommand extends Command
     {
         $this->io->comment('Processing pre-due reminders...');
 
-        $companyRepository = $this->registry->getRepository(Company::class);
-
-        $companies = $companyRepository->createQueryBuilder('c')
-            ->select('DISTINCT(c.id) as companyId', 's_days.value as preDueDays')
-            ->innerJoin('c.settings', 's_days', 'WITH', 's_days.key = :key_days')
-            ->innerJoin('c.settings', 's_rem', 'WITH', 's_rem.key = :key_rem AND s_rem.value = :val_true')
-            ->innerJoin('c.settings', 's_pre', 'WITH', 's_pre.key = :key_pre AND s_pre.value = :val_true')
-            ->getQuery()
-            ->toIterable([
-                'key_days' => 'invoice/reminder/pre_due_days',
-                'key_rem' => 'invoice/reminder/enabled',
-                'key_pre' => 'invoice/reminder/pre_due_enabled',
-                'val_true' => '1',
-            ], AbstractQuery::HYDRATE_SCALAR);
-
         $count = 0;
 
-        foreach ($companies as $company) {
-            $companyId = Ulid::fromString($company['companyId']);
-
-            $this->companySelector->switchCompany($companyId);
-
+        // Pre-due reminders fire a company-configured number of days before the due date, so one
+        // scan per distinct window covers every company that shares it.
+        foreach ($this->invoiceRepository->getConfiguredPreDueDays() as $daysBeforeDue) {
             try {
-                foreach ($this->invoiceRepository->getInvoicesNeedingPreDueReminders((int) $company['preDueDays']) as $invoice) {
+                foreach ($this->invoiceRepository->getInvoicesNeedingPreDueReminders($daysBeforeDue) as $candidate) {
                     $daysUntilDue = null;
-                    if ($invoice->getDue()) {
-                        $daysUntilDue = CarbonImmutable::instance($this->clock->now())->startOfDay()->diff($invoice->getDue())->days;
+
+                    if ($candidate['due'] instanceof DateTimeInterface) {
+                        $daysUntilDue = CarbonImmutable::instance($this->clock->now())
+                            ->startOfDay()
+                            ->diff($candidate['due'])
+                            ->days;
                     }
 
                     $this->messageBus->dispatch(
                         new SendInvoiceReminderMessage(
-                            $invoice->getId(),
-                            $companyId,
+                            $candidate['invoiceId'],
+                            $candidate['companyId'],
                             ReminderType::PreDue,
                             $daysUntilDue
                         )
@@ -152,8 +159,7 @@ final class SendInvoiceRemindersCommand extends Command
                 }
             } catch (DateMalformedStringException | ExceptionInterface $e) {
                 captureException($e);
-            } finally {
-                $this->companySelector->reset();
+                $this->logger->error($e->getMessage(), ['exception' => $e]);
             }
         }
 
@@ -166,53 +172,35 @@ final class SendInvoiceRemindersCommand extends Command
 
         $count = 0;
 
-        // Get companies with reminders enabled
-        // Overdue reminders use fixed intervals (1, 7, 14 days) but respect the global enable setting
+        // Overdue reminders use fixed intervals (1, 7, 14 days) but respect the global enable
+        // setting, which the query filters on. One scan per interval covers every company.
+        foreach ($this->reminderTypes as $days => $type) {
+            $count += withMonitor(sprintf('overdue_invoice_reminders_%d_day', $days), function () use ($days, $type): int {
+                $count = 0;
 
-        $companyRepository = $this->registry->getRepository(Company::class);
-
-        $companies = $companyRepository->createQueryBuilder('c')
-            ->select('DISTINCT(c.id) as companyId')
-            ->innerJoin('c.settings', 's_rem', 'WITH', 's_rem.key = :key_rem AND s_rem.value = :val_true')
-            ->getQuery()
-            ->toIterable([
-                'key_rem' => 'invoice/reminder/enabled',
-                'val_true' => '1',
-            ], AbstractQuery::HYDRATE_SCALAR);
-
-        foreach ($companies as $company) {
-            $companyId = Ulid::fromString($company['companyId']);
-
-            $this->companySelector->switchCompany($companyId);
-
-            try {
-                foreach ($this->reminderTypes as $days => $type) {
-                    $count += withMonitor(sprintf('overdue_invoice_reminders_%d_day', $days), function () use ($days, $type, $companyId) {
-                        $count = 0;
-                        if ($this->io->isVerbose()) {
-                            $this->io->comment(sprintf('Processing %d-day overdue reminders', $days));
-                        }
-
-                        foreach ($this->invoiceRepository->getInvoicesNeedingOverdueReminders($days, $type) as $invoice) {
-                            $this->messageBus->dispatch(
-                                new SendInvoiceReminderMessage(
-                                    $invoice->getId(),
-                                    $companyId,
-                                    $type
-                                )
-                            );
-
-                            ++$count;
-                        }
-
-                        return $count;
-                    });
+                if ($this->io->isVerbose()) {
+                    $this->io->comment(sprintf('Processing %d-day overdue reminders', $days));
                 }
-            } catch (Throwable $e) {
-                $this->logger->error($e->getMessage(), ['exception' => $e]);
-            } finally {
-                $this->companySelector->reset();
-            }
+
+                try {
+                    foreach ($this->invoiceRepository->getInvoicesNeedingOverdueReminders($days, $type) as $candidate) {
+                        $this->messageBus->dispatch(
+                            new SendInvoiceReminderMessage(
+                                $candidate['invoiceId'],
+                                $candidate['companyId'],
+                                $type
+                            )
+                        );
+
+                        ++$count;
+                    }
+                } catch (Throwable $e) {
+                    captureException($e);
+                    $this->logger->error($e->getMessage(), ['exception' => $e]);
+                }
+
+                return $count;
+            });
         }
 
         return $count;

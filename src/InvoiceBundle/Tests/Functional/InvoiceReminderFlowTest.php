@@ -269,18 +269,30 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertCount(1, $reminders, 'Idempotency guard should prevent duplicate reminder');
     }
 
+    /**
+     * Each reminder type is scheduled as its own cron task, so a full sweep means running the
+     * command once per type. Both are dispatched here to mirror what the scheduler does over a cycle.
+     */
     private function runTestCommand(): void
+    {
+        foreach (['pre-due', 'overdue'] as $type) {
+            $this->runTestCommandForType($type);
+        }
+    }
+
+    private function runTestCommandForType(string $type): void
     {
         // Get the command directly from the container
         $command = self::getContainer()->get(SendInvoiceRemindersCommand::class);
 
-        // Manually set IO object for Platform Command
-        $input = new ArrayInput([]);
+        // Manually set IO object for Platform Command. The definition has to be passed so the
+        // input is bound, otherwise the command cannot read the 'type' argument off it.
+        $input = new ArrayInput(['type' => $type], $command->getDefinition());
         $output = new BufferedOutput();
         $command->setIo(new IO($input, $output));
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $commandTester->execute(['type' => $type]);
 
         self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
 
