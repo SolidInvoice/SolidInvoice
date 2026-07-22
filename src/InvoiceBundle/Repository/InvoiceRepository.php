@@ -21,11 +21,14 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Deprecated;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -33,8 +36,14 @@ use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
+use function array_map;
+use function array_unique;
+use function array_values;
+use function intval;
 
 /**
  * @extends EntityRepository<Invoice>
@@ -509,49 +518,122 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get pending invoices needing pre-due reminders.
+     * Get pending invoices needing pre-due reminders, across every company at once.
      *
-     * @return iterable<Invoice>
+     * Companies opt in through their settings, so those are joined here rather than resolved by the
+     * caller: one query covers the whole tenant base instead of one query per tenant. The caller is
+     * responsible for suspending the company filter, otherwise this is scoped to a single company.
+     *
+     * Only the fields needed to dispatch a reminder are selected — hydrating entities for a scan
+     * this wide would hold every matched invoice in the identity map.
+     *
+     * @return iterable<array{invoiceId: Ulid, companyId: Ulid, due: DateTimeImmutable|null}>
      * @throws DateMalformedStringException
      */
     public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
     {
         $targetDate = $this->clock->now()->modify(sprintf('+%d days', $daysBeforeDue));
 
-        $qb = $this->createQueryBuilder('i');
+        $qb = $this->createReminderCandidateQueryBuilder(ReminderType::PreDue, $targetDate);
 
-        $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
-            ->where('i.status = :status')
-            ->andWhere('i.due = :targetDate')
-            ->andWhere('r.id IS NULL')
+        $qb
+            ->innerJoin(Setting::class, 's_pre_due', 'WITH', 's_pre_due.company = c AND s_pre_due.key = :preDueKey AND s_pre_due.value = :enabled')
+            ->innerJoin(Setting::class, 's_days', 'WITH', 's_days.company = c AND s_days.key = :daysKey AND s_days.value = :days')
+            ->andWhere('i.status = :status')
             ->setParameter('status', InvoiceStatus::Pending)
-            ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
-            ->setParameter('reminderType', ReminderType::PreDue);
+            ->setParameter('preDueKey', 'invoice/reminder/pre_due_enabled')
+            ->setParameter('daysKey', 'invoice/reminder/pre_due_days')
+            ->setParameter('days', (string) $daysBeforeDue);
 
-        return $qb->getQuery()->toIterable();
+        return $this->hydrateReminderCandidates($qb->getQuery()->toIterable([], AbstractQuery::HYDRATE_SCALAR));
     }
 
     /**
-     * Get overdue invoices needing reminders.
+     * Get overdue invoices needing reminders, across every company at once.
      *
-     * @return iterable<Invoice>
+     * @return iterable<array{invoiceId: Ulid, companyId: Ulid, due: DateTimeImmutable|null}>
      * @throws DateMalformedStringException
+     * @see self::getInvoicesNeedingPreDueReminders() for why this scans all companies at once.
      */
     public function getInvoicesNeedingOverdueReminders(int $daysOverdue, ReminderType $reminderType): iterable
     {
         $targetDate = $this->clock->now()->modify(sprintf('-%d days', $daysOverdue));
 
-        $qb = $this->createQueryBuilder('i');
+        $qb = $this->createReminderCandidateQueryBuilder($reminderType, $targetDate);
 
-        $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
-            ->where('i.status  in (:pending, :overdue)')
-            ->andWhere('i.due = :targetDate')
+        $qb
+            ->andWhere('i.status IN (:statuses)')
+            ->setParameter('statuses', [InvoiceStatus::Pending, InvoiceStatus::Overdue]);
+
+        return $this->hydrateReminderCandidates($qb->getQuery()->toIterable([], AbstractQuery::HYDRATE_SCALAR));
+    }
+
+    /**
+     * Scalar hydration hands back raw driver values — a 16 byte binary string for a ULID on MySQL,
+     * a uuid string on Postgres, and a plain date string for the due date. Run them back through
+     * the mapped Doctrine types so callers get the same objects entity hydration would have given
+     * them, without the identity map cost of hydrating whole invoices.
+     *
+     * @param iterable<array{invoiceId: mixed, companyId: mixed, due: mixed}> $rows
+     * @return Generator<int, array{invoiceId: Ulid, companyId: Ulid, due: DateTimeImmutable|null}>
+     */
+    private function hydrateReminderCandidates(iterable $rows): Generator
+    {
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+        $ulidType = Type::getType(UlidType::NAME);
+        $dateType = Type::getType(Types::DATE_IMMUTABLE);
+
+        foreach ($rows as $row) {
+            yield [
+                'invoiceId' => $ulidType->convertToPHPValue($row['invoiceId'], $platform),
+                'companyId' => $ulidType->convertToPHPValue($row['companyId'], $platform),
+                'due' => $dateType->convertToPHPValue($row['due'], $platform),
+            ];
+        }
+    }
+
+    /**
+     * Invoices due on an exact date that have not had this reminder type recorded yet, limited to
+     * companies with reminders switched on.
+     *
+     * The anti-join needs no company predicate of its own — an invoice id already identifies a
+     * single tenant's row.
+     */
+    private function createReminderCandidateQueryBuilder(ReminderType $reminderType, DateTimeInterface $targetDate): QueryBuilder
+    {
+        return $this->createQueryBuilder('i')
+            ->select('i.id AS invoiceId', 'c.id AS companyId', 'i.due AS due')
+            ->innerJoin('i.company', 'c')
+            ->innerJoin(Setting::class, 's_enabled', 'WITH', 's_enabled.company = c AND s_enabled.key = :enabledKey AND s_enabled.value = :enabled')
+            ->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
+            ->where('i.due = :targetDate')
             ->andWhere('r.id IS NULL')
-            ->setParameter('pending', InvoiceStatus::Pending)
-            ->setParameter('overdue', InvoiceStatus::Overdue)
             ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
-            ->setParameter('reminderType', $reminderType);
+            ->setParameter('reminderType', $reminderType)
+            ->setParameter('enabledKey', 'invoice/reminder/enabled')
+            ->setParameter('enabled', '1');
+    }
 
-        return $qb->getQuery()->toIterable();
+    /**
+     * The distinct pre-due windows configured across all companies.
+     *
+     * Pre-due reminders fire a company-configured number of days before the due date, so the scan
+     * runs once per distinct window rather than once per company.
+     *
+     * @return list<int>
+     */
+    public function getConfiguredPreDueDays(): array
+    {
+        $values = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('DISTINCT s.value')
+            ->from(Setting::class, 's')
+            ->where('s.key = :daysKey')
+            ->andWhere('s.value IS NOT NULL')
+            ->setParameter('daysKey', 'invoice/reminder/pre_due_days')
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        return array_values(array_unique(array_map(intval(...), $values)));
     }
 }

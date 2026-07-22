@@ -25,6 +25,7 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Clock\MockClock;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceRepository::class)]
@@ -63,7 +64,30 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $results = iterator_to_array($this->repository->getInvoicesNeedingPreDueReminders(3));
 
         self::assertCount(1, $results);
-        self::assertSame($invoice->getId()->toBase32(), $results[0]->getId()->toBase32());
+        self::assertSame($invoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
+    }
+
+    /**
+     * The scan hydrates scalars for speed, which hands back raw driver values — a binary string for
+     * a ULID, a plain string for the date. They have to come back out as the mapped types, or the
+     * dispatched message carries a binary id and never works out the days until due.
+     */
+    public function testGetInvoicesNeedingPreDueRemindersReturnsMappedTypesNotRawDriverValues(): void
+    {
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $this->clock->now()->modify('+3 days'),
+        ]);
+
+        $results = iterator_to_array($this->repository->getInvoicesNeedingPreDueReminders(3));
+
+        self::assertCount(1, $results);
+        self::assertInstanceOf(Ulid::class, $results[0]['invoiceId']);
+        self::assertInstanceOf(Ulid::class, $results[0]['companyId']);
+        self::assertInstanceOf(DateTimeImmutable::class, $results[0]['due']);
+        self::assertSame($this->company->getId()->toBase32(), $results[0]['companyId']->toBase32());
+        self::assertSame('2024-02-04', $results[0]['due']->format('Y-m-d'));
     }
 
     public function testGetInvoicesNeedingPreDueRemindersExcludesInvoicesAlreadySentReminder(): void
@@ -139,7 +163,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $results = iterator_to_array($this->repository->getInvoicesNeedingOverdueReminders(1, ReminderType::Overdue1));
 
         self::assertCount(1, $results);
-        self::assertSame($invoice->getId()->toBase32(), $results[0]->getId()->toBase32());
+        self::assertSame($invoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
     }
 
     public function testGetInvoicesNeedingOverdueRemindersExcludesInvoicesAlreadySentReminder(): void
@@ -191,7 +215,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $results = iterator_to_array($this->repository->getInvoicesNeedingOverdueReminders(7, ReminderType::Overdue7));
 
         self::assertCount(1, $results);
-        self::assertSame($invoice7Days->getId()->toBase32(), $results[0]->getId()->toBase32());
+        self::assertSame($invoice7Days->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
     }
 
     public function testGetInvoicesNeedingOverdueRemindersExcludesPaidInvoices(): void
@@ -215,7 +239,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $results = iterator_to_array($this->repository->getInvoicesNeedingOverdueReminders(1, ReminderType::Overdue1));
 
         self::assertCount(1, $results);
-        self::assertSame($overdueInvoice->getId()->toBase32(), $results[0]->getId()->toBase32());
+        self::assertSame($overdueInvoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
     }
 
     public function testCountCreatedInMonthCountsInvoicesInTheCalendarMonth(): void

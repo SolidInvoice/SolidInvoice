@@ -63,6 +63,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Invoice::TABLE_NAME)]
 #[ORM\Index(columns: ['quote_id'])]
+#[ORM\Index(name: 'idx_invoice_reminder_scan', columns: ['due', 'status'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['invoiceDate', 'due', 'paidDate'])]

@@ -16,8 +16,10 @@ namespace SolidInvoice\InvoiceBundle\Tests\Command;
 use const PHP_EOL;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
@@ -47,36 +49,55 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
     use Factories;
     use ConsoleTesterTrait;
 
-    public function testCommandExecutesSuccessfully(): void
+    /**
+     * Each reminder type is scheduled as its own cron task, so a run handles one type only.
+     *
+     * @return iterable<string, array{string, string}>
+     */
+    public static function reminderTypeProvider(): iterable
     {
-        CompanyFactory::createOne();
-
-        $output = $this->runTestCommand();
-
-        self::assertThat($this->statusCode, new CommandIsSuccessful());
-        self::assertStringContainsString('Processing pre-due reminders', $output);
-        self::assertStringContainsString('Processing overdue reminders', $output);
+        yield 'pre-due' => ['pre-due', 'Processing pre-due reminders'];
+        yield 'overdue' => ['overdue', 'Processing overdue reminders'];
     }
 
-    public function testCommandHandlesMultipleCompanies(): void
+    #[DataProvider('reminderTypeProvider')]
+    public function testCommandExecutesSuccessfully(string $type, string $expectedOutput): void
     {
         CompanyFactory::createOne();
-        CompanyFactory::createOne();
 
-        $output = $this->runTestCommand();
+        $output = $this->runTestCommand($type);
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
-        self::assertStringContainsString('Processing pre-due reminders', $output);
-        self::assertStringContainsString('Processing overdue reminders', $output);
+        self::assertStringContainsString($expectedOutput, $output);
     }
 
-    public function testCommandHandlesNoCompanies(): void
+    #[DataProvider('reminderTypeProvider')]
+    public function testCommandHandlesMultipleCompanies(string $type, string $expectedOutput): void
     {
-        $output = $this->runTestCommand();
+        CompanyFactory::createOne();
+        CompanyFactory::createOne();
+
+        $output = $this->runTestCommand($type);
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
-        self::assertStringContainsString('Processing pre-due reminders', $output);
-        self::assertStringContainsString('Processing overdue reminders', $output);
+        self::assertStringContainsString($expectedOutput, $output);
+    }
+
+    #[DataProvider('reminderTypeProvider')]
+    public function testCommandHandlesNoCompanies(string $type, string $expectedOutput): void
+    {
+        $output = $this->runTestCommand($type);
+
+        self::assertThat($this->statusCode, new CommandIsSuccessful());
+        self::assertStringContainsString($expectedOutput, $output);
+    }
+
+    public function testCommandRejectsAnUnknownReminderType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid type "weekly"');
+
+        $this->runTestCommand('weekly');
     }
 
     /**
@@ -111,7 +132,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
             'users' => [$contact],
         ]);
 
-        $output = $this->runTestCommand();
+        $output = $this->runTestCommand('pre-due');
 
         self::assertThat($this->statusCode, new CommandIsSuccessful());
         self::assertStringContainsString('Dispatched 1 pre-due reminder', $output);
@@ -131,7 +152,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         self::assertInstanceOf(SendInvoiceReminderMessage::class, $transport->getSent()[0]->getMessage());
     }
 
-    private function runTestCommand(): string
+    private function runTestCommand(string $type): string
     {
         $application = new Application(self::bootKernel());
 
@@ -141,7 +162,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
         /** @var SendInvoiceRemindersCommand $command */
         $command = $lazyCommand->getCommand();
         $this->initOutput([]);
-        $this->input = new ArrayInput([]);
+        $this->input = new ArrayInput(['type' => $type]);
         $this->input->setStream(self::createStream([]));
 
         $command->setIo(new IO($this->input, $this->output));
