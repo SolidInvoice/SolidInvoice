@@ -33,6 +33,11 @@
     <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
+{# Demo mode: unremovable watermark, not gated on any setting or custom_branding #}
+{% if is_demo() %}
+    <watermarktext content="DEMO" alpha="0.1"/>
+{% endif %}
+
 {# ============================================================================
    PAGE FOOTER (mPDF specific)
 ============================================================================ #}
