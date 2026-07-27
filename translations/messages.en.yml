@@ -230,6 +230,7 @@ company:
         then: Then
         title: 'Create Your Company'
         trial_title: 'Start Your Free Trial'
+        trial_title_paid: 'Start Your Trial'
         trial_used: 'You have already used your free trial.'
         view_docs: 'View Documentation'
     select:
@@ -2002,12 +2003,17 @@ saas:
         just_completed_title: 'Just completed checkout?'
         need_help: 'Need a hand?'
         secure_checkout: 'Secure checkout · Cancel anytime · No hidden fees'
+        secure_checkout_paid_trial: 'Secure checkout · Cancel anytime during your trial · No hidden fees'
         subtitle: 'Pick a plan and start running your business with SolidInvoice in minutes.'
+        subtitle_paid_trial: 'Pick a plan and add your payment details to get started. You can cancel at any time.'
         switch_company: 'Switch to another company'
         title: 'Activate Your Subscription'
+        title_paid_trial: 'Choose Your Plan'
     plan:
         choose: 'Choose plan'
         continue_free: 'Continue with Free'
+        start_trial: '{1}Start 1-day trial|]1,Inf[Start %days%-day trial'
+        subscribe: Subscribe
         current: 'Current plan'
         included: Included
         just_getting_started: 'Just getting started?'

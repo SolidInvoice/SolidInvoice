@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -50,6 +51,7 @@ class SubscribeController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly Telemetry $telemetry,
         private readonly ClockInterface $clock,
+        private readonly BillingMode $billingMode,
     ) {
     }
 
@@ -64,18 +66,9 @@ class SubscribeController extends AbstractController
             return $this->redirectToRoute('_dashboard');
         }
 
-        // Grant Lemon Squeezy's built-in trial (skip_trial: false) only for a
-        // user who is still actively trialling and has not yet added a card.
-        // This is what makes the "extend your trial" offer real. Every other
-        // path (expired trial, cancelled, free-plan upgrade, plan change) is
-        // charged immediately and must not receive a second free trial.
-        $grantsTrialExtension = $subscription->getStatus() === SubscriptionStatus::TRIAL
-            && ! $subscription->isExternallyBilled()
-            && $subscription->getEndDate() > $this->clock->now();
-
         $options = Options::new()
             ->withEmail($user->getEmail())
-            ->withSkipTrial(! $grantsTrialExtension);
+            ->withSkipTrial(! $this->grantsProviderTrial($subscription));
 
         // The chosen plan id (LS variant) is passed in via query parameter
         // from ChoosePlanAction / ConfirmPlanChangeAction. We swap it onto the
@@ -123,6 +116,37 @@ class SubscribeController extends AbstractController
         $this->telemetry->event(TelemetryEvent::SaasCheckoutStarted, ['plan' => $planName]);
 
         return $this->redirect($checkoutUrl);
+    }
+
+    /**
+     * Whether this checkout should let Lemon Squeezy apply the variant's
+     * built-in trial (`skip_trial: false`).
+     *
+     * The two billing modes disagree on what the first checkout means:
+     *
+     *  - Paid trial: checkout is how a trial *starts*. The subscription is
+     *    still PENDING and has never been billed, so it must receive the
+     *    trial. A variant configured with no trial days simply charges
+     *    immediately, which is the intended "no trial" behaviour.
+     *  - Free trial: the trial already ran locally, and checkout is how the
+     *    user extends it by adding a card. Only an actively-trialling,
+     *    never-billed subscription qualifies.
+     *
+     * Either way, a subscription that is already externally billed is
+     * changing plans and must never receive a second trial.
+     */
+    private function grantsProviderTrial(Subscription $subscription): bool
+    {
+        if ($subscription->isExternallyBilled()) {
+            return false;
+        }
+
+        if ($this->billingMode->requiresCardForTrial()) {
+            return true;
+        }
+
+        return $subscription->getStatus() === SubscriptionStatus::TRIAL
+            && $subscription->getEndDate() > $this->clock->now();
     }
 
     private function getSubscription(): ?Subscription

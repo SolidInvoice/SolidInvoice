@@ -29,6 +29,8 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Tests\Telemetry\CollectingMessageBus;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
+use SolidInvoice\SaasBundle\Service\BillingMode;
+use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -164,6 +166,61 @@ final class SubscribeControllerTest extends TestCase
     }
 
     /**
+     * The whole point of paid-trial mode: checkout is how the trial starts, so
+     * the first checkout must let Lemon Squeezy apply the variant's trial. The
+     * subscription is still PENDING here, which under the free-trial rules
+     * would have skipped the trial and charged the user immediately.
+     */
+    public function testPendingCheckoutGrantsTrialInPaidTrialMode(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::PENDING,
+            CarbonImmutable::parse('2024-01-01'),
+        );
+
+        $options = $this->captureCheckoutOptions(
+            $subscription,
+            CarbonImmutable::parse('2024-01-01'),
+            BillingModeFactory::paidTrial(),
+        );
+
+        self::assertFalse($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    public function testExternallyBilledCheckoutSkipsTrialInPaidTrialMode(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::ACTIVE,
+            CarbonImmutable::parse('2024-02-01'),
+            'ls_existing_1',
+        );
+
+        $options = $this->captureCheckoutOptions(
+            $subscription,
+            CarbonImmutable::parse('2024-01-01'),
+            BillingModeFactory::paidTrial(),
+        );
+
+        self::assertTrue($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    /**
+     * Free-trial mode must be unaffected by the paid-trial branch: a PENDING
+     * subscription there is a free-plan upgrade and is charged immediately.
+     */
+    public function testPendingCheckoutSkipsTrialInFreeTrialMode(): void
+    {
+        $subscription = $this->trialSubscription(
+            SubscriptionStatus::PENDING,
+            CarbonImmutable::parse('2024-01-01'),
+        );
+
+        $options = $this->captureCheckoutOptions($subscription, CarbonImmutable::parse('2024-01-01'));
+
+        self::assertTrue($options->getValue(Options::SKIP_TRIAL));
+    }
+
+    /**
      * @return array{0: RedirectResponse, 1: array<string, list<string|Stringable>>}
      */
     private function invokeController(?Throwable $exception): array
@@ -210,6 +267,7 @@ final class SubscribeControllerTest extends TestCase
             $this->createStub(EntityManagerInterface::class),
             $this->makeTelemetry(),
             $clock,
+            BillingModeFactory::freeTrial(),
         );
 
         $session = new Session(new MockArraySessionStorage());
@@ -281,8 +339,11 @@ final class SubscribeControllerTest extends TestCase
         return $subscription;
     }
 
-    private function captureCheckoutOptions(Subscription $subscription, DateTimeImmutable $now): Options
-    {
+    private function captureCheckoutOptions(
+        Subscription $subscription,
+        DateTimeImmutable $now,
+        ?BillingMode $billingMode = null,
+    ): Options {
         $capturedOptions = null;
 
         $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
@@ -320,6 +381,7 @@ final class SubscribeControllerTest extends TestCase
             $this->createStub(EntityManagerInterface::class),
             $this->makeTelemetry(),
             $clock,
+            $billingMode ?? BillingModeFactory::freeTrial(),
         );
 
         $session = new Session(new MockArraySessionStorage());
