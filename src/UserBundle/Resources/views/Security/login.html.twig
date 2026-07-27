@@ -41,7 +41,33 @@
         </span>
     </div>
 
+    {% if is_demo() %}
+        <div class="alert alert-info mb-3" role="alert">
+            <div class="d-flex align-items-center">
+                {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'me-2 flex-shrink-0'}) }}
+                <div>
+                    <div class="fw-bold">{{ 'security.login.demo.heading'|trans }}</div>
+                    <div class="text-sm">
+                        {{ 'security.login.demo.username'|trans }}: <code>{{ demo_username() }}</code><br>
+                        {{ 'security.login.demo.password'|trans }}: <code>{{ demo_password() }}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     {{ parent() }}
+
+    {% if is_demo() %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var pwd = document.querySelector('input[type="password"]');
+                if (pwd && pwd.value === '') {
+                    pwd.value = {{ demo_password()|json_encode|raw }};
+                }
+            });
+        </script>
+    {% endif %}
 
     <div class="text-center text-secondary mt-3 bg-white p-2">
         {{ 'security.login.no_account'|trans }}

@@ -78,6 +78,10 @@ security:
         login_with_google: 'Login with Google'
         no_account: "Don't have an account yet?"
         register_now: 'Register Now'
+        demo:
+            heading: 'Demo account'
+            username: 'Username'
+            password: 'Password'
     register:
         title: Register
         heading: 'Create your free account'

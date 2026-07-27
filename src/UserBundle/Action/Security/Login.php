@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Security;
 
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -21,6 +22,11 @@ use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 final class Login
 {
+    public function __construct(
+        private readonly ModeResolver $modeResolver,
+    ) {
+    }
+
     /**
      * @return array{last_username: ?string, error: ?AuthenticationException, csrf_token: string}
      */
@@ -44,8 +50,14 @@ final class Login
             $error = null; // The value does not come from the security component.
         }
 
+        $lastUsername = $session->get($lastUsernameKey);
+
+        if (($lastUsername === null || $lastUsername === '') && $this->modeResolver->isDemo()) {
+            $lastUsername = $this->modeResolver->demoUsername();
+        }
+
         return [
-            'last_username' => $session->get($lastUsernameKey),
+            'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfTokenManager->getToken('authenticate')->getValue(),
         ];
