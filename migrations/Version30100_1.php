@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -27,9 +27,15 @@ final class Version30100_1 extends AbstractMigration
         return 'Add a (due, status) index on invoices to support the reminder scans';
     }
 
+    /**
+     * MariaDBPlatform is a sibling of MySQLPlatform, not a subclass — both extend
+     * AbstractMySQLPlatform. Matching on the abstract parent is what covers MariaDB too, which
+     * implicitly commits on DDL just like MySQL, so wrapping this in a transaction would only
+     * promise a rollback that cannot happen.
+     */
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void
