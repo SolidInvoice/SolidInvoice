@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
@@ -23,6 +24,7 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
+use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Uid\Ulid;
@@ -88,6 +90,32 @@ final class InvoiceRepositoryTest extends KernelTestCase
         self::assertInstanceOf(DateTimeImmutable::class, $results[0]['due']);
         self::assertSame($this->company->getId()->toBase32(), $results[0]['companyId']->toBase32());
         self::assertSame('2024-02-04', $results[0]['due']->format('Y-m-d'));
+    }
+
+    /**
+     * The setting column is free text, so the same window can be stored as "3", "03" or "3 days".
+     * getConfiguredPreDueDays() normalises them all to 3 and the scan runs once for that window, so
+     * the scan has to match every spelling — otherwise those companies never get a reminder.
+     */
+    #[TestWith(['03'])]
+    #[TestWith([' 3'])]
+    #[TestWith(['3 days'])]
+    public function testGetInvoicesNeedingPreDueRemindersMatchesNonCanonicalDaySettings(string $storedValue): void
+    {
+        $this->updateSetting('invoice/reminder/pre_due_days', $storedValue);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $this->clock->now()->modify('+3 days'),
+        ]);
+
+        self::assertSame([3], $this->repository->getConfiguredPreDueDays());
+
+        $results = iterator_to_array($this->repository->getInvoicesNeedingPreDueReminders(3));
+
+        self::assertCount(1, $results);
+        self::assertSame($invoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
     }
 
     public function testGetInvoicesNeedingPreDueRemindersExcludesInvoicesAlreadySentReminder(): void
@@ -274,5 +302,26 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $month = new DateTimeImmutable('2024-04-15 10:00:00', new DateTimeZone('UTC'));
 
         self::assertSame(0, $this->repository->countCreatedInMonth($month));
+    }
+
+    private function updateSetting(string $key, string $value): void
+    {
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+
+        $setting = $entityManager->getRepository(Setting::class)
+            ->findOneBy([
+                'company' => $this->company,
+                'key' => $key,
+            ]);
+
+        if ($setting === null) {
+            $setting = new Setting();
+            $setting->setKey($key);
+            $setting->setCompany($this->company);
+            $entityManager->persist($setting);
+        }
+
+        $setting->setValue($value);
+        $entityManager->flush();
     }
 }
