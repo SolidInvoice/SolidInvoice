@@ -15,9 +15,12 @@ namespace SolidInvoice\InvoiceBundle\Tests\Repository;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use Psr\Clock\ClockInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -116,6 +119,39 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         self::assertCount(1, $results);
         self::assertSame($invoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
+    }
+
+    /**
+     * Switching either reminder toggle off leaves the day setting behind, so counting every stored
+     * window would keep the disabled company's window in the list and the caller would run a scan
+     * for it on every cron tick — one that can never match, since the scan itself requires both
+     * toggles to be on.
+     */
+    #[TestWith(['invoice/reminder/enabled'])]
+    #[TestWith(['invoice/reminder/pre_due_enabled'])]
+    public function testGetConfiguredPreDueDaysExcludesCompaniesWithRemindersDisabled(string $disabledToggle): void
+    {
+        $this->updateSetting($disabledToggle, '0');
+
+        self::assertSame([], $this->repository->getConfiguredPreDueDays());
+    }
+
+    /**
+     * The windows are collected across the whole tenant base, so a window no enabled company shares
+     * has to drop out entirely — while the windows of the companies that are still on stay.
+     */
+    public function testGetConfiguredPreDueDaysOnlyReturnsWindowsFromCompaniesWithRemindersOn(): void
+    {
+        // Creating a company seeds its default reminder settings and switches the active tenant to it.
+        $disabledCompany = CompanyFactory::createOne();
+
+        $this->updateSetting('invoice/reminder/pre_due_days', '7', $disabledCompany);
+        $this->updateSetting('invoice/reminder/enabled', '0', $disabledCompany);
+
+        self::assertSame(
+            [3],
+            $this->withoutCompanyFilter(fn (): array => $this->repository->getConfiguredPreDueDays())
+        );
     }
 
     public function testGetInvoicesNeedingPreDueRemindersExcludesInvoicesAlreadySentReminder(): void
@@ -304,24 +340,52 @@ final class InvoiceRepositoryTest extends KernelTestCase
         self::assertSame(0, $this->repository->countCreatedInMonth($month));
     }
 
-    private function updateSetting(string $key, string $value): void
+    private function updateSetting(string $key, string $value, ?Company $company = null): void
     {
+        $company ??= $this->company;
+
         $entityManager = self::getContainer()->get('doctrine')->getManager();
 
         $setting = $entityManager->getRepository(Setting::class)
             ->findOneBy([
-                'company' => $this->company,
+                'company' => $company,
                 'key' => $key,
             ]);
 
         if ($setting === null) {
             $setting = new Setting();
             $setting->setKey($key);
-            $setting->setCompany($this->company);
+            $setting->setCompany($company);
             $entityManager->persist($setting);
         }
 
         $setting->setValue($value);
         $entityManager->flush();
+    }
+
+    /**
+     * The reminder scans run across every tenant at once, which SendInvoiceRemindersCommand sets up
+     * by suspending the company filter. Without that the query only ever sees the active company.
+     *
+     * @template T
+     * @param callable(): T $callback
+     * @return T
+     */
+    private function withoutCompanyFilter(callable $callback): mixed
+    {
+        $filters = self::getContainer()->get(EntityManagerInterface::class)->getFilters();
+        $enabled = $filters->isEnabled('company');
+
+        if ($enabled) {
+            $filters->suspend('company');
+        }
+
+        try {
+            return $callback();
+        } finally {
+            if ($enabled) {
+                $filters->restore('company');
+            }
+        }
     }
 }

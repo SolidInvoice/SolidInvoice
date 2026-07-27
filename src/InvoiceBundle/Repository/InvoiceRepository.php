@@ -623,7 +623,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * The distinct pre-due windows configured across all companies.
+     * The distinct pre-due windows configured across the companies that have pre-due reminders on.
      *
      * Pre-due reminders fire a company-configured number of days before the due date, so the scan
      * runs once per distinct window rather than once per company.
@@ -636,7 +636,8 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Every raw spelling of the setting that normalises to the given window.
+     * Every raw spelling of the setting that normalises to the given window, among the companies
+     * the scan can match at all.
      *
      * The scan groups companies by the normalised value, so it has to match on those same raw
      * spellings. The column is free text, so "3", "03" and "3 days" all mean the same window —
@@ -656,7 +657,11 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * The distinct raw pre-due day settings stored across all companies.
+     * The distinct raw pre-due day settings stored across the companies that would act on them.
+     *
+     * Switching reminders off leaves the day setting behind, so an unfiltered DISTINCT would hand
+     * back windows no company can ever match and the caller would run a scan per dead window. Both
+     * toggles are joined here to keep the number of scans tied to the active configurations.
      *
      * @return list<string>
      */
@@ -666,9 +671,14 @@ class InvoiceRepository extends EntityRepository
             ->createQueryBuilder()
             ->select('DISTINCT s.value')
             ->from(Setting::class, 's')
+            ->innerJoin(Setting::class, 's_enabled', 'WITH', 's_enabled.company = s.company AND s_enabled.key = :enabledKey AND s_enabled.value = :enabled')
+            ->innerJoin(Setting::class, 's_pre_due', 'WITH', 's_pre_due.company = s.company AND s_pre_due.key = :preDueKey AND s_pre_due.value = :enabled')
             ->where('s.key = :daysKey')
             ->andWhere('s.value IS NOT NULL')
             ->setParameter('daysKey', 'invoice/reminder/pre_due_days')
+            ->setParameter('enabledKey', 'invoice/reminder/enabled')
+            ->setParameter('preDueKey', 'invoice/reminder/pre_due_enabled')
+            ->setParameter('enabled', '1')
             ->getQuery()
             ->getSingleColumnResult();
 
