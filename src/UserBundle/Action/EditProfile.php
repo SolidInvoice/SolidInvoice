@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
@@ -34,7 +36,8 @@ final readonly class EditProfile
         private FormFactoryInterface $formFactory,
         private UserRepositoryInterface $userRepository,
         private TokenStorageInterface $tokenStorage,
-        private RouterInterface $router
+        private RouterInterface $router,
+        private ModeResolver $modeResolver,
     ) {
     }
 
@@ -49,10 +52,15 @@ final readonly class EditProfile
             throw new AccessDeniedException('User must be authenticated to edit profile.');
         }
 
+        $originalEmail = $user->getEmail();
         $form = $this->formFactory->create(ProfileType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (null !== $originalEmail && ! $this->modeResolver->allows(Capability::CredentialChange)) {
+                $user->setEmail($originalEmail);
+            }
+
             $this->userRepository->save($user);
 
             $session = $request->getSession();

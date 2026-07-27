@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\DTO\ChangePassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -26,11 +28,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ChangePasswordType extends AbstractType
 {
+    public function __construct(
+        private readonly ModeResolver $modeResolver,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $locked = ! $this->modeResolver->allows(Capability::CredentialChange);
+
         if (true === $options['confirm_password']) {
             $builder->add('currentPassword', PasswordType::class, [
                 'label' => 'Current Password',
+                'disabled' => $locked,
                 'attr' => [
                     'autocomplete' => 'current-password',
                 ],
@@ -39,6 +49,7 @@ class ChangePasswordType extends AbstractType
 
         $builder->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
+            'disabled' => $locked,
             'options' => [
                 'attr' => [
                     'autocomplete' => 'new-password',

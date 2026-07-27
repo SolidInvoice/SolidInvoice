@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,17 +30,27 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ProfileType extends AbstractType
 {
+    public function __construct(
+        private readonly ModeResolver $modeResolver,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $credentialsLocked = ! $this->modeResolver->allows(Capability::CredentialChange);
+
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'disabled' => $credentialsLocked,
+            ])
             ->add('mobile')
             ->add('current_password', PasswordType::class, [
                 'label' => 'Current Password',
                 'mapped' => false,
-                'constraints' => [
+                'disabled' => $credentialsLocked,
+                'constraints' => $credentialsLocked ? [] : [
                     new NotBlank(),
                     new UserPassword(),
                 ],

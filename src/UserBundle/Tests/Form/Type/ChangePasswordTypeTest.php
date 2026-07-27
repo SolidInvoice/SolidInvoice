@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Type;
 
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\UserBundle\DTO\ChangePassword;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Forms;
 
 final class ChangePasswordTypeTest extends FormTestCase
 {
@@ -36,9 +39,11 @@ final class ChangePasswordTypeTest extends FormTestCase
         $object->currentPassword = $currentPassword;
         $object->plainPassword = $newPassword;
 
-        $this->assertFormData(ChangePasswordType::class, $formData, $object, [
+        $form = $this->createForm(new ModeResolver(), $object, [
             'confirm_password' => true,
         ]);
+
+        $this->assertFormData($form, $formData, $object);
     }
 
     public function testSubmitWithoutCurrentPassword(): void
@@ -55,14 +60,16 @@ final class ChangePasswordTypeTest extends FormTestCase
         $object = new ChangePassword();
         $object->plainPassword = $newPassword;
 
-        $this->assertFormData(ChangePasswordType::class, $formData, $object, [
+        $form = $this->createForm(new ModeResolver(), $object, [
             'confirm_password' => false,
         ]);
+
+        $this->assertFormData($form, $formData, $object);
     }
 
     public function testFormHasExpectedFields(): void
     {
-        $form = $this->factory->create(ChangePasswordType::class, null, [
+        $form = $this->createForm(new ModeResolver(), null, [
             'confirm_password' => true,
         ]);
 
@@ -72,7 +79,7 @@ final class ChangePasswordTypeTest extends FormTestCase
 
     public function testFormWithoutCurrentPasswordField(): void
     {
-        $form = $this->factory->create(ChangePasswordType::class, null, [
+        $form = $this->createForm(new ModeResolver(), null, [
             'confirm_password' => false,
         ]);
 
@@ -82,9 +89,47 @@ final class ChangePasswordTypeTest extends FormTestCase
 
     public function testRepeatedPasswordFieldStructure(): void
     {
-        $form = $this->factory->create(ChangePasswordType::class);
+        $form = $this->createForm(new ModeResolver(), null);
 
         self::assertTrue($form->get('plainPassword')->has('first'));
         self::assertTrue($form->get('plainPassword')->has('second'));
+    }
+
+    public function testCurrentPasswordAndPlainPasswordAreNotDisabledWhenNotInDemoMode(): void
+    {
+        $form = $this->createForm(new ModeResolver(), null, [
+            'confirm_password' => true,
+        ]);
+
+        self::assertFalse($form->get('currentPassword')->isDisabled());
+        self::assertFalse($form->get('plainPassword')->isDisabled());
+    }
+
+    public function testCurrentPasswordAndPlainPasswordAreDisabledInDemoMode(): void
+    {
+        $form = $this->createForm(new ModeResolver('demo', 'demo@example.com', 'demo-password'), null, [
+            'confirm_password' => true,
+        ]);
+
+        self::assertTrue($form->get('currentPassword')->isDisabled());
+        self::assertTrue($form->get('plainPassword')->isDisabled());
+    }
+
+    /**
+     * Builds a ChangePasswordType form using a real ModeResolver, since the form type now requires
+     * one injected via its constructor (it is no longer resolvable as a bare class-name string).
+     *
+     * @param array<string, mixed> $options
+     *
+     * @return FormInterface<ChangePassword>
+     */
+    private function createForm(ModeResolver $modeResolver, ?ChangePassword $object, array $options = []): FormInterface
+    {
+        $factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtensions($this->getTypeExtensions())
+            ->addType(new ChangePasswordType($modeResolver))
+            ->getFormFactory();
+
+        return $factory->create(ChangePasswordType::class, $object, $options);
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Security;
 
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\DTO\ChangePassword as ChangePasswordDTO;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
@@ -38,7 +40,8 @@ final readonly class ChangePassword
         private UserRepositoryInterface $userRepository,
         private UserPasswordHasherInterface $userPasswordHasher,
         private TokenStorageInterface $tokenStorage,
-        private RouterInterface $router
+        private RouterInterface $router,
+        private ModeResolver $modeResolver,
     ) {
     }
 
@@ -63,6 +66,15 @@ final readonly class ChangePassword
                 throw new AccessDeniedException('User must be authenticated to change password.');
             }
 
+            $session = $request->getSession();
+            assert($session instanceof Session);
+
+            if (! $this->modeResolver->allows(Capability::CredentialChange)) {
+                $session->getFlashBag()->add('success', 'profile.password_change.success');
+
+                return new RedirectResponse($this->router->generate('_profile'));
+            }
+
             // Hash the NEW plain password from the DTO and set it on the User entity
             if (null !== $changePasswordDTO->plainPassword) {
                 $hashedPassword = $this->userPasswordHasher->hashPassword($user, $changePasswordDTO->plainPassword);
@@ -73,8 +85,6 @@ final readonly class ChangePassword
 
             $this->userRepository->save($user);
 
-            $session = $request->getSession();
-            assert($session instanceof Session);
             $session->getFlashBag()->add('success', 'profile.password_change.success');
 
             return new RedirectResponse($this->router->generate('_profile'));
