@@ -79,7 +79,7 @@ final class RecurringInvoiceTest extends TestCase
     public function testGetRecurringOptionsInitializesWhenBypassingConstructor(): void
     {
         // Simulate Doctrine's entity hydration which bypasses the constructor
-        $recurringInvoice = (new ReflectionClass(RecurringInvoice::class))->newInstanceWithoutConstructor();
+        $recurringInvoice = new ReflectionClass(RecurringInvoice::class)->newInstanceWithoutConstructor();
 
         $options = $recurringInvoice->getRecurringOptions();
 
@@ -89,7 +89,7 @@ final class RecurringInvoiceTest extends TestCase
 
     public function testGetRecurringOptionsReturnsSameInstanceOnSubsequentCalls(): void
     {
-        $recurringInvoice = (new ReflectionClass(RecurringInvoice::class))->newInstanceWithoutConstructor();
+        $recurringInvoice = new ReflectionClass(RecurringInvoice::class)->newInstanceWithoutConstructor();
 
         $first = $recurringInvoice->getRecurringOptions();
         $second = $recurringInvoice->getRecurringOptions();

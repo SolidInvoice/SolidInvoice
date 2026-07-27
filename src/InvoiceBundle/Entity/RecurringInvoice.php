@@ -329,6 +329,7 @@ class RecurringInvoice extends BaseInvoice
 
     public function getRecurringOptions(): RecurringOptions
     {
+        // @phpstan-ignore-next-line
         if (! isset($this->recurringOptions)) {
             $this->setRecurringOptions(new RecurringOptions());
         }
