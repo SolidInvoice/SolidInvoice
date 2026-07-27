@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
@@ -49,7 +49,7 @@ final class Version30000_9 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     /**
@@ -707,10 +707,12 @@ final class Version30000_9 extends AbstractMigration
             return null;
         }
 
-        // Doctrine's MySQLPlatform covers MariaDB; PostgreSQLPlatform covers PostgreSQL.
+        // AbstractMySQLPlatform is what covers both MySQL and MariaDB — MariaDBPlatform is a
+        // sibling of MySQLPlatform, not a subclass, so matching the concrete MySQLPlatform would
+        // drop the constraint on MariaDB without saying so.
         // Oracle and SQL Server also support `ALTER TABLE ADD CONSTRAINT CHECK`, so include
         // them so the invariant is enforced at the DB level on every server-class platform.
-        $supported = $this->platform instanceof MySQLPlatform
+        $supported = $this->platform instanceof AbstractMySQLPlatform
             || $this->platform instanceof PostgreSQLPlatform
             || $this->platform instanceof OraclePlatform
             || (class_exists(\Doctrine\DBAL\Platforms\SQLServerPlatform::class)
