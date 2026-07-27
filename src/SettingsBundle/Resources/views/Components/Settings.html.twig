@@ -426,6 +426,9 @@
                 {# Mail Provider Settings #}
                 {% if form.sending_options is defined %}
                     <div>
+                        {% if is_demo() %}
+                            {{ include('@SolidInvoiceCore/Demo/_warning_alert.html.twig') }}
+                        {% endif %}
                         <h3 class="d-flex align-items-center gap-2 mb-3">
                             {{ ux_icon('tabler:server', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'Email Delivery'|trans }}

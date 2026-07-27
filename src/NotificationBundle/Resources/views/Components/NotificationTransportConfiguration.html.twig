@@ -32,6 +32,10 @@
             </div>
         </twig:block>
 
+        {% if is_demo() %}
+            {{ include('@SolidInvoiceCore/Demo/_warning_alert.html.twig') }}
+        {% endif %}
+
         {{ form_start(form, {
             attr: {
                 'data-action': 'live#action:prevent',
