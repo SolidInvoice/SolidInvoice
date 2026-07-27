@@ -23,9 +23,13 @@
                 {{ ux_icon('tabler:rocket', {width: 32, height: 32}) }}
             </div>
 
-            <h1 class="subscription-title">{{ 'saas.pending.title'|trans }}</h1>
+            {% set paidTrial = toggle('saas_paid_trial') %}
+
+            <h1 class="subscription-title">
+                {{ (paidTrial ? 'saas.pending.title_paid_trial' : 'saas.pending.title')|trans }}
+            </h1>
             <p class="subscription-subtitle">
-                {{ 'saas.pending.subtitle'|trans }}
+                {{ (paidTrial ? 'saas.pending.subtitle_paid_trial' : 'saas.pending.subtitle')|trans }}
             </p>
 
             {# Plan picker #}
@@ -36,7 +40,7 @@
 
                 <p class="text-subtle small mt-3 mb-0">
                     {{ ux_icon('tabler:lock', {width: 14, height: 14, class: 'me-1'}) }}
-                    {{ 'saas.pending.secure_checkout'|trans }}
+                    {{ (paidTrial ? 'saas.pending.secure_checkout_paid_trial' : 'saas.pending.secure_checkout')|trans }}
                 </p>
             {% else %}
                 {# Fallback when no plans are configured — keep the original CTA so the user can still complete activation. #}

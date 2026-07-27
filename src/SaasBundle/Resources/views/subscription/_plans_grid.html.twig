@@ -20,6 +20,10 @@
 {% set actionRoute = actionRoute|default('saas_subscription_choose') %}
 {% set csrfToken = csrfToken|default('choose_plan') %}
 
+{# When a card is required up front, the CTA promises the trial the payment
+ # provider will actually grant — or plain "Subscribe" when there is none. #}
+{% set paidTrial = toggle('saas_paid_trial') %}
+
 {# Free plan rendered separately below the main grid. #}
 {% set freePlan = null %}
 {% set paidPlans = [] %}
@@ -78,7 +82,16 @@
                             <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
                             <button type="submit" class="btn w-100 {{ isRecommended ? 'btn-primary' : 'btn-outline-primary' }}">
                                 {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
-                                {{ 'saas.plan.choose'|trans }}
+                                {% if paidTrial %}
+                                    {% set planTrialDays = saas_plan_trial_days(plan) %}
+                                    {% if planTrialDays %}
+                                        {{ 'saas.plan.start_trial'|trans({'%days%': planTrialDays, '%count%': planTrialDays}) }}
+                                    {% else %}
+                                        {{ 'saas.plan.subscribe'|trans }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ 'saas.plan.choose'|trans }}
+                                {% endif %}
                             </button>
                         </form>
                     {% endif %}

@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Service;
 
-use Carbon\CarbonInterval;
-use DateInterval;
 use Psr\Clock\ClockInterface;
-use SolidWorx\Platform\SaasBundle\Entity\Plan;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -33,10 +31,8 @@ final readonly class TrialBannerResolver
 {
     public function __construct(
         private ClockInterface $clock,
-        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
-        private string $couponCode = '',
-        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
-        private int $couponPercent = 30,
+        private BillingMode $billingMode,
+        private TrialPeriod $trialPeriod,
         #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS')]
         private int $bannerDays = 7,
         #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS')]
@@ -67,6 +63,13 @@ final readonly class TrialBannerResolver
             return null;
         }
 
+        // Below here the banner is a trial *incentive* — extend the trial, or
+        // redeem a coupon. A paid trial already has a card on file, so neither
+        // is on offer. The cancelled notice above still applies in both modes.
+        if ($this->billingMode->requiresCardForTrial()) {
+            return null;
+        }
+
         // A card is already on file (Lemon Squeezy is billing this trial); the
         // extension has already happened, so nudging them again is wrong.
         if ($subscription->isExternallyBilled()) {
@@ -90,13 +93,15 @@ final readonly class TrialBannerResolver
         // the "get N more days" copy always reflects the real trial the user
         // receives by adding a card. Without a trial length we cannot make that
         // promise, so no banner is shown.
-        $extensionDays = $this->trialExtensionDays($subscription->getPlan());
+        $extensionDays = $this->trialPeriod->days($subscription->getPlan());
 
         if ($extensionDays === null) {
             return null;
         }
 
-        if ($this->couponCode !== '' && $daysRemaining <= $this->couponDays) {
+        $couponCode = $this->billingMode->couponCode();
+
+        if ($couponCode !== '' && $daysRemaining <= $this->couponDays) {
             return new TrialBanner(
                 'info',
                 'tabler:gift',
@@ -104,11 +109,11 @@ final readonly class TrialBannerResolver
                 'saas.trial_banner.coupon.message',
                 [
                     '%days%' => $extensionDays,
-                    '%percent%' => $this->couponPercent,
-                    '%code%' => $this->couponCode,
+                    '%percent%' => $this->billingMode->couponPercent(),
+                    '%code%' => $couponCode,
                 ],
                 'saas.trial_banner.coupon.cta',
-                $this->couponCode,
+                $couponCode,
             );
         }
 
@@ -120,23 +125,5 @@ final readonly class TrialBannerResolver
             ['%days%' => $extensionDays],
             'saas.trial_banner.extend.cta',
         );
-    }
-
-    /**
-     * Whole days of trial the plan grants, derived from the Plan's trial
-     * duration (synced from the payment provider by the back-office). Null when
-     * the plan has no trial configured.
-     */
-    private function trialExtensionDays(Plan $plan): ?int
-    {
-        $trialDuration = $plan->getTrialDuration();
-
-        if (! $trialDuration instanceof DateInterval) {
-            return null;
-        }
-
-        $days = (int) CarbonInterval::instance($trialDuration)->total('days');
-
-        return $days > 0 ? $days : null;
     }
 }
