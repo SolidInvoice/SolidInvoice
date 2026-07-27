@@ -15,6 +15,8 @@ namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Email\ResetPasswordEmail;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ResetPasswordRequestFormType;
@@ -37,6 +39,7 @@ final class Request extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
+        private readonly ModeResolver $modeResolver,
     ) {
     }
 
@@ -68,6 +71,13 @@ final class Request extends AbstractController
 
         // Do not reveal whether a user account was found or not.
         if (! $user instanceof User) {
+            return $this->redirectToRoute('_user_forgot_password_check_email');
+        }
+
+        // In demo mode credentials for the shared account must never change, so don't even
+        // generate/persist/send a reset token. The response is identical to the normal
+        // "if an account exists, we've sent a link" outcome, so the guard cannot be detected.
+        if (! $this->modeResolver->allows(Capability::CredentialChange)) {
             return $this->redirectToRoute('_user_forgot_password_check_email');
         }
 

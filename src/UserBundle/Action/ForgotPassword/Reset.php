@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +37,7 @@ final class Reset extends AbstractController
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly TranslatorInterface $translator,
         private readonly ManagerRegistry $registry,
+        private readonly ModeResolver $modeResolver,
     ) {
     }
 
@@ -72,6 +75,15 @@ final class Reset extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (! $this->modeResolver->allows(Capability::CredentialChange)) {
+                // In demo mode the shared account's credentials must never change, otherwise
+                // one visitor could lock every other demo user out. Keep the UX identical to
+                // a real success (same flash + redirect) without touching the password.
+                $this->addFlash('success', 'Your password has been changed successfully. You can now log in.');
+
+                return $this->redirectToRoute('_login_main');
+            }
+
             // A password reset token should be used only once, remove it.
             $this->resetPasswordHelper->removeResetRequest($token);
 

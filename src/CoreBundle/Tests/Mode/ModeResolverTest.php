@@ -64,4 +64,19 @@ final class ModeResolverTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         (new ModeResolver('bogus'))->current();
     }
+
+    /**
+     * Guard against the fail-open nature of ModeResolver::DENIED: a newly added Capability
+     * case is allowed in demo mode by default until it is explicitly added to the DENIED map.
+     * This test documents the expectation that, today, every capability is demo-denied. When a
+     * new capability is intentionally allowed in demo, update this test deliberately.
+     */
+    public function testDemoModeDeniesEveryCurrentCapability(): void
+    {
+        $resolver = new ModeResolver('demo', 'demo@example.com', 'secret');
+
+        foreach (Capability::cases() as $capability) {
+            self::assertFalse($resolver->allows($capability), $capability->name);
+        }
+    }
 }

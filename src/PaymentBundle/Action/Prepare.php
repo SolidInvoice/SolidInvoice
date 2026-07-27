@@ -196,6 +196,10 @@ final class Prepare
 
             $data['capture_online'] ??= ! in_array($paymentName, $offlinePaymentGateways, true);
 
+            if (filter_var($data['capture_online'], FILTER_VALIDATE_BOOLEAN) && ! $this->modeResolver->allows(Capability::OnlinePaymentCapture)) {
+                throw new AccessDeniedHttpException();
+            }
+
             $payment = new Payment();
             $payment->setInvoice($invoice);
             $payment->setStatus(PaymentStatus::New);
@@ -214,10 +218,6 @@ final class Prepare
             $this->save($payment);
 
             if (filter_var($data['capture_online'], FILTER_VALIDATE_BOOLEAN)) {
-                if (! $this->modeResolver->allows(Capability::OnlinePaymentCapture)) {
-                    throw new AccessDeniedHttpException();
-                }
-
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(

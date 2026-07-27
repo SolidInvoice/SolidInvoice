@@ -26,6 +26,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Action\Prepare;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
@@ -369,10 +370,21 @@ final class PrepareTest extends KernelTestCase
             $this->buildFormFactory($form),
         );
 
-        $this->expectException(AccessDeniedHttpException::class);
+        $paymentRepository = self::getContainer()->get('doctrine')->getRepository(Payment::class);
+        $paymentCountBefore = $paymentRepository->count([]);
 
         $request = Request::create('/pay/' . (string) $invoice->getUuid(), 'POST');
-        $action($request, (string) $invoice->getUuid());
+
+        try {
+            $action($request, (string) $invoice->getUuid());
+            self::fail('Expected an AccessDeniedHttpException to be thrown.');
+        } catch (AccessDeniedHttpException) {
+            // expected
+        }
+
+        // The guard must trip before a `New` Payment row is persisted, so a blocked
+        // online capture in demo mode must not leave behind an orphan Payment.
+        self::assertSame($paymentCountBefore, $paymentRepository->count([]));
     }
 
     public function testOfflineCaptureUnaffectedInDemoMode(): void
