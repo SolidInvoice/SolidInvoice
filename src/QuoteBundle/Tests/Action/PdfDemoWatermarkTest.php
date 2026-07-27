@@ -102,4 +102,26 @@ final class PdfDemoWatermarkTest extends KernelTestCase
         self::assertStringNotContainsString('content="PENDING"', $rendered);
         self::assertStringContainsString('content="DEMO"', $rendered);
     }
+
+    private function renderHtmlView(bool $demoEnabled): string
+    {
+        self::getContainer()->set(
+            ModeExtension::class,
+            new ModeExtension($demoEnabled ? new ModeResolver('demo', 'demo@example.com', 'demo-password') : new ModeResolver()),
+        );
+
+        return self::getContainer()->get(Environment::class)
+            ->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')
+            ->renderBlock('content', ['quote' => $this->makeQuote()]);
+    }
+
+    public function testDemoOverlayInQuoteHtmlView(): void
+    {
+        self::assertStringContainsString('demo-watermark-overlay', $this->renderHtmlView(true));
+    }
+
+    public function testNoDemoOverlayInQuoteHtmlViewWhenDemoDisabled(): void
+    {
+        self::assertStringNotContainsString('demo-watermark-overlay', $this->renderHtmlView(false));
+    }
 }

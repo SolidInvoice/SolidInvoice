@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
 use Carbon\CarbonImmutable;
+use ReflectionProperty;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Mode\ModeResolver;
@@ -22,7 +23,9 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
@@ -101,5 +104,85 @@ final class PdfDemoWatermarkTest extends KernelTestCase
 
         self::assertStringNotContainsString('content="PENDING"', $rendered);
         self::assertStringContainsString('content="DEMO"', $rendered);
+    }
+
+    private function renderHtmlView(bool $demoEnabled): string
+    {
+        self::getContainer()->set(
+            ModeExtension::class,
+            new ModeExtension($demoEnabled ? new ModeResolver('demo', 'demo@example.com', 'demo-password') : new ModeResolver()),
+        );
+
+        return self::getContainer()->get(Environment::class)
+            ->resolveTemplate('@SolidInvoiceInvoice/Default/view.html.twig')
+            ->renderBlock('content', ['invoice' => $this->makeInvoice(), 'payments' => []]);
+    }
+
+    public function testDemoOverlayInInvoiceHtmlView(): void
+    {
+        self::assertStringContainsString('demo-watermark-overlay', $this->renderHtmlView(true));
+    }
+
+    public function testNoDemoOverlayInInvoiceHtmlViewWhenDemoDisabled(): void
+    {
+        self::assertStringNotContainsString('demo-watermark-overlay', $this->renderHtmlView(false));
+    }
+
+    private function renderExternalHtmlView(bool $demoEnabled): string
+    {
+        self::getContainer()->set(
+            ModeExtension::class,
+            new ModeExtension($demoEnabled ? new ModeResolver('demo', 'demo@example.com', 'demo-password') : new ModeResolver()),
+        );
+
+        return self::getContainer()->get(Environment::class)
+            ->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $this->makeInvoice()]);
+    }
+
+    public function testDemoOverlayInExternalInvoiceHtmlView(): void
+    {
+        self::assertStringContainsString('demo-watermark-overlay', $this->renderExternalHtmlView(true));
+    }
+
+    public function testNoDemoOverlayInExternalInvoiceHtmlViewWhenDemoDisabled(): void
+    {
+        self::assertStringNotContainsString('demo-watermark-overlay', $this->renderExternalHtmlView(false));
+    }
+
+    private function renderRecurringHtmlView(bool $demoEnabled): string
+    {
+        self::getContainer()->set(
+            ModeExtension::class,
+            new ModeExtension($demoEnabled ? new ModeResolver('demo', 'demo@example.com', 'demo-password') : new ModeResolver()),
+        );
+
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'name' => 'Johnston PLC'])->_real();
+
+        $recurringInvoice = RecurringInvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => RecurringInvoiceStatus::Active,
+                'total' => '100.00',
+                'baseTotal' => '100.00',
+                'discount' => new Discount(),
+                'tax' => 0,
+            ])
+            ->_real();
+        new ReflectionProperty($recurringInvoice, 'id')->setValue($recurringInvoice, Ulid::fromString(self::INVOICE_ID));
+
+        return self::getContainer()->get(Environment::class)
+            ->resolveTemplate('@SolidInvoiceInvoice/Default/view_recurring.html.twig')
+            ->renderBlock('content', ['invoice' => $recurringInvoice]);
+    }
+
+    public function testDemoOverlayInRecurringInvoiceHtmlView(): void
+    {
+        self::assertStringContainsString('demo-watermark-overlay', $this->renderRecurringHtmlView(true));
+    }
+
+    public function testNoDemoOverlayInRecurringInvoiceHtmlViewWhenDemoDisabled(): void
+    {
+        self::assertStringNotContainsString('demo-watermark-overlay', $this->renderRecurringHtmlView(false));
     }
 }

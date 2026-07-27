@@ -16,6 +16,34 @@
 {% block content %}
 {% set currency = quote.client.currency %}
 <div class="doc-view-page">
+    {% if is_demo() %}
+        <style>
+            .demo-watermark-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 9998;
+                pointer-events: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .demo-watermark-overlay span {
+                font-size: 12rem;
+                font-weight: 700;
+                letter-spacing: 1rem;
+                color: rgba(46, 150, 58, 0.08);
+                transform: rotate(-30deg);
+                text-transform: uppercase;
+                user-select: none;
+                white-space: nowrap;
+            }
+            @media print {
+                .demo-watermark-overlay span { color: rgba(0, 0, 0, 0.12); }
+            }
+        </style>
+        <div class="demo-watermark-overlay" aria-hidden="true"><span>DEMO</span></div>
+    {% endif -%}
     {# ═══════════════════════════════════════════════════════════════════════
        PAGE HEADER - Quote Title, Status, and Actions
     ═══════════════════════════════════════════════════════════════════════ #}
