@@ -29,6 +29,7 @@ use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\UpgradeOfferStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\WelcomeStep;
+use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
@@ -193,7 +194,7 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private function upgradeOfferStep(): UpgradeOfferStep
     {
-        return new UpgradeOfferStep($this->translator, 'SOLID30');
+        return new UpgradeOfferStep($this->translator, BillingModeFactory::freeTrial('SOLID30'));
     }
 
     private function trialAboutToEndStep(): TrialAboutToEndStep
@@ -203,7 +204,7 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
             new MockClock(self::FROZEN_NOW),
             self::getContainer()->get(ClientRepository::class),
             self::getContainer()->get(InvoiceRepository::class),
-            'SOLID30',
+            BillingModeFactory::freeTrial('SOLID30'),
         );
     }
 }
