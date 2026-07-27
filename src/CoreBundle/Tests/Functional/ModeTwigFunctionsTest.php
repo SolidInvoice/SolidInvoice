@@ -16,16 +16,18 @@ namespace SolidInvoice\CoreBundle\Tests\Functional;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
 
-final class DemoTwigFunctionsTest extends KernelTestCase
+final class ModeTwigFunctionsTest extends KernelTestCase
 {
-    public function testDemoTwigFunctionsResolveToDisabledDefaults(): void
+    public function testModeTwigFunctionsResolveToSelfHostedDefaults(): void
     {
         self::bootKernel();
 
         $twig = self::getContainer()->get('twig');
         self::assertInstanceOf(Environment::class, $twig);
 
-        self::assertSame('no', $twig->createTemplate("{{ demo_enabled() ? 'yes' : 'no' }}")->render());
+        self::assertSame('self-hosted', $twig->createTemplate('{{ app_mode() }}')->render());
+        self::assertSame('no', $twig->createTemplate("{{ is_demo() ? 'yes' : 'no' }}")->render());
+        self::assertSame('no', $twig->createTemplate("{{ is_saas() ? 'yes' : 'no' }}")->render());
         self::assertSame('', $twig->createTemplate('{{ demo_username() }}')->render());
         self::assertSame('', $twig->createTemplate('{{ demo_password() }}')->render());
         self::assertSame('', $twig->createTemplate('{{ demo_signup_url() }}')->render());
