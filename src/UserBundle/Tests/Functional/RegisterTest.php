@@ -81,7 +81,7 @@ final class RegisterTest extends WebTestCase
     public function testRegistrationDeniedInDemoMode(): void
     {
         $this->setEnv('SOLIDINVOICE_ALLOW_REGISTRATION', '1');
-        $this->setEnv('SOLIDINVOICE_DEMO', '1');
+        $this->setEnv('SOLIDINVOICE_MODE', 'demo');
         $this->setEnv('SOLIDINVOICE_DEMO_USERNAME', 'demo@example.com');
         $this->setEnv('SOLIDINVOICE_DEMO_PASSWORD', 'demo-password');
 

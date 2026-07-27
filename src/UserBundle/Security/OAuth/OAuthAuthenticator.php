@@ -16,7 +16,8 @@ namespace SolidInvoice\UserBundle\Security\OAuth;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\OAuth\OAuthUser;
@@ -47,7 +48,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
         private readonly ToggleInterface $toggle,
         private readonly PropertyAccessorInterface $propertyAccessor,
         private readonly Security $security,
-        private readonly DemoMode $demoMode,
+        private readonly ModeResolver $modeResolver,
     ) {
     }
 
@@ -82,7 +83,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                     if ($currentUser instanceof User) {
                         $user = $currentUser;
                     } else {
-                        if ($this->demoMode->isEnabled() || ! $this->toggle->isActive('allow_registration')) {
+                        if (! $this->modeResolver->allows(Capability::UserRegistration) || ! $this->toggle->isActive('allow_registration')) {
                             return null;
                         }
 

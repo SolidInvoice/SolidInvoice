@@ -21,7 +21,7 @@ use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -61,7 +61,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
     private OAuth2ClientInterface | MockObject $client;
 
-    private DemoMode $demoMode;
+    private ModeResolver $modeResolver;
 
     protected function setUp(): void
     {
@@ -74,11 +74,9 @@ final class OAuthAuthenticatorTest extends TestCase
         $this->userRepository = $this->createMock(UserRepository::class);
         $this->client = $this->createMock(OAuth2ClientInterface::class);
 
-        // DemoMode is a final class and cannot be mocked/stubbed directly; construct a real
-        // instance wrapping a mocked ToggleInterface instead (defaults to demo mode disabled).
-        $demoToggle = $this->createStub(ToggleInterface::class);
-        $demoToggle->method('isActive')->willReturn(false);
-        $this->demoMode = new DemoMode($demoToggle);
+        // ModeResolver is a final class and cannot be mocked/stubbed directly; construct a real
+        // instance instead (defaults to self-hosted mode, which allows registration).
+        $this->modeResolver = new ModeResolver();
 
         $this->authenticator = new OAuthAuthenticator(
             $this->clientRegistry,
@@ -87,7 +85,7 @@ final class OAuthAuthenticatorTest extends TestCase
             $this->toggle,
             $this->propertyAccessor,
             $this->security,
-            $this->demoMode,
+            $this->modeResolver,
         );
     }
 
@@ -499,9 +497,7 @@ final class OAuthAuthenticatorTest extends TestCase
         // Demo mode short-circuits the check, so the allow_registration toggle is never consulted.
         $this->toggle->expects($this->never())->method('isActive');
 
-        $demoToggle = $this->createStub(ToggleInterface::class);
-        $demoToggle->method('isActive')->willReturn(true);
-        $this->demoMode = new DemoMode($demoToggle);
+        $this->modeResolver = new ModeResolver('demo', 'demo@example.com', 'demo-password');
 
         $this->authenticator = new OAuthAuthenticator(
             $this->clientRegistry,
@@ -510,7 +506,7 @@ final class OAuthAuthenticatorTest extends TestCase
             $this->toggle,
             $this->propertyAccessor,
             $this->security,
-            $this->demoMode,
+            $this->modeResolver,
         );
 
         $this->clientRegistry
@@ -671,9 +667,7 @@ final class OAuthAuthenticatorTest extends TestCase
         // is resolved from the current session, so the toggle is never consulted.
         $this->toggle->expects($this->never())->method($this->anything());
 
-        $demoToggle = $this->createStub(ToggleInterface::class);
-        $demoToggle->method('isActive')->willReturn(true);
-        $this->demoMode = new DemoMode($demoToggle);
+        $this->modeResolver = new ModeResolver('demo', 'demo@example.com', 'demo-password');
 
         $this->authenticator = new OAuthAuthenticator(
             $this->clientRegistry,
@@ -682,7 +676,7 @@ final class OAuthAuthenticatorTest extends TestCase
             $this->toggle,
             $this->propertyAccessor,
             $this->security,
-            $this->demoMode,
+            $this->modeResolver,
         );
 
         $this->clientRegistry
