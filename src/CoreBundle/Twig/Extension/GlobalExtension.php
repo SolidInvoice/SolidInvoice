@@ -30,9 +30,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
@@ -117,7 +114,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         return [
             new TwigFunction('icon', $this->displayIcon(...), ['is_safe' => ['html']]),
 
-            new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html']]),
 
             new TwigFunction('company_name', function (): string {
                 if ($this->companySelector->getCompany() instanceof Ulid) {
@@ -144,9 +141,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     }
 
     /**
-     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
+     * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException
      */
-    public function displayAppLogo(Environment $env, string $width = 'auto', ?Company $company = null, bool $showDefault = false, bool $showOnlyAppIcon = false): string
+    public function displayAppLogo(string $width = 'auto', ?Company $company = null, bool $showDefault = false, bool $showOnlyAppIcon = false): string
     {
         $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
@@ -164,7 +161,12 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 
         [$type, $logo] = explode('|', $logo);
 
-        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="navbar-brand-image m-2" width="' . $width . '"/>')->render(['type' => $type, 'logo' => $logo]);
+        return sprintf(
+            '<img src="data:image/%s;base64,%s" class="navbar-brand-image m-2" width="%s"/>',
+            htmlspecialchars($type, ENT_QUOTES, 'UTF-8'),
+            htmlspecialchars($logo, ENT_QUOTES, 'UTF-8'),
+            htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8')
+        );
     }
 
     /**
