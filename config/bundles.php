@@ -119,14 +119,21 @@ $bundles = [
     McpBundle::class => ['all' => true],
 ];
 
-$platform = $_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null;
-$demoEnabled = (bool) ($_ENV['SOLIDINVOICE_DEMO'] ?? $_SERVER['SOLIDINVOICE_DEMO'] ?? false);
+$mode = $_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? 'self-hosted';
 
-if ($demoEnabled && $platform === 'saas') {
-    throw new RuntimeException('Demo mode (SOLIDINVOICE_DEMO) cannot be enabled together with the SaaS platform (SOLIDINVOICE_PLATFORM=saas). These modes are mutually exclusive.');
+if (! in_array($mode, ['self-hosted', 'demo', 'saas'], true)) {
+    throw new RuntimeException(sprintf('Invalid SOLIDINVOICE_MODE "%s". Expected one of: self-hosted, demo, saas.', $mode));
 }
 
-if ($platform === 'saas') {
+if ($mode === 'demo') {
+    $demoUsername = $_ENV['SOLIDINVOICE_DEMO_USERNAME'] ?? $_SERVER['SOLIDINVOICE_DEMO_USERNAME'] ?? '';
+    $demoPassword = $_ENV['SOLIDINVOICE_DEMO_PASSWORD'] ?? $_SERVER['SOLIDINVOICE_DEMO_PASSWORD'] ?? '';
+    if ($demoUsername === '' || $demoPassword === '') {
+        throw new RuntimeException('SOLIDINVOICE_MODE=demo requires SOLIDINVOICE_DEMO_USERNAME and SOLIDINVOICE_DEMO_PASSWORD to be set.');
+    }
+}
+
+if ($mode === 'saas') {
     $bundles[SolidWorxPlatformSaasBundle::class] = ['all' => true];
     $bundles[SolidInvoiceSaasBundle::class] = ['all' => true];
 }

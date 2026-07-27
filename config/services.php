@@ -40,7 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SITE_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)', null);
 
-    $parameters->set('env(SOLIDINVOICE_DEMO)', '0');
+    $parameters->set('env(SOLIDINVOICE_MODE)', 'self-hosted');
     $parameters->set('env(SOLIDINVOICE_DEMO_USERNAME)', '');
     $parameters->set('env(SOLIDINVOICE_DEMO_PASSWORD)', '');
     $parameters->set('env(SOLIDINVOICE_DEMO_SIGNUP_URL)', '');
@@ -55,7 +55,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MAILER_DSN)', 'null://null');
     $parameters->set('env(SOLIDINVOICE_MAILER_SENDER)', 'SolidInvoice <no-reply@solidinvoice.co>');
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
-    $parameters->set('env(SOLIDINVOICE_PLATFORM)', null);
 
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_URL)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_API_KEY)', '');

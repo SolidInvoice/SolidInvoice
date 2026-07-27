@@ -25,7 +25,7 @@ final class DemoTogglerFlagTest extends KernelTestCase
         $toggle = self::getContainer()->get(ToggleInterface::class);
         self::assertInstanceOf(ToggleInterface::class, $toggle);
 
-        // With SOLIDINVOICE_DEMO defaulting to '0', the flag must resolve to false.
+        // With SOLIDINVOICE_MODE defaulting to 'self-hosted', the flag must resolve to false.
         self::assertFalse($toggle->isActive('demo_enabled'));
     }
 }

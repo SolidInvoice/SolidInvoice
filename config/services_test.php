@@ -39,9 +39,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
-    // when SOLIDINVOICE_PLATFORM=saas. Mirror the same gate from bundles.php so
+    // when SOLIDINVOICE_MODE=saas. Mirror the same gate from bundles.php so
     // the alias is only declared when the underlying service exists.
-    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+    if (($_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? 'self-hosted') === 'saas') {
         $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class);
         $services->alias('test.' . RequiredPlanLabelProvider::class, RequiredPlanLabelProvider::class);
         $services->alias('test.' . SaasFeatureRestrictedExtension::class, SaasFeatureRestrictedExtension::class);

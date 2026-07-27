@@ -78,7 +78,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // "function already defined" error at compile time. The same pattern applies
     // to FeatureRestrictedExtension: SaasBundle ships the real form-extension and
     // CoreBundle ships a no-op so the `feature_gated` form option remains valid.
-    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
+    if (($_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? 'self-hosted') !== 'saas') {
         $services->set(FeatureExtension::class);
         $services->set(FeatureRestrictedExtension::class);
     }

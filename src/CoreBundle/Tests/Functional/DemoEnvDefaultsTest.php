@@ -23,9 +23,12 @@ final class DemoEnvDefaultsTest extends KernelTestCase
 
         $container = self::getContainer();
 
-        self::assertSame('0', $container->getParameter('env(SOLIDINVOICE_DEMO)'));
+        self::assertSame('self-hosted', $container->getParameter('env(SOLIDINVOICE_MODE)'));
         self::assertSame('', $container->getParameter('env(SOLIDINVOICE_DEMO_USERNAME)'));
         self::assertSame('', $container->getParameter('env(SOLIDINVOICE_DEMO_PASSWORD)'));
         self::assertSame('', $container->getParameter('env(SOLIDINVOICE_DEMO_SIGNUP_URL)'));
+
+        self::assertFalse($container->hasParameter('env(SOLIDINVOICE_DEMO)'));
+        self::assertFalse($container->hasParameter('env(SOLIDINVOICE_PLATFORM)'));
     }
 }
