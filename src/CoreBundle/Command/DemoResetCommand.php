@@ -18,9 +18,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Override;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\UserBundle\Entity\User;
@@ -52,7 +52,7 @@ final class DemoResetCommand extends Command
         private readonly CompanyRepository $companyRepository,
         private readonly UserRepository $userRepository,
         private readonly LockFactory $lockFactory,
-        private readonly DemoMode $demoMode,
+        private readonly ModeResolver $modeResolver,
     ) {
         parent::__construct();
     }
@@ -60,7 +60,7 @@ final class DemoResetCommand extends Command
     #[Override]
     public function isEnabled(): bool
     {
-        return $this->demoMode->isEnabled();
+        return $this->modeResolver->isDemo();
     }
 
     protected function configure(): void
@@ -94,7 +94,7 @@ HELP
         // above only hides this command from `list`/`help` — it does NOT stop
         // it from being looked up and executed by name. This full DB wipe
         // must never run for real outside demo mode, so re-check here.
-        if (! $this->demoMode->isEnabled()) {
+        if (! $this->modeResolver->isDemo()) {
             $this->io->error('This command can only be run when demo mode is enabled.');
 
             return self::FAILURE;
@@ -109,8 +109,8 @@ HELP
         }
 
         try {
-            $username = $this->demoMode->username();
-            $password = $this->demoMode->password();
+            $username = $this->modeResolver->demoUsername();
+            $password = $this->modeResolver->demoPassword();
 
             if (null === $username || null === $password) {
                 $this->io->error('Demo credentials (SOLIDINVOICE_DEMO_USERNAME / SOLIDINVOICE_DEMO_PASSWORD) are not configured.');

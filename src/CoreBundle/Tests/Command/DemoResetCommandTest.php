@@ -31,18 +31,17 @@ use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use SolidInvoice\CoreBundle\Command\DemoResetCommand;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use SolidWorx\Platform\PlatformBundle\Console\IO;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Filesystem\Filesystem;
@@ -99,14 +98,14 @@ final class DemoResetCommandTest extends TestCase
 
     public function testIsEnabledReflectsDemoMode(): void
     {
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturn(true, false);
-
-        $demoMode = new DemoMode($toggle, 'demo@example.com', 'demo-password', 'https://signup.example.com');
-
-        $command = $this->createCommand(demoMode: $demoMode);
+        $demoModeResolver = new ModeResolver('demo', 'demo@example.com', 'demo-password');
+        $command = $this->createCommand(modeResolver: $demoModeResolver);
 
         self::assertTrue($command->isEnabled());
+
+        $selfHostedModeResolver = new ModeResolver();
+        $command = $this->createCommand(modeResolver: $selfHostedModeResolver);
+
         self::assertFalse($command->isEnabled());
     }
 
@@ -117,9 +116,7 @@ final class DemoResetCommandTest extends TestCase
         // this command from `list`/`help`; it does not stop the command from being
         // looked up and executed by name. handle() must independently refuse to run a
         // full DB wipe when demo mode is off, so this is asserted directly here.
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturn(false);
-        $demoMode = new DemoMode($toggle, 'demo@example.com', 'demo-password', 'https://signup.example.com');
+        $modeResolver = new ModeResolver();
 
         $lockFactory = M::mock(LockFactory::class);
         $lockFactory->shouldNotReceive('createLock');
@@ -127,7 +124,7 @@ final class DemoResetCommandTest extends TestCase
         $output = new BufferedOutput();
         $io = new IO(new ArrayInput([]), $output);
 
-        $command = $this->createCommand(lockFactory: $lockFactory, demoMode: $demoMode);
+        $command = $this->createCommand(lockFactory: $lockFactory, modeResolver: $modeResolver);
         $command->setIo($io);
 
         self::assertSame(Command::FAILURE, $this->invokeHandle($command));
@@ -279,9 +276,7 @@ final class DemoResetCommandTest extends TestCase
             $lockFactory = M::mock(LockFactory::class);
             $lockFactory->shouldReceive('createLock')->once()->andReturn($lock);
 
-            $toggle = M::mock(ToggleInterface::class);
-            $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturn(true);
-            $demoMode = new DemoMode($toggle, 'demo@example.com', 'demo-password', 'https://signup.example.com');
+            $modeResolver = new ModeResolver('demo', 'demo@example.com', 'demo-password');
 
             $output = new BufferedOutput();
             $io = new IO(new ArrayInput([]), $output);
@@ -295,7 +290,7 @@ final class DemoResetCommandTest extends TestCase
                 companyRepository: $companyRepository,
                 userRepository: $userRepository,
                 lockFactory: $lockFactory,
-                demoMode: $demoMode,
+                modeResolver: $modeResolver,
             );
             $command->setIo($io);
 
@@ -321,7 +316,7 @@ final class DemoResetCommandTest extends TestCase
         ?CompanyRepository $companyRepository = null,
         ?UserRepository $userRepository = null,
         ?LockFactory $lockFactory = null,
-        ?DemoMode $demoMode = null,
+        ?ModeResolver $modeResolver = null,
     ): DemoResetCommand {
         return new DemoResetCommand(
             $registry ?? M::mock(ManagerRegistry::class),
@@ -333,16 +328,8 @@ final class DemoResetCommandTest extends TestCase
             $companyRepository ?? M::mock(CompanyRepository::class),
             $userRepository ?? M::mock(UserRepository::class),
             $lockFactory ?? M::mock(LockFactory::class),
-            $demoMode ?? $this->defaultDemoMode(),
+            $modeResolver ?? new ModeResolver('demo', 'demo@example.com', 'demo-password'),
         );
-    }
-
-    private function defaultDemoMode(): DemoMode
-    {
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturn(true)->byDefault();
-
-        return new DemoMode($toggle, 'demo@example.com', 'demo-password', 'https://signup.example.com');
     }
 
     private function invokeHandle(DemoResetCommand $command): int
