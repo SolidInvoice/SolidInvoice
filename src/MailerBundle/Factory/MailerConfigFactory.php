@@ -15,7 +15,8 @@ namespace SolidInvoice\MailerBundle\Factory;
 
 use JsonException;
 use RuntimeException;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
@@ -36,7 +37,7 @@ final readonly class MailerConfigFactory
         private Transport $inner,
         private SystemConfig $config,
         private iterable $transports,
-        private DemoMode $demoMode,
+        private ModeResolver $modeResolver,
     ) {
     }
 
@@ -45,7 +46,7 @@ final readonly class MailerConfigFactory
      */
     public function fromStrings(array $dsns = []): ?TransportInterface
     {
-        if ($this->demoMode->isEnabled()) {
+        if (! $this->modeResolver->allows(Capability::RealEmailDelivery)) {
             return $this->inner->fromStrings($dsns);
         }
 

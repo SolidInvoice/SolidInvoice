@@ -18,11 +18,10 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use RuntimeException;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
 use SolidInvoice\MailerBundle\Factory\MailerConfigFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Mailer\Bridge\Amazon\Transport\SesApiAsyncAwsTransport;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\NullTransport;
@@ -36,7 +35,7 @@ final class MailerConfigFactoryTest extends TestCase
     {
         $systemConfig = M::mock(SystemConfig::class);
 
-        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [new SesConfigurator()], $this->disabledDemoMode());
+        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [new SesConfigurator()], new ModeResolver());
 
         $systemConfig->shouldReceive('get')
             ->with('email/sending_options/provider')
@@ -52,7 +51,7 @@ final class MailerConfigFactoryTest extends TestCase
 
         $systemConfig = M::mock(SystemConfig::class);
 
-        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [], $this->disabledDemoMode());
+        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [], new ModeResolver());
 
         $systemConfig->shouldReceive('get')
             ->with('email/sending_options/provider')
@@ -66,11 +65,7 @@ final class MailerConfigFactoryTest extends TestCase
         $systemConfig = M::mock(SystemConfig::class);
         $systemConfig->shouldNotReceive('get');
 
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturnTrue();
-        $demoMode = new DemoMode($toggle);
-
-        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [new SesConfigurator()], $demoMode);
+        $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [new SesConfigurator()], new ModeResolver('demo'));
 
         $transport = $factory->fromStrings(['null://null']);
 
@@ -82,16 +77,5 @@ final class MailerConfigFactoryTest extends TestCase
         $default = new ReflectionProperty(Transports::class, 'default');
 
         self::assertInstanceOf(NullTransport::class, $default->getValue($transport));
-    }
-
-    /**
-     * @see \SolidInvoice\CoreBundle\Tests\Demo\DemoModeTest for the mocking pattern used here.
-     */
-    private function disabledDemoMode(): DemoMode
-    {
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturnFalse();
-
-        return new DemoMode($toggle);
     }
 }
