@@ -40,10 +40,12 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
+use function array_filter;
 use function array_map;
 use function array_unique;
 use function array_values;
 use function intval;
+use function strval;
 
 /**
  * @extends EntityRepository<Invoice>
@@ -532,18 +534,24 @@ class InvoiceRepository extends EntityRepository
      */
     public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
     {
+        $settingValues = $this->preDueSettingValuesFor($daysBeforeDue);
+
+        if ($settingValues === []) {
+            return [];
+        }
+
         $targetDate = $this->clock->now()->modify(sprintf('+%d days', $daysBeforeDue));
 
         $qb = $this->createReminderCandidateQueryBuilder(ReminderType::PreDue, $targetDate);
 
         $qb
             ->innerJoin(Setting::class, 's_pre_due', 'WITH', 's_pre_due.company = c AND s_pre_due.key = :preDueKey AND s_pre_due.value = :enabled')
-            ->innerJoin(Setting::class, 's_days', 'WITH', 's_days.company = c AND s_days.key = :daysKey AND s_days.value = :days')
+            ->innerJoin(Setting::class, 's_days', 'WITH', 's_days.company = c AND s_days.key = :daysKey AND s_days.value IN (:days)')
             ->andWhere('i.status = :status')
             ->setParameter('status', InvoiceStatus::Pending)
             ->setParameter('preDueKey', 'invoice/reminder/pre_due_enabled')
             ->setParameter('daysKey', 'invoice/reminder/pre_due_days')
-            ->setParameter('days', (string) $daysBeforeDue);
+            ->setParameter('days', $settingValues);
 
         return $this->hydrateReminderCandidates($qb->getQuery()->toIterable([], AbstractQuery::HYDRATE_SCALAR));
     }
@@ -624,6 +632,36 @@ class InvoiceRepository extends EntityRepository
      */
     public function getConfiguredPreDueDays(): array
     {
+        return array_values(array_unique(array_map(intval(...), $this->preDueDaySettingValues())));
+    }
+
+    /**
+     * Every raw spelling of the setting that normalises to the given window.
+     *
+     * The scan groups companies by the normalised value, so it has to match on those same raw
+     * spellings. The column is free text, so "3", "03" and "3 days" all mean the same window —
+     * comparing against a single canonical string would silently skip the companies that stored
+     * one of the others.
+     *
+     * @return list<string>
+     */
+    private function preDueSettingValuesFor(int $daysBeforeDue): array
+    {
+        return array_values(
+            array_filter(
+                $this->preDueDaySettingValues(),
+                static fn (string $value): bool => intval($value) === $daysBeforeDue
+            )
+        );
+    }
+
+    /**
+     * The distinct raw pre-due day settings stored across all companies.
+     *
+     * @return list<string>
+     */
+    private function preDueDaySettingValues(): array
+    {
         $values = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('DISTINCT s.value')
@@ -634,6 +672,6 @@ class InvoiceRepository extends EntityRepository
             ->getQuery()
             ->getSingleColumnResult();
 
-        return array_values(array_unique(array_map(intval(...), $values)));
+        return array_values(array_map(strval(...), $values));
     }
 }
