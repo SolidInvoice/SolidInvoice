@@ -23,6 +23,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
@@ -90,5 +91,15 @@ final class PdfDemoWatermarkTest extends KernelTestCase
     public function testNoDemoWatermarkWhenDemoDisabled(): void
     {
         self::assertStringNotContainsString('content="DEMO"', $this->render(false));
+    }
+
+    public function testDemoWatermarkIsForcedEvenWhenWatermarkSettingDisabled(): void
+    {
+        self::getContainer()->get(SystemConfig::class)->set('invoice/watermark', '0');
+
+        $rendered = $this->render(true);
+
+        self::assertStringNotContainsString('content="PENDING"', $rendered);
+        self::assertStringContainsString('content="DEMO"', $rendered);
     }
 }
