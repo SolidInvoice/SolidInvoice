@@ -19,7 +19,7 @@ use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use SolidInvoice\CoreBundle\Demo\DemoMode;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -30,7 +30,6 @@ use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageExceptio
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\NotifierInterface;
@@ -61,19 +60,8 @@ final class NotificationManagerTest extends TestCase
             new ServiceLocator([]),
             new NullLogger(),
             new RequestStack(),
-            $this->disabledDemoMode(),
+            new ModeResolver(),
         );
-    }
-
-    /**
-     * @see \SolidInvoice\CoreBundle\Tests\Demo\DemoModeTest for the mocking pattern used here.
-     */
-    private function disabledDemoMode(): DemoMode
-    {
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturnFalse();
-
-        return new DemoMode($toggle);
     }
 
     public function testMessageWithoutAttribute(): void
@@ -227,7 +215,7 @@ final class NotificationManagerTest extends TestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
-            $this->disabledDemoMode(),
+            new ModeResolver(),
         );
 
         $notificationManager->sendNotification($class);
@@ -304,7 +292,7 @@ final class NotificationManagerTest extends TestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
-            $this->disabledDemoMode(),
+            new ModeResolver(),
         );
 
         $notificationManager->sendNotification($class);
@@ -408,7 +396,7 @@ final class NotificationManagerTest extends TestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator, 'FooBars' => static fn () => $configurator2]),
             new NullLogger(),
             new RequestStack(),
-            $this->disabledDemoMode(),
+            new ModeResolver(),
         );
 
         $notificationManager->sendNotification($class);
@@ -455,17 +443,13 @@ final class NotificationManagerTest extends TestCase
         $this->notifier
             ->shouldNotReceive('send');
 
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturnTrue();
-        $demoMode = new DemoMode($toggle);
-
         $notificationManager = new NotificationManager(
             $this->notifier,
             self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator([]),
             new NullLogger(),
             new RequestStack(),
-            $demoMode,
+            new ModeResolver('demo'),
         );
 
         $notificationManager->sendNotification($class);
@@ -485,17 +469,13 @@ final class NotificationManagerTest extends TestCase
         $this->notifier
             ->shouldNotReceive('send');
 
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('demo_enabled')->andReturnTrue();
-        $demoMode = new DemoMode($toggle);
-
         $notificationManager = new NotificationManager(
             $this->notifier,
             self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator([]),
             new NullLogger(),
             new RequestStack(),
-            $demoMode,
+            new ModeResolver('demo'),
         );
 
         // No exception is thrown, even though this message lacks the AsNotification
