@@ -86,6 +86,22 @@
     </aside>
     {{ block('header') }}
 
+    {% block demo_banner %}
+        {% if is_demo() %}
+            <div class="demo-app-banner alert alert-warning border-0 rounded-0 mb-0 py-2 d-print-none" role="alert">
+                <div class="container-xl d-flex align-items-center justify-content-center gap-2 text-center">
+                    {{ ux_icon('tabler:flask', {width: 18, height: 18, class: 'flex-shrink-0'}) }}
+                    <span>{{ 'core.demo.banner.message'|trans }}</span>
+                    {% if demo_signup_url() is not empty %}
+                        <a href="{{ demo_signup_url() }}" class="demo-app-banner-cta btn btn-sm btn-primary ms-2" target="_blank" rel="noopener">
+                            {{ 'core.demo.banner.signup'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+
     <div class="page-wrapper">
         {% if block('title') is defined and block('title')|trim is not empty %}
             <div class="page-header d-print-none">

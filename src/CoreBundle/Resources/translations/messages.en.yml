@@ -38,6 +38,11 @@ billing:
     tax: Tax
     discount: Discount
     total: Total
+core:
+    demo:
+        banner:
+            message: 'You are viewing a demo of SolidInvoice with limited functionality.'
+            signup: 'Sign up'
 notification.send_failed: 'Failed to send notification. Please verify your email configuration in Settings.'
 powered_by: 'Powered By'
 pdf:
