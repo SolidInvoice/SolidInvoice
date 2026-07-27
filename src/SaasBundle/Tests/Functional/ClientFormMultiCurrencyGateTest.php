@@ -107,7 +107,7 @@ final class ClientFormMultiCurrencyGateTest extends KernelTestCase
         // in non-SaaS deployments. Verify that path leaves the field editable.
         $container = self::getContainer();
 
-        if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
+        if (($_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? null) !== 'saas') {
             $gateId = 'test.' . FeatureGate::class;
             self::assertTrue($container->has($gateId));
             self::assertInstanceOf(NoopFeatureGate::class, $container->get($gateId));

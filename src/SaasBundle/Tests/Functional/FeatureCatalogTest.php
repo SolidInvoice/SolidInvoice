@@ -114,7 +114,7 @@ final class FeatureCatalogTest extends KernelTestCase
         $id = 'test.' . FeatureConfigRegistry::class;
         self::assertTrue(
             $container->has($id),
-            sprintf('Test alias "%s" is not registered. Ensure SOLIDINVOICE_PLATFORM=saas and config/services_test.php is loaded.', $id),
+            sprintf('Test alias "%s" is not registered. Ensure SOLIDINVOICE_MODE=saas and config/services_test.php is loaded.', $id),
         );
 
         $registry = $container->get($id);

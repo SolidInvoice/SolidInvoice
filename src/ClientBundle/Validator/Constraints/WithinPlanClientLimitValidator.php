@@ -16,9 +16,9 @@ namespace SolidInvoice\ClientBundle\Validator\Constraints;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -32,7 +32,7 @@ final class WithinPlanClientLimitValidator extends ConstraintValidator
     public function __construct(
         private readonly ClientRepository $clientRepository,
         private readonly FeatureGate $featureGate,
-        private readonly ToggleInterface $toggle,
+        private readonly ModeResolver $modeResolver,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
@@ -48,8 +48,8 @@ final class WithinPlanClientLimitValidator extends ConstraintValidator
         }
 
         // SaaS-only. On self-hosted the Noop feature gate allows everything anyway,
-        // but the toggle guard avoids the count query and makes the intent explicit.
-        if (! $this->toggle->isActive('saas_enabled')) {
+        // but the mode guard avoids the count query and makes the intent explicit.
+        if (! $this->modeResolver->isSaas()) {
             return;
         }
 

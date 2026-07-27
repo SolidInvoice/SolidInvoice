@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Security;
 
 use Override;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -34,7 +34,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class VerifiedUserChecker extends UserChecker
 {
     public function __construct(
-        private readonly ToggleInterface $toggle,
+        private readonly ModeResolver $modeResolver,
     ) {
     }
 
@@ -43,7 +43,7 @@ final class VerifiedUserChecker extends UserChecker
     {
         parent::checkPostAuth($user);
 
-        if (! $this->toggle->isActive('saas_enabled')) {
+        if (! $this->modeResolver->isSaas()) {
             return;
         }
 

@@ -23,7 +23,7 @@ use Twig\Environment;
  * helpers. The three "read" functions come from vendor PlatformBundle's
  * FeatureExtension; the three "upgrade UI" functions come from CoreBundle's
  * no-op FeatureExtension (which is conditionally registered when
- * SOLIDINVOICE_PLATFORM is not 'saas').
+ * SOLIDINVOICE_MODE is not 'saas').
  */
 final class FeatureTwigFunctionsTest extends KernelTestCase
 {

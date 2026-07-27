@@ -24,7 +24,7 @@ use Twig\TwigFunction;
  * Vendor PlatformBundle already exposes `feature_enabled`, `feature_can_use`
  * and `feature_remaining` in every deployment, so we only stub the three
  * names that are SaaS-specific. This extension is registered conditionally
- * (only when SOLIDINVOICE_PLATFORM is not 'saas') so SaaS deployments can
+ * (only when SOLIDINVOICE_MODE is not 'saas') so SaaS deployments can
  * register the real implementations without colliding on Twig function names.
  */
 final class FeatureExtension extends AbstractExtension

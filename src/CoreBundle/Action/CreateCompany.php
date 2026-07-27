@@ -20,12 +20,12 @@ use Money\Money;
 use NumberFormatter;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,7 +40,7 @@ final class CreateCompany extends AbstractController
         private readonly Security $security,
         private readonly CompanyRepository $companyRepository,
         private readonly RouterInterface $router,
-        private readonly ToggleInterface $toggler,
+        private readonly ModeResolver $modeResolver,
         private readonly ?TrialManagerInterface $trialManager = null,
         private readonly ?DefaultPlanProvider $defaultPlanProvider = null,
     ) {
@@ -73,7 +73,7 @@ final class CreateCompany extends AbstractController
         $planHasTrial = false;
         $trialDuration = null;
 
-        if ($this->toggler->isActive('saas_enabled')) {
+        if ($this->modeResolver->isSaas()) {
             $userHasTrial = $this->trialManager?->userHasTrial($user) ?? false;
 
             // Only surface the default plan's price/trial when this is the

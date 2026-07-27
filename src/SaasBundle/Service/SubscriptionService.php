@@ -16,16 +16,16 @@ namespace SolidInvoice\SaasBundle\Service;
 use Exception;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Uid\Ulid;
 
 final readonly class SubscriptionService
 {
     public function __construct(
-        private ToggleInterface $toggler,
+        private ModeResolver $modeResolver,
         private SubscriptionProviderInterface $subscriptionProvider,
         private CompanySelector $companySelector,
         private CompanyRepository $companyRepository,
@@ -35,7 +35,7 @@ final readonly class SubscriptionService
     public function isTrialSubscription(): bool
     {
         // Return false if SaaS is not enabled
-        if (! $this->toggler->isActive('saas_enabled')) {
+        if (! $this->modeResolver->isSaas()) {
             return false;
         }
 

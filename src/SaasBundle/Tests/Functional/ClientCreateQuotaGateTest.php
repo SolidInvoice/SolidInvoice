@@ -67,7 +67,7 @@ final class ClientCreateQuotaGateTest extends WebTestCase
         $providerId = 'test.' . UpgradePromptProvider::class;
         self::assertTrue($container->has($providerId));
 
-        if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
+        if (($_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? null) !== 'saas') {
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }
 

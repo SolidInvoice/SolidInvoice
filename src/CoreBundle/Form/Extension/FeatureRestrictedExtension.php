@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * option valid (default null) and ensures `feature_gated_active`/`_plan` view
  * vars exist with safe defaults — letting templates render the same partials
  * uniformly. Conditionally registered in CoreBundle's services.php only when
- * `SOLIDINVOICE_PLATFORM` is not `saas`.
+ * `SOLIDINVOICE_MODE` is not `saas`.
  */
 final class FeatureRestrictedExtension extends AbstractTypeExtension
 {

@@ -16,11 +16,11 @@ namespace SolidInvoice\McpBundle\Tests\Security\Voter;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\McpBundle\Security\Attribute;
 use SolidInvoice\McpBundle\Security\Voter\McpAccessVoter;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -32,7 +32,7 @@ final class McpAccessVoterTest extends TestCase
 
     public function testGrantsWhenSaasIsDisabled(): void
     {
-        $voter = new McpAccessVoter($this->toggler(saasEnabled: false), new NoopFeatureGate());
+        $voter = new McpAccessVoter(new ModeResolver(), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_GRANTED,
@@ -42,7 +42,7 @@ final class McpAccessVoterTest extends TestCase
 
     public function testAbstainsWhenSaasIsEnabled(): void
     {
-        $voter = new McpAccessVoter($this->toggler(saasEnabled: true), new NoopFeatureGate());
+        $voter = new McpAccessVoter(new ModeResolver('saas'), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -52,7 +52,7 @@ final class McpAccessVoterTest extends TestCase
 
     public function testAbstainsForUnsupportedAttribute(): void
     {
-        $voter = new McpAccessVoter($this->toggler(saasEnabled: false), new NoopFeatureGate());
+        $voter = new McpAccessVoter(new ModeResolver(), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -65,20 +65,12 @@ final class McpAccessVoterTest extends TestCase
         $featureGate = M::mock(FeatureGate::class);
         $featureGate->shouldReceive('isEnabled')->with('mcp_access')->andReturn(false);
 
-        $voter = new McpAccessVoter($this->toggler(saasEnabled: false), $featureGate);
+        $voter = new McpAccessVoter(new ModeResolver(), $featureGate);
 
         $vote = new Vote();
         $result = $voter->vote(M::mock(TokenInterface::class), null, [Attribute::ACCESS], $vote);
 
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
         self::assertSame(['MCP access is not available on the current plan.'], $vote->reasons);
-    }
-
-    private function toggler(bool $saasEnabled): ToggleInterface
-    {
-        $toggler = M::mock(ToggleInterface::class);
-        $toggler->shouldReceive('isActive')->with('saas_enabled')->andReturn($saasEnabled);
-
-        return $toggler;
     }
 }

@@ -86,7 +86,7 @@
                                 <hr class="my-4">
 
                                 {# Pricing Information #}
-                                {% toggle 'saas_enabled' %}
+                                {% if is_saas() %}
                                     {% if not userHasTrial and planHasTrial %}
                                         <div class="alert alert-info d-flex align-items-start" role="alert">
                                             <div class="me-3">
@@ -142,7 +142,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% endtoggle %}
+                                {% endif %}
                             </div>
 
                             <twig:block name="footer">

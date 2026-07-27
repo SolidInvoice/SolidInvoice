@@ -119,7 +119,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $this->seedHidePoweredBy('1');
 
         // Do NOT replace the gate — exercise the wired implementation.
-        if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+        if (($_ENV['SOLIDINVOICE_MODE'] ?? $_SERVER['SOLIDINVOICE_MODE'] ?? null) === 'saas') {
             self::markTestSkipped('Self-hosted scenario is exercised in non-SaaS test runs only.');
         }
 

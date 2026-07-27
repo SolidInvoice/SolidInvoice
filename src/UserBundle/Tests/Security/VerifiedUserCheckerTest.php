@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Security;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Security\VerifiedUserChecker;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 
@@ -30,7 +29,7 @@ final class VerifiedUserCheckerTest extends TestCase
 
     public function testPostAuthThrowsForUnverifiedUserOnSaas(): void
     {
-        $checker = new VerifiedUserChecker($this->toggle(saasEnabled: true));
+        $checker = new VerifiedUserChecker(new ModeResolver('saas'));
 
         $this->expectException(CustomUserMessageAccountStatusException::class);
 
@@ -39,7 +38,7 @@ final class VerifiedUserCheckerTest extends TestCase
 
     public function testPostAuthAllowsVerifiedUserOnSaas(): void
     {
-        $checker = new VerifiedUserChecker($this->toggle(saasEnabled: true));
+        $checker = new VerifiedUserChecker(new ModeResolver('saas'));
 
         $checker->checkPostAuth(new User()->setEnabled(true)->setVerified(true));
 
@@ -49,7 +48,7 @@ final class VerifiedUserCheckerTest extends TestCase
     public function testPostAuthAllowsUnverifiedUserWhenNotSaas(): void
     {
         // On self-hosted the unverified block does not apply.
-        $checker = new VerifiedUserChecker($this->toggle(saasEnabled: false));
+        $checker = new VerifiedUserChecker(new ModeResolver());
 
         $checker->checkPostAuth(new User()->setEnabled(true)->setVerified(false));
 
@@ -59,18 +58,10 @@ final class VerifiedUserCheckerTest extends TestCase
     public function testPreAuthStillBlocksDisabledUser(): void
     {
         // Inherited disabled-account check applies regardless of platform.
-        $checker = new VerifiedUserChecker($this->toggle(saasEnabled: false));
+        $checker = new VerifiedUserChecker(new ModeResolver());
 
         $this->expectException(DisabledException::class);
 
         $checker->checkPreAuth(new User()->setEnabled(false));
-    }
-
-    private function toggle(bool $saasEnabled): ToggleInterface
-    {
-        $toggle = M::mock(ToggleInterface::class);
-        $toggle->shouldReceive('isActive')->with('saas_enabled')->andReturn($saasEnabled);
-
-        return $toggle;
     }
 }

@@ -32,7 +32,7 @@ use Throwable;
  * Subscription-aware voter for the MCP and API access attributes.
  *
  * Only registered on SaaS deployments (this bundle is conditionally loaded
- * via `SOLIDINVOICE_PLATFORM=saas`), so the `saas_enabled` toggle does not
+ * via `SOLIDINVOICE_MODE=saas`), so the `saas_enabled` toggle does not
  * need to be re-checked here — its presence in the voter list already
  * implies the SaaS platform is active. The per-bundle access voters
  * (`McpAccessVoter`, `ApiAccessVoter`) handle self-hosted installs.

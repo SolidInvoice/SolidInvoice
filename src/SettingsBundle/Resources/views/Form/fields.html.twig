@@ -41,7 +41,7 @@
 {# Trial-Restricted Form Row #}
 {% block checkbox_row %}
     {% import _self as upgrade %}
-    {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
+    {% if feature_gated_active|default(false) and is_saas() %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label mb-0">{{ label|trans }}</label>
@@ -53,7 +53,7 @@
             {{ form_help(form) }}
             {{ form_errors(form) }}
         </div>
-    {% elseif trial_restricted_active|default(false) and toggle('saas_enabled') %}
+    {% elseif trial_restricted_active|default(false) and is_saas() %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label mb-0">{{ label|trans }}</label>
@@ -72,7 +72,7 @@
 
 {% block form_row %}
     {% import _self as upgrade %}
-    {% if feature_gated_active|default(false) and toggle('saas_enabled') %}
+    {% if feature_gated_active|default(false) and is_saas() %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label">{{ label|trans }}</label>
@@ -81,7 +81,7 @@
 
             {{ form_widget(form) }}
         </div>
-    {% elseif trial_restricted_active|default(false) and toggle('saas_enabled') %}
+    {% elseif trial_restricted_active|default(false) and is_saas() %}
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label">{{ label|trans }}</label>

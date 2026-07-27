@@ -18,9 +18,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Security\Attribute;
 use SolidInvoice\ApiBundle\Security\Voter\ApiAccessVoter;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -32,7 +32,7 @@ final class ApiAccessVoterTest extends TestCase
 
     public function testGrantsWhenSaasIsDisabled(): void
     {
-        $voter = new ApiAccessVoter($this->toggler(saasEnabled: false), new NoopFeatureGate());
+        $voter = new ApiAccessVoter(new ModeResolver(), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_GRANTED,
@@ -42,7 +42,7 @@ final class ApiAccessVoterTest extends TestCase
 
     public function testAbstainsWhenSaasIsEnabled(): void
     {
-        $voter = new ApiAccessVoter($this->toggler(saasEnabled: true), new NoopFeatureGate());
+        $voter = new ApiAccessVoter(new ModeResolver('saas'), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -52,7 +52,7 @@ final class ApiAccessVoterTest extends TestCase
 
     public function testAbstainsForUnsupportedAttribute(): void
     {
-        $voter = new ApiAccessVoter($this->toggler(saasEnabled: false), new NoopFeatureGate());
+        $voter = new ApiAccessVoter(new ModeResolver(), new NoopFeatureGate());
 
         self::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
@@ -65,20 +65,12 @@ final class ApiAccessVoterTest extends TestCase
         $featureGate = M::mock(FeatureGate::class);
         $featureGate->shouldReceive('isEnabled')->with('rest_api_access')->andReturn(false);
 
-        $voter = new ApiAccessVoter($this->toggler(saasEnabled: false), $featureGate);
+        $voter = new ApiAccessVoter(new ModeResolver(), $featureGate);
 
         $vote = new Vote();
         $result = $voter->vote(M::mock(TokenInterface::class), null, [Attribute::ACCESS], $vote);
 
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
         self::assertSame(['REST API access is not available on the current plan.'], $vote->reasons);
-    }
-
-    private function toggler(bool $saasEnabled): ToggleInterface
-    {
-        $toggler = M::mock(ToggleInterface::class);
-        $toggler->shouldReceive('isActive')->with('saas_enabled')->andReturn($saasEnabled);
-
-        return $toggler;
     }
 }

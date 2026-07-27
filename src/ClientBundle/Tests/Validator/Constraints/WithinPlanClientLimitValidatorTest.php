@@ -22,9 +22,9 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
 use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimitValidator;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -41,7 +41,7 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
 
     private MockObject&FeatureGate $featureGate;
 
-    private MockObject&ToggleInterface $toggle;
+    private ModeResolver $modeResolver;
 
     private Stub&EntityManagerInterface $entityManager;
 
@@ -49,20 +49,15 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
     {
         $this->clientRepository = $this->createStub(ClientRepository::class);
         $this->featureGate = $this->createMock(FeatureGate::class);
-        $this->toggle = $this->createMock(ToggleInterface::class);
+        $this->modeResolver = new ModeResolver('saas');
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
 
-        return new WithinPlanClientLimitValidator($this->clientRepository, $this->featureGate, $this->toggle, $this->entityManager);
+        return new WithinPlanClientLimitValidator($this->clientRepository, $this->featureGate, $this->modeResolver, $this->entityManager);
     }
 
     public function testSkipsExistingClient(): void
     {
         // A managed (already-persisted) entity is an edit, not a create.
-        $this->toggle
-            ->expects($this->once())
-            ->method('isActive')
-            ->with('saas_enabled')
-            ->willReturn(true);
         $this->entityManager->method('contains')->willReturn(true);
         $this->featureGate->expects($this->never())->method('canUse');
 
@@ -73,11 +68,9 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
 
     public function testSkipsWhenNotSaas(): void
     {
-        $this->toggle
-            ->expects($this->once())
-            ->method('isActive')
-            ->with('saas_enabled')
-            ->willReturn(false);
+        $this->modeResolver = new ModeResolver();
+        $this->validator = new WithinPlanClientLimitValidator($this->clientRepository, $this->featureGate, $this->modeResolver, $this->entityManager);
+        $this->validator->initialize($this->context);
         $this->featureGate->expects($this->never())->method('canUse');
 
         $this->validator->validate(new Client(), new WithinPlanClientLimit());
@@ -87,11 +80,6 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
 
     public function testNoViolationWhenWithinLimit(): void
     {
-        $this->toggle
-            ->expects($this->once())
-            ->method('isActive')
-            ->with('saas_enabled')
-            ->willReturn(true);
         $this->entityManager->method('contains')->willReturn(false);
         $this->clientRepository->method('getTotalClients')->willReturn(3);
         $this->featureGate->expects($this->once())
@@ -108,11 +96,6 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
     {
         $constraint = new WithinPlanClientLimit();
 
-        $this->toggle
-            ->expects($this->once())
-            ->method('isActive')
-            ->with('saas_enabled')
-            ->willReturn(true);
         $this->entityManager->method('contains')->willReturn(false);
         $this->clientRepository->method('getTotalClients')->willReturn(10);
         $this->featureGate

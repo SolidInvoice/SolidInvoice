@@ -19,7 +19,7 @@ use SolidInvoice\Kernel;
 final class SaasTestKernel extends Kernel
 {
     private const array ENV_OVERRIDES = [
-        'SOLIDINVOICE_PLATFORM' => 'saas',
+        'SOLIDINVOICE_MODE' => 'saas',
         'SOLIDINVOICE_LEMON_SQUEEZY_API_KEY' => 'test-api-key',
         'SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID' => 'test-store',
         'SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET' => 'test-secret',
@@ -49,7 +49,7 @@ final class SaasTestKernel extends Kernel
         parent::shutdown();
 
         // Restore the env vars we overrode in the constructor so that other tests
-        // (which share the same PHP process) don't see stale `SOLIDINVOICE_PLATFORM=saas`
+        // (which share the same PHP process) don't see stale `SOLIDINVOICE_MODE=saas`
         // and incorrectly enable SaaS-only behaviour.
         foreach ($this->previousEnv as $name => $previous) {
             $this->restoreEnv($name, $previous['env'], $previous['server']);

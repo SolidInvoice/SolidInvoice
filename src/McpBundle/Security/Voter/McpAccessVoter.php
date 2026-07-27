@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Security\Voter;
 
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\McpBundle\Security\Attribute;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -35,7 +35,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class McpAccessVoter extends Voter
 {
     public function __construct(
-        private readonly ToggleInterface $toggler,
+        private readonly ModeResolver $modeResolver,
         private readonly FeatureGate $featureGate,
     ) {
     }
@@ -43,7 +43,7 @@ final class McpAccessVoter extends Voter
     protected function supports(string $attribute, mixed $subject): bool
     {
         // Abstain on SaaS deployments — SubscriptionVoter is responsible there.
-        return $attribute === Attribute::ACCESS && ! $this->toggler->isActive('saas_enabled');
+        return $attribute === Attribute::ACCESS && ! $this->modeResolver->isSaas();
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool

@@ -32,7 +32,7 @@ enum TelemetryEvent: string
     case PaymentReceived = 'payment_received';
 
     // SaaS (hosted) upgrade-funnel events. Emitted only by SaasBundle, which is
-    // registered only when SOLIDINVOICE_PLATFORM=saas, so these never fire on
+    // registered only when SOLIDINVOICE_MODE=saas, so these never fire on
     // self-hosted installations. See docs/superpowers/specs/2026-06-22-saas-conversion-telemetry-design.md
     case SaasPricingPageViewed = 'saas_pricing_page_viewed';
     case SaasPlanSelected = 'saas_plan_selected';
