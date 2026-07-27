@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use const JSON_THROW_ON_ERROR;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
@@ -32,7 +32,7 @@ final class Version30000_3 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void

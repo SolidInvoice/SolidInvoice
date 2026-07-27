@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -33,7 +33,7 @@ final class Version30000_7 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void
