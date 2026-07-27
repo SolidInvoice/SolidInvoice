@@ -21,8 +21,9 @@ trait DoctrineAwareTrait
     protected ?ManagerRegistry $doctrine = null;
 
     #[Required]
-    public function setDoctrine(ManagerRegistry $doctrine): void
-    {
+    public function setDoctrine(
+        ManagerRegistry $doctrine
+    ): void {
         $this->doctrine = $doctrine;
     }
 }

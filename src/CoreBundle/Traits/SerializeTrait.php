@@ -27,8 +27,9 @@ trait SerializeTrait
     private $serializer;
 
     #[Required]
-    public function setSerializer(SerializerInterface $serializer): void
-    {
+    public function setSerializer(
+        SerializerInterface $serializer
+    ): void {
         $this->serializer = $serializer;
     }
 

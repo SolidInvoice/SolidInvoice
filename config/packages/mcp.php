@@ -46,22 +46,5 @@ return App::config([
                 'ttl' => (int) $env('SOLIDINVOICE_MCP_SESSION_TTL', 3600),
             ],
         ],
-        'discovery' => [
-            'scan_dirs' => ['src'],
-            'exclude_dirs' => [
-                // Tests/, Test/ and DataFixtures/ are excluded by basename (no
-                // slash) so Finder skips them in every bundle — discovering them
-                // in prod triggers autoload of dev-only classes (PHPUnit, Foundry's
-                // PersistentProxyObjectFactory, doctrine/fixtures Fixture) and
-                // crashes the MCP controller.
-                'Tests',
-                'Test',
-                'DataFixtures',
-                'src/McpBundle/Entity',
-                'src/McpBundle/OAuth',
-                'src/McpBundle/Security',
-                'src/McpBundle/Action',
-            ],
-        ],
     ],
 ]);
