@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Action;
 
+use Brick\Math\BigNumber;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -23,12 +26,16 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Action\Prepare;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -47,23 +54,53 @@ final class PrepareTest extends KernelTestCase
         WorkflowInterface $invoiceStateMachine,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
+        ?ModeResolver $modeResolver = null,
+        ?FormFactoryInterface $formFactory = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
     ): Prepare {
         $action = new Prepare(
             $invoiceStateMachine,
             $paymentMethodRepository,
             $authorizationChecker,
             self::getContainer()->get(TokenStorageInterface::class),
-            self::getContainer()->get(FormFactoryInterface::class),
-            self::getContainer()->get(EventDispatcherInterface::class),
+            $formFactory ?? self::getContainer()->get(FormFactoryInterface::class),
+            $eventDispatcher ?? self::getContainer()->get(EventDispatcherInterface::class),
             self::getContainer()->get(RegistryInterface::class),
             $router,
             self::getContainer()->get(CompanySelector::class),
             $invoiceRepository,
+            $modeResolver ?? new ModeResolver(),
         );
 
         $action->setDoctrine(self::getContainer()->get('doctrine'));
 
         return $action;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return FormInterface<mixed>
+     */
+    private function buildSubmittedForm(array $data): FormInterface
+    {
+        $form = $this->createStub(FormInterface::class);
+        $form->method('handleRequest');
+        $form->method('isSubmitted')->willReturn(true);
+        $form->method('isValid')->willReturn(true);
+        $form->method('getData')->willReturn($data);
+
+        return $form;
+    }
+
+    /**
+     * @param FormInterface<mixed> $form
+     */
+    private function buildFormFactory(FormInterface $form): FormFactoryInterface
+    {
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $formFactory->method('create')->willReturn($form);
+
+        return $formFactory;
     }
 
     public function testNoPaymentMethodsAvailableRedirectsAuthenticatedUserWithFlash(): void
@@ -269,5 +306,147 @@ final class PrepareTest extends KernelTestCase
         $flashes = iterator_to_array($response->getFlash());
         self::assertArrayHasKey(FlashResponse::FLASH_DANGER, $flashes);
         self::assertSame('payment.create.exception.invoice_cannot_be_paid', $flashes[FlashResponse::FLASH_DANGER]);
+    }
+
+    public function testOnlineCaptureBlockedInDemoMode(): void
+    {
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        ContactFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+        ]);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => InvoiceStatus::Pending,
+        ])->_real();
+
+        /** @var PaymentMethod $paymentMethod */
+        $paymentMethod = PaymentMethodFactory::createOne([
+            'company' => $this->company,
+            'gatewayName' => 'stripe',
+            'factoryName' => 'stripe',
+            'internal' => false,
+            'enabled' => true,
+        ])->_real();
+
+        $invoiceRepository = $this->createStub(InvoiceRepository::class);
+        $invoiceRepository->method('findOneBy')->willReturn($invoice);
+
+        $paymentMethodRepository = $this->createStub(PaymentMethodRepository::class);
+        $paymentMethodRepository->method('getTotalMethodsConfigured')->willReturn(1);
+        $paymentMethodRepository->method('findBy')->willReturn([]);
+
+        $invoiceStateMachine = $this->createStub(WorkflowInterface::class);
+        $invoiceStateMachine->method('can')->willReturn(true);
+
+        $authorizationChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $authorizationChecker->method('isGranted')->willReturn(true);
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects(self::never())->method('generate');
+
+        $form = $this->buildSubmittedForm([
+            'amount' => BigNumber::of(100),
+            'payment_method' => $paymentMethod,
+            'capture_online' => true,
+            'reference' => null,
+            'notes' => null,
+        ]);
+
+        $action = $this->buildAction(
+            $paymentMethodRepository,
+            $invoiceRepository,
+            $invoiceStateMachine,
+            $authorizationChecker,
+            $router,
+            new ModeResolver('demo', 'demo@example.com', 'demo-password'),
+            $this->buildFormFactory($form),
+        );
+
+        $this->expectException(AccessDeniedHttpException::class);
+
+        $request = Request::create('/pay/' . (string) $invoice->getUuid(), 'POST');
+        $action($request, (string) $invoice->getUuid());
+    }
+
+    public function testOfflineCaptureUnaffectedInDemoMode(): void
+    {
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        ContactFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+        ]);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => InvoiceStatus::Pending,
+        ])->_real();
+
+        /** @var PaymentMethod $paymentMethod */
+        $paymentMethod = PaymentMethodFactory::createOne([
+            'company' => $this->company,
+            'gatewayName' => 'bank_transfer',
+            'factoryName' => PaymentMethod::FACTORY_OFFLINE,
+            'internal' => false,
+            'enabled' => true,
+        ])->_real();
+
+        $invoiceRepository = $this->createStub(InvoiceRepository::class);
+        $invoiceRepository->method('findOneBy')->willReturn($invoice);
+
+        $paymentMethodRepository = $this->createStub(PaymentMethodRepository::class);
+        $paymentMethodRepository->method('getTotalMethodsConfigured')->willReturn(1);
+        $paymentMethodRepository->method('findBy')->willReturn([]);
+
+        $invoiceStateMachine = $this->createStub(WorkflowInterface::class);
+        $invoiceStateMachine->method('can')->willReturn(true);
+
+        $authorizationChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $authorizationChecker->method('isGranted')->willReturn(true);
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects(self::once())
+            ->method('generate')
+            ->with('_payments_index', self::anything())
+            ->willReturn('/payments');
+
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnArgument(0);
+
+        $form = $this->buildSubmittedForm([
+            'amount' => BigNumber::of(100),
+            'payment_method' => $paymentMethod,
+            'capture_online' => false,
+            'reference' => null,
+            'notes' => null,
+        ]);
+
+        $action = $this->buildAction(
+            $paymentMethodRepository,
+            $invoiceRepository,
+            $invoiceStateMachine,
+            $authorizationChecker,
+            $router,
+            new ModeResolver('demo', 'demo@example.com', 'demo-password'),
+            $this->buildFormFactory($form),
+            $eventDispatcher,
+        );
+
+        $request = Request::create('/pay/' . (string) $invoice->getUuid(), 'POST');
+        $response = $action($request, (string) $invoice->getUuid());
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/payments', $response->getTargetUrl());
     }
 }

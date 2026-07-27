@@ -21,6 +21,8 @@ use Generator;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Mode\Capability;
+use SolidInvoice\CoreBundle\Mode\ModeResolver;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -76,6 +78,7 @@ final class Prepare
         private readonly RouterInterface $router,
         private readonly CompanySelector $companySelector,
         private readonly InvoiceRepository $invoiceRepository,
+        private readonly ModeResolver $modeResolver,
     ) {
     }
 
@@ -211,6 +214,10 @@ final class Prepare
             $this->save($payment);
 
             if (filter_var($data['capture_online'], FILTER_VALIDATE_BOOLEAN)) {
+                if (! $this->modeResolver->allows(Capability::OnlinePaymentCapture)) {
+                    throw new AccessDeniedHttpException();
+                }
+
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(
