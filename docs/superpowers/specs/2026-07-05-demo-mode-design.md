@@ -1,8 +1,99 @@
 # Demo Mode — Design Spec
 
-**Date:** 2026-07-05
+**Date:** 2026-07-05 (revised 2026-07-06)
 **Status:** Approved for planning
 **Author:** Pierre du Plessis (with AI assistant)
+
+> **REVISION 2026-07-06 — mode-based architecture (supersedes §2–§3.2 below).**
+> The original design used separate booleans (`SOLIDINVOICE_DEMO` + `SOLIDINVOICE_PLATFORM==='saas'`)
+> and a `DemoMode` service queried with `isEnabled()` at each restriction site. That is replaced by a
+> **single `SOLIDINVOICE_MODE` enum** (`self-hosted` | `demo` | `saas`), one `ModeResolver` service, and a
+> **`Capability` policy** so call sites ask *"is this capability allowed in the current mode?"* instead of
+> *"are we in demo?"*. `SOLIDINVOICE_PLATFORM` is fully retired (all consumers migrated). The full revised
+> architecture is in **§3A** below; where §2/§3.1/§3.2 conflict with §3A, §3A wins. The purpose (§1),
+> restriction *set* (§3.4), reset tooling (§3.3), and UI (§3.5) are unchanged in intent — only the
+> detection/gating mechanism changed.
+
+## 3A. Mode-based architecture (revised)
+
+### 3A.1 Single mode switch
+
+`SOLIDINVOICE_MODE` env var, default `self-hosted`. Backed by a PHP backed enum:
+
+```php
+enum ApplicationMode: string {
+    case SelfHosted = 'self-hosted';  // default
+    case Demo       = 'demo';
+    case Saas       = 'saas';
+}
+```
+
+Mutual exclusion is now **structural** — the value is exactly one mode, so demo and saas can never both be
+active. The old boot-time SaaS-vs-demo guard is therefore **removed**, replaced by validation that rejects an
+unknown `SOLIDINVOICE_MODE` value (fail fast at boot). `SOLIDINVOICE_PLATFORM` is retired entirely.
+
+### 3A.2 Env vars (revised §2)
+
+| Env var | Purpose | Default |
+|---|---|---|
+| `SOLIDINVOICE_MODE` | Application mode: `self-hosted`, `demo`, or `saas` | `self-hosted` |
+| `SOLIDINVOICE_DEMO_USERNAME` | Demo shared-account login (email); **required when mode=demo** | `''` |
+| `SOLIDINVOICE_DEMO_PASSWORD` | Demo shared-account password; **required when mode=demo** | `''` |
+| `SOLIDINVOICE_DEMO_SIGNUP_URL` | External "get your own account" CTA target (opt-in) | `''` |
+
+`SOLIDINVOICE_DEMO` and `SOLIDINVOICE_PLATFORM` no longer exist. If `SOLIDINVOICE_MODE=demo` but username or
+password is unset, the app fails fast (misconfiguration) rather than silently degrading to non-demo.
+
+### 3A.3 ModeResolver + Capability policy
+
+A single `SolidInvoice\CoreBundle\Mode\ModeResolver` service (CoreBundle), reading `SOLIDINVOICE_MODE`:
+
+- `current(): ApplicationMode`
+- `is(ApplicationMode $mode): bool` (+ convenience `isDemo()/isSaas()/isSelfHosted()`)
+- `allows(Capability $capability): bool` — backed by a per-mode policy map
+- demo parameter accessors: `demoUsername(): ?string`, `demoPassword(): ?string`, `demoSignupUrl(): ?string`
+  (null when unset / not in demo)
+
+```php
+enum Capability {
+    case UserRegistration;        // demo denies (registration + OAuth auto-registration)
+    case RealEmailDelivery;       // demo denies (mailer forced to null transport)
+    case RealNotificationDelivery;// demo denies (NotificationManager short-circuits)
+    case OnlinePaymentCapture;    // demo denies (Payum online capture blocked)
+    case CredentialChange;        // demo denies (shared-account email/password locked)
+}
+```
+
+Policy: **self-hosted allows all; saas allows all** (SaaS restrictions are handled separately by the existing
+plan `FeatureGate` / subscription layer, not here); **demo denies the capabilities above**. Restriction call
+sites become `if (! $this->modeResolver->allows(Capability::RealEmailDelivery)) { … }`.
+
+**Positioning against the two pre-existing systems (kept distinct):**
+- **`solidworx/toggler`** = "is a capability *wired/configured*" (env presence). `saas_enabled` is **redefined**
+  as `SOLIDINVOICE_MODE === 'saas'`.
+- **`FeatureGate`** (SaasBundle) = "does this tenant's *paid plan* include this feature" — unchanged, saas-only.
+- **`ModeResolver::allows(Capability)`** = "is this action *permitted in the current run mode*" — the new,
+  demo-driven layer.
+
+Presentation concerns (DEMO watermark, login banner + prefill, in-app banner, config-form warning alerts) key
+off mode **identity** (`ModeResolver::isDemo()` / a `is_demo()` Twig helper), not the capability policy — they
+are display, not permission gates.
+
+### 3A.4 Runtime vs container-build-time split (A2 migration)
+
+`SOLIDINVOICE_PLATFORM`/`saas_enabled` are used in two kinds of place; the migration treats them differently:
+
+- **Runtime service consumers** (`ApiAccessVoter`, `McpAccessVoter`, `SubscriptionVoter`, `WithinPlanClientLimitValidator`,
+  `WithinPlanInvoiceLimitValidator`, `VerifiedUserChecker`, `SubscriptionService`, `CreateCompany`, and the
+  `toggle('saas_enabled')` template usages) → migrate to `ModeResolver` (or an `is_saas()` Twig helper).
+- **Container-build-time env reads** (`config/bundles.php`, `src/Kernel.php`, `config/services_test.php`,
+  `src/CoreBundle/Resources/config/services/services.php`) run before services exist → read `SOLIDINVOICE_MODE`
+  from `$_ENV`/`$_SERVER` directly (`=== 'saas'` / `=== 'demo'`). These cannot use the resolver service.
+
+Twig helpers exposed: `app_mode()` (enum value string), `is_demo()`, `is_saas()`, plus the demo-parameter
+accessors `demo_username()`, `demo_password()`, `demo_signup_url()`. The old `demo_enabled()` Twig function and
+`saas_enabled` toggler flag are removed/redefined accordingly.
+
 
 ## 1. Purpose
 
