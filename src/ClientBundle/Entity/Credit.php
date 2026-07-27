@@ -26,9 +26,10 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Table(name: Credit::TABLE_NAME, uniqueConstraints: [new ORM\UniqueConstraint(columns: ['client_id'])])]
+#[ORM\Table(name: Credit::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'credit')])]
+#[ORM\UniqueConstraint(columns: ['company_id', 'client_id'])]
 class Credit implements Stringable
 {
     final public const string TABLE_NAME = 'client_credit';
