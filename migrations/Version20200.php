@@ -239,9 +239,14 @@ final class Version20200 extends AbstractMigration
         $this->connection
             ->insert('companies', ['name' => $companyName, 'id' => $companyId->toBinary()]);
 
+        // Unconditional UPDATE rather than a `WHERE 1 = '1'` catch-all: SQLite compares an integer
+        // against a bound string by storage class, so `1 = '1'` is false there and every row kept a
+        // NULL company_id — silently, since the statement itself succeeds.
         foreach (self::ALL_TABLES as $table) {
-            // @phpstan-ignore-next-line
-            $this->connection->update($table, ['company_id' => $companyId->toBinary()], ['1' => '1']);
+            $this->connection->executeStatement(
+                sprintf('UPDATE %s SET company_id = ?', $table),
+                [$companyId->toBinary()]
+            );
         }
 
         foreach ($users as $user) {

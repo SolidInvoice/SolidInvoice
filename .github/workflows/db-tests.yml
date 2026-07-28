@@ -164,6 +164,9 @@ jobs:
           MYSQL_ROOT_PASSWORD: solidinvoice
           MYSQL_DATABASE: solidinvoice
           POSTGRES_PASSWORD: solidinvoice
+          # The MySQL images create MYSQL_DATABASE on boot; Postgres needs the equivalent, so the
+          # migration step below has a database to connect to before the test bootstrap creates one.
+          POSTGRES_DB: solidinvoice
         ports:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
@@ -218,8 +221,53 @@ jobs:
 
       - run: bun run build
 
+      # Fresh installs build the schema from ORM metadata and mark every migration as already run
+      # (see InstallBundle\Installer\Database\Migration), and the test bootstrap does the same. That
+      # left the migrations themselves running on no platform at all. Run the whole chain against a
+      # real server of each supported flavour before the suite, so upgrades are covered too.
+      - name: Run migrations
+        run: bin/console doctrine:migrations:migrate --no-interaction
+
       - name: Run test suite
         # Installation currently only runs with SQLite,
         # so let's skip it to prevent unneeded errors
         # @TODO: Fix installation to work with other DBs
         run: bin/phpunit --exclude-group=installation
+
+  # SQLite is a supported platform but needs no service container, so it cannot join the matrix
+  # above. Migrations only, since the suite already runs against SQLite in unit-tests.yml.
+  migrations-sqlite:
+    name: DB (SQLite)
+
+    runs-on: ubuntu-latest
+
+    env:
+      SOLIDINVOICE_DATABASE_URL: "sqlite:///%kernel.cache_dir%/migrations.db"
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+          allowed-endpoints: >
+            packagist.org:443
+            objects.githubusercontent.com:443
+            setup-php.com:443
+            getcomposer.org:443
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, pdo_sqlite, zip, :xdebug
+        env:
+          fail-fast: true
+
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+
+      - name: Run migrations
+        run: bin/console doctrine:migrations:migrate --no-interaction
