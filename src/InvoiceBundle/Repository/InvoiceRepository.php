@@ -626,7 +626,8 @@ class InvoiceRepository extends EntityRepository
      * The distinct pre-due windows configured across the companies that have pre-due reminders on.
      *
      * Pre-due reminders fire a company-configured number of days before the due date, so the scan
-     * runs once per distinct window rather than once per company.
+     * runs once per distinct window rather than once per company. The caller must suspend the company
+     * filter to collect windows across all tenants.
      *
      * @return list<int>
      */
