@@ -218,15 +218,15 @@ jobs:
 
       - run: bun run build
 
-      # Fresh installs build the schema from ORM metadata and mark every migration as already run
-      # (see InstallBundle\Installer\Database\Migration), and the test bootstrap does the same. That
-      # left the migrations themselves running on no platform at all. Run the whole chain against a
-      # real server of each supported flavour before the suite, so upgrades are covered too.
       # Installing is the only path that ever builds a schema for a new deployment: it runs
       # SchemaTool over the entity metadata and records every migration as already applied. Until
       # now it was exercised on SQLite alone, which is how MySQL and MariaDB installs came to be
       # broken outright. Install against the real server, then check the schema it produced still
       # matches the mapping.
+      #
+      # This covers installing, not upgrading: because the installer marks the whole plan as
+      # applied, no migration up() runs here. Exercising those needs a schema at an older version
+      # to migrate from, which nothing currently produces.
       #
       # SOLIDINVOICE_DATABASE_URL is unset for these two commands on purpose: the installer has to
       # derive its connection from the options below and the config it writes, exactly as a real
