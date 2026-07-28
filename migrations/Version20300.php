@@ -341,30 +341,36 @@ final class Version20300 extends AbstractMigration
         $this->connection
             ->update('invoice_lines', ['type' => 'recurring_invoice'], ['invoice_id' => null]);
 
-        if ($this->columnsToUpdate !== [] && Type::hasType(UuidBinaryOrderedTimeType::NAME)) {
-            foreach ($this->columnsToUpdate as $table => $columns) {
+        // preUp() switches constraint enforcement off before any of this runs, so it has to come
+        // back on along every path out. There is nothing to convert when the legacy type is
+        // unregistered or no column used it, and MySQL scopes FOREIGN_KEY_CHECKS to the session —
+        // skipping the restore there leaves the rest of the migration run unguarded.
+        try {
+            if ($this->columnsToUpdate !== [] && Type::hasType(UuidBinaryOrderedTimeType::NAME)) {
+                foreach ($this->columnsToUpdate as $table => $columns) {
 
-                $qb = $this->connection->createQueryBuilder()
-                    ->select(...$columns)
-                    ->from($table)
-                    ->executeQuery()
-                ;
+                    $qb = $this->connection->createQueryBuilder()
+                        ->select(...$columns)
+                        ->from($table)
+                        ->executeQuery()
+                    ;
 
-                /** @var array<string, string> $record */
-                foreach ($qb->iterateAssociative() as $record) {
-                    foreach ($record as $column => $id) {
+                    /** @var array<string, string> $record */
+                    foreach ($qb->iterateAssociative() as $record) {
+                        foreach ($record as $column => $id) {
 
-                        if ($id === null) {
-                            continue;
+                            if ($id === null) {
+                                continue;
+                            }
+
+                            $convertedId = Ulid::fromString($id);
+
+                            $this->connection->update($table, [$column => $convertedId->toBinary()], [$column => $id]);
                         }
-
-                        $convertedId = Ulid::fromString($id);
-
-                        $this->connection->update($table, [$column => $convertedId->toBinary()], [$column => $id]);
                     }
                 }
             }
-
+        } finally {
             if ($this->platform instanceof AbstractMySQLPlatform) {
                 $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
             } elseif ($this->platform instanceof SQLitePlatform) {
