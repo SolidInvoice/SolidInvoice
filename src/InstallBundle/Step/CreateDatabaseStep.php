@@ -20,6 +20,7 @@ use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use function in_array;
+use function str_contains;
 use function str_replace;
 
 /**
@@ -48,6 +49,17 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         if ($params['driver'] !== 'pdo_sqlite') {
             $dbName = $params['dbname'];
             unset($params['dbname']);
+
+            // The database being created cannot be connected to yet, but DBAL 4's MySQL schema
+            // manager resolves its metadata provider from the connection's database and throws
+            // DatabaseRequired when there is none — so dropping dbname entirely fails before it can
+            // create anything. information_schema exists on every MySQL and MariaDB server, is
+            // readable without extra grants, and CREATE DATABASE is a server-level statement, so it
+            // works as the connection target. PostgreSQL needs no equivalent: it falls back to a
+            // default database on its own.
+            if (str_contains($params['driver'], 'mysql')) {
+                $params['dbname'] = 'information_schema';
+            }
         } else {
             $dbName = str_replace($this->projectDir . '/', './', $params['path']);
         }

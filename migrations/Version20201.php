@@ -89,18 +89,11 @@ final class Version20201 extends AbstractMigration
         $quoteContact->addIndex(['quote_id', 'company_id']);
         $quoteContact->setPrimaryKey(['quote_id', 'contact_id']);
 
-        // Apply these through $this->schema like everything else. $schema is only diffed by
-        // Doctrine once up() returns, against the state introspected before any of the work below
-        // ran — so a change staged on it is emitted from a stale snapshot. For payment_methods that
-        // meant recreating the table with its original INTEGER id long after the rows had been
-        // converted to ulids, which SQLite rejects outright as a datatype mismatch.
-        $this->schema->dropTable('ext_log_entries');
+        $schema->dropTable('ext_log_entries');
 
-        $paymentMethods = $this->schema->getTable('payment_methods');
-
-        foreach ($paymentMethods->getIndexes() as $index) {
+        foreach ($schema->getTable('payment_methods')->getIndexes() as $index) {
             if ($index->isUnique() && ! $index->isPrimary()) {
-                $paymentMethods->dropIndex($index->getName());
+                $schema->getTable('payment_methods')->dropIndex($index->getName());
             }
         }
 
@@ -165,16 +158,8 @@ final class Version20201 extends AbstractMigration
 
         $this->migrate('users', false);
 
-        // user_company holds a foreign key to users, so the migrate() call above has just restored
-        // its original primary key. Drop it again before defining the intended one — setting a
-        // second primary key on the same table is an error.
-        $userCompany = $this->schema->getTable('user_company');
-
-        if ($userCompany->getPrimaryKey() instanceof Index) {
-            $userCompany->dropPrimaryKey();
-        }
-
-        $userCompany->setPrimaryKey(['company_id', 'user_id']);
+        $this->schema->getTable('user_company')
+            ->setPrimaryKey(['company_id', 'user_id']);
 
         $this->persistChanges();
     }
@@ -310,11 +295,7 @@ final class Version20201 extends AbstractMigration
     {
         $table = $this->schema->getTable($tableName);
 
-        // Nullable on purpose: the column is populated straight after this, and only becomes the
-        // NOT NULL primary key in dropIdPrimaryKeyAndSetUuidToPrimaryKey(). Adding it NOT NULL up
-        // front is rejected outright by SQLite ("Cannot add a NOT NULL column with default value
-        // NULL") and fails on PostgreSQL as soon as the table has rows.
-        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => false]);
+        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => true]);
 
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
@@ -349,20 +330,18 @@ final class Version20201 extends AbstractMigration
             $uuid = new Ulid();
 
             if ($linkCompany) {
-                $idToUuidMap[$record['company_id']][$id] = $uuid;
+                $companyId = $record['company_id'];
+                $idToUuidMap[$companyId][$id] = $uuid;
+                $updateCriteria = ['id' => $id, 'company_id' => $companyId];
             } else {
                 $idToUuidMap[$id] = $uuid;
+                $updateCriteria = ['id' => $id];
             }
 
-            // Match on the primary key alone. Adding company_id would be redundant — id already
-            // identifies the row — and actively wrong when it is NULL, because Connection::update()
-            // renders that as `company_id = NULL`, which matches nothing. Rows seeded before
-            // companies existed (all 23 app_config settings) would keep a NULL uuid and then break
-            // when it is promoted to the NOT NULL primary key.
             $this->connection->update(
                 $tableName,
                 [$uuidColumnName => $uuid],
-                ['id' => $id],
+                $updateCriteria,
                 [$uuidColumnName => UlidType::NAME]
             );
         }
@@ -495,18 +474,8 @@ final class Version20201 extends AbstractMigration
 
         $this->persistChanges();
 
-        // Add the new id on its own, copy the generated ulids across explicitly, and only then
-        // tighten it into the primary key. Dropping __uuid__ in the same diff would leave Doctrine
-        // to infer a column rename to carry the data over — a heuristic that only fires when both
-        // definitions match exactly, which this migration depended on without saying so.
-        $table->addColumn('id', UlidType::NAME, ['notnull' => false]);
-
-        $this->persistChanges();
-
-        $this->connection->executeStatement(sprintf('UPDATE %s SET id = %s', $tableName, $uuidColumnName));
-
         $table->dropColumn($uuidColumnName);
-        $table->modifyColumn('id', ['notnull' => true]);
+        $table->addColumn('id', UlidType::NAME, ['notnull' => true]);
         $table->setPrimaryKey(['id']);
     }
 

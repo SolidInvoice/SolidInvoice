@@ -164,9 +164,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: solidinvoice
           MYSQL_DATABASE: solidinvoice
           POSTGRES_PASSWORD: solidinvoice
-          # The MySQL images create MYSQL_DATABASE on boot; Postgres needs the equivalent, so the
-          # migration step below has a database to connect to before the test bootstrap creates one.
-          POSTGRES_DB: solidinvoice
         ports:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
@@ -225,29 +222,49 @@ jobs:
       # (see InstallBundle\Installer\Database\Migration), and the test bootstrap does the same. That
       # left the migrations themselves running on no platform at all. Run the whole chain against a
       # real server of each supported flavour before the suite, so upgrades are covered too.
-      # The test environment appends a _test suffix to the database name (config/packages/test/
-      # doctrine.php), so the database the service container created is not the one migrations
-      # connect to. Only the phpunit bootstrap created it before, which runs after this step.
-      - name: Run migrations
+      # Installing is the only path that ever builds a schema for a new deployment: it runs
+      # SchemaTool over the entity metadata and records every migration as already applied. Until
+      # now it was exercised on SQLite alone, which is how MySQL and MariaDB installs came to be
+      # broken outright. Install against the real server, then check the schema it produced still
+      # matches the mapping.
+      #
+      # SOLIDINVOICE_DATABASE_URL is unset for these two commands on purpose: the installer has to
+      # derive its connection from the options below and the config it writes, exactly as a real
+      # install does, rather than inherit the DSN the test suite uses.
+      - name: Verify installation
+        env:
+          DB_DRIVER: ${{ matrix.db.driver }}
+          DB_PORT: ${{ matrix.db.port }}
+          DB_USER: ${{ matrix.db.user }}
+          SOLIDINVOICE_CONFIG_DIR: ${{ runner.temp }}/solidinvoice-install
         run: |
-          bin/console doctrine:database:create --if-not-exists --no-interaction
-          bin/console doctrine:migrations:migrate --no-interaction
+          env -u SOLIDINVOICE_DATABASE_URL bin/console solidinvoice:install \
+            --database-driver="$DB_DRIVER" \
+            --database-host=127.0.0.1 \
+            --database-port="$DB_PORT" \
+            --database-name=solidinvoice_install \
+            --database-user="$DB_USER" \
+            --database-password=solidinvoice \
+            --skip-user \
+            --disable-telemetry \
+            --locale=en_US \
+            --application-url=http://localhost \
+            --no-interaction
+          env -u SOLIDINVOICE_DATABASE_URL bin/console doctrine:schema:validate
 
       - name: Run test suite
-        # Installation currently only runs with SQLite,
-        # so let's skip it to prevent unneeded errors
-        # @TODO: Fix installation to work with other DBs
+        # The installation group drives the install wizard in a browser and picks SQLite in the
+        # form itself, so it cannot describe any other platform. The step above covers installing
+        # against this matrix entry's server instead.
         run: bin/phpunit --exclude-group=installation
 
   # SQLite is a supported platform but needs no service container, so it cannot join the matrix
-  # above. Migrations only, since the suite already runs against SQLite in unit-tests.yml.
-  migrations-sqlite:
+  # above. The suite itself already runs against SQLite in unit-tests.yml, so this covers the
+  # install path only, keeping all four supported platforms on the same check.
+  install-sqlite:
     name: DB (SQLite)
 
     runs-on: ubuntu-latest
-
-    env:
-      SOLIDINVOICE_DATABASE_URL: "sqlite:///%kernel.cache_dir%/migrations.db"
 
     steps:
       - name: Harden Runner
@@ -274,6 +291,16 @@ jobs:
 
       - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
 
-      - name: Run migrations
-        run: bin/console doctrine:migrations:migrate --no-interaction
+      - name: Verify installation
+        env:
+          SOLIDINVOICE_CONFIG_DIR: ${{ runner.temp }}/solidinvoice-install
+        run: |
+          env -u SOLIDINVOICE_DATABASE_URL bin/console solidinvoice:install \
+            --database-driver=pdo_sqlite \
+            --skip-user \
+            --disable-telemetry \
+            --locale=en_US \
+            --application-url=http://localhost \
+            --no-interaction
+          env -u SOLIDINVOICE_DATABASE_URL bin/console doctrine:schema:validate
 
