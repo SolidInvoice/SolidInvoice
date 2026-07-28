@@ -32,9 +32,10 @@ class CompanyFilter extends SQLFilter
     {
         $platform = $this->getConnection()->getDatabasePlatform();
 
-        // The company id is bound as an uppercase hex string rather than raw binary, since quoting
-        // binary into a filter parameter is not portable (see CompanySelector::switchCompany()).
-        //
+        // The company id is bound as a quoted string literal for portability (see CompanySelector::switchCompany()):
+        // - Postgres: RFC 4122 (uuid) string
+        // - MySQL/MariaDB/SQLite: uppercase hex string representing the BINARY(16) value
+
         // Decode the literal instead of encoding the column wherever the platform allows it: wrapping
         // the column in HEX() makes the comparison non-sargable, which disqualifies every index on
         // company_id and forces a full table scan on every multi-tenant query.
