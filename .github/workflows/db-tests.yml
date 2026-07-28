@@ -225,8 +225,13 @@ jobs:
       # (see InstallBundle\Installer\Database\Migration), and the test bootstrap does the same. That
       # left the migrations themselves running on no platform at all. Run the whole chain against a
       # real server of each supported flavour before the suite, so upgrades are covered too.
+      # The test environment appends a _test suffix to the database name (config/packages/test/
+      # doctrine.php), so the database the service container created is not the one migrations
+      # connect to. Only the phpunit bootstrap created it before, which runs after this step.
       - name: Run migrations
-        run: bin/console doctrine:migrations:migrate --no-interaction
+        run: |
+          bin/console doctrine:database:create --if-not-exists --no-interaction
+          bin/console doctrine:migrations:migrate --no-interaction
 
       - name: Run test suite
         # Installation currently only runs with SQLite,
@@ -271,3 +276,4 @@ jobs:
 
       - name: Run migrations
         run: bin/console doctrine:migrations:migrate --no-interaction
+
