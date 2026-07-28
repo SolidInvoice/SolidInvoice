@@ -218,8 +218,89 @@ jobs:
 
       - run: bun run build
 
+      # Fresh installs build the schema from ORM metadata and mark every migration as already run
+      # (see InstallBundle\Installer\Database\Migration), and the test bootstrap does the same. That
+      # left the migrations themselves running on no platform at all. Run the whole chain against a
+      # real server of each supported flavour before the suite, so upgrades are covered too.
+      # Installing is the only path that ever builds a schema for a new deployment: it runs
+      # SchemaTool over the entity metadata and records every migration as already applied. Until
+      # now it was exercised on SQLite alone, which is how MySQL and MariaDB installs came to be
+      # broken outright. Install against the real server, then check the schema it produced still
+      # matches the mapping.
+      #
+      # SOLIDINVOICE_DATABASE_URL is unset for these two commands on purpose: the installer has to
+      # derive its connection from the options below and the config it writes, exactly as a real
+      # install does, rather than inherit the DSN the test suite uses.
+      - name: Verify installation
+        env:
+          DB_DRIVER: ${{ matrix.db.driver }}
+          DB_PORT: ${{ matrix.db.port }}
+          DB_USER: ${{ matrix.db.user }}
+          SOLIDINVOICE_CONFIG_DIR: ${{ runner.temp }}/solidinvoice-install
+        run: |
+          env -u SOLIDINVOICE_DATABASE_URL bin/console solidinvoice:install \
+            --database-driver="$DB_DRIVER" \
+            --database-host=127.0.0.1 \
+            --database-port="$DB_PORT" \
+            --database-name=solidinvoice_install \
+            --database-user="$DB_USER" \
+            --database-password=solidinvoice \
+            --skip-user \
+            --disable-telemetry \
+            --locale=en_US \
+            --application-url=http://localhost \
+            --no-interaction
+          env -u SOLIDINVOICE_DATABASE_URL bin/console doctrine:schema:validate
+
       - name: Run test suite
-        # Installation currently only runs with SQLite,
-        # so let's skip it to prevent unneeded errors
-        # @TODO: Fix installation to work with other DBs
+        # The installation group drives the install wizard in a browser and picks SQLite in the
+        # form itself, so it cannot describe any other platform. The step above covers installing
+        # against this matrix entry's server instead.
         run: bin/phpunit --exclude-group=installation
+
+  # SQLite is a supported platform but needs no service container, so it cannot join the matrix
+  # above. The suite itself already runs against SQLite in unit-tests.yml, so this covers the
+  # install path only, keeping all four supported platforms on the same check.
+  install-sqlite:
+    name: DB (SQLite)
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+          allowed-endpoints: >
+            packagist.org:443
+            objects.githubusercontent.com:443
+            setup-php.com:443
+            getcomposer.org:443
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, pdo_sqlite, zip, :xdebug
+        env:
+          fail-fast: true
+
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+
+      - name: Verify installation
+        env:
+          SOLIDINVOICE_CONFIG_DIR: ${{ runner.temp }}/solidinvoice-install
+        run: |
+          env -u SOLIDINVOICE_DATABASE_URL bin/console solidinvoice:install \
+            --database-driver=pdo_sqlite \
+            --skip-user \
+            --disable-telemetry \
+            --locale=en_US \
+            --application-url=http://localhost \
+            --no-interaction
+          env -u SOLIDINVOICE_DATABASE_URL bin/console doctrine:schema:validate
+
