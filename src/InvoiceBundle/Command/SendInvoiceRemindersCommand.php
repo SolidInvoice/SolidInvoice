@@ -134,9 +134,9 @@ final class SendInvoiceRemindersCommand extends Command
 
         // Pre-due reminders fire a company-configured number of days before the due date, so one
         // scan per distinct window covers every company that shares it.
-        foreach ($this->invoiceRepository->getConfiguredPreDueDays() as $daysBeforeDue) {
+        foreach ($this->invoiceRepository->getConfiguredPreDueDays() as $daysBeforeDue => $settingValues) {
             try {
-                foreach ($this->invoiceRepository->getInvoicesNeedingPreDueReminders($daysBeforeDue) as $candidate) {
+                foreach ($this->invoiceRepository->getInvoicesNeedingPreDueReminders($daysBeforeDue, $settingValues) as $candidate) {
                     $daysUntilDue = null;
 
                     if ($candidate['due'] instanceof DateTimeInterface) {

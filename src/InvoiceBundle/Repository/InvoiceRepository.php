@@ -42,7 +42,6 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function array_filter;
 use function array_map;
-use function array_unique;
 use function array_values;
 use function intval;
 use function strval;
@@ -529,12 +528,16 @@ class InvoiceRepository extends EntityRepository
      * Only the fields needed to dispatch a reminder are selected — hydrating entities for a scan
      * this wide would hold every matched invoice in the identity map.
      *
+     * @param list<string>|null $settingValues the raw spellings of this window, as returned by
+     *                                         getConfiguredPreDueDays(); resolved here when omitted
      * @return iterable<array{invoiceId: Ulid, companyId: Ulid, due: DateTimeImmutable|null}>
      * @throws DateMalformedStringException
      */
-    public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
+    public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue, ?array $settingValues = null): iterable
     {
-        $settingValues = $this->preDueSettingValuesFor($daysBeforeDue);
+        // Callers looping over getConfiguredPreDueDays() already hold the spellings for this window
+        // and pass them in; resolving them here as well would run that query once per window.
+        $settingValues ??= $this->preDueSettingValuesFor($daysBeforeDue);
 
         if ($settingValues === []) {
             return [];
@@ -623,16 +626,25 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * The distinct pre-due windows configured across the companies that have pre-due reminders on.
+     * The pre-due windows configured across the companies that have pre-due reminders on, each
+     * mapped to every raw spelling that normalises to it.
      *
      * Pre-due reminders fire a company-configured number of days before the due date, so the scan
-     * runs once per distinct window rather than once per company.
+     * runs once per distinct window rather than once per company. The spellings come back with the
+     * windows so the caller can hand them straight to getInvoicesNeedingPreDueReminders() — looking
+     * them up again per window would repeat this query once for every window.
      *
-     * @return list<int>
+     * @return array<int, list<string>>
      */
     public function getConfiguredPreDueDays(): array
     {
-        return array_values(array_unique(array_map(intval(...), $this->preDueDaySettingValues())));
+        $windows = [];
+
+        foreach ($this->preDueDaySettingValues() as $value) {
+            $windows[intval($value)][] = $value;
+        }
+
+        return $windows;
     }
 
     /**

@@ -113,12 +113,53 @@ final class InvoiceRepositoryTest extends KernelTestCase
             'due' => $this->clock->now()->modify('+3 days'),
         ]);
 
-        self::assertSame([3], $this->repository->getConfiguredPreDueDays());
+        self::assertSame([3], array_keys($this->repository->getConfiguredPreDueDays()));
 
         $results = iterator_to_array($this->repository->getInvoicesNeedingPreDueReminders(3));
 
         self::assertCount(1, $results);
         self::assertSame($invoice->getId()->toBase32(), $results[0]['invoiceId']->toBase32());
+    }
+
+    /**
+     * Two companies configuring the same window with different spellings is what makes the scan
+     * match against a list rather than a single value. Worth its own case: every other test here
+     * configures one company, where a list of one and a plain scalar would behave identically, so
+     * nothing else would notice if the IN () parameter stopped expanding.
+     */
+    public function testGetInvoicesNeedingPreDueRemindersMatchesEverySpellingOfTheSameWindow(): void
+    {
+        $dueDate = $this->clock->now()->modify('+3 days');
+
+        $this->updateSetting('invoice/reminder/pre_due_days', '3');
+
+        $canonical = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $dueDate,
+        ]);
+
+        // Creating a company seeds its default reminder settings and switches the active tenant.
+        $otherCompany = CompanyFactory::createOne();
+        $this->updateSetting('invoice/reminder/pre_due_days', '03', $otherCompany);
+
+        $nonCanonical = InvoiceFactory::createOne([
+            'company' => $otherCompany,
+            'status' => InvoiceStatus::Pending,
+            'due' => $dueDate,
+        ]);
+
+        $results = $this->withoutCompanyFilter(
+            fn (): array => iterator_to_array($this->repository->getInvoicesNeedingPreDueReminders(3))
+        );
+
+        $found = array_map(static fn (array $row): string => $row['invoiceId']->toBase32(), $results);
+
+        sort($found);
+        $expected = [$canonical->getId()->toBase32(), $nonCanonical->getId()->toBase32()];
+        sort($expected);
+
+        self::assertSame($expected, $found, 'Both spellings of the same window must be scanned');
     }
 
     /**
@@ -150,7 +191,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         self::assertSame(
             [3],
-            $this->withoutCompanyFilter(fn (): array => $this->repository->getConfiguredPreDueDays())
+            array_keys($this->withoutCompanyFilter(fn (): array => $this->repository->getConfiguredPreDueDays()))
         );
     }
 
