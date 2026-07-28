@@ -77,12 +77,15 @@ final class CompanyFilterTest extends TestCase
     /**
      * Postgres stores the id natively and compares against the RFC 4122 representation.
      */
-    public function testPostgresComparesTheColumnDirectly(): void
-    {
-        $constraint = $this->filterFor(new PostgreSQLPlatform())->addFilterConstraint($this->invoiceMetadata(), 'i0_');
+public function testPostgresComparesTheColumnDirectly(): void
+{
+    $filter = new CompanyFilter($this->entityManager(new PostgreSQLPlatform()));
+    $filter->setParameter('companyId', '01967e2e-2da3-c873-0ff7-f658b76c209f', 'string');
 
-        self::assertSame(sprintf("i0_.company_id = '%s'", self::COMPANY_ID), $constraint);
-    }
+    $constraint = $filter->addFilterConstraint($this->invoiceMetadata(), 'i0_');
+
+    self::assertSame("i0_.company_id = '01967e2e-2da3-c873-0ff7-f658b76c209f'", $constraint);
+}
 
     /**
      * SQLite gained unhex() only in 3.41, so it keeps encoding the column instead.
