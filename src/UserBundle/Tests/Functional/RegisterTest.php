@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Test\Factories;
+use function Zenstruck\Foundry\faker;
 
 #[Group('functional')]
 final class RegisterTest extends WebTestCase
@@ -47,7 +48,7 @@ final class RegisterTest extends WebTestCase
 
         $client = $this->bootClient();
 
-        $this->submitRegistration($client, 'new-user@example.com');
+        $this->submitRegistration($client, faker()->email());
 
         self::assertResponseRedirects();
         self::assertSame(1, $this->userCount());
@@ -66,7 +67,7 @@ final class RegisterTest extends WebTestCase
 
         $client = $this->bootClient();
 
-        $this->submitRegistration($client, 'blocked-user@example.com');
+        $this->submitRegistration($client, faker()->email());
 
         // An invalid form submission re-renders with Symfony's 422 status (no redirect).
         self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
