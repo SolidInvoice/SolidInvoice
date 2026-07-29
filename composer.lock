@@ -10800,16 +10800,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v8.1.1",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "99ced9d6305c43b25a7d48fe6a7d169df275a597"
+                "reference": "9bc6af9fadb6e7a614606e82e040fd4ac95c1d42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/99ced9d6305c43b25a7d48fe6a7d169df275a597",
-                "reference": "99ced9d6305c43b25a7d48fe6a7d169df275a597",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/9bc6af9fadb6e7a614606e82e040fd4ac95c1d42",
+                "reference": "9bc6af9fadb6e7a614606e82e040fd4ac95c1d42",
                 "shasum": ""
             },
             "require": {
@@ -10857,7 +10857,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v8.1.1"
+                "source": "https://github.com/symfony/dependency-injection/tree/v8.1.2"
             },
             "funding": [
                 {
@@ -10877,7 +10877,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-27T06:18:14+00:00"
+            "time": "2026-07-28T13:31:46+00:00"
         },
         {
             "name": "symfony/discord-notifier",
