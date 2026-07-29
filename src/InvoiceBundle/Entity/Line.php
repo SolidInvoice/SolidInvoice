@@ -52,33 +52,62 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string', enumType: InvoiceLineType::class)]
 #[ORM\DiscriminatorMap(['invoice' => Line::class, 'recurring_invoice' => RecurringInvoiceLine::class])]
 #[ApiResource(
-    uriTemplate: '/invoices/{invoiceId}/lines',
     shortName: 'InvoiceLine',
-    operations: [new GetCollection(), new Post(processor: InvoiceLinePersistProcessor::class)],
-    uriVariables: [
-        'invoiceId' => new Link(
-            fromProperty: 'lines',
-            fromClass: Invoice::class,
+    operations: [
+        new GetCollection(
+            uriTemplate: '/invoices/{invoiceId}/lines',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Invoice::class,
+                ),
+            ],
         ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/invoices/{invoiceId}/line/{id}',
-    shortName: 'InvoiceLine',
-    operations: [new Get(), new Patch(), new Delete()],
-    uriVariables: [
-        'invoiceId' => new Link(
-            fromProperty: 'lines',
-            fromClass: Invoice::class,
+        new Post(
+            uriTemplate: '/invoices/{invoiceId}/lines',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Invoice::class,
+                ),
+            ],
+            processor: InvoiceLinePersistProcessor::class,
         ),
-        'id' => new Link(
-            fromClass: Line::class,
+        new Get(
+            uriTemplate: '/invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Invoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Invoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Invoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
         ),
     ],
     normalizationContext: [

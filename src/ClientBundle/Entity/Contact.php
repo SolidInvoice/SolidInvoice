@@ -99,33 +99,61 @@ use Symfony\Component\Validator\Constraints as Assert;
     ]
 )]*/
 #[ApiResource(
-    uriTemplate: '/clients/{clientId}/contacts',
-    operations: [ new GetCollection(), new Post(processor: ContactPersistProcessor::class) ],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'contacts',
-            fromClass: Client::class,
+    operations: [
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/contacts',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'contacts',
+                    fromClass: Client::class,
+                ),
+            ],
         ),
-    ],
-    normalizationContext: [
-        'groups' => ['contact_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['contact_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/contact/{id}',
-    operations: [new Get(), new Delete(), new Patch()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'contacts',
-            fromClass: Client::class,
+        new Post(
+            uriTemplate: '/clients/{clientId}/contacts',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'contacts',
+                    fromClass: Client::class,
+                ),
+            ],
+            processor: ContactPersistProcessor::class,
         ),
-        'id' => new Link(
-            fromClass: Contact::class,
+        new Get(
+            uriTemplate: '/clients/{clientId}/contact/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'contacts',
+                    fromClass: Client::class,
+                ),
+                'id' => new Link(
+                    fromClass: Contact::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/clients/{clientId}/contact/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'contacts',
+                    fromClass: Client::class,
+                ),
+                'id' => new Link(
+                    fromClass: Contact::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/clients/{clientId}/contact/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'contacts',
+                    fromClass: Client::class,
+                ),
+                'id' => new Link(
+                    fromClass: Contact::class,
+                ),
+            ],
         ),
     ],
     normalizationContext: [

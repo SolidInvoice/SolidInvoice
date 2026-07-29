@@ -37,16 +37,75 @@ use function array_filter;
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
 #[ApiResource(
-    uriTemplate: '/clients/{clientId}/address/{id}',
-    operations: [new Get(), new Delete(), new Patch()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'addresses',
-            fromClass: Client::class,
-            description: 'Client identifier',
+    operations: [
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/addresses',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'addresses',
+                    fromClass: Client::class,
+                ),
+            ],
+            normalizationContext: [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+            denormalizationContext: [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
         ),
-        'id' => new Link(
-            fromClass: Address::class,
+        new Post(
+            uriTemplate: '/clients/{clientId}/addresses',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'addresses',
+                    fromClass: Client::class,
+                ),
+            ],
+            normalizationContext: [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+            denormalizationContext: [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+        ),
+        new Get(
+            uriTemplate: '/clients/{clientId}/address/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'addresses',
+                    fromClass: Client::class,
+                    description: 'Client identifier',
+                ),
+                'id' => new Link(
+                    fromClass: Address::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/clients/{clientId}/address/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'addresses',
+                    fromClass: Client::class,
+                    description: 'Client identifier',
+                ),
+                'id' => new Link(
+                    fromClass: Address::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/clients/{clientId}/address/{id}',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'addresses',
+                    fromClass: Client::class,
+                    description: 'Client identifier',
+                ),
+                'id' => new Link(
+                    fromClass: Address::class,
+                ),
+            ],
         ),
     ],
     normalizationContext: [
@@ -55,23 +114,6 @@ use function array_filter;
     ],
     denormalizationContext: [
         'groups' => ['address_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/addresses',
-    operations: [ new GetCollection(), new Post() ],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'addresses',
-            fromClass: Client::class,
-            description: 'Client identifier',
-        ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]

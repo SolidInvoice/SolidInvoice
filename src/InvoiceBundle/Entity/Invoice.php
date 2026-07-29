@@ -70,38 +70,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(OrderFilter::class, properties: ['invoiceDate', 'due', 'status'])]
 #[ApiFilter(NumericFilter::class, properties: ['balance'])]
 #[ApiResource(
-    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
-    normalizationContext: [
-        'groups' => ['invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/invoices',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'invoices',
-            fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        'groups' => ['invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/invoices/{id}/transitions/{transition}',
     operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/invoices',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'invoices',
+                    fromClass: Client::class,
+                ),
+            ],
+        ),
         new Post(
+            uriTemplate: '/invoices/{id}/transitions/{transition}',
+            uriVariables: [
+                'id' => new Link(fromClass: Invoice::class),
+            ],
             input: false,
             output: Invoice::class,
             name: 'invoice_transition',
@@ -109,11 +97,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: InvoiceTransitionProcessor::class,
         ),
     ],
-    uriVariables: [
-        'id' => new Link(fromClass: Invoice::class),
-    ],
     normalizationContext: [
         'groups' => ['invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['invoice_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]

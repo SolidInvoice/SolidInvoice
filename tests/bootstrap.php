@@ -23,6 +23,8 @@ if (class_exists(Deprecation::class)) {
     Deprecation::enableWithTriggerError();
 }
 
+libxml_use_internal_errors(true);
+
 (static function (): void {
     $kernel = new Kernel('test', true);
     $kernel->boot();
