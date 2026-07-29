@@ -39,12 +39,10 @@ use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 final class OnboardingEmailSnapshotTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use MatchesSnapshots;
 
     private const string FROZEN_NOW = '2026-04-19 12:00:00';

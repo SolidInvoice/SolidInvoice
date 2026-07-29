@@ -16,13 +16,10 @@ namespace SolidInvoice\CoreBundle\Tests\Functional\Api;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class CustomFieldApiTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return CustomField::class;

@@ -26,13 +26,11 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceRepository::class)]
 final class InvoiceRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private InvoiceRepository $repository;
 

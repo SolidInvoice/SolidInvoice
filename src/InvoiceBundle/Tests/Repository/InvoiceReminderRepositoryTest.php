@@ -23,13 +23,11 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceReminderRepository::class)]
 final class InvoiceReminderRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private InvoiceReminderRepository $repository;
 

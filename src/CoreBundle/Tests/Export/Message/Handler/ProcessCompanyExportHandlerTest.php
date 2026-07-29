@@ -27,7 +27,6 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use ZipArchive;
 
@@ -37,7 +36,6 @@ use ZipArchive;
 final class ProcessCompanyExportHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use InteractsWithMailer;
 
     public function testHandlerBuildsArchiveAndNotifiesUser(): void

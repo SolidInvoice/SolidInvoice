@@ -35,13 +35,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\ErrorHandler\BufferingLogger;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(MarkInvoiceOverdueHandler::class)]
 final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use MockeryPHPUnitIntegration;
 
     public function testHandlerMarksInvoiceOverdue(): void

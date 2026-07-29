@@ -88,7 +88,9 @@ final class TurnstileVerifierTest extends TestCase
     private function toggle(bool $active): ToggleInterface
     {
         $toggle = $this->createMock(ToggleInterface::class);
-        $toggle->method('isActive')
+        $toggle
+            ->expects(self::atLeastOnce())
+            ->method('isActive')
             ->willReturn($active);
 
         return $toggle;

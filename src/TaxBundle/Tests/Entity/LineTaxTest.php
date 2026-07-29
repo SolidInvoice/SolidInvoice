@@ -29,7 +29,6 @@ use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLine;
 use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneLineValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(LineTax::class)]
 #[CoversClass(ExactlyOneLine::class)]
@@ -37,7 +36,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class LineTaxTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private ValidatorInterface $validator;
 

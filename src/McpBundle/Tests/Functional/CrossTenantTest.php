@@ -35,7 +35,6 @@ use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies that a token bound to company A cannot read or write records
@@ -46,7 +45,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class CrossTenantTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     /**
      * @var array{company: Company, client: Client, invoice: Invoice}|null

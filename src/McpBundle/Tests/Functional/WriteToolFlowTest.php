@@ -31,7 +31,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Phase 3 write tool coverage — asserts scope enforcement, company binding,
@@ -41,7 +40,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class WriteToolFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testReadOnlyTokenRejectsWrite(): void
     {

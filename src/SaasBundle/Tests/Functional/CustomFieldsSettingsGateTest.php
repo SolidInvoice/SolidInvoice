@@ -21,7 +21,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Asserts that the SettingsBundle CustomField management UI is short-circuited
@@ -32,7 +31,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class CustomFieldsSettingsGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string GATED_HEADLINE = 'This feature requires an upgrade';
 

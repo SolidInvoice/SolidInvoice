@@ -39,16 +39,16 @@ final class SelectPlanActionTest extends TestCase
         $bus = new CollectingMessageBus();
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('findAllOrdered')->willReturn([
+        $planRepository->expects(self::once())->method('findAllOrdered')->willReturn([
             $this->makePlan('Free'),
             $this->makePlan('Solo'),
         ]);
 
         $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->method('getSubscriptionFor')->willReturn(null);
+        $subscriptionProvider->expects(self::never())->method('getSubscriptionFor')->willReturn(null);
 
         $companyRepository = $this->createMock(CompanyRepository::class);
-        $companyRepository->method('find')->willReturn(new Company());
+        $companyRepository->expects(self::never())->method('find')->willReturn(new Company());
 
         // CompanySelector is final; a real instance with no selected company
         // returns null from getCompany(), which short-circuits subscription
@@ -64,7 +64,7 @@ final class SelectPlanActionTest extends TestCase
         );
 
         $twig = $this->createMock(Environment::class);
-        $twig->method('render')->willReturn('<html></html>');
+        $twig->expects(self::once())->method('render')->willReturn('<html></html>');
 
         $container = new Container();
         $container->set('twig', $twig);
@@ -86,7 +86,7 @@ final class SelectPlanActionTest extends TestCase
     private function makeTelemetry(CollectingMessageBus $bus): Telemetry
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->method('generateKeys')->willReturn(true);
+        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
             $bus,

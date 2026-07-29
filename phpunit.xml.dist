@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd" backupGlobals="false" colors="true" executionOrder="random" failOnWarning="true" failOnRisky="true" beStrictAboutTestsThatDoNotTestAnything="true" beStrictAboutOutputDuringTests="true" beStrictAboutChangesToGlobalState="true" processIsolation="false" stopOnFailure="false" bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.2/phpunit.xsd"
+        colors="true"
+        executionOrder="random"
+        failOnWarning="true"
+        failOnRisky="true"
+        failOnPhpunitNotice="true"
+        failOnPhpunitDeprecation="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutChangesToGlobalState="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnPhpunitDeprecations="true"
+        displayDetailsOnPhpunitNotices="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+        bootstrap="tests/bootstrap.php"
+        cacheDirectory=".phpunit.cache"
+        stderr="true"
+>
   <testsuites>
     <testsuite name="SolidInvoice Test Suite">
       <directory>src/*Bundle/Tests</directory>
@@ -16,12 +36,12 @@
     <server name="SOLIDINVOICE_ENV" value="test"/>
     <server name="SOLIDINVOICE_DEBUG" value="0"/>
     <server name="KERNEL_CLASS" value="SolidInvoice\Kernel"/>
-    <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
   </php>
   <extensions>
     <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
     <bootstrap class="Zenstruck\Browser\Test\BrowserExtension"/>
+    <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension"/>
   </extensions>
   <source>
     <include>

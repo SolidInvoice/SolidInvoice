@@ -20,13 +20,10 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Test\Factory\TaxIdentifierFactory;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class TaxIdentifierTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return TaxIdentifier::class;

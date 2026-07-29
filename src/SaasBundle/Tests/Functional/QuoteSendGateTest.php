@@ -31,7 +31,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS email-verification gate short-circuits the quote send
@@ -42,7 +41,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class QuoteSendGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testGatedRequestDoesNotSendQuote(): void
     {

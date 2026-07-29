@@ -32,14 +32,12 @@ use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(WorkFlowSubscriber::class)]
 final class WorkFlowSubscriberTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
-    use Factories;
 
     public function testOnQuoteAccepted(): void
     {

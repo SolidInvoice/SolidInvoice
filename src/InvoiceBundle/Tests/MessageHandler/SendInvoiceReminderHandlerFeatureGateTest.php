@@ -36,7 +36,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\ErrorHandler\BufferingLogger;
 use Symfony\Component\Mailer\MailerInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SendInvoiceReminderHandler skips and logs (without throwing or
@@ -47,7 +46,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class SendInvoiceReminderHandlerFeatureGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testHandlerSkipsAndLogsWhenFeatureDisabled(): void
     {

@@ -24,14 +24,12 @@ use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversMethod(McpAccessTokenRepository::class, 'touch')]
 #[Group('functional')]
 final class AccessTokenTouchTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testTouchUpdatesLastUsedAt(): void
     {

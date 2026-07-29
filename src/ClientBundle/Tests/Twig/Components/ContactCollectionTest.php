@@ -20,13 +20,10 @@ use SolidInvoice\ClientBundle\Twig\Components\ContactCollection;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ContactCollection::class)]
 final class ContactCollectionTest extends LiveComponentTest
 {
-    use Factories;
-
     public function testSaveNewContactPersistsCustomFieldValue(): void
     {
         $client = ClientFactory::createOne(['company' => $this->company]);

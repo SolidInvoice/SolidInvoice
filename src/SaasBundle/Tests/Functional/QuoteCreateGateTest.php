@@ -23,7 +23,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS feature-gate short-circuits the QuoteBundle Create action
@@ -34,7 +33,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class QuoteCreateGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string GATED_HEADLINE = 'This feature requires an upgrade';
 

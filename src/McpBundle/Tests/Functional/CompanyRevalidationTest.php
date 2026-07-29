@@ -35,7 +35,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies that a token bound to a company the user has since been removed from
@@ -47,7 +46,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class CompanyRevalidationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testRevokedCompanyAccessRejectsToken(): void
     {

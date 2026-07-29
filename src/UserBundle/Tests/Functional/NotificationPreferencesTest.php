@@ -20,12 +20,10 @@ use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class NotificationPreferencesTest extends WebTestCase
 {
-    use Factories;
     use EnsureApplicationInstalled;
 
     public function testNotificationPreferencesPageLoads(): void

@@ -22,13 +22,11 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(CompanyRepository::class)]
 final class CompanyRepositoryTest extends KernelTestCase
 {
     use DoctrineTestTrait;
-    use Factories;
 
     public function testDeleteCompanyAlsoRemovesOrphanedSecurityTokens(): void
     {

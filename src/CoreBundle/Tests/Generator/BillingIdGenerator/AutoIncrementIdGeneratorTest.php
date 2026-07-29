@@ -21,13 +21,11 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(AutoIncrementIdGenerator::class)]
 final class AutoIncrementIdGeneratorTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testItGeneratesTheSameIdWhenNotSavingAnyEntities(): void
     {

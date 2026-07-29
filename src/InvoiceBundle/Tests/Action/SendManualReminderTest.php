@@ -31,12 +31,10 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 final class SendManualReminderTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private function createOpenGate(): EmailVerificationGateInterface
     {

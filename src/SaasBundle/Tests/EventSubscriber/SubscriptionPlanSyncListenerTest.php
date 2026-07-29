@@ -158,7 +158,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::once())->method('findOneBy')->willReturn($subscription);
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
         $planRepository->expects(self::once())->method('find')->with('12345')->willReturn($newPlan);
@@ -180,7 +180,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
         $subscription = $this->makeSubscription($currentPlan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::once())->method('findOneBy')->willReturn($subscription);
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
         $planRepository->expects(self::once())->method('find')->with('67890')->willReturn($newPlan);
@@ -207,7 +207,7 @@ final class SubscriptionPlanSyncListenerTest extends TestCase
     private function makeTelemetry(): Telemetry
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->method('generateKeys')->willReturn(true);
+        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
             $this->bus,

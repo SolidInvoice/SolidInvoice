@@ -31,13 +31,11 @@ use SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceTemplateExtension::class)]
 final class TemplatesRenderingTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const array CHANNELS = ['pdf', 'email', 'preview'];
 

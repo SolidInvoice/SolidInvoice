@@ -26,7 +26,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the MCP Authorize action surfaces a friendly upgrade page when
@@ -39,7 +38,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class McpAuthorizeGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testRendersUpgradePageWhenMcpAccessFeatureDeniedForAllCompanies(): void
     {

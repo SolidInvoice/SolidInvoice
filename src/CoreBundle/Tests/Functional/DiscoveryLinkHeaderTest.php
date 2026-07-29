@@ -19,14 +19,12 @@ use SolidInvoice\CoreBundle\Listener\DiscoveryLinkHeaderListener;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(DiscoveryLinkHeaderListener::class)]
 #[Group('functional')]
 final class DiscoveryLinkHeaderTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testHomepageAdvertisesDiscoveryLinks(): void
     {

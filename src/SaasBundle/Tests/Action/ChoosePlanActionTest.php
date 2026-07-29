@@ -87,10 +87,10 @@ final class ChoosePlanActionTest extends TestCase
         $subscription->setPlan($this->makePlan('Existing', 'existing-monthly', 900));
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->method('find')->willReturn($plan);
+        $planRepository->expects(self::once())->method('find')->willReturn($plan);
 
         $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->method('getSubscriptionFor')->willReturn($subscription);
+        $subscriptionProvider->expects(self::once())->method('getSubscriptionFor')->willReturn($subscription);
 
         // SubscriptionManager is final readonly; build a real one whose
         // changePlan()/activate() (free-plan path) just persist via the mocked
@@ -102,7 +102,7 @@ final class ChoosePlanActionTest extends TestCase
         );
 
         $companyRepository = $this->createMock(CompanyRepository::class);
-        $companyRepository->method('find')->willReturn(new Company());
+        $companyRepository->expects(self::once())->method('find')->willReturn(new Company());
 
         // CompanySelector is final; use a real instance with a company id set.
         $companySelector = new CompanySelector($this->createStub(ManagerRegistry::class));
@@ -118,10 +118,10 @@ final class ChoosePlanActionTest extends TestCase
         );
 
         $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
-        $csrfTokenManager->method('isTokenValid')->willReturn(true);
+        $csrfTokenManager->expects(self::once())->method('isTokenValid')->willReturn(true);
 
         $router = $this->createMock(RouterInterface::class);
-        $router->method('generate')->willReturn('/redirect');
+        $router->expects(self::once())->method('generate')->willReturn('/redirect');
 
         $request = $this->makeRequest('');
         $requestStack = new RequestStack([$request]);
@@ -159,7 +159,7 @@ final class ChoosePlanActionTest extends TestCase
     private function makeTelemetry(CollectingMessageBus $bus): Telemetry
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->method('generateKeys')->willReturn(true);
+        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
             $bus,

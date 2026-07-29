@@ -22,7 +22,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\NoopFeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Form\FormFactoryInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS feature gate at the ClientType form level: when
@@ -35,7 +34,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class ClientFormMultiCurrencyGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testFormGatesCurrencyCodeFieldWhenFeatureDisabled(): void
     {

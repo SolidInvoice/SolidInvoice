@@ -44,8 +44,8 @@ final class ClientTypeTest extends FormTestCase
     {
         $this->disabledFeatures = [];
 
-        $company = $this->faker->company;
-        $url = $this->faker->url;
+        $company = $this->faker->company();
+        $url = $this->faker->url();
         $currencyCode = 'USD';
 
         $formData = [
@@ -69,7 +69,7 @@ final class ClientTypeTest extends FormTestCase
         $this->disabledFeatures = ['multi_currency'];
 
         $object = new Client();
-        $object->setName($this->faker->company);
+        $object->setName($this->faker->company());
         $object->setCurrencyCode('EUR');
 
         $form = $this->factory->create(ClientType::class, $object);

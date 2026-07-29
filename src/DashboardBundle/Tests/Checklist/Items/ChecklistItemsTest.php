@@ -26,12 +26,10 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 final class ChecklistItemsTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     // ============================================================================
     // UploadLogoItem Tests

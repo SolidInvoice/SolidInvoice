@@ -17,10 +17,7 @@ return App::config([
     'zenstruck_foundry' => [
         'enable_auto_refresh_with_lazy_objects' => false,
         'persistence' => [
-            'flush_once' => false,
-        ],
-        'faker' => [
-            'seed' => 91847,
+            'flush_once' => true,
         ],
     ],
 ]);

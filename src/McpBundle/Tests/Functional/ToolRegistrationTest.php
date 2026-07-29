@@ -25,7 +25,6 @@ use SolidInvoice\QuoteBundle\Mcp\QuoteReadTools;
 use SolidInvoice\SettingsBundle\Mcp\SettingsReadTools;
 use SolidInvoice\TaxBundle\Mcp\TaxReadTools;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Asserts every Phase 2 tool class is registered with the `mcp.tool` tag in the
@@ -35,7 +34,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class ToolRegistrationTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testAllReadToolClassesAreResolvable(): void
     {

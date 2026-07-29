@@ -31,7 +31,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the public invoice/quote view link returns 404 when the owning
@@ -42,7 +41,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class PublicViewLinkGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testReturnsNotFoundWhenCompanyGated(): void
     {

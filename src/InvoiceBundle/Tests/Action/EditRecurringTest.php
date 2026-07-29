@@ -41,7 +41,7 @@ final class EditRecurringTest extends TestCase
         ManagerRegistry $doctrine,
     ): EditRecurring {
         $featureGate = $this->createMock(FeatureGate::class);
-        $featureGate->method('isEnabled')->willReturn(true);
+        $featureGate->expects(self::once())->method('isEnabled')->willReturn(true);
 
         return new EditRecurring($formFactory, $router, $workflow, $doctrine, $this->createStub(TotalCalculator::class), $featureGate);
     }
@@ -64,9 +64,9 @@ final class EditRecurringTest extends TestCase
     private function buildSubmittedForm(): FormInterface
     {
         $form = $this->createMock(FormInterface::class);
-        $form->method('isSubmitted')->willReturn(true);
-        $form->method('isValid')->willReturn(true);
-        $form->method('handleRequest');
+        $form->expects(self::once())->method('isSubmitted')->willReturn(true);
+        $form->expects(self::once())->method('isValid')->willReturn(true);
+        $form->expects(self::once())->method('handleRequest');
 
         return $form;
     }
@@ -87,7 +87,7 @@ final class EditRecurringTest extends TestCase
         $form = $this->buildSubmittedForm();
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formFactory->method('create')->willReturn($form);
+        $formFactory->expects(self::once())->method('create')->willReturn($form);
 
         $workflow = $this->createMock(WorkflowInterface::class);
         $workflow->expects($this->once())
@@ -101,10 +101,10 @@ final class EditRecurringTest extends TestCase
         $em->expects($this->once())->method('flush');
 
         $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->method('getManager')->willReturn($em);
+        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
 
         $router = $this->createMock(RouterInterface::class);
-        $router->method('generate')->willReturn('/invoices/recurring/view/123');
+        $router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/view/123');
 
         $action = $this->buildAction($formFactory, $router, $workflow, $doctrine);
         $response = $action($this->buildRequest('publish'), $invoice);
@@ -119,7 +119,7 @@ final class EditRecurringTest extends TestCase
         $form = $this->buildSubmittedForm();
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formFactory->method('create')->willReturn($form);
+        $formFactory->expects(self::once())->method('create')->willReturn($form);
 
         $workflow = $this->createMock(WorkflowInterface::class);
         $workflow->expects($this->once())
@@ -134,10 +134,10 @@ final class EditRecurringTest extends TestCase
         $em->expects($this->once())->method('flush');
 
         $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->method('getManager')->willReturn($em);
+        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
 
         $router = $this->createMock(RouterInterface::class);
-        $router->method('generate')->willReturn('/invoices/recurring/view/123');
+        $router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/view/123');
 
         $action = $this->buildAction($formFactory, $router, $workflow, $doctrine);
         $response = $action($this->buildRequest('publish'), $invoice);
@@ -152,7 +152,7 @@ final class EditRecurringTest extends TestCase
         $form = $this->buildSubmittedForm();
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formFactory->method('create')->willReturn($form);
+        $formFactory->expects(self::once())->method('create')->willReturn($form);
 
         $workflow = $this->createMock(WorkflowInterface::class);
         $workflow->expects($this->never())->method('can');
@@ -162,10 +162,10 @@ final class EditRecurringTest extends TestCase
         $em->expects($this->once())->method('flush');
 
         $doctrine = $this->createMock(ManagerRegistry::class);
-        $doctrine->method('getManager')->willReturn($em);
+        $doctrine->expects(self::once())->method('getManager')->willReturn($em);
 
         $router = $this->createMock(RouterInterface::class);
-        $router->method('generate')->willReturn('/invoices/recurring/view/123');
+        $router->expects(self::once())->method('generate')->willReturn('/invoices/recurring/view/123');
 
         $action = $this->buildAction($formFactory, $router, $workflow, $doctrine);
         $response = $action($this->buildRequest('draft'), $invoice);

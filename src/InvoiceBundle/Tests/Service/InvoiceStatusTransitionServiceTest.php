@@ -26,13 +26,11 @@ use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceStatusTransitionService::class)]
 final class InvoiceStatusTransitionServiceTest extends KernelTestCase
 {
     use DoctrineTestTrait;
-    use Factories;
     use MockeryPHPUnitIntegration;
 
     public function testApplyTransition(): void

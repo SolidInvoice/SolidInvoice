@@ -31,7 +31,6 @@ use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use function Zenstruck\Foundry\Persistence\save;
 
@@ -46,7 +45,6 @@ use function Zenstruck\Foundry\Persistence\save;
 final class OverdueInvoiceFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use InteractsWithMailer;
 
     public function testCompleteOverdueFlow(): void

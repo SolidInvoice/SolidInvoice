@@ -21,13 +21,11 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Browser\Test\HasBrowser;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class TwoFactorSettingsTest extends WebTestCase
 {
     use HasBrowser;
-    use Factories;
     use EnsureApplicationInstalled;
     use DoctrineTestTrait;
 

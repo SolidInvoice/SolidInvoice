@@ -37,7 +37,6 @@ use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
-use Zenstruck\Foundry\Test\Factories;
 use function rewind;
 use function str_replace;
 use function stream_get_contents;
@@ -46,7 +45,6 @@ use function stream_get_contents;
 final class SendInvoiceRemindersCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use ConsoleTesterTrait;
 
     /**

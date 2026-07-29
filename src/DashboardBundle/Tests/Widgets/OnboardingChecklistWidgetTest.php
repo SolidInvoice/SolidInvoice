@@ -21,12 +21,10 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
-use Zenstruck\Foundry\Test\Factories;
 
 final class OnboardingChecklistWidgetTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testGetDataReturnsShowFalseWhenNoUserIsLoggedIn(): void
     {

@@ -39,12 +39,9 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use Zenstruck\Foundry\Test\Factories;
 
 final class QuoteTypeTest extends FormTestCase
 {
-    use Factories;
-
     public function testSubmit(): void
     {
         $notes = $this->faker->text;

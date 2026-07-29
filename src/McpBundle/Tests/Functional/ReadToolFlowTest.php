@@ -31,7 +31,6 @@ use SolidInvoice\SettingsBundle\Mcp\SettingsReadTools;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Exercises the Phase 2 read tools end-to-end within the kernel, simulating
@@ -41,7 +40,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class ReadToolFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testCompanyInfoToolReturnsActiveCompany(): void
     {

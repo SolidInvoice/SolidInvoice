@@ -29,14 +29,11 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
 #[Group('functional')]
 final class RecurringInvoiceTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return RecurringInvoice::class;

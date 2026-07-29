@@ -114,7 +114,7 @@ final class TelemetryTest extends TestCase
     public function testPingMapsDatabasePlatformToDriverName(AbstractPlatform $platform, string $expectedDriver): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->method('getDatabasePlatform')->willReturn($platform);
+        $connection->expects(self::once())->method('getDatabasePlatform')->willReturn($platform);
 
         $this->createTelemetry(connection: $connection)->ping();
 
@@ -185,7 +185,7 @@ final class TelemetryTest extends TestCase
         ?Connection $connection = null,
         ?string $lastVersion = null,
     ): Telemetry {
-        $vault = $this->createMock(AbstractVault::class);
+        $vault = $this->createStub(AbstractVault::class);
         $vault->method('generateKeys')->willReturn(true);
 
         $configWriter = new ConfigWriter($vault, '/tmp/solidinvoice-test-config');

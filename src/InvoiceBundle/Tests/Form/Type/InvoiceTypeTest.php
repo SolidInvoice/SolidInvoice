@@ -42,12 +42,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
-use Zenstruck\Foundry\Test\Factories;
 
 final class InvoiceTypeTest extends FormTestCase
 {
-    use Factories;
-
     public function testSubmit(): void
     {
         $notes = $this->faker->text;

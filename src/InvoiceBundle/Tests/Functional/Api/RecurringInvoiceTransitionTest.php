@@ -24,13 +24,10 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class RecurringInvoiceTransitionTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return RecurringInvoice::class;

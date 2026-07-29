@@ -29,7 +29,6 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 use function basename;
 use function dirname;
 use function glob;
@@ -44,7 +43,6 @@ use function str_starts_with;
 final class TemplatesRenderingTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const array CHANNELS = ['pdf', 'email', 'preview'];
 

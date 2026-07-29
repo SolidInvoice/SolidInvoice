@@ -18,13 +18,10 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class RecurringInvoiceLineTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return RecurringInvoiceLine::class;

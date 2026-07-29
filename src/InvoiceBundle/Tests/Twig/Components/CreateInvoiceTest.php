@@ -28,12 +28,9 @@ use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 final class CreateInvoiceTest extends LiveComponentTest
 {
-    use Factories;
-
     public function testCreateInvoice(): void
     {
         $dto = new InvoiceFormDTO();

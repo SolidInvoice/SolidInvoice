@@ -21,18 +21,9 @@ use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Twig\Components\CreateQuote;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 final class CreateQuoteTest extends LiveComponentTest
 {
-    /**
-     * @var Ulid
-     */
-    public $id;
-
-    use Factories;
-
     public function testCreateQuote(): void
     {
         $dto = new QuoteFormDTO();

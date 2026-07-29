@@ -36,7 +36,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
-use Zenstruck\Foundry\Test\Factories;
 use function Zenstruck\Foundry\Persistence\save;
 
 #[CoversClass(SendInvoiceRemindersCommand::class)]
@@ -47,7 +46,6 @@ use function Zenstruck\Foundry\Persistence\save;
 final class InvoiceReminderFlowTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private InvoiceReminderRepository $reminderRepository;
 
