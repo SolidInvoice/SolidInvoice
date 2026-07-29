@@ -31,13 +31,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class MultiTaxLineTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testInvoiceLineWithIndiaGstSplit(): void
     {

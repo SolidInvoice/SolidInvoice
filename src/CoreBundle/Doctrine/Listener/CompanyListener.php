@@ -42,7 +42,7 @@ final readonly class CompanyListener
         $metaData = $em->getClassMetadata($object::class);
 
         if ($metaData->hasAssociation('company')) {
-            if ($metaData->getReflectionProperty('company')->isInitialized($object)) {
+            if ($metaData->getPropertyAccessor('company')->getUnderlyingReflector()->isInitialized($object)) {
                 return;
             }
 

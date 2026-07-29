@@ -23,7 +23,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS feature-gate short-circuits the InvoiceBundle CreateRecurring
@@ -35,7 +34,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class RecurringInvoiceCreateGateTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string GATED_HEADLINE = 'This feature requires an upgrade';
 

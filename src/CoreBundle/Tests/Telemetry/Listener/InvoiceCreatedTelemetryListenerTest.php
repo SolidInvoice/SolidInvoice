@@ -62,7 +62,7 @@ final class InvoiceCreatedTelemetryListenerTest extends TestCase
     private function createConfigWriter(): ConfigWriter
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->method('generateKeys')->willReturn(true);
+        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
 
         return new ConfigWriter($vault, '/tmp/solidinvoice-test-config');
     }

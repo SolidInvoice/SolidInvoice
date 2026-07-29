@@ -22,14 +22,12 @@ use SolidInvoice\McpBundle\OAuth\ConsentService;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ConsentService::class)]
 #[Group('functional')]
 final class ConsentGrantTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testRememberAndLookupConsent(): void
     {

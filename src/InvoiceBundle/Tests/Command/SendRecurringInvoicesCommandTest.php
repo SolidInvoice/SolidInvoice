@@ -26,7 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\LazyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\Constraint\CommandIsSuccessful;
-use Zenstruck\Foundry\Test\Factories;
 use function rewind;
 use function str_replace;
 use function stream_get_contents;
@@ -35,7 +34,6 @@ use function stream_get_contents;
 final class SendRecurringInvoicesCommandTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use ConsoleTesterTrait;
 
     public function testCommandExecutesSuccessfully(): void

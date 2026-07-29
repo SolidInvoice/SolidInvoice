@@ -20,13 +20,10 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientCredit;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ClientCredit::class)]
 final class ClientCreditTest extends LiveComponentTest
 {
-    use Factories;
-
     public function testFormWrapsModal(): void
     {
         $client = ClientFactory::createOne([

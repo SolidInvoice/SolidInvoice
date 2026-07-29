@@ -29,14 +29,11 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
 #[Group('functional')]
 final class ClientTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Client::class;

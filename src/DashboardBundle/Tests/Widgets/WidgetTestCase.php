@@ -18,12 +18,10 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 abstract class WidgetTestCase extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use MatchesSnapshots;
 
     protected Environment $twig;

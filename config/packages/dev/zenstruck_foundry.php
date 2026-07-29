@@ -17,7 +17,7 @@ return App::config([
     'zenstruck_foundry' => [
         'enable_auto_refresh_with_lazy_objects' => false,
         'persistence' => [
-            'flush_once' => false,
+            'flush_once' => true,
         ],
     ],
 ]);

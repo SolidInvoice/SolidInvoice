@@ -19,7 +19,6 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Regression: league/oauth2-server passes the stored client_id back to the
@@ -31,7 +30,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class OAuthClientLookupTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testGetClientEntityAcceptsRfc4122Form(): void
     {

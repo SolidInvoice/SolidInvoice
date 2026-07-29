@@ -18,13 +18,10 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class InvoiceLineTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Line::class;

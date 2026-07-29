@@ -171,9 +171,9 @@ final class SubscribeControllerTest extends TestCase
         $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
 
         if ($exception instanceof Throwable) {
-            $paymentIntegration->method('checkout')->willThrowException($exception);
+            $paymentIntegration->expects(self::once())->method('checkout')->willThrowException($exception);
         } else {
-            $paymentIntegration->method('checkout')->willReturn('https://checkout.lemonsqueezy.com/buy/abc');
+            $paymentIntegration->expects(self::once())->method('checkout')->willReturn('https://checkout.lemonsqueezy.com/buy/abc');
         }
 
         $plan = new Plan();
@@ -185,7 +185,7 @@ final class SubscribeControllerTest extends TestCase
         $subscription->setPlan($plan);
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::once())->method('findOneBy')->willReturn($subscription);
 
         $subscriptionManager = new SubscriptionManager(
             $subscriptionRepository,
@@ -194,10 +194,10 @@ final class SubscribeControllerTest extends TestCase
         );
 
         $companySelector = $this->createMock(CompanySelectorInterface::class);
-        $companySelector->method('getCompany')->willReturn(new Ulid());
+        $companySelector->expects(self::once())->method('getCompany')->willReturn(new Ulid());
 
         $companyRepository = $this->createMock(CompanyRepository::class);
-        $companyRepository->method('find')->willReturn(new Company());
+        $companyRepository->expects(self::once())->method('find')->willReturn(new Company());
 
         $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')->willReturn(CarbonImmutable::parse('2024-01-01'));
@@ -218,17 +218,17 @@ final class SubscribeControllerTest extends TestCase
 
         $requestStack = new RequestStack([$request]);
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')->willReturn('/billing/');
 
         $user = new User();
         $user->setEmail('test@example.com');
 
         $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($user);
+        $token->expects(self::once())->method('getUser')->willReturn($user);
 
         $tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $tokenStorage->method('getToken')->willReturn($token);
+        $tokenStorage->expects(self::once())->method('getToken')->willReturn($token);
 
         $container = new Container();
         $container->set('request_stack', $requestStack);
@@ -245,7 +245,7 @@ final class SubscribeControllerTest extends TestCase
 
     private function makeTelemetry(): Telemetry
     {
-        $vault = $this->createMock(AbstractVault::class);
+        $vault = $this->createStub(AbstractVault::class);
         $vault->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
@@ -286,7 +286,7 @@ final class SubscribeControllerTest extends TestCase
         $capturedOptions = null;
 
         $paymentIntegration = $this->createMock(PaymentIntegrationInterface::class);
-        $paymentIntegration->method('checkout')->willReturnCallback(
+        $paymentIntegration->expects(self::once())->method('checkout')->willReturnCallback(
             static function (Subscription $s, ?Options $options) use (&$capturedOptions): string {
                 $capturedOptions = $options;
 
@@ -295,7 +295,7 @@ final class SubscribeControllerTest extends TestCase
         );
 
         $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
-        $subscriptionRepository->method('findOneBy')->willReturn($subscription);
+        $subscriptionRepository->expects(self::once())->method('findOneBy')->willReturn($subscription);
 
         $subscriptionManager = new SubscriptionManager(
             $subscriptionRepository,
@@ -304,10 +304,10 @@ final class SubscribeControllerTest extends TestCase
         );
 
         $companySelector = $this->createMock(CompanySelectorInterface::class);
-        $companySelector->method('getCompany')->willReturn(new Ulid());
+        $companySelector->expects(self::once())->method('getCompany')->willReturn(new Ulid());
 
         $companyRepository = $this->createMock(CompanyRepository::class);
-        $companyRepository->method('find')->willReturn(new Company());
+        $companyRepository->expects(self::once())->method('find')->willReturn(new Company());
 
         $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')->willReturn($now);
@@ -326,17 +326,17 @@ final class SubscribeControllerTest extends TestCase
         $request = Request::create('/billing/subscription/activate');
         $request->setSession($session);
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = $this->createStub(RouterInterface::class);
         $router->method('generate')->willReturn('/billing/');
 
         $user = new User();
         $user->setEmail('test@example.com');
 
         $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($user);
+        $token->expects(self::once())->method('getUser')->willReturn($user);
 
         $tokenStorage = $this->createMock(TokenStorageInterface::class);
-        $tokenStorage->method('getToken')->willReturn($token);
+        $tokenStorage->expects(self::once())->method('getToken')->willReturn($token);
 
         $container = new Container();
         $container->set('request_stack', new RequestStack([$request]));

@@ -26,13 +26,10 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class AddressTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Address::class;

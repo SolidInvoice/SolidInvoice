@@ -31,13 +31,11 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(PaymentRepository::class)]
 final class PaymentRepositoryTest extends KernelTestCase
 {
     use DoctrineTestTrait;
-    use Factories;
 
     public function testGetTotalPaidForInvoice(): void
     {

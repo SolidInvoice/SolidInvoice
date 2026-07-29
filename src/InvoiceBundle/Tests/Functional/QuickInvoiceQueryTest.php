@@ -21,12 +21,10 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 final class QuickInvoiceQueryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testCanFindInvoiceNeedingReminder(): void
     {

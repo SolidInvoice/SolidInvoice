@@ -29,14 +29,12 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Browser\Test\HasBrowser;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class OnboardingFlowTest extends WebTestCase
 {
     use HasBrowser;
     use DoctrineTestTrait;
-    use Factories;
     use EnsureApplicationInstalled;
 
     private UserSettingRepository $userSettingRepository;

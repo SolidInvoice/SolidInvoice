@@ -34,12 +34,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 final class PrepareTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private function buildAction(
         PaymentMethodRepository $paymentMethodRepository,

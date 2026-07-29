@@ -19,7 +19,6 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the global disabled-account block is enforced at API authentication
@@ -28,8 +27,6 @@ use Zenstruck\Foundry\Test\Factories;
 #[Group('functional')]
 final class ApiUserCheckerTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Client::class;

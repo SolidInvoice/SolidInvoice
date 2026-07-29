@@ -27,14 +27,11 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
 #[Group('functional')]
 final class InvoiceTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Invoice::class;

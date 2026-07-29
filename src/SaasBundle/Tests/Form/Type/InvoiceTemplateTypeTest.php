@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\SaasBundle\Form\Type\InvoiceTemplateType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -38,6 +39,7 @@ final class InvoiceTemplateTypeTest extends TypeTestCase
     {
         $this->filesystem = new Filesystem();
         $this->invoiceDir = sys_get_temp_dir() . '/' . uniqid('invoice_template_type_', true) . '/invoice';
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
 
         foreach (['sleek', 'bold'] as $slug) {
             foreach (['pdf', 'email', 'preview'] as $channel) {

@@ -35,7 +35,6 @@ use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies that a denied authorization decision blocks API authentication
@@ -48,7 +47,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class SubscriptionGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     public function testAuthorizationGrantedAllowsRequest(): void

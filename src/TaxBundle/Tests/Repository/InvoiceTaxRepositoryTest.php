@@ -22,13 +22,11 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Repository\InvoiceTaxRepository;
 use SolidInvoice\TaxBundle\Test\Factory\InvoiceTaxFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceTaxRepository::class)]
 final class InvoiceTaxRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private InvoiceTaxRepository $repository;
 

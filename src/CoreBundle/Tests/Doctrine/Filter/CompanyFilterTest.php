@@ -119,13 +119,13 @@ final class CompanyFilterTest extends TestCase
 
     private function entityManager(AbstractPlatform $platform): EntityManagerInterface
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = $this->createStub(Connection::class);
         $connection->method('getDatabasePlatform')->willReturn($platform);
         $connection->method('quote')->willReturnCallback(static fn (string $value): string => "'" . $value . "'");
         $connection->method('createQueryBuilder')->willReturnCallback(static fn (): QueryBuilder => new QueryBuilder($connection));
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager->method('getConnection')->willReturn($connection);
+        $entityManager->expects(self::atLeastOnce())->method('getConnection')->willReturn($connection);
 
         return $entityManager;
     }

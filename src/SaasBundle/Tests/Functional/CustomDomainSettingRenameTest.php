@@ -23,7 +23,6 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Asserts that a value stored under the legacy `system/company/custom_domain`
@@ -34,7 +33,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class CustomDomainSettingRenameTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string OLD_KEY = 'system/company/custom_domain';
 

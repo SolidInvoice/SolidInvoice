@@ -36,13 +36,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
-    use Factories;
 
     private const string CLIENT_ID = '01JGXKV8QZ0000000000000001';
 

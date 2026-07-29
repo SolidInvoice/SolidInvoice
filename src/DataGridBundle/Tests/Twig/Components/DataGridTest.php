@@ -16,12 +16,9 @@ namespace SolidInvoice\DataGridBundle\Tests\Twig\Components;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
-use Zenstruck\Foundry\Test\Factories;
 
 final class DataGridTest extends LiveComponentTest
 {
-    use Factories;
-
     private TestLiveComponent $component;
 
     protected function setUp(): void

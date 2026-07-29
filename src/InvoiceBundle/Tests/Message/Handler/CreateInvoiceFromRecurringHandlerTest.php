@@ -39,13 +39,11 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\StateMachine;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(CreateInvoiceFromRecurringHandler::class)]
 final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testHandler(): void
     {

@@ -29,7 +29,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Renders each invoice email template against a stable fixture and
@@ -40,7 +39,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class TemplateEmailSnapshotTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
     use MatchesSnapshots;
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';

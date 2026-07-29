@@ -20,13 +20,10 @@ use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class ApiTokenTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return ApiToken::class;

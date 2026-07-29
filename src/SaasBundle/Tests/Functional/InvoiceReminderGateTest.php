@@ -31,7 +31,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS email-verification gate short-circuits the manual
@@ -42,7 +41,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class InvoiceReminderGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testGatedReminderShortCircuitsAndDoesNotSendEmail(): void
     {

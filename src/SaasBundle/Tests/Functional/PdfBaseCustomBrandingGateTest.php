@@ -32,7 +32,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Twig\Environment;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies that the PDF base template (`_pdf_base.html.twig`) gates the
@@ -51,7 +50,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string SETTING_KEY = 'system/general/hide_powered_by';
 

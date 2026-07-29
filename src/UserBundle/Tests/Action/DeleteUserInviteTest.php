@@ -23,13 +23,11 @@ use SolidInvoice\UserBundle\Enum\InvitationStatus;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class DeleteUserInviteTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testDeletesPendingInvitation(): void
     {

@@ -26,12 +26,10 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[Group('functional')]
 final class CustomFieldValueCollectionTypeTest extends KernelTestCase
 {
-    use Factories;
     use EnsureApplicationInstalled;
 
     public function testSubmitCreatesValue(): void

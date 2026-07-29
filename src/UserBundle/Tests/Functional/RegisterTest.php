@@ -22,14 +22,12 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Test\Factories;
 use function Zenstruck\Foundry\faker;
 
 #[Group('functional')]
 final class RegisterTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private const string PASSWORD = 'Sup3rStr0ngP@ssw0rd';
 

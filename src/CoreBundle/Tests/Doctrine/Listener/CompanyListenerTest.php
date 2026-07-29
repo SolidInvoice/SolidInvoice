@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\PropertyAccessors\PropertyAccessor;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -28,6 +29,8 @@ use SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use stdClass;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[CoversClass(CompanyListener::class)]
@@ -136,11 +139,15 @@ final class CompanyListenerTest extends TestCase
 
         if ($hasAssociation) {
             $reflection = new ReflectionProperty($entity, 'company');
+            $propertyAccessor = $this->createStub(PropertyAccessor::class);
             $metadata
-                ->shouldReceive('getReflectionProperty')
+                ->shouldReceive('getPropertyAccessor')
                 ->with('company')
                 ->zeroOrMoreTimes()
-                ->andReturn($reflection);
+                ->andReturn($propertyAccessor);
+            $propertyAccessor
+                ->method('getUnderlyingReflector')
+                ->willReturn($reflection);
         }
 
         $repository = M::mock(EntityRepository::class);

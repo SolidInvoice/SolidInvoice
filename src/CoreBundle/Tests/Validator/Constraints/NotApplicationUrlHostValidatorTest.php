@@ -85,9 +85,8 @@ final class NotApplicationUrlHostValidatorTest extends ConstraintValidatorTestCa
     {
         $this->applicationUrl = '';
         $this->validator = $this->createValidator();
-        $this->validator->initialize($this->context);
 
-        $this->validator->validate('app.example.com', new NotApplicationUrlHost());
+        $this->validator->validateInContext('app.example.com', new NotApplicationUrlHost(), $this->context);
         $this->assertNoViolation();
     }
 }

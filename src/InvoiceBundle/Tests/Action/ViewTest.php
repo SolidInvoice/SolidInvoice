@@ -41,13 +41,11 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
-    use Factories;
 
     private const string CLIENT_ID = '01JGXKV8QZ0000000000000001';
 

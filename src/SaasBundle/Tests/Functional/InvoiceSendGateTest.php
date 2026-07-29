@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 /**
  * Verifies the SaaS email-verification gate short-circuits the invoice send
@@ -41,7 +40,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class InvoiceSendGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testGatedSendShortCircuitsAndDoesNotSendEmail(): void
     {

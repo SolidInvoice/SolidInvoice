@@ -18,13 +18,10 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use Symfony\Component\Uid\Ulid;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(ClientForm::class)]
 final class ClientFormTest extends LiveComponentTest
 {
-    use Factories;
-
     public function testRender(): void
     {
         $component = $this

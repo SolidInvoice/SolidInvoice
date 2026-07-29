@@ -22,7 +22,6 @@ use SolidInvoice\McpBundle\Action\WellKnownProtectedResource;
 use SolidInvoice\McpBundle\Action\WellKnownServerCard;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(WellKnownAuthServer::class)]
 #[CoversClass(WellKnownProtectedResource::class)]
@@ -32,7 +31,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class WellKnownTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     public function testAuthorizationServerMetadata(): void
     {

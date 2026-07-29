@@ -27,14 +27,11 @@ use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
-use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
 #[Group('functional')]
 final class QuoteTest extends ApiTestCase
 {
-    use Factories;
-
     protected function getResourceClass(): string
     {
         return Quote::class;

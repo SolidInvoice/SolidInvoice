@@ -31,7 +31,6 @@ use SolidInvoice\TaxBundle\Validator\Constraints\ExactlyOneDocumentValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zenstruck\Foundry\Test\Factories;
 
 #[CoversClass(InvoiceTax::class)]
 #[CoversClass(ExactlyOneDocument::class)]
@@ -39,7 +38,6 @@ use Zenstruck\Foundry\Test\Factories;
 final class InvoiceTaxTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     private ValidatorInterface $validator;
 
