@@ -31,9 +31,9 @@ final class ContactTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $firstName = $this->faker->firstName;
-        $lastName = $this->faker->lastName;
-        $email = $this->faker->email;
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
+        $email = $this->faker->email();
 
         $formData = [
             'firstName' => $firstName,

@@ -21,11 +21,11 @@ final class ProfileTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $mobile = $this->faker->phoneNumber;
+        $mobile = $this->faker->phoneNumber();
 
         $formData = [
-            'firstName' => $this->faker->firstName,
-            'lastName' => $this->faker->lastName,
+            'firstName' => $this->faker->firstName(),
+            'lastName' => $this->faker->lastName(),
             'mobile' => $mobile,
         ];
 

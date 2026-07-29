@@ -20,9 +20,9 @@ final class PaymentMethodTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $name = $this->faker->name;
-        $enabled = $this->faker->boolean;
-        $internal = $this->faker->boolean;
+        $name = $this->faker->name();
+        $enabled = $this->faker->boolean();
+        $internal = $this->faker->boolean();
 
         $formData = [
             'name' => $name,

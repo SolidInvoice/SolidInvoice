@@ -26,7 +26,7 @@ final class ItemTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $description = $this->faker->text;
+        $description = $this->faker->text();
         $price = $this->faker->randomNumber(3);
         $qty = $this->faker->randomFloat(2);
 

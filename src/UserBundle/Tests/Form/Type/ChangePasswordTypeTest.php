@@ -21,8 +21,8 @@ final class ChangePasswordTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $currentPassword = $this->faker->password;
-        $newPassword = $this->faker->password;
+        $currentPassword = $this->faker->password();
+        $newPassword = $this->faker->password();
 
         $formData = [
             'currentPassword' => $currentPassword,
@@ -43,7 +43,7 @@ final class ChangePasswordTypeTest extends FormTestCase
 
     public function testSubmitWithoutCurrentPassword(): void
     {
-        $newPassword = $this->faker->password;
+        $newPassword = $this->faker->password();
 
         $formData = [
             'plainPassword' => [

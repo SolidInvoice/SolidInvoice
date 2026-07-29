@@ -197,6 +197,7 @@
         "dbrekelmans/bdi": "^1.4",
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "ergebnis/composer-normalize": "^2.52",
+        "ergebnis/rector-rules": "^1.18",
         "laravel/pao": "^1.1",
         "liip/test-fixtures-bundle": "^3.9",
         "matthiasnoback/symfony-dependency-injection-test": "^6.3",

@@ -39,9 +39,9 @@ final class SystemInformationFormTest extends FormTestCase
     public function testSubmit(): void
     {
         $locale = $this->faker->randomKey(Locales::getNames());
-        $email = $this->faker->email;
-        $firstName = $this->faker->firstName;
-        $lastName = $this->faker->lastName;
+        $email = $this->faker->email();
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
 
         $formData = [
             'applicationUrl' => 'https://invoices.example.com',
@@ -68,9 +68,9 @@ final class SystemInformationFormTest extends FormTestCase
     public function testSubmitWithPassword(): void
     {
         $locale = 'en';
-        $email = $this->faker->email;
-        $firstName = $this->faker->firstName;
-        $lastName = $this->faker->lastName;
+        $email = $this->faker->email();
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
         $password = $this->faker->password(8, 20);
 
         $formData = [

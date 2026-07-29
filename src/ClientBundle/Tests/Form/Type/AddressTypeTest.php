@@ -24,11 +24,11 @@ final class AddressTypeTest extends FormTestCase
     {
         $faker = Factory::create();
 
-        $street1 = $faker->buildingNumber . ' ' . $faker->streetName;
-        $street2 = $faker->randomNumber(2) . ' ' . $faker->streetName . ' ' . $faker->streetSuffix;
-        $city = $faker->city;
-        $postcode = $faker->postcode;
-        $countryCode = $faker->countryCode;
+        $street1 = $faker->buildingNumber() . ' ' . $faker->streetName();
+        $street2 = $faker->randomNumber(2) . ' ' . $faker->streetName() . ' ' . $faker->streetSuffix();
+        $city = $faker->city();
+        $postcode = $faker->postcode();
+        $countryCode = $faker->countryCode();
 
         $formData = [
             'street1' => $street1,

@@ -44,8 +44,8 @@ final class QuoteTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $notes = $this->faker->text;
-        $terms = $this->faker->text;
+        $notes = $this->faker->text();
+        $terms = $this->faker->text();
         $discountValue = $this->faker->numberBetween(0, 100);
         $client = ClientFactory::createOne();
 
@@ -88,8 +88,8 @@ final class QuoteTypeTest extends FormTestCase
 
     public function testSubmitWithNewClient(): void
     {
-        $notes = $this->faker->text;
-        $terms = $this->faker->text;
+        $notes = $this->faker->text();
+        $terms = $this->faker->text();
         $discountValue = $this->faker->numberBetween(0, 100);
 
         $formData = [
