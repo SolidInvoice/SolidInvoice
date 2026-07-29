@@ -53,57 +53,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
 #[ApiResource(
-    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
-    normalizationContext: [
-        'groups' => ['recurring_invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['recurring_invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/recurring-invoices',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'recurringInvoices',
-            fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        'groups' => ['recurring_invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['recurring_invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/recurring-invoices/{id}/transitions/{transition}',
     operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/recurring-invoices',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'recurringInvoices',
+                    fromClass: Client::class,
+                ),
+            ],
+        ),
         new Post(
+            uriTemplate: '/recurring-invoices/{id}/transitions/{transition}',
+            uriVariables: [
+                'id' => new Link(fromClass: RecurringInvoice::class),
+            ],
             input: false,
             output: RecurringInvoice::class,
             name: 'recurring_invoice_transition',
             provider: RecurringInvoiceItemProvider::class,
             processor: RecurringInvoiceTransitionProcessor::class,
         ),
-    ],
-    uriVariables: [
-        'id' => new Link(fromClass: RecurringInvoice::class),
-    ],
-    normalizationContext: [
-        'groups' => ['recurring_invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/recurring-invoices/{id}/generate',
-    operations: [
         new Post(
+            uriTemplate: '/recurring-invoices/{id}/generate',
+            uriVariables: ['id' => new Link(fromClass: RecurringInvoice::class)],
+            normalizationContext: [
+                'groups' => ['invoice_api:read'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
             input: false,
             output: Invoice::class,
             name: 'recurring_invoice_generate',
@@ -111,9 +93,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: GenerateInvoiceFromRecurringProcessor::class,
         ),
     ],
-    uriVariables: ['id' => new Link(fromClass: RecurringInvoice::class)],
     normalizationContext: [
-        'groups' => ['invoice_api:read'],
+        'groups' => ['recurring_invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['recurring_invoice_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]

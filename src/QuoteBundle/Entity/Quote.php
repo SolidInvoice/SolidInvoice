@@ -69,57 +69,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(NumericFilter::class, properties: ['total', 'baseTotal', 'tax'])]
 #[ApiFilter(OrderFilter::class, properties: ['due', 'status'])]
 #[ApiResource(
-    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
-    normalizationContext: [
-        'groups' => ['quote_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['quote_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/quotes',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'quotes',
-            fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        'groups' => ['quote_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['quote_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/quotes/{id}/transitions/{transition}',
     operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/quotes',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'quotes',
+                    fromClass: Client::class,
+                ),
+            ],
+        ),
         new Post(
+            uriTemplate: '/quotes/{id}/transitions/{transition}',
+            uriVariables: [
+                'id' => new Link(fromClass: Quote::class),
+            ],
             input: false,
             output: Quote::class,
             name: 'quote_transition',
             provider: QuoteItemProvider::class,
             processor: QuoteTransitionProcessor::class,
         ),
-    ],
-    uriVariables: [
-        'id' => new Link(fromClass: Quote::class),
-    ],
-    normalizationContext: [
-        'groups' => ['quote_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/quotes/{id}/invoice',
-    operations: [
         new Post(
+            uriTemplate: '/quotes/{id}/invoice',
+            uriVariables: ['id' => new Link(fromClass: Quote::class)],
+            normalizationContext: [
+                'groups' => ['invoice_api:read'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
             input: false,
             output: Invoice::class,
             name: 'quote_to_invoice',
@@ -127,9 +109,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: QuoteToInvoiceProcessor::class,
         ),
     ],
-    uriVariables: ['id' => new Link(fromClass: Quote::class)],
     normalizationContext: [
-        'groups' => ['invoice_api:read'],
+        'groups' => ['quote_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['quote_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]

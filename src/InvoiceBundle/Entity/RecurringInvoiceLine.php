@@ -27,31 +27,61 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 #[ORM\Entity(repositoryClass: RecurringInvoiceLineRepository::class)]
 #[ApiResource(
-    uriTemplate: '/recurring-invoices/{invoiceId}/lines',
-    operations: [new GetCollection(), new Post(processor: RecurringInvoiceLinePersistProcessor::class)],
-    uriVariables: [
-        'invoiceId' => new Link(
-            fromProperty: 'lines',
-            fromClass: RecurringInvoice::class,
+    operations: [
+        new GetCollection(
+            uriTemplate: '/recurring-invoices/{invoiceId}/lines',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: RecurringInvoice::class,
+                ),
+            ],
         ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/recurring-invoices/{invoiceId}/line/{id}',
-    operations: [new Get(), new Patch(), new Delete()],
-    uriVariables: [
-        'invoiceId' => new Link(
-            fromProperty: 'lines',
-            fromClass: RecurringInvoice::class,
+        new Post(
+            uriTemplate: '/recurring-invoices/{invoiceId}/lines',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: RecurringInvoice::class,
+                ),
+            ],
+            processor: RecurringInvoiceLinePersistProcessor::class,
         ),
-        'id' => new Link(
-            fromClass: RecurringInvoiceLine::class,
+        new Get(
+            uriTemplate: '/recurring-invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: RecurringInvoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: RecurringInvoiceLine::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/recurring-invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: RecurringInvoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: RecurringInvoiceLine::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/recurring-invoices/{invoiceId}/line/{id}',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: RecurringInvoice::class,
+                ),
+                'id' => new Link(
+                    fromClass: RecurringInvoiceLine::class,
+                ),
+            ],
         ),
     ],
     normalizationContext: [

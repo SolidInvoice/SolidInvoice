@@ -48,33 +48,62 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
-    uriTemplate: '/quotes/{quoteId}/lines',
     shortName: 'QuoteLine',
-    operations: [new GetCollection(), new Post(processor: QuoteLinePersistProcessor::class)],
-    uriVariables: [
-        'quoteId' => new Link(
-            fromProperty: 'lines',
-            fromClass: Quote::class,
+    operations: [
+        new GetCollection(
+            uriTemplate: '/quotes/{quoteId}/lines',
+            uriVariables: [
+                'quoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Quote::class,
+                ),
+            ],
         ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/quotes/{quoteId}/line/{id}',
-    shortName: 'QuoteLine',
-    operations: [new Get(), new Patch(), new Delete()],
-    uriVariables: [
-        'quoteId' => new Link(
-            fromProperty: 'lines',
-            fromClass: Quote::class,
+        new Post(
+            uriTemplate: '/quotes/{quoteId}/lines',
+            uriVariables: [
+                'quoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Quote::class,
+                ),
+            ],
+            processor: QuoteLinePersistProcessor::class,
         ),
-        'id' => new Link(
-            fromClass: Line::class,
+        new Get(
+            uriTemplate: '/quotes/{quoteId}/line/{id}',
+            uriVariables: [
+                'quoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Quote::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/quotes/{quoteId}/line/{id}',
+            uriVariables: [
+                'quoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Quote::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/quotes/{quoteId}/line/{id}',
+            uriVariables: [
+                'quoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: Quote::class,
+                ),
+                'id' => new Link(
+                    fromClass: Line::class,
+                ),
+            ],
         ),
     ],
     normalizationContext: [

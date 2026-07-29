@@ -42,19 +42,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ExportIgnore]
 #[UniqueEntity(['name', 'user'])]
 #[ApiResource(
-    uriTemplate: '/profile/api-tokens',
     operations: [
-        new GetCollection(provider: ApiTokenCollectionProvider::class),
-    ],
-    normalizationContext: ['groups' => ['api_token:read']],
-    denormalizationContext: ['groups' => ['api_token:write']],
-    graphQlOperations: [],
-)]
-#[ApiResource(
-    uriTemplate: '/profile/api-tokens/{id}',
-    operations: [
-        new Get(provider: ApiTokenItemProvider::class),
-        new Delete(provider: ApiTokenItemProvider::class),
+        new GetCollection(
+            uriTemplate: '/profile/api-tokens',
+            denormalizationContext: ['groups' => ['api_token:write']],
+            provider: ApiTokenCollectionProvider::class,
+        ),
+        new Get(
+            uriTemplate: '/profile/api-tokens/{id}',
+            provider: ApiTokenItemProvider::class,
+        ),
+        new Delete(
+            uriTemplate: '/profile/api-tokens/{id}',
+            provider: ApiTokenItemProvider::class,
+        ),
     ],
     normalizationContext: ['groups' => ['api_token:read']],
     graphQlOperations: [],

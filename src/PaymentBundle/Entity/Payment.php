@@ -83,17 +83,6 @@ use Traversable;
                 ),
             ],
         ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    graphQlOperations: [],
-)]
-#[ApiResource(
-    operations: [
         new Get(),
         new GetCollection(),
     ],
