@@ -47,12 +47,12 @@ final class SettingsTypeTest extends FormTestCase
             $setting->setKey('setting_' . $i);
             $setting->setType($type);
 
-            $value = $this->faker->name;
+            $value = $this->faker->name();
             $formValue = $value;
             if (NotificationType::class === $type) {
                 $value = [
-                    'email' => $this->faker->boolean,
-                    'sms' => $this->faker->boolean,
+                    'email' => $this->faker->boolean(),
+                    'sms' => $this->faker->boolean(),
                 ];
                 $formValue = json_encode($value, JSON_THROW_ON_ERROR);
             }

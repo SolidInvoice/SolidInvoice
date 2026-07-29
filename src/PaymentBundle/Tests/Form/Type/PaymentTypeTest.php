@@ -28,7 +28,7 @@ final class PaymentTypeTest extends FormTestCase
      */
     public function testSubmit(): void
     {
-        $paymentMethod = $this->faker->name;
+        $paymentMethod = $this->faker->name();
         $amount = $this->faker->randomNumber();
 
         $formData = [

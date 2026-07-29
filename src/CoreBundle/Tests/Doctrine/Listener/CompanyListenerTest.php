@@ -29,8 +29,6 @@ use SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use stdClass;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[CoversClass(CompanyListener::class)]

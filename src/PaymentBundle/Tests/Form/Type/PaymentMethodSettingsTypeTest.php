@@ -20,11 +20,11 @@ final class PaymentMethodSettingsTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $paragraphs = $this->faker->paragraphs;
+        $paragraphs = $this->faker->paragraphs();
 
-        $one = $this->faker->name;
-        $two = $this->faker->boolean;
-        $three = $this->faker->password;
+        $one = $this->faker->name();
+        $two = $this->faker->boolean();
+        $three = $this->faker->password();
         $four = $this->faker->randomKey($paragraphs);
 
         $formData = [

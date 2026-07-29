@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Ergebnis\Rector\Rules\Faker\GeneratorPropertyFetchToMethodCallRector;
 use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
@@ -89,6 +90,7 @@ return RectorConfig::configure()
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,
+        GeneratorPropertyFetchToMethodCallRector::class,
     ])
     ->withSkip([
         // The secrets vault directory contains generated (gitignored) files that are

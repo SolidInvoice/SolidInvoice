@@ -21,8 +21,8 @@ final class NotificationTypeTest extends FormTestCase
     public function testSubmit(): void
     {
         $formData = [
-            'email' => $this->faker->boolean,
-            'sms' => $this->faker->boolean,
+            'email' => $this->faker->boolean(),
+            'sms' => $this->faker->boolean(),
         ];
 
         $this->assertFormData(NotificationType::class, $formData, json_encode($formData, JSON_THROW_ON_ERROR));

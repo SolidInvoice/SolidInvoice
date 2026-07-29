@@ -77,8 +77,8 @@ final class UserRepositoryTest extends KernelTestCase
     public function testSave(): void
     {
         $user = new User();
-        $user->setEmail($this->faker->email)
-            ->setPassword($this->faker->password)
+        $user->setEmail($this->faker->email())
+            ->setPassword($this->faker->password())
             ->addCompany($this->company)
         ;
 
@@ -91,8 +91,8 @@ final class UserRepositoryTest extends KernelTestCase
     public function testSaveWithoutAnyCompanyLinkedToUser(): void
     {
         $user = new User();
-        $user->setEmail($this->faker->email)
-            ->setPassword($this->faker->password)
+        $user->setEmail($this->faker->email())
+            ->setPassword($this->faker->password())
         ;
 
         $this->repository->save($user);
@@ -147,7 +147,7 @@ final class UserRepositoryTest extends KernelTestCase
 
     public function testLoadUserByIdentifierWithInvalidUser(): void
     {
-        $email = $this->faker->email;
+        $email = $this->faker->email();
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('User "' . $email . '" does not exist.');
@@ -169,8 +169,8 @@ final class UserRepositoryTest extends KernelTestCase
 
         // Create a user that joined recently (within 30 days)
         $recentUser = new User();
-        $recentUser->setEmail($this->faker->email)
-            ->setPassword($this->faker->password)
+        $recentUser->setEmail($this->faker->email())
+            ->setPassword($this->faker->password())
             ->addCompany($this->company);
         $this->repository->save($recentUser);
 
@@ -179,8 +179,8 @@ final class UserRepositoryTest extends KernelTestCase
 
         // Create a user that joined more than 30 days ago
         $oldUser = new User();
-        $oldUser->setEmail($this->faker->email)
-            ->setPassword($this->faker->password)
+        $oldUser->setEmail($this->faker->email())
+            ->setPassword($this->faker->password())
             ->addCompany($this->company);
 
         $registry = self::getContainer()->get('doctrine');
@@ -223,14 +223,14 @@ final class UserRepositoryTest extends KernelTestCase
         self::assertSame(0, $this->repository->getUserCountForCompany($this->company));
 
         $user = new User();
-        $user->setEmail($this->faker->email)
-            ->setPassword($this->faker->password)
+        $user->setEmail($this->faker->email())
+            ->setPassword($this->faker->password())
             ->addCompany($this->company);
         $this->repository->save($user);
 
         $userInOtherCompany = new User();
-        $userInOtherCompany->setEmail($this->faker->email)
-            ->setPassword($this->faker->password);
+        $userInOtherCompany->setEmail($this->faker->email())
+            ->setPassword($this->faker->password());
         $this->repository->save($userInOtherCompany);
 
         self::assertSame(1, $this->repository->getUserCountForCompany($this->company));

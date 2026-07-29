@@ -69,7 +69,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
         // Create a pending invitation
         $invitation = new UserInvitation();
-        $invitation->setEmail($this->faker->email)
+        $invitation->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
@@ -79,7 +79,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
         // Create another pending invitation
         $invitation2 = new UserInvitation();
-        $invitation2->setEmail($this->faker->email)
+        $invitation2->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
@@ -107,7 +107,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         // An invitation created in the past, so its validity window has elapsed.
         CarbonImmutable::setTestNow(CarbonImmutable::now()->subDays(UserInvitation::VALIDITY_DAYS + 1));
         $expired = new UserInvitation();
-        $expired->setEmail($this->faker->email)
+        $expired->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
@@ -116,7 +116,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
         // A freshly created invitation that is still valid.
         $valid = new UserInvitation();
-        $valid->setEmail($this->faker->email)
+        $valid->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
@@ -151,7 +151,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         self::assertSame(0, $this->repository->countPending($company));
 
         $pending = new UserInvitation();
-        $pending->setEmail($this->faker->email)
+        $pending->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
@@ -159,7 +159,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
 
         // A same-company invitation in a non-pending status must not be counted.
         $expired = new UserInvitation();
-        $expired->setEmail($this->faker->email)
+        $expired->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Expired);
@@ -186,14 +186,14 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $manager->persist($otherCompany);
 
         $own = new UserInvitation();
-        $own->setEmail($this->faker->email)
+        $own->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($company)
             ->setStatus(InvitationStatus::Pending);
         $this->repository->save($own);
 
         $foreign = new UserInvitation();
-        $foreign->setEmail($this->faker->email)
+        $foreign->setEmail($this->faker->email())
             ->setInvitedBy($inviter)
             ->setCompany($otherCompany)
             ->setStatus(InvitationStatus::Pending);

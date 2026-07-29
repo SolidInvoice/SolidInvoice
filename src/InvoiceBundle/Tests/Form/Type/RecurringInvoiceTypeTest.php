@@ -44,8 +44,8 @@ final class RecurringInvoiceTypeTest extends FormTestCase
 
         $this->registry->getManager()->persist($client);
 
-        $notes = $this->faker->text;
-        $terms = $this->faker->text;
+        $notes = $this->faker->text();
+        $terms = $this->faker->text();
         $discountValue = $this->faker->numberBetween(0, 100);
         $formData = [
             'client' => [
@@ -65,7 +65,7 @@ final class RecurringInvoiceTypeTest extends FormTestCase
             'total' => 0,
             'baseTotal' => 0,
             'tax' => 0,
-            'date_start' => $this->faker->dateTime,
+            'date_start' => $this->faker->dateTime(),
         ];
 
         $object = new RecurringInvoice();
