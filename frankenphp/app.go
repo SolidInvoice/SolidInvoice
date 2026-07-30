@@ -25,12 +25,13 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/common-nighthawk/go-figure"
 	"github.com/dunglas/frankenphp"
-	"github.com/go-playground/validator/v10"
 	"github.com/luno/jettison/log"
 	"github.com/luno/lu"
 	"github.com/luno/lu/process"
 
 	"github.com/spf13/cobra"
+
+	"solidinvoice/internal/serverconfig"
 
 	// plug in Caddy modules here.
 	_ "github.com/caddyserver/caddy/v2/modules/standard"
@@ -245,6 +246,10 @@ func setupCommands() {
 				return fmt.Errorf("--lets-encrypt requires --domain")
 			}
 
+			if enableLetsEncrypt && disableHttps {
+				return fmt.Errorf("--lets-encrypt cannot be used with --disable-https")
+			}
+
 			// Validate custom SSL certificate
 			if sslCertFile != "" || sslKeyFile != "" {
 				if sslCertFile == "" || sslKeyFile == "" {
@@ -290,37 +295,16 @@ func setupCommands() {
 			}
 
 			// Build server name
-			var serverName string
-			if domain != "" {
-				if disableHttps {
-					return errors.New("disabling HTTPS is not allowed when specifying a domain")
-				}
-
-				validate := validator.New(validator.WithRequiredStructEnabled())
-				if errs := validate.Var(domain, "required,hostname"); errs != nil {
-					return errs
-				}
-
-				if enableLetsEncrypt {
-					serverName = fmt.Sprintf("https://%s", domain)
-				} else {
-					serverName = fmt.Sprintf("https://%s:%s", domain, httpPort)
-				}
-			} else {
-				protocol := "https"
-				if disableHttps {
-					protocol = "http"
-				}
-
-				if os.Getenv("SOLIDINVOICE_DOCKER") == "true" {
-					serverName = fmt.Sprintf("%s://:%s", protocol, httpPort)
-				} else {
-					serverName = fmt.Sprintf("%s://%s:%s, %s://localhost:%s",
-						protocol, serverIp, httpPort, protocol, httpPort)
-					if serverIp != "127.0.0.1" {
-						serverName += fmt.Sprintf(", %s://127.0.0.1:%s", protocol, httpPort)
-					}
-				}
+			serverName, err := serverconfig.BuildServerName(serverconfig.Params{
+				Domain:            domain,
+				DisableHttps:      disableHttps,
+				EnableLetsEncrypt: enableLetsEncrypt,
+				HttpPort:          httpPort,
+				ServerIp:          serverIp,
+				Docker:            os.Getenv("SOLIDINVOICE_DOCKER") == "true",
+			})
+			if err != nil {
+				return err
 			}
 
 			must(os.Setenv("SERVER_NAME", serverName))
@@ -605,7 +589,7 @@ func setupCommands() {
 	runCmd.PersistentFlags().StringVar(&domain, "domain", "", "The domain name to use for the application. When specifying a domain, an SSL certificate will automatically be generated for you")
 	runCmd.PersistentFlags().StringVar(&httpPort, "port", defaultPort, "The default port to use for the application. When specifying a domain to use, the port will default to 443")
 	runCmd.PersistentFlags().StringVar(&serverIp, "server-ip", defaultServerIp, "If you have multiple IP addresses on your server, specify the IP address to use. By default, the server will bind to all IP addresses")
-	runCmd.PersistentFlags().BoolVar(&disableHttps, "disable-https", false, "Disable HTTPS. The application will only be accessible using http://. This setting is not recommended, unless you are setting up a reverse proxy which will use https")
+	runCmd.PersistentFlags().BoolVar(&disableHttps, "disable-https", false, "Disable HTTPS. The application will only be accessible using http://. This setting is not recommended, unless you are setting up a reverse proxy which will handle https. Combine with --domain to specify the hostname Caddy should accept when behind a reverse proxy (e.g. --disable-https --domain solidinvoice.example.com)")
 	runCmd.PersistentFlags().BoolVar(&enableLetsEncrypt, "lets-encrypt", false, "Enable Let's Encrypt for automatic SSL certificates (requires --domain)")
 	runCmd.PersistentFlags().StringVar(&sslCertFile, "ssl-cert", "", "Path to custom SSL certificate file (requires --ssl-key and --domain)")
 	runCmd.PersistentFlags().StringVar(&sslKeyFile, "ssl-key", "", "Path to custom SSL private key file (requires --ssl-cert and --domain)")
