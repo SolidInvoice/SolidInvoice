@@ -9,8 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\AppMode;
 use SolidInvoice\Kernel;
+use SolidInvoice\Runtime;
 
+$_SERVER['APP_RUNTIME'] = Runtime::class;
 $_SERVER['APP_RUNTIME_OPTIONS'] = [
     'env_var_name' => 'SOLIDINVOICE_ENV',
     'debug_var_name' => 'SOLIDINVOICE_DEBUG'
@@ -18,6 +21,6 @@ $_SERVER['APP_RUNTIME_OPTIONS'] = [
 
 require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
-return static function (array $context) {
-    return new Kernel($context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
+return static function (AppMode $mode, array $context) {
+    return new Kernel($mode, $context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
 };
