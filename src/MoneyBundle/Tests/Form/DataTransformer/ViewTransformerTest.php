@@ -19,6 +19,8 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -29,9 +31,13 @@ final class ViewTransformerTest extends TestCase
 {
     private ViewTransformer $viewTransformer;
 
+    private ViewTransformer $jpyTransformer;
+
     protected function setUp(): void
     {
-        $this->viewTransformer = new ViewTransformer();
+        $currencies = new ISOCurrencies();
+        $this->viewTransformer = new ViewTransformer(new Currency('USD'), $currencies);
+        $this->jpyTransformer = new ViewTransformer(new Currency('JPY'), $currencies);
     }
 
     #[DataProvider('reverseTransformDataProvider')]
@@ -52,6 +58,28 @@ final class ViewTransformerTest extends TestCase
     public function testTransformsMoneyObjectToFloat(BigNumber | string | int | float | null $money, float | int $expected): void
     {
         $value = $this->viewTransformer->transform($money);
+
+        self::assertSame($expected, $value);
+    }
+
+    #[DataProvider('jpyReverseTransformDataProvider')]
+    public function testReverseTransformForZeroDecimalCurrency(?int $value, int $expected): void
+    {
+        $result = $this->jpyTransformer->reverseTransform($value);
+
+        self::assertTrue($result->isEqualTo($expected));
+    }
+
+    /**
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     */
+    #[DataProvider('jpyTransformDataProvider')]
+    public function testTransformForZeroDecimalCurrency(BigNumber | string | int | float | null $money, float | int $expected): void
+    {
+        $value = $this->jpyTransformer->transform($money);
 
         self::assertSame($expected, $value);
     }
@@ -90,6 +118,32 @@ final class ViewTransformerTest extends TestCase
         yield [BigDecimal::of(100), 1.0];
         yield [BigDecimal::of(10), 0.10];
         yield [BigDecimal::of(1), 0.01];
+        yield [BigDecimal::of(0), 0.0];
+    }
+
+    /**
+     * @return iterable<array<int|null>>
+     */
+    public static function jpyReverseTransformDataProvider(): iterable
+    {
+        // For JPY (0 decimal places) the multiplier is 10^0 = 1, so input equals stored value.
+        yield [null, 0];
+        yield [8, 8];
+        yield [100, 100];
+        yield [1500, 1500];
+    }
+
+    /**
+     * @return iterable<array<string|float|BigDecimal|null>>
+     * @throws MathException
+     */
+    public static function jpyTransformDataProvider(): iterable
+    {
+        // For JPY (0 decimal places) the divisor is 10^0 = 1, so stored value equals display value.
+        yield [null, 0.0];
+        yield [BigDecimal::of(8), 8.0];
+        yield [BigDecimal::of(100), 100.0];
+        yield [BigDecimal::of(1500), 1500.0];
         yield [BigDecimal::of(0), 0.0];
     }
 }
