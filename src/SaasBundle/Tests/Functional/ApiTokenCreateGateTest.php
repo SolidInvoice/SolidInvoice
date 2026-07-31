@@ -72,8 +72,6 @@ final class ApiTokenCreateGateTest extends WebTestCase
         $providerId = 'test.' . UpgradePromptProvider::class;
         self::assertTrue($container->has($providerId));
 
-        dd(($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null));
-
         if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
             self::assertInstanceOf(NullUpgradePromptProvider::class, $container->get($providerId));
         }

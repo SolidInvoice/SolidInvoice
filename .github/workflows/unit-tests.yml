@@ -130,9 +130,9 @@ jobs:
         run: |
           mkdir -p build/logs var/log && chmod 777 var/log
           if [ "$COVERAGE" = '1' ]; then
-            bin/phpunit --coverage-clover build/logs/clover.xml
+            bin/paratest --coverage-clover build/logs/clover.xml
           else
-            bin/phpunit
+            bin/paratest
           fi
 
       - name: Upload coverage results to Codecov

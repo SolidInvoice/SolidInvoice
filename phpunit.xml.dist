@@ -31,10 +31,12 @@
     <ini name="error_reporting" value="-1"/>
     <env name="PANTHER_NO_HEADLESS" value="0"/>
     <env name="PANTHER_APP_ENV" value="test"/>
-    <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice_%app_mode%.db"/>
+    <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice_%app_mode%_%env(default:app_mode:TEST_TOKEN)%.db"/>
     <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st"/>
     <server name="SOLIDINVOICE_ENV" value="test"/>
     <server name="SOLIDINVOICE_DEBUG" value="0"/>
+    <server name="APP_ENV" value="test"/>
+    <server name="APP_DEBUG" value="0"/>
     <server name="KERNEL_CLASS" value="SolidInvoice\Test\Kernel"/>
     <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
   </php>

@@ -118,9 +118,7 @@ class Kernel extends BaseKernel
             $container->import($configDir . '/{services}_prod.php');
         }
 
-        $bundles = $this->getBundles();
-
-        if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
+        if ($this->mode === AppMode::SAAS) {
             $container->import($configDir . '/{packages}/saas/*.{php,yaml}');
         }
     }
@@ -130,9 +128,7 @@ class Kernel extends BaseKernel
     {
         parent::configureRoutes($routes);
 
-        $bundles = $this->getBundles();
-
-        if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
+        if ($this->mode === AppMode::SAAS) {
             $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
             $routes->import($configDir . '/{routes}/saas/*.{php,yaml}');
 

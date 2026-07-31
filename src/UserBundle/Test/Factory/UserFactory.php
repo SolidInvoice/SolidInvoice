@@ -16,8 +16,6 @@ namespace SolidInvoice\UserBundle\Test\Factory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 use Zenstruck\Foundry\Persistence\RepositoryDecorator;
@@ -61,15 +59,6 @@ use Zenstruck\Foundry\Persistence\RepositoryDecorator;
  */
 final class UserFactory extends PersistentObjectFactory
 {
-    private readonly PasswordHasherInterface $passwordHasher;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->passwordHasher = new NativePasswordHasher();
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -79,7 +68,7 @@ final class UserFactory extends PersistentObjectFactory
         return [
             'email' => $email,
             'enabled' => true,
-            'password' => $this->passwordHasher->hash(self::faker()->password()),
+            'password' => '$argon2id$v=19$m=65536,t=4,p=1$pLFF3D2gnvDmxMuuqH4BrA$3vKfv0cw+6EaNspq9btVAYc+jCOqrmWRstInB2fRPeQ',
             'verified' => true,
             'roles' => [],
             'companies' => CompanyFactory::random(),
