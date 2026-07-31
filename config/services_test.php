@@ -17,9 +17,10 @@ use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFea
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use SolidWorx\Platform\SaasBundle\Feature\FeatureConfigRegistry;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
+return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container): void {
     $parameters = $containerConfigurator->parameters();
 
     $parameters->set('env(database_name)', 'solidinvoice_test');
@@ -39,9 +40,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
-    // when SOLIDINVOICE_PLATFORM=saas. Mirror the same gate from bundles.php so
+    // when the app mode is 'saas'. Mirror the same gate from bundles.php so
     // the alias is only declared when the underlying service exists.
-    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+    if ($container->getParameter('app_mode') === 'saas') {
         $services->alias('test.' . FeatureConfigRegistry::class, FeatureConfigRegistry::class);
         $services->alias('test.' . RequiredPlanLabelProvider::class, RequiredPlanLabelProvider::class);
         $services->alias('test.' . SaasFeatureRestrictedExtension::class, SaasFeatureRestrictedExtension::class);

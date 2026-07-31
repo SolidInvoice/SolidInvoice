@@ -29,7 +29,7 @@ use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\UpgradeOfferStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\WelcomeStep;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -58,7 +58,7 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     protected function setUp(): void

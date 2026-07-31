@@ -17,7 +17,7 @@ use Override;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -34,7 +34,7 @@ final class FeatureRestrictedExtensionWiringTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testRequiredPlanLabelProviderResolvesToUpgradePromptRenderer(): void

@@ -16,7 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Functional;
 use Override;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\SaasBundle\Feature\Feature;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\SaasBundle\Feature\PlanFeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -38,7 +38,7 @@ final class FeatureTwigFunctionsTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testFeatureGateAliasResolvesToPlanFeatureGateInSaasMode(): void

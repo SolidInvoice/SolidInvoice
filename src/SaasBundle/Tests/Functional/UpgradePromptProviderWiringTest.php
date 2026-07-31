@@ -16,7 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Functional;
 use Override;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -30,7 +30,7 @@ final class UpgradePromptProviderWiringTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testUpgradePromptProviderResolvesToUpgradePromptRenderer(): void

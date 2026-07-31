@@ -12,8 +12,6 @@
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\Kernel;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -43,10 +41,7 @@ date_default_timezone_set('Africa/Johannesburg');
  */
 (static function (): void {
     $env = $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-    $debugRaw = $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
-    $debug = is_bool($debugRaw)
-        ? $debugRaw
-        : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
+    $debug = filter_var((string) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? 'true'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
     $prepare = static function (KernelInterface $kernel): void {
         $kernel->boot();
@@ -59,10 +54,6 @@ date_default_timezone_set('Africa/Johannesburg');
         $doctrine = $kernel->getContainer()->get('doctrine');
         $connection = $doctrine->getConnection();
         $params = $connection->getParams();
-
-        if (isset($params['primary'])) {
-            $params = $params['primary'];
-        }
 
         if (($params['driver'] ?? '') === 'pdo_sqlite') {
             $directory = dirname((string) $params['path']);
@@ -86,7 +77,7 @@ date_default_timezone_set('Africa/Johannesburg');
             $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
             $schemaManager = $tmpConnection->createSchemaManager();
 
-            if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
+            if (! in_array($dbName, $schemaManager->introspectDatabaseNames(), true)) {
                 $schemaManager->createDatabase($tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($dbName));
             }
 
@@ -109,8 +100,6 @@ date_default_timezone_set('Africa/Johannesburg');
         $kernel->shutdown();
     };
 
-    // The default kernel first: SaasTestKernel sets SOLIDINVOICE_PLATFORM=saas for its own
-    // lifetime, and config/bundles.php reads that at container build time.
-    $prepare(new Kernel($env, $debug));
-    $prepare(new SaasTestKernel($env, $debug));
+    $prepare(new SolidInvoice\Test\Kernel($env, $debug));
+    $prepare(new SolidInvoice\Test\SaasKernel($env, $debug));
 })();

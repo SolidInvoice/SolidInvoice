@@ -17,9 +17,9 @@ use Doctrine\DBAL\Connection;
 use Override;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\Test\SaasKernel;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -40,7 +40,7 @@ final class CustomDomainSettingRenameTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testNewKeyResolvesAfterRename(): void

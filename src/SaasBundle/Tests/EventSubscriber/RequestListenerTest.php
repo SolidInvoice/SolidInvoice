@@ -27,7 +27,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -56,7 +56,7 @@ final class RequestListenerTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testGetSubscribedEvents(): void
