@@ -91,7 +91,10 @@ final class MoneyFormatter implements MoneyFormatterInterface
         if (extension_loaded('intl')) {
             $pattern = explode(';', $this->numberFormatter->getPattern());
 
-            return str_replace(['¤', '#,##0.00'], ['%s', '%v'], $pattern[0]);
+            // The number placeholder is matched rather than compared against a literal
+            // "#,##0.00": the number of decimals in the pattern follows the locale, so a
+            // zero-decimal locale yields "#,##0" and a three-decimal one "#,##0.000".
+            return preg_replace('/[#,]+0(?:\.[0#]+)?/', '%v', str_replace('¤', '%s', $pattern[0])) ?? '%s%v';
         }
 
         return '%s%v';

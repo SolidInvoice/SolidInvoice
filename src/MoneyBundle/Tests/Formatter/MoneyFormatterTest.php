@@ -40,6 +40,35 @@ final class MoneyFormatterTest extends TestCase
         self::assertStringContainsString('800', $formatter->format($money));
     }
 
+    public function testFormatThreeDecimalCurrency(): void
+    {
+        $systemConfig = $this->getSystemConfigMock('BHD');
+
+        $formatter = new MoneyFormatter('en_US', $systemConfig);
+
+        // 1234 BHD minor units is BD 1.234 (subunit = 3); all three decimals must survive.
+        $money = new Money(1234, new Currency('BHD'));
+
+        self::assertStringContainsString('1.234', $formatter->format($money));
+    }
+
+    /**
+     * The pattern is derived from the locale, so the number of decimals in it varies. Every
+     * locale must still yield a "%v" placeholder for the amount.
+     */
+    #[DataProvider('patternPlaceholderProvider')]
+    public function testGetPatternAlwaysContainsValuePlaceholder(string $locale): void
+    {
+        $formatter = new MoneyFormatter($locale, $this->getSystemConfigMock());
+
+        $pattern = $formatter->getPattern();
+
+        self::assertStringContainsString('%v', $pattern);
+        self::assertStringContainsString('%s', $pattern);
+        self::assertStringNotContainsString('#', $pattern);
+        self::assertStringNotContainsString('0', $pattern);
+    }
+
     #[DataProvider('localeProvider')]
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {
@@ -167,6 +196,19 @@ final class MoneyFormatterTest extends TestCase
         yield [
             'af_ZA', ',',
         ];
+    }
+
+    /**
+     * @return Iterator<(int|string), array<string>>
+     */
+    public static function patternPlaceholderProvider(): Iterator
+    {
+        yield 'two decimals' => ['en_US'];
+        yield 'two decimals, suffix symbol' => ['fr_FR'];
+        yield 'zero decimals' => ['ja_JP'];
+        yield 'zero decimals (Korean)' => ['ko_KR'];
+        yield 'three decimals' => ['ar_BH'];
+        yield 'grouped differently' => ['en_IN'];
     }
 
     /**
