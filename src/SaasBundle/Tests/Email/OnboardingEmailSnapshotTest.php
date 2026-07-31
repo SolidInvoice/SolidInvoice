@@ -56,12 +56,9 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     private TranslatorInterface $translator;
 
     #[Override]
-    protected static function createKernel(array $options = []): SaasTestKernel
+    protected static function getKernelClass(): string
     {
-        $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debug = $options['debug'] ?? (bool) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true);
-
-        return new SaasTestKernel($env, $debug);
+        return SaasTestKernel::class;
     }
 
     protected function setUp(): void

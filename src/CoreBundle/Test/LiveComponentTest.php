@@ -31,9 +31,7 @@ use function password_hash;
 abstract class LiveComponentTest extends KernelTestCase
 {
     use InteractsWithLiveComponents;
-    use EnsureApplicationInstalled {
-        tearDown as tearDownTrait;
-    }
+    use EnsureApplicationInstalled;
     use MatchesSnapshots;
 
     protected KernelBrowser $client;
@@ -102,7 +100,6 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function tearDown(): void
     {
-        $this->tearDownTrait();
         parent::tearDown();
 
         $this->client->getKernel()->shutdown();

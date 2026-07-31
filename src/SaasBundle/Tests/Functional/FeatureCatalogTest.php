@@ -33,16 +33,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 #[Group('functional')]
 final class FeatureCatalogTest extends KernelTestCase
 {
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): SaasTestKernel
+    protected static function getKernelClass(): string
     {
-        $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debug = $options['debug'] ?? (bool) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true);
-
-        return new SaasTestKernel($env, $debug);
+        return SaasTestKernel::class;
     }
 
     public function testEveryFeatureEnumCaseIsRegisteredInTheRegistry(): void

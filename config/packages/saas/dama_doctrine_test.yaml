@@ -1,0 +1,14 @@
+# SaasTestKernel shares a PHP process with the default kernel but has its own cache dir,
+# and therefore its own SQLite database. dama/doctrine-test-bundle keys its static
+# connection on the doctrine *connection name* - "default" for both kernels - so without a
+# distinct key here the first kernel to connect hands its connection, and with it its
+# database, to every kernel that boots afterwards. Under executionOrder="random" that made
+# the SaaS tests fail with "no such table: saas_plan" whenever a non-SaaS test class
+# happened to run first.
+#
+# Only the SaaS container imports config/packages/saas/, so the default kernel keeps the
+# "default" key. when@test guards the extension, which is only registered in the test env.
+when@test:
+    dama_doctrine_test:
+        connection_keys:
+            default: saas

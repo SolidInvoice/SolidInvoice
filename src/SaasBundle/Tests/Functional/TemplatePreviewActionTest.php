@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
-use const FILTER_NULL_ON_FAILURE;
-use const FILTER_VALIDATE_BOOLEAN;
 use Override;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
@@ -26,27 +24,16 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
-use function filter_var;
-use function is_bool;
 
 #[Group('functional')]
 final class TemplatePreviewActionTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
 
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): SaasTestKernel
+    protected static function getKernelClass(): string
     {
-        $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debugRaw = $options['debug'] ?? $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
-        $debug = is_bool($debugRaw)
-            ? $debugRaw
-            : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
-
-        return new SaasTestKernel($env, $debug);
+        return SaasTestKernel::class;
     }
 
     public function testRendersEveryDiscoveredTemplateWithSampleData(): void
