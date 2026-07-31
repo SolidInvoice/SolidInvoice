@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SolidWorx\Platform\PlatformBundle\Model\User;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 // By default, password hashers are resource intensive and take time. This is
@@ -23,6 +24,12 @@ return App::config([
     'security' => [
         'password_hashers' => [
             PasswordAuthenticatedUserInterface::class => [
+                'algorithm' => 'auto',
+                'cost' => 4, // Lowest possible value for bcrypt
+                'time_cost' => 3, // Lowest possible value for argon
+                'memory_cost' => 10, // Lowest possible value for argon
+            ],
+            User::class => [
                 'algorithm' => 'auto',
                 'cost' => 4, // Lowest possible value for bcrypt
                 'time_cost' => 3, // Lowest possible value for argon

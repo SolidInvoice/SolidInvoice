@@ -222,4 +222,4 @@ jobs:
         # Installation currently only runs with SQLite,
         # so let's skip it to prevent unneeded errors
         # @TODO: Fix installation to work with other DBs
-        run: bin/phpunit --exclude-group=installation
+        run: bin/paratest --exclude-group=installation

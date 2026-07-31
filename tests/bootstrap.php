@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 (new Dotenv('SOLIDINVOICE_ENV', 'SOLIDINVOICE_DEBUG'))->bootEnv(dirname(__DIR__) . '/.env', 'test');
@@ -27,6 +28,15 @@ if (class_exists(Deprecation::class)) {
 // suppress errors with libxml when using html snapshots and some tags (E.G svg, section) are not supported
 libxml_use_internal_errors(true);
 date_default_timezone_set('Africa/Johannesburg');
+
+if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?? null)) {
+    /*
+     * Ensure a fresh cache when debug mode is disabled. When using paratest, this
+     * file is required once at the very beginning, and once per process. Checking that
+     * TEST_TOKEN is not set ensures this is only run once at the beginning.
+     */
+    new Filesystem()->remove(__DIR__ . '/../var/cache/test');
+}
 
 /*
  * The suite runs two kernels: the default one and SaasTestKernel, which has its own cache

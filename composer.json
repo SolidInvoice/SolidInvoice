@@ -193,6 +193,7 @@
         "willdurand/negotiation": "^3.1"
     },
     "require-dev": {
+        "brianium/paratest": "^7.23",
         "captainhook/captainhook-phar": "^5.29",
         "dama/doctrine-test-bundle": "^8.6",
         "dbrekelmans/bdi": "^1.4",
