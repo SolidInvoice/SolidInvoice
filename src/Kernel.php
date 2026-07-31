@@ -95,6 +95,7 @@ class Kernel extends BaseKernel
         parent::prepareContainer($container);
 
         $container->set(AppMode::class, $this->mode);
+        $container->setParameter('app_mode', $this->mode->value);
     }
 
     /**
@@ -153,6 +154,9 @@ class Kernel extends BaseKernel
         ];
     }
 
+    /**
+     * @param array<string, AppMode|string|bool|null> $data
+     */
     #[Override]
     public function __unserialize(array $data): void
     {

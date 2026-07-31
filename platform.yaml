@@ -1,6 +1,6 @@
 platform:
-    name: SolidInvoice
-    version: 3.0.x
+    name: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::APP_NAME
+    version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
 
     security:
         two_factor:

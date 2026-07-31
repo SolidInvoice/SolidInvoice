@@ -1807,12 +1807,6 @@ parameters:
 			path: src/SettingsBundle/Entity/Setting.php
 
 		-
-			message: '#^Service "test\.SolidWorx\\Platform\\PlatformBundle\\Feature\\FeatureGate" is not registered in the container\.$#'
-			identifier: symfonyContainer.serviceNotFound
-			count: 2
-			path: src/SettingsBundle/Tests/Action/CustomField/DeleteActionTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''value'' and ''value'' will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1

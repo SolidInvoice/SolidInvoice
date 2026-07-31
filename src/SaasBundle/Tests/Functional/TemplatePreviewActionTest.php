@@ -19,8 +19,8 @@ use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\Action\TemplatePreviewAction;
 use SolidInvoice\SaasBundle\Templates\PreviewInvoiceFactory;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\Test\SaasKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -33,7 +33,7 @@ final class TemplatePreviewActionTest extends KernelTestCase
     #[Override]
     protected static function getKernelClass(): string
     {
-        return SaasTestKernel::class;
+        return SaasKernel::class;
     }
 
     public function testRendersEveryDiscoveredTemplateWithSampleData(): void
