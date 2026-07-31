@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Brick\Math\BigInteger;
-use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Brick\Math\RoundingMode;
 use Carbon\CarbonImmutable;
 use DateMalformedStringException;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Money\Currency;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -43,6 +43,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
         private ChartBuilderInterface $chartBuilder,
         private SystemConfig $systemConfig,
         private LoggerInterface $logger,
+        private CurrencyScale $currencyScale = new CurrencyScale(),
     ) {
         $this->manager = $registry->getManager();
     }
@@ -157,7 +158,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
      * system currency when there is nothing to plot.
      *
      * @param array<string, array<string, BigInteger>> $revenueData
-     * @return list<string>
+     * @return list<non-empty-string>
      */
     private function resolveCurrencies(array $revenueData): array
     {
@@ -165,6 +166,10 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         foreach ($revenueData as $monthData) {
             foreach (array_keys($monthData) as $currency) {
+                if ('' === $currency) {
+                    continue;
+                }
+
                 if (! in_array($currency, $currencies, true)) {
                     $currencies[] = $currency;
                 }
@@ -182,7 +187,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
      * Build one dataset per currency.
      *
      * @param array<string, array<string, BigInteger>> $revenueData
-     * @param list<string> $currencies
+     * @param list<non-empty-string> $currencies
      * @return list<array<string, mixed>>
      * @throws DateMalformedStringException
      * @throws MathException
@@ -204,7 +209,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
             for ($i = 11; $i >= 0; --$i) {
                 $monthKey = $now->modify(sprintf('-%d months', $i))->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
-                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HalfEven)->toFloat() // Convert cents to currency units
+                    ? $this->currencyScale->toMajorUnit($revenueData[$monthKey][$currency], new Currency($currency))
                     : 0;
             }
 

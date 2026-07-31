@@ -19,7 +19,6 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -33,11 +32,13 @@ final class ViewTransformerTest extends TestCase
 
     private ViewTransformer $jpyTransformer;
 
+    private ViewTransformer $bhdTransformer;
+
     protected function setUp(): void
     {
-        $currencies = new ISOCurrencies();
-        $this->viewTransformer = new ViewTransformer(new Currency('USD'), $currencies);
-        $this->jpyTransformer = new ViewTransformer(new Currency('JPY'), $currencies);
+        $this->viewTransformer = new ViewTransformer(new Currency('USD'));
+        $this->jpyTransformer = new ViewTransformer(new Currency('JPY'));
+        $this->bhdTransformer = new ViewTransformer(new Currency('BHD'));
     }
 
     #[DataProvider('reverseTransformDataProvider')]
@@ -80,6 +81,28 @@ final class ViewTransformerTest extends TestCase
     public function testTransformForZeroDecimalCurrency(BigNumber | string | int | float | null $money, float | int $expected): void
     {
         $value = $this->jpyTransformer->transform($money);
+
+        self::assertSame($expected, $value);
+    }
+
+    #[DataProvider('bhdReverseTransformDataProvider')]
+    public function testReverseTransformForThreeDecimalCurrency(float | int | null $value, int $expected): void
+    {
+        $result = $this->bhdTransformer->reverseTransform($value);
+
+        self::assertTrue($result->isEqualTo($expected));
+    }
+
+    /**
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
+     */
+    #[DataProvider('bhdTransformDataProvider')]
+    public function testTransformForThreeDecimalCurrency(BigNumber | string | int | float | null $money, float | int $expected): void
+    {
+        $value = $this->bhdTransformer->transform($money);
 
         self::assertSame($expected, $value);
     }
@@ -144,6 +167,34 @@ final class ViewTransformerTest extends TestCase
         yield [BigDecimal::of(8), 8.0];
         yield [BigDecimal::of(100), 100.0];
         yield [BigDecimal::of(1500), 1500.0];
+        yield [BigDecimal::of(0), 0.0];
+    }
+
+    /**
+     * @return iterable<array<float|int|null>>
+     */
+    public static function bhdReverseTransformDataProvider(): iterable
+    {
+        // For BHD (3 decimal places) the multiplier is 10^3 = 1000.
+        yield [null, 0];
+        yield [1.234, 1234];
+        yield [1, 1000];
+        yield [0.001, 1];
+        yield [10.5, 10500];
+    }
+
+    /**
+     * @return iterable<array<string|float|BigDecimal|null>>
+     * @throws MathException
+     */
+    public static function bhdTransformDataProvider(): iterable
+    {
+        // For BHD (3 decimal places) the divisor is 10^3 = 1000.
+        yield [null, 0.0];
+        yield [BigDecimal::of(1234), 1.234];
+        yield [BigDecimal::of(1000), 1.0];
+        yield [BigDecimal::of(1), 0.001];
+        yield [BigDecimal::of(10500), 10.5];
         yield [BigDecimal::of(0), 0.0];
     }
 }

@@ -148,6 +148,50 @@ final class RevenueChartWidgetTest extends WidgetTestCase
         $firstDataset = $chartData['data']['datasets'][0];
         self::assertSame('USD', $firstDataset['label']);
         self::assertCount(12, $firstDataset['data']);
+
+        // 25000 minor units of a two-decimal currency plots as 250.00
+        self::assertSame(250.0, $firstDataset['data'][11]);
+    }
+
+    public function testChartPlotsZeroDecimalCurrencyAtFullValue(): void
+    {
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'JPY',
+        ]);
+
+        $invoice = InvoiceFactory::createOne([
+            'client' => $client,
+            'status' => InvoiceStatus::Paid,
+            'total' => BigInteger::of(800),
+            'balance' => BigInteger::zero(),
+            'baseTotal' => BigInteger::of(800),
+            'tax' => BigInteger::zero(),
+            'discount' => $this->createZeroDiscount(),
+        ]);
+
+        $paymentMethod = PaymentMethodFactory::createOne([
+            'company' => $this->company,
+        ]);
+
+        PaymentFactory::createOne([
+            'client' => $client,
+            'invoice' => $invoice,
+            'method' => $paymentMethod,
+            'totalAmount' => 800,
+            'currencyCode' => 'JPY',
+            'status' => PaymentStatus::Captured,
+            'created' => Carbon::now(),
+        ]);
+
+        $widget = self::getContainer()->get(RevenueChartWidget::class);
+        $chartData = $widget->getData()['chart']->createView();
+
+        $dataset = $chartData['data']['datasets'][0];
+
+        self::assertSame('JPY', $dataset['label']);
+        // JPY has no subunit, so ¥800 is stored as 800 and must plot as 800, not 8.
+        self::assertSame(800.0, $dataset['data'][11]);
     }
 
     public function testGetTemplate(): void
