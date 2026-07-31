@@ -13,24 +13,47 @@ declare(strict_types=1);
 
 namespace SolidInvoice;
 
+use BadMethodCallException;
 use Doctrine\DBAL\Types\Type;
 use Override;
 use SolidInvoice\CoreBundle\Doctrine\Type\ArrayType;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidInvoice\CoreBundle\Doctrine\Type\ObjectType;
+use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Bundle\BundleAdapter;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use function preg_replace;
 
 class Kernel extends BaseKernel
 {
+    public function __construct(
+        private readonly AppMode $mode,
+        string $environment,
+        bool $debug
+    ) {
+        parent::__construct($environment, $debug);
+    }
+
     #[Override]
     public function boot(): void
     {
+        if ($this->debug) {
+            $fs = new Filesystem();
+            $appModePath = $this->getCacheDir() . '/' . $this->getContainerClass() . '.app_mode';
+            if (! $fs->exists($appModePath)) {
+                $fs->dumpFile($appModePath, $this->mode->value);
+            }
+
+            if ($fs->readFile($appModePath) !== $this->mode->value) {
+                $fs->touch($this->getConfigDir() . '/bundles.php');
+                $fs->dumpFile($appModePath, $this->mode->value);
+            }
+        }
+
         parent::boot();
 
         if (! Type::hasType('json_array')) {
@@ -55,23 +78,23 @@ class Kernel extends BaseKernel
         return \dirname(__DIR__);
     }
 
-    /**
-     * The platform Kernel overrides initializeBundles() without the BundleAdapter wrapping
-     * that Symfony's HttpKernel-based kernels apply to new-style (DependencyInjection
-     * component) bundles such as ServicesBundle. Re-apply the wrapping here, otherwise
-     * building the container fails on Symfony 8.1 (getNamespace() does not exist on
-     * new-style bundles). Remove once solidworx/platform restores the wrapping upstream.
-     */
     #[Override]
-    protected function initializeBundles(): void
+    public function registerBundles(): iterable
     {
-        parent::initializeBundles();
+        yield from parent::registerBundles();
 
-        foreach ($this->bundles as $name => $bundle) {
-            if (! $bundle instanceof BundleInterface) {
-                $this->bundles[$name] = new BundleAdapter($bundle);
-            }
+        if ($this->mode === AppMode::SAAS) {
+            yield new SolidWorxPlatformSaasBundle();
+            yield new SolidInvoiceSaasBundle();
         }
+    }
+
+    #[Override]
+    protected function prepareContainer(ContainerBuilder $container): void
+    {
+        parent::prepareContainer($container);
+
+        $container->set(AppMode::class, $this->mode);
     }
 
     /**
@@ -118,5 +141,29 @@ class Kernel extends BaseKernel
     private function getConfigDir(): string
     {
         return $this->getProjectDir() . '/config';
+    }
+
+    #[Override]
+    public function __serialize(): array
+    {
+        return [
+            'mode' => $this->mode,
+            'environment' => $this->environment,
+            'debug' => $this->debug,
+        ];
+    }
+
+    #[Override]
+    public function __unserialize(array $data): void
+    {
+        $environment = $data['environment'] ?? $data["\0*\0environment"];
+        $debug = $data['debug'] ?? $data["\0*\0debug"];
+        $mode = $data['mode'] ?? $data["\0*\0mode"];
+
+        if (\is_object($environment) || \is_object($debug)) {
+            throw new BadMethodCallException('Cannot unserialize ' . self::class);
+        }
+
+        $this->__construct($mode, $environment, $debug);
     }
 }

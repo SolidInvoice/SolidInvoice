@@ -37,11 +37,9 @@ use SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle;
 use SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle;
 use SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle;
 use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
-use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle;
 use SolidInvoice\TaxBundle\SolidInvoiceTaxBundle;
 use SolidInvoice\UserBundle\SolidInvoiceUserBundle;
-use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
 use SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle;
 use SolidWorx\Toggler\Symfony\TogglerBundle;
 use Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle;
@@ -66,7 +64,7 @@ use SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle;
 use Zenstruck\Foundry\ZenstruckFoundryBundle;
 use Zenstruck\Mailer\Test\ZenstruckMailerTestBundle;
 
-$bundles = [
+return [
     FrameworkBundle::class => ['all' => true],
     SecurityBundle::class => ['all' => true],
     TwigBundle::class => ['all' => true],
@@ -120,10 +118,3 @@ $bundles = [
     McpBundle::class => ['all' => true],
     DAMADoctrineTestBundle::class => ['test' => true]
 ];
-
-if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
-    $bundles[SolidWorxPlatformSaasBundle::class] = ['all' => true];
-    $bundles[SolidInvoiceSaasBundle::class] = ['all' => true];
-}
-
-return $bundles;

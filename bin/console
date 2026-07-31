@@ -1,13 +1,17 @@
 #!/usr/bin/env php
 <?php
 
+use SolidInvoice\AppMode;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\Kernel;
+use SolidInvoice\Runtime;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 if (!is_dir(dirname(__DIR__).'/vendor')) {
     throw new LogicException('Dependencies are missing. Try running "composer install".');
 }
+
+$_SERVER['APP_RUNTIME'] = Runtime::class;
 
 $_SERVER['APP_RUNTIME_OPTIONS'] = [
     'env_var_name' => 'SOLIDINVOICE_ENV',
@@ -43,8 +47,8 @@ if (function_exists('ini_set')) {
     unset($memoryInBytes);
 }
 
-return static function (array $context) {
-    $kernel = new Kernel($context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
+return static function (AppMode $mode, array $context) {
+    $kernel = new Kernel($mode, $context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
 
     $application = new Application($kernel);
     $application->setName(SolidInvoiceCoreBundle::APP_NAME);
