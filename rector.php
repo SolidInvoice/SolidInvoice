@@ -33,6 +33,7 @@ use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
 use SolidWorx\Platform\Tools\Rector\Set\SolidWorxSetList;
+use Zenstruck\Foundry\Utils\Rector\FoundrySetList;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -87,6 +88,10 @@ return RectorConfig::configure()
 
         // SolidWorx Platform
         SolidWorxSetList::PLATFORM,
+
+        // Foundry
+        FoundrySetList::FOUNDRY_2_7,
+        FoundrySetList::FOUNDRY_2_9,
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,

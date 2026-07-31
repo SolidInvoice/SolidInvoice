@@ -35,19 +35,10 @@ use Twig\Environment;
 #[Group('functional')]
 final class FeatureTwigFunctionsTest extends KernelTestCase
 {
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): SaasTestKernel
+    protected static function getKernelClass(): string
     {
-        $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debugRaw = $options['debug'] ?? $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
-        $debug = is_bool($debugRaw)
-            ? $debugRaw
-            : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
-
-        return new SaasTestKernel($env, $debug);
+        return SaasTestKernel::class;
     }
 
     public function testFeatureGateAliasResolvesToPlanFeatureGateInSaasMode(): void

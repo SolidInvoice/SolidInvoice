@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Verifies the `UpgradePromptProvider` interface resolves to
@@ -28,13 +27,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class UpgradePromptProviderWiringTest extends KernelTestCase
 {
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): KernelInterface
+    protected static function getKernelClass(): string
     {
-        return new SaasTestKernel('test', true);
+        return SaasTestKernel::class;
     }
 
     public function testUpgradePromptProviderResolvesToUpgradePromptRenderer(): void

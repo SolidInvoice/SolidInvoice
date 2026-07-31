@@ -19,7 +19,6 @@ use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension;
 use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Verifies SaaS-side wiring for the form-level feature gating mechanism:
@@ -32,13 +31,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class FeatureRestrictedExtensionWiringTest extends KernelTestCase
 {
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): KernelInterface
+    protected static function getKernelClass(): string
     {
-        return new SaasTestKernel('test', true);
+        return SaasTestKernel::class;
     }
 
     public function testRequiredPlanLabelProviderResolvesToUpgradePromptRenderer(): void

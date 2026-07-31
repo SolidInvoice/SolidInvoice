@@ -49,6 +49,12 @@ parameters:
 			path: src/ApiBundle/State/Processor/RecurringInvoiceTransitionProcessor.php
 
 		-
+			message: '#^Cannot unset property SolidInvoice\\ApiBundle\\Test\\ApiTestCase\:\:\$company because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SolidInvoice\\\\ApiBundle\\\\GeneratedApiToken'' and SolidInvoice\\ApiBundle\\GeneratedApiToken will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -1771,12 +1777,6 @@ parameters:
 			path: src/SaasBundle/Tests/Company/SubscriptionAwareUserCompaniesTest.php
 
 		-
-			message: '#^Method SolidInvoice\\SaasBundle\\Tests\\Email\\OnboardingEmailSnapshotTest\:\:createKernel\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\HttpFoundation\\\\RedirectResponse'' and Symfony\\Component\\HttpFoundation\\RedirectResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
@@ -1805,6 +1805,12 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/SettingsBundle/Entity/Setting.php
+
+		-
+			message: '#^Service "test\.SolidWorx\\Platform\\PlatformBundle\\Feature\\FeatureGate" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SettingsBundle/Tests/Action/CustomField/DeleteActionTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''value'' and ''value'' will always evaluate to true\.$#'

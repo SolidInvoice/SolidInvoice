@@ -13,9 +13,12 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\Kernel;
+use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 (new Dotenv('SOLIDINVOICE_ENV', 'SOLIDINVOICE_DEBUG'))->bootEnv(dirname(__DIR__) . '/.env', 'test');
 
@@ -23,59 +26,91 @@ if (class_exists(Deprecation::class)) {
     Deprecation::enableWithTriggerError();
 }
 
+// suppress errors with libxml when using html snapshots and some tags (E.G svg, section) are not supported
 libxml_use_internal_errors(true);
-
-(static function (): void {
-    $kernel = new Kernel('test', true);
-    $kernel->boot();
-
-    // Create the test database through a temporary connection without a database name,
-    // mirroring InstallBundle's CreateDatabaseStep. The doctrine:database:create command
-    // cannot be used here: it determines the database platform from the main connection,
-    // which requires connecting to the (not yet existing) database.
-    /** @var ManagerRegistry $doctrine */
-    $doctrine = $kernel->getContainer()->get('doctrine');
-    $connection = $doctrine->getConnection();
-    $params = $connection->getParams();
-
-    if (isset($params['primary'])) {
-        $params = $params['primary'];
-    }
-
-    if (($params['driver'] ?? '') === 'pdo_sqlite') {
-        // Opening the connection is enough to create the SQLite database file.
-        $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
-        $tmpConnection->getNativeConnection();
-        $tmpConnection->close();
-    } elseif (isset($params['dbname'])) {
-        $dbName = $params['dbname'];
-        unset($params['dbname']);
-
-        if (str_contains($params['driver'] ?? '', 'pgsql')) {
-            $params['dbname'] = $params['default_dbname'] ?? 'postgres';
-        }
-
-        $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
-        $schemaManager = $tmpConnection->createSchemaManager();
-
-        if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
-            $schemaManager->createDatabase($tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($dbName));
-        }
-
-        $tmpConnection->close();
-    }
-
-    $application = new Application($kernel);
-    $application->setAutoExit(false);
-
-    $application->run(new ArrayInput([
-        'command' => 'doctrine:schema:update',
-        '--force' => true,
-        '--complete' => true,
-        '--quiet' => true,
-    ]));
-
-    $kernel->shutdown();
-})();
-
 date_default_timezone_set('Africa/Johannesburg');
+
+/*
+ * The suite runs two kernels: the default one and SaasTestKernel, which has its own cache
+ * dir and therefore its own database (SOLIDINVOICE_DATABASE_URL is relative to
+ * %kernel.cache_dir%). Foundry's automatic reset only builds one schema per run - the one
+ * belonging to whichever test class runs first - so the other database is left with a stale
+ * schema, or none at all on a fresh checkout or in CI.
+ *
+ * Both are prepared here instead. Foundry then rebuilds whichever one it picks, which is
+ * harmless. See config/packages/saas/dama_doctrine_test.yaml for the matching connection
+ * key split that stops the two kernels from sharing a single static connection.
+ */
+(static function (): void {
+    $env = $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
+    $debugRaw = $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
+    $debug = is_bool($debugRaw)
+        ? $debugRaw
+        : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
+
+    $prepare = static function (KernelInterface $kernel): void {
+        $kernel->boot();
+
+        // Create the database through a temporary connection without a database name,
+        // mirroring InstallBundle's CreateDatabaseStep. The doctrine:database:create command
+        // cannot be used here: it determines the database platform from the main connection,
+        // which requires connecting to the (not yet existing) database.
+        /** @var ManagerRegistry $doctrine */
+        $doctrine = $kernel->getContainer()->get('doctrine');
+        $connection = $doctrine->getConnection();
+        $params = $connection->getParams();
+
+        if (isset($params['primary'])) {
+            $params = $params['primary'];
+        }
+
+        if (($params['driver'] ?? '') === 'pdo_sqlite') {
+            $directory = dirname((string) $params['path']);
+
+            if (! is_dir($directory) && ! mkdir($directory, 0o777, true) && ! is_dir($directory)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
+            }
+
+            // Opening the connection is enough to create the SQLite database file.
+            $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
+            $tmpConnection->getNativeConnection();
+            $tmpConnection->close();
+        } elseif (isset($params['dbname'])) {
+            $dbName = $params['dbname'];
+            unset($params['dbname']);
+
+            if (str_contains($params['driver'] ?? '', 'pgsql')) {
+                $params['dbname'] = $params['default_dbname'] ?? 'postgres';
+            }
+
+            $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
+            $schemaManager = $tmpConnection->createSchemaManager();
+
+            if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
+                $schemaManager->createDatabase($tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($dbName));
+            }
+
+            $tmpConnection->close();
+        }
+
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $output = new BufferedOutput();
+        $command = ['command' => 'doctrine:schema:update', '--force' => true, '--complete' => true];
+
+        if ($application->run(new ArrayInput($command), $output) !== 0) {
+            throw new RuntimeException(sprintf(
+                'Failed to prepare the test database for %s: %s',
+                $kernel::class,
+                $output->fetch()
+            ));
+        }
+
+        $kernel->shutdown();
+    };
+
+    // The default kernel first: SaasTestKernel sets SOLIDINVOICE_PLATFORM=saas for its own
+    // lifetime, and config/bundles.php reads that at container build time.
+    $prepare(new Kernel($env, $debug));
+    $prepare(new SaasTestKernel($env, $debug));
+})();

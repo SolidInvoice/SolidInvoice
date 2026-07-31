@@ -39,9 +39,12 @@
     <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
   </php>
   <extensions>
+    <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
     <bootstrap class="Zenstruck\Browser\Test\BrowserExtension"/>
-    <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension"/>
+    <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension">
+      <parameter name="enabled-auto-reset" value="true"/>
+    </bootstrap>
   </extensions>
   <source>
     <include>

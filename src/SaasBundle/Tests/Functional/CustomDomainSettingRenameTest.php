@@ -22,7 +22,6 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Asserts that a value stored under the legacy `system/company/custom_domain`
@@ -38,13 +37,10 @@ final class CustomDomainSettingRenameTest extends KernelTestCase
 
     private const string NEW_KEY = 'system/domain/custom_domain';
 
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): KernelInterface
+    protected static function getKernelClass(): string
     {
-        return new SaasTestKernel('test', true);
+        return SaasTestKernel::class;
     }
 
     public function testNewKeyResolvesAfterRename(): void

@@ -14,67 +14,41 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Test;
 
 use DateTimeInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Before;
-use PHPUnit\Framework\Attributes\BeforeClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
-use Zenstruck\Foundry\Configuration;
-use Zenstruck\Foundry\Persistence\ResetDatabase\ResetDatabaseManager;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use function date;
+use function putenv;
 
 trait EnsureApplicationInstalled
 {
-    use SymfonyKernelTrait;
-
     protected Company $company;
 
     #[Before]
-    public function installApplication(): void
+    public function createCompany(): void
     {
-        if (Configuration::isBooted() && ! Configuration::instance()->isPersistenceAvailable()) {
-            Configuration::boot(static function () {
-                return static::getContainer()->get('.zenstruck_foundry.configuration'); // @phpstan-ignore-line
-            });
-        }
-
-        ResetDatabaseManager::resetBeforeEachTest(static::bootKernel());
-
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
         $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
+        putenv('SOLIDINVOICE_INSTALLED=' . $_SERVER['SOLIDINVOICE_INSTALLED']);
 
-        /** @var ManagerRegistry $registry */
-        $registry = static::getContainer()->get('doctrine');
-
-        $this->company = new Company();
-        $this->company->setName('SolidInvoice');
-        $this->company->currency = 'USD';
-        $registry->getManager()->persist($this->company);
-        $registry->getManager()->flush();
+        $this->company = CompanyFactory::createOne(['name' => SolidInvoiceCoreBundle::APP_NAME]);
 
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
 
     #[After]
-    public function resetInstallation(): void
+    public function resetCompany(): void
     {
         unset(
             $_SERVER['SOLIDINVOICE_LOCALE'],
             $_ENV['SOLIDINVOICE_LOCALE'],
             $_SERVER['SOLIDINVOICE_INSTALLED'],
             $_ENV['SOLIDINVOICE_INSTALLED'],
-            $this->company,
+            $this->company
         );
-    }
-
-    /**
-     * @internal
-     */
-    #[BeforeClass]
-    public static function _resetDatabaseBeforeFirstTest(): void
-    {
-        ResetDatabaseManager::resetBeforeFirstTest(static::bootKernel());
+        putenv('SOLIDINVOICE_INSTALLED=');
     }
 }

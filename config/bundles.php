@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
+use DAMA\DoctrineTestBundle\DAMADoctrineTestBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
@@ -117,6 +118,7 @@ $bundles = [
     ChartjsBundle::class => ['all' => true],
     MeilisearchBundle::class => ['all' => true],
     McpBundle::class => ['all' => true],
+    DAMADoctrineTestBundle::class => ['test' => true]
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
