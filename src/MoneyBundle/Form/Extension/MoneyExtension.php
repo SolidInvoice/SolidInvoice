@@ -31,7 +31,7 @@ class MoneyExtension extends AbstractTypeExtension
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addViewTransformer(new ViewTransformer(), true);
+        $builder->addViewTransformer(new ViewTransformer($options['currency']), true);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -51,7 +51,6 @@ final class MoneyFormatter implements MoneyFormatterInterface
             $this->numberFormatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
         }
 
-        $this->numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
         $this->formatter = new IntlMoneyFormatter($this->numberFormatter, new ISOCurrencies());
         $this->locale = $locale;
     }

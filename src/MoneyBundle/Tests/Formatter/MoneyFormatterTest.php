@@ -27,6 +27,19 @@ final class MoneyFormatterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    public function testFormatZeroDecimalCurrency(): void
+    {
+        $systemConfig = $this->getSystemConfigMock('JPY');
+
+        $formatter = new MoneyFormatter('en_US', $systemConfig);
+
+        // 800 JPY stored as 800 (subunit = 0, no conversion); must display without decimal places.
+        $money = new Money(800, new Currency('JPY'));
+
+        self::assertStringNotContainsString('.', $formatter->format($money));
+        self::assertStringContainsString('800', $formatter->format($money));
+    }
+
     #[DataProvider('localeProvider')]
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {

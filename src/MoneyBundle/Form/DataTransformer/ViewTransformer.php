@@ -20,6 +20,9 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
+use Money\Currencies;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -28,6 +31,12 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class ViewTransformer implements DataTransformerInterface
 {
+    public function __construct(
+        private readonly Currency $currency,
+        private readonly Currencies $currencies = new ISOCurrencies(),
+    ) {
+    }
+
     /**
      * @throws DivisionByZeroException
      * @throws RoundingNecessaryException
@@ -42,7 +51,9 @@ class ViewTransformer implements DataTransformerInterface
 
         $value = is_float($value) ? (string) $value : $value;
 
-        return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HalfEven)->toFloat();
+        $subunit = $this->currencies->subunitFor($this->currency);
+
+        return BigNumber::of($value)->toBigDecimal()->dividedBy(10 ** $subunit, $subunit, RoundingMode::HalfEven)->toFloat();
     }
 
     /**
@@ -59,6 +70,8 @@ class ViewTransformer implements DataTransformerInterface
 
         $value = is_float($value) ? (string) $value : $value;
 
-        return BigNumber::of($value)->toBigDecimal()->multipliedBy(100);
+        $subunit = $this->currencies->subunitFor($this->currency);
+
+        return BigNumber::of($value)->toBigDecimal()->multipliedBy(10 ** $subunit);
     }
 }
