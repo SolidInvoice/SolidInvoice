@@ -65,6 +65,10 @@ if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?
         $connection = $doctrine->getConnection();
         $params = $connection->getParams();
 
+        if (isset($params['primary'])) {
+            $params = $params['primary'];
+        }
+
         if (($params['driver'] ?? '') === 'pdo_sqlite') {
             $directory = dirname((string) $params['path']);
 
