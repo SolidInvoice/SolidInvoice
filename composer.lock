@@ -9309,12 +9309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "35f152999f303d7600c2cfa5575eae6ed9e5f670"
+                "reference": "983b19982396894c31635399fa96b1309057fced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/35f152999f303d7600c2cfa5575eae6ed9e5f670",
-                "reference": "35f152999f303d7600c2cfa5575eae6ed9e5f670",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/983b19982396894c31635399fa96b1309057fced",
+                "reference": "983b19982396894c31635399fa96b1309057fced",
                 "shasum": ""
             },
             "require": {
@@ -9391,7 +9391,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-07-31T08:57:40+00:00"
+            "time": "2026-08-02T17:58:19+00:00"
         },
         {
             "name": "solidworx/toggler",
@@ -17705,16 +17705,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "1a885a51d6bad71e869779da148dfef4fc8e5705"
+                "reference": "510a7a1054acd4d24b2b8b09597bb9406f247193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/1a885a51d6bad71e869779da148dfef4fc8e5705",
-                "reference": "1a885a51d6bad71e869779da148dfef4fc8e5705",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/510a7a1054acd4d24b2b8b09597bb9406f247193",
+                "reference": "510a7a1054acd4d24b2b8b09597bb9406f247193",
                 "shasum": ""
             },
             "require": {
@@ -17757,7 +17757,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v3.3.0"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -17777,7 +17777,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-13T16:10:12+00:00"
+            "time": "2026-07-25T17:54:47+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -18935,16 +18935,16 @@
         },
         {
             "name": "symfony/ux-icons",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-icons.git",
-                "reference": "449a8873a8077fc21ac2bd98a453c247c320cdd5"
+                "reference": "117b5d9bc9652f364495d586235b9e1f1f7c9d52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-icons/zipball/449a8873a8077fc21ac2bd98a453c247c320cdd5",
-                "reference": "449a8873a8077fc21ac2bd98a453c247c320cdd5",
+                "url": "https://api.github.com/repos/symfony/ux-icons/zipball/117b5d9bc9652f364495d586235b9e1f1f7c9d52",
+                "reference": "117b5d9bc9652f364495d586235b9e1f1f7c9d52",
                 "shasum": ""
             },
             "require": {
@@ -19004,7 +19004,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-icons/tree/v3.3.0"
+                "source": "https://github.com/symfony/ux-icons/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -19024,20 +19024,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-19T06:54:48+00:00"
+            "time": "2026-07-29T16:44:14+00:00"
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "120e6bec064e7f79efbb83a837cc07df37419076"
+                "reference": "bb7a955e68dbedbbd4c24ab0b6acab1ca22d8720"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/120e6bec064e7f79efbb83a837cc07df37419076",
-                "reference": "120e6bec064e7f79efbb83a837cc07df37419076",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/bb7a955e68dbedbbd4c24ab0b6acab1ca22d8720",
+                "reference": "bb7a955e68dbedbbd4c24ab0b6acab1ca22d8720",
                 "shasum": ""
             },
             "require": {
@@ -19105,7 +19105,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v3.3.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -19125,7 +19125,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-10T15:47:13+00:00"
+            "time": "2026-07-25T17:54:47+00:00"
         },
         {
             "name": "symfony/ux-toggle-password",
@@ -19213,16 +19213,16 @@
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
-                "reference": "2f3a1b74e3ee04daed1a303245998e7b799eb9dc"
+                "reference": "520e1da46bbb5974a2cf5839369aec3c8fc1a6f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/2f3a1b74e3ee04daed1a303245998e7b799eb9dc",
-                "reference": "2f3a1b74e3ee04daed1a303245998e7b799eb9dc",
+                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/520e1da46bbb5974a2cf5839369aec3c8fc1a6f0",
+                "reference": "520e1da46bbb5974a2cf5839369aec3c8fc1a6f0",
                 "shasum": ""
             },
             "require": {
@@ -19278,7 +19278,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v3.3.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -19298,7 +19298,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-05T15:45:35+00:00"
+            "time": "2026-07-28T06:36:17+00:00"
         },
         {
             "name": "symfony/validator",
