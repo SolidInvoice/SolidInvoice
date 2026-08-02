@@ -10,6 +10,7 @@
  */
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\Deprecations\Deprecation;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -50,6 +51,7 @@ if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?
  * key split that stops the two kernels from sharing a single static connection.
  */
 (static function (): void {
+    xdebug_break();
     $env = $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
     $debug = filter_var((string) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? 'true'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
@@ -84,14 +86,19 @@ if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?
             $dbName = $params['dbname'];
             unset($params['dbname']);
 
-            if (str_contains($params['driver'] ?? '', 'pgsql')) {
-                $params['dbname'] = $params['default_dbname'] ?? 'postgres';
+            switch (true) {
+                case $params['driver'] === 'pdo_mysql':
+                    $params['dbname'] = 'information_schema';
+                    break;
+                case $params['driver'] === 'pdo_pgsql':
+                    $params['dbname'] = $params['default_dbname'] ?? 'postgres';
+                    break;
             }
 
             $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
             $schemaManager = $tmpConnection->createSchemaManager();
 
-            if (! in_array($dbName, $schemaManager->introspectDatabaseNames(), true)) {
+            if (! array_any($schemaManager->introspectDatabaseNames(), static fn (UnqualifiedName $db, int $_): bool => $db->toString() === $dbName)) {
                 $schemaManager->createDatabase($tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($dbName));
             }
 
