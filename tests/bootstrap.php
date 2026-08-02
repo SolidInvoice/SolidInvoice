@@ -51,7 +51,6 @@ if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?
  * key split that stops the two kernels from sharing a single static connection.
  */
 (static function (): void {
-    xdebug_break();
     $env = $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
     $debug = filter_var((string) ($_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? 'true'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
