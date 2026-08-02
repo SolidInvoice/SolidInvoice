@@ -168,7 +168,7 @@ jobs:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
     env:
-      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice?serverVersion=${{ matrix.db.server_version }}"
+      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice_%app_mode%_%env(default:app_mode:TEST_TOKEN)%?serverVersion=${{ matrix.db.server_version }}"
 
     steps:
       - name: Harden Runner
