@@ -30,7 +30,7 @@ final class ContactOrderingTest extends KernelTestCase
 {
     use DoctrineTestTrait;
 
-    public function testContactsAreReturnedInInsertionOrder(): void
+    public function testContactsAreReturnedInAscendingIdOrder(): void
     {
         $client = ClientFactory::createOne(['name' => 'Ordering Test', 'currencyCode' => 'USD']);
 
@@ -47,6 +47,11 @@ final class ContactOrderingTest extends KernelTestCase
             $expected[] = $contact->getId()->toRfc4122();
         }
 
+        // The mapping promises ascending id, not insertion order. Those coincide while ULID
+        // generation is monotonic, which is what makes the invoice-form snapshots stable,
+        // but asserting the weaker contract keeps this test about the ORDER BY.
+        sort($expected);
+
         $id = $client->getId();
         $this->em->clear();
 
@@ -59,8 +64,6 @@ final class ContactOrderingTest extends KernelTestCase
             $reloaded->getContacts()->toArray()
         );
 
-        // Ids are ULIDs, so insertion order is id order; the point is that it is stable at
-        // all, on every platform, rather than whatever the query planner returns.
         self::assertSame($expected, array_values($actual));
     }
 }

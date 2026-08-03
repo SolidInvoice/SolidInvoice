@@ -149,13 +149,13 @@ final readonly class LineItemBuilder
             $line->setDescription($description);
 
             try {
-                $line->setPrice(BigDecimal::of((string) $price));
+                $line->setPrice(BigDecimal::of($this->toExactString($price)));
             } catch (Throwable) {
                 throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, $this->describe($price)));
             }
 
             try {
-                $line->setQty(BigDecimal::of(\is_float($qty) ? (string) $qty : $qty));
+                $line->setQty(BigDecimal::of($this->toExactString($qty)));
             } catch (Throwable) {
                 throw new ToolCallException(sprintf('Line item #%d has an invalid "qty": %s', $index, $this->describe($qty)));
             }
@@ -166,6 +166,20 @@ final readonly class LineItemBuilder
         }
 
         return $built;
+    }
+
+    /**
+     * A JSON number reaches a tool as a float. `(string)` would serialise it at the host's
+     * `precision` ini setting, so the same tool call could resolve to different digits from
+     * one host to the next; %.14G pins that, matching
+     * {@see \SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer}.
+     *
+     * Anything that is not a number is handed to BigDecimal untouched, so that malformed
+     * input fails there and is reported as a ToolCallException.
+     */
+    private function toExactString(mixed $value): mixed
+    {
+        return \is_float($value) ? sprintf('%.14G', $value) : $value;
     }
 
     /**
