@@ -89,8 +89,17 @@ final class Settings extends AbstractController
     {
         $settings = [];
 
+        // Ordered explicitly: this array is built by inserting keys in row order, so the row
+        // order decides both the section tabs (and which one preMount() selects by default)
+        // and the order of the fields within a section. A plain findAll() leaves that to the
+        // database, and PostgreSQL gives no guarantee at all - an UPDATE relocates the row,
+        // so simply saving a setting reshuffled the tabs.
+        //
+        // Ordering by the ULID id keeps the settings in creation order, which is the order
+        // the config providers seed them in and the order the UI has always displayed.
+        // Ordering by key would be alphabetical and would reorder the tabs.
         /** @var Setting $setting */
-        foreach ($this->settingsRepository->findAll() as $setting) {
+        foreach ($this->settingsRepository->findBy([], ['id' => 'ASC']) as $setting) {
             $path = '[' . str_replace('/', '][', $setting->getKey()) . ']';
 
             $value = $setting->getType() === CheckboxType::class ? $setting->getValue() === '1' : $setting->getValue();
