@@ -288,16 +288,16 @@
         },
         {
             "name": "async-aws/core",
-            "version": "1.29.1",
+            "version": "1.29.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/async-aws/core.git",
-                "reference": "549c166a715fba5e18508a8922904865d056c69a"
+                "reference": "aefe81449ea19f6ed43944bbb29874a0a5e54d18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/async-aws/core/zipball/549c166a715fba5e18508a8922904865d056c69a",
-                "reference": "549c166a715fba5e18508a8922904865d056c69a",
+                "url": "https://api.github.com/repos/async-aws/core/zipball/aefe81449ea19f6ed43944bbb29874a0a5e54d18",
+                "reference": "aefe81449ea19f6ed43944bbb29874a0a5e54d18",
                 "shasum": ""
             },
             "require": {
@@ -344,7 +344,7 @@
                 "sts"
             ],
             "support": {
-                "source": "https://github.com/async-aws/core/tree/1.29.1"
+                "source": "https://github.com/async-aws/core/tree/1.29.2"
             },
             "funding": [
                 {
@@ -356,7 +356,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-01T13:58:12+00:00"
+            "time": "2026-07-29T12:54:05+00:00"
         },
         {
             "name": "async-aws/ses",
@@ -9903,16 +9903,16 @@
         },
         {
             "name": "symfony/amazon-sqs-messenger",
-            "version": "v8.1.0",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amazon-sqs-messenger.git",
-                "reference": "131a70490d189333f80d67b1da188bfeb2fdbc19"
+                "reference": "1a5fed8c0237a2c9af10ba857fc1c705e17fcd42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amazon-sqs-messenger/zipball/131a70490d189333f80d67b1da188bfeb2fdbc19",
-                "reference": "131a70490d189333f80d67b1da188bfeb2fdbc19",
+                "url": "https://api.github.com/repos/symfony/amazon-sqs-messenger/zipball/1a5fed8c0237a2c9af10ba857fc1c705e17fcd42",
+                "reference": "1a5fed8c0237a2c9af10ba857fc1c705e17fcd42",
                 "shasum": ""
             },
             "require": {
@@ -9957,7 +9957,7 @@
             "description": "Symfony Amazon SQS extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amazon-sqs-messenger/tree/v8.1.0"
+                "source": "https://github.com/symfony/amazon-sqs-messenger/tree/v8.1.2"
             },
             "funding": [
                 {
@@ -9977,7 +9977,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-07-27T13:58:19+00:00"
         },
         {
             "name": "symfony/asset",
