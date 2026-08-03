@@ -44,9 +44,11 @@ final class LineQuantityDecimalMigrationTest extends TestCase
 
         $column = $schema->getTable($table)->getColumn('qty');
 
-        self::assertSame(Type::getType(Types::DECIMAL), $column->getType());
-        self::assertSame(QuantityType::PRECISION, $column->getPrecision());
-        self::assertSame(QuantityType::SCALE, $column->getScale());
+        self::assertSame(Type::getType(QuantityType::NAME), $column->getType());
+        // Literals, not QuantityType's constants: the migration freezes the shape it
+        // produced, so this has to fail if a later change to the type silently moves it.
+        self::assertSame(20, $column->getPrecision());
+        self::assertSame(6, $column->getScale());
         self::assertTrue($column->getNotnull());
     }
 
@@ -66,6 +68,12 @@ final class LineQuantityDecimalMigrationTest extends TestCase
 
     private function preMigrationSchema(): Schema
     {
+        // The type is registered by the DBAL config in a booted kernel; this test runs
+        // without one.
+        if (! Type::hasType(QuantityType::NAME)) {
+            Type::addType(QuantityType::NAME, QuantityType::class);
+        }
+
         $schema = new Schema();
 
         foreach (['invoice_lines', 'quote_lines'] as $tableName) {
