@@ -166,8 +166,8 @@ github.com/dunglas/caddy-cbrotli v1.0.1 h1:mkg7EB1GmoyfBt3kY3mq4o/0bfnBeq7ZLQjmV
 github.com/dunglas/caddy-cbrotli v1.0.1/go.mod h1:uXABy3tjy1FABF+3JWKVh1ajFvIO/kfpwHaeZGSBaAY=
 github.com/dunglas/frankenphp v1.12.6 h1:9awaMImqbR1XhGM4bBciHPIC0ixRhoAaj9kqzqMa954=
 github.com/dunglas/frankenphp v1.12.6/go.mod h1:5WT2GmMgJOKtzfM09hWg6XKdyMDVX7hr28YArcVEo6g=
-github.com/dunglas/frankenphp/caddy v1.12.4 h1:q0ELbYnLW72UeWCPk8rt4LXWy+CRABofJf6/sb7B8iU=
-github.com/dunglas/frankenphp/caddy v1.12.4/go.mod h1:BynBqS13tQI3HILiFL6GJOaf1nli3g1+Xjh9WkctI3Q=
+github.com/dunglas/frankenphp/caddy v1.12.6 h1:+wm+jUNQE2QERLKKAsQ0dC3+Y8oPh6Y4K8Umn/00hwo=
+github.com/dunglas/frankenphp/caddy v1.12.6/go.mod h1:KS3/0bC8EMnIPtVXWZKiKoK3wnWvee093liU0KMOBKo=
 github.com/dunglas/mercure v0.24.2 h1:0uKT5XR/tkaGWhwUlXqjWek/0w+dY1n8HEY9Q8YB0hw=
 github.com/dunglas/mercure v0.24.2/go.mod h1:BAaiHFKr5+rS5SUP1tJBRXlCjPWZmzy1n0BDlVJnWzY=
 github.com/dunglas/mercure/caddy v0.24.2 h1:QjdJXvyJQaOtrt/LSk4QoCdFmRbyTVMl72bqmAGFPxw=
