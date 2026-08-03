@@ -28,8 +28,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
 use SolidInvoice\ApiBundle\State\Processor\InvoiceLinePersistProcessor;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
+use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -39,6 +41,7 @@ use SolidInvoice\TaxBundle\Entity\LineTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
@@ -150,10 +153,22 @@ class Line implements LineInterface, Stringable
     )]
     protected BigNumber $price;
 
-    #[ORM\Column(name: 'qty', type: Types::FLOAT)]
+    #[ORM\Column(name: 'qty', type: QuantityType::NAME, precision: QuantityType::PRECISION, scale: QuantityType::SCALE)]
     #[Assert\NotBlank]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    protected ?float $qty = 1;
+    #[Context(
+        normalizationContext: [BigIntegerNormalizer::MONETARY => false],
+        denormalizationContext: [BigIntegerNormalizer::MONETARY => false],
+    )]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
+    protected BigNumber $qty;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'lines')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
@@ -188,6 +203,7 @@ class Line implements LineInterface, Stringable
     {
         $this->total = BigDecimal::zero();
         $this->price = BigDecimal::zero();
+        $this->qty = BigDecimal::one();
         $this->taxes = new ArrayCollection();
     }
 
@@ -223,14 +239,17 @@ class Line implements LineInterface, Stringable
         return $this->price;
     }
 
-    public function setQty(float $qty): static
+    /**
+     * @throws MathException
+     */
+    public function setQty(BigNumber | int | string $qty): static
     {
-        $this->qty = $qty;
+        $this->qty = BigNumber::of($qty)->toBigDecimal()->strippedOfTrailingZeros();
 
         return $this;
     }
 
-    public function getQty(): ?float
+    public function getQty(): BigNumber
     {
         return $this->qty;
     }
@@ -295,7 +314,7 @@ class Line implements LineInterface, Stringable
     #[ORM\PrePersist]
     public function updateTotal(): static
     {
-        $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty !== null ? (string) $this->qty : 1);
+        $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty->toBigDecimal());
 
         return $this;
     }

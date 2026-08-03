@@ -30,9 +30,9 @@ interface LineInterface
 
     public function getPrice(): BigNumber;
 
-    public function setQty(float $qty): self;
+    public function setQty(BigNumber | int | string $qty): self;
 
-    public function getQty(): ?float;
+    public function getQty(): BigNumber;
 
     public function setTotal(BigNumber | int | string $total): self;
 

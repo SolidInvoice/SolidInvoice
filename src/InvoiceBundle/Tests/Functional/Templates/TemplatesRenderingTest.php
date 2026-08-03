@@ -203,7 +203,7 @@ final class TemplatesRenderingTest extends KernelTestCase
                 new Line()
                     ->setDescription('Sample line item')
                     ->setPrice(BigInteger::of(75000))
-                    ->setQty(2.0)
+                    ->setQty(2)
                     ->setTotal(BigInteger::of(150000)),
             ],
             'users' => [$contact],

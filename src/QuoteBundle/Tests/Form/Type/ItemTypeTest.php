@@ -32,7 +32,7 @@ final class ItemTypeTest extends FormTestCase
     {
         $description = $this->faker->text();
         $price = $this->faker->randomNumber(3);
-        $qty = $this->faker->randomFloat(2);
+        $qty = '12.345678';
 
         $formData = [
             'description' => $description,
@@ -57,7 +57,7 @@ final class ItemTypeTest extends FormTestCase
     {
         $description = 'Item + discount & "special" chars: 100% off';
         $price = 100;
-        $qty = 1.0;
+        $qty = '1';
 
         $formData = [
             'description' => $description,

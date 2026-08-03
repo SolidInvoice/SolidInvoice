@@ -42,7 +42,7 @@ Each line item has four fields:
 | --- | --- |
 | **Description** | What the service or product is. Supports multiple lines. |
 | **Price** | The unit price. |
-| **Qty** | The quantity. Defaults to `1`. |
+| **Qty** | The quantity. Defaults to `1`. Fractional quantities are supported to six decimal places, so you can bill part-hours, metered usage or weights exactly. |
 | **Tax** | An optional tax rate to apply to this line. Tax rates are managed in `System` → `Taxes`. |
 
 The **Total** column and the **Summary** panel on the right update in real time as you type.

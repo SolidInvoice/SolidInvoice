@@ -48,6 +48,51 @@ final class InvoiceLineTest extends ApiTestCase
         self::assertArrayHasKey('total', $result);
     }
 
+    /**
+     * `qty` is a plain number on the wire, unlike `price` and `total`, which are scaled
+     * into the minor unit. A fractional quantity has to come back exactly as sent.
+     */
+    public function testCreateWithAFractionalQuantity(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $result = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Metered usage',
+            'price' => 1000,
+            'qty' => 2.5,
+        ]);
+
+        self::assertSame(2.5, $result['qty']);
+        // price is sent in the major unit, so 1000 × 2.5 comes back as 2500.
+        self::assertEquals(2500, $result['total']);
+
+        $reloaded = $this->requestGet('/api/invoices/' . $invoiceId . '/line/' . $result['id']);
+
+        self::assertSame(2.5, $reloaded['qty']);
+    }
+
+    public function testEditAQuantityToSixDecimalPlaces(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $created = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Metered usage',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $updated = $this->requestPatch(
+            '/api/invoices/' . $invoiceId . '/line/' . $created['id'],
+            ['qty' => 0.123456]
+        );
+
+        self::assertSame(0.123456, $updated['qty']);
+    }
+
     public function testGet(): void
     {
         $invoice = InvoiceFactory::createOne();

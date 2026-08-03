@@ -883,12 +883,6 @@ parameters:
 			path: src/InvoiceBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$qty type mapping mismatch\: property can contain float\|null but database expects float\|int\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/InvoiceBundle/Entity/Line.php
-
-		-
 			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
@@ -1628,12 +1622,6 @@ parameters:
 
 		-
 			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$description type mapping mismatch\: property can contain string\|null but database expects string\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/QuoteBundle/Entity/Line.php
-
-		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$qty type mapping mismatch\: property can contain float\|null but database expects float\|int\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Line.php

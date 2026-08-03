@@ -133,6 +133,6 @@ final class QuoteClonerTest extends TestCase
         self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $quoteItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
-        self::assertSame($item->getQty(), $quoteItem[0]->getQty());
+        self::assertTrue($item->getQty()->isEqualTo($quoteItem[0]->getQty()));
     }
 }

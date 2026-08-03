@@ -168,7 +168,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $line = new Line()
             ->setDescription('Consulting')
             ->setPrice(10000)
-            ->setQty(1.0);
+            ->setQty(1);
 
         $invoice = new Invoice();
         $invoice->setStatus(InvoiceStatus::Pending);

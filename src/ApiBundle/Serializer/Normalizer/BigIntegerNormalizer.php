@@ -28,13 +28,24 @@ use function is_a;
 final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
+     * Context flag marking whether the {@see BigNumber} being (de)normalized is a monetary
+     * amount held in the minor unit, and therefore needs scaling by 100 across the API
+     * boundary. Defaults to true, since most of them are.
+     *
+     * Set it to false with {@see \Symfony\Component\Serializer\Attribute\Context} on any
+     * `BigNumber` property that is a plain number — a line quantity, for instance, which
+     * is exposed exactly as it is stored.
+     */
+    public const string MONETARY = 'monetary_amount';
+
+    /**
      * @throws MathException
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BigNumber
     {
         $data = is_float($data) ? (string) $data : $data;
 
-        if ($context['api_denormalize'] ?? false) {
+        if (($context['api_denormalize'] ?? false) && ($context[self::MONETARY] ?? true)) {
             return BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
         }
 
@@ -53,7 +64,7 @@ final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInt
      */
     public function normalize(mixed $object, ?string $format = null, array $context = []): float
     {
-        if (isset($context['api_attribute'])) {
+        if (isset($context['api_attribute']) && ($context[self::MONETARY] ?? true)) {
             return $object->toBigDecimal()->dividedBy(100, 2, RoundingMode::HalfEven)->toFloat();
         }
 

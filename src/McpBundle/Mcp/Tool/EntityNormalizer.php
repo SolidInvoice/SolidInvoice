@@ -185,7 +185,7 @@ final class EntityNormalizer
                 'id' => $line->getId()->toRfc4122(),
                 'description' => $line->getDescription(),
                 'price' => $this->bigNumber($line->getPrice()),
-                'qty' => $line->getQty(),
+                'qty' => $this->bigNumber($line->getQty()),
                 'total' => $this->bigNumber($line->getTotal()),
                 'taxes' => array_values(array_map(
                     $this->lineTax(...),
