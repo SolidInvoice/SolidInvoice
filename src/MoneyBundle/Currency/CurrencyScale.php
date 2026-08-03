@@ -44,9 +44,6 @@ final readonly class CurrencyScale
     ) {
     }
 
-    /**
-     * The number of decimal places the currency is expressed in.
-     */
     public function subunitFor(Currency $currency): int
     {
         if (! $this->currencies->contains($currency)) {
@@ -56,17 +53,12 @@ final readonly class CurrencyScale
         return $this->currencies->subunitFor($currency);
     }
 
-    /**
-     * The factor between major and minor units, i.e. 100 for USD, 1 for JPY and 1000 for BHD.
-     */
     public function factorFor(Currency $currency): int
     {
         return 10 ** $this->subunitFor($currency);
     }
 
     /**
-     * Converts a major unit amount (what a user types) to the minor unit amount that gets stored.
-     *
      * @throws MathException
      */
     public function toMinorUnit(BigNumber | float | int | string $value, Currency $currency): BigDecimal
@@ -75,7 +67,9 @@ final readonly class CurrencyScale
     }
 
     /**
-     * Converts a stored minor unit amount to the major unit amount that gets displayed.
+     * Returns a float rather than a BigDecimal because both callers feed a display layer that
+     * needs a primitive (a form view and a chart dataset). Do not reuse this where the exact
+     * value matters - go through toMinorUnit and keep the BigDecimal instead.
      *
      * @throws MathException
      */
