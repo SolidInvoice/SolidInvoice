@@ -9,7 +9,7 @@ require (
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/dunglas/caddy-cbrotli v1.0.1
 	github.com/dunglas/frankenphp v1.12.6
-	github.com/dunglas/frankenphp/caddy v1.12.4
+	github.com/dunglas/frankenphp/caddy v1.12.6
 	github.com/go-playground/validator/v10 v10.30.3
 	github.com/luno/jettison v0.0.0-20240722160230-b42bd507a5f6
 	github.com/luno/lu v0.0.0-20250306165345-9dc624600fb2
