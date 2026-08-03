@@ -97,7 +97,10 @@ if (false === (bool) $_SERVER['APP_DEBUG'] && null === ($_SERVER['TEST_TOKEN'] ?
             $tmpConnection = DriverManager::getConnection($params, $connection->getConfiguration());
             $schemaManager = $tmpConnection->createSchemaManager();
 
-            if (! array_any($schemaManager->introspectDatabaseNames(), static fn (UnqualifiedName $db, int $_): bool => $db->toString() === $dbName)) {
+            // getIdentifier()->getValue() and not toString(): the latter returns the *quoted*
+            // form ("solidinvoice_self-hosted_test") for any name needing quoting, so it never
+            // matches the raw name and the database is re-created on every run.
+            if (! array_any($schemaManager->introspectDatabaseNames(), static fn (UnqualifiedName $db, int $_): bool => $db->getIdentifier()->getValue() === $dbName)) {
                 $schemaManager->createDatabase($tmpConnection->getDatabasePlatform()->quoteSingleIdentifier($dbName));
             }
 
