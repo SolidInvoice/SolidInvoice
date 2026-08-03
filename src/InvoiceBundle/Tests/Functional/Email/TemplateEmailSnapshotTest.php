@@ -119,7 +119,7 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
                     new Line()
                         ->setDescription('Sample line item')
                         ->setPrice(75000)
-                        ->setQty(2.0)
+                        ->setQty(2)
                         ->updateTotal(),
                 ],
                 'users' => [$contact],

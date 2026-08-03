@@ -73,9 +73,9 @@ final readonly class PreviewInvoiceFactory
         $invoice->setDiscount(new Discount()->setType(null));
 
         foreach ([
-            ['Brand identity design', 120000, 1.0],
-            ['Landing page implementation', 85000, 1.0],
-            ['Consulting & support', 15000, 3.0],
+            ['Brand identity design', 120000, 1],
+            ['Landing page implementation', 85000, 1],
+            ['Consulting & support', 15000, 3],
         ] as [$description, $price, $qty]) {
             $line = new Line();
             $line->setDescription($description);

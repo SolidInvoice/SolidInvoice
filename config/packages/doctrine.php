@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Doctrine\Function\ToNumberFunction;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
+use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 
 return App::config([
     'doctrine' => [
@@ -35,6 +36,9 @@ return App::config([
             'types' => [
                 BigIntegerType::NAME => [
                     'class' => BigIntegerType::class,
+                ],
+                QuantityType::NAME => [
+                    'class' => QuantityType::class,
                 ],
             ],
         ],

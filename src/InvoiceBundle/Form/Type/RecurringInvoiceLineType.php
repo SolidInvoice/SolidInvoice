@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Override;
+use SolidInvoice\CoreBundle\Form\Transformer\QuantityTransformer;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
@@ -65,12 +66,18 @@ class RecurringInvoiceLineType extends AbstractType
             'qty',
             NumberType::class,
             [
-                'empty_data' => 1,
+                'empty_data' => '1',
                 'attr' => [
                     'class' => 'input-mini invoice-item-qty',
                 ],
             ]
         );
+
+        // NumberType's own view transformer round-trips through a float, which would undo
+        // the exact-decimal quantity the entity now holds.
+        $builder->get('qty')
+            ->resetViewTransformers()
+            ->addViewTransformer(new QuantityTransformer());
 
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(

@@ -132,7 +132,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
-        self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
+        self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
     }
 
     public function testCloneWithRecurring(): void
@@ -208,7 +208,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
-        self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
+        self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
         self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
         self::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
     }

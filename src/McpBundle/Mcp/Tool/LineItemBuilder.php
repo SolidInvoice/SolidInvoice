@@ -154,7 +154,11 @@ final readonly class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, (string) $price));
             }
 
-            $line->setQty((float) $qty);
+            try {
+                $line->setQty(BigDecimal::of(\is_float($qty) ? (string) $qty : $qty));
+            } catch (Throwable) {
+                throw new ToolCallException(sprintf('Line item #%d has an invalid "qty": %s', $index, (string) $qty));
+            }
 
             $this->attachTaxes($line, $data, $index);
 

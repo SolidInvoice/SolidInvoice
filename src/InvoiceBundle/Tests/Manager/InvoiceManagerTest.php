@@ -176,7 +176,7 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
-        self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
+        self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
     }
 
     public function testQuoteToInvoiceCopiesLineTaxSnapshotsAsNewRows(): void
@@ -349,6 +349,6 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getDescription());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
-        self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
+        self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
     }
 }

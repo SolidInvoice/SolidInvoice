@@ -76,7 +76,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
             /** @var Line $item */
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
             $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($item->getPrice()), 2);
-            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $item->getQty();
+            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = (string) $item->getQty();
 
             ++$counter;
         }

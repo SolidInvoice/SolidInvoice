@@ -216,7 +216,7 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertFalse($row->compound);
     }
 
-    private function makeLine(int $price, float $qty): Line
+    private function makeLine(int $price, int | string $qty): Line
     {
         $line = new Line();
         $line->setPrice($price);

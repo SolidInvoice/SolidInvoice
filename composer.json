@@ -252,7 +252,10 @@
         "psr-4": {
             "App\\Mate\\": "mate/src/",
             "SolidInvoice\\Test\\": "tests/Test"
-        }
+        },
+        "classmap": [
+            "migrations/"
+        ]
     },
     "config": {
         "allow-plugins": {
