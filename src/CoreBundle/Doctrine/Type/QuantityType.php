@@ -73,15 +73,18 @@ final class QuantityType extends Type
     public const int SCALE = 6;
 
     /**
-     * Precision and scale are fixed here rather than read from `$column` so the DDL can
-     * never drift from the scale {@see self::convertToDatabaseValue()} rounds to.
+     * The constants are a default, not an override: a caller that declares its own
+     * precision and scale — the entity mapping, or a migration freezing the shape it
+     * produced — gets exactly what it asked for. Declaring nothing gets `DECIMAL(20, 6)`,
+     * so a column can never silently end up narrower than the scale
+     * {@see self::convertToDatabaseValue()} rounds to.
      */
     #[Override]
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDecimalTypeDeclarationSQL([
-            'precision' => self::PRECISION,
-            'scale' => self::SCALE,
+            'precision' => $column['precision'] ?? self::PRECISION,
+            'scale' => $column['scale'] ?? self::SCALE,
         ]);
     }
 

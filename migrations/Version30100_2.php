@@ -34,6 +34,16 @@ final class Version30100_2 extends AbstractMigration
 {
     private const array TABLES = ['invoice_lines', 'quote_lines'];
 
+    /**
+     * Frozen at the values {@see QuantityType} used when this migration was written, rather
+     * than read from its constants: a migration has to keep describing the schema it
+     * produced, so that a later migration that changes the scale has the right starting
+     * point to diff against.
+     */
+    private const int PRECISION = 20;
+
+    private const int SCALE = 6;
+
     public function getDescription(): string
     {
         return 'Store invoice and quote line quantities as DECIMAL(20, 6) instead of a float';
@@ -43,9 +53,9 @@ final class Version30100_2 extends AbstractMigration
     {
         foreach (self::TABLES as $tableName) {
             $column = $schema->getTable($tableName)->getColumn('qty');
-            $column->setType(Type::getType(Types::DECIMAL));
-            $column->setPrecision(QuantityType::PRECISION);
-            $column->setScale(QuantityType::SCALE);
+            $column->setType(Type::getType(QuantityType::NAME));
+            $column->setPrecision(self::PRECISION);
+            $column->setScale(self::SCALE);
         }
     }
 

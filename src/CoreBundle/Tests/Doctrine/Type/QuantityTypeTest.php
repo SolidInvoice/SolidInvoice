@@ -49,11 +49,21 @@ final class QuantityTypeTest extends TestCase
     }
 
     #[DataProvider('platforms')]
-    public function testDeclaresAFixedPrecisionAndScale(AbstractPlatform $platform, string $expected): void
+    public function testDeclaresTheDefaultPrecisionAndScale(AbstractPlatform $platform, string $expected): void
     {
-        // The precision and scale in the mapping are deliberately ignored, so the DDL can
-        // never drift from the scale convertToDatabaseValue() rounds to.
-        self::assertSame($expected, $this->type->getSQLDeclaration(['precision' => 4, 'scale' => 1], $platform));
+        // A column that declares nothing must not end up narrower than the scale
+        // convertToDatabaseValue() rounds to.
+        self::assertSame($expected, $this->type->getSQLDeclaration([], $platform));
+    }
+
+    #[DataProvider('platforms')]
+    public function testHonoursAnExplicitlyDeclaredPrecisionAndScale(AbstractPlatform $platform): void
+    {
+        // A migration freezes the shape it produced, so it has to win over the constants.
+        self::assertSame(
+            'NUMERIC(14, 4)',
+            $this->type->getSQLDeclaration(['precision' => 14, 'scale' => 4], $platform)
+        );
     }
 
     public function testConvertsNullBothWays(): void
