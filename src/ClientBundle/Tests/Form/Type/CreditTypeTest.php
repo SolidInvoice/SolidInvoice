@@ -17,6 +17,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Money\Currency;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Symfony\Component\Form\FormTypeInterface;
@@ -39,7 +40,35 @@ final class CreditTypeTest extends FormTestCase
             'amount' => BigDecimal::of($amount * 100),
         ];
 
-        $this->assertFormData(CreditType::class, $formData, $object, ['currency' => new Currency($this->faker->currencyCode())]);
+        $this->assertFormData(CreditType::class, $formData, $object, ['currency' => new Currency('USD')]);
+    }
+
+    /**
+     * The amount is entered in major units and stored in minor units, so the factor follows the
+     * number of decimals the currency has. This previously passed a random `faker->currencyCode()`
+     * while asserting a fixed x100, which passed or failed depending on the currency drawn.
+     *
+     * @throws MathException
+     */
+    #[DataProvider('currencyProvider')]
+    public function testSubmitScalesByCurrencySubunit(string $currencyCode, int $amount, string $expected): void
+    {
+        $this->assertFormData(
+            CreditType::class,
+            ['amount' => $amount],
+            ['amount' => BigDecimal::of($expected)],
+            ['currency' => new Currency($currencyCode)]
+        );
+    }
+
+    /**
+     * @return iterable<string, array{string, int, string}>
+     */
+    public static function currencyProvider(): iterable
+    {
+        yield 'two decimals' => ['USD', 2312, '231200'];
+        yield 'zero decimals' => ['JPY', 2312, '2312'];
+        yield 'three decimals' => ['BHD', 2312, '2312000'];
     }
 
     /**
