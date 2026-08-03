@@ -17,5 +17,4 @@ enum AppMode: string
 {
     case SAAS = 'saas';
     case SELF_HOSTED = 'self-hosted';
-    case DEMO = 'demo';
 }

@@ -15,7 +15,7 @@ namespace SolidInvoice\Test;
 
 use SolidInvoice\AppMode;
 
-class Kernel extends \SolidInvoice\Kernel
+final class Kernel extends \SolidInvoice\Kernel
 {
     public function __construct(string $environment, bool $debug)
     {

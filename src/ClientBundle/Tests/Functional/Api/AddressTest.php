@@ -87,11 +87,12 @@ final class AddressTest extends ApiTestCase
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         unset($result['id'], $result['@id']);
 
+        // companyId and empty are deliberately absent: they carry no address_api:read
+        // group, so they are only ever serialized when an operation loses the resource
+        // level normalizationContext. The item operations have never exposed them.
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($this->getResourceClass()),
             '@type' => 'Address',
-            'companyId' => $this->company->getId()
-                ->toBase58(),
             'street1' => 'foo',
             'street2' => 'foo',
             'city' => 'foo',
@@ -100,7 +101,6 @@ final class AddressTest extends ApiTestCase
             'country' => 'US',
             'countryName' => 'United States',
             'client' => $this->getIriFromResource($client),
-            'empty' => false,
         ], $result);
     }
 

@@ -49,6 +49,8 @@ trait EnsureApplicationInstalled
             $_ENV['SOLIDINVOICE_INSTALLED'],
             $this->company
         );
-        putenv('SOLIDINVOICE_INSTALLED=');
+        // No trailing "=": putenv('VAR=') keeps the variable with an empty value, which
+        // installation-state checks read as "present". Only putenv('VAR') removes it.
+        putenv('SOLIDINVOICE_INSTALLED');
     }
 }
