@@ -28,7 +28,7 @@ type Params struct {
 func BuildServerName(p Params) (string, error) {
 	if p.Domain != "" {
 		validate := validator.New(validator.WithRequiredStructEnabled())
-		if errs := validate.Var(p.Domain, "required,hostname"); errs != nil {
+		if errs := validate.Var(p.Domain, "required,hostname_rfc1123"); errs != nil {
 			return "", errs
 		}
 
