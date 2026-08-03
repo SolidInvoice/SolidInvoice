@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
+use SolidInvoice\AppMode;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
@@ -30,6 +31,7 @@ use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\CoreBundle\Translation\Extractor\MenuLabelExtractor;
 use SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -46,7 +48,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
+return static function (ContainerConfigurator $containerConfigurator, ContainerBuilder $container): void {
     $services = $containerConfigurator->services();
 
     $services
@@ -81,7 +83,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // "function already defined" error at compile time. The same pattern applies
     // to FeatureRestrictedExtension: SaasBundle ships the real form-extension and
     // CoreBundle ships a no-op so the `feature_gated` form option remains valid.
-    if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) !== 'saas') {
+    //
+    // The check reads the `app_mode` container parameter rather than
+    // $_ENV['SOLIDINVOICE_PLATFORM']: the kernel resolves the mode itself (see
+    // SolidInvoice\Kernel::prepareContainer()), and test kernels select a mode by
+    // constructor argument without ever writing to $_ENV.
+    if (AppMode::from($container->getParameter('app_mode')) !== AppMode::SAAS) {
         $services->set(FeatureExtension::class);
         $services->set(FeatureRestrictedExtension::class);
     }

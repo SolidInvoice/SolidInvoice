@@ -38,6 +38,10 @@ use function array_filter;
 #[ORM\Entity]
 #[ApiResource(
     operations: [
+        // No operation-level (de)normalizationContext: API Platform replaces the
+        // resource-level context rather than merging into it, so repeating only
+        // SKIP_NULL_VALUES here would drop the serialization groups and expose every
+        // field (including companyId) on these two operations.
         new GetCollection(
             uriTemplate: '/clients/{clientId}/addresses',
             uriVariables: [
@@ -45,12 +49,6 @@ use function array_filter;
                     fromProperty: 'addresses',
                     fromClass: Client::class,
                 ),
-            ],
-            normalizationContext: [
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-            ],
-            denormalizationContext: [
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
             ],
         ),
         new Post(
@@ -60,12 +58,6 @@ use function array_filter;
                     fromProperty: 'addresses',
                     fromClass: Client::class,
                 ),
-            ],
-            normalizationContext: [
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-            ],
-            denormalizationContext: [
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
             ],
         ),
         new Get(

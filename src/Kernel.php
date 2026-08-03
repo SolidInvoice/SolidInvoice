@@ -156,11 +156,15 @@ class Kernel extends BaseKernel
     #[Override]
     public function __unserialize(array $data): void
     {
+        // environment/debug keep their "\0*\0" fallbacks: they are protected properties
+        // inherited from Symfony's Kernel, so legacy payloads mangle them that way. $mode
+        // is private to this class and never existed before it was introduced, so there is
+        // no legacy spelling to fall back to - an absent key is simply unusable.
         $environment = $data['environment'] ?? $data["\0*\0environment"];
         $debug = $data['debug'] ?? $data["\0*\0debug"];
-        $mode = $data['mode'] ?? $data["\0*\0mode"];
+        $mode = $data['mode'] ?? null;
 
-        if (\is_object($environment) || \is_object($debug)) {
+        if (\is_object($environment) || \is_object($debug) || ! $mode instanceof AppMode) {
             throw new BadMethodCallException('Cannot unserialize ' . self::class);
         }
 
