@@ -94,7 +94,14 @@ final class MoneyFormatter implements MoneyFormatterInterface
             // The number placeholder is matched rather than compared against a literal
             // "#,##0.00": the number of decimals in the pattern follows the locale, so a
             // zero-decimal locale yields "#,##0" and a three-decimal one "#,##0.000".
-            return preg_replace('/[#,]+0(?:\.[0#]+)?/', '%v', str_replace('¤', '%s', $pattern[0])) ?? '%s%v';
+            $pattern = preg_replace('/[#,]+0(?:\.[0#]+)?/', '%v', str_replace('¤', '%s', $pattern[0]));
+
+            // preg_replace returns the subject untouched when nothing matched, so an
+            // unrecognised pattern would otherwise be handed back with its ICU digits intact.
+            // Only accept a result that actually carries the amount placeholder.
+            if (null !== $pattern && str_contains($pattern, '%v')) {
+                return $pattern;
+            }
         }
 
         return '%s%v';

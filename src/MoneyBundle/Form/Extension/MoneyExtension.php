@@ -27,7 +27,7 @@ final class MoneyExtension extends AbstractTypeExtension
 {
     public function __construct(
         private readonly SystemConfig $config,
-        private readonly CurrencyScale $currencyScale = new CurrencyScale(),
+        private readonly CurrencyScale $currencyScale,
     ) {
     }
 

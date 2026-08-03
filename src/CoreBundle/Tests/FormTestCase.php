@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -108,7 +109,7 @@ abstract class FormTestCase extends KernelTestCase
 
         return [
             new FormHelpExtension(),
-            new MoneyExtension($systemConfig),
+            new MoneyExtension($systemConfig, new CurrencyScale()),
             new FormTypeValidatorExtension($validator),
             new TextTypeHtmlSanitizerExtension(
                 new ServiceLocator(['default' => fn () => new HtmlSanitizer(new HtmlSanitizerConfig())])
@@ -172,7 +173,7 @@ abstract class FormTestCase extends KernelTestCase
     private function getInternalExtension(): array
     {
         $type = new EntityType($this->registry);
-        $moneyType = new HiddenMoneyType();
+        $moneyType = new HiddenMoneyType(new CurrencyScale());
 
         return array_merge([
             new PreloadedExtension([$type, $moneyType, new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class))], []),
