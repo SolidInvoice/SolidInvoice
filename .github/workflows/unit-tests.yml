@@ -135,6 +135,16 @@ jobs:
             bin/paratest
           fi
 
+      # The installation tests are excluded by default in phpunit.xml.dist and run here on
+      # their own: they drive a real browser against a Panther web server that has its own
+      # database connection and its own view of the config directory, so they cannot share a
+      # process - or a parallel worker pool - with the transaction-isolated suite above.
+      # Deliberately bin/phpunit and not bin/paratest: one Panther server, one browser, no
+      # workers competing for the same port and config directory. Runs last so the state it
+      # leaves behind cannot affect the main suite.
+      - name: Run installation tests
+        run: bin/phpunit --group=installation
+
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7
         if: matrix.coverage
