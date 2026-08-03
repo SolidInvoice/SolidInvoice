@@ -153,6 +153,10 @@ class Client implements Stringable
      */
     #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'], iris: ['https://schema.org/Person'])]
     #[ORM\OneToMany(targetEntity: Contact::class, mappedBy: 'client', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    // Without an explicit order the database is free to return contacts in any order, and
+    // PostgreSQL does. Ids are ULIDs, so ordering by id is insertion order — what MySQL and
+    // SQLite happened to give already, which is why this only ever surfaced on PostgreSQL.
+    #[ORM\OrderBy(['id' => 'ASC'])]
     #[Assert\Count(
         min: 1,
         minMessage: 'client.constraint.contacts.min',
