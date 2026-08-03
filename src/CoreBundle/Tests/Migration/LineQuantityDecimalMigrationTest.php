@@ -26,13 +26,16 @@ use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 
 final class LineQuantityDecimalMigrationTest extends TestCase
 {
+    private const array TABLES = ['invoice_lines', 'quote_lines'];
+
     /**
      * @return iterable<string, array{string}>
      */
     public static function tables(): iterable
     {
-        yield 'invoice_lines' => ['invoice_lines'];
-        yield 'quote_lines' => ['quote_lines'];
+        foreach (self::TABLES as $table) {
+            yield $table => [$table];
+        }
     }
 
     #[DataProvider('tables')]
@@ -64,6 +67,8 @@ final class LineQuantityDecimalMigrationTest extends TestCase
         $column = $schema->getTable($table)->getColumn('qty');
 
         self::assertSame(Type::getType(Types::FLOAT), $column->getType());
+        self::assertSame(10, $column->getPrecision());
+        self::assertSame(0, $column->getScale());
     }
 
     private function preMigrationSchema(): Schema
@@ -76,7 +81,7 @@ final class LineQuantityDecimalMigrationTest extends TestCase
 
         $schema = new Schema();
 
-        foreach (['invoice_lines', 'quote_lines'] as $tableName) {
+        foreach (self::TABLES as $tableName) {
             $table = $schema->createTable($tableName);
             $table->addColumn('qty', Types::FLOAT, ['notnull' => true]);
         }

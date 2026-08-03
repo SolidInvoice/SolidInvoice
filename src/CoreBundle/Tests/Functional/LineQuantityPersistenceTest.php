@@ -119,6 +119,47 @@ final class LineQuantityPersistenceTest extends KernelTestCase
     }
 
     /**
+     * The line total is computed in `PrePersist`, before DBAL converts the quantity. If the
+     * quantity were not already at the column scale by then, the stored total would be
+     * computed from digits the column drops, and recomputing after a reload would move the
+     * invoice. The price here is large enough that a difference lands in the minor unit.
+     */
+    public function testTheStoredTotalMatchesTheStoredQuantity(): void
+    {
+        $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
+        $invoice->setStatus(InvoiceStatus::Draft);
+
+        $line = new Line();
+        $line->setDescription('Sub-scale usage')
+            ->setPrice(100_000_000)
+            ->setQty('1.23456749')
+            ->updateTotal();
+
+        $invoice->addLine($line);
+
+        $storedTotal = (string) $line->getTotal();
+
+        $this->em->persist($invoice);
+        $this->em->flush();
+
+        $id = $line->getId();
+        $this->em->clear();
+
+        $reloaded = $this->em->find(Line::class, $id);
+
+        self::assertInstanceOf(Line::class, $reloaded);
+        self::assertTrue(
+            $reloaded->updateTotal()->getTotal()->isEqualTo(BigDecimal::of($storedTotal)),
+            sprintf(
+                'Recomputing from the stored quantity gave %s, but %s was stored',
+                (string) $reloaded->getTotal(),
+                $storedTotal
+            )
+        );
+    }
+
+    /**
      * A quantity beyond the column scale is rounded once, on the way in, rather than
      * drifting differently on every read.
      */

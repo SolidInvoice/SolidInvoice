@@ -239,7 +239,10 @@ class Line implements LineInterface, Stringable
      */
     public function setQty(BigNumber | int | string $qty): static
     {
-        $this->qty = BigNumber::of($qty)->toBigDecimal()->strippedOfTrailingZeros();
+        // Normalized on the way in, not on the way out: updateTotal() runs before DBAL
+        // converts the quantity, so the total has to be computed from the same value the
+        // column will hold. See QuantityType::normalize().
+        $this->qty = QuantityType::normalize(BigNumber::of($qty));
 
         return $this;
     }

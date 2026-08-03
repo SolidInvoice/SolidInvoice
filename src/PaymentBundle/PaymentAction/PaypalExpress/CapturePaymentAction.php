@@ -74,9 +74,20 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         $counter = 0;
         foreach ($invoice->getLines() as $item) {
             /** @var Line $item */
+            $qty = $item->getQty()->toBigDecimal();
+
+            // PayPal's NVP API only accepts a positive integer for an item quantity, but a
+            // SolidInvoice line can be billed in fractions of a unit (hours, weights, metered
+            // usage). Such a line is sent as a single unit priced at the line total, which
+            // keeps the item amounts summing to ITEMAMT — what PayPal actually validates.
+            $isWholeUnits = $qty->getFractionalPart()->isZero();
+
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
-            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($item->getPrice()), 2);
-            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = (string) $item->getQty();
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(
+                MoneyFormatter::toFloat($isWholeUnits ? $item->getPrice() : $item->getTotal()),
+                2
+            );
+            $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $isWholeUnits ? (string) $qty->toBigInteger() : '1';
 
             ++$counter;
         }

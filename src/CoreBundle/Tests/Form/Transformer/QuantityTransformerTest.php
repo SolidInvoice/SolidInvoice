@@ -19,6 +19,7 @@ use Brick\Math\BigNumber;
 use Locale;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Form\Transformer\QuantityTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -82,8 +83,8 @@ final class QuantityTransformerTest extends TestCase
         yield 'decimal point' => ['2.5', '2.5'];
         yield 'decimal comma' => ['2,5', '2.5'];
         yield 'full scale' => ['0.000001', '0.000001'];
-        yield 'beyond the scale is rounded half up' => ['0.0000005', '0.000001'];
-        yield 'padded' => ['2.500000', '2.5'];
+        // Parsed verbatim; setQty() canonicalises, and the field re-renders from the model.
+        yield 'padded' => ['2.500000', '2.500000'];
         yield 'negative' => ['-1.25', '-1.25'];
         yield 'surrounding whitespace' => ["  2.5\n", '2.5'];
         yield 'non-breaking space' => ["2\xc2\xa0500.5", '2500.5'];
@@ -114,6 +115,19 @@ final class QuantityTransformerTest extends TestCase
         self::assertNull($this->transformer->reverseTransform($value));
     }
 
+    /**
+     * Beyond-scale input is passed through untouched: setQty() owns the rounding, so that a
+     * form and an API call resolve the same quantity identically.
+     */
+    public function testReverseTransformLeavesRoundingToTheEntity(): void
+    {
+        $result = $this->transformer->reverseTransform('0.0000005');
+
+        self::assertInstanceOf(BigDecimal::class, $result);
+        self::assertSame('0.0000005', (string) $result);
+        self::assertSame('0', (string) QuantityType::normalize($result));
+    }
+
     public function testReverseTransformRejectsNonNumericInput(): void
     {
         $this->expectException(TransformationFailedException::class);
@@ -129,11 +143,11 @@ final class QuantityTransformerTest extends TestCase
     }
 
     #[DataProvider('modelValues')]
-    public function testRoundTripsWithoutLosingDigits(BigNumber $value): void
+    public function testRoundTripsWithoutLosingDigits(BigNumber $value, string $view): void
     {
-        $result = $this->transformer->reverseTransform($this->transformer->transform($value));
+        $result = $this->transformer->reverseTransform($view);
 
         self::assertInstanceOf(BigDecimal::class, $result);
-        self::assertTrue($value->isEqualTo($result));
+        self::assertTrue($value->isEqualTo($result), sprintf('Expected %s, got %s', $value, $result));
     }
 }

@@ -151,13 +151,13 @@ final readonly class LineItemBuilder
             try {
                 $line->setPrice(BigDecimal::of((string) $price));
             } catch (Throwable) {
-                throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, (string) $price));
+                throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, $this->describe($price)));
             }
 
             try {
                 $line->setQty(BigDecimal::of(\is_float($qty) ? (string) $qty : $qty));
             } catch (Throwable) {
-                throw new ToolCallException(sprintf('Line item #%d has an invalid "qty": %s', $index, (string) $qty));
+                throw new ToolCallException(sprintf('Line item #%d has an invalid "qty": %s', $index, $this->describe($qty)));
             }
 
             $this->attachTaxes($line, $data, $index);
@@ -166,6 +166,15 @@ final readonly class LineItemBuilder
         }
 
         return $built;
+    }
+
+    /**
+     * Tools are handed raw JSON, so a value that failed to parse can be an array or an
+     * object; casting those to string for the error message would emit a warning of its own.
+     */
+    private function describe(mixed $value): string
+    {
+        return \is_scalar($value) ? (string) $value : \get_debug_type($value);
     }
 
     /**

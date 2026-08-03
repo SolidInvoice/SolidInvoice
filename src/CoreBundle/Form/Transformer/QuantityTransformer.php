@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Form\Transformer;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Brick\Math\RoundingMode;
 use Locale;
 use NumberFormatter;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
@@ -40,16 +39,16 @@ use function trim;
  * regardless of locale (matching what `NumberToLocalizedStringTransformer` does when
  * `grouping` is off), and only the locale's separator is used when rendering.
  *
+ * Rounding is deliberately not done here. `setQty()` applies
+ * {@see QuantityType::normalize()} to whatever it is given, so a form submission and an
+ * API call rounding the same beyond-scale quantity land on the same value. A second rule
+ * in this class would silently make the two entry points disagree.
+ *
  * @implements DataTransformerInterface<BigNumber, string>
  * @see \SolidInvoice\CoreBundle\Tests\Form\Transformer\QuantityTransformerTest
  */
 final readonly class QuantityTransformer implements DataTransformerInterface
 {
-    public function __construct(
-        private int $scale = QuantityType::SCALE,
-    ) {
-    }
-
     /**
      * @param mixed $value the form hands over whatever the model holds, unchecked
      */
@@ -64,9 +63,7 @@ final readonly class QuantityTransformer implements DataTransformerInterface
         }
 
         try {
-            $decimal = $value->toBigDecimal()
-                ->toScale($this->scale, RoundingMode::HalfEven)
-                ->strippedOfTrailingZeros();
+            $decimal = QuantityType::normalize($value);
         } catch (MathException $e) {
             throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
         }
@@ -99,9 +96,7 @@ final readonly class QuantityTransformer implements DataTransformerInterface
         $value = str_replace(',', '.', $value);
 
         try {
-            return BigDecimal::of($value)
-                ->toScale($this->scale, RoundingMode::HalfUp)
-                ->strippedOfTrailingZeros();
+            return BigDecimal::of($value);
         } catch (MathException $e) {
             throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
         }
