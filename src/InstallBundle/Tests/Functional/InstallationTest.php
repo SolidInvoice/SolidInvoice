@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use DAMA\DoctrineTestBundle\PHPUnit\SkipDatabaseRollback;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
@@ -25,7 +26,19 @@ use Zenstruck\Browser\PantherBrowser;
 use Zenstruck\Browser\Test\HasBrowser;
 use function Zenstruck\Foundry\faker;
 
+/**
+ * The installer runs inside the Panther web server, which is a separate process with its own
+ * connection to the same database. dama/doctrine-test-bundle would otherwise wrap this test in
+ * a transaction that is never committed, so the writes made here (see setUp()) hold a write
+ * lock the installer's CREATE TABLE statements can never acquire - the "Creating database
+ * schema" step then blocks forever and the wizard's next button is never enabled.
+ *
+ * SkipDatabaseRollback turns the static connection off for this class, so the test and the
+ * server both talk to the database normally. Nothing is rolled back afterwards, which is why
+ * setUp() cleans up explicitly.
+ */
 #[Group('installation')]
+#[SkipDatabaseRollback]
 final class InstallationTest extends PantherTestCase
 {
     use HasBrowser;
