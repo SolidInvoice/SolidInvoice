@@ -44,9 +44,8 @@ final class CreditTypeTest extends FormTestCase
     }
 
     /**
-     * The amount is entered in major units and stored in minor units, so the factor follows the
-     * number of decimals the currency has. This previously passed a random `faker->currencyCode()`
-     * while asserting a fixed x100, which passed or failed depending on the currency drawn.
+     * Previously drew a random faker->currencyCode() while asserting a fixed x100, so it passed
+     * or failed depending on the currency drawn.
      *
      * @throws MathException
      */

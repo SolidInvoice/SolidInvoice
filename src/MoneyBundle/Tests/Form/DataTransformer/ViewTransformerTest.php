@@ -23,6 +23,7 @@ use Money\Currency;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 
 #[CoversClass(ViewTransformer::class)]
@@ -36,9 +37,11 @@ final class ViewTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->viewTransformer = new ViewTransformer(new Currency('USD'));
-        $this->jpyTransformer = new ViewTransformer(new Currency('JPY'));
-        $this->bhdTransformer = new ViewTransformer(new Currency('BHD'));
+        $scale = new CurrencyScale();
+
+        $this->viewTransformer = new ViewTransformer(new Currency('USD'), $scale);
+        $this->jpyTransformer = new ViewTransformer(new Currency('JPY'), $scale);
+        $this->bhdTransformer = new ViewTransformer(new Currency('BHD'), $scale);
     }
 
     #[DataProvider('reverseTransformDataProvider')]

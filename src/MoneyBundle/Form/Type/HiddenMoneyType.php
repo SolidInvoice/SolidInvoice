@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class HiddenMoneyType extends AbstractType
 {
     public function __construct(
-        private readonly CurrencyScale $currencyScale = new CurrencyScale(),
+        private readonly CurrencyScale $currencyScale,
     ) {
     }
 

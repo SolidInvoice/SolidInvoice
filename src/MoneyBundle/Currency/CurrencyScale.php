@@ -22,12 +22,9 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 
 /**
- * Converts between the minor units amounts are stored in and the major units they are entered
- * and displayed in, using the number of decimal places the currency actually has.
- *
- * Most currencies have two decimals (USD 1.00 is stored as 100), but JPY has none (¥800 is
- * stored as 800) and BHD has three (BD 1.234 is stored as 1234). Assuming two decimals
- * everywhere is what made zero- and three-decimal currencies render at the wrong magnitude.
+ * Converts between stored minor units and entered/displayed major units. The factor follows the
+ * currency's own decimal count, not a fixed 100 - assuming 100 everywhere is what put JPY and
+ * BHD amounts out by two and one orders of magnitude respectively.
  *
  * @see \SolidInvoice\MoneyBundle\Tests\Currency\CurrencyScaleTest
  */
@@ -59,6 +56,10 @@ final readonly class CurrencyScale
     }
 
     /**
+     * Scales without rounding, so a value carrying more precision than the currency allows keeps
+     * its fraction (0.5 JPY stays 0.5). Callers that need a whole number of minor units - anything
+     * building a Money directly rather than persisting through the integer column - must round.
+     *
      * @throws MathException
      */
     public function toMinorUnit(BigNumber | float | int | string $value, Currency $currency): BigDecimal
