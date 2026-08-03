@@ -88,6 +88,25 @@ final class QuantityType extends Type
         ]);
     }
 
+    /**
+     * The single rule for what a quantity is allowed to be: at most {@see self::SCALE}
+     * decimal places, rounded half-even, in canonical form.
+     *
+     * Every entry point has to apply this at the moment the quantity is set, not when it
+     * is written. A line total is computed in `PrePersist`, so a quantity carrying more
+     * decimals than the column can hold would be multiplied at full precision and stored
+     * against a rounded quantity — reloading the invoice and recomputing would then give a
+     * different total.
+     *
+     * @throws MathException
+     */
+    public static function normalize(BigNumber $quantity): BigDecimal
+    {
+        return $quantity->toBigDecimal()
+            ->toScale(self::SCALE, RoundingMode::HalfEven)
+            ->strippedOfTrailingZeros();
+    }
+
     #[Override]
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?BigDecimal
     {
@@ -99,8 +118,7 @@ final class QuantityType extends Type
             // SQLite hands back a float or an int for this column; every other platform
             // returns the decimal as a string. Formatting the float to the column scale
             // recovers the stored value without going through PHP's `precision` setting.
-            return BigDecimal::of(is_float($value) ? sprintf('%.*F', self::SCALE, $value) : $value)
-                ->strippedOfTrailingZeros();
+            return self::normalize(BigDecimal::of(is_float($value) ? sprintf('%.*F', self::SCALE, $value) : $value));
         } catch (MathException $e) {
             throw ValueNotConvertible::new($value, self::NAME, $e->getMessage(), $e);
         }
@@ -115,7 +133,8 @@ final class QuantityType extends Type
 
         if ($value instanceof BigNumber) {
             try {
-                return (string) $value->toBigDecimal()->toScale(self::SCALE, RoundingMode::HalfEven);
+                // toScale() only pads here: normalize() has already rounded to the scale.
+                return (string) self::normalize($value)->toScale(self::SCALE);
             } catch (MathException $e) {
                 throw SerializationFailed::new($value, self::NAME, $e->getMessage(), $e);
             }

@@ -153,7 +153,12 @@ final class LineQuantityRegressionTest extends TestCase
      */
     public function testAQuantityWithMoreDigitsThanAFloatCanCarrySurvives(): void
     {
-        // 15 significant digits — one more than PHP's default `precision` of 14 emits.
+        // The legacy path only lost digits while `precision` emitted fewer than 15 of them,
+        // which is PHP's default. State that rather than assume it: on a host configured
+        // otherwise the float cast below keeps every digit and the comparison is vacuous.
+        self::assertLessThan(15, (int) ini_get('precision'));
+
+        // 15 significant digits — one more than a `precision` of 14 emits.
         $qty = '123456789.123456';
 
         $line = new Line();

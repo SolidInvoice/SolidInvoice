@@ -39,21 +39,21 @@ final class QuantityTypeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{AbstractPlatform, string}>
+     * @return iterable<string, array{AbstractPlatform}>
      */
     public static function platforms(): iterable
     {
-        yield 'mysql' => [new MySQLPlatform(), 'NUMERIC(20, 6)'];
-        yield 'postgres' => [new PostgreSQLPlatform(), 'NUMERIC(20, 6)'];
-        yield 'sqlite' => [new SQLitePlatform(), 'NUMERIC(20, 6)'];
+        yield 'mysql' => [new MySQLPlatform()];
+        yield 'postgres' => [new PostgreSQLPlatform()];
+        yield 'sqlite' => [new SQLitePlatform()];
     }
 
     #[DataProvider('platforms')]
-    public function testDeclaresTheDefaultPrecisionAndScale(AbstractPlatform $platform, string $expected): void
+    public function testDeclaresTheDefaultPrecisionAndScale(AbstractPlatform $platform): void
     {
         // A column that declares nothing must not end up narrower than the scale
         // convertToDatabaseValue() rounds to.
-        self::assertSame($expected, $this->type->getSQLDeclaration([], $platform));
+        self::assertSame('NUMERIC(20, 6)', $this->type->getSQLDeclaration([], $platform));
     }
 
     #[DataProvider('platforms')]
@@ -126,7 +126,7 @@ final class QuantityTypeTest extends TestCase
     }
 
     #[DataProvider('databaseValues')]
-    public function testRoundTripsExactly(int | float | string $value): void
+    public function testRoundTripsExactly(int | float | string $value, string $expected): void
     {
         $php = $this->type->convertToPHPValue($value, $this->platform);
         self::assertNotNull($php);
@@ -135,5 +135,9 @@ final class QuantityTypeTest extends TestCase
         self::assertNotNull($database);
 
         self::assertTrue($php->isEqualTo(BigDecimal::of($database)));
+
+        // A second trip through the column has to land on the same PHP value, so a stored
+        // quantity cannot drift a little further on every read and write.
+        self::assertSame($expected, (string) $this->type->convertToPHPValue($database, $this->platform));
     }
 }

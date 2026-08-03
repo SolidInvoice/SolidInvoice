@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use function is_a;
+use function sprintf;
 
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\BigIntegerNormalizerTest
@@ -43,7 +44,10 @@ final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInt
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BigNumber
     {
-        $data = is_float($data) ? (string) $data : $data;
+        // JSON numbers arrive as floats. `(string)` would serialise them at PHP's `precision`
+        // ini setting, so the same payload could denormalize differently from one host to
+        // the next; %.14G pins that to the historical default and makes it deterministic.
+        $data = is_float($data) ? sprintf('%.14G', $data) : $data;
 
         if (($context['api_denormalize'] ?? false) && ($context[self::MONETARY] ?? true)) {
             return BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
