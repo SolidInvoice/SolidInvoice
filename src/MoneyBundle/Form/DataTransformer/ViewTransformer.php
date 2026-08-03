@@ -27,11 +27,11 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @implements DataTransformerInterface<BigNumber, float>
  * @see \SolidInvoice\MoneyBundle\Tests\Form\DataTransformer\ViewTransformerTest
  */
-final class ViewTransformer implements DataTransformerInterface
+final readonly class ViewTransformer implements DataTransformerInterface
 {
     public function __construct(
-        private readonly Currency $currency,
-        private readonly CurrencyScale $scale = new CurrencyScale(),
+        private Currency $currency,
+        private CurrencyScale $scale = new CurrencyScale(),
     ) {
     }
 
