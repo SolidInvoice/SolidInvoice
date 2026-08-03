@@ -94,14 +94,17 @@ final class LineQuantityDecimalMigrationTest extends TestCase
         return new Version30100_2($this->connection(), new NullLogger());
     }
 
+    /**
+     * The migration only mutates a {@see Schema}, so the platform is irrelevant to what is
+     * asserted here — but AbstractMigration resolves one in its constructor. In-memory
+     * SQLite keeps that self-contained: it needs no server, and it is the only driver the
+     * suite already requires, whereas `ext-pdo_mysql` is not a declared dependency.
+     */
     private function connection(): Connection
     {
-        // A server version keeps DBAL from having to connect to resolve the platform.
         return DriverManager::getConnection([
-            'driver' => 'pdo_mysql',
-            'host' => 'localhost',
-            'dbname' => 'solidinvoice',
-            'serverVersion' => '8.0.0',
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
         ]);
     }
 }
