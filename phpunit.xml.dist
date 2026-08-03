@@ -21,6 +21,24 @@
         cacheDirectory=".phpunit.cache"
         stderr="true"
 >
+  <!--
+    The installation tests drive a real browser against a Panther-managed web server, which
+    runs in its own process with its own database connection. That makes them incompatible
+    with the rest of the suite: they cannot see data inside dama/doctrine-test-bundle's
+    uncommitted transaction, their own writes are never rolled back, and their setUp()
+    deletes SOLIDINVOICE_CONFIG_DIR (var/cache/test/config) - a path shared by every
+    paratest worker.
+
+    They are therefore excluded by default, so `bin/phpunit` and `bin/paratest` run the rest
+    of the suite cleanly. Run them explicitly with `bin/phpunit` and the "group" option set
+    to "installation" (without paratest). An explicit group option on the command line
+    overrides this exclusion. See the "Run installation tests" step in unit-tests.yml.
+  -->
+  <groups>
+    <exclude>
+      <group>installation</group>
+    </exclude>
+  </groups>
   <testsuites>
     <testsuite name="SolidInvoice Test Suite">
       <directory>src/*Bundle/Tests</directory>
