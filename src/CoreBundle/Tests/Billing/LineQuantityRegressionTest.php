@@ -153,11 +153,6 @@ final class LineQuantityRegressionTest extends TestCase
      */
     public function testAQuantityWithMoreDigitsThanAFloatCanCarrySurvives(): void
     {
-        // The legacy path only lost digits while `precision` emitted fewer than 15 of them,
-        // which is PHP's default. State that rather than assume it: on a host configured
-        // otherwise the float cast below keeps every digit and the comparison is vacuous.
-        self::assertLessThan(15, (int) ini_get('precision'));
-
         // 15 significant digits — one more than a `precision` of 14 emits.
         $qty = '123456789.123456';
 
@@ -166,8 +161,20 @@ final class LineQuantityRegressionTest extends TestCase
 
         self::assertSame('12345678912.345600', (string) $line->updateTotal()->getTotal());
 
-        $legacy = BigDecimal::of(100)->multipliedBy(LineQuantityCorpus::legacyQtyString((float) $qty));
+        // Pin `precision` rather than assert on it: the point is to reproduce what the old
+        // float path did, and a host that sets 15 or more would keep every digit and make
+        // the comparison below vacuous. Restored in `finally` so a failure cannot leak it.
+        $precision = ini_get('precision');
+        ini_set('precision', '14');
 
+        try {
+            $legacy = BigDecimal::of(100)->multipliedBy(LineQuantityCorpus::legacyQtyString((float) $qty));
+        } finally {
+            ini_set('precision', $precision === false ? '14' : $precision);
+        }
+
+        // The float rendered as "123456789.12346" — the fifteenth digit is gone.
+        self::assertSame('12345678912.34600', (string) $legacy);
         self::assertFalse(
             $line->getTotal()->isEqualTo($legacy),
             'This quantity is supposed to be one the old float path could not carry'
