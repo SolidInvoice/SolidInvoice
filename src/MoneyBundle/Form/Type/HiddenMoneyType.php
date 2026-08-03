@@ -15,6 +15,7 @@ namespace SolidInvoice\MoneyBundle\Form\Type;
 
 use Money\Currency;
 use Override;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -24,11 +25,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<mixed>
  */
-class HiddenMoneyType extends AbstractType
+final class HiddenMoneyType extends AbstractType
 {
+    public function __construct(
+        private readonly CurrencyScale $currencyScale = new CurrencyScale(),
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addViewTransformer(new ViewTransformer($options['currency']), true);
+        $builder->addViewTransformer(new ViewTransformer($options['currency'], $this->currencyScale), true);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
