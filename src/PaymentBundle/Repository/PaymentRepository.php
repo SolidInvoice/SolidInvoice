@@ -335,7 +335,7 @@ class PaymentRepository extends EntityRepository
     /**
      * Get revenue grouped by month and currency for dashboard chart.
      *
-     * @return array<string, array<string, BigInteger>>
+     * @return array<string, array<non-empty-string, BigInteger>>
      * @throws DateMalformedStringException
      */
     public function getRevenueByMonthGrouped(int $months = 12): array
@@ -349,14 +349,22 @@ class PaymentRepository extends EntityRepository
             ->setParameter('status', PaymentStatus::Captured->value)
             ->orderBy('p.created', Criteria::ASC);
 
-        /** @var array<string, array<string, BigInteger>> $results */
+        /** @var array<string, array<non-empty-string, BigInteger>> $results */
         $results = [];
 
         foreach ($qb->getQuery()->getArrayResult() as $result) {
+            $currency = $result['currencyCode'];
+
+            // Matches getTotalIncome() and getPaymentsThisMonth(): a payment without a currency
+            // cannot be attributed to a currency series, and a null code would otherwise land
+            // under the '' array key.
+            if (null === $currency || '' === $currency) {
+                continue;
+            }
+
             /** @var DateTime $created */
             $created = $result['created'];
             $month = $created->format('Y-m');
-            $currency = $result['currencyCode'];
 
             if (! isset($results[$month])) {
                 $results[$month] = [];

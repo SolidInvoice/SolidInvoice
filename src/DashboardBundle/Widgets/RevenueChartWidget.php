@@ -43,7 +43,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
         private ChartBuilderInterface $chartBuilder,
         private SystemConfig $systemConfig,
         private LoggerInterface $logger,
-        private CurrencyScale $currencyScale = new CurrencyScale(),
+        private CurrencyScale $currencyScale,
     ) {
         $this->manager = $registry->getManager();
     }
@@ -157,7 +157,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
      * Collect every currency present in the data, falling back to the configured
      * system currency when there is nothing to plot.
      *
-     * @param array<string, array<string, BigInteger>> $revenueData
+     * @param array<string, array<non-empty-string, BigInteger>> $revenueData
      * @return list<non-empty-string>
      */
     private function resolveCurrencies(array $revenueData): array
@@ -166,10 +166,6 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         foreach ($revenueData as $monthData) {
             foreach (array_keys($monthData) as $currency) {
-                if ('' === $currency) {
-                    continue;
-                }
-
                 if (! in_array($currency, $currencies, true)) {
                     $currencies[] = $currency;
                 }
@@ -186,7 +182,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
     /**
      * Build one dataset per currency.
      *
-     * @param array<string, array<string, BigInteger>> $revenueData
+     * @param array<string, array<non-empty-string, BigInteger>> $revenueData
      * @param list<non-empty-string> $currencies
      * @return list<array<string, mixed>>
      * @throws DateMalformedStringException
@@ -205,11 +201,12 @@ final readonly class RevenueChartWidget implements WidgetInterface
 
         foreach ($currencies as $index => $currency) {
             $data = [];
+            $currencyObject = new Currency($currency);
 
             for ($i = 11; $i >= 0; --$i) {
                 $monthKey = $now->modify(sprintf('-%d months', $i))->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
-                    ? $this->currencyScale->toMajorUnit($revenueData[$monthKey][$currency], new Currency($currency))
+                    ? $this->currencyScale->toMajorUnit($revenueData[$monthKey][$currency], $currencyObject)
                     : 0;
             }
 
