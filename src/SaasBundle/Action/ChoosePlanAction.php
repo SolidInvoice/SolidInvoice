@@ -83,7 +83,7 @@ final class ChoosePlanAction extends AbstractController
 
         $this->telemetry->event(TelemetryEvent::SaasPlanSelected, [
             'plan' => strtolower($plan->getName()),
-            'is_paid' => ! $plan->isFree(),
+            'is_paid' => $plan->isFree() ? 'false' : 'true',
         ]);
 
         // Free plan: no Lemon Squeezy round-trip; safe to commit locally now.
