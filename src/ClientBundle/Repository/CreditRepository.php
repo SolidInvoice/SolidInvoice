@@ -26,6 +26,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends EntityRepository<Credit>
+ * @see \SolidInvoice\ClientBundle\Tests\Repository\CreditRepositoryTest
  */
 class CreditRepository extends EntityRepository
 {

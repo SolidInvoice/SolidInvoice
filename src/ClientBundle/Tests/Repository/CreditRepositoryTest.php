@@ -34,7 +34,7 @@ final class CreditRepositoryTest extends KernelTestCase
     {
         parent::setUp();
         $creditRepository = $this->em->getRepository(Credit::class);
-        assert($creditRepository instanceof CreditRepository);
+        self::assertInstanceOf(CreditRepository::class, $creditRepository);
         $this->creditRepository = $creditRepository;
     }
 
@@ -46,6 +46,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $this->company]);
         $credit = $client->getCredit();
         $credit->setValue(50000);
+
         $this->em->flush();
 
         $returned = $this->creditRepository->addCredit($client, 20000);
@@ -64,6 +65,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $this->company]);
         $credit = $client->getCredit();
         $credit->setValue(50000);
+
         $this->em->flush();
 
         $returned = $this->creditRepository->deductCredit($client, 20000);
@@ -82,6 +84,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $this->company]);
         $credit = $client->getCredit();
         $credit->setValue(50000);
+
         $this->em->flush();
 
         $returned = $this->creditRepository->deductCredit($client, 50000);
@@ -97,6 +100,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $this->company]);
         $credit = $client->getCredit();
         $credit->setValue(50000);
+
         $this->em->flush();
 
         $this->expectException(InsufficientCreditException::class);
@@ -124,6 +128,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['company' => $this->company]);
         $credit = $client->getCredit();
         $credit->setValue(50000);
+
         $this->em->flush();
 
         $this->creditRepository->deductCredit($client, 50000);
