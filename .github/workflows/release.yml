@@ -107,13 +107,13 @@ jobs:
         run: "./scripts/build_dist.sh ${BUILD_BRANCH} ${BUILD_VERSION}"
 
       - name: Upload TAR archive
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
 
       - name: Upload ZIP archive
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
@@ -183,7 +183,7 @@ jobs:
 
       - name: Upload static-php-cli build logs on failure
         if: failure()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: static-php-build-logs-${{ matrix.os }}-${{ matrix.platform }}
           path: |
@@ -273,7 +273,7 @@ jobs:
 
       - name: Upload static-php-cli build logs on failure
         if: failure()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: static-php-build-logs-linux-${{ matrix.arch }}
           path: |
@@ -331,7 +331,7 @@ jobs:
 
       - name: Upload digest artifact
         if: needs.prepare.outputs.release == '1'
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: digest-linux-${{ matrix.arch }}
           path: /tmp/digests/*
