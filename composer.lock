@@ -28141,16 +28141,16 @@
         },
         {
             "name": "zenstruck/foundry",
-            "version": "v2.11.0",
+            "version": "v2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/foundry.git",
-                "reference": "3063be3c941e1cdf74144a1a5e1f1c97abf4b8d9"
+                "reference": "df5790819d0228e3c48e575e79f280822200c270"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/3063be3c941e1cdf74144a1a5e1f1c97abf4b8d9",
-                "reference": "3063be3c941e1cdf74144a1a5e1f1c97abf4b8d9",
+                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/df5790819d0228e3c48e575e79f280822200c270",
+                "reference": "df5790819d0228e3c48e575e79f280822200c270",
                 "shasum": ""
             },
             "require": {
@@ -28252,7 +28252,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/foundry/issues",
-                "source": "https://github.com/zenstruck/foundry/tree/v2.11.0"
+                "source": "https://github.com/zenstruck/foundry/tree/v2.11.1"
             },
             "funding": [
                 {
@@ -28264,7 +28264,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-27T20:25:22+00:00"
+            "time": "2026-08-01T21:34:09+00:00"
         },
         {
             "name": "zenstruck/mailer-test",
