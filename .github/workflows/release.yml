@@ -308,7 +308,7 @@ jobs:
       - name: Build and push Docker image
         if: needs.prepare.outputs.release == '1'
         id: build
-        uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
+        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
         with:
           targets: package
           source: .
