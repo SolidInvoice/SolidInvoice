@@ -18769,16 +18769,16 @@
         },
         {
             "name": "symfony/ux-chartjs",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-chartjs.git",
-                "reference": "6976d7e56a7f98c11438f9bb314c767575abe7fe"
+                "reference": "e97b5b39d5081ac16840db0054862b0bdcab2e68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/6976d7e56a7f98c11438f9bb314c767575abe7fe",
-                "reference": "6976d7e56a7f98c11438f9bb314c767575abe7fe",
+                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/e97b5b39d5081ac16840db0054862b0bdcab2e68",
+                "reference": "e97b5b39d5081ac16840db0054862b0bdcab2e68",
                 "shasum": ""
             },
             "require": {
@@ -18829,7 +18829,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-chartjs/tree/v3.3.0"
+                "source": "https://github.com/symfony/ux-chartjs/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -18849,7 +18849,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-09T05:17:17+00:00"
+            "time": "2026-07-25T17:54:47+00:00"
         },
         {
             "name": "symfony/ux-dropzone",
