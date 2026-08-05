@@ -148,7 +148,7 @@ jobs:
       - run: bun install
 
       - name: Super-Linter
-        uses: github/super-linter/slim@4e8a7c2bf106c4c766c816b35ec612638dc9b6b2
+        uses: github/super-linter/slim@ce838ab356d25fc8e83a16fa6d1fc6f583e14e87
         env:
           # exclude noisy dirs
           FILTER_REGEX_EXCLUDE: '(node_modules|vendor|dist|build|.git)'
