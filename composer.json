@@ -28,7 +28,7 @@
         "api-platform/core": "^4.3",
         "async-aws/ses": "^1.15",
         "babdev/pagerfanta-bundle": "^4.6",
-        "brick/math": "^0.18",
+        "brick/math": "^0.19",
         "defuse/php-encryption": "^2.4",
         "doctrine/collections": "^2.6",
         "doctrine/common": "^3.5",
