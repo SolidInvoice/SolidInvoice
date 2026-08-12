@@ -12569,16 +12569,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v8.1.3",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "ae15c8c6f5c4f4adbe7da2a2d69b349eb6e407dd"
+                "reference": "f8d33e21c749e931a33c98b1f6a8ea378b29627a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/ae15c8c6f5c4f4adbe7da2a2d69b349eb6e407dd",
-                "reference": "ae15c8c6f5c4f4adbe7da2a2d69b349eb6e407dd",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/f8d33e21c749e931a33c98b1f6a8ea378b29627a",
+                "reference": "f8d33e21c749e931a33c98b1f6a8ea378b29627a",
                 "shasum": ""
             },
             "require": {
@@ -12601,7 +12601,7 @@
             "require-dev": {
                 "amphp/http-client": "^5.3.2",
                 "amphp/http-tunnel": "^2.0",
-                "guzzlehttp/guzzle": "^7.10",
+                "guzzlehttp/guzzle": "^7.10|^8.0",
                 "nyholm/psr7": "^1.0",
                 "php-http/httplug": "^1.0|^2.0",
                 "psr/http-client": "^1.0",
@@ -12642,7 +12642,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v8.1.3"
+                "source": "https://github.com/symfony/http-client/tree/v8.1.4"
             },
             "funding": [
                 {
@@ -12662,7 +12662,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-29T16:43:23+00:00"
+            "time": "2026-08-06T21:11:24+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -14167,16 +14167,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v8.1.2",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "75f4779d4ec2e13f24a3a7e5d0347c340c7ca627"
+                "reference": "8f8ac859d369fe3d18e3837998b1c992bbee92c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/75f4779d4ec2e13f24a3a7e5d0347c340c7ca627",
-                "reference": "75f4779d4ec2e13f24a3a7e5d0347c340c7ca627",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/8f8ac859d369fe3d18e3837998b1c992bbee92c9",
+                "reference": "8f8ac859d369fe3d18e3837998b1c992bbee92c9",
                 "shasum": ""
             },
             "require": {
@@ -14229,7 +14229,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v8.1.2"
+                "source": "https://github.com/symfony/mime/tree/v8.1.4"
             },
             "funding": [
                 {
@@ -14249,7 +14249,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-29T08:00:47+00:00"
+            "time": "2026-08-07T15:02:39+00:00"
         },
         {
             "name": "symfony/mobyt-notifier",
@@ -14481,16 +14481,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v8.1.0",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "31eda67c366ab1c5759baa026eea862a764991b7"
+                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/31eda67c366ab1c5759baa026eea862a764991b7",
-                "reference": "31eda67c366ab1c5759baa026eea862a764991b7",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/e4c1236171800cdb3e5dbe189121454204f1654f",
+                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f",
                 "shasum": ""
             },
             "require": {
@@ -14539,7 +14539,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v8.1.0"
+                "source": "https://github.com/symfony/notifier/tree/v8.1.2"
             },
             "funding": [
                 {
@@ -14559,7 +14559,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-07-05T10:41:02+00:00"
         },
         {
             "name": "symfony/object-mapper",
@@ -17938,16 +17938,16 @@
         },
         {
             "name": "symfony/telegram-notifier",
-            "version": "v8.1.0",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/telegram-notifier.git",
-                "reference": "e641b3f04ae15c887894d364d2709762f5084750"
+                "reference": "8761336a0100010260febf8518d6c7d85f4f8b11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/e641b3f04ae15c887894d364d2709762f5084750",
-                "reference": "e641b3f04ae15c887894d364d2709762f5084750",
+                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/8761336a0100010260febf8518d6c7d85f4f8b11",
+                "reference": "8761336a0100010260febf8518d6c7d85f4f8b11",
                 "shasum": ""
             },
             "require": {
@@ -17986,7 +17986,7 @@
                 "telegram"
             ],
             "support": {
-                "source": "https://github.com/symfony/telegram-notifier/tree/v8.1.0"
+                "source": "https://github.com/symfony/telegram-notifier/tree/v8.1.4"
             },
             "funding": [
                 {
@@ -18006,7 +18006,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-08-01T16:08:50+00:00"
         },
         {
             "name": "symfony/telnyx-notifier",
