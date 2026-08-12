@@ -10378,16 +10378,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v8.1.2",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "e8ee277684fa228d37795ff160b901eeda1ade5d"
+                "reference": "cb84364d9b47030c6979422d6911f9ea6603f5a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/e8ee277684fa228d37795ff160b901eeda1ade5d",
-                "reference": "e8ee277684fa228d37795ff160b901eeda1ade5d",
+                "url": "https://api.github.com/repos/symfony/config/zipball/cb84364d9b47030c6979422d6911f9ea6603f5a2",
+                "reference": "cb84364d9b47030c6979422d6911f9ea6603f5a2",
                 "shasum": ""
             },
             "require": {
@@ -10432,7 +10432,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v8.1.2"
+                "source": "https://github.com/symfony/config/tree/v8.1.4"
             },
             "funding": [
                 {
@@ -10452,7 +10452,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-22T15:42:13+00:00"
+            "time": "2026-07-31T12:43:13+00:00"
         },
         {
             "name": "symfony/console",
