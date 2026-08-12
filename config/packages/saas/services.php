@@ -16,8 +16,8 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)', null);
-    $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)', null);
+    $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)', '');
+    $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)', '');
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)', '');
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE)', '');
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT)', '30');
