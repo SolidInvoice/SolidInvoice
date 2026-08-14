@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -43,6 +44,7 @@ final readonly class Edit
         private ManagerRegistry $doctrine,
         private TotalCalculator $totalCalculator,
         private QuoteFormManager $formManager,
+        private QuoteMailer $quoteMailer,
     ) {
     }
 
@@ -73,11 +75,11 @@ final readonly class Edit
 
             // Send the quote (publish and notify client)
             if ('send' === $action) {
-                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+                $this->quoteMailer->send($quote);
             }
 
             // Publish the quote (without sending)
-            if ('publish' === $action) {
+            if ('publish' === $action && $this->quoteStateMachine->can($quote, Graph::TRANSITION_PUBLISH)) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
             }
 
