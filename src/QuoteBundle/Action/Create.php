@@ -23,6 +23,7 @@ use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\SaasBundle\Feature\Feature;
@@ -47,6 +48,7 @@ final class Create extends AbstractController
         private readonly TotalCalculator $totalCalculator,
         private readonly QuoteFormManager $formManager,
         private readonly FeatureGate $featureGate,
+        private readonly QuoteMailer $quoteMailer,
     ) {
     }
 
@@ -96,11 +98,11 @@ final class Create extends AbstractController
 
             // Send the quote (publish and notify client)
             if ('send' === $action) {
-                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+                $this->quoteMailer->send($quote);
             }
 
             // Publish the quote (without sending)
-            if ('publish' === $action) {
+            if ('publish' === $action && $this->quoteStateMachine->can($quote, Graph::TRANSITION_PUBLISH)) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
             }
 

@@ -28,6 +28,7 @@ use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\SaasBundle\Feature\Feature;
@@ -80,6 +81,7 @@ final class CreateQuote extends AbstractController
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly CustomFieldFormWriter $customFieldFormWriter,
         private readonly FeatureGate $featureGate,
+        private readonly QuoteMailer $quoteMailer,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -226,10 +228,10 @@ final class CreateQuote extends AbstractController
             $this->formManager->updateQuoteFromDTO($this->quote, $dto);
 
             if ('send' === $action) {
-                $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_SEND);
+                $this->quoteMailer->send($this->quote);
             }
 
-            if ('publish' === $action) {
+            if ('publish' === $action && $this->quoteStateMachine->can($this->quote, Graph::TRANSITION_PUBLISH)) {
                 $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_PUBLISH);
             }
 
@@ -260,11 +262,11 @@ final class CreateQuote extends AbstractController
 
         // Send the quote (publish and notify client)
         if ('send' === $action) {
-            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+            $this->quoteMailer->send($quote);
         }
 
         // Publish the quote (without sending)
-        if ('publish' === $action) {
+        if ('publish' === $action && $this->quoteStateMachine->can($quote, Graph::TRANSITION_PUBLISH)) {
             $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
         }
 
