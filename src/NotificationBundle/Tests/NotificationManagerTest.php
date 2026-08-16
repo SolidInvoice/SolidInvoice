@@ -17,7 +17,9 @@ use Hamcrest\Core\IsEqual;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use RuntimeException;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -30,7 +32,11 @@ use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Notifier\Transport\Dsn;
@@ -405,5 +411,71 @@ final class NotificationManagerTest extends KernelTestCase
                 new Recipient($email, '')
             )
         );
+    }
+
+    public function testSendNotificationLogsAndFlagsFailureWhenTransportThrows(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $email = $this->getFaker()->email();
+
+        $user = new User()
+            ->setEmail($email)
+            ->setPassword('password');
+
+        $userNotification = new UserNotification()
+            ->setEvent('test_event')
+            ->setEmail(true)
+            ->setUser($user);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($userNotification);
+        $em->flush();
+
+        $transportException = new class('Boom') extends RuntimeException implements TransportExceptionInterface {
+            public function getDebug(): string
+            {
+                return '';
+            }
+        };
+
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once()
+            ->andThrow($transportException);
+
+        $logger = M::mock(LoggerInterface::class);
+        $logger
+            ->expects('error')
+            ->once()
+            ->with(
+                'Failed to send notification: Boom',
+                IsEqual::equalTo(['exception' => $transportException, 'event' => 'test_event']),
+            );
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = Request::create('/');
+        $request->setSession($session);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $notificationManager = new NotificationManager(
+            $this->notifier,
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator([]),
+            $logger,
+            $requestStack,
+        );
+
+        $notificationManager->sendNotification($class);
+
+        self::assertSame(['notification.send_failed'], $session->getFlashBag()->get('error'));
     }
 }
