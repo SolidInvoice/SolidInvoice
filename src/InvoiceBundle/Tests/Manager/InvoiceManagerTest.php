@@ -30,9 +30,11 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -61,6 +63,14 @@ final class InvoiceManagerTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        $this->manager = $this->buildManager([new Transition('new', 'new', 'draft')]);
+    }
+
+    /**
+     * @param list<Transition> $transitions
+     */
+    private function buildManager(array $transitions): InvoiceManager
+    {
         $entityManager = M::mock(EntityManagerInterface::class);
         $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $entityManager]);
         $notification = M::mock(NotificationManager::class);
@@ -68,16 +78,13 @@ final class InvoiceManagerTest extends KernelTestCase
         $notification->shouldReceive('sendNotification')
             ->andReturn(null);
 
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
+        $workflowDispatcher = new EventDispatcher();
+        $workflowDispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
 
         $stateMachine = new StateMachine(
-            new Definition(
-                ['new', 'draft'],
-                [new Transition('new', 'new', 'draft')]
-            ),
+            new Definition(['new', 'draft'], $transitions),
             new MethodMarkingStore(true, 'status'),
-            $dispatcher,
+            $workflowDispatcher,
             'invoice'
         );
 
@@ -89,7 +96,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $clock->method('now')
             ->willReturn(CarbonImmutable::parse('2024-01-15 10:30:00'));
 
-        $this->manager = new InvoiceManager(
+        $manager = new InvoiceManager(
             $doctrine,
             new EventDispatcher(),
             $stateMachine,
@@ -109,6 +116,8 @@ final class InvoiceManagerTest extends KernelTestCase
         $entityManager
             ->shouldReceive('persist', 'flush')
             ->zeroOrMoreTimes();
+
+        return $manager;
     }
 
     public function testCreateFromQuote(): void
@@ -350,5 +359,24 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+    }
+
+    public function testCreateThrowsInvalidTransitionExceptionWhenTransitionNotAllowed(): void
+    {
+        // No transitions defined on the workflow, so the "new" transition can never be applied.
+        $manager = $this->buildManager([]);
+
+        $client = new Client();
+        $client->setName('Test Client');
+
+        $invoice = new Invoice();
+        $invoice->setBaseTotal(100);
+        $invoice->setTotal(100);
+        $invoice->setClient($client);
+        $invoice->setCompany(new Company());
+
+        $this->expectException(InvalidTransitionException::class);
+
+        $manager->create($invoice);
     }
 }
