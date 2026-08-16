@@ -79,7 +79,7 @@ final class InvoiceManagerTest extends KernelTestCase
             ->andReturn(null);
 
         $workflowDispatcher = new EventDispatcher();
-        $workflowDispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
+        $workflowDispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, $notification));
 
         $stateMachine = new StateMachine(
             new Definition(['new', 'draft'], $transitions),
