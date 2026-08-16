@@ -29,6 +29,7 @@ use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
+use SolidInvoice\NotificationBundle\Test\Factory\UserNotificationFactory;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -431,14 +432,12 @@ final class NotificationManagerTest extends KernelTestCase
             'companies' => [$this->company],
         ]);
 
-        $userNotification = new UserNotification()
-            ->setEvent('test_event')
-            ->setEmail(true)
-            ->setUser($user);
-
-        $em = self::getContainer()->get('doctrine.orm.entity_manager');
-        $em->persist($userNotification);
-        $em->flush();
+        $userNotification = UserNotificationFactory::createOne([
+            'event' => 'test_event',
+            'email' => true,
+            'user' => $user,
+            'company' => $this->company,
+        ]);
 
         $transportException = new class('Boom') extends RuntimeException implements TransportExceptionInterface {
             public function getDebug(): string
