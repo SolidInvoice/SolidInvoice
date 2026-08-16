@@ -59,7 +59,7 @@ final class ChoosePlanActionTest extends TestCase
         self::assertSame('event', $bus->messages[0]->type);
         self::assertSame('saas_plan_selected', $bus->messages[0]->payload['event']);
         self::assertSame('solo', $bus->messages[0]->payload['properties']['plan']);
-        self::assertTrue($bus->messages[0]->payload['properties']['is_paid']);
+        self::assertSame('true', $bus->messages[0]->payload['properties']['is_paid']);
     }
 
     public function testEmitsPlanSelectedTelemetryForFreePlan(): void
@@ -75,7 +75,7 @@ final class ChoosePlanActionTest extends TestCase
         self::assertCount(1, $bus->messages);
         self::assertSame('saas_plan_selected', $bus->messages[0]->payload['event']);
         self::assertSame('free', $bus->messages[0]->payload['properties']['plan']);
-        self::assertFalse($bus->messages[0]->payload['properties']['is_paid']);
+        self::assertSame('false', $bus->messages[0]->payload['properties']['is_paid']);
     }
 
     /**
