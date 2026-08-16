@@ -30,6 +30,7 @@ use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageExceptio
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
@@ -424,9 +425,11 @@ final class NotificationManagerTest extends KernelTestCase
 
         $email = $this->getFaker()->email();
 
-        $user = new User()
-            ->setEmail($email)
-            ->setPassword('password');
+        $user = UserFactory::createOne([
+            'email' => $email,
+            'password' => 'password',
+            'companies' => [$this->company],
+        ]);
 
         $userNotification = new UserNotification()
             ->setEvent('test_event')
@@ -434,7 +437,6 @@ final class NotificationManagerTest extends KernelTestCase
             ->setUser($user);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
-        $em->persist($user);
         $em->persist($userNotification);
         $em->flush();
 
