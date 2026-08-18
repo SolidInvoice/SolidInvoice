@@ -464,6 +464,7 @@ final class NotificationManagerTest extends KernelTestCase
         $session = new Session(new MockArraySessionStorage());
         $request = Request::create('/');
         $request->setSession($session);
+
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
