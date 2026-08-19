@@ -1,0 +1,61 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'trial_downgraded.heading'|trans({}, 'email') }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'trial_downgraded.greeting'|trans({}, 'email') }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'trial_downgraded.intro'|trans({}, 'email') }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'trial_downgraded.body'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #626976; font-size: 15px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'trial_downgraded.upsell'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {{ email.button('trial_downgraded.cta'|trans({}, 'email'), url('saas_subscription_plans'), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #626976; font-size: 14px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'trial_downgraded.closing'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{%- endblock -%}

@@ -320,3 +320,12 @@ reset_password:
     message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
     subject: 'Reset your password for %username%'
+trial_downgraded:
+    body: "You're now on our Free plan, so you can keep creating and sending invoices, managing your clients, and getting paid — without interruption."
+    closing: "Thanks for trying SolidInvoice — we're glad you're here."
+    cta: 'Explore plans'
+    greeting: 'Hi there,'
+    heading: "Everything's right where you left it"
+    intro: "Your SolidInvoice trial has come to an end, and there's nothing you need to do — your account, your clients, and every invoice you've created are exactly where you left them."
+    subject: "You're all set on SolidInvoice"
+    upsell: 'Growing fast and want more? Recurring invoices, extra team members, and advanced reporting are just a click away. Upgrading takes about a minute, and you can switch back whenever you like.'
