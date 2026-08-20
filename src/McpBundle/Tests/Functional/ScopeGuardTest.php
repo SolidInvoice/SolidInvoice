@@ -35,24 +35,18 @@ final class ScopeGuardTest extends TestCase
     public function testReadScopeSatisfiesReadRequirement(): void
     {
         $this->buildGuard(['mcp:read'])->require(McpScope::Read);
-
-        self::addToAssertionCount(1);
     }
 
     #[DoesNotPerformAssertions]
     public function testWriteScopeImpliesRead(): void
     {
         $this->buildGuard(['mcp:write'])->require(McpScope::Read);
-
-        self::addToAssertionCount(1);
     }
 
     #[DoesNotPerformAssertions]
     public function testWriteScopeSatisfiesWriteRequirement(): void
     {
         $this->buildGuard(['mcp:write'])->require(McpScope::Write);
-
-        self::addToAssertionCount(1);
     }
 
     public function testReadOnlyTokenCannotWrite(): void
