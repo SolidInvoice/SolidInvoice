@@ -56,7 +56,7 @@ final class WidgetFactoryTest extends TestCase
         $widget = M::mock(WidgetInterface::class);
 
         $this->expectException('Exception');
-        $this->expectExceptionMessage('Invalid widget location: bottom');
+        $this->expectExceptionMessageIsOrContains('Invalid widget location: bottom');
 
         $factory->add($widget, 'bottom');
     }

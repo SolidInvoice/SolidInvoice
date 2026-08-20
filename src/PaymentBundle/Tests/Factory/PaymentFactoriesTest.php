@@ -98,7 +98,7 @@ final class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
 
         $this->expectException(InvalidGatewayException::class);
-        $this->expectExceptionMessage('Invalid gateway: unknown');
+        $this->expectExceptionMessageIsOrContains('Invalid gateway: unknown');
         $paymentFactories->getFactory('unknown');
     }
 

@@ -82,7 +82,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('At least one line item');
+        $this->expectExceptionMessageIsOrContains('At least one line item');
 
         $tool->createInvoice($client->getId()->toRfc4122(), []);
     }
@@ -97,7 +97,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('description');
+        $this->expectExceptionMessageIsOrContains('description');
 
         $tool->createInvoice(
             $client->getId()
@@ -116,7 +116,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('mcp:write');
+        $this->expectExceptionMessageIsOrContains('mcp:write');
 
         $tool->createInvoice(
             $client->getId()
@@ -177,7 +177,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('Invalid discount_type');
+        $this->expectExceptionMessageIsOrContains('Invalid discount_type');
 
         $tool->createInvoice(
             $client->getId()
@@ -198,7 +198,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('discount_value is required');
+        $this->expectExceptionMessageIsOrContains('discount_value is required');
 
         $tool->createInvoice(
             $client->getId()

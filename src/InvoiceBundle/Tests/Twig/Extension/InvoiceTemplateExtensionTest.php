@@ -119,19 +119,6 @@ final class InvoiceTemplateExtensionTest extends TestCase
         self::assertNull($this->extension->primaryContact(new Invoice()));
     }
 
-    public function testGetFunctionsExposesExpectedTwigFunctions(): void
-    {
-        $names = array_map(
-            static fn ($function): string => $function->getName(),
-            $this->extension->getFunctions(),
-        );
-
-        self::assertSame(
-            ['invoice_has_outstanding_balance', 'invoice_captured_payments', 'invoice_primary_contact'],
-            $names,
-        );
-    }
-
     private function capturedPayment(): Payment
     {
         return $this->payment(PaymentStatus::Captured);

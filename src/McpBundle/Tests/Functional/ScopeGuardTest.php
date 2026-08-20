@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use Doctrine\Persistence\ManagerRegistry;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
@@ -30,6 +31,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 #[CoversClass(McpScope::class)]
 final class ScopeGuardTest extends TestCase
 {
+    #[DoesNotPerformAssertions]
     public function testReadScopeSatisfiesReadRequirement(): void
     {
         $this->buildGuard(['mcp:read'])->require(McpScope::Read);
@@ -37,6 +39,7 @@ final class ScopeGuardTest extends TestCase
         self::addToAssertionCount(1);
     }
 
+    #[DoesNotPerformAssertions]
     public function testWriteScopeImpliesRead(): void
     {
         $this->buildGuard(['mcp:write'])->require(McpScope::Read);
@@ -44,6 +47,7 @@ final class ScopeGuardTest extends TestCase
         self::addToAssertionCount(1);
     }
 
+    #[DoesNotPerformAssertions]
     public function testWriteScopeSatisfiesWriteRequirement(): void
     {
         $this->buildGuard(['mcp:write'])->require(McpScope::Write);
@@ -54,7 +58,7 @@ final class ScopeGuardTest extends TestCase
     public function testReadOnlyTokenCannotWrite(): void
     {
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('mcp:write');
+        $this->expectExceptionMessageIsOrContains('mcp:write');
 
         $this->buildGuard(['mcp:read'])->require(McpScope::Write);
     }

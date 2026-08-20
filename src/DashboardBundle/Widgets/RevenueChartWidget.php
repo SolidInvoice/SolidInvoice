@@ -173,7 +173,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
         }
 
         if ([] === $currencies) {
-            $currencies = [$this->systemConfig->getCurrency()->getCode()];
+            return [$this->systemConfig->getCurrency()->getCode()];
         }
 
         return $currencies;

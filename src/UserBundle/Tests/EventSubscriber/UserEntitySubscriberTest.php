@@ -101,12 +101,11 @@ final class UserEntitySubscriberTest extends TestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (TemplatedEmail $email) use ($user): bool {
+            ->willReturnCallback(function (TemplatedEmail $email) use ($user): void {
                 self::assertSame($user->getEmail(), $email->getTo()[0]->getAddress());
                 self::assertSame('Please Confirm your Email', $email->getSubject());
                 self::assertSame('@SolidInvoiceUser/Email/confirm_email.html.twig', $email->getHtmlTemplate());
-                return true;
-            }));
+            });
 
         $subscriber->postPersist($user);
     }

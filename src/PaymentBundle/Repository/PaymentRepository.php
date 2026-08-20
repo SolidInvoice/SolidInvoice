@@ -22,7 +22,6 @@ use DateTime;
 use DateTimeInterface;
 use Deprecated;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
@@ -207,7 +206,7 @@ class PaymentRepository extends EntityRepository
 
         $queryBuilder
             ->groupBy('p.created, p.totalAmount')
-            ->orderBy('p.created', Criteria::ASC);
+            ->orderBy('p.created', 'ASC');
 
         $query = $queryBuilder->getQuery();
 
@@ -261,7 +260,7 @@ class PaymentRepository extends EntityRepository
             ->where('p.created >= :date')
             ->setParameter('date', Carbon::parse('-1 Year'))
             ->groupBy('p.created, p.totalAmount')
-            ->orderBy('p.created', Criteria::ASC);
+            ->orderBy('p.created', 'ASC');
 
         $query = $queryBuilder->getQuery();
 
@@ -347,7 +346,7 @@ class PaymentRepository extends EntityRepository
             ->andWhere('p.status = :status')
             ->setParameter('date', new DateTime(sprintf('-%d months', $months)))
             ->setParameter('status', PaymentStatus::Captured->value)
-            ->orderBy('p.created', Criteria::ASC);
+            ->orderBy('p.created', 'ASC');
 
         /** @var array<string, array<non-empty-string, BigInteger>> $results */
         $results = [];

@@ -93,7 +93,7 @@ final class SendInvoiceRemindersCommandTest extends KernelTestCase
     public function testCommandRejectsAnUnknownReminderType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid type "weekly"');
+        $this->expectExceptionMessageIsOrContains('Invalid type "weekly"');
 
         $this->runTestCommand('weekly');
     }

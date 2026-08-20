@@ -49,7 +49,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('mcp:write');
+        $this->expectExceptionMessageIsOrContains('mcp:write');
 
         $tool->createResource('client', ['name' => 'Rejected', 'currency_code' => 'USD']);
     }
@@ -110,7 +110,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('invoice');
+        $this->expectExceptionMessageIsOrContains('invoice');
 
         // Invoice is not in the CREATABLE allowlist (too complex; dedicated tool required).
         $tool->createResource('invoice', []);
@@ -165,7 +165,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(ClientWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('Invalid email');
+        $this->expectExceptionMessageIsOrContains('Invalid email');
 
         $tool->addContact($client->getId()->toRfc4122(), 'not-an-email');
     }
@@ -185,7 +185,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('not enabled');
+        $this->expectExceptionMessageIsOrContains('not enabled');
 
         // "pay" on an already-paid invoice should be rejected.
         $tool->applyInvoiceTransition($invoice->getId()->toRfc4122(), 'pay');

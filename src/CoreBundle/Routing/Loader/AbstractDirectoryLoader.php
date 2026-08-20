@@ -34,10 +34,7 @@ abstract class AbstractDirectoryLoader extends Loader
         parent::__construct();
     }
 
-    /**
-     * @param mixed $resource
-     */
-    public function load($resource, ?string $type = null): ?RouteCollection
+    public function load(mixed $resource, ?string $type = null): ?RouteCollection
     {
         $dir = $this->locator->locate($resource);
 

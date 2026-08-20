@@ -70,7 +70,7 @@ final class GenerateTransportConfigCommand extends Command
             $this->generate($io, $type, $configs);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

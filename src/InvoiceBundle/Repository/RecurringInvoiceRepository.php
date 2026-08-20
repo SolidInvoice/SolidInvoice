@@ -18,7 +18,6 @@ use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use DateTime;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -166,7 +165,7 @@ class RecurringInvoiceRepository extends EntityRepository
             ->setParameter('status', RecurringInvoiceStatus::Active->value)
             ->setParameter('now', $now)
             ->setParameter('futureDate', $futureDate)
-            ->orderBy('ri.dateStart', Criteria::ASC)
+            ->orderBy('ri.dateStart', 'ASC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();

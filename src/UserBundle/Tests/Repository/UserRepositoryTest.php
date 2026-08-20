@@ -127,7 +127,7 @@ final class UserRepositoryTest extends KernelTestCase
         };
 
         $this->expectException(UnsupportedUserException::class);
-        $this->expectExceptionMessage(sprintf('Instances of "%s" are not supported.', $user::class));
+        $this->expectExceptionMessageIsOrContains(sprintf('Instances of "%s" are not supported.', $user::class));
         $this->repository->refreshUser($user);
     }
 
@@ -141,7 +141,7 @@ final class UserRepositoryTest extends KernelTestCase
     {
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessage('User "test1" does not exist.');
+        $this->expectExceptionMessageIsOrContains('User "test1" does not exist.');
         $this->repository->loadUserByIdentifier('test1');
     }
 
@@ -150,7 +150,7 @@ final class UserRepositoryTest extends KernelTestCase
         $email = $this->faker->email();
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessage('User "' . $email . '" does not exist.');
+        $this->expectExceptionMessageIsOrContains('User "' . $email . '" does not exist.');
         $this->repository->loadUserByIdentifier($email);
     }
 

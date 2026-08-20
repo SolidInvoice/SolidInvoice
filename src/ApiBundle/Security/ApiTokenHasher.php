@@ -30,7 +30,7 @@ final readonly class ApiTokenHasher
 {
     public function __construct(
         #[SensitiveParameter]
-        #[Autowire('%kernel.secret%')]
+        #[Autowire(param: 'kernel.secret')]
         private string $appSecret,
     ) {
     }

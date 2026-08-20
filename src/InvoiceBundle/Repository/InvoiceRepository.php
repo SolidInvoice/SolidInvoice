@@ -20,7 +20,6 @@ use DateMalformedStringException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Deprecated;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\AbstractQuery;
@@ -204,7 +203,7 @@ class InvoiceRepository extends EntityRepository
 
         $qb
             ->innerJoin('i.client', 'c')
-            ->orderBy('i.created', Criteria::DESC)
+            ->orderBy('i.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -358,7 +357,7 @@ class InvoiceRepository extends EntityRepository
             ->addSelect('c')
             ->where('i.status = :status')
             ->setParameter('status', InvoiceStatus::Overdue)
-            ->orderBy('i.due', Criteria::ASC)
+            ->orderBy('i.due', 'ASC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -378,7 +377,7 @@ class InvoiceRepository extends EntityRepository
             ->addSelect('c')
             ->where('i.status = :status')
             ->setParameter('status', InvoiceStatus::Draft)
-            ->orderBy('i.created', Criteria::DESC)
+            ->orderBy('i.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -472,7 +471,7 @@ class InvoiceRepository extends EntityRepository
             ->addSelect('c')
             ->where('i.status = :status')
             ->setParameter('status', InvoiceStatus::Pending)
-            ->orderBy('i.updated', Criteria::DESC)
+            ->orderBy('i.updated', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -492,7 +491,7 @@ class InvoiceRepository extends EntityRepository
             ->addSelect('c')
             ->innerJoin('i.recurringInvoice', 'ri')
             ->addSelect('ri')
-            ->orderBy('i.created', Criteria::DESC)
+            ->orderBy('i.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
