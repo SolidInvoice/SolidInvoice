@@ -1,0 +1,26 @@
+name: Milestone
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Pull request to put on its branch's milestone."
+        required: true
+        type: string
+
+jobs:
+  milestone:
+    # Tracked at @main rather than pinned to a commit the way the third-party
+    # actions in the other workflows are: SolidWorx/actions is ours and is
+    # deliberately published without release tags.
+    uses: SolidWorx/actions/.github/workflows/pr-milestone.yml@main
+    with:
+      pr: ${{ inputs.pr }}
+    # A reusable workflow can only narrow what it was granted, so the caller is
+    # where these have to be given.
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
