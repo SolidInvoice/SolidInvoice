@@ -10,6 +10,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   milestone:
     # Tracked at @main rather than pinned to a commit the way the third-party
