@@ -74,7 +74,7 @@ final class DoctrineStorageTest extends TestCase
     public function testGetIdentityWithCompositeKey(): void
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Storage does not support composite primary ids');
+        $this->expectExceptionMessageIsOrContains('Storage does not support composite primary ids');
 
         $objectManager = $this->createMock(ObjectManager::class);
         $classMetadata = $this->createMock(ClassMetadata::class);

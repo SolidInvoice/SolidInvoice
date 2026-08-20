@@ -32,7 +32,7 @@ final readonly class TurnstileVerifier
     public function __construct(
         private HttpClientInterface $httpClient,
         private ToggleInterface $toggle,
-        #[Autowire('%env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)%')]
+        #[Autowire(env: 'SOLIDINVOICE_TURNSTILE_SECRET_KEY')]
         private ?string $secretKey = null,
     ) {
     }

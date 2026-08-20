@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Twig;
 
-use Override;
 use SolidInvoice\SaasBundle\Feature\FeatureCopy;
 use SolidInvoice\SaasBundle\Feature\FeatureCopyRegistry;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * Twig functions for SaaS-only upgrade UI: required-plan label, locked-feature
@@ -36,48 +34,22 @@ use Twig\TwigFunction;
  * SolidInvoice\CoreBundle\Twig\Extension\FeatureExtension provides the three
  * SaaS-only names so templates can call them unconditionally.
  */
-final class FeatureExtension extends AbstractExtension
+final readonly class FeatureExtension
 {
     public function __construct(
-        private readonly UpgradePromptRenderer $renderer,
-        private readonly FeatureGate $gate,
-        private readonly FeatureCopyRegistry $copyRegistry,
+        private UpgradePromptRenderer $renderer,
+        private FeatureGate $gate,
+        private FeatureCopyRegistry $copyRegistry,
     ) {
     }
 
-    /**
-     * @return list<TwigFunction>
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction(
-                'feature_required_plan_label',
-                $this->requiredPlanLabel(...),
-            ),
-            new TwigFunction(
-                'upgrade_prompt',
-                $this->upgradePrompt(...),
-                ['is_safe' => ['html']],
-            ),
-            new TwigFunction(
-                'feature_usage_banner',
-                $this->usageBanner(...),
-                ['is_safe' => ['html']],
-            ),
-            new TwigFunction(
-                'feature_copy',
-                $this->featureCopy(...),
-            ),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'feature_copy')]
     public function featureCopy(string $featureKey): ?FeatureCopy
     {
         return $this->copyRegistry->get($featureKey);
     }
 
+    #[AsTwigFunction(name: 'feature_required_plan_label')]
     public function requiredPlanLabel(string $featureKey): ?string
     {
         if ($this->gate->isEnabled($featureKey)) {
@@ -87,6 +59,7 @@ final class FeatureExtension extends AbstractExtension
         return $this->renderer->menuLabel($featureKey);
     }
 
+    #[AsTwigFunction(name: 'upgrade_prompt', isSafe: ['html'])]
     public function upgradePrompt(string $featureKey): string
     {
         if ($this->gate->isEnabled($featureKey)) {
@@ -96,6 +69,7 @@ final class FeatureExtension extends AbstractExtension
         return $this->renderer->prompt($featureKey);
     }
 
+    #[AsTwigFunction(name: 'feature_usage_banner', isSafe: ['html'])]
     public function usageBanner(string $featureKey, int $currentUsage = 0): string
     {
         return $this->renderer->usageBanner($featureKey, $currentUsage);

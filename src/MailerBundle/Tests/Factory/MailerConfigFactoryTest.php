@@ -43,7 +43,7 @@ final class MailerConfigFactoryTest extends TestCase
     public function testFromStringsWithNoConfigurators(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid mailer config');
+        $this->expectExceptionMessageIsOrContains('Invalid mailer config');
 
         $systemConfig = M::mock(SystemConfig::class);
 

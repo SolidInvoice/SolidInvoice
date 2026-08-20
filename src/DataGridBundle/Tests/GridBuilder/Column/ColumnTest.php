@@ -164,7 +164,7 @@ final class ColumnTest extends TestCase
         $this->column->linkToRoute('some_route');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Route link is already set for column test_field');
+        $this->expectExceptionMessageIsOrContains('Route link is already set for column test_field');
         $this->column->linkTo('https://example.com');
     }
 
@@ -173,7 +173,7 @@ final class ColumnTest extends TestCase
         $this->column->linkTo('https://example.com');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Link is already set for column test_field');
+        $this->expectExceptionMessageIsOrContains('Link is already set for column test_field');
         $this->column->linkToRoute('some_route');
     }
 

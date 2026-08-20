@@ -133,7 +133,7 @@ final class ReadToolFlowTest extends KernelTestCase
         self::assertInstanceOf(SettingsReadTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('mcp:read');
+        $this->expectExceptionMessageIsOrContains('mcp:read');
 
         $tool->getCompanyInfo();
     }

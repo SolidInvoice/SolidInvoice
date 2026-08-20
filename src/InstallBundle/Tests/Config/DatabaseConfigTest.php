@@ -29,7 +29,7 @@ final class DatabaseConfigTest extends TestCase
     {
         if ($expectedExceptionMessage !== '') {
             $this->expectException(InvalidArgumentException::class);
-            $this->expectExceptionMessage($expectedExceptionMessage);
+            $this->expectExceptionMessageIsOrContains($expectedExceptionMessage);
         }
 
         self::assertSame($expected, DatabaseConfig::paramsToDatabaseUrl($params));

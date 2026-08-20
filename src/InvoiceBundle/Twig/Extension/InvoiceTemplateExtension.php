@@ -13,34 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Twig\Extension;
 
-use Override;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 use function array_filter;
 use function array_values;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Twig\Extension\InvoiceTemplateExtensionTest
  */
-final class InvoiceTemplateExtension extends AbstractExtension
+final class InvoiceTemplateExtension
 {
-    /**
-     * @return TwigFunction[]
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('invoice_has_outstanding_balance', $this->hasOutstandingBalance(...)),
-            new TwigFunction('invoice_captured_payments', $this->capturedPayments(...)),
-            new TwigFunction('invoice_primary_contact', $this->primaryContact(...)),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'invoice_has_outstanding_balance')]
     public function hasOutstandingBalance(Invoice $invoice): bool
     {
         if (! $invoice->getBalance()->isPositive()) {
@@ -53,6 +39,7 @@ final class InvoiceTemplateExtension extends AbstractExtension
     /**
      * @return list<Payment>
      */
+    #[AsTwigFunction(name: 'invoice_captured_payments')]
     public function capturedPayments(Invoice $invoice): array
     {
         return array_values(array_filter(
@@ -61,6 +48,7 @@ final class InvoiceTemplateExtension extends AbstractExtension
         ));
     }
 
+    #[AsTwigFunction(name: 'invoice_primary_contact')]
     public function primaryContact(Invoice $invoice): ?Contact
     {
         $first = $invoice->getUsers()->first();

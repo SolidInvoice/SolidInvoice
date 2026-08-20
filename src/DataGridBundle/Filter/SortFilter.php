@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use function str_contains;
@@ -25,7 +24,7 @@ final readonly class SortFilter implements FilterInterface
 {
     public function __construct(
         private string $field,
-        private string $direction = Criteria::ASC,
+        private string $direction = 'ASC',
     ) {
     }
 

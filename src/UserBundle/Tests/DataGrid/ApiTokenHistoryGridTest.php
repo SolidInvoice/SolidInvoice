@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\DataGrid;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
@@ -112,7 +114,7 @@ final class ApiTokenHistoryGridTest extends TestCase
         $queryBuilder
             ->expects(self::exactly(2))
             ->method('setParameter')
-            ->willReturnCallback(static function (string $name, $value, $type) use ($queryBuilder, $userId, $tokenId): QueryBuilder {
+            ->willReturnCallback(static function (string $name, $value, ParameterType | ArrayParameterType | string | int | null $type) use ($queryBuilder, $userId, $tokenId): QueryBuilder {
                 if ('user' === $name) {
                     self::assertSame($userId, $value);
                     self::assertSame(UlidType::NAME, $type);

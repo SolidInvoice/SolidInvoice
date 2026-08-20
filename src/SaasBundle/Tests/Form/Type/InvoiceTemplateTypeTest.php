@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Form\Type;
 
 use Override;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
@@ -29,6 +30,7 @@ use function sys_get_temp_dir;
 use function uniqid;
 
 #[CoversClass(InvoiceTemplateType::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class InvoiceTemplateTypeTest extends TypeTestCase
 {
     private string $invoiceDir;

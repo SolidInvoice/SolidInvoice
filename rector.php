@@ -23,7 +23,6 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Configs\Rector\Closure\FromServicePublicToDefaultsPublicRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSetStringNameToClassNameRector;
 use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
@@ -64,14 +63,11 @@ return RectorConfig::configure()
         LevelSetList::UP_TO_PHP_84,
 
         // PHPUnit
-        PHPUnitSetList::PHPUNIT_70,
-        PHPUnitSetList::PHPUNIT_80,
-        PHPUnitSetList::PHPUNIT_90,
-        PHPUnitSetList::PHPUNIT_100,
-        PHPUnitSetList::PHPUNIT_110,
-        PHPUnitSetList::PHPUNIT_120,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
+        PHPUnitSetList::COMPOSER_BASED,
+        PHPUnitSetList::PHPUNIT_NARROW_ASSERTS,
+        PHPUnitSetList::PHPUNIT_MOCK_TO_STUB,
 
         // Doctrine
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
@@ -79,7 +75,7 @@ return RectorConfig::configure()
         DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
         DoctrineSetList::TYPED_COLLECTIONS,
         DoctrineSetList::TYPED_COLLECTIONS_DOCBLOCKS,
-        DoctrineSetList::YAML_TO_ANNOTATIONS,
+        DoctrineSetList::COMPOSER_BASED,
 
         // Symfony
         SymfonySetList::CONFIGS,
@@ -104,10 +100,6 @@ return RectorConfig::configure()
 
         ServiceSetStringNameToClassNameRector::class,
         ServiceSettersToSettersAutodiscoveryRector::class,
-        ControllerMethodInjectionToConstructorRector::class => [
-            // This rule moved the `Column` class from the `renderField` method to the constructor, which will break grid rendering
-            'src/DataGridBundle/Twig/Components/DataGrid.php',
-        ],
 
         // This changes fetching string service names to the class names in the container in tests, while the service might not exist and breaking tests
         ContainerGetNameToTypeInTestsRector::class,

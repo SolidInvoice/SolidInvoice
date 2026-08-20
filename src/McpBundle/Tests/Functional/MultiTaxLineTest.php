@@ -193,7 +193,7 @@ final class MultiTaxLineTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('tax_id is required');
+        $this->expectExceptionMessageIsOrContains('tax_id is required');
 
         $tool->createInvoice(
             $client->getId()

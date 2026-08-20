@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Filter;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -38,7 +37,7 @@ final class SortFilterTest extends TestCase
         $this->queryBuilder
             ->expects($this->once())
             ->method('orderBy')
-            ->with('d.field', Criteria::ASC);
+            ->with('d.field', 'ASC');
 
         $this->filter->filter($this->queryBuilder, null);
     }
@@ -56,12 +55,12 @@ final class SortFilterTest extends TestCase
 
     public function testFilterAppliesCorrectOrderingWhenDirectionIsDesc(): void
     {
-        $sortFilter = new SortFilter('field', Criteria::DESC);
+        $sortFilter = new SortFilter('field', 'DESC');
 
         $this->queryBuilder
             ->expects($this->once())
             ->method('orderBy')
-            ->with('d.field', Criteria::DESC);
+            ->with('d.field', 'DESC');
 
         $sortFilter->filter($this->queryBuilder, null);
     }

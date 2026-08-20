@@ -100,7 +100,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $request = Request::create('/_mcp', Request::METHOD_POST, [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
-        $this->expectExceptionMessage('no longer has access to the company');
+        $this->expectExceptionMessageIsOrContains('no longer has access to the company');
 
         $authenticator->authenticate($request);
     }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Components;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
@@ -199,7 +198,7 @@ class DataGrid extends AbstractController
     #[ExposeInTemplate]
     public function sortDir(): string
     {
-        return explode(',', $this->sort)[1] ?? Criteria::ASC;
+        return explode(',', $this->sort)[1] ?? 'ASC';
     }
 
     #[ExposeInTemplate]

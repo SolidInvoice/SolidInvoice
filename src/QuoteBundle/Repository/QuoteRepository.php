@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -61,7 +60,7 @@ class QuoteRepository extends EntityRepository
 
         $qb
             ->innerJoin('q.client', 'c')
-            ->orderBy('q.created', Criteria::DESC)
+            ->orderBy('q.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -184,7 +183,7 @@ class QuoteRepository extends EntityRepository
             ->addSelect('c')
             ->where('q.status = :status')
             ->setParameter('status', QuoteStatus::Pending)
-            ->orderBy('q.created', Criteria::DESC)
+            ->orderBy('q.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
@@ -205,7 +204,7 @@ class QuoteRepository extends EntityRepository
             ->where('q.status = :acceptedStatus OR q.status = :declinedStatus')
             ->setParameter('acceptedStatus', QuoteStatus::Accepted)
             ->setParameter('declinedStatus', QuoteStatus::Declined)
-            ->orderBy('q.updated', Criteria::DESC)
+            ->orderBy('q.updated', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();

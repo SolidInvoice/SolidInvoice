@@ -80,7 +80,7 @@ final class NotificationManagerTest extends KernelTestCase
         };
 
         $this->expectException(InvalidNotificationMessageException::class);
-        $this->expectExceptionMessage('The notification message "' . $class::class . '" must have the ' . AsNotification::class . ' set.');
+        $this->expectExceptionMessageIsOrContains('The notification message "' . $class::class . '" must have the ' . AsNotification::class . ' set.');
 
         $this->notificationManager->sendNotification($class);
     }
@@ -465,8 +465,7 @@ final class NotificationManagerTest extends KernelTestCase
         $request = Request::create('/');
         $request->setSession($session);
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         $notificationManager = new NotificationManager(
             $this->notifier,

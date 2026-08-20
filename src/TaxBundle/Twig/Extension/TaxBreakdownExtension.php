@@ -15,7 +15,6 @@ namespace SolidInvoice\TaxBundle\Twig\Extension;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
-use Override;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -28,11 +27,10 @@ use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
 use Symfony\Component\Uid\Ulid;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 use WeakMap;
 
-final class TaxBreakdownExtension extends AbstractExtension
+final class TaxBreakdownExtension
 {
     /**
      * @var WeakMap<BaseInvoice|Quote, CalculationResult>
@@ -48,23 +46,11 @@ final class TaxBreakdownExtension extends AbstractExtension
     }
 
     /**
-     * @return TwigFunction[]
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('tax_identifiers', $this->taxIdentifiers(...)),
-            new TwigFunction('tax_breakdown', $this->taxBreakdown(...)),
-            new TwigFunction('payable_amount', $this->payableAmount(...)),
-        ];
-    }
-
-    /**
      * Returns an ordered list of TaxIdentifier entities for the given owner.
      *
      * @return list<TaxIdentifier>
      */
+    #[AsTwigFunction(name: 'tax_identifiers')]
     public function taxIdentifiers(Client | Company | null $owner = null): array
     {
         $identifiers = $owner instanceof Client
@@ -100,6 +86,7 @@ final class TaxBreakdownExtension extends AbstractExtension
      *
      * @return array<string, mixed>
      */
+    #[AsTwigFunction(name: 'tax_breakdown')]
     public function taxBreakdown(BaseInvoice | Quote $document): array
     {
         $result = $this->cache[$document] ?? null;
@@ -157,6 +144,7 @@ final class TaxBreakdownExtension extends AbstractExtension
      * `total - withholding` recomputed when the document has not been saved
      * since US-008 (e.g., a draft never run through TotalCalculator).
      */
+    #[AsTwigFunction(name: 'payable_amount')]
     public function payableAmount(BaseInvoice | Quote $document): BigNumber
     {
         $persisted = $document->getPayableAmount();

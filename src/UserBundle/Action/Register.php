@@ -37,7 +37,7 @@ final class Register extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly Security $security,
         private readonly ToggleInterface $toggle,
-        #[Autowire('%env(SOLIDINVOICE_TURNSTILE_SITE_KEY)%')]
+        #[Autowire(env: 'SOLIDINVOICE_TURNSTILE_SITE_KEY')]
         private readonly ?string $turnstileSiteKey = null,
     ) {
     }

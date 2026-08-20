@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -69,7 +68,7 @@ class ClientRepository extends EntityRepository
                 'c.status',
             ]
         )
-            ->orderBy('c.created', Criteria::DESC)
+            ->orderBy('c.created', 'DESC')
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getArrayResult();

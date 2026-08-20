@@ -103,7 +103,7 @@ final class EmailVerifierTest extends TestCase
             ->method('context')
             ->with($this->callback(
                 // Verify that the context contains the required keys
-                function ($context): bool {
+                function (array $context): bool {
                     self::assertArrayHasKey('expiresAtMessageData', $context);
                     self::assertArrayHasKey('expiresAtMessageKey', $context);
                     self::assertArrayHasKey('signedUrl', $context);

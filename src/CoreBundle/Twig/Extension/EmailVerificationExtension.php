@@ -13,38 +13,26 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use Override;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\EmailVerificationExtensionTest
  */
-final class EmailVerificationExtension extends AbstractExtension
+final readonly class EmailVerificationExtension
 {
     public function __construct(
-        private readonly EmailVerificationGateInterface $gate,
+        private EmailVerificationGateInterface $gate,
     ) {
     }
 
-    /**
-     * @return TwigFunction[]
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('is_email_verification_gated', $this->isEmailVerificationGated(...)),
-            new TwigFunction('email_verification_message', $this->emailVerificationMessage(...)),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'is_email_verification_gated')]
     public function isEmailVerificationGated(): bool
     {
         return $this->gate->isGated();
     }
 
+    #[AsTwigFunction(name: 'email_verification_message')]
     public function emailVerificationMessage(string $action): string
     {
         return $this->gate->reason($action);

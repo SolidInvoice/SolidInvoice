@@ -87,7 +87,7 @@ final class CrossTenantTest extends KernelTestCase
         self::assertInstanceOf(ResourceQueryTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('not found');
+        $this->expectExceptionMessageIsOrContains('not found');
 
         $tool->getResource('invoice', $foreignId);
     }
@@ -105,7 +105,7 @@ final class CrossTenantTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('not found');
+        $this->expectExceptionMessageIsOrContains('not found');
 
         $tool->applyInvoiceTransition($foreignId, 'pay');
     }
@@ -123,7 +123,7 @@ final class CrossTenantTest extends KernelTestCase
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('not found');
+        $this->expectExceptionMessageIsOrContains('not found');
 
         $tool->updateResource('client', $foreignId, ['name' => 'Hijacked']);
     }

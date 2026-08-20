@@ -103,7 +103,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('Invalid schedule.type');
+        $this->expectExceptionMessageIsOrContains('Invalid schedule.type');
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
@@ -124,7 +124,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('end_date');
+        $this->expectExceptionMessageIsOrContains('end_date');
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
@@ -157,7 +157,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(RecurringInvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessage('mcp:write');
+        $this->expectExceptionMessageIsOrContains('mcp:write');
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()

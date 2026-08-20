@@ -47,7 +47,7 @@ final class IncompatibleTaxConfigurationValidator extends ConstraintValidator
             default => throw new UnexpectedValueException($value, Tax::class . '|' . LineTax::class),
         };
 
-        if ($type === null || ! $compound) {
+        if (! $type instanceof TaxType || ! $compound) {
             return;
         }
 

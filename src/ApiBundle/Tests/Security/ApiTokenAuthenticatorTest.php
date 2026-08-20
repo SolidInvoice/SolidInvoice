@@ -71,7 +71,7 @@ final class ApiTokenAuthenticatorTest extends TestCase
     public function testAuthenticateRejectsEmptyToken(#[SensitiveParameter] string $token): void
     {
         $this->expectException(CustomUserMessageAuthenticationException::class);
-        $this->expectExceptionMessage('No API token provided');
+        $this->expectExceptionMessageIsOrContains('No API token provided');
 
         $this->authenticator()->authenticate($this->requestWithToken($token));
     }
@@ -132,7 +132,7 @@ final class ApiTokenAuthenticatorTest extends TestCase
         );
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
-        $this->expectExceptionMessage('Invalid API token');
+        $this->expectExceptionMessageIsOrContains('Invalid API token');
 
         try {
             $authenticator->onAuthenticationSuccess($request, M::mock(TokenInterface::class), 'api');
