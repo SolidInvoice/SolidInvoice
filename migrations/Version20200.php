@@ -255,8 +255,8 @@ final class Version20200 extends AbstractMigration
         foreach ($this->tablesForForeignKeys as $tableB => [$foreignTableName, $foreignKeyName]) {
             $schema->getTable($tableB)->addForeignKeyConstraint(
                 $foreignTableName,
-                $foreignKeyName,
-                ['id']
+                [...$foreignKeyName, 'company_id'],
+                ['id', 'company_id']
             );
         }
 
