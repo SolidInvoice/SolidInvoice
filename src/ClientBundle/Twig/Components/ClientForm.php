@@ -62,11 +62,11 @@ class ClientForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(): RedirectResponse|null
+    public function save(): RedirectResponse | null
     {
         $this->submitForm();
 
-        if (!$this->getForm()->isValid()) {
+        if (! $this->getForm()->isValid()) {
             return null;
         }
 
