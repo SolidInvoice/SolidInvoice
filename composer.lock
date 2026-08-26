@@ -14002,16 +14002,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v8.1.4",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "a6740ff5c758be69d6fa4a3995242955e303ba50"
+                "reference": "fa890d0632db0b5e8bc547560b412de824b3b9cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/a6740ff5c758be69d6fa4a3995242955e303ba50",
-                "reference": "a6740ff5c758be69d6fa4a3995242955e303ba50",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/fa890d0632db0b5e8bc547560b412de824b3b9cd",
+                "reference": "fa890d0632db0b5e8bc547560b412de824b3b9cd",
                 "shasum": ""
             },
             "require": {
@@ -14070,7 +14070,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v8.1.4"
+                "source": "https://github.com/symfony/messenger/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -14090,7 +14090,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-03T17:17:21+00:00"
+            "time": "2026-08-21T20:43:01+00:00"
         },
         {
             "name": "symfony/microsoft-teams-notifier",
