@@ -14,6 +14,12 @@ const config: Config = {
   url: 'https://solidinvoice.co',
   baseUrl: '/docs/',
 
+  // The host serves every docs page at its trailing-slash URL and 307-redirects
+  // the bare form. Without this, Docusaurus emits the bare URL in internal links,
+  // canonical tags and the sitemap, so every page redirects and its canonical
+  // points at a redirect. Keep this aligned with the host.
+  trailingSlash: true,
+
   organizationName: 'SolidInvoice',
   projectName: 'SolidInvoice',
 
@@ -25,6 +31,22 @@ const config: Config = {
   },
 
   headTags: [
+    // Docusaurus emits og:title/description/image/url/locale but not og:type or
+    // og:site_name, which leaves the Open Graph card incomplete for crawlers.
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:type',
+        content: 'website',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:site_name',
+        content: 'SolidInvoice Docs',
+      },
+    },
     {
       tagName: 'link',
       attributes: {
@@ -75,6 +97,14 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
+          // The search and 404 routes are noindex utility pages. Listing them
+          // in the sitemap asks crawlers to index pages we tell them to skip.
+          createSitemapItems: async ({defaultCreateSitemapItems, ...rest}) => {
+            const items = await defaultCreateSitemapItems(rest);
+            return items.filter(
+              (item) => !/\/(search|404)\/?$/.test(new URL(item.url).pathname),
+            );
+          },
         },
       } satisfies Preset.Options,
     ],

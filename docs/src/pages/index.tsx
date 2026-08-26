@@ -53,7 +53,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={siteConfig.title}
-      description="Documentation for SolidInvoice — open-source invoicing for freelancers and small businesses.">
+      description="Documentation for SolidInvoice, the open-source invoicing platform for freelancers and small businesses. Installation guides, integrations, and API reference.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

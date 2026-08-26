@@ -19,7 +19,7 @@ The official Docker image runs the same self-contained build used in the [quick 
 docker run -d -p 8765:8765 -v solidinvoice_data:/etc/solidinvoice solidinvoice/solidinvoice
 ```
 
-The application starts on [http://127.0.0.1:8765](http://127.0.0.1:8765). Continue with the [first-run wizard](./system-installation.md).
+The application starts on `http://127.0.0.1:8765`. Continue with the [first-run wizard](./system-installation.md).
 
 :::tip
 Change `8765` on the left side of the `-p` flag to expose SolidInvoice on a different host port (e.g. `-p 80:8765`).
