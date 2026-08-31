@@ -1,0 +1,317 @@
+'This value should be false.': 'Questo valore dovrebbe essere falso.'
+'This value should be true.': 'Questo valore dovrebbe essere vero.'
+'This value should be of type {{ type }}.': 'Questo valore dovrebbe essere di tipo {{ type }}.'
+'This value should be blank.': 'Questo valore dovrebbe essere vuoto.'
+'The value you selected is not a valid choice.': 'Il valore selezionato non è una scelta valida.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Si dovrebbe selezionare almeno {{ limit }} opzione.|Si dovrebbero selezionare almeno {{ limit }} opzioni.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Si dovrebbe selezionare al massimo {{ limit }} opzione.|Si dovrebbero selezionare al massimo {{ limit }} opzioni.'
+'One or more of the given values is invalid.': 'Uno o più valori inseriti non sono validi.'
+'This field was not expected.': 'Questo campo non è stato previsto.'
+'This field is missing.': 'Questo campo è mancante.'
+'This value is not a valid date.': 'Questo valore non è una data valida.'
+'This value is not a valid datetime.': 'Questo valore non è una data e ora valida.'
+'This value is not a valid email address.': 'Questo valore non è un indirizzo email valido.'
+'The file could not be found.': 'Non è stato possibile trovare il file.'
+'The file is not readable.': 'Il file non è leggibile.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Il file è troppo grande ({{ size }} {{ suffix }}). La dimensione massima consentita è {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Il mime type del file non è valido ({{ type }}). I tipi permessi sono {{ types }}.'
+'This value should be {{ limit }} or less.': 'Questo valore dovrebbe essere {{ limit }} o inferiore.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Questo valore è troppo lungo. Dovrebbe essere al massimo di {{ limit }} carattere.|Questo valore è troppo lungo. Dovrebbe essere al massimo di {{ limit }} caratteri.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Questo valore è troppo lungo. Dovrebbe contenere una parola.|Questo valore è troppo lungo. Dovrebbe contenere {{ max }} parole o meno.'
+'This value should be {{ limit }} or more.': 'Questo valore dovrebbe essere {{ limit }} o superiore.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Questo valore è troppo corto. Dovrebbe essere almeno di {{ limit }} carattere.|Questo valore è troppo corto. Dovrebbe essere almeno di {{ limit }} caratteri.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Questo valore è troppo corto. Dovrebbe contenere almeno una parola.|Questo valore è troppo corto. Dovrebbe contenere almeno {{ min }} parole.'
+'This value should not be blank.': 'Questo valore non dovrebbe essere vuoto.'
+'This value should not be null.': 'Questo valore non dovrebbe essere nullo.'
+'This value should be null.': 'Questo valore dovrebbe essere nullo.'
+'This value is not valid.': 'Questo valore non è valido.'
+'This value is not a valid time.': "Questo valore non è un'ora valida."
+'This value is not a valid URL.': 'Questo valore non è un URL valido.'
+'The two values should be equal.': 'I due valori dovrebbero essere uguali.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Il file è troppo grande. La dimensione massima è {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Il file è troppo grande.'
+'The file could not be uploaded.': 'Il file non può essere caricato.'
+'This value should be a valid number.': 'Questo valore dovrebbe essere un numero.'
+'This file is not a valid image.': 'Questo file non è una immagine valida.'
+'This is not a valid IP address.': 'Questo valore non è un indirizzo IP valido.'
+'This value is not a valid language.': 'Questo valore non è una lingua valida.'
+'This value is not a valid locale.': 'Questo valore non è una impostazione regionale valida.'
+'This value is not a valid country.': 'Questo valore non è una nazione valida.'
+'This value is already used.': 'Questo valore è già stato utilizzato.'
+'The size of the image could not be detected.': "La dimensione dell'immagine non può essere determinata."
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': "La larghezza dell'immagine è troppo grande ({{ width }}px). La larghezza massima è di {{ max_width }}px."
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': "La larghezza dell'immagine è troppo piccola ({{ width }}px). La larghezza minima è di {{ min_width }}px."
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': "L'altezza dell'immagine è troppo grande ({{ height }}px). L'altezza massima è di {{ max_height }}px."
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': "L'altezza dell'immagine è troppo piccola ({{ height }}px). L'altezza minima è di {{ min_height }}px."
+"This value should be the user's current password.": "Questo valore dovrebbe essere la password attuale dell'utente."
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Questo valore dovrebbe contenere esattamente {{ limit }} carattere.|Questo valore dovrebbe contenere esattamente {{ limit }} caratteri.'
+'The file was only partially uploaded.': 'Il file è stato caricato solo parzialmente.'
+'No file was uploaded.': 'Nessun file è stato caricato.'
+'No temporary folder was configured in php':
+    ini.: 'Non è stata configurata una cartella temporanea in php.ini, o la cartella configurata non esiste.'
+'Cannot write temporary file to disk.': 'Impossibile scrivere il file temporaneo sul disco.'
+'A PHP extension caused the upload to fail.': "Un'estensione PHP ha causato il fallimento del caricamento."
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Questa collezione dovrebbe contenere almeno {{ limit }} elemento.|Questa collezione dovrebbe contenere almeno {{ limit }} elementi.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Questa collezione dovrebbe contenere massimo {{ limit }} elemento.|Questa collezione dovrebbe contenere massimo {{ limit }} elementi.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Questa collezione dovrebbe contenere esattamente {{ limit }} elemento.|Questa collezione dovrebbe contenere esattamente {{ limit }} elementi.'
+'Invalid card number.': 'Numero di carta non valido.'
+'Unsupported card type or invalid card number.': 'Tipo di carta non supportato o numero non valido.'
+'This is not a valid International Bank Account Number (IBAN).': 'Questo valore non è un IBAN valido.'
+'This value is not a valid ISBN-10.': 'Questo valore non è un codice ISBN-10 valido.'
+'This value is not a valid ISBN-13.': 'Questo valore non è un codice ISBN-13 valido.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Questo valore non è un codice ISBN-10 o ISBN-13 valido.'
+'This value is not a valid ISSN.': 'Questo valore non è un codice ISSN valido.'
+'This value is not a valid currency.': 'Questo valore non è una valuta valida.'
+'This value should be equal to {{ compared_value }}.': 'Questo valore dovrebbe essere uguale a {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Questo valore dovrebbe essere maggiore di {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Questo valore dovrebbe essere maggiore o uguale a {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Questo valore dovrebbe essere identico a {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Questo valore dovrebbe essere minore di {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Questo valore dovrebbe essere minore o uguale a {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Questo valore dovrebbe essere diverso da {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Questo valore dovrebbe essere diverso da {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': "Il rapporto di aspetto dell'immagine è troppo grande ({{ ratio }}). Il rapporto massimo consentito è {{ max_ratio }}."
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': "Il rapporto di aspetto dell'immagine è troppo piccolo ({{ ratio }}). Il rapporto minimo consentito è {{ min_ratio }}."
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': "L'immagine è quadrata ({{ width }}x{{ height }}px). Le immagini quadrate non sono consentite."
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': "L'immagine è orizzontale ({{ width }}x{{ height }}px). Le immagini orizzontali non sono consentite."
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': "L'immagine è verticale ({{ width }}x{{ height }}px). Le immagini verticali non sono consentite."
+'An empty file is not allowed.': 'Un file vuoto non è consentito.'
+'The host could not be resolved.': "L'host non può essere risolto."
+'This value does not match the expected {{ charset }} charset.': 'Questo valore non corrisponde al charset {{ charset }} previsto.'
+'This is not a valid Business Identifier Code (BIC).': 'Questo valore non è un codice identificativo bancario (BIC) valido.'
+Error: Errore
+'This is not a valid UUID.': 'Questo valore non è un UUID valido.'
+'This value should be a multiple of {{ compared_value }}.': 'Questo valore dovrebbe essere un multiplo di {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': "Questo codice identificativo bancario (BIC) non è associato all'IBAN {{ iban }}."
+'This value should be valid JSON.': 'Questo valore dovrebbe essere un JSON valido.'
+'This collection should contain only unique elements.': 'Questa collezione dovrebbe contenere solo elementi unici.'
+'This value should be positive.': 'Questo valore dovrebbe essere positivo.'
+'This value should be either positive or zero.': 'Questo valore dovrebbe essere positivo oppure zero.'
+'This value should be negative.': 'Questo valore dovrebbe essere negativo.'
+'This value should be either negative or zero.': 'Questo valore dovrebbe essere negativo oppure zero.'
+'This value is not a valid timezone.': 'Questo valore non è un fuso orario valido.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Questa password è trapelata durante una compromissione di dati, non deve essere usata. Si prega di usare una password diversa.'
+'This value should be between {{ min }} and {{ max }}.': 'Questo valore dovrebbe essere compreso tra {{ min }} e {{ max }}.'
+'This value is not a valid hostname.': 'Questo valore non è un nome di host valido.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Il numero di elementi in questa collezione dovrebbe essere un multiplo di {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Questo valore dovrebbe soddisfare almeno uno dei vincoli seguenti:'
+'Each element of this collection should satisfy its own set of constraints.': 'Ciascun elemento di questa collezione dovrebbe soddisfare il suo insieme di vincoli.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Questo valore non è un codice identificativo internazionale di valori mobiliari (ISIN) valido.'
+'This value should be a valid expression.': "Questo valore dovrebbe essere un'espressione valida."
+'This value is not a valid CSS color.': 'Questo valore non è un colore CSS valido.'
+'This value is not a valid CIDR notation.': 'Questo valore non è una notazione CIDR valida.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Il valore della netmask dovrebbe essere compreso tra {{ min }} e {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Il nome del file è troppo lungo. Dovrebbe avere {{ filename_max_length }} carattere o meno.|Il nome del file è troppo lungo. Dovrebbe avere {{ filename_max_length }} caratteri o meno.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'La password non è abbastanza sicura. Per favore, utilizza una password più robusta.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Questo valore contiene caratteri che non sono consentiti dal livello di restrizione attuale.'
+'Using invisible characters is not allowed.': 'Utilizzare caratteri invisibili non è consentito.'
+'Mixing numbers from different scripts is not allowed.': 'Non è consentito mescolare numeri provenienti da diversi script.'
+'Using hidden overlay characters is not allowed.': 'Non è consentito utilizzare caratteri sovrapposti nascosti.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': "L'estensione del file non è valida ({{ extension }}). Le estensioni consentite sono {{ extensions }}."
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'La codifica dei caratteri rilevata non è valida ({{ detected }}). Le codifiche ammesse sono {{ encodings }}.'
+'This value is not a valid MAC address.': 'Questo valore non è un indirizzo MAC valido.'
+'This URL is missing a top-level domain.': 'Questo URL è privo di un dominio di primo livello.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Questo valore non rappresenta una settimana valida nel formato ISO 8601.'
+'This value is not a valid week.': 'Questo valore non è una settimana valida.'
+'This value should not be before week "{{ min }}".': 'Questo valore non dovrebbe essere prima della settimana "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Questo valore non dovrebbe essere dopo la settimana "{{ max }}".'
+'This value is not a valid Twig template.': 'Questo valore non è un template Twig valido.'
+'This file is not a valid video.': 'Questo file non è un video valido.'
+'The size of the video could not be detected.': 'Non è stato possibile rilevare la dimensione del video.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'La larghezza del video è troppo grande ({{ width }}px). La larghezza massima consentita è {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'La larghezza del video è troppo piccola ({{ width }}px). La larghezza minima prevista è {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': "L'altezza del video è troppo grande ({{ height }}px). L'altezza massima consentita è {{ max_height }}px."
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': "L'altezza del video è troppo piccola ({{ height }}px). L'altezza minima prevista è {{ min_height }}px."
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Il video ha troppo pochi pixel ({{ pixels }}). La quantità minima prevista è {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Il video ha troppi pixel ({{ pixels }}). La quantità massima prevista è {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Il rapporto del video è troppo alto ({{ ratio }}). Il rapporto massimo consentito è {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Il rapporto del video è troppo piccolo ({{ ratio }}). Il rapporto minimo previsto è {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Il video è quadrato ({{ width }}x{{ height }}px). I video quadrati non sono consentiti.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Il video è in orientamento orizzontale ({{ width }}x{{ height }}px). I video orizzontali non sono consentiti.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Il video è in orientamento verticale ({{ width }}x{{ height }}px). I video in orientamento verticale non sono consentiti.'
+'The video file is corrupted.': 'Il file video è danneggiato.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Il video contiene più flussi. È consentito un solo flusso.'
+'Unsupported video codec "{{ codec }}".': 'Codec video non supportato «{{ codec }}».'
+'Unsupported video container "{{ container }}".': 'Container video non supportato "{{ container }}".'
+'The image file is corrupted.': 'Il file immagine è danneggiato.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'L’immagine ha troppo pochi pixel ({{ pixels }}). La quantità minima prevista è {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'L’immagine ha troppi pixel ({{ pixels }}). La quantità massima prevista è {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Questo nome file non corrisponde al set di caratteri previsto.'
+'This value is not valid XML.': 'Questo valore non è un XML valido.'
+'This value does not conform to the expected XSD schema.': 'Questo valore non è conforme allo schema XSD previsto.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Questo payload XML è troppo grande ({{ size }} byte): supera il limite di {{ limit }} byte.'
+'This value is not a valid cron expression.': "Questo valore non è un'espressione cron valida."
+'This form should not contain extra fields.': 'Questo form non dovrebbe contenere nessun campo extra.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Il file caricato è troppo grande. Per favore, carica un file più piccolo.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'Il token CSRF non è valido. Prova a reinviare il form.'
+'This value is not a valid HTML5 color.': 'Il valore non è un colore HTML5 valido.'
+'Please enter a valid birthdate.': 'Per favore, inserisci una data di compleanno valida.'
+'The selected choice is invalid.': 'La scelta selezionata non è valida.'
+'The collection is invalid.': 'La collezione non è valida.'
+'Please select a valid color.': 'Per favore, seleziona un colore valido.'
+'Please select a valid country.': 'Per favore, seleziona un paese valido.'
+'Please select a valid currency.': 'Per favore, seleziona una valuta valida.'
+'Please choose a valid date interval.': 'Per favore, scegli un intervallo di date valido.'
+'Please enter a valid date and time.': 'Per favore, inserisci una data e ora valida.'
+'Please enter a valid date.': 'Per favore, inserisci una data valida.'
+'Please select a valid file.': 'Per favore, seleziona un file valido.'
+'The hidden field is invalid.': 'Il campo nascosto non è valido.'
+'Please enter an integer.': 'Per favore, inserisci un numero intero.'
+'Please select a valid language.': 'Per favore, seleziona una lingua valida.'
+'Please select a valid locale.': 'Per favore, seleziona una lingua valida.'
+'Please enter a valid money amount.': 'Per favore, inserisci un importo valido.'
+'Please enter a number.': 'Per favore, inserisci un numero.'
+'The password is invalid.': 'La password non è valida.'
+'Please enter a percentage value.': 'Per favore, inserisci un valore percentuale.'
+'The values do not match.': 'I valori non corrispondono.'
+'Please enter a valid time.': 'Per favore, inserisci un orario valido.'
+'Please select a valid timezone.': 'Per favore, seleziona un fuso orario valido.'
+'Please enter a valid URL.': 'Per favore, inserisci un URL valido.'
+'Please enter a valid search term.': 'Per favore, inserisci un termine di ricerca valido.'
+'Please provide a valid phone number.': 'Per favore, indica un numero di telefono valido.'
+'The checkbox has an invalid value.': 'La casella di selezione non ha un valore valido.'
+'Please enter a valid email address.': 'Per favore, indica un indirizzo email valido.'
+'Please select a valid option.': "Per favore, seleziona un'opzione valida."
+'Please select a valid range.': 'Per favore, seleziona un intervallo valido.'
+'Please enter a valid week.': 'Per favore, inserisci una settimana valida.'
+'Please enter a valid UUID.': 'Per favore, inserisci un UUID valido.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

@@ -1,0 +1,317 @@
+'This value should be false.': 'Værdien skal være falsk.'
+'This value should be true.': 'Værdien skal være sand.'
+'This value should be of type {{ type }}.': 'Værdien skal være af typen {{ type }}.'
+'This value should be blank.': 'Værdien skal være blank.'
+'The value you selected is not a valid choice.': 'Den valgte værdi er ikke gyldig.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Du skal vælge mindst én mulighed.|Du skal vælge mindst {{ limit }} muligheder.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Du kan højst vælge én mulighed.|Du kan højst vælge {{ limit }} muligheder.'
+'One or more of the given values is invalid.': 'En eller flere af de angivne værdier er ugyldige.'
+'This field was not expected.': 'Feltet blev ikke forventet.'
+'This field is missing.': 'Dette felt mangler.'
+'This value is not a valid date.': 'Værdien er ikke en gyldig dato.'
+'This value is not a valid datetime.': 'Værdien er ikke et gyldigt tidspunkt.'
+'This value is not a valid email address.': 'Værdien er ikke en gyldig e-mailadresse.'
+'The file could not be found.': 'Filen kunne ikke findes.'
+'The file is not readable.': 'Filen kan ikke læses.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Filen er for stor ({{ size }} {{ suffix }}). Maksimale tilladte størrelse er {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Filens MIME-type er ugyldig ({{ type }}). Tilladte MIME-typer er {{ types }}.'
+'This value should be {{ limit }} or less.': 'Værdien skal være {{ limit }} eller mindre.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Værdien er for lang. Den må højst indeholde {{ limit }} tegn.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Denne værdi er for lang. Den skal indeholde ét ord.|Denne værdi er for lang. Den skal indeholde {{ max }} ord eller færre.'
+'This value should be {{ limit }} or more.': 'Værdien skal være {{ limit }} eller mere.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Værdien er for kort. Den skal indeholde mindst {{ limit }} tegn.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Denne værdi er for kort. Den skal indeholde mindst ét ord.|Denne værdi er for kort. Den skal indeholde mindst {{ min }} ord.'
+'This value should not be blank.': 'Værdien må ikke være blank.'
+'This value should not be null.': 'Værdien må ikke være tom (null).'
+'This value should be null.': 'Værdien skal være tom (null).'
+'This value is not valid.': 'Værdien er ikke gyldig.'
+'This value is not a valid time.': 'Værdien er ikke et gyldigt klokkeslæt.'
+'This value is not a valid URL.': 'Værdien er ikke en gyldig URL.'
+'The two values should be equal.': 'De to værdier skal være ens.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Filen er for stor. Den maksimale størrelse er {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Filen er for stor.'
+'The file could not be uploaded.': 'Filen kunne ikke uploades.'
+'This value should be a valid number.': 'Værdien skal være et gyldigt tal.'
+'This file is not a valid image.': 'Filen er ikke gyldigt billede.'
+'This is not a valid IP address.': 'Denne værdi er ikke en gyldig IP-adresse.'
+'This value is not a valid language.': 'Værdien er ikke et gyldigt sprog.'
+'This value is not a valid locale.': 'Værdien er ikke en gyldig lokalitet.'
+'This value is not a valid country.': 'Værdien er ikke et gyldigt land.'
+'This value is already used.': 'Værdien er allerede i brug.'
+'The size of the image could not be detected.': 'Størrelsen på billedet kunne ikke detekteres.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Billedet er for bredt ({{ width }}px). Største tilladte bredde er {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Billedet er for smalt ({{ width }}px). Mindste forventede bredde er {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Billedet er for højt ({{ height }}px). Største tilladte højde er {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Billedet er for lavt ({{ height }}px). Mindste forventede højde er {{ min_height }}px.'
+"This value should be the user's current password.": 'Værdien skal være brugerens nuværende adgangskode.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Værdien skal være på præcis {{ limit }} tegn.'
+'The file was only partially uploaded.': 'Filen blev kun delvist uploadet.'
+'No file was uploaded.': 'Ingen fil blev uploadet.'
+'No temporary folder was configured in php':
+    ini.: 'Der blev ikke konfigureret en midlertidig mappe i php.ini, eller den konfigurerede mappe eksisterer ikke.'
+'Cannot write temporary file to disk.': 'Kan ikke skrive midlertidig fil til disk.'
+'A PHP extension caused the upload to fail.': 'En PHP-udvidelse forårsagede fejl i upload.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Denne samling skal indeholde mindst ét element.|Denne samling skal indeholde mindst {{ limit }} elementer.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Denne samling skal indeholde højst ét element.|Denne samling skal indeholde højst {{ limit }} elementer.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Denne samling skal indeholde præcis ét element.|Denne samling skal indeholde præcis {{ limit }} elementer.'
+'Invalid card number.': 'Ugyldigt kortnummer.'
+'Unsupported card type or invalid card number.': 'Ikke-understøttet korttype eller ugyldigt kortnummer.'
+'This is not a valid International Bank Account Number (IBAN).': 'Denne værdi er ikke et gyldigt internationalt bankkontonummer (IBAN).'
+'This value is not a valid ISBN-10.': 'Værdien er ikke en gyldig ISBN-10.'
+'This value is not a valid ISBN-13.': 'Værdien er ikke en gyldig ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Værdien er hverken en gyldig ISBN-10 eller en gyldig ISBN-13.'
+'This value is not a valid ISSN.': 'Værdien er ikke en gyldig ISSN.'
+'This value is not a valid currency.': 'Denne værdi er ikke en gyldig valuta.'
+'This value should be equal to {{ compared_value }}.': 'Denne værdi skal være lig med {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Denne værdi skal være større end {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Denne værdi skal være større end eller lig med {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Denne værdi skal være identisk med {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Denne værdi skal være mindre end {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Denne værdi skal være mindre end eller lig med {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Denne værdi bør ikke være lig med {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Denne værdi bør ikke være identisk med {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Billedforholdet er for stort ({{ratio}}). Tilladt maksimumsforhold er {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Billedforholdet er for lille ({{ ratio }}). Minimumsforventet forventet er {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Billedet er firkantet ({{ width }} x {{ height }} px). Firkantede billeder er ikke tilladt.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Billedet er landskabsorienteret ({{width}} x {{height}} px). Landskabsorienterede billeder er ikke tilladt'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Billedet er portrætorienteret ({{ width }}x{{ height }}px). Portrætorienterede billeder er ikke tilladt.'
+'An empty file is not allowed.': 'En tom fil er ikke tilladt.'
+'The host could not be resolved.': 'Værten kunne ikke løses.'
+'This value does not match the expected {{ charset }} charset.': 'Denne værdi stemmer ikke overens med den forventede {{ charset }} charset.'
+'This is not a valid Business Identifier Code (BIC).': 'Denne værdi er ikke en gyldig forretningsidentifikationskode (BIC).'
+Error: Fejl
+'This is not a valid UUID.': 'Denne værdi er ikke en gyldig UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Denne værdi skal være et multiplikation af {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Denne Business Identifier Code (BIC) er ikke forbundet med IBAN {{ iban }}.'
+'This value should be valid JSON.': 'Denne værdi skal være gyldig JSON.'
+'This collection should contain only unique elements.': 'Denne samling bør kun indeholde unikke elementer.'
+'This value should be positive.': 'Denne værdi skal være positiv.'
+'This value should be either positive or zero.': 'Denne værdi skal være enten positiv eller nul.'
+'This value should be negative.': 'Denne værdi skal være negativ.'
+'This value should be either negative or zero.': 'Denne værdi skal være enten negativ eller nul.'
+'This value is not a valid timezone.': 'Denne værdi er ikke en gyldig tidszone.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Denne adgangskode er blevet lækket i et databrud, det må ikke bruges. Brug venligst en anden adgangskode.'
+'This value should be between {{ min }} and {{ max }}.': 'Værdien skal være mellem {{ min }} og {{ max }}.'
+'This value is not a valid hostname.': 'Værdien er ikke et gyldigt værtsnavn.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Antallet af elementer i denne samling skal være en multiplikation af {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Værdien skal overholde mindst én af følgende krav:'
+'Each element of this collection should satisfy its own set of constraints.': 'Hvert element i denne samling skal overholde dens egne krav.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Værdien er ikke et gyldig International Securities Identification Number (ISIN).'
+'This value should be a valid expression.': 'Værdien skal være et gyldigt udtryk.'
+'This value is not a valid CSS color.': 'Værdien skal være en gyldig CSS farve.'
+'This value is not a valid CIDR notation.': 'Værdien er ikke en gyldig CIDR notation.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Værdien af netmasken skal være mellem {{ min }} og {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Filnavnet er for langt. Det bør indeholde {{ filename_max_length }} tegn eller mindre.|Filnavnet er for langt. Det bør indeholde {{ filename_max_length }} tegn eller mindre.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Kodeordets styrke er for lav. Du bedes indtaste et stærkere kodeord.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Denne værdi indeholder tegn, som ikke er tilladt med det nuværende restriktionsniveau.'
+'Using invisible characters is not allowed.': 'Brug af usynlige tegn er ikke tilladt.'
+'Mixing numbers from different scripts is not allowed.': 'At blande numre fra forskellige scripts er ikke tilladt.'
+'Using hidden overlay characters is not allowed.': 'At bruge skjulte overlejringstegn er ikke tilladt.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Udvidelsen til filen er ugyldig ({{ extension }}). De tilladte udvidelser er {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Det registrerede tegnsæt er ugyldigt ({{ detected }}). De tilladte tegnsæt er {{ encodings }}.'
+'This value is not a valid MAC address.': 'Denne værdi er ikke en gyldig MAC-adresse.'
+'This URL is missing a top-level domain.': 'Denne URL mangler et topdomæne.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Denne værdi repræsenterer ikke en gyldig uge i ISO 8601-formatet.'
+'This value is not a valid week.': 'Denne værdi er ikke en gyldig uge.'
+'This value should not be before week "{{ min }}".': 'Denne værdi bør ikke være før uge "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Denne værdi bør ikke være efter uge "{{ max }}".'
+'This value is not a valid Twig template.': 'Denne værdi er ikke en gyldig Twig-skabelon.'
+'This file is not a valid video.': 'Denne fil er ikke en gyldig video.'
+'The size of the video could not be detected.': 'Videostørrelsen kunne ikke registreres.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Videobredden er for stor ({{ width }}px). Tilladt maksimal bredde er {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Videobredden er for lille ({{ width }}px). Mindste forventede bredde er {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Videoens højde er for stor ({{ height }}px). Tilladt maksimal højde er {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Videoens højde er for lille ({{ height }}px). Forventet minimumshøjde er {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Videoen har for få pixels ({{ pixels }}). Forventet minimum er {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Videoen har for mange pixels ({{ pixels }}). Forventet maksimummængde er {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Videoforholdet er for stort ({{ ratio }}). Tilladt maksimalforhold er {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Videoforholdet er for lille ({{ ratio }}). Forventet minimumsforhold er {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Videoen er kvadratisk ({{ width }}x{{ height }}px). Kvadratiske videoer er ikke tilladt.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Videoen er i liggende format ({{ width }}x{{ height }} px). Liggende videoer er ikke tilladt.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Videoen er i portrætformat ({{ width }}x{{ height }}px). Portrætvideoer er ikke tilladt.'
+'The video file is corrupted.': 'Videofilen er beskadiget.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Videoen indeholder flere streams. Kun én stream er tilladt.'
+'Unsupported video codec "{{ codec }}".': 'Ikke-understøttet videokodek "{{ codec }}".'
+'Unsupported video container "{{ container }}".': 'Ikke-understøttet videocontainer "{{ container }}".'
+'The image file is corrupted.': 'Billedfilen er beskadiget.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Billedet har for få pixels ({{ pixels }}). Forventet minimum er {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Billedet har for mange pixels ({{ pixels }}). Forventet maksimalt antal er {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Dette filnavn matcher ikke det forventede tegnsæt.'
+'This value is not valid XML.': 'Denne værdi er ikke gyldig XML.'
+'This value does not conform to the expected XSD schema.': 'Denne værdi overholder ikke det forventede XSD-skema.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Denne XML-nyttelast er for stor ({{ size }} byte): den overskrider grænsen på {{ limit }} byte.'
+'This value is not a valid cron expression.': 'Denne værdi er ikke et gyldigt cron-udtryk.'
+'This form should not contain extra fields.': 'Feltgruppen må ikke indeholde ekstra felter.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Den uploadede fil var for stor. Upload venligst en mindre fil.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF-token er ugyldig. Prøv venligst at genindsende.'
+'This value is not a valid HTML5 color.': 'Værdien er ikke en gyldig HTML5 farve.'
+'Please enter a valid birthdate.': 'Indtast venligst en gyldig fødselsdato.'
+'The selected choice is invalid.': 'Den valgte mulighed er ugyldig .'
+'The collection is invalid.': 'Samlingen er ugyldig.'
+'Please select a valid color.': 'Vælg venligst en gyldig farve.'
+'Please select a valid country.': 'Vælg venligst et gyldigt land.'
+'Please select a valid currency.': 'Vælg venligst en gyldig valuta.'
+'Please choose a valid date interval.': 'Vælg venligst et gyldigt datointerval.'
+'Please enter a valid date and time.': 'Vælg venligst en gyldig dato og tid.'
+'Please enter a valid date.': 'Vælg venligst en gyldig dato.'
+'Please select a valid file.': 'Vælg venligst en gyldig fil.'
+'The hidden field is invalid.': 'Det skjulte felt er ugyldigt.'
+'Please enter an integer.': 'Indsæt veligst et heltal.'
+'Please select a valid language.': 'Vælg venligst et gyldigt sprog.'
+'Please select a valid locale.': 'Vælg venligst en gyldigt sprogkode.'
+'Please enter a valid money amount.': 'Vælg venligst et gyldigt beløb.'
+'Please enter a number.': 'Indtast venligst et nummer.'
+'The password is invalid.': 'Passwordet er ugyldigt.'
+'Please enter a percentage value.': 'Indtast venligst en procentværdi.'
+'The values do not match.': 'Værdierne er ikke ens.'
+'Please enter a valid time.': 'Indtast venligst en gyldig tid.'
+'Please select a valid timezone.': 'Vælg venligst en gyldig tidszone.'
+'Please enter a valid URL.': 'Indtast venligst en gyldig URL.'
+'Please enter a valid search term.': 'Indtast venligst et gyldigt søgeord.'
+'Please provide a valid phone number.': 'Giv venligst et gyldigt telefonnummer.'
+'The checkbox has an invalid value.': 'Checkboxen har en ugyldigt værdi.'
+'Please enter a valid email address.': 'Indtast venligst en gyldig e-mailadresse.'
+'Please select a valid option.': 'Vælg venligst en gyldig mulighed.'
+'Please select a valid range.': 'Vælg venligst et gyldigt interval .'
+'Please enter a valid week.': 'Indtast venligst en gyldig uge.'
+'Please enter a valid UUID.': 'Indtast venligst en gyldig UUID.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

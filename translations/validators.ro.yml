@@ -1,0 +1,317 @@
+'This value should be false.': 'Această valoare ar trebui să fie falsă.'
+'This value should be true.': 'Această valoare ar trebui să fie adevărată.'
+'This value should be of type {{ type }}.': 'Această valoare ar trebui să fie de tipul {{ type }}.'
+'This value should be blank.': 'Această valoare ar trebui să fie necompletată.'
+'The value you selected is not a valid choice.': 'Valoarea selectată nu este o opțiune validă.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Trebuie să selectați cel puțin {{ limit }} opțiune.|Trebuie să selectați cel puțin {{ limit }} opțiuni.|Trebuie să selectați cel puțin {{ limit }} de opțiuni.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Trebuie să selectați cel mult {{ limit }} opțiune.|Trebuie să selectați cel mult {{ limit }} opțiuni.|Trebuie să selectați cel mult {{ limit }} de opțiuni.'
+'One or more of the given values is invalid.': 'Una sau mai multe dintre valorile furnizate sunt invalide.'
+'This field was not expected.': 'Acest câmp nu era prevăzut.'
+'This field is missing.': 'Acest câmp lipsește.'
+'This value is not a valid date.': 'Această valoare nu reprezintă o dată validă.'
+'This value is not a valid datetime.': 'Această valoare nu reprezintă o dată și oră validă.'
+'This value is not a valid email address.': 'Această valoare nu reprezintă o adresă de e-mail validă.'
+'The file could not be found.': 'Fișierul nu a putut fi găsit.'
+'The file is not readable.': 'Fișierul nu poate fi citit.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Fișierul este prea mare ({{ size }} {{ suffix }}). Dimensiunea maximă permisă este {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Tipul fișierului este invalid ({{ type }}). Tipurile de fișiere permise sunt {{ types }}.'
+'This value should be {{ limit }} or less.': 'Această valoare ar trebui să fie cel mult {{ limit }}.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Această valoare este prea lungă. Ar trebui să aibă maxim {{ limit }} caracter.|Această valoare este prea lungă. Ar trebui să aibă maxim {{ limit }} caractere.|Această valoare este prea lungă. Ar trebui să aibă maxim {{ limit }} de caractere.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Această valoare este prea lungă. Trebuie să conțină un singur cuvânt.|Această valoare este prea lungă. Trebuie să conțină cel mult {{ max }} cuvinte.'
+'This value should be {{ limit }} or more.': 'Această valoare ar trebui să fie cel puțin {{ limit }}.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Această valoare este prea scurtă. Ar trebui să aibă minim {{ limit }} caracter.|Această valoare este prea scurtă. Ar trebui să aibă minim {{ limit }} caractere.|Această valoare este prea scurtă. Ar trebui să aibă minim {{ limit }} de caractere.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Această valoare este prea scurtă. Trebuie să conțină cel puțin un cuvânt.|Această valoare este prea scurtă. Trebuie să conțină cel puțin {{ min }} cuvinte.'
+'This value should not be blank.': 'Această valoare nu ar trebui să fie necompletată.'
+'This value should not be null.': 'Această valoare nu ar trebui să fie nulă.'
+'This value should be null.': 'Această valoare ar trebui să fie nulă.'
+'This value is not valid.': 'Această valoare nu este validă.'
+'This value is not a valid time.': 'Această valoare nu reprezintă o oră validă.'
+'This value is not a valid URL.': 'Această valoare nu reprezintă un URL valid.'
+'The two values should be equal.': 'Cele două valori ar trebui să fie egale.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Fișierul este prea mare. Mărimea maximă permisă este de {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Fișierul este prea mare.'
+'The file could not be uploaded.': 'Fișierul nu a putut fi încărcat.'
+'This value should be a valid number.': 'Această valoare nu reprezintă un număr valid.'
+'This file is not a valid image.': 'Acest fișier nu este o imagine validă.'
+'This is not a valid IP address.': 'Această valoare nu este o adresă IP validă.'
+'This value is not a valid language.': 'Această valoare nu reprezintă o limbă corectă.'
+'This value is not a valid locale.': 'Această valoare nu este o localizare validă.'
+'This value is not a valid country.': 'Această valoare nu este o țară validă.'
+'This value is already used.': 'Această valoare este folosită deja.'
+'The size of the image could not be detected.': 'Mărimea imaginii nu a putut fi detectată.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Lățimea imaginii este prea mare ({{ width }}px). Lățimea maximă permisă este de {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Lățimea imaginii este prea mică ({{ width }}px). Lățimea minimă permisă este de {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Înălțimea imaginii este prea mare ({{ height }}px). Înălțimea maximă permisă este de {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Înălțimea imaginii este prea mică ({{ height }}px). Înălțimea minimă permisă este de {{ min_height }}px.'
+"This value should be the user's current password.": 'Această valoare trebuie să fie parola curentă a utilizatorului.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Această valoare trebuie să conțină exact {{ limit }} caracter.|Această valoare trebuie să conțină exact {{ limit }} caractere.|Această valoare trebuie să conțină exact {{ limit }} de caractere.'
+'The file was only partially uploaded.': 'Fișierul a fost încărcat parțial.'
+'No file was uploaded.': 'Nu a fost încărcat niciun fișier.'
+'No temporary folder was configured in php':
+    ini.: 'Nu a fost configurat niciun folder temporar în php.ini, sau folderul configurat nu există.'
+'Cannot write temporary file to disk.': 'Nu a fost posibilă scrierea fișierului temporar pe disc.'
+'A PHP extension caused the upload to fail.': 'O extensie PHP a cauzat eșecul încărcării.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Această colecție trebuie să conțină cel puțin {{ limit }} element.|Această colecție trebuie să conțină cel puțin {{ limit }} elemente.|Această colecție trebuie să conțină cel puțin {{ limit }} de elemente.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Această colecție trebuie să conțină cel mult {{ limit }} element.|Această colecție trebuie să conțină cel mult {{ limit }} elemente.|Această colecție trebuie să conțină cel mult {{ limit }} de elemente.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Această colecție trebuie să conțină exact {{ limit }} element.|Această colecție trebuie să conțină exact {{ limit }} elemente.|Această colecție trebuie să conțină exact {{ limit }} de elemente.'
+'Invalid card number.': 'Numărul cardului este invalid.'
+'Unsupported card type or invalid card number.': 'Tipul sau numărul cardului sunt invalide.'
+'This is not a valid International Bank Account Number (IBAN).': 'Această valoare nu este un Număr de Cont Bancar Internațional (IBAN) valid.'
+'This value is not a valid ISBN-10.': 'Această valoare nu este un cod ISBN-10 valid.'
+'This value is not a valid ISBN-13.': 'Această valoare nu este un cod ISBN-13 valid.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Această valoare nu este un cod ISBN-10 sau ISBN-13 valid.'
+'This value is not a valid ISSN.': 'Această valoare nu este un cod ISSN valid.'
+'This value is not a valid currency.': 'Această valoare nu este o monedă validă.'
+'This value should be equal to {{ compared_value }}.': 'Această valoare trebuie să fie egală cu {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Această valoare trebuie să fie mai mare decât {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Această valoare trebuie să fie mai mare sau egală cu {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Această valoare trebuie să fie identică cu {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Această valoare trebuie să fie mai mică decât {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Această valoare trebuie să fie mai mică sau egală cu {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Această valoare nu trebuie să fie egală cu {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Această valoare nu trebuie să fie identică cu {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Raportul imaginii este prea mare ({{ ratio }}). Raportul maxim permis este {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Raportul imaginii este prea mic ({{ ratio }}). Raportul minim permis este {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Imaginea este pătrată ({{ width }}x{{ height }}px). Imaginile pătrate nu sunt permise.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Imaginea are orientarea orizontală ({{ width }}x{{ height }}px). Imaginile cu orientare orizontală nu sunt permise.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Imaginea are orientarea portret ({{ width }}x{{ height }}px). Imaginile cu orientare portret nu sunt permise.'
+'An empty file is not allowed.': 'Nu se permite un fișier gol.'
+'The host could not be resolved.': 'Host-ul nu a putut fi rezolvat.'
+'This value does not match the expected {{ charset }} charset.': 'Această valoare nu corespunde setului de caractere {{ charset }} așteptat.'
+'This is not a valid Business Identifier Code (BIC).': 'Această valoare nu este un Cod de Identificare a Afacerilor (BIC) valid.'
+Error: Eroare
+'This is not a valid UUID.': 'Această valoare nu este un UUID valid.'
+'This value should be a multiple of {{ compared_value }}.': 'Această valoare trebuie să fie un multiplu de {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Codul BIC (Business Identifier Code) nu este asociat cu codul IBAN {{ iban }}.'
+'This value should be valid JSON.': 'Această valoare trebuie să fie un JSON valid.'
+'This collection should contain only unique elements.': 'Această colecție ar trebui să conțină numai elemente unice.'
+'This value should be positive.': 'Această valoare ar trebui să fie pozitivă.'
+'This value should be either positive or zero.': 'Această valoare trebuie să fie pozitivă sau zero.'
+'This value should be negative.': 'Această valoare ar trebui să fie negativă.'
+'This value should be either negative or zero.': 'Această valoare trebuie să fie negativă sau zero.'
+'This value is not a valid timezone.': 'Această valoare nu este un fus orar valid.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Această parolă a fost compromisă și nu poate fi utilizată. Vă rugăm să utilizați o altă parolă.'
+'This value should be between {{ min }} and {{ max }}.': 'Această valoare trebuie să fie între {{ min }} și {{ max }}.'
+'This value is not a valid hostname.': 'Această valoare nu este un hostname valid.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Numărul de elemente din această colecție ar trebui să fie un multiplu de {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Această valoare trebuie să îndeplinească cel puțin una dintre următoarele condiții:'
+'Each element of this collection should satisfy its own set of constraints.': 'Fiecare element din acest set ar trebui să îndeplinească propriul set de condiții.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Această valoare nu este un număr internațional de identificare (ISIN) valabil.'
+'This value should be a valid expression.': 'Această valoare ar trebui să fie o expresie validă.'
+'This value is not a valid CSS color.': 'Această valoare nu este o culoare CSS validă.'
+'This value is not a valid CIDR notation.': 'Această valoare nu este o notație CIDR validă.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Valoarea măștii de rețea trebuie să fie între {{ min }} și {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Denumirea fișierului este prea lungă. Trebuie să conțină {{ filename_max_length }} caracter sau mai puțin.|Denumirea fișierului este prea lungă. Trebuie să conțină {{ filename_max_length }} caractere sau mai puține.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Complexitatea parolei este prea mică. Vă rugăm să folosiți o parolă mai puternică.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Această valoare conține caractere care nu sunt permise de nivelul de restricționare curent.'
+'Using invisible characters is not allowed.': 'Folosirea caracterelor invizibile nu este permisă.'
+'Mixing numbers from different scripts is not allowed.': 'Combinarea numerelor din diferite script-uri nu este permisă.'
+'Using hidden overlay characters is not allowed.': 'Folosirea caracterelor ascunse nu este permisă.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Extensia fișierului este invalidă ({{ extension }}). Extensiile permise sunt {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Codificarea caracterelor detectate este invalidă ({{ detected }}). Codificările permise sunt {{ encodings }}.'
+'This value is not a valid MAC address.': 'Această valoare nu este o adresă MAC validă.'
+'This URL is missing a top-level domain.': 'Acestui URL îi lipsește un domeniu de nivel superior.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Această valoare nu reprezintă o săptămână validă în formatul ISO 8601.'
+'This value is not a valid week.': 'Această valoare nu este o săptămână validă.'
+'This value should not be before week "{{ min }}".': 'Această valoare nu trebuie să fie înainte de săptămâna "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Această valoare nu trebuie să fie după săptămâna "{{ max }}".'
+'This value is not a valid Twig template.': 'Această valoare nu este un șablon Twig valid.'
+'This file is not a valid video.': 'Acest fișier nu este un videoclip valid.'
+'The size of the video could not be detected.': 'Dimensiunea videoclipului nu a putut fi detectată.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Lățimea videoclipului este prea mare ({{ width }}px). Lățimea maximă permisă este {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Lățimea videoclipului este prea mică ({{ width }}px). Lățimea minimă așteptată este {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Înălțimea videoclipului este prea mare ({{ height }}px). Înălțimea maximă permisă este {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Înălțimea videoclipului este prea mică ({{ height }}px). Înălțimea minimă așteptată este {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Videoclipul are prea puțini pixeli ({{ pixels }}). Cantitatea minimă așteptată este {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Videoclipul are prea mulți pixeli ({{ pixels }}). Cantitatea maximă așteptată este {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Raportul video este prea mare ({{ ratio }}). Raportul maxim permis este {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Raportul video este prea mic ({{ ratio }}). Raportul minim așteptat este {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Videoclipul este pătrat ({{ width }}x{{ height }}px). Videoclipurile pătrate nu sunt permise.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Videoclipul are orientare peisaj ({{ width }}x{{ height }} px). Videoclipurile în orientare peisaj nu sunt permise.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Videoclipul este în orientare portret ({{ width }}x{{ height }}px). Videoclipurile cu orientare portret nu sunt permise.'
+'The video file is corrupted.': 'Fișierul video este corupt.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Videoclipul conține mai multe fluxuri. Doar un singur flux este permis.'
+'Unsupported video codec "{{ codec }}".': 'Codec video nesuportat „{{ codec }}”.'
+'Unsupported video container "{{ container }}".': 'Container video nesuportat "{{ container }}".'
+'The image file is corrupted.': 'Fișierul imagine este corupt.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Imaginea are prea puțini pixeli ({{ pixels }}). Cantitatea minimă așteptată este {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Imaginea are prea mulți pixeli ({{ pixels }}). Cantitatea maximă așteptată este {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Acest nume de fișier nu corespunde setului de caractere așteptat.'
+'This value is not valid XML.': 'Această valoare nu este un XML valid.'
+'This value does not conform to the expected XSD schema.': 'Această valoare nu este conformă cu schema XSD așteptată.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Această încărcătură utilă XML este prea mare ({{ size }} octeți): depășește limita de {{ limit }} octeți.'
+'This value is not a valid cron expression.': 'Această valoare nu este o expresie cron validă.'
+'This form should not contain extra fields.': 'Acest formular nu ar trebui să conțină câmpuri suplimentare.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Fișierul încărcat a fost prea mare. Vă rugăm sa încărcați un fișier mai mic.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'Token-ul CSRF este invalid. Vă rugăm să retrimiteți formularul.'
+'This value is not a valid HTML5 color.': 'Această valoare nu este un cod de culoare HTML5 valid.'
+'Please enter a valid birthdate.': 'Vă rugăm să introduceți o dată de naștere validă.'
+'The selected choice is invalid.': 'Valoarea selectată este invalidă.'
+'The collection is invalid.': 'Colecția nu este validă.'
+'Please select a valid color.': 'Vă rugăm să selectați o culoare validă.'
+'Please select a valid country.': 'Vă rugăm să selectați o țară validă.'
+'Please select a valid currency.': 'Vă rugăm să selectați o monedă validă.'
+'Please choose a valid date interval.': 'Vă rugăm să selectați un interval de zile valid.'
+'Please enter a valid date and time.': 'Vă rugăm să introduceți o dată și o oră validă.'
+'Please enter a valid date.': 'Vă rugăm să introduceți o dată validă.'
+'Please select a valid file.': 'Vă rugăm să selectați un fișier valid.'
+'The hidden field is invalid.': 'Câmpul ascuns este invalid.'
+'Please enter an integer.': 'Vă rugăm să introduceți un număr întreg.'
+'Please select a valid language.': 'Vă rugăm să selectați o limbă validă.'
+'Please select a valid locale.': 'Vă rugăm să selectați o setare locală validă.'
+'Please enter a valid money amount.': 'Vă rugăm să introduceți o valoare monetară corectă.'
+'Please enter a number.': 'Vă rugăm să introduceți un număr.'
+'The password is invalid.': 'Parola nu este validă.'
+'Please enter a percentage value.': 'Vă rugăm să introduceți o valoare procentuală.'
+'The values do not match.': 'Valorile nu coincid.'
+'Please enter a valid time.': 'Vă rugăm să introduceți o oră validă.'
+'Please select a valid timezone.': 'Vă rugăm să selectați un fus orar valid.'
+'Please enter a valid URL.': 'Vă rugăm să introduceți un URL valid.'
+'Please enter a valid search term.': 'Vă rugăm să introduceți un termen de căutare valid.'
+'Please provide a valid phone number.': 'Vă rugăm să introduceți un număr de telefon valid.'
+'The checkbox has an invalid value.': 'Bifa nu are o valoare validă.'
+'Please enter a valid email address.': 'Vă rugăm să introduceți o adresă de email validă.'
+'Please select a valid option.': 'Vă rugăm să selectați o opțiune validă.'
+'Please select a valid range.': 'Vă rugăm să selectați un interval valid.'
+'Please enter a valid week.': 'Vă rugăm să introduceți o săptămână validă.'
+'Please enter a valid UUID.': 'Vă rugăm să introduceți un UUID valid.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

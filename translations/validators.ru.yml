@@ -1,0 +1,317 @@
+'This value should be false.': 'Значение должно быть ложным.'
+'This value should be true.': 'Значение должно быть истинным.'
+'This value should be of type {{ type }}.': 'Тип значения должен быть {{ type }}.'
+'This value should be blank.': 'Значение должно быть пустым.'
+'The value you selected is not a valid choice.': 'Выбранное Вами значение недопустимо.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Вы должны выбрать хотя бы {{ limit }} вариант.|Вы должны выбрать хотя бы {{ limit }} варианта.|Вы должны выбрать хотя бы {{ limit }} вариантов.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Вы должны выбрать не более чем {{ limit }} вариант.|Вы должны выбрать не более чем {{ limit }} варианта.|Вы должны выбрать не более чем {{ limit }} вариантов.'
+'One or more of the given values is invalid.': 'Одно или несколько заданных значений недопустимо.'
+'This field was not expected.': 'Это поле не ожидалось.'
+'This field is missing.': 'Это поле отсутствует.'
+'This value is not a valid date.': 'Значение не является правильной датой.'
+'This value is not a valid datetime.': 'Значение даты и времени недопустимо.'
+'This value is not a valid email address.': 'Значение адреса электронной почты недопустимо.'
+'The file could not be found.': 'Файл не может быть найден.'
+'The file is not readable.': 'Файл не может быть прочитан.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Файл слишком большой ({{ size }} {{ suffix }}). Максимально допустимый размер {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'MIME-тип файла недопустим ({{ type }}). Допустимы MIME-типы файлов {{ types }}.'
+'This value should be {{ limit }} or less.': 'Значение должно быть {{ limit }} или меньше.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Значение слишком длинное. Должно быть равно {{ limit }} символу или меньше.|Значение слишком длинное. Должно быть равно {{ limit }} символам или меньше.|Значение слишком длинное. Должно быть равно {{ limit }} символам или меньше.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Это значение слишком длинное. Оно должно содержать только одно слово.|Это значение слишком длинное. Оно должно содержать {{ max }} слова или меньше.|Это значение слишком длинное. Оно должно содержать {{ max }} слов или меньше.'
+'This value should be {{ limit }} or more.': 'Значение должно быть {{ limit }} или больше.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Значение слишком короткое. Должно быть равно {{ limit }} символу или больше.|Значение слишком короткое. Должно быть равно {{ limit }} символам или больше.|Значение слишком короткое. Должно быть равно {{ limit }} символам или больше.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Это значение слишком короткое. Оно должно содержать как минимум одно слово.|Это значение слишком короткое. Оно должно содержать как минимум {{ min }} слова.|Это значение слишком короткое. Оно должно содержать как минимум {{ min }} слов.'
+'This value should not be blank.': 'Значение не должно быть пустым.'
+'This value should not be null.': 'Значение не должно быть null.'
+'This value should be null.': 'Значение должно быть null.'
+'This value is not valid.': 'Значение недопустимо.'
+'This value is not a valid time.': 'Значение времени недопустимо.'
+'This value is not a valid URL.': 'Значение не является допустимым URL.'
+'The two values should be equal.': 'Оба значения должны быть одинаковыми.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Файл слишком большой. Максимально допустимый размер {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Файл слишком большой.'
+'The file could not be uploaded.': 'Файл не может быть загружен.'
+'This value should be a valid number.': 'Значение должно быть числом.'
+'This file is not a valid image.': 'Файл не является допустимым форматом изображения.'
+'This is not a valid IP address.': 'Это значение не является действительным IP-адресом.'
+'This value is not a valid language.': 'Значение не является допустимым языком.'
+'This value is not a valid locale.': 'Значение не является допустимой локалью.'
+'This value is not a valid country.': 'Значение не является допустимой страной.'
+'This value is already used.': 'Это значение уже используется.'
+'The size of the image could not be detected.': 'Не удалось определить размер изображения.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Ширина изображения слишком велика ({{ width }}px). Максимально допустимая ширина {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Ширина изображения слишком мала ({{ width }}px). Минимально допустимая ширина {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Высота изображения слишком велика ({{ height }}px). Максимально допустимая высота {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Высота изображения слишком мала ({{ height }}px). Минимально допустимая высота {{ min_height }}px.'
+"This value should be the user's current password.": 'Значение должно быть текущим паролем пользователя.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Значение должно быть равно {{ limit }} символу.|Значение должно быть равно {{ limit }} символам.|Значение должно быть равно {{ limit }} символам.'
+'The file was only partially uploaded.': 'Файл был загружен только частично.'
+'No file was uploaded.': 'Файл не был загружен.'
+'No temporary folder was configured in php':
+    ini.: 'В php.ini не была настроена временная папка, или настроенная папка не существует.'
+'Cannot write temporary file to disk.': 'Невозможно записать временный файл на диск.'
+'A PHP extension caused the upload to fail.': 'Расширение PHP вызвало ошибку при загрузке.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Эта коллекция должна содержать {{ limit }} элемент или больше.|Эта коллекция должна содержать {{ limit }} элемента или больше.|Эта коллекция должна содержать {{ limit }} элементов или больше.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Эта коллекция должна содержать {{ limit }} элемент или меньше.|Эта коллекция должна содержать {{ limit }} элемента или меньше.|Эта коллекция должна содержать {{ limit }} элементов или меньше.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Эта коллекция должна содержать ровно {{ limit }} элемент.|Эта коллекция должна содержать ровно {{ limit }} элемента.|Эта коллекция должна содержать ровно {{ limit }} элементов.'
+'Invalid card number.': 'Неверный номер карты.'
+'Unsupported card type or invalid card number.': 'Неподдерживаемый тип или неверный номер карты.'
+'This is not a valid International Bank Account Number (IBAN).': 'Это значение не является действительным Международным банковским счетом (IBAN).'
+'This value is not a valid ISBN-10.': 'Значение имеет неверный формат ISBN-10.'
+'This value is not a valid ISBN-13.': 'Значение имеет неверный формат ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Значение не соответствует форматам ISBN-10 и ISBN-13.'
+'This value is not a valid ISSN.': 'Значение не соответствует формату ISSN.'
+'This value is not a valid currency.': 'Некорректный формат валюты.'
+'This value should be equal to {{ compared_value }}.': 'Значение должно быть равно {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Значение должно быть больше чем {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Значение должно быть больше или равно {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Значение должно быть идентичным {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Значение должно быть меньше чем {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Значение должно быть меньше или равно {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Значение не должно быть равно {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Значение не должно быть идентичным {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Соотношение сторон изображения слишком велико ({{ ratio }}). Максимальное соотношение сторон {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Соотношение сторон изображения слишком мало ({{ ratio }}). Минимальное соотношение сторон {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Изображение квадратное ({{ width }}x{{ height }}px). Квадратные изображения не разрешены.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Изображение в альбомной ориентации ({{ width }}x{{ height }}px). Изображения в альбомной ориентации не разрешены.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Изображение в портретной ориентации ({{ width }}x{{ height }}px). Изображения в портретной ориентации не разрешены.'
+'An empty file is not allowed.': 'Пустые файлы не разрешены.'
+'The host could not be resolved.': 'Имя хоста не может быть разрешено.'
+'This value does not match the expected {{ charset }} charset.': 'Значение не совпадает с ожидаемой {{ charset }} кодировкой.'
+'This is not a valid Business Identifier Code (BIC).': 'Это значение не является действительным Бизнес-идентификатором (BIC).'
+Error: Ошибка
+'This is not a valid UUID.': 'Это значение не является действительным UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Значение должно быть кратно {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Данный BIC не связан с IBAN {{ iban }}.'
+'This value should be valid JSON.': 'Значение должно быть корректным JSON.'
+'This collection should contain only unique elements.': 'Эта коллекция должна содержать только уникальные элементы.'
+'This value should be positive.': 'Значение должно быть положительным.'
+'This value should be either positive or zero.': 'Значение должно быть положительным или равным нулю.'
+'This value should be negative.': 'Значение должно быть отрицательным.'
+'This value should be either negative or zero.': 'Значение должно быть отрицательным или равным нулю.'
+'This value is not a valid timezone.': 'Значение не является корректным часовым поясом.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Данный пароль был скомпрометирован в результате утечки данных и не должен быть использован. Пожалуйста, используйте другой пароль.'
+'This value should be between {{ min }} and {{ max }}.': 'Значение должно быть между {{ min }} и {{ max }}.'
+'This value is not a valid hostname.': 'Значение не является корректным именем хоста.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Количество элементов в этой коллекции должно быть кратным {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Значение должно удовлетворять как минимум одному из следующих ограничений:'
+'Each element of this collection should satisfy its own set of constraints.': 'Каждый элемент этой коллекции должен удовлетворять своему собственному набору ограничений.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Значение не является корректным международным идентификационным номером ценных бумаг (ISIN).'
+'This value should be a valid expression.': 'Это значение должно быть корректным выражением.'
+'This value is not a valid CSS color.': 'Значение не является корректным CSS цветом.'
+'This value is not a valid CIDR notation.': 'Значение не соответствует нотации CIDR.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Значение маски подсети должно быть от {{ min }} до {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Имя файла слишком длинное. Оно должно содержать {{ filename_max_length }} символ или меньше.|Имя файла слишком длинное. Оно должно содержать {{ filename_max_length }} символа или меньше.|Имя файла слишком длинное. Оно должно содержать {{ filename_max_length }} символов или меньше.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Слишком низкая надёжность пароля. Пожалуйста, используйте более надёжный пароль.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Значение содержит символы, запрещённые на текущем уровне ограничений.'
+'Using invisible characters is not allowed.': 'Использование невидимых символов запрещено.'
+'Mixing numbers from different scripts is not allowed.': 'Смешивание номеров из разных сценариев запрещено.'
+'Using hidden overlay characters is not allowed.': 'Использование невидимых символов наложения запрещено.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Недопустимое расширение файла ({{ extension }}). Разрешенные расширения: {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Обнаруженная кодировка символов недопустима ({{ detected }}). Разрешенные кодировки: {{ encodings }}.'
+'This value is not a valid MAC address.': 'Это значение не является действительным MAC-адресом.'
+'This URL is missing a top-level domain.': 'В этом URL отсутствует домен верхнего уровня.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Это значение не представляет допустимую неделю в формате ISO 8601.'
+'This value is not a valid week.': 'Это значение не является допустимой неделей.'
+'This value should not be before week "{{ min }}".': 'Это значение не должно быть раньше недели "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Это значение не должно быть после недели "{{ max }}".'
+'This value is not a valid Twig template.': 'Это значение не является корректным шаблоном Twig.'
+'This file is not a valid video.': 'Этот файл не является корректным видео.'
+'The size of the video could not be detected.': 'Не удалось определить размер видео.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Ширина видео слишком велика ({{ width }}px). Максимально допустимая ширина {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Ширина видео слишком мала ({{ width }}px). Минимально допустимая ширина {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Высота видео слишком велика ({{ height }}px). Максимально допустимая высота {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Высота видео слишком мала ({{ height }}px). Минимально допустимая высота {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'В видео слишком мало пикселей ({{ pixels }} пикселей). Минимально допустимое количество {{ min_pixels }} пикселей.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'В видео слишком много пикселей ({{ pixels }} пикселей). Максимально допустимое количество {{ max_pixels }} пикселей.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Соотношение сторон видео слишком велико ({{ ratio }}). Максимально допустимое соотношение {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Соотношение сторон видео слишком мало ({{ ratio }}). Минимально допустимое соотношение {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Видео квадратное ({{ width }}x{{ height }}px). Квадратные видео не разрешены.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Видео в альбомной ориентации ({{ width }}x{{ height }}px). Видео в альбомной ориентации не разрешены.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Видео в портретной ориентации ({{ width }}x{{ height }}px). Видео в портретной ориентации не разрешены.'
+'The video file is corrupted.': 'Видеофайл повреждён.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Видео содержит несколько потоков. Разрешён только один поток.'
+'Unsupported video codec "{{ codec }}".': 'Неподдерживаемый видеокодек «{{ codec }}».'
+'Unsupported video container "{{ container }}".': 'Неподдерживаемый видеоконтейнер «{{ container }}».'
+'The image file is corrupted.': 'Файл изображения повреждён.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'В изображении слишком мало пикселей ({{ pixels }} пикселей). Минимально допустимое количество {{ min_pixels }} пикселей.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'В изображении слишком много пикселей ({{ pixels }} пикселей). Максимально допустимое количество {{ max_pixels }} пикселей.'
+'This filename does not match the expected charset.': 'Это имя файла не соответствует ожидаемой кодировке.'
+'This value is not valid XML.': 'Это значение не является корректным XML.'
+'This value does not conform to the expected XSD schema.': 'Это значение не соответствует ожидаемой схеме XSD.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Эта полезная нагрузка XML слишком велика ({{ size }} байт): она превышает ограничение в {{ limit }} байт.'
+'This value is not a valid cron expression.': 'Это значение не является корректным выражением cron.'
+'This form should not contain extra fields.': 'Эта форма не должна содержать дополнительных полей.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Загруженный файл слишком большой. Пожалуйста, попробуйте загрузить файл меньшего размера.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF значение недопустимо. Пожалуйста, попробуйте повторить отправку формы.'
+'This value is not a valid HTML5 color.': 'Значение не является допустимым HTML5 цветом.'
+'Please enter a valid birthdate.': 'Пожалуйста, введите действительную дату рождения.'
+'The selected choice is invalid.': 'Выбранный вариант недопустим.'
+'The collection is invalid.': 'Коллекция недопустима.'
+'Please select a valid color.': 'Пожалуйста, выберите допустимый цвет.'
+'Please select a valid country.': 'Пожалуйста, выберите действительную страну.'
+'Please select a valid currency.': 'Пожалуйста, выберите действительную валюту.'
+'Please choose a valid date interval.': 'Пожалуйста, выберите действительный период.'
+'Please enter a valid date and time.': 'Пожалуйста, введите действительные дату и время.'
+'Please enter a valid date.': 'Пожалуйста, введите действительную дату.'
+'Please select a valid file.': 'Пожалуйста, выберите допустимый файл.'
+'The hidden field is invalid.': 'Значение скрытого поля недопустимо.'
+'Please enter an integer.': 'Пожалуйста, введите целое число.'
+'Please select a valid language.': 'Пожалуйста, выберите допустимый язык.'
+'Please select a valid locale.': 'Пожалуйста, выберите допустимую локаль.'
+'Please enter a valid money amount.': 'Пожалуйста, введите допустимое количество денег.'
+'Please enter a number.': 'Пожалуйста, введите номер.'
+'The password is invalid.': 'Пароль недействителен.'
+'Please enter a percentage value.': 'Пожалуйста, введите процентное значение.'
+'The values do not match.': 'Значения не совпадают.'
+'Please enter a valid time.': 'Пожалуйста, введите действительное время.'
+'Please select a valid timezone.': 'Пожалуйста, выберите действительный часовой пояс.'
+'Please enter a valid URL.': 'Пожалуйста, введите действительный URL.'
+'Please enter a valid search term.': 'Пожалуйста, введите действительный поисковый запрос.'
+'Please provide a valid phone number.': 'Пожалуйста, введите действительный номер телефона.'
+'The checkbox has an invalid value.': 'Флажок имеет недопустимое значение.'
+'Please enter a valid email address.': 'Пожалуйста, введите допустимый email адрес.'
+'Please select a valid option.': 'Пожалуйста, выберите допустимый вариант.'
+'Please select a valid range.': 'Пожалуйста, выберите допустимый диапазон.'
+'Please enter a valid week.': 'Пожалуйста, введите действительную неделю.'
+'Please enter a valid UUID.': 'Пожалуйста, введите действительный UUID.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

@@ -1,0 +1,317 @@
+'This value should be false.': 'Ennek az értéknek hamisnak kell lennie.'
+'This value should be true.': 'Ennek az értéknek igaznak kell lennie.'
+'This value should be of type {{ type }}.': 'Ennek az értéknek {{ type }} típusúnak kell lennie.'
+'This value should be blank.': 'Ennek az értéknek üresnek kell lennie.'
+'The value you selected is not a valid choice.': 'A választott érték érvénytelen.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Legalább {{ limit }} értéket kell kiválasztani.|Legalább {{ limit }} értéket kell kiválasztani.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Legfeljebb {{ limit }} értéket lehet kiválasztani.|Legfeljebb {{ limit }} értéket lehet kiválasztani.'
+'One or more of the given values is invalid.': 'A megadott értékek közül legalább egy érvénytelen.'
+'This field was not expected.': 'Nem várt mező.'
+'This field is missing.': 'Ez a mező hiányzik.'
+'This value is not a valid date.': 'Ez az érték nem érvényes dátum.'
+'This value is not a valid datetime.': 'Ez az érték nem érvényes időpont.'
+'This value is not a valid email address.': 'Ez az érték nem érvényes e-mail cím.'
+'The file could not be found.': 'A fájl nem található.'
+'The file is not readable.': 'A fájl nem olvasható.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'A fájl túl nagy ({{ size }} {{ suffix }}). A legnagyobb megengedett méret {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'A fájl MIME típusa érvénytelen ({{ type }}). Az engedélyezett MIME típusok: {{ types }}.'
+'This value should be {{ limit }} or less.': 'Ez az érték legfeljebb {{ limit }} lehet.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Ez az érték túl hosszú. Legfeljebb {{ limit }} karaktert tartalmazhat.|Ez az érték túl hosszú. Legfeljebb {{ limit }} karaktert tartalmazhat.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Ez az érték túl hosszú. Csak egy szót tartalmazhat.|Ez az érték túl hosszú. Legfeljebb {{ max }} szót vagy kevesebbet tartalmazhat.'
+'This value should be {{ limit }} or more.': 'Ez az érték legalább {{ limit }} kell, hogy legyen.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Ez az érték túl rövid. Legalább {{ limit }} karaktert kell tartalmaznia.|Ez az érték túl rövid. Legalább {{ limit }} karaktert kell tartalmaznia.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Ez az érték túl rövid. Tartalmaznia kell legalább egy szót.|Ez az érték túl rövid. Tartalmaznia kell legalább {{ min }} szót.'
+'This value should not be blank.': 'Ez az érték nem lehet üres.'
+'This value should not be null.': 'Ez az érték nem lehet null.'
+'This value should be null.': 'Ennek az értéknek nullnak kell lennie.'
+'This value is not valid.': 'Ez az érték nem érvényes.'
+'This value is not a valid time.': 'Ez az érték nem érvényes időpont.'
+'This value is not a valid URL.': 'Ez az érték nem érvényes URL.'
+'The two values should be equal.': 'A két értéknek azonosnak kell lennie.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'A fájl túl nagy. A megengedett maximális méret: {{ limit }} {{ suffix }}.'
+'The file is too large.': 'A fájl túl nagy.'
+'The file could not be uploaded.': 'A fájl nem tölthető fel.'
+'This value should be a valid number.': 'Ennek az értéknek érvényes számnak kell lennie.'
+'This file is not a valid image.': 'Ez a fájl nem érvényes kép.'
+'This is not a valid IP address.': 'Ez az érték nem érvényes IP-cím.'
+'This value is not a valid language.': 'Ez az érték nem érvényes nyelv.'
+'This value is not a valid locale.': 'Ez az érték nem érvényes területi beállítás.'
+'This value is not a valid country.': 'Ez az érték nem érvényes ország.'
+'This value is already used.': 'Ez az érték már használatban van.'
+'The size of the image could not be detected.': 'A kép méretét nem lehet megállapítani.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'A kép szélessége túl nagy ({{ width }}px). A megengedett legnagyobb szélesség {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'A kép szélessége túl kicsi ({{ width }}px). Az elvárt legkisebb szélesség {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'A kép magassága túl nagy ({{ height }}px). A megengedett legnagyobb magasság {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'A kép magassága túl kicsi ({{ height }}px). Az elvárt legkisebb magasság {{ min_height }}px.'
+"This value should be the user's current password.": 'Ez az érték a felhasználó jelenlegi jelszavával kell megegyezzen.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Ennek az értéknek pontosan {{ limit }} karaktert kell tartalmaznia.|Ennek az értéknek pontosan {{ limit }} karaktert kell tartalmaznia.'
+'The file was only partially uploaded.': 'A fájl csak részben lett feltöltve.'
+'No file was uploaded.': 'Nem lett fájl feltöltve.'
+'No temporary folder was configured in php':
+    ini.: 'Nem lett ideiglenes mappa beállítva a php.ini-ben, vagy a beállított mappa nem létezik.'
+'Cannot write temporary file to disk.': 'Az ideiglenes fájl nem írható a lemezre.'
+'A PHP extension caused the upload to fail.': 'Egy PHP bővítmény miatt a feltöltés nem sikerült.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Ennek a gyűjteménynek legalább {{ limit }} elemet kell tartalmaznia.|Ennek a gyűjteménynek legalább {{ limit }} elemet kell tartalmaznia.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Ez a gyűjtemény legfeljebb {{ limit }} elemet tartalmazhat.|Ez a gyűjtemény legfeljebb {{ limit }} elemet tartalmazhat.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Ennek a gyűjteménynek pontosan {{ limit }} elemet kell tartalmaznia.|Ennek a gyűjteménynek pontosan {{ limit }} elemet kell tartalmaznia.'
+'Invalid card number.': 'Érvénytelen kártyaszám.'
+'Unsupported card type or invalid card number.': 'Nem támogatott kártyatípus vagy érvénytelen kártyaszám.'
+'This is not a valid International Bank Account Number (IBAN).': 'Ez az érték nem érvényes Nemzetközi Bankszámlaszám (IBAN).'
+'This value is not a valid ISBN-10.': 'Ez az érték nem érvényes ISBN-10.'
+'This value is not a valid ISBN-13.': 'Ez az érték nem érvényes ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Ez az érték nem érvényes ISBN-10 vagy ISBN-13.'
+'This value is not a valid ISSN.': 'Ez az érték nem érvényes ISSN.'
+'This value is not a valid currency.': 'Ez az érték nem érvényes pénznem.'
+'This value should be equal to {{ compared_value }}.': 'Ez az érték legyen {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Ez az érték nagyobb legyen, mint {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Ez az érték nagyobb vagy egyenlő legyen, mint {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Ez az érték ugyanolyan legyen, mint {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Ez az érték kisebb legyen, mint {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Ez az érték kisebb vagy egyenlő legyen, mint {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Ez az érték ne legyen {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Ez az érték ne legyen ugyanolyan, mint {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'A képarány túl nagy ({{ ratio }}). A megengedett legnagyobb képarány {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'A képarány túl kicsi ({{ ratio }}). A megengedett legkisebb képarány {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'A kép négyzet alakú ({{ width }}x{{ height }}px). A négyzet alakú képek nem engedélyezettek.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'A kép fekvő tájolású ({{ width }}x{{ height }}px). A fekvő tájolású képek nem engedélyezettek.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'A kép álló tájolású ({{ width }}x{{ height }}px). Az álló tájolású képek nem engedélyezettek.'
+'An empty file is not allowed.': 'Üres fájl nem megengedett.'
+'The host could not be resolved.': 'Az állomásnevet nem lehet feloldani.'
+'This value does not match the expected {{ charset }} charset.': 'Ez az érték nem az elvárt {{ charset }} karakterkódolást használja.'
+'This is not a valid Business Identifier Code (BIC).': 'Ez az érték nem érvényes Üzleti Azonosító Kód (BIC).'
+Error: Hiba
+'This is not a valid UUID.': 'Ez az érték nem érvényes UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Ennek az értéknek oszthatónak kell lennie a következővel: {{ compared_value }}'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Ez a Bankazonosító kód (BIC) nem kapcsolódik az IBAN kódhoz ({{ iban }}).'
+'This value should be valid JSON.': 'Ez az érték érvényes JSON kell, hogy legyen.'
+'This collection should contain only unique elements.': 'Ez a gyűjtemény csak egyedi elemeket tartalmazhat.'
+'This value should be positive.': 'Ennek az értéknek pozitívnak kell lennie.'
+'This value should be either positive or zero.': 'Ennek az értéknek pozitívnak vagy nullának kell lennie.'
+'This value should be negative.': 'Ennek az értéknek negatívnak kell lennie.'
+'This value should be either negative or zero.': 'Ennek az értéknek negatívnak vagy nullának kell lennie.'
+'This value is not a valid timezone.': 'Ez az érték nem érvényes időzóna.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Ez a jelszó korábban egy adatvédelmi incidens során illetéktelenek kezébe került, így nem használható. Kérjük, használjon másik jelszót.'
+'This value should be between {{ min }} and {{ max }}.': 'Ennek az értéknek {{ min }} és {{ max }} között kell lennie.'
+'This value is not a valid hostname.': 'Ez az érték nem érvényes állomásnév (hosztnév).'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'A gyűjteményben lévő elemek számának oszthatónak kell lennie a következővel: {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Ennek az értéknek meg kell felelni legalább egynek a következő feltételek közül:'
+'Each element of this collection should satisfy its own set of constraints.': 'A gyűjtemény minden elemének meg kell felelni a saját feltételeinek.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Ez az érték nem érvényes nemzetközi értékpapír-azonosító szám (ISIN).'
+'This value should be a valid expression.': 'Ennek az értéknek érvényes kifejezésnek kell lennie.'
+'This value is not a valid CSS color.': 'Ez az érték nem érvényes CSS szín.'
+'This value is not a valid CIDR notation.': 'Ez az érték nem érvényes CIDR jelölés.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Ennek a netmask értéknek {{ min }} és {{ max }} között kell lennie.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'A fájlnév túl hosszú. {{ filename_max_length }} karakter vagy kevesebb legyen.|A fájlnév túl hosszú. {{ filename_max_length }} karakter vagy kevesebb legyen.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'A jelszó túl egyszerű. Kérjük, használjon egy erősebb jelszót.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Ez az érték olyan karaktereket tartalmaz, amik nem megengedettek.'
+'Using invisible characters is not allowed.': 'Láthatatlan karakterek használata nem megengedett.'
+'Mixing numbers from different scripts is not allowed.': 'Különböző szám írásmódok használata nem megengedett.'
+'Using hidden overlay characters is not allowed.': 'Rejtett módosító karakterek használata nem megengedett.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'A fájl kiterjesztése érvénytelen ({{ extension }}). Engedélyezett kiterjesztések: {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Az érzékelt karakterkódolás érvénytelen ({{ detected }}). Engedélyezett karakterkódolások: {{ encodings }}.'
+'This value is not a valid MAC address.': 'Ez az érték nem érvényes MAC-cím.'
+'This URL is missing a top-level domain.': 'Az URL-ből hiányzik a legfelső szintű tartomány (top-level domain).'
+'This value does not represent a valid week in the ISO 8601 format.': 'Ez a érték érvénytelen hetet jelent az ISO 8601 formátumban.'
+'This value is not a valid week.': 'Ez az érték érvénytelen hét.'
+'This value should not be before week "{{ min }}".': 'Ez az érték nem lehet a "{{ min }}". hétnél korábbi.'
+'This value should not be after week "{{ max }}".': 'Ez az érték nem lehet a "{{ max }}". hétnél későbbi.'
+'This value is not a valid Twig template.': 'Ez az érték nem érvényes Twig sablon.'
+'This file is not a valid video.': 'Ez a fájl nem érvényes videó.'
+'The size of the video could not be detected.': 'A videó méretét nem sikerült megállapítani.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'A videó szélessége túl nagy ({{ width }}px). A megengedett legnagyobb szélesség {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'A videó szélessége túl kicsi ({{ width }}px). Az elvárt legkisebb szélesség {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'A videó magassága túl nagy ({{ height }}px). A megengedett legnagyobb magasság {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'A videó magassága túl kicsi ({{ height }}px). Az elvárt legkisebb magasság {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'A videóban túl kevés a képpont ({{ pixels }}). Az elvárt legkisebb mennyiség {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'A videóban túl sok a képpont ({{ pixels }}). A megengedett legnagyobb mennyiség {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'A videó képaránya túl nagy ({{ ratio }}). A megengedett legnagyobb képarány {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'A videó képaránya túl kicsi ({{ ratio }}). Az elvárt legkisebb képarány {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'A videó négyzet alakú ({{ width }}x{{ height }}px). A négyzet alakú videók nem engedélyezettek.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'A videó fekvő tájolású ({{ width }}x{{ height }} px). Fekvő tájolású videók nem engedélyezettek.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'A videó álló tájolású ({{ width }}x{{ height }} px). Álló tájolású videók nem engedélyezettek.'
+'The video file is corrupted.': 'A videófájl sérült.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'A videó több adatfolyamot tartalmaz. Csak egy adatfolyam engedélyezett.'
+'Unsupported video codec "{{ codec }}".': 'Nem támogatott videókodek „{{ codec }}".'
+'Unsupported video container "{{ container }}".': 'Nem támogatott videókonténer „{{ container }}".'
+'The image file is corrupted.': 'A képfájl sérült.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'A képben túl kevés a képpont ({{ pixels }}). Az elvárt legkisebb mennyiség {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'A képben túl sok a képpont ({{ pixels }}). A megengedett legnagyobb mennyiség {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Ez a fájlnév nem felel meg a várt karakterkészletnek.'
+'This value is not valid XML.': 'Ez az érték nem érvényes XML.'
+'This value does not conform to the expected XSD schema.': 'Ez az érték nem felel meg az elvárt XSD-sémának.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Ez az XML-adattartalom túl nagy ({{ size }} bájt): meghaladja a {{ limit }} bájtos korlátot.'
+'This value is not a valid cron expression.': 'Ez az érték nem érvényes cron kifejezés.'
+'This form should not contain extra fields.': 'Ez a mezőcsoport nem tartalmazhat extra mezőket.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'A feltöltött fájl túl nagy. Kérem, próbáljon egy kisebb fájlt feltölteni.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'Érvénytelen CSRF token. Kérem, próbálja újra elküldeni az űrlapot.'
+'This value is not a valid HTML5 color.': 'Ez az érték nem érvényes HTML5 szín.'
+'Please enter a valid birthdate.': 'Kérjük, adjon meg egy valós születési dátumot.'
+'The selected choice is invalid.': 'A kiválasztott opció érvénytelen.'
+'The collection is invalid.': 'A gyűjtemény érvénytelen.'
+'Please select a valid color.': 'Kérjük, válasszon egy érvényes színt.'
+'Please select a valid country.': 'Kérjük, válasszon egy érvényes országot.'
+'Please select a valid currency.': 'Kérjük, válasszon egy érvényes pénznemet.'
+'Please choose a valid date interval.': 'Kérjük, válasszon egy érvényes dátumintervallumot.'
+'Please enter a valid date and time.': 'Kérjük, adjon meg egy érvényes dátumot és időpontot.'
+'Please enter a valid date.': 'Kérjük, adjon meg egy érvényes dátumot.'
+'Please select a valid file.': 'Kérjük, válasszon egy érvényes fájlt.'
+'The hidden field is invalid.': 'A rejtett mező érvénytelen.'
+'Please enter an integer.': 'Kérjük, adjon meg egy egész számot.'
+'Please select a valid language.': 'Kérjük, válasszon egy érvényes nyelvet.'
+'Please select a valid locale.': 'Kérjük, válasszon egy érvényes területi beállítást.'
+'Please enter a valid money amount.': 'Kérjük, adjon meg egy érvényes pénzösszeget.'
+'Please enter a number.': 'Kérjük, adjon meg egy számot.'
+'The password is invalid.': 'A jelszó érvénytelen.'
+'Please enter a percentage value.': 'Kérjük, adjon meg egy százalékos értéket.'
+'The values do not match.': 'Az értékek nem egyeznek.'
+'Please enter a valid time.': 'Kérjük, adjon meg egy érvényes időpontot.'
+'Please select a valid timezone.': 'Kérjük, válasszon érvényes időzónát.'
+'Please enter a valid URL.': 'Kérjük, adjon meg egy érvényes URL-t.'
+'Please enter a valid search term.': 'Kérjük, adjon meg egy érvényes keresési kifejezést.'
+'Please provide a valid phone number.': 'Kérjük, adjon egy érvényes telefonszámot'
+'The checkbox has an invalid value.': 'A jelölőnégyzet értéke érvénytelen.'
+'Please enter a valid email address.': 'Kérjük valós e-mail címet adjon meg.'
+'Please select a valid option.': 'Kérjük, válasszon egy érvényes beállítást.'
+'Please select a valid range.': 'Kérjük, válasszon egy érvényes tartományt.'
+'Please enter a valid week.': 'Kérjük, adjon meg egy érvényes hetet.'
+'Please enter a valid UUID.': 'Kérjük, adjon meg egy érvényes UUID-t.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'
