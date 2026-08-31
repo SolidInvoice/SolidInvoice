@@ -1,0 +1,317 @@
+'This value should be false.': 'Значення повинно бути Ні.'
+'This value should be true.': 'Значення повинно бути Так.'
+'This value should be of type {{ type }}.': 'Тип значення повинен бути {{ type }}.'
+'This value should be blank.': 'Значення повинно бути пустим.'
+'The value you selected is not a valid choice.': 'Обране вами значення недопустиме.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Ви повинні обрати хоча б {{ limit }} варіант.|Ви повинні обрати хоча б {{ limit }} варіанти.|Ви повинні обрати хоча б {{ limit }} варіантів.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Ви повинні обрати не більше ніж {{ limit }} варіантів.'
+'One or more of the given values is invalid.': 'Одне або кілька заданих значень є недопустимі.'
+'This field was not expected.': 'Це поле не очікується.'
+'This field is missing.': 'Це поле не вистачає.'
+'This value is not a valid date.': 'Дане значення не є вірною датою.'
+'This value is not a valid datetime.': 'Дане значення дати та часу недопустиме.'
+'This value is not a valid email address.': 'Значення адреси электронної пошти недопустиме.'
+'The file could not be found.': 'Файл не знайдено.'
+'The file is not readable.': 'Файл не читається.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Файл занадто великий ({{ size }} {{ suffix }}). Дозволений максимальний розмір {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'MIME-тип файлу недопустимий ({{ type }}). Допустимі MIME-типи файлів {{ types }}.'
+'This value should be {{ limit }} or less.': 'Значення повинно бути {{ limit }} або менше.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Значення занадто довге. Повинно бути рівне {{ limit }} символу або менше.|Значення занадто довге. Повинно бути рівне {{ limit }} символам або менше.|Значення занадто довге. Повинно бути рівне {{ limit }} символам або менше.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Це значення занадто довге. Воно має містити лише одне слово.|Це значення занадто довге. Максимальна кількість слів — {{ max }}.'
+'This value should be {{ limit }} or more.': 'Значення повинно бути {{ limit }} або більше.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Значення занадто коротке. Повинно бути рівне {{ limit }} символу або більше.|Значення занадто коротке. Повинно бути рівне {{ limit }} символам або більше.|Значення занадто коротке. Повинно бути рівне {{ limit }} символам або більше.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Це значення занадто коротке. Воно має містити принаймні одне слово.|Це значення занадто коротке. Мінімальна кількість слів — {{ min }}.'
+'This value should not be blank.': 'Значення не повинно бути пустим.'
+'This value should not be null.': 'Значення не повинно бути null.'
+'This value should be null.': 'Значення повинно бути null.'
+'This value is not valid.': 'Значення недопустиме.'
+'This value is not a valid time.': 'Значення часу недопустиме.'
+'This value is not a valid URL.': 'Значення URL недопустиме.'
+'The two values should be equal.': 'Обидва занчення повинні бути одинаковими.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Файл занадто великий. Максимальний допустимий розмір {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Файл занадто великий.'
+'The file could not be uploaded.': 'Файл не можливо завантажити.'
+'This value should be a valid number.': 'Значення має бути допустимим числом.'
+'This file is not a valid image.': 'Цей файл не є допустимим форматом зображення.'
+'This is not a valid IP address.': 'Це значення не є дійсною IP-адресою.'
+'This value is not a valid language.': 'Це некоректна мова.'
+'This value is not a valid locale.': 'Це некоректна локалізація.'
+'This value is not a valid country.': 'Це некоректна країна.'
+'This value is already used.': 'Це значення вже використовується.'
+'The size of the image could not be detected.': 'Не вдалося визначити розмір зображення.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Ширина зображення занадто велика ({{ width }}px). Максимально допустима ширина {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Ширина зображення занадто мала ({{ width }}px). Мінімально допустима ширина {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Висота зображення занадто велика ({{ height }}px). Максимально допустима висота {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Висота зображення занадто мала ({{ height }}px). Мінімально допустима висота {{ min_height }}px.'
+"This value should be the user's current password.": 'Значення має бути поточним паролем користувача.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Значення повинно бути рівним {{ limit }} символу.|Значення повинно бути рівним {{ limit }} символам.|Значення повинно бути рівним {{ limit }} символам.'
+'The file was only partially uploaded.': 'Файл був завантажений лише частково.'
+'No file was uploaded.': 'Файл не був завантажений.'
+'No temporary folder was configured in php':
+    ini.: 'У php.ini не було налаштовано тимчасової теки, або налаштована тека не існує.'
+'Cannot write temporary file to disk.': 'Неможливо записати тимчасовий файл на диск.'
+'A PHP extension caused the upload to fail.': 'Розширення PHP викликало помилку при завантаженні.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Ця колекція повинна містити {{ limit }} елемент чи більше.|Ця колекція повинна містити {{ limit }} елемента чи більше.|Ця колекція повинна містити {{ limit }} елементів чи більше.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Ця колекція повинна містити {{ limit }} елемент чи менше.|Ця колекція повинна містити {{ limit }} елемента чи менше.|Ця колекція повинна містити {{ limit }} елементов чи менше.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Ця колекція повинна містити рівно {{ limit }} елемент.|Ця колекція повинна містити рівно {{ limit }} елемента.|Ця колекція повинна містити рівно {{ limit }} елементів.'
+'Invalid card number.': 'Невірний номер карти.'
+'Unsupported card type or invalid card number.': 'Непідтримуваний тип карти або невірний номер карти.'
+'This is not a valid International Bank Account Number (IBAN).': 'Це значення не є дійсним міжнародним номером банківського рахунку (IBAN).'
+'This value is not a valid ISBN-10.': 'Значення не у форматі ISBN-10.'
+'This value is not a valid ISBN-13.': 'Значення не у форматі ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Значення не відповідає форматам ISBN-10 та ISBN-13.'
+'This value is not a valid ISSN.': 'Значення має невірний формат ISSN.'
+'This value is not a valid currency.': 'Значення має невірний формат валюти.'
+'This value should be equal to {{ compared_value }}.': 'Значення повинно дорівнювати {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Значення має бути більше ніж {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Значення має бути більше або дорівнювати {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Значення має бути ідентичним {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Значення повинно бути менше ніж {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Значення повинно бути менше або дорівнювати {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Значення не повинно дорівнювати  {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Значення не повинно бути ідентичним {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Співвідношення сторін зображення занадто велике ({{ ratio }}). Максимальне співвідношення сторін {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Співвідношення сторін зображення занадто мало ({{ ratio }}). Мінімальне співвідношення сторін {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Зображення квадратне ({{ width }}x{{ height }}px). Квадратні зображення не дозволені.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Зображення альбомної орієнтації ({{ width }}x{{ height }}px). Зображення альбомної орієнтації не дозволені.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Зображення в портретній орієнтації ({{ width }}x{{ height }}px). Зображення в портретної орієнтації не дозволені.'
+'An empty file is not allowed.': 'Порожні файли не дозволені.'
+'The host could not be resolved.': "Ім'я хоста не знайдено."
+'This value does not match the expected {{ charset }} charset.': 'Значення не збігається з очікуваним {{ charset }} кодуванням.'
+'This is not a valid Business Identifier Code (BIC).': 'Це значення не є дійсним банківським кодом (BIC).'
+Error: Помилка
+'This is not a valid UUID.': 'Це значення не є дійсним UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Це значення повинне бути кратним {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Банківський код (BIC) не пов’язаний із міжнародним номером банківського рахунку (IBAN) {{ iban }}.'
+'This value should be valid JSON.': 'Значення має бути корректним JSON.'
+'This collection should contain only unique elements.': 'Ця колекція повинна мати тільки унікальни значення.'
+'This value should be positive.': 'Значення має бути позитивним.'
+'This value should be either positive or zero.': 'Значення має бути позитивним або дорівнювати нулю.'
+'This value should be negative.': 'Значення має бути негативним.'
+'This value should be either negative or zero.': 'Значення має бути негативним або дорівнювати нулю.'
+'This value is not a valid timezone.': 'Значення не є дійсним часовим поясом.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Цей пароль був скомпрометований в результаті витоку даних та не повинен використовуватися. Будь ласка, використовуйте інший пароль.'
+'This value should be between {{ min }} and {{ max }}.': 'Значення має бути між {{ min }} та {{ max }}.'
+'This value is not a valid hostname.': 'Значення не є дійсним іменем хоста.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Кількість елементів у цій колекції повинна бути кратною {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Значення повинно задовольняти хоча б одному з наступних обмежень:'
+'Each element of this collection should satisfy its own set of constraints.': 'Кожен елемент цієї колекції повинен задовольняти власному набору обмежень.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Це значення не є дійсним міжнародним ідентифікаційним номером цінних паперів (ISIN).'
+'This value should be a valid expression.': 'Це значення має бути дійсним виразом.'
+'This value is not a valid CSS color.': 'Це значення не є дійсним CSS кольором.'
+'This value is not a valid CIDR notation.': 'Це значення не є дійсною CIDR нотаціею.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Значення в мережевій масці має бути між {{ min }} та {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Назва файлу занадто довга. Вона має містити {{ filename_max_length }} символів або менше.|Назва файлу занадто довга. Вона має містити {{ filename_max_length }} символів або менше.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Надійність пароля занадто низька. Будь ласка, створіть складніший пароль.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Це значення містить символи, які не дозволяються поточним рівнем обмежень.'
+'Using invisible characters is not allowed.': 'Використання невидимих ​​символів не допускається.'
+'Mixing numbers from different scripts is not allowed.': 'Змішувати числа з різних скриптів не допускається.'
+'Using hidden overlay characters is not allowed.': 'Використання прихованих накладених символів не допускається.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Розширення файлу недопустиме ({{ extension }}). Дозволені розширення {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Недопустиме кодування символів ({{ detected }}). Допустимі кодування: {{ encodings }}.'
+'This value is not a valid MAC address.': 'Це значення не є дійсною MAC-адресою.'
+'This URL is missing a top-level domain.': 'Цьому URL не вистачає домену верхнього рівня.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Це значення не представляє дійсний тиждень у форматі ISO 8601.'
+'This value is not a valid week.': 'Це значення не є дійсним тижнем.'
+'This value should not be before week "{{ min }}".': 'Це значення не повинно бути раніше тижня "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Це значення не повинно бути після тижня "{{ max }}".'
+'This value is not a valid Twig template.': 'Це значення не є дійсним шаблоном Twig.'
+'This file is not a valid video.': 'Цей файл не є допустимим відеофайлом.'
+'The size of the video could not be detected.': 'Не вдалося визначити розмір відеофайлу.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Ширина відеофайлу занадто велика ({{ width }}px). Максимально допустима ширина {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Ширина відеофайлу занадто мала ({{ width }}px). Мінімально допустима ширина {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Висота відеофайлу занадто велика ({{ height }}px). Максимально допустима висота {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Висота відеофайлу занадто мала ({{ height }}px). Мінімально допустима висота {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Кількість пікселів у відеофайлі занадто мала ({{ pixels }} пікселів). Мінімально допустима кількість {{ min_pixels }} пікселів.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Кількість пікселів у відеофайлі занадто велика ({{ pixels }} пікселів). Максимально допустима кількість {{ max_pixels }} пікселів.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Співвідношення сторін відеофайлу занадто велике ({{ ratio }}). Максимально допустиме співвідношення сторін {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Співвідношення сторін відеофайлу занадто мале ({{ ratio }}). Мінімально допустиме співвідношення сторін {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': ' Відеофайл має квадратні пропорції ({{ width }}x{{ height }}px). Квадратні відеофайли не дозволені.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Відеофайл в альбомній орієнтації ({{ width }}x{{ height }}px). Відеофайли в альбомній орієнтації не дозволені.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Відеофайл у портретній орієнтації ({{ width }}x{{ height }}px). Відеофайли у портретній орієнтації не дозволені.'
+'The video file is corrupted.': 'Відеофайл пошкоджено.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Відеофайл містить кілька потоків. Дозволено лише один потік.'
+'Unsupported video codec "{{ codec }}".': 'Непідтримуваний відеокодек «{{ codec }}».'
+'Unsupported video container "{{ container }}".': 'Непідтримуваний відеоконтейнер "{{ container }}".'
+'The image file is corrupted.': 'Файл зображення пошкоджено.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Кількість пікселів у зображенні занадто мала ({{ pixels }} пікселів). Мінімально допустима кількість {{ min_pixels }} пікселів.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Кількість пікселів у зображенні занадто велика ({{ pixels }} пікселів). Максимально допустима кількість {{ max_pixels }} пікселів.'
+'This filename does not match the expected charset.': 'Назва файлу не відповідає очікуваному набору символів.'
+'This value is not valid XML.': 'Це значення не є дійсним XML.'
+'This value does not conform to the expected XSD schema.': 'Це значення не відповідає очікуваній XSD схемі.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Ці XML-дані занадто великі ({{ size }} байт): вони перевищують ліміт у {{ limit }} байт.'
+'This value is not a valid cron expression.': 'Це значення не є дійсним cron-виразом.'
+'This form should not contain extra fields.': 'Ця форма не повинна містити додаткових полів.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Завантажений файл занадто великий. Будь ласка, спробуйте завантажити файл меншого розміру.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF значення недопустиме. Будь ласка, спробуйте відправити форму знову.'
+'This value is not a valid HTML5 color.': 'Це значення не є допустимим кольором HTML5.'
+'Please enter a valid birthdate.': 'Будь ласка, введіть дійсну дату народження.'
+'The selected choice is invalid.': 'Обраний варіант недійсний.'
+'The collection is invalid.': 'Колекція недійсна.'
+'Please select a valid color.': 'Будь ласка, оберіть дійсний колір.'
+'Please select a valid country.': 'Будь ласка, оберіть дійсну країну.'
+'Please select a valid currency.': 'Будь ласка, оберіть дійсну валюту.'
+'Please choose a valid date interval.': 'Будь ласка, оберіть дійсний інтервал дати.'
+'Please enter a valid date and time.': 'Будь ласка, введіть дійсну дату та час.'
+'Please enter a valid date.': 'Будь ласка, введіть дійсну дату.'
+'Please select a valid file.': 'Будь ласка, оберіть дійсний файл.'
+'The hidden field is invalid.': 'Приховане поле недійсне.'
+'Please enter an integer.': 'Будь ласка, введіть ціле число.'
+'Please select a valid language.': 'Будь ласка, оберіть дійсну мову.'
+'Please select a valid locale.': 'Будь ласка, оберіть дійсну локаль.'
+'Please enter a valid money amount.': 'Будь ласка, введіть дійсну суму грошей.'
+'Please enter a number.': 'Будь ласка, введіть число.'
+'The password is invalid.': 'Пароль недійсний.'
+'Please enter a percentage value.': 'Будь ласка, введіть процентне значення.'
+'The values do not match.': 'Значення не збігаються.'
+'Please enter a valid time.': 'Будь ласка, введіть дійсний час.'
+'Please select a valid timezone.': 'Будь ласка, оберіть дійсний часовий пояс.'
+'Please enter a valid URL.': 'Будь ласка, введіть дійсну URL-адресу.'
+'Please enter a valid search term.': 'Будь ласка, введіть дійсний пошуковий термін.'
+'Please provide a valid phone number.': 'Будь ласка, введіть дійсний номер телефону.'
+'The checkbox has an invalid value.': 'Прапорець має недійсне значення.'
+'Please enter a valid email address.': 'Будь ласка, введіть дійсну адресу електронної пошти.'
+'Please select a valid option.': 'Будь ласка, оберіть дійсний варіант.'
+'Please select a valid range.': 'Будь ласка, оберіть дійсний діапазон.'
+'Please enter a valid week.': 'Будь ласка, введіть дійсний тиждень.'
+'Please enter a valid UUID.': 'Будь ласка, введіть дійсний UUID.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

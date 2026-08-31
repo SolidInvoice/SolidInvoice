@@ -1,0 +1,317 @@
+'This value should be false.': この値はfalseでなければなりません。
+'This value should be true.': この値はtrueでなければなりません。
+'This value should be of type {{ type }}.': 'この値は{{ type }}型でなければなりません。'
+'This value should be blank.': この値は空でなければなりません。
+'The value you selected is not a valid choice.': 有効な選択肢ではありません。
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': '{{ limit }}個以上選択してください。'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': '{{ limit }}個以下で選択してください。'
+'One or more of the given values is invalid.': 無効な値が含まれています。
+'This field was not expected.': このフィールドは不要です。
+'This field is missing.': このフィールドを入力してください。
+'This value is not a valid date.': 有効な日付ではありません。
+'This value is not a valid datetime.': 有効な日時ではありません。
+'This value is not a valid email address.': 有効なメールアドレスではありません。
+'The file could not be found.': ファイルが見つかりません。
+'The file is not readable.': ファイルが読み込めません。
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'ファイルのサイズが大きすぎます（{{ size }} {{ suffix }}）。{{ limit }} {{ suffix }}以下にしてください。'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'ファイルのMIMEタイプが無効です（{{ type }}）。有効なMIMEタイプは{{ types }}です。'
+'This value should be {{ limit }} or less.': 'この値は{{ limit }}以下でなければなりません。'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': '長すぎます。この値は{{ limit }}文字以下で入力してください。'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': '長すぎます。この値は{{ max }}単語以下にする必要があります。'
+'This value should be {{ limit }} or more.': 'この値は{{ limit }}以上でなければなりません。'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': '短すぎます。この値は{{ limit }}文字以上で入力してください。'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': '短すぎます。この値は{{ min }}単語以上にする必要があります。'
+'This value should not be blank.': この値は空にできません。
+'This value should not be null.': 値を入力してください。
+'This value should be null.': 入力しないでください。
+'This value is not valid.': 有効な値ではありません。
+'This value is not a valid time.': 有効な時刻ではありません。
+'This value is not a valid URL.': 有効なURLではありません。
+'The two values should be equal.': 2つの値は同じでなければなりません。
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'ファイルのサイズが大きすぎます。許可されている最大サイズは{{ limit }} {{ suffix }}です。'
+'The file is too large.': ファイルのサイズが大きすぎます。
+'The file could not be uploaded.': ファイルをアップロードできませんでした。
+'This value should be a valid number.': この値は有効な数値でなければなりません。
+'This file is not a valid image.': 選択されたファイルは有効な画像ではありません。
+'This is not a valid IP address.': 有効なIPアドレスではありません。
+'This value is not a valid language.': 有効な言語名ではありません。
+'This value is not a valid locale.': 有効なロケールではありません。
+'This value is not a valid country.': 有効な国名ではありません。
+'This value is already used.': 既に使用されています。
+'The size of the image could not be detected.': 画像のサイズが検出できません。
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': '画像の幅が大きすぎます（{{ width }}px）。{{ max_width }}px以下にしてください。'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': '画像の幅が小さすぎます（{{ width }}px）。{{ min_width }}px以上にしてください。'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': '画像の高さが大きすぎます（{{ height }}px）。{{ max_height }}px以下にしてください。'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': '画像の高さが小さすぎます（{{ height }}px）。{{ min_height }}px以上にしてください。'
+"This value should be the user's current password.": 現在のパスワードを入力してください。
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'この値は{{ limit }}文字ちょうどで入力してください。'
+'The file was only partially uploaded.': ファイルのアップロードが完了しませんでした。
+'No file was uploaded.': ファイルがアップロードされていません。
+'No temporary folder was configured in php':
+    ini.: php.iniに一時フォルダが設定されていないか、設定されたフォルダが存在しません。
+'Cannot write temporary file to disk.': 一時ファイルをディスクに書き込むことができません。
+'A PHP extension caused the upload to fail.': PHP拡張が原因でアップロードに失敗しました。
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': '要素は{{ limit }}個以上でなければなりません。'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': '要素は{{ limit }}個以下でなければなりません。'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': '要素はちょうど{{ limit }}個でなければなりません。'
+'Invalid card number.': 無効なカード番号です。
+'Unsupported card type or invalid card number.': 対応していないカードまたは無効なカード番号です。
+'This is not a valid International Bank Account Number (IBAN).': 有効な国際銀行勘定番号（IBAN）ではありません。
+'This value is not a valid ISBN-10.': 有効なISBN-10コードではありません。
+'This value is not a valid ISBN-13.': 有効なISBN-13コードではありません。
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 有効なISBN-10コードまたはISBN-13コードではありません。
+'This value is not a valid ISSN.': 有効なISSNコードではありません。
+'This value is not a valid currency.': 有効な通貨ではありません。
+'This value should be equal to {{ compared_value }}.': 'この値は{{ compared_value }}と同じ値でなければなりません。'
+'This value should be greater than {{ compared_value }}.': 'この値は{{ compared_value }}より大きくなければなりません。'
+'This value should be greater than or equal to {{ compared_value }}.': 'この値は{{ compared_value }}以上でなければなりません。'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'この値は{{ compared_value_type }}型の{{ compared_value }}と同じでなければなりません。'
+'This value should be less than {{ compared_value }}.': 'この値は{{ compared_value }}未満でなければなりません。'
+'This value should be less than or equal to {{ compared_value }}.': 'この値は{{ compared_value }}以下でなければなりません。'
+'This value should not be equal to {{ compared_value }}.': 'この値は{{ compared_value }}と等しくてはいけません。'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'この値は{{ compared_value_type }}型の{{ compared_value }}と異なる値にしてください。'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': '画像のアスペクト比が大きすぎます（{{ ratio }}）。{{ max_ratio }}までにしてください。'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': '画像のアスペクト比が小さすぎます（{{ ratio }}）。{{ min_ratio }}以上にしてください。'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': '画像が正方形になっています（{{ width }}x{{ height }}px）。正方形の画像は許可されていません。'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': '画像が横向きになっています（{{ width }}x{{ height }}px）。横向きの画像は許可されていません。'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': '画像が縦向きになっています（{{ width }}x{{ height }}px）。縦向きの画像は許可されていません。'
+'An empty file is not allowed.': 空のファイルは許可されていません。
+'The host could not be resolved.': ホストを解決できませんでした。
+'This value does not match the expected {{ charset }} charset.': 'この値の文字コードが期待される{{ charset }}と一致しません。'
+'This is not a valid Business Identifier Code (BIC).': 有効な事業者識別コード（BIC）ではありません。
+Error: エラー
+'This is not a valid UUID.': 有効なUUIDではありません。
+'This value should be a multiple of {{ compared_value }}.': 'この値は{{ compared_value }}の倍数でなければなりません。'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'このSWIFTコードはIBANコード（{{ iban }}）に関連付けられていません。'
+'This value should be valid JSON.': この値は有効なJSONでなければなりません。
+'This collection should contain only unique elements.': 要素は重複してはなりません。
+'This value should be positive.': この値は正の数でなければなりません。
+'This value should be either positive or zero.': この値は正の数、または0でなければなりません。
+'This value should be negative.': この値は負の数でなければなりません。
+'This value should be either negative or zero.': この値は負の数、または0でなければなりません。
+'This value is not a valid timezone.': 有効なタイムゾーンではありません。
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': このパスワードは漏洩しているため使用できません。
+'This value should be between {{ min }} and {{ max }}.': 'この値は{{ min }}以上{{ max }}以下でなければなりません。'
+'This value is not a valid hostname.': 有効なホスト名ではありません。
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': '要素の数は{{ compared_value }}の倍数でなければなりません。'
+'This value should satisfy at least one of the following constraints:': 以下の制約のうち少なくとも1つを満たさなければなりません。
+'Each element of this collection should satisfy its own set of constraints.': コレクションの各要素は、それぞれの制約を満たさなければなりません。
+'This value is not a valid International Securities Identification Number (ISIN).': この値は有効な国際証券識別番号（ISIN）ではありません。
+'This value should be a valid expression.': この値は有効な式形式でなければなりません。
+'This value is not a valid CSS color.': この値は有効なCSSカラーではありません。
+'This value is not a valid CIDR notation.': この値は有効なCIDR表記ではありません。
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'サブネットマスクは{{ min }}から{{ max }}の範囲で入力してください。'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'ファイル名が長すぎます。ファイル名は{{ filename_max_length }}文字以下でなければなりません。'
+'The password strength is too low':
+    ' Please use a stronger password.': パスワードの強度が弱すぎます。より強いパスワードを使用してください。
+'This value contains characters that are not allowed by the current restriction-level.': 現在の設定では使用できない文字が含まれています。
+'Using invisible characters is not allowed.': 不可視文字は使用できません。
+'Mixing numbers from different scripts is not allowed.': 異なる種類の数字を使うことはできません。
+'Using hidden overlay characters is not allowed.': 隠れたオーバレイ文字は使用できません。
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'ファイルの拡張子が無効です（{{ extension }}）。有効な拡張子は{{ extensions }}です。'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': '検出された文字コードは無効です（{{ detected }}）。有効な文字コードは{{ encodings }}です。'
+'This value is not a valid MAC address.': 有効なMACアドレスではありません。
+'This URL is missing a top-level domain.': このURLはトップレベルドメインがありません。
+'This value does not represent a valid week in the ISO 8601 format.': '週の形式が正しくありません（ISO 8601形式）。'
+'This value is not a valid week.': 有効な週形式ではありません。
+'This value should not be before week "{{ min }}".': '週 "{{ min }}" 以降を指定してください。'
+'This value should not be after week "{{ max }}".': '週 "{{ max }}" までを指定してください。'
+'This value is not a valid Twig template.': 有効なTwigテンプレートではありません。
+'This file is not a valid video.': 選択されたファイルは有効な動画ではありません。
+'The size of the video could not be detected.': 動画のファイルサイズを検出できませんでした。
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': '動画の幅が大きすぎます（{{ width }}px）。許可されている最大の幅は {{ max_width }}px です。'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': '動画の幅が小さすぎます（{{ width }}px）。許可されている最小の幅は {{ min_width }}px です。'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': '動画の高さが大きすぎます （{{ height }}px）。許可されている最大の高さは {{ max_height }}px です。'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': '動画の高さが小さすぎます （{{ height }}px）。許可されている最小の高さは {{ min_height }}px です。'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'この動画のピクセル数が少なすぎます （{{ pixels }}）。許可されている最小ピクセル数は {{ min_pixels }} です。'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'この動画のピクセル数が多すぎます （{{ pixels }}）。許可されている最大ピクセル数は {{ max_pixels }} です。'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': '動画のアスペクト比が大きすぎます （{{ ratio }}）。許可されている最大比率は {{ max_ratio }} です。'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': '動画のアスペクト比が小さすぎます （{{ ratio }}）。許可されている最小比率は {{ min_ratio }} です。'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': '動画は正方形です （{{ width }}x{{ height }}px）。正方形の動画は許可されていません。'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': '動画は横向きです（{{ width }}x{{ height }}px）。横向きの動画は許可されていません。'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': '動画は縦向きです（{{ width }}x{{ height }}px）。縦向きの動画は許可されていません。'
+'The video file is corrupted.': 動画ファイルが破損しています。
+'The video contains multiple streams':
+    ' Only one stream is allowed.': この動画には複数のストリームが含まれています。許可されるのは1つのストリームのみです。
+'Unsupported video codec "{{ codec }}".': 'サポートされていないビデオコーデック「{{ codec }}」です。'
+'Unsupported video container "{{ container }}".': 'サポートされていない動画コンテナ「{{ container }}」です。'
+'The image file is corrupted.': 画像ファイルが破損しています。
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': '画像のピクセル数が少なすぎます（{{ pixels }}）。許可されている最小ピクセル数は {{ min_pixels }} です。'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': '画像のピクセル数が多すぎます（{{ pixels }}）。許可されている最大ピクセル数は {{ max_pixels }} です。'
+'This filename does not match the expected charset.': このファイル名は期待される文字セットと一致しません。
+'This value is not valid XML.': この値は有効なXMLではありません。
+'This value does not conform to the expected XSD schema.': この値は期待されるXSDスキーマに準拠していません。
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'このXMLペイロードは大きすぎます（{{ size }}バイト）。{{ limit }}バイトの制限を超えています。'
+'This value is not a valid cron expression.': この値は有効なcron式ではありません。
+'This form should not contain extra fields.': フィールドグループに追加のフィールドを含んではなりません。
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': アップロードされたファイルが大きすぎます。小さなファイルで再度アップロードしてください。
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': CSRFトークンが無効です、再送信してください。
+'This value is not a valid HTML5 color.': 有効なHTML5の色ではありません。
+'Please enter a valid birthdate.': 有効な生年月日を入力してください。
+'The selected choice is invalid.': 選択した値は無効です。
+'The collection is invalid.': コレクションは無効です。
+'Please select a valid color.': 有効な色を選択してください。
+'Please select a valid country.': 有効な国を選択してください。
+'Please select a valid currency.': 有効な通貨を選択してください。
+'Please choose a valid date interval.': 有効な日付間隔を選択してください。
+'Please enter a valid date and time.': 有効な日時を入力してください。
+'Please enter a valid date.': 有効な日付を入力してください。
+'Please select a valid file.': 有効なファイルを選択してください。
+'The hidden field is invalid.': 隠しフィールドが無効です。
+'Please enter an integer.': 整数で入力してください。
+'Please select a valid language.': 有効な言語を選択してください。
+'Please select a valid locale.': 有効なロケールを選択してください。
+'Please enter a valid money amount.': 有効な金額を入力してください。
+'Please enter a number.': 数値で入力してください。
+'The password is invalid.': パスワードが無効です。
+'Please enter a percentage value.': パーセント値で入力してください。
+'The values do not match.': 値が一致しません。
+'Please enter a valid time.': 有効な時間を入力してください。
+'Please select a valid timezone.': 有効なタイムゾーンを選択してください。
+'Please enter a valid URL.': 有効なURLを入力してください。
+'Please enter a valid search term.': 有効な検索語を入力してください。
+'Please provide a valid phone number.': 有効な電話番号を入力してください。
+'The checkbox has an invalid value.': チェックボックスの値が無効です。
+'Please enter a valid email address.': 有効なメールアドレスを入力してください。
+'Please select a valid option.': 有効な値を選択してください。
+'Please select a valid range.': 有効な範囲を選択してください。
+'Please enter a valid week.': 有効な週を入力してください。
+'Please enter a valid UUID.': 有効なUUIDを入力してください。
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

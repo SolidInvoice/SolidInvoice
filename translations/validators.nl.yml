@@ -1,0 +1,317 @@
+'This value should be false.': 'Deze waarde moet onwaar zijn.'
+'This value should be true.': 'Deze waarde moet waar zijn.'
+'This value should be of type {{ type }}.': 'Deze waarde moet van het type {{ type }} zijn.'
+'This value should be blank.': 'Deze waarde moet leeg zijn.'
+'The value you selected is not a valid choice.': 'De geselecteerde waarde is geen geldige optie.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Selecteer ten minste {{ limit }} optie.|Selecteer ten minste {{ limit }} opties.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Selecteer maximaal {{ limit }} optie.|Selecteer maximaal {{ limit }} opties.'
+'One or more of the given values is invalid.': 'Eén of meer van de ingegeven waarden zijn ongeldig.'
+'This field was not expected.': 'Dit veld werd niet verwacht.'
+'This field is missing.': 'Dit veld ontbreekt.'
+'This value is not a valid date.': 'Deze waarde is geen geldige datum.'
+'This value is not a valid datetime.': 'Deze waarde is geen geldige datum en tijd.'
+'This value is not a valid email address.': 'Deze waarde is geen geldig e-mailadres.'
+'The file could not be found.': 'Het bestand kon niet gevonden worden.'
+'The file is not readable.': 'Het bestand is niet leesbaar.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Het bestand is te groot ({{ size }} {{ suffix }}). De maximale grootte is {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Het mediatype van het bestand is ongeldig ({{ type }}). De toegestane mediatypes zijn {{ types }}.'
+'This value should be {{ limit }} or less.': 'Deze waarde moet {{ limit }} of minder zijn.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Deze waarde is te lang. Deze mag maximaal één teken bevatten.|Deze waarde is te lang. Deze mag maximaal {{ limit }} tekens bevatten.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Deze waarde is te lang. Het moet één woord zijn.|Deze waarde is te lang. Het mag maximaal {{ max }} woorden bevatten.'
+'This value should be {{ limit }} or more.': 'Deze waarde moet {{ limit }} of meer zijn.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Deze waarde is te kort. Deze moet ten minste één teken bevatten.|Deze waarde is te kort. Deze moet ten minste {{ limit }} tekens bevatten.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Deze waarde is te kort. Het moet ten minste één woord bevatten.|Deze waarde is te kort. Het moet ten minste {{ min }} woorden bevatten.'
+'This value should not be blank.': 'Deze waarde mag niet leeg zijn.'
+'This value should not be null.': 'Deze waarde mag niet null zijn.'
+'This value should be null.': 'Deze waarde moet null zijn.'
+'This value is not valid.': 'Deze waarde is niet geldig.'
+'This value is not a valid time.': 'Deze waarde is geen geldige tijd.'
+'This value is not a valid URL.': 'Deze waarde is geen geldige URL.'
+'The two values should be equal.': 'De twee waarden moeten gelijk zijn.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Het bestand is te groot. De maximale grootte is {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Het bestand is te groot.'
+'The file could not be uploaded.': 'Het bestand kon niet worden geüpload.'
+'This value should be a valid number.': 'Deze waarde moet een geldig getal zijn.'
+'This file is not a valid image.': 'Dit bestand is geen geldige afbeelding.'
+'This is not a valid IP address.': 'Deze waarde is geen geldig IP-adres.'
+'This value is not a valid language.': 'Deze waarde is geen geldige taal.'
+'This value is not a valid locale.': 'Deze waarde is geen geldige landinstelling.'
+'This value is not a valid country.': 'Deze waarde is geen geldig land.'
+'This value is already used.': 'Deze waarde wordt al gebruikt.'
+'The size of the image could not be detected.': 'De grootte van de afbeelding kon niet bepaald worden.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'De afbeelding is te breed ({{ width }}px). De maximale breedte is {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'De afbeelding is niet breed genoeg ({{ width }}px). De minimaal verwachte breedte is {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'De afbeelding is te hoog ({{ height }}px). De maximale hoogte is {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'De afbeelding is niet hoog genoeg ({{ height }}px). De minimaal verwachte hoogte is {{ min_height }}px.'
+"This value should be the user's current password.": 'Deze waarde moet het huidige wachtwoord van de gebruiker zijn.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Deze waarde moet exact één teken lang zijn.|Deze waarde moet exact {{ limit }} tekens lang zijn.'
+'The file was only partially uploaded.': 'Het bestand is slechts gedeeltelijk geüpload.'
+'No file was uploaded.': 'Er is geen bestand geüpload.'
+'No temporary folder was configured in php':
+    ini.: 'Er is geen tijdelijke map geconfigureerd in php.ini, of de gespecificeerde map bestaat niet.'
+'Cannot write temporary file to disk.': 'Kan het tijdelijke bestand niet wegschrijven op de schijf.'
+'A PHP extension caused the upload to fail.': 'De upload is mislukt vanwege een PHP-extensie.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Deze collectie moet één of meer elementen bevatten.|Deze collectie moet {{ limit }} of meer elementen bevatten.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Deze collectie moet één of minder elementen bevatten.|Deze collectie moet {{ limit }} of minder elementen bevatten.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Deze collectie moet exact één element bevatten.|Deze collectie moet exact {{ limit }} elementen bevatten.'
+'Invalid card number.': 'Ongeldig creditcardnummer.'
+'Unsupported card type or invalid card number.': 'Niet-ondersteund type creditcard of ongeldig nummer.'
+'This is not a valid International Bank Account Number (IBAN).': 'Deze waarde is geen geldig internationaal bankrekeningnummer (IBAN).'
+'This value is not a valid ISBN-10.': 'Deze waarde is geen geldige ISBN-10.'
+'This value is not a valid ISBN-13.': 'Deze waarde is geen geldige ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Deze waarde is geen geldige ISBN-10 of ISBN-13.'
+'This value is not a valid ISSN.': 'Deze waarde is geen geldige ISSN.'
+'This value is not a valid currency.': 'Deze waarde is geen geldige valuta.'
+'This value should be equal to {{ compared_value }}.': 'Deze waarde moet gelijk zijn aan {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Deze waarde moet groter zijn dan {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Deze waarde moet groter of gelijk aan {{ compared_value }} zijn.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Deze waarde moet identiek zijn aan {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Deze waarde moet minder zijn dan {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Deze waarde moet minder dan of gelijk aan {{ compared_value }} zijn.'
+'This value should not be equal to {{ compared_value }}.': 'Deze waarde mag niet gelijk zijn aan {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Deze waarde mag niet identiek zijn aan {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'De afbeeldingsverhouding is te groot ({{ ratio }}). De maximale verhouding is {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'De afbeeldingsverhouding is te klein ({{ ratio }}). De minimale verhouding is {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'De afbeelding is vierkant ({{ width }}x{{ height }}px). Vierkante afbeeldingen zijn niet toegestaan.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'De afbeelding is liggend ({{ width }}x{{ height }}px). Liggende afbeeldingen zijn niet toegestaan.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'De afbeelding is staand ({{ width }}x{{ height }}px). Staande afbeeldingen zijn niet toegestaan.'
+'An empty file is not allowed.': 'Lege bestanden zijn niet toegestaan.'
+'The host could not be resolved.': 'De hostnaam kon niet worden gevonden.'
+'This value does not match the expected {{ charset }} charset.': 'Deze waarde is niet in de verwachte tekencodering {{ charset }}.'
+'This is not a valid Business Identifier Code (BIC).': 'Deze waarde is geen geldige bankidentificatiecode (BIC).'
+Error: Fout
+'This is not a valid UUID.': 'Deze waarde is geen geldige UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Deze waarde moet een meervoud van {{ compared_value }} zijn.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Deze bankidentificatiecode (BIC) is niet gekoppeld aan IBAN {{ iban }}.'
+'This value should be valid JSON.': 'Deze waarde moet geldige JSON zijn.'
+'This collection should contain only unique elements.': 'Deze collectie mag alleen unieke elementen bevatten.'
+'This value should be positive.': 'Deze waarde moet positief zijn.'
+'This value should be either positive or zero.': 'Deze waarde moet positief of gelijk aan nul zijn.'
+'This value should be negative.': 'Deze waarde moet negatief zijn.'
+'This value should be either negative or zero.': 'Deze waarde moet negatief of gelijk aan nul zijn.'
+'This value is not a valid timezone.': 'Deze waarde is geen geldige tijdzone.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Dit wachtwoord is gelekt bij een datalek en mag niet worden gebruikt. Kies een ander wachtwoord.'
+'This value should be between {{ min }} and {{ max }}.': 'Deze waarde moet zich tussen {{ min }} en {{ max }} bevinden.'
+'This value is not a valid hostname.': 'Deze waarde is geen geldige hostnaam.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Het aantal elementen van deze collectie moet een veelvoud zijn van {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Deze waarde moet voldoen aan tenminste een van de volgende voorwaarden:'
+'Each element of this collection should satisfy its own set of constraints.': 'Elk element van deze collectie moet voldoen aan zijn eigen set voorwaarden.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Deze waarde is geen geldig International Securities Identification Number (ISIN).'
+'This value should be a valid expression.': 'Deze waarde moet een geldige expressie zijn.'
+'This value is not a valid CSS color.': 'Deze waarde is geen geldige CSS kleur.'
+'This value is not a valid CIDR notation.': 'Deze waarde is geen geldige CIDR-notatie.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'De waarde van het netmasker moet tussen {{ min }} en {{ max }} liggen.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'De bestandsnaam is te lang. Het moet {{ filename_max_length }} of minder karakters zijn.|De bestandsnaam is te lang. Het moet {{ filename_max_length }} of minder karakters zijn.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Het wachtwoord is niet sterk genoeg. Probeer een sterker wachtwoord.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Deze waarde bevat tekens die niet zijn toegestaan volgens het huidige beperkingsniveau.'
+'Using invisible characters is not allowed.': 'Het gebruik van onzichtbare tekens is niet toegestaan.'
+'Mixing numbers from different scripts is not allowed.': 'Het mengen van cijfers uit verschillende schriften is niet toegestaan.'
+'Using hidden overlay characters is not allowed.': 'Het gebruik van verborgen overlay-tekens is niet toegestaan.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'De bestandsextensie is ongeldig ({{ extension }}). De toegestane extensies zijn {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'De gedetecteerde karaktercodering is ongeldig ({{ detected }}). De toegestane coderingen zijn {{ encodings }}.'
+'This value is not a valid MAC address.': 'Deze waarde is geen geldig MAC-adres.'
+'This URL is missing a top-level domain.': 'Deze URL mist een top-level domein.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Deze waarde vertegenwoordigt geen geldige week in het ISO 8601-formaat.'
+'This value is not a valid week.': 'Deze waarde is geen geldige week.'
+'This value should not be before week "{{ min }}".': 'Deze waarde mag niet vóór week "{{ min }}" liggen.'
+'This value should not be after week "{{ max }}".': 'Deze waarde mag niet na week "{{ max }}" liggen.'
+'This value is not a valid Twig template.': 'Deze waarde is geen geldige Twig-template.'
+'This file is not a valid video.': 'Dit bestand is geen geldige video.'
+'The size of the video could not be detected.': 'De grootte van de video kon niet worden gedetecteerd.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'De videobreedte is te groot ({{ width }}px). Toegestane maximale breedte is {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'De videobreedte is te klein ({{ width }}px). Verwachte minimum breedte is {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'De videohoogte is te groot ({{ height }}px). Toegestane maximale hoogte is {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'De videohoogte is te klein ({{ height }}px). Verwachte minimale hoogte is {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'De video heeft te weinig pixels ({{ pixels }}). Verwachte minimumaantal is {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'De video heeft te veel pixels ({{ pixels }}). Het verwachte maximum is {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'De videoratio is te groot ({{ ratio }}). Toegestane maximale ratio is {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'De videoratio is te klein ({{ ratio }}). Verwachte minimumverhouding is {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': "De video is vierkant ({{ width }}x{{ height }}px). Vierkante video's zijn niet toegestaan."
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': "De video is in liggende oriëntatie ({{ width }}x{{ height }} px). Liggende video's zijn niet toegestaan."
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': "De video is in portretstand ({{ width }}x{{ height }}px). Video's in portretstand zijn niet toegestaan."
+'The video file is corrupted.': 'Het videobestand is beschadigd.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'De video bevat meerdere streams. Slechts één stream is toegestaan.'
+'Unsupported video codec "{{ codec }}".': 'Niet-ondersteunde videocodec ‘{{ codec }}’.'
+'Unsupported video container "{{ container }}".': 'Niet-ondersteunde videocontainer "{{ container }}".'
+'The image file is corrupted.': 'Het afbeeldingsbestand is beschadigd.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'De afbeelding heeft te weinig pixels ({{ pixels }}). Verwachte minimumhoeveelheid is {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'De afbeelding heeft te veel pixels ({{ pixels }}). Het verwachte maximum is {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Deze bestandsnaam komt niet overeen met de verwachte tekencodering.'
+'This value is not valid XML.': 'Deze waarde is geen geldige XML.'
+'This value does not conform to the expected XSD schema.': 'Deze waarde voldoet niet aan het verwachte XSD-schema.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Deze XML-payload is te groot ({{ size }} bytes): deze overschrijdt de limiet van {{ limit }} bytes.'
+'This value is not a valid cron expression.': 'Deze waarde is geen geldige cron-expressie.'
+'This form should not contain extra fields.': 'Dit formulier mag geen extra velden bevatten.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Het geüploade bestand is te groot. Probeer een kleiner bestand te uploaden.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'De CSRF-token is ongeldig. Probeer het formulier opnieuw te versturen.'
+'This value is not a valid HTML5 color.': 'Dit is geen geldige HTML5 kleur.'
+'Please enter a valid birthdate.': 'Vul een geldige geboortedatum in.'
+'The selected choice is invalid.': 'Deze keuze is ongeldig.'
+'The collection is invalid.': 'Deze collectie is ongeldig.'
+'Please select a valid color.': 'Kies een geldige kleur.'
+'Please select a valid country.': 'Kies een geldige landnaam.'
+'Please select a valid currency.': 'Kies een geldige valuta.'
+'Please choose a valid date interval.': 'Kies een geldig tijdinterval.'
+'Please enter a valid date and time.': 'Vul een geldige datum en tijd in.'
+'Please enter a valid date.': 'Vul een geldige datum in.'
+'Please select a valid file.': 'Kies een geldig bestand.'
+'The hidden field is invalid.': 'Het verborgen veld is incorrect.'
+'Please enter an integer.': 'Vul een geldig getal in.'
+'Please select a valid language.': 'Kies een geldige taal.'
+'Please select a valid locale.': 'Kies een geldige locale.'
+'Please enter a valid money amount.': 'Vul een geldig bedrag in.'
+'Please enter a number.': 'Vul een geldig getal in.'
+'The password is invalid.': 'Het wachtwoord is incorrect.'
+'Please enter a percentage value.': 'Vul een geldig percentage in.'
+'The values do not match.': 'De waardes komen niet overeen.'
+'Please enter a valid time.': 'Vul een geldige tijd in.'
+'Please select a valid timezone.': 'Vul een geldige tijdzone in.'
+'Please enter a valid URL.': 'Vul een geldige URL in.'
+'Please enter a valid search term.': 'Vul een geldige zoekterm in.'
+'Please provide a valid phone number.': 'Vul een geldig telefoonnummer in.'
+'The checkbox has an invalid value.': 'De checkbox heeft een incorrecte waarde.'
+'Please enter a valid email address.': 'Vul een geldig e-mailadres in.'
+'Please select a valid option.': 'Kies een geldige optie.'
+'Please select a valid range.': 'Kies een geldig bereik.'
+'Please enter a valid week.': 'Vul een geldige week in.'
+'Please enter a valid UUID.': 'Vul een geldige UUID in.'
+validator:
+    credit_card:
+        invalidDate: 'Deze waarde moet een geldige datum zijn.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

@@ -1,0 +1,317 @@
+'This value should be false.': 'Arvon tulee olla epätosi.'
+'This value should be true.': 'Arvon tulee olla tosi.'
+'This value should be of type {{ type }}.': 'Arvon tulee olla tyyppiä {{ type }}.'
+'This value should be blank.': 'Arvon tulee olla tyhjä.'
+'The value you selected is not a valid choice.': 'Arvon tulee olla yksi annetuista vaihtoehdoista.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Sinun tulee valita vähintään yksi vaihtoehto.|Sinun tulee valita vähintään {{ limit }} vaihtoehtoa.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Sinun tulee valita enintään yksi vaihtoehto.|Sinun tulee valita enintään {{ limit }} vaihtoehtoa.'
+'One or more of the given values is invalid.': 'Yksi tai useampi annetuista arvoista on virheellinen.'
+'This field was not expected.': 'Tätä kenttää ei odotettu.'
+'This field is missing.': 'Tämä kenttä puuttuu.'
+'This value is not a valid date.': 'Annettu arvo ei ole kelvollinen päivämäärä.'
+'This value is not a valid datetime.': 'Annettu arvo ei ole kelvollinen päivämäärä ja kellonaika.'
+'This value is not a valid email address.': 'Annettu arvo ei ole kelvollinen sähköpostiosoite.'
+'The file could not be found.': 'Tiedostoa ei löydy.'
+'The file is not readable.': 'Tiedostoa ei voi lukea.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Tiedostonkoko ({{ size }} {{ suffix }}) on liian iso. Suurin sallittu tiedostonkoko on {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Tiedostotyyppi ({{ type }}) on virheellinen. Sallittuja tiedostotyyppejä ovat {{ types }}.'
+'This value should be {{ limit }} or less.': 'Arvon tulee olla {{ limit }} tai vähemmän.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Liian pitkä syöte. Syöte saa olla enintään yhden merkin.|Liian pitkä syöte. Syöte saa olla enintään {{ limit }} merkkiä.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Tämä arvo on liian pitkä. Sen pitäisi sisältää vain yksi sana.|Tämä arvo on liian pitkä. Sen pitäisi sisältää {{ max }} sanaa tai vähemmän.'
+'This value should be {{ limit }} or more.': 'Arvon tulee olla {{ limit }} tai enemmän.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Liian lyhyt syöte. Syötteen tulee olla vähintään yhden merkin.|Liian lyhyt syöte. Syötteen tulee olla vähintään {{ limit }} merkkiä.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Tämä arvo on liian lyhyt. Sen pitäisi sisältää vähintään yksi sana.|Tämä arvo on liian lyhyt. Sen pitäisi sisältää vähintään {{ min }} sanaa.'
+'This value should not be blank.': 'Kenttä ei voi olla tyhjä.'
+'This value should not be null.': 'Annettu arvo ei voi olla null.'
+'This value should be null.': 'Annetun arvon tulee olla null.'
+'This value is not valid.': 'Virheellinen arvo.'
+'This value is not a valid time.': 'Annettu arvo ei ole kelvollinen kellonaika.'
+'This value is not a valid URL.': 'Annettu arvo ei ole kelvollinen URL-osoite.'
+'The two values should be equal.': 'Kahden annetun arvon tulee olla samat.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Annettu tiedosto on liian iso. Suurin sallittu tiedostokoko on {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Tiedosto on liian iso.'
+'The file could not be uploaded.': 'Tiedoston siirto epäonnistui.'
+'This value should be a valid number.': 'Arvon tulee olla numero.'
+'This file is not a valid image.': 'Tiedosto ei ole kelvollinen kuva.'
+'This is not a valid IP address.': 'Tämä arvo ei ole kelvollinen IP-osoite.'
+'This value is not a valid language.': 'Arvo ei ole kelvollinen kieli.'
+'This value is not a valid locale.': 'Arvo ei ole kelvollinen kieli- ja alueasetus (locale).'
+'This value is not a valid country.': 'Arvo ei ole kelvollinen maa.'
+'This value is already used.': 'Arvo on jo käytetty.'
+'The size of the image could not be detected.': 'Kuvan kokoa ei tunnistettu.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Kuva on liian leveä ({{ width }} px). Leveyden tulee olla enintään {{ max_width }} px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Kuva on liian kapea ({{ width }} px). Leveyden tulee olla vähintään {{ min_width }} px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Kuva on liian korkea ({{ width }} px). Korkeuden tulee olla enintään {{ max_width }} px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Kuva on liian matala ({{ height }} px). Korkeuden tulee olla vähintään {{ min_height }} px.'
+"This value should be the user's current password.": 'Arvon tulee olla käyttäjän tämänhetkinen salasana.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Arvon tulee olla tasan yhden merkin pituinen.|Arvon tulee olla tasan {{ limit }} merkin pituinen.'
+'The file was only partially uploaded.': 'Tiedosto ladattiin vain osittain.'
+'No file was uploaded.': 'Tiedostoa ei ladattu.'
+'No temporary folder was configured in php':
+    ini.: 'Väliaikaista kansiota ei ole määritetty php.ini:ssä, tai määritetty kansio ei ole olemassa.'
+'Cannot write temporary file to disk.': 'Väliaikaistiedostoa ei voitu kirjoittaa levylle.'
+'A PHP extension caused the upload to fail.': 'PHP-laajennoksen vuoksi tiedoston lataus epäonnistui.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Tässä ryhmässä tulee olla vähintään yksi elementti.|Tässä ryhmässä tulee olla vähintään {{ limit }} elementtiä.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Tässä ryhmässä tulee olla enintään yksi elementti.|Tässä ryhmässä tulee olla enintään {{ limit }} elementtiä.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Tässä ryhmässä tulee olla tasan yksi elementti.|Tässä ryhmässä tulee olla tasan {{ limit }} elementtiä.'
+'Invalid card number.': 'Virheellinen korttinumero.'
+'Unsupported card type or invalid card number.': 'Tätä korttityyppiä ei tueta tai korttinumero on virheellinen.'
+'This is not a valid International Bank Account Number (IBAN).': 'Tämä arvo ei ole kelvollinen kansainvälinen pankkitilinumero (IBAN).'
+'This value is not a valid ISBN-10.': 'Arvo ei ole kelvollinen ISBN-10.'
+'This value is not a valid ISBN-13.': 'Arvo ei ole kelvollinen ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Arvo ei ole kelvollinen ISBN-10 eikä ISBN-13.'
+'This value is not a valid ISSN.': 'Arvo ei ole kelvollinen ISSN.'
+'This value is not a valid currency.': 'Arvo ei ole kelvollinen valuutta.'
+'This value should be equal to {{ compared_value }}.': 'Arvo ei ole sama kuin {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Arvon tulee olla suurempi kuin {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Arvon tulee olla suurempi tai yhtä suuri kuin {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Arvon tulee olla sama kuin {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Arvon tulee olla pienempi kuin {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Arvon tulee olla pienempi tai yhtä suuri kuin {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Arvon ei tule olla sama kuin {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Arvon ei tule olla sama kuin {{ compared_value_type }} {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Kuvasuhde on liian suuri ({{ ratio }}). Suurin sallittu suhde on {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Kuvasuhde on liian pieni ({{ ratio }}). Pienin sallittu suhde on {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Kuva on neliö ({{ width }}x{{ height }} px). Neliönmuotoiset kuvat eivät ole sallittuja.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Kuva on vaakasuuntainen ({{ width }}x{{ height }} px). Vaakasuuntaiset kuvat eivät ole sallittuja.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Kuva on pystysuuntainen ({{ width }}x{{ height }} px). Pystysuuntaiset kuvat eivät ole sallittuja.'
+'An empty file is not allowed.': 'Tiedosto ei saa olla tyhjä.'
+'The host could not be resolved.': 'Palvelimeen ei saatu yhteyttä.'
+'This value does not match the expected {{ charset }} charset.': 'Arvo ei vastaa odotettua merkistöä {{ charset }}.'
+'This is not a valid Business Identifier Code (BIC).': 'Tämä arvo ei ole kelvollinen liiketoiminnan tunnistekoodi (BIC).'
+Error: Virhe
+'This is not a valid UUID.': 'Tämä arvo ei ole kelvollinen UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Tämän arvon tulee olla luvun {{ compared_value }} kerrannainen.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Tätä yritystunnusta (BIC) ei ole liitetty IBAN-tilinumeroon {{ iban }}.'
+'This value should be valid JSON.': 'Arvon tulee olla kelvollinen JSON.'
+'This collection should contain only unique elements.': 'Ryhmän tulee sisältää vain yksilöllisiä arvoja.'
+'This value should be positive.': 'Arvon tulee olla positiivinen.'
+'This value should be either positive or zero.': 'Arvon tulee olla joko positiivinen tai nolla.'
+'This value should be negative.': 'Arvon tulee olla negatiivinen.'
+'This value should be either negative or zero.': 'Arvon tulee olla joko negatiivinen tai nolla.'
+'This value is not a valid timezone.': 'Arvo ei ole kelvollinen aikavyöhyke.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Tämä salasana on vuotanut tietomurrossa, eikä sitä saa käyttää. Käytä toista salasanaa.'
+'This value should be between {{ min }} and {{ max }}.': 'Arvon tulee olla {{ min }} - {{ max }}.'
+'This value is not a valid hostname.': 'Arvo ei ole kelvollinen laitenimi (hostname).'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Ryhmässä olevien elementtien määrän pitää olla luvun {{ compared_value }} kerrannainen.'
+'This value should satisfy at least one of the following constraints:': 'Arvon tulee läpäistä vähintään yksi seuraavista tarkistuksista:'
+'Each element of this collection should satisfy its own set of constraints.': 'Ryhmän jokaisen elementin tulee läpäistä omat tarkistuksensa.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Tämä arvo ei ole kelvollinen ISIN-koodi (International Securities Identification Number).'
+'This value should be a valid expression.': 'Tämän arvon on oltava kelvollinen lauseke.'
+'This value is not a valid CSS color.': 'Tämä arvo ei ole kelvollinen CSS-värimääritys.'
+'This value is not a valid CIDR notation.': 'Tämä arvo ei ole kelvollinen CIDR-merkintä.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Verkkomaskille annetun arvon tulee olla {{ min }} - {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Tiedostonimi on liian pitkä. Nimi saa olla enintään yhden merkin pituinen.|Tiedostonimi on liian pitkä. Nimi saa olla enintään {{ filename_max_length }} merkin pituinen.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Salasana on liian heikko. Valitse vahvempi salasana.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Arvo sisältää merkkejä, joita nykyinen rajoitustaso ei salli.'
+'Using invisible characters is not allowed.': 'Näkymättömiä merkkejä ei saa käyttää.'
+'Mixing numbers from different scripts is not allowed.': 'Eri kirjaimistojen numeroita ei saa sekoittaa.'
+'Using hidden overlay characters is not allowed.': 'Piilotettuja tarkemerkkejä ei saa käyttää.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Tiedostopääte ({{ extension }}) on virheellinen. Sallitut tiedostopäätteet ovat: {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Havaittu merkistö on virheellinen ({{ detected }}). Sallitut merkistöt ovat {{ encodings }}.'
+'This value is not a valid MAC address.': 'Tämä arvo ei ole kelvollinen MAC-osoite.'
+'This URL is missing a top-level domain.': 'Tästä URL-osoitteesta puuttuu ylätason verkkotunnus.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Tämä arvo ei esitä kelvollista viikkoa ISO 8601 -muodossa.'
+'This value is not a valid week.': 'Tämä arvo ei ole kelvollinen viikko.'
+'This value should not be before week "{{ min }}".': 'Tämän arvon ei pitäisi olla ennen viikkoa "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Tämän arvon ei pitäisi olla viikon "{{ max }}" jälkeen.'
+'This value is not a valid Twig template.': 'Tämä arvo ei ole kelvollinen Twig-malli.'
+'This file is not a valid video.': 'Tämä tiedosto ei ole kelvollinen video.'
+'The size of the video could not be detected.': 'Videon kokoa ei voitu tunnistaa.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Videon leveys on liian suuri ({{ width }} px). Leveyden tulee olla enintään {{ max_width }} px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Videon leveys on liian pieni ({{ width }} px). Leveyden tulee olla vähintään {{ min_width }} px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Videon korkeus on liian suuri ({{ height }} px). Korkeuden tulee olla enintään {{ max_height }} px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Videon korkeus on liian pieni ({{ height }} px). Korkeuden tulee olla vähintään {{ min_height }} px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Videossa on liian vähän pikseleitä ({{ pixels }}). Pikseleitä tulee olla vähintään {{ min_pixels }}.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Videossa on liikaa pikseleitä ({{ pixels }}). Pikseleitä tulee olla enintään {{ max_pixels }}.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Videon kuvasuhde on liian suuri ({{ ratio }}). Suurin sallittu suhde on {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Videon kuvasuhde on liian pieni ({{ ratio }}). Pienin sallittu suhde on {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Video on neliön muotoinen ({{ width }}x{{ height }}px). Neliönmuotoiset videot eivät ole sallittuja.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Video on vaakasuuntainen ({{ width }}x{{ height }} px). Vaakasuuntaiset videot eivät ole sallittuja.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Video on pystysuuntainen ({{ width }}x{{ height }} px). Pystysuuntaiset videot eivät ole sallittuja.'
+'The video file is corrupted.': 'Videotiedosto on vioittunut.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Videossa on useita virtoja. Vain yksi virta on sallittu.'
+'Unsupported video codec "{{ codec }}".': 'Videokoodekkia ei tueta ({{ codec }}).'
+'Unsupported video container "{{ container }}".': 'Videon säiliömuotoa ei tueta ({{ container }}).'
+'The image file is corrupted.': 'Kuvatiedosto on vioittunut.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Kuvassa on liian vähän pikseleitä ({{ pixels }}). Pikseleitä tulee olla vähintään {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Kuvassa on liikaa pikseleitä ({{ pixels }}). Pikseleitä tulee olla enintään {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Tämä tiedostonimi ei vastaa odotettua merkistöä.'
+'This value is not valid XML.': 'Tämä arvo ei ole kelvollista XML:ää.'
+'This value does not conform to the expected XSD schema.': 'Tämä arvo ei vastaa odotettua XSD-skeemaa.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Tämä XML-data on liian suuri ({{ size }} tavua): se ylittää {{ limit }} tavun rajan.'
+'This value is not a valid cron expression.': 'Tämä arvo ei ole kelvollinen cron-lauseke.'
+'This form should not contain extra fields.': 'Tämä lomake ei voi sisältää ylimääräisiä kenttiä.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Ladattu tiedosto on liian iso. Ole hyvä ja lataa pienempi tiedosto.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF-tarkiste on virheellinen. Ole hyvä ja yritä lähettää lomake uudestaan.'
+'This value is not a valid HTML5 color.': 'Tämä arvo ei ole kelvollinen HTML5-väri.'
+'Please enter a valid birthdate.': 'Syötä kelvollinen syntymäaika.'
+'The selected choice is invalid.': 'Valittu vaihtoehto ei kelpaa.'
+'The collection is invalid.': 'Ryhmä ei kelpaa.'
+'Please select a valid color.': 'Valitse kelvollinen väri.'
+'Please select a valid country.': 'Valitse kelvollinen maa.'
+'Please select a valid currency.': 'Valitse kelvollinen valuutta.'
+'Please choose a valid date interval.': 'Valitse kelvollinen aikaväli.'
+'Please enter a valid date and time.': 'Syötä kelvolliset päivä ja aika.'
+'Please enter a valid date.': 'Syötä kelvollinen päivä.'
+'Please select a valid file.': 'Valitse kelvollinen tiedosto.'
+'The hidden field is invalid.': 'Piilotettu kenttä ei ole kelvollinen.'
+'Please enter an integer.': 'Syötä kokonaisluku.'
+'Please select a valid language.': 'Valitse kelvollinen kieli.'
+'Please select a valid locale.': 'Valitse kelvollinen kielikoodi.'
+'Please enter a valid money amount.': 'Syötä kelvollinen rahasumma.'
+'Please enter a number.': 'Syötä numero.'
+'The password is invalid.': 'Salasana ei kelpaa.'
+'Please enter a percentage value.': 'Syötä prosenttiluku.'
+'The values do not match.': 'Arvot eivät vastaa toisiaan.'
+'Please enter a valid time.': 'Syötä kelvollinen kellonaika.'
+'Please select a valid timezone.': 'Valitse kelvollinen aikavyöhyke.'
+'Please enter a valid URL.': 'Syötä kelvollinen URL.'
+'Please enter a valid search term.': 'Syötä kelvollinen hakusana.'
+'Please provide a valid phone number.': 'Anna kelvollinen puhelinnumero.'
+'The checkbox has an invalid value.': 'Valintaruudun arvo ei  kelpaa.'
+'Please enter a valid email address.': 'Syötä kelvollinen sähköpostiosoite.'
+'Please select a valid option.': 'Valitse kelvollinen vaihtoehto.'
+'Please select a valid range.': 'Valitse kelvollinen väli.'
+'Please enter a valid week.': 'Syötä kelvollinen viikko.'
+'Please enter a valid UUID.': 'Syötä kelvollinen UUID.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

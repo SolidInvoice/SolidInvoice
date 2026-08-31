@@ -1,0 +1,317 @@
+'This value should be false.': 'Tato hodnota musí být nepravdivá (false).'
+'This value should be true.': 'Tato hodnota musí být pravdivá (true).'
+'This value should be of type {{ type }}.': 'Tato hodnota musí být typu {{ type }}.'
+'This value should be blank.': 'Tato hodnota musí být prázdná.'
+'The value you selected is not a valid choice.': 'Vybraná hodnota není platnou možností.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'Musí být vybrána nejméně {{ limit }} možnost.|Musí být vybrány nejméně {{ limit }} možnosti.|Musí být vybráno nejméně {{ limit }} možností.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'Musí být vybrána maximálně {{ limit }} možnost.|Musí být vybrány maximálně {{ limit }} možnosti.|Musí být vybráno maximálně {{ limit }} možností.'
+'One or more of the given values is invalid.': 'Některé z uvedených hodnot jsou neplatné.'
+'This field was not expected.': 'Toto pole nebylo očekáváno.'
+'This field is missing.': 'Toto pole chybí.'
+'This value is not a valid date.': 'Tato hodnota není platné datum.'
+'This value is not a valid datetime.': 'Tato hodnota není platné datum s časovým údajem.'
+'This value is not a valid email address.': 'Tato hodnota není platná e-mailová adresa.'
+'The file could not be found.': 'Soubor nebyl nalezen.'
+'The file is not readable.': 'Soubor je nečitelný.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Soubor je příliš velký ({{ size }} {{ suffix }}). Maximální povolená velikost souboru je {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Neplatný mime typ souboru ({{ type }}). Povolené mime typy souborů jsou {{ types }}.'
+'This value should be {{ limit }} or less.': 'Tato hodnota musí být {{ limit }} nebo méně.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znak.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znaky.|Tato hodnota je příliš dlouhá. Musí obsahovat maximálně {{ limit }} znaků.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Tato hodnota je příliš dlouhá, měla obsahovat pouze jedno slovo.|Tato hodnota je příliš dlouhá, měla by obsahovat {{ max }} slova a nebo méně.'
+'This value should be {{ limit }} or more.': 'Tato hodnota musí být {{ limit }} nebo více.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znak.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znaky.|Tato hodnota je příliš krátká. Musí obsahovat minimálně {{ limit }} znaků.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Tato hodnota je příliš krátká, měla by obsahovat alespoň jedno slovo|Tato hodnota je příliš krátká, měla by obsahovat alespoň {{ min }} slova.'
+'This value should not be blank.': 'Tato hodnota nesmí být prázdná.'
+'This value should not be null.': 'Tato hodnota nesmí být null.'
+'This value should be null.': 'Tato hodnota musí být null.'
+'This value is not valid.': 'Tato hodnota není platná.'
+'This value is not a valid time.': 'Tato hodnota není platný časový údaj.'
+'This value is not a valid URL.': 'Tato hodnota není platná URL adresa.'
+'The two values should be equal.': 'Tyto dvě hodnoty musí být stejné.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Soubor je příliš velký. Maximální povolená velikost souboru je {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Soubor je příliš velký.'
+'The file could not be uploaded.': 'Soubor se nepodařilo nahrát.'
+'This value should be a valid number.': 'Tato hodnota musí být číslo.'
+'This file is not a valid image.': 'Tento soubor není obrázek.'
+'This is not a valid IP address.': 'Tato hodnota není platnou IP adresou.'
+'This value is not a valid language.': 'Tento jazyk neexistuje.'
+'This value is not a valid locale.': 'Tato lokalizace neexistuje.'
+'This value is not a valid country.': 'Tato země neexistuje.'
+'This value is already used.': 'Tato hodnota je již používána.'
+'The size of the image could not be detected.': 'Nepodařily se zjistit rozměry obrázku.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Obrázek je příliš široký ({{ width }}px). Maximální povolená šířka je {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Obrázek je příliš úzký ({{ width }}px). Minimální očekávaná šířka je {{ min_width }}px.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Obrázek je příliš vysoký ({{ height }}px). Maximální povolená výška je {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Obrázek je příliš nízký ({{ height }}px). Minimální očekávaná výška je {{ min_height }}px.'
+"This value should be the user's current password.": 'Tato hodnota musí být aktuální heslo uživatele.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Tato hodnota musí mít přesně {{ limit }} znak.|Tato hodnota musí mít přesně {{ limit }} znaky.|Tato hodnota musí mít přesně {{ limit }} znaků.'
+'The file was only partially uploaded.': 'Byla nahrána jen část souboru.'
+'No file was uploaded.': 'Žádný soubor nebyl nahrán.'
+'No temporary folder was configured in php':
+    ini.: 'V php.ini nebyla nastavena cesta k dočasnému adresáři, nebo nastavený adresář neexistuje.'
+'Cannot write temporary file to disk.': 'Dočasný soubor se nepodařilo zapsat na disk.'
+'A PHP extension caused the upload to fail.': 'Rozšíření PHP zabránilo nahrání souboru.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Tato kolekce musí obsahovat minimálně {{ limit }} prvek.|Tato kolekce musí obsahovat minimálně {{ limit }} prvky.|Tato kolekce musí obsahovat minimálně {{ limit }} prvků.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Tato kolekce musí obsahovat maximálně {{ limit }} prvek.|Tato kolekce musí obsahovat maximálně {{ limit }} prvky.|Tato kolekce musí obsahovat maximálně {{ limit }} prvků.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Tato kolekce musí obsahovat přesně {{ limit }} prvek.|Tato kolekce musí obsahovat přesně {{ limit }} prvky.|Tato kolekce musí obsahovat přesně {{ limit }} prvků.'
+'Invalid card number.': 'Neplatné číslo karty.'
+'Unsupported card type or invalid card number.': 'Nepodporovaný typ karty nebo neplatné číslo karty.'
+'This is not a valid International Bank Account Number (IBAN).': 'Tato hodnota není platným Mezinárodním bankovním číslem účtu (IBAN).'
+'This value is not a valid ISBN-10.': 'Tato hodnota není platné ISBN-10.'
+'This value is not a valid ISBN-13.': 'Tato hodnota není platné ISBN-13.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Tato hodnota není platné ISBN-10 ani ISBN-13.'
+'This value is not a valid ISSN.': 'Tato hodnota není platné ISSN.'
+'This value is not a valid currency.': 'Tato měna neexistuje.'
+'This value should be equal to {{ compared_value }}.': 'Tato hodnota musí být rovna {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Tato hodnota musí být větší než {{ compared_value }}.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Tato hodnota musí být větší nebo rovna {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Tato hodnota musí být typu {{ compared_value_type }} a zároveň musí být rovna {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Tato hodnota musí být menší než {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Tato hodnota musí být menší nebo rovna {{ compared_value }}.'
+'This value should not be equal to {{ compared_value }}.': 'Tato hodnota nesmí být rovna {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Tato hodnota nesmí být typu {{ compared_value_type }} a zároveň nesmí být rovna {{ compared_value }}.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Poměr stran obrázku je příliš velký ({{ ratio }}). Maximální povolený poměr stran je {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Poměr stran obrázku je příliš malý ({{ ratio }}). Minimální očekávaný poměr stran je {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Obrázek je čtvercový ({{ width }}x{{ height }}px). Čtvercové obrázky nejsou povolené.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Obrázek je orientovaný na šířku ({{ width }}x{{ height }}px). Obrázky orientované na šířku nejsou povolené.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Obrázek je orientovaný na výšku ({{ width }}x{{ height }}px). Obrázky orientované na výšku nejsou povolené.'
+'An empty file is not allowed.': 'Soubor nesmí být prázdný.'
+'The host could not be resolved.': 'Hostitele nebylo možné rozpoznat.'
+'This value does not match the expected {{ charset }} charset.': 'Tato hodnota neodpovídá očekávané znakové sadě {{ charset }}.'
+'This is not a valid Business Identifier Code (BIC).': 'Tato hodnota není platným Kódem obchodního identifikátoru (BIC).'
+Error: Chyba
+'This is not a valid UUID.': 'Tato hodnota není platným UUID.'
+'This value should be a multiple of {{ compared_value }}.': 'Tato hodnota musí být násobek hodnoty {{ compared_value }}.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Bankovní identifikační kód (BIC) neodpovídá mezinárodnímu číslu účtu (IBAN) {{ iban }}.'
+'This value should be valid JSON.': 'Tato hodnota musí být validní JSON.'
+'This collection should contain only unique elements.': 'Tato kolekce musí obsahovat pouze unikátní prvky.'
+'This value should be positive.': 'Tato hodnota musí být kladná.'
+'This value should be either positive or zero.': 'Tato hodnota musí být buď kladná nebo nula.'
+'This value should be negative.': 'Tato hodnota musí být záporná.'
+'This value should be either negative or zero.': 'Tato hodnota musí být buď záporná nebo nula.'
+'This value is not a valid timezone.': 'Tato časová zóna neexistuje.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Zadané heslo bylo součástí úniku dat, takže ho není možné použít. Použijte prosím jiné heslo.'
+'This value should be between {{ min }} and {{ max }}.': 'Hodnota musí být mezi {{ min }} a {{ max }}.'
+'This value is not a valid hostname.': 'Tato hodnota není platný hostname.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Počet prvků v této kolekci musí být násobek {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Tato hodnota musí splňovat alespoň jedno z následujících omezení:'
+'Each element of this collection should satisfy its own set of constraints.': 'Každý prvek v této kolekci musí splňovat svá vlastní omezení.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Tato hodnota není platné mezinárodní identifikační číslo cenného papíru (ISIN).'
+'This value should be a valid expression.': 'Tato hodnota musí být platný výraz.'
+'This value is not a valid CSS color.': 'Tato hodnota není platná barva CSS.'
+'This value is not a valid CIDR notation.': 'Tato hodnota není platná notace CIDR.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': 'Hodnota masky sítě musí být mezi {{ min }} a {{ max }}.'
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znak nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znaky nebo méně.|Název souboru je příliš dlouhý. Měl by obsahovat {{ filename_max_length }} znaků nebo méně.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Síla hesla je příliš nízká. Použijte silnější heslo, prosím.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Tato hodnota obsahuje znaky, které nejsou povoleny aktuální úrovní omezení.'
+'Using invisible characters is not allowed.': 'Používání neviditelných znaků není povoleno.'
+'Mixing numbers from different scripts is not allowed.': 'Kombinování čísel z různých písem není povoleno.'
+'Using hidden overlay characters is not allowed.': 'Použití skrytých překrývajících znaků není povoleno.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Přípona souboru je neplatná ({{ extension }}). Povolené přípony jsou {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Zjištěné kódování znaků je neplatné ({{ detected }}). Povolená kódování jsou {{ encodings }}.'
+'This value is not a valid MAC address.': 'Tato hodnota není platnou MAC adresou.'
+'This URL is missing a top-level domain.': 'Této URL není doména nejvyššího řádu.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Tato hodnota není validní týden v ISO 8601 formatu.'
+'This value is not a valid week.': 'Tato hodnota není validní týden.'
+'This value should not be before week "{{ min }}".': 'Tato hodnota by neměla být týden před "{{ min }}".'
+'This value should not be after week "{{ max }}".': 'Tato hodnota by neměla být týden za "{{ max }}".'
+'This value is not a valid Twig template.': 'Tato hodnota není platná Twig šablona.'
+'This file is not a valid video.': 'Tento soubor není video.'
+'The size of the video could not be detected.': 'Nepodařily se zjistit rozměry videa.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Video je příliš široké ({{ width }}px). Maximální povolená šířka je {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Video je příliš úzké ({{ width }}px). Minimální očekávaná šířka je {{ min_width }} px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Video je příliš vysoké ({{ height }}px). Maximální povolená výška je {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Video je příliš nízké ({{ height }}px). Minimální očekávaná výška je {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Video má příliš málo pixelů ({{ pixels }} pixelů). Minimální očekávané množství je {{ min_pixels }} pixelů.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Video má příliš mnoho pixelů ({{ pixels }} pixelů). Maximální očekávané množství je {{ max_pixels }} pixelů.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Poměr stran videa je příliš velký ({{ ratio }}). Maximální povolený poměr stran je {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Poměr stran videa je příliš malý ({{ ratio }}). Minimální očekávaný poměr stran je {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Video je čtvercové ({{ width }}x{{ height }}px). Čtvercová videa nejsou povolená.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Video je orientované na šířku ({{ width }}x{{ height }} px). Videa orientovaná na šířku nejsou povolená.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Video je orientované na výšku ({{ width }}x{{ height }} px). Videa orientovaná na výšku nejsou povolená.'
+'The video file is corrupted.': 'Soubor videa je poškozený.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Video obsahuje více proudů. Povolen je pouze jeden proud.'
+'Unsupported video codec "{{ codec }}".': 'Nepodporovaný kodek videa "{{ codec }}".'
+'Unsupported video container "{{ container }}".': 'Nepodporovaný kontejner videa "{{ container }}".'
+'The image file is corrupted.': 'Soubor obrázku je poškozený.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Obrázek má příliš málo pixelů ({{ pixels }} pixelů). Minimální očekávané množství je {{ min_pixels }} pixelů.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Obrázek má příliš mnoho pixelů ({{ pixels }} pixelů). Maximální očekávané množství je {{ max_pixels }} pixelů.'
+'This filename does not match the expected charset.': 'Tento název souboru neodpovídá očekávané znakové sadě.'
+'This value is not valid XML.': 'Tato hodnota není platné XML.'
+'This value does not conform to the expected XSD schema.': 'Tato hodnota neodpovídá očekávanému schématu XSD.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Tato datová část XML je příliš velká ({{ size }} bajtů): překračuje limit {{ limit }} bajtů.'
+'This value is not a valid cron expression.': 'Tato hodnota není platný výraz cron.'
+'This form should not contain extra fields.': 'Tato skupina polí nesmí obsahovat další pole.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Nahraný soubor je příliš velký. Nahrajte prosím menší soubor.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF token je neplatný. Zkuste prosím znovu odeslat formulář.'
+'This value is not a valid HTML5 color.': 'Tato hodnota není platná HTML5 barva.'
+'Please enter a valid birthdate.': 'Prosím zadejte platný datum narození.'
+'The selected choice is invalid.': 'Vybraná možnost není platná.'
+'The collection is invalid.': 'Kolekce není platná.'
+'Please select a valid color.': 'Prosím vyberte platnou barvu.'
+'Please select a valid country.': 'Prosím vyberte platnou zemi.'
+'Please select a valid currency.': 'Prosím vyberte platnou měnu.'
+'Please choose a valid date interval.': 'Prosím vyberte platné rozpětí dat.'
+'Please enter a valid date and time.': 'Prosím zadejte platný datum a čas.'
+'Please enter a valid date.': 'Prosím zadejte platný datum.'
+'Please select a valid file.': 'Prosím vyberte platný soubor.'
+'The hidden field is invalid.': 'Skryté pole není platné.'
+'Please enter an integer.': 'Prosím zadejte číslo.'
+'Please select a valid language.': 'Prosím zadejte platný jazyk.'
+'Please select a valid locale.': 'Prosím zadejte platný jazyk.'
+'Please enter a valid money amount.': 'Prosím zadejte platnou částku.'
+'Please enter a number.': 'Prosím zadejte číslo.'
+'The password is invalid.': 'Heslo není platné.'
+'Please enter a percentage value.': 'Prosím zadejte procentuální hodnotu.'
+'The values do not match.': 'Hodnoty se neshodují.'
+'Please enter a valid time.': 'Prosím zadejte platný čas.'
+'Please select a valid timezone.': 'Prosím vyberte platné časové pásmo.'
+'Please enter a valid URL.': 'Prosím zadejte platnou URL.'
+'Please enter a valid search term.': 'Prosím zadejte platný výraz k vyhledání.'
+'Please provide a valid phone number.': 'Prosím zadejte platné telefonní číslo.'
+'The checkbox has an invalid value.': 'Zaškrtávací políčko má neplatnou hodnotu.'
+'Please enter a valid email address.': 'Prosím zadejte platnou emailovou adresu.'
+'Please select a valid option.': 'Prosím vyberte platnou možnost.'
+'Please select a valid range.': 'Prosím vyberte platný rozsah.'
+'Please enter a valid week.': 'Prosím zadejte platný týden.'
+'Please enter a valid UUID.': 'Prosím zadejte platný UUID.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'

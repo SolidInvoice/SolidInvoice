@@ -1,0 +1,317 @@
+'This value should be false.': 'Bu değer olumsuz olmalıdır.'
+'This value should be true.': 'Bu değer olumlu olmalıdır.'
+'This value should be of type {{ type }}.': 'Bu değerin tipi {{ type }} olmalıdır.'
+'This value should be blank.': 'Bu değer boş olmalıdır.'
+'The value you selected is not a valid choice.': 'Seçtiğiniz değer geçerli bir seçenek değildir.'
+'You must select at least {{ limit }} choice':
+    '|You must select at least {{ limit }} choices.': 'En az {{ limit }} seçenek belirtmelisiniz.'
+'You must select at most {{ limit }} choice':
+    '|You must select at most {{ limit }} choices.': 'En çok {{ limit }} seçenek belirtmelisiniz.'
+'One or more of the given values is invalid.': 'Verilen değerlerden bir veya daha fazlası geçersiz.'
+'This field was not expected.': 'Bu alan beklenen olmadı.'
+'This field is missing.': 'Bu alan, eksiktir'
+'This value is not a valid date.': 'Bu değer doğru bir tarih biçimi değildir.'
+'This value is not a valid datetime.': 'Bu değer doğru bir tarihsaat biçimi değildir.'
+'This value is not a valid email address.': 'Bu değer doğru bir e-mail adresi değildir.'
+'The file could not be found.': 'Dosya bulunamadı.'
+'The file is not readable.': 'Dosya okunabilir değildir.'
+'The file is too large ({{ size }} {{ suffix }})':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Dosya çok büyük ({{ size }} {{ suffix }}). İzin verilen en büyük dosya boyutu {{ limit }} {{ suffix }}.'
+'The mime type of the file is invalid ({{ type }})':
+    ' Allowed mime types are {{ types }}.': 'Dosyanın mime tipi geçersiz ({{ type }}). İzin verilen mime tipleri {{ types }}.'
+'This value should be {{ limit }} or less.': 'Bu değer {{ limit }} ve altında olmalıdır.'
+'This value is too long':
+    ' It should have {{ limit }} character or less':
+        '|This value is too long':
+            ' It should have {{ limit }} characters or less.': 'Bu değer çok uzun. {{ limit }} karakter veya daha az olmalıdır.'
+    ' It should contain one word':
+        '|This value is too long':
+            ' It should contain {{ max }} words or less.': 'Bu değer çok uzun. Tek bir kelime içermelidir.|Bu değer çok uzun. {{ max }} veya daha az kelime içermelidir.'
+'This value should be {{ limit }} or more.': 'Bu değer {{ limit }} veya daha fazla olmalıdır.'
+'This value is too short':
+    ' It should have {{ limit }} character or more':
+        '|This value is too short':
+            ' It should have {{ limit }} characters or more.': 'Bu değer çok kısa. {{ limit }} karakter veya daha fazla olmalıdır.'
+    ' It should contain at least one word':
+        '|This value is too short':
+            ' It should contain at least {{ min }} words.': 'Bu değer çok kısa. En az bir kelime içermelidir.|Bu değer çok kısa. En az {{ min }} kelime içermelidir.'
+'This value should not be blank.': 'Bu değer boş bırakılmamalıdır.'
+'This value should not be null.': 'Bu değer boş bırakılmamalıdır.'
+'This value should be null.': 'Bu değer boş bırakılmalıdır.'
+'This value is not valid.': 'Bu değer geçerli değildir.'
+'This value is not a valid time.': 'Bu değer doğru bir saat değildir.'
+'This value is not a valid URL.': 'Bu değer doğru bir URL değildir.'
+'The two values should be equal.': 'İki değer eşit olmalıdır.'
+'The file is too large':
+    ' Allowed maximum size is {{ limit }} {{ suffix }}.': 'Dosya çok büyük. İzin verilen en büyük dosya boyutu {{ limit }} {{ suffix }}.'
+'The file is too large.': 'Dosya çok büyük.'
+'The file could not be uploaded.': 'Dosya yüklenemiyor.'
+'This value should be a valid number.': 'Bu değer geçerli bir rakam olmalıdır.'
+'This file is not a valid image.': 'Bu dosya geçerli bir resim değildir.'
+'This is not a valid IP address.': 'Bu değer geçerli bir IP adresi değildir.'
+'This value is not a valid language.': 'Bu değer geçerli bir lisan değildir.'
+'This value is not a valid locale.': 'Bu değer geçerli bir yer değildir.'
+'This value is not a valid country.': 'Bu değer geçerli bir ülke değildir.'
+'This value is already used.': 'Bu değer şu anda kullanımda.'
+'The size of the image could not be detected.': 'Resmin boyutu saptanamıyor.'
+'The image width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Resmin genişliği çok büyük ({{ width }}px). İzin verilen en büyük genişlik {{ max_width }}px.'
+'The image width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Resmin genişliği çok küçük ({{ width }}px). En az {{ min_width }}px olmalıdır.'
+'The image height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Resmin yüksekliği çok büyük ({{ height }}px). İzin verilen en büyük yükseklik {{ max_height }}px.'
+'The image height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Resmin yüksekliği çok küçük ({{ height }}px). En az {{ min_height }}px olmalıdır.'
+"This value should be the user's current password.": 'Bu değer kullanıcının şu anki şifresi olmalıdır.'
+'This value should have exactly {{ limit }} character':
+    '|This value should have exactly {{ limit }} characters.': 'Bu değer tam olarak {{ limit }} karakter olmaldır.'
+'The file was only partially uploaded.': 'Dosya sadece kısmen yüklendi.'
+'No file was uploaded.': 'Hiçbir dosya yüklenmedi.'
+'No temporary folder was configured in php':
+    ini.: "php.ini'de geçici bir klasör yapılandırılmadı veya yapılandırılan klasör mevcut değildir."
+'Cannot write temporary file to disk.': 'Geçici dosya diske yazılamıyor.'
+'A PHP extension caused the upload to fail.': 'Bir PHP eklentisi dosyanın yüklemesini başarısız kıldı.'
+'This collection should contain {{ limit }} element or more':
+    '|This collection should contain {{ limit }} elements or more.': 'Bu derlem {{ limit }} veya daha çok eleman içermelidir.'
+'This collection should contain {{ limit }} element or less':
+    '|This collection should contain {{ limit }} elements or less.': 'Bu derlem {{ limit }} veya daha az eleman içermelidir.'
+'This collection should contain exactly {{ limit }} element':
+    '|This collection should contain exactly {{ limit }} elements.': 'Bu derlem {{ limit }} eleman içermelidir.'
+'Invalid card number.': 'Geçersiz kart numarası.'
+'Unsupported card type or invalid card number.': 'Desteklenmeyen kart tipi veya geçersiz kart numarası.'
+'This is not a valid International Bank Account Number (IBAN).': 'Bu değer geçerli bir Uluslararası Banka Hesap Numarası (IBAN) değildir.'
+'This value is not a valid ISBN-10.': 'Bu değer geçerli bir ISBN-10 değildir.'
+'This value is not a valid ISBN-13.': 'Bu değer geçerli bir ISBN-13 değildir.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Bu değer geçerli bir ISBN-10 veya ISBN-13 değildir.'
+'This value is not a valid ISSN.': 'Bu değer geçerli bir ISSN değildir.'
+'This value is not a valid currency.': 'Bu değer geçerli bir para birimi değildir.'
+'This value should be equal to {{ compared_value }}.': 'Bu değer {{ compared_value }} ile eşit olmalıdır.'
+'This value should be greater than {{ compared_value }}.': 'Bu değer {{ compared_value }} değerinden büyük olmalıdır.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Bu değer {{ compared_value }} ile eşit veya büyük olmalıdır.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Bu değer {{ compared_value_type }} {{ compared_value }} ile aynı olmalıdır.'
+'This value should be less than {{ compared_value }}.': 'Bu değer {{ compared_value }} değerinden düşük olmalıdır.'
+'This value should be less than or equal to {{ compared_value }}.': '.Bu değer {{ compared_value }} ile eşit veya düşük olmalıdır.'
+'This value should not be equal to {{ compared_value }}.': 'Bu değer {{ compared_value }} ile eşit olmamalıdır.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Bu değer {{ compared_value_type }} {{ compared_value }} ile aynı olmamalıdır.'
+'The image ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Resim oranı çok büyük ({{ ratio }}). İzin verilen maksimum oran: {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Resim oranı çok ufak ({{ ratio }}). Beklenen minimum oran {{ min_ratio }}.'
+'The image is square ({{ width }}x{{ height }}px)':
+    ' Square images are not allowed.': 'Resim karesi ({{ width }}x{{ height }}px). Kare resimlerine izin verilmiyor.'
+'The image is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented images are not allowed.': 'Resim manzara odaklı ({{ width }}x{{ height }}px). Manzara odaklı resimlere izin verilmiyor.'
+'The image is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented images are not allowed.': 'Resim portre odaklı ({{ width }}x{{ height }}px). Portre odaklı resimlere izin verilmiyor.'
+'An empty file is not allowed.': 'Boş bir dosyaya izin verilmiyor.'
+'The host could not be resolved.': 'Sunucu çözülemedi.'
+'This value does not match the expected {{ charset }} charset.': 'Bu değer beklenen {{ charset }} karakter kümesiyle eşleşmiyor.'
+'This is not a valid Business Identifier Code (BIC).': 'Bu değer geçerli bir İşletme Tanımlama Kodu (BIC) değildir.'
+Error: Hata
+'This is not a valid UUID.': 'Bu değer geçerli bir UUID değildir.'
+'This value should be a multiple of {{ compared_value }}.': 'Bu değer {{ compare_value }} değerinin katlarından biri olmalıdır.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Bu İşletme Tanımlayıcı Kodu (BIC), IBAN {{ iban }} ile ilişkili değildir.'
+'This value should be valid JSON.': 'Bu değer için geçerli olmalıdır JSON.'
+'This collection should contain only unique elements.': 'Bu grup yalnızca benzersiz öğeler içermelidir.'
+'This value should be positive.': 'Bu değer pozitif olmalıdır.'
+'This value should be either positive or zero.': 'Bu değer pozitif veya sıfır olmalıdır.'
+'This value should be negative.': 'Bu değer negatif olmalıdır.'
+'This value should be either negative or zero.': 'Bu değer, negatif veya sıfır olmalıdır.'
+'This value is not a valid timezone.': 'Bu değer, geçerli bir saat dilimi değildir.'
+'This password has been leaked in a data breach, it must not be used':
+    ' Please use another password.': 'Bu parola, bir veri ihlali nedeniyle sızdırılmıştır ve kullanılmamalıdır. Lütfen başka bir şifre kullanın.'
+'This value should be between {{ min }} and {{ max }}.': 'Bu değer {{ min }} ve {{ max }} arasında olmalıdır.'
+'This value is not a valid hostname.': 'Bu değer, geçerli bir ana bilgisayar adı değildir.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Bu gruptaki öğe sayısı birden fazla olmalıdır {{ compared_value }}.'
+'This value should satisfy at least one of the following constraints:': 'Bu değer aşağıdaki kısıtlamalardan birini karşılamalıdır:'
+'Each element of this collection should satisfy its own set of constraints.': 'Bu gruptaki her öğe kendi kısıtlamalarını karşılamalıdır.'
+'This value is not a valid International Securities Identification Number (ISIN).': 'Bu değer geçerli bir Uluslararası Menkul Kıymetler Kimlik Numarası (ISIN) değildir.'
+'This value should be a valid expression.': 'Bu değer geçerli bir ifade olmalıdır.'
+'This value is not a valid CSS color.': 'Bu değer geçerli bir CSS rengi değildir.'
+'This value is not a valid CIDR notation.': 'Bu değer geçerli bir CIDR yazımı değildir.'
+'The value of the netmask should be between {{ min }} and {{ max }}.': "Netmask'in değeri {{ min }} ve {{ max }} arasında olmaldır."
+'The filename is too long':
+    ' It should have {{ filename_max_length }} character or less':
+        '|The filename is too long':
+            ' It should have {{ filename_max_length }} characters or less.': 'Dosya adı çok uzun. {{ filename_max_length }} karakter veya daha az olmalıdır.'
+'The password strength is too low':
+    ' Please use a stronger password.': 'Şifre gücü çok düşük. Lütfen daha güçlü bir şifre kullanın.'
+'This value contains characters that are not allowed by the current restriction-level.': 'Bu değer, mevcut kısıtlama seviyesi tarafından izin verilmeyen karakterler içeriyor.'
+'Using invisible characters is not allowed.': 'Görünmez karakterlerin kullanılması izin verilmez.'
+'Mixing numbers from different scripts is not allowed.': 'Farklı yazı türlerinden sayıların karıştırılması izin verilmez.'
+'Using hidden overlay characters is not allowed.': 'Gizli üstü kaplama karakterlerinin kullanılması izin verilmez.'
+'The extension of the file is invalid ({{ extension }})':
+    ' Allowed extensions are {{ extensions }}.': 'Dosya uzantısı geçersiz ({{ extension }}). İzin verilen uzantılar {{ extensions }}.'
+'The detected character encoding is invalid ({{ detected }})':
+    ' Allowed encodings are {{ encodings }}.': 'Tespit edilen karakter kodlaması geçersiz ({{ detected }}). İzin verilen kodlamalar: {{ encodings }}.'
+'This value is not a valid MAC address.': 'Bu değer geçerli bir MAC adresi değildir.'
+'This URL is missing a top-level domain.': 'Bu URL bir üst seviye alan adı eksik.'
+'This value does not represent a valid week in the ISO 8601 format.': 'Bu değer ISO 8601 formatında geçerli bir haftayı temsil etmezdir.'
+'This value is not a valid week.': 'Bu değer geçerli hafta değildir.'
+'This value should not be before week "{{ min }}".': 'Bu değer “{{ min }}” haftasından önce olmamalıdır.'
+'This value should not be after week "{{ max }}".': 'Bu değer “{{ max }}” haftasından sonra olmamalıdır'
+'This value is not a valid Twig template.': 'Bu değer geçerli bir Twig şablonu olarak kabul edilmiyor.'
+'This file is not a valid video.': 'Bu dosya geçerli bir video dosyası değil.'
+'The size of the video could not be detected.': 'Videonun boyutu tespit edilemedi.'
+'The video width is too big ({{ width }}px)':
+    ' Allowed maximum width is {{ max_width }}px.': 'Video genişliği çok büyük ({{ width }}px). İzin verilen maksimum genişlik {{ max_width }}px.'
+'The video width is too small ({{ width }}px)':
+    ' Minimum width expected is {{ min_width }}px.': 'Video genişliği çok küçük ({{ width }}px). Beklenen minimum genişlik {{ min_width }}px.'
+'The video height is too big ({{ height }}px)':
+    ' Allowed maximum height is {{ max_height }}px.': 'Video yüksekliği çok büyük ({{ height }}px). İzin verilen maksimum yükseklik {{ max_height }}px.'
+'The video height is too small ({{ height }}px)':
+    ' Minimum height expected is {{ min_height }}px.': 'Video yüksekliği çok küçük ({{ height }}px). Beklenen minimum yükseklik {{ min_height }}px.'
+'The video has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Videodaki piksel sayısı çok az ({{ pixels }} piksel). Beklenen minimum miktar {{ min_pixels }} pikseldir.'
+'The video has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Videodaki piksel sayısı çok fazla ({{ pixels }} piksel). Beklenen maksimum miktar {{ max_pixels }} pikseldir.'
+'The video ratio is too big ({{ ratio }})':
+    ' Allowed maximum ratio is {{ max_ratio }}.': 'Video oranı çok büyük ({{ ratio }}). İzin verilen maksimum oran {{ max_ratio }}.'
+'The video ratio is too small ({{ ratio }})':
+    ' Minimum ratio expected is {{ min_ratio }}.': 'Video oranı çok küçük ({{ ratio }}). Beklenen minimum oran {{ min_ratio }}.'
+'The video is square ({{ width }}x{{ height }}px)':
+    ' Square videos are not allowed.': 'Video kare biçimde ({{ width }}x{{ height }}px). Kare videolara izin verilmez.'
+'The video is landscape oriented ({{ width }}x{{ height }}px)':
+    ' Landscape oriented videos are not allowed.': 'Video yatay biçimde ({{ width }}x{{ height }}px). Yatay videolara izin verilmez.'
+'The video is portrait oriented ({{ width }}x{{ height }}px)':
+    ' Portrait oriented videos are not allowed.': 'Video dikey biçimde ({{ width }}x{{ height }}px). Dikey videolara izin verilmez.'
+'The video file is corrupted.': 'Video dosyası bozuk.'
+'The video contains multiple streams':
+    ' Only one stream is allowed.': 'Video birden fazla akış içeriyor. Yalnızca tek akışa izin verilir.'
+'Unsupported video codec "{{ codec }}".': 'Desteklenmeyen video codec''i "{{ codec }}".'
+'Unsupported video container "{{ container }}".': 'Desteklenmeyen video kapsayıcısı "{{ container }}".'
+'The image file is corrupted.': 'Görüntü dosyası bozulmuş.'
+'The image has too few pixels ({{ pixels }} pixels)':
+    ' Minimum amount expected is {{ min_pixels }} pixels.': 'Görüntüdeki piksel sayısı çok az ({{ pixels }}). Beklenen minimum miktar {{ min_pixels }}.'
+'The image has too many pixels ({{ pixels }} pixels)':
+    ' Maximum amount expected is {{ max_pixels }} pixels.': 'Görüntüdeki piksel sayısı çok fazla ({{ pixels }}). Beklenen maksimum miktar {{ max_pixels }}.'
+'This filename does not match the expected charset.': 'Bu dosya adı beklenen karakter kümesiyle eşleşmiyor.'
+'This value is not valid XML.': 'Bu değer geçerli bir XML değil.'
+'This value does not conform to the expected XSD schema.': 'Bu değer beklenen XSD şemasına uymuyor.'
+'This XML payload is too large ({{ size }} bytes): it exceeds the limit of {{ limit }} bytes.': 'Bu XML yükü çok büyük ({{ size }} bayt): {{ limit }} baytlık sınırı aşıyor.'
+'This value is not a valid cron expression.': 'Bu değer geçerli bir cron ifadesi değil.'
+'This form should not contain extra fields.': 'Form ekstra alanlar içeremez.'
+'The uploaded file was too large':
+    ' Please try to upload a smaller file.': 'Yüklenen dosya boyutu çok yüksek. Lütfen daha küçük bir dosya yüklemeyi deneyin.'
+'The CSRF token is invalid':
+    ' Please try to resubmit the form.': 'CSRF fişi geçersiz. Formu tekrar göndermeyi deneyin.'
+'This value is not a valid HTML5 color.': 'Bu değer, geçerli bir HTML5 rengi değil.'
+'Please enter a valid birthdate.': 'Lütfen geçerli bir doğum tarihi girin.'
+'The selected choice is invalid.': 'Seçilen seçim geçersiz.'
+'The collection is invalid.': 'Koleksiyon geçersiz.'
+'Please select a valid color.': 'Lütfen geçerli bir renk seçin.'
+'Please select a valid country.': 'Lütfen geçerli bir ülke seçin.'
+'Please select a valid currency.': 'Lütfen geçerli bir para birimi seçin.'
+'Please choose a valid date interval.': 'Lütfen geçerli bir tarih aralığı seçin.'
+'Please enter a valid date and time.': 'Lütfen geçerli bir tarih ve saat girin.'
+'Please enter a valid date.': 'Lütfen geçerli bir tarih giriniz.'
+'Please select a valid file.': 'Lütfen geçerli bir dosya seçin.'
+'The hidden field is invalid.': 'Gizli alan geçersiz.'
+'Please enter an integer.': 'Lütfen bir tam sayı girin.'
+'Please select a valid language.': 'Lütfen geçerli bir dil seçin.'
+'Please select a valid locale.': 'Lütfen geçerli bir yerel ayar seçin.'
+'Please enter a valid money amount.': 'Lütfen geçerli bir para tutarı girin.'
+'Please enter a number.': 'Lütfen bir numara giriniz.'
+'The password is invalid.': 'Şifre geçersiz.'
+'Please enter a percentage value.': 'Lütfen bir yüzde değeri girin.'
+'The values do not match.': 'Değerler eşleşmiyor.'
+'Please enter a valid time.': 'Lütfen geçerli bir zaman girin.'
+'Please select a valid timezone.': 'Lütfen geçerli bir saat dilimi seçin.'
+'Please enter a valid URL.': 'Lütfen geçerli bir giriniz URL.'
+'Please enter a valid search term.': 'Lütfen geçerli bir arama terimi girin.'
+'Please provide a valid phone number.': 'lütfen geçerli bir telefon numarası sağlayın.'
+'The checkbox has an invalid value.': 'Onay kutusunda geçersiz bir değer var.'
+'Please enter a valid email address.': 'Lütfen geçerli bir e-posta adresi girin.'
+'Please select a valid option.': 'Lütfen geçerli bir seçenek seçin.'
+'Please select a valid range.': 'Lütfen geçerli bir aralık seçin.'
+'Please enter a valid week.': 'Lütfen geçerli bir hafta girin.'
+'Please enter a valid UUID.': 'Lütfen geçerli bir UUID girin.'
+validator:
+    credit_card:
+        invalidDate: 'This value should be a valid date.'
+client:
+    constraint:
+        contacts:
+            min: 'You need to add at least one contact to this client'
+        currency_code:
+            exact_length: 'Currency code must be exactly {{ limit }} characters long.'
+        unique_name: 'A client with the name "{{ value }}" already exists.'
+core:
+    constraint:
+        application_url_host: 'This domain is reserved for the default application URL.'
+    custom_field:
+        field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        similar_label: 'A custom field with a similar label already exists for the selected target.'
+        unique_label: 'A custom field with this label already exists for the selected target.'
+install:
+    database:
+        driver:
+            not_blank: 'Please select a database driver.'
+    requirements:
+        not_met: 'Your system does not meet the minimum requirements to run SolidInvoice. Please fix the issues listed below.'
+    user_account:
+        email:
+            not_blank: 'Please enter an email'
+        first_name:
+            not_blank: 'Please enter a first name'
+        last_name:
+            not_blank: 'Please enter a last name'
+        locale:
+            not_blank: 'Please select a locale'
+        password:
+            not_blank: 'You must enter a secure password'
+invoice:
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+notification:
+    constraint:
+        transport_setting:
+            unique_name: 'The name is already in use'
+quote:
+    lines:
+        min: 'You need to add at least 1 line to the Quote'
+    users:
+        min: 'You need to select at least 1 user to attach to the Quote'
+recurring_invoice:
+    end_date:
+        future: 'End date must be in the future'
+    lines:
+        min: 'You need to add at least 1 line to the Invoice'
+    schedule:
+        days:
+            monthly_required: 'You must select at least one day for monthly recurrence'
+            weekly_required: 'You must select at least one day for weekly recurrence'
+            yearly_required: 'You must select at least one month for yearly recurrence'
+        end_date:
+            required: 'You must specify an end date'
+        end_occurrence:
+            required: 'You must specify the number of occurrences'
+        end_type:
+            required: 'You must select an end type'
+        type:
+            required: 'You must select a recurrence type'
+    users:
+        min: 'You need to select at least 1 user to attach to the Invoice'
+tax:
+    constraint:
+        incompatible:
+            flat_rate_compound: 'A flat-rate tax cannot be compound.'
+            inclusive_compound: 'A tax cannot be both inclusive and compound.'
+user:
+    email:
+        invalid: 'The email {{ value }} is not a valid email.'
+        not_blank: 'Please enter your email'
+    password:
+        compromised: 'This password has been leaked in a data breach, please use a different password.'
+        fields_match: 'The password fields must match.'
+        min_length: 'Your password should be at least {{ limit }} characters'
+        min_length_long: 'Your password must be at least {{ limit }} characters long'
+        mismatch: 'Passwords do not match.'
+        not_blank: 'Please enter a password'
+        weak: 'Your password is too weak. Please use a stronger password with a mix of letters, numbers, and symbols.'
+    register:
+        accept_terms: 'You must accept the terms and conditions to register'
+    turnstile:
+        failed: 'Captcha verification failed. Please try again.'
