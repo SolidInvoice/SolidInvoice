@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
-use function assert;
 
 /**
  * @extends EntityRepository<Credit>
@@ -38,14 +37,51 @@ class CreditRepository extends EntityRepository
      */
     public function addCredit(Client $client, BigNumber | float | int | string $amount): Credit
     {
+        $intAmount = $this->toIntAmount($amount);
+
+        $this->getEntityManager()
+            ->createQueryBuilder()
+            ->update(Credit::class, 'c')
+            ->set('c.value', 'c.value + :amount')
+            ->where('c.client = :client')
+            ->setParameter('amount', $intAmount)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->execute();
+
         $credit = $client->getCredit();
+        $this->getEntityManager()->refresh($credit);
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
+        return $credit;
+    }
 
-        $credit->setValue($value->plus($amount));
+    /**
+     * @throws MathException
+     * @throws InsufficientCreditException
+     */
+    public function deductCredit(Client $client, BigNumber | float | int | string $amount): Credit
+    {
+        $intAmount = $this->toIntAmount($amount);
 
-        $this->save($credit);
+        // Single atomic UPDATE: checks balance and deducts in one statement.
+        // If the WHERE clause fails (insufficient credit), zero rows are affected.
+        $affected = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->update(Credit::class, 'c')
+            ->set('c.value', 'c.value - :amount')
+            ->where('c.client = :client')
+            ->andWhere('c.value >= :amount')
+            ->setParameter('amount', $intAmount)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->execute();
+
+        if ($affected === 0) {
+            throw new InsufficientCreditException();
+        }
+
+        $credit = $client->getCredit();
+        $this->getEntityManager()->refresh($credit);
 
         return $credit;
     }
@@ -53,17 +89,12 @@ class CreditRepository extends EntityRepository
     /**
      * @throws MathException
      */
-    public function deductCredit(Client $client, BigNumber | float | int | string $amount): Credit
+    private function toIntAmount(BigNumber | float | int | string $amount): int
     {
-        $credit = $client->getCredit();
+        if (is_float($amount)) {
+            $amount = (string) $amount;
+        }
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
-
-        $credit->setValue($value->minus($amount));
-
-        $this->save($credit);
-
-        return $credit;
+        return BigNumber::of($amount)->toScale(0, RoundingMode::HalfEven)->toInt();
     }
 }
