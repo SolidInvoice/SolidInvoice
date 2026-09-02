@@ -58,6 +58,7 @@ final class CreditRepositoryTest extends KernelTestCase
         // Start at 50000 (e.g. $500.00)
         $credit = $client->getCredit();
         $credit->setValue(BigInteger::of(50000));
+
         $this->em->persist($credit);
         $this->em->flush();
 
@@ -78,6 +79,7 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $credit = $client->getCredit();
         $credit->setValue(BigInteger::of(50000));
+
         $this->em->persist($credit);
         $this->em->flush();
 
@@ -102,6 +104,7 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $credit = $client->getCredit();
         $credit->setValue(BigInteger::of(10000));
+
         $this->em->persist($credit);
         $this->em->flush();
 

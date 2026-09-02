@@ -24,6 +24,7 @@ use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
  * @extends EntityRepository<Credit>
+ * @see \SolidInvoice\ClientBundle\Tests\Repository\CreditRepositoryTest
  */
 class CreditRepository extends EntityRepository
 {
