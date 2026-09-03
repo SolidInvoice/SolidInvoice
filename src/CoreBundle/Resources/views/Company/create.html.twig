@@ -87,20 +87,27 @@
 
                                 {# Pricing Information #}
                                 {% toggle 'saas_enabled' %}
+                                    {% set paidTrial = toggle('saas_paid_trial') %}
                                     {% if not userHasTrial and planHasTrial %}
                                         <div class="alert alert-info d-flex align-items-start" role="alert">
                                             <div class="me-3">
-                                                {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
+                                                {{ ux_icon(paidTrial ? 'tabler:credit-card' : 'tabler:gift', {width: 24, height: 24}) }}
                                             </div>
                                             <div class="flex-fill">
-                                                <div class="alert-title fw-semibold">{{ 'company.create.trial_title'|trans }}</div>
+                                                <div class="alert-title fw-semibold">
+                                                    {{ (paidTrial ? 'company.create.trial_title_paid' : 'company.create.trial_title')|trans }}
+                                                </div>
                                                 <div class="text-secondary mb-2">
                                                     {% set trial_label -%}
                                                         {% if trialDuration.y > 0 %}{{ '{1} %count% year|]1,Inf[ %count% years'|trans({'%count%': trialDuration.y}, count=trialDuration.y) }} {% endif %}
                                                         {% if trialDuration.m > 0 %}{{ '{1} %count% month|]1,Inf[ %count% months'|trans({'%count%': trialDuration.m}, count=trialDuration.m) }} {% endif %}
                                                         {% if trialDuration.d > 0 %}{{ '{1} %count% day|]1,Inf[ %count% days'|trans({'%count%': trialDuration.d}, count=trialDuration.d) }}{% endif %}
                                                     {%- endset %}
-                                                    {% trans with {'%duration%': trial_label|trim} %}Get full access for %duration%, completely free. No credit card required.{% endtrans %}
+                                                    {% if paidTrial %}
+                                                        {% trans with {'%duration%': trial_label|trim} %}Get full access for %duration%. We'll ask for your payment details to begin — cancel any time before the trial ends and you won't be charged.{% endtrans %}
+                                                    {% else %}
+                                                        {% trans with {'%duration%': trial_label|trim} %}Get full access for %duration%, completely free. No credit card required.{% endtrans %}
+                                                    {% endif %}
                                                 </div>
                                                 {% if planPrice %}
                                                     <div class="d-flex align-items-center gap-2 mt-2">

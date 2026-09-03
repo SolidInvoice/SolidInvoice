@@ -19,8 +19,10 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
+use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -132,20 +134,56 @@ final class TrialBannerResolverTest extends TestCase
         self::assertNull($banner);
     }
 
+    /**
+     * Neither banner variant makes sense once a card is required up front: the
+     * trial cannot be extended and the coupon cannot be redeemed. This holds
+     * even in the window where a free trial would have shown one.
+     */
+    public function testNoBannerInPaidTrialMode(): void
+    {
+        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-03', paidTrial: true);
+
+        self::assertNull($banner);
+    }
+
+    public function testBannerShowsInTheSameWindowInFreeTrialMode(): void
+    {
+        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-03');
+
+        self::assertInstanceOf(TrialBanner::class, $banner);
+    }
+
+    /**
+     * Suppressing trial incentives must not suppress the cancelled notice —
+     * that one tells the user when they lose access and applies in both modes.
+     */
+    public function testCancelledBannerStillShowsInPaidTrialMode(): void
+    {
+        $banner = $this->resolve(SubscriptionStatus::CANCELLED, '2024-01-10', paidTrial: true);
+
+        self::assertInstanceOf(TrialBanner::class, $banner);
+        self::assertSame('saas.trial_banner.cancelled.title', $banner->titleKey);
+    }
+
     private function resolve(
         SubscriptionStatus $status,
         string $endDate,
         string $couponCode = 'SAVE30',
         ?string $subscriptionId = null,
         string $trialDuration = 'P14D',
+        bool $paidTrial = false,
     ): ?TrialBanner {
         $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')->willReturn(new DateTimeImmutable(self::NOW));
 
+        $billingMode = $paidTrial
+            ? BillingModeFactory::paidTrial($couponCode)
+            : BillingModeFactory::freeTrial($couponCode);
+
         $resolver = new TrialBannerResolver(
             $clock,
-            couponCode: $couponCode,
-            couponPercent: 30,
+            $billingMode,
+            new TrialPeriod(),
             bannerDays: 7,
             couponDays: 2,
         );

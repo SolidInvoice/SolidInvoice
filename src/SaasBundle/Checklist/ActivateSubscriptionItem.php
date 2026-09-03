@@ -13,21 +13,26 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Checklist;
 
-use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\Checklist\ActivateSubscriptionItemTest
+ */
 final readonly class ActivateSubscriptionItem implements ChecklistItemInterface
 {
     public function __construct(
         private SubscriptionProviderInterface $subscriptionProvider,
-        private CompanySelector $companySelector,
+        private CompanySelectorInterface $companySelector,
         private CompanyRepository $companyRepository,
+        private BillingMode $billingMode,
     ) {
     }
 
@@ -58,7 +63,10 @@ final readonly class ActivateSubscriptionItem implements ChecklistItemInterface
 
     public function active(): bool
     {
-        return true;
+        // In paid-trial mode a company cannot reach the dashboard without an
+        // active subscription in the first place, so prompting them to activate
+        // one is redundant.
+        return ! $this->billingMode->requiresCardForTrial();
     }
 
     public function isComplete(): bool

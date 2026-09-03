@@ -17,6 +17,7 @@ use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -44,6 +45,7 @@ final class CompanyEventSubscriber
         private readonly TrialManagerInterface $trialManager,
         private readonly EntityManagerInterface $entityManager,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly BillingMode $billingMode,
     ) {
     }
 
@@ -65,6 +67,14 @@ final class CompanyEventSubscriber
             $user = $this->security->getUser();
             assert($user instanceof User);
 
+            if ($this->billingMode->requiresCardForTrial()) {
+                $this->recordTrialEntry($user);
+                $event->setResponse($this->createPlanSelectionRedirect());
+                $this->subscription = null;
+
+                return;
+            }
+
             $plan = $this->subscription->getPlan();
 
             if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() instanceof DateInterval) {
@@ -85,6 +95,30 @@ final class CompanyEventSubscriber
             }
 
             $this->subscription = null;
+        }
+    }
+
+    /**
+     * In paid-trial mode the trial is started by the payment provider once the
+     * user completes checkout, so nothing is started locally — the subscription
+     * stays PENDING and RequestListener blocks the app until the webhook lands.
+     *
+     * The Trial row is still recorded here. It is the ledger the onboarding
+     * email scheduler joins against, so skipping it would silently stop the
+     * whole onboarding sequence, not just the trial-specific emails. In this
+     * mode it records "entered the trial funnel" rather than "trial started".
+     */
+    private function recordTrialEntry(User $user): void
+    {
+        if ($this->trialManager->userHasTrial($user)) {
+            return;
+        }
+
+        try {
+            $this->trialManager->createTrial($user, $this->subscription);
+        } catch (TrialAlreadyExistsException) {
+            // Race condition: another request already recorded a trial for this
+            // user. Harmless — the user is headed to plan selection regardless.
         }
     }
 

@@ -19,9 +19,9 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsTaggedItem(priority: 50)]
@@ -32,12 +32,20 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         private readonly ClockInterface $clock,
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
-        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
-        private readonly string $couponCode = '',
-        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
-        private readonly int $couponPercent = 30,
+        private readonly BillingMode $billingMode,
     ) {
         parent::__construct($translator);
+    }
+
+    /**
+     * A paid trial already has a card on file, so warning the user that it is
+     * about to end — and offering a coupon to convert — is meaningless. The
+     * subscription simply bills at the end of the trial.
+     */
+    #[Override]
+    public function shouldSend(OnboardingContext $context): bool
+    {
+        return ! $this->billingMode->requiresCardForTrial() && parent::shouldSend($context);
     }
 
     public static function key(): string
@@ -73,8 +81,8 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
 
         return parent::templateContext($context) + [
             'days_remaining' => $daysRemaining,
-            'coupon_code' => $this->couponCode,
-            'coupon_percent' => $this->couponPercent,
+            'coupon_code' => $this->billingMode->couponCode(),
+            'coupon_percent' => $this->billingMode->couponPercent(),
             'usage_clients' => $this->clientRepository->getTotalClients(),
             'usage_invoices' => $this->invoiceRepository->getTotalInvoices(),
             'usage_collected' => $this->invoiceRepository->getCountByStatus(InvoiceStatus::Paid),

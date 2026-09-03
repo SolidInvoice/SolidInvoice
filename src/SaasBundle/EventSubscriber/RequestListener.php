@@ -17,6 +17,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -24,7 +25,6 @@ use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +43,11 @@ use function in_array;
 final readonly class RequestListener implements EventSubscriberInterface
 {
     private const array SKIPPED_ROUTES = [
+        // Always leave a way out of a blocking page. This matters most in
+        // paid-trial mode, where every new signup sits at PENDING until they
+        // complete checkout — without this they could not even sign out.
+        '_logout',
+
         '_switch_company',
         '_view_quote_external',
         '_view_invoice_external',
@@ -76,10 +81,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         private ClockInterface $clock,
         private TrialBannerResolver $trialBannerResolver,
         private TranslatorInterface $translator,
-        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
-        private string $onboardingCouponCode = '',
-        #[Autowire(env: 'int:SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT')]
-        private int $couponPercent = 30,
+        private BillingMode $billingMode,
     ) {
     }
 
@@ -139,8 +141,8 @@ final readonly class RequestListener implements EventSubscriberInterface
                         new Response(
                             $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
                                 'subscription' => $subscription,
-                                'coupon_code' => $this->onboardingCouponCode,
-                                'coupon_percent' => $this->couponPercent,
+                                'coupon_code' => $this->billingMode->couponCode(),
+                                'coupon_percent' => $this->billingMode->couponPercent(),
                             ]),
                         )
                     );

@@ -26,7 +26,9 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
+use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
@@ -410,6 +412,9 @@ final class RequestListenerTest extends KernelTestCase
         yield ['_switch_company'];
         yield ['_view_quote_external'];
         yield ['_view_invoice_external'];
+
+        // A blocked subscription must never trap the user in the app.
+        yield ['_logout'];
     }
 
     private function createListener(
@@ -479,10 +484,12 @@ final class RequestListenerTest extends KernelTestCase
 
         $translator = self::getContainer()->get(TranslatorInterface::class);
 
+        $billingMode = BillingModeFactory::freeTrial($couponCode, $couponPercent);
+
         $trialBannerResolver = new TrialBannerResolver(
             $clock,
-            couponCode: $couponCode,
-            couponPercent: $couponPercent,
+            $billingMode,
+            new TrialPeriod(),
             bannerDays: 7,
             couponDays: 2,
         );
@@ -498,8 +505,7 @@ final class RequestListenerTest extends KernelTestCase
             $clock,
             $trialBannerResolver,
             $translator,
-            $couponCode,
-            $couponPercent,
+            $billingMode,
         );
     }
 

@@ -57,6 +57,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
     $parameters->set('env(SOLIDINVOICE_PLATFORM)', null);
 
+    // '1' requires payment details up front: the trial is started by Lemon
+    // Squeezy once the user completes checkout, instead of locally at signup.
+    // Defined here rather than under config/packages/saas/ because
+    // config/packages/toggler.php is loaded on every platform.
+    $parameters->set('env(SOLIDINVOICE_SAAS_PAID_TRIAL)', '0');
+
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_URL)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_API_KEY)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_PREFIX)', 'solidinvoice_%env(SOLIDINVOICE_ENV)%_');
