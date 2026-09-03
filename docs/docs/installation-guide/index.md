@@ -18,8 +18,8 @@ The [hosted version of SolidInvoice](https://solidinvoice.co) takes care of inst
 | --- | --- |
 | Get running in under a minute, no PHP or webserver setup | [Quick install](./quick-install.mdx) **(recommended)** |
 | Install from a package manager on macOS or Linux | [Homebrew](./homebrew.md) |
-| Install as a snap on Ubuntu or any Linux with snapd | [Snap](./snap.md) |
 | Install natively on Debian, Ubuntu, RHEL, Fedora, or Alpine | [Linux packages](./linux-packages.mdx) |
+| Run SolidInvoice in an LXC container on a Proxmox VE host | [Proxmox VE](./proxmox.md) |
 | Run SolidInvoice as a container alongside your other services | [Docker](./docker.md) |
 | Deploy to a Kubernetes cluster | [Helm](./helm.md) |
 | Deploy to shared hosting, an existing webserver, or have full control over the stack | [Distribution package](./distribution-package/index.mdx) |
