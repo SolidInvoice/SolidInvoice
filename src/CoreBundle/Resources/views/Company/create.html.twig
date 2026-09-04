@@ -11,29 +11,6 @@
 
 {% block content %}
     <div class="company-create-page">
-        {# Application Header #}
-        <header class="company-page-header">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="company-page-logo">
-                            {{ app_logo('48', showDefault: true, showOnlyAppIcon: true) }}
-                        </div>
-                        <div class="company-page-brand">
-                            <h1 class="h3 mb-0">{{ app_name }}</h1>
-                        </div>
-                    </div>
-                    {% if allowCancel %}
-                        <div>
-                            <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-sm">
-                                {{ ux_icon('tabler:arrow-left', {width: 24, height: 24}) }} {{ 'company.create.back'|trans }}
-                            </a>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </header>
-
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8 col-xl-7">
@@ -145,7 +122,14 @@
 
                             <twig:block name="footer">
                                 <div class="card-footer bg-transparent p-4">
-                                    <div class="d-flex justify-content-end">
+                                    <div class="d-flex justify-content-between">
+                                        {% if allowCancel %}
+                                            <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-lg">
+                                                {{ ux_icon('tabler:arrow-left', {width: 24, height: 24}) }} {{ 'company.create.back'|trans }}
+                                            </a>
+
+                                        {% endif %}
+
                                         <button type="submit" class="btn btn-primary btn-lg px-5">
                                             {{ ux_icon('tabler:rocket') }} {{ 'company.create.create_button'|trans }}
                                         </button>

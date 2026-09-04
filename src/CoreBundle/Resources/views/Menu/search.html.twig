@@ -1,0 +1,185 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+{% toggle 'meilisearch_search' %}
+    <div class="flex-grow-1 d-flex justify-content-center align-items-center px-3">
+        <div class="global-search w-100"
+             data-controller="global-search"
+             data-global-search-url-value="{{ path('_search') }}"
+             data-global-search-suggestions-url-value="{{ path('_search_suggestions') }}"
+        >
+            <div class="search-chips-bar" data-global-search-target="chips"></div>
+            <div class="global-search-input-wrapper">
+                            <span class="global-search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                            </span>
+                <input
+                        type="search"
+                        class="global-search-input"
+                        placeholder="{{ 'search.placeholder'|trans }}"
+                        autocomplete="off"
+                        data-global-search-target="input"
+                        data-action="input->global-search#onInput keydown->global-search#onKeydown"
+                >
+                <span class="global-search-actions">
+                                <button type="button" class="search-help-trigger" data-bs-toggle="modal" data-bs-target="#searchHelpModal" aria-label="{{ 'search.guide'|trans }}" title="{{ 'search.guide'|trans }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+                                </button>
+                                <span class="global-search-shortcut d-none d-xl-flex">
+                                    <kbd>Ctrl</kbd><kbd>K</kbd>
+                                </span>
+                            </span>
+            </div>
+            <div class="search-suggestions" data-global-search-target="suggestions"></div>
+            <div class="search-dropdown" data-global-search-target="dropdown">
+                <div class="search-spinner d-none" data-global-search-target="spinner">
+                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                        <span class="visually-hidden">{{ 'search.searching'|trans }}</span>
+                    </div>
+                    <span>{{ 'search.searching'|trans }}</span>
+                </div>
+                <div class="search-results" data-global-search-target="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-blur fade" id="searchHelpModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        {{ 'search.guide_title'|trans }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'action.close'|trans }}"></button>
+                </div>
+                <div class="modal-body p-0">
+
+                    <div class="px-4 py-3 bg-light border-bottom">
+                        <p class="text-muted mb-0" style="font-size:.875rem">
+                            {{ 'search.intro'|trans }}
+                        </p>
+                    </div>
+
+                    <div class="p-4">
+                        <h6 class="search-help-section-title">{{ 'search.available_qualifiers'|trans }}</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover mb-0">
+                                <thead>
+                                <tr>
+                                    <th style="width:120px">{{ 'search.qualifier'|trans }}</th>
+                                    <th>{{ 'search.description'|trans }}</th>
+                                    <th>{{ 'search.values_syntax'|trans }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><code>in:</code></td>
+                                    <td>{{ 'search.limit_section'|trans }}</td>
+                                    <td class="text-muted"><small>invoices · quotes · payments · clients · contacts · recurring_invoices</small></td>
+                                </tr>
+                                <tr>
+                                    <td><code>status:</code></td>
+                                    <td>{{ 'search.filter_status'|trans }}</td>
+                                    <td class="text-muted"><small>draft · pending · paid · overdue · cancelled · active · paused · captured · refunded · failed</small></td>
+                                </tr>
+                                <tr>
+                                    <td><code>amount:</code></td>
+                                    <td>{{ 'search.filter_amount'|trans }}</td>
+                                    <td class="text-muted"><small>{{ 'search.supports_operators'|trans }}</small></td>
+                                </tr>
+                                <tr>
+                                    <td><code>client:</code></td>
+                                    <td>{{ 'search.filter_client'|trans }}</td>
+                                    <td class="text-muted"><small>client:Acme &nbsp;·&nbsp; client:"Acme Corp"</small></td>
+                                </tr>
+                                <tr>
+                                    <td><code>created:</code></td>
+                                    <td>{{ 'search.filter_created'|trans }}</td>
+                                    <td class="text-muted"><small>{{ 'search.supports_operators'|trans }}</small></td>
+                                </tr>
+                                <tr>
+                                    <td><code>sort:</code></td>
+                                    <td>{{ 'search.sort_results'|trans }}</td>
+                                    <td class="text-muted"><small>amount · amount_desc · date · date_desc</small></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr class="m-0">
+
+                    <div class="row g-0">
+                        <div class="col-md-5 p-4 border-end">
+                            <h6 class="search-help-section-title">{{ 'search.comparison_operators'|trans }}</h6>
+                            <p class="text-muted mb-3" style="font-size:.8125rem">{{ 'search.applies_to'|trans }} <code>amount:</code> {{ 'search.and'|trans }} <code>created:</code></p>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">100</code>
+                                    <span class="text-muted small">{{ 'search.exact_match'|trans }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">&gt;100</code>
+                                    <span class="text-muted small">{{ 'search.greater_than'|trans }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">&gt;=100</code>
+                                    <span class="text-muted small">{{ 'search.at_least'|trans }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">&lt;100</code>
+                                    <span class="text-muted small">{{ 'search.less_than'|trans }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">&lt;=100</code>
+                                    <span class="text-muted small">{{ 'search.at_most'|trans }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <code class="search-help-op">50..200</code>
+                                    <span class="text-muted small">{{ 'search.between_range'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7 p-4">
+                            <h6 class="search-help-section-title">{{ 'search.example_queries'|trans }}</h6>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="search-help-example">
+                                    <code>status:overdue</code>
+                                    <span>{{ 'search.example_overdue'|trans }}</span>
+                                </div>
+                                <div class="search-help-example">
+                                    <code>in:invoices status:paid amount:&gt;500</code>
+                                    <span>{{ 'search.example_paid'|trans }}</span>
+                                </div>
+                                <div class="search-help-example">
+                                    <code>client:"Acme Corp" status:pending</code>
+                                    <span>{{ 'search.example_pending'|trans }}</span>
+                                </div>
+                                <div class="search-help-example">
+                                    <code>in:payments sort:amount_desc</code>
+                                    <span>{{ 'search.example_payments'|trans }}</span>
+                                </div>
+                                <div class="search-help-example">
+                                    <code>created:&gt;2024-01-01 in:quotes</code>
+                                    <span>{{ 'search.example_quotes'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endtoggle %}

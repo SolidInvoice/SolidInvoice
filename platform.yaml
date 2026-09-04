@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=./vendor/solidworx/platform/platform-schema.json
 platform:
     name: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::APP_NAME
     version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
@@ -5,7 +6,7 @@ platform:
     security:
         two_factor:
             enabled: true
-            base_template: "@SolidInvoiceCore/Layout/two_factor_security.html.twig"
+            base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"
     models:
         user: SolidInvoice\UserBundle\Entity\User
 
@@ -86,6 +87,6 @@ saas:
             description: 'Choose a custom design template for invoices and quotes across PDFs, emails and the client portal.'
 
 ui:
+    icon_pack: tabler
     templates:
-        base: '@SolidInvoiceCore/Layout/base.html.twig'
         login: '@SolidInvoiceUser/Security/login.html.twig'

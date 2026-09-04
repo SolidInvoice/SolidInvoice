@@ -227,11 +227,7 @@ final readonly class Authorize
 
         $authRequest->setScopes($grantedScopes);
 
-        $userId = $user->getId()?->toRfc4122();
-
-        if ($userId === null || $userId === '') {
-            return $this->renderError('server_error', 'User identifier unavailable.', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        $userId = $user->getId()->toRfc4122();
 
         $authRequest->setUser(new OAuthUserEntity($userId));
         $authRequest->setAuthorizationApproved(true);
