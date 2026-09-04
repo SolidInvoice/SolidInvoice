@@ -92,7 +92,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'recurringOptions' => [
                 'type' => ScheduleRecurringType::WEEKLY,
                 'endType' => ScheduleEndType::AFTER,
-                'days' => ['4', '5'],
+                'days' => [4, 5],
                 'endOccurrence' => 1,
             ],
             'discount' => [

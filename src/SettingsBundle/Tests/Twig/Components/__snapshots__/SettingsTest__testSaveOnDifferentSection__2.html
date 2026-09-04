@@ -35,7 +35,7 @@
             </li>
             </ul>
 
-    <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save">
+    <form name="settings" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="norender|*" data-live-action-param="prevent|files|save">
 
         <div class="card settings-content-card">
         <div class="card-body">
@@ -228,7 +228,7 @@
         </div>
     </div>
 
-    <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
+    <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
 
         

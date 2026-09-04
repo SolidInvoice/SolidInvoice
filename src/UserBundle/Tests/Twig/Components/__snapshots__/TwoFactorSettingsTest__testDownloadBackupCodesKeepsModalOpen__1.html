@@ -158,7 +158,7 @@
                     </div>
 
                                         <div class="verification-form-container">
-                        <form name="two_factor_verify" method="post" data-model="on(change)|*" class="verification-form">
+                        <form name="two_factor_verify" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*" class="verification-form">
                             <div class="mb-4">
                                 <label for="two_factor_verify_code" class="form-label">
                                     Enter the 6-digit code from your app
@@ -167,7 +167,7 @@
                                 
                             </div>
                             <input type="hidden" id="two_factor_verify_secret" name="two_factor_verify[secret]" value="01JBYEQCR7DJ2YW4EXP6FYJZCR01JBYEQCR7DJ2YW4EXP6FYJZCR">
-                        <input type="hidden" id="two_factor_verify__token" name="two_factor_verify[_token]" data-controller="csrf-protection">
+                        <input type="hidden" id="two_factor_verify__token" name="two_factor_verify[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
                     </div>
                 </div>

@@ -27,6 +27,7 @@ final class ProfileTypeTest extends FormTestCase
             'firstName' => $this->faker->firstName(),
             'lastName' => $this->faker->lastName(),
             'mobile' => $mobile,
+            'email' => $this->faker->email(),
         ];
 
         $object = new User();

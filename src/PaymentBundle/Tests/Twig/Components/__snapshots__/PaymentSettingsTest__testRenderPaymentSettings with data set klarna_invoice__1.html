@@ -28,7 +28,7 @@
         
                                             <div class="card-body">
                     
-        <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+        <form name="payment_methods" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save">
                         
 
                         <section class="mb-4">
@@ -82,7 +82,7 @@
     </div>
                 </section>
             
-            <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
+            <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
         </form>
 
         

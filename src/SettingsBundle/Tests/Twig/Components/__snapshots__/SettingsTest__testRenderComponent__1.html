@@ -35,7 +35,7 @@
             </li>
             </ul>
 
-    <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save" enctype="multipart/form-data">
+    <form name="settings" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="norender|*" data-live-action-param="prevent|files|save" enctype="multipart/form-data">
 
         <div class="card settings-content-card">
         <div class="card-body">
@@ -605,7 +605,7 @@
         </div>
     </div>
 
-    <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
+    <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
 
                 <div class="card settings-content-card mt-4">
@@ -620,7 +620,7 @@
         Add the tax identifiers (VAT, GST, TIN, ABN, etc.) for your own business &acirc;&#128;&#148; these will appear on the invoices and quotes you issue.
     </p>
 
-    <form name="company_tax_identifiers" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+    <form name="company_tax_identifiers" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save">
 
     <div class="tax-identifiers-list mb-3">
                     <p class="text-muted small mb-2">
@@ -642,7 +642,7 @@
     <fieldset class="mb-3">                
     <div id="company_tax_identifiers_identifiers"></div>
 </fieldset>
-<input type="hidden" id="company_tax_identifiers__token" name="company_tax_identifiers[_token]" data-controller="csrf-protection">
+<input type="hidden" id="company_tax_identifiers__token" name="company_tax_identifiers[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
 </div>
 
