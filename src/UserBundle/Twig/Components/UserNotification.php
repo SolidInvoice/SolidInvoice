@@ -190,10 +190,10 @@ final class UserNotification extends AbstractController
             str_contains($transportLower, 'discord') => 'tabler:brand-discord',
             str_contains($transportLower, 'telegram') => 'tabler:brand-telegram',
             str_contains($transportLower, 'teams') => 'tabler:brand-teams',
-            str_contains($transportLower, 'twilio') => 'tabler:message',
-            str_contains($transportLower, 'sms') => 'tabler:message',
-            str_contains($transportLower, 'vonage') => 'tabler:message',
-            str_contains($transportLower, 'messagebird') => 'tabler:message',
+            str_contains($transportLower, 'twilio') => 'tabler:message-2',
+            str_contains($transportLower, 'sms') => 'tabler:message-2',
+            str_contains($transportLower, 'vonage') => 'tabler:message-2',
+            str_contains($transportLower, 'messagebird') => 'tabler:message-2',
             default => 'tabler:bell',
         };
     }

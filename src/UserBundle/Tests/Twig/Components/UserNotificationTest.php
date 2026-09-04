@@ -185,10 +185,10 @@ final class UserNotificationTest extends KernelTestCase
         self::assertSame('tabler:brand-discord', $this->component->getTransportIcon('discord'));
         self::assertSame('tabler:brand-telegram', $this->component->getTransportIcon('telegram'));
         self::assertSame('tabler:brand-teams', $this->component->getTransportIcon('teams'));
-        self::assertSame('tabler:message', $this->component->getTransportIcon('twilio'));
-        self::assertSame('tabler:message', $this->component->getTransportIcon('sms'));
-        self::assertSame('tabler:message', $this->component->getTransportIcon('vonage'));
-        self::assertSame('tabler:message', $this->component->getTransportIcon('messagebird'));
+        self::assertSame('tabler:message-2', $this->component->getTransportIcon('twilio'));
+        self::assertSame('tabler:message-2', $this->component->getTransportIcon('sms'));
+        self::assertSame('tabler:message-2', $this->component->getTransportIcon('vonage'));
+        self::assertSame('tabler:message-2', $this->component->getTransportIcon('messagebird'));
         self::assertSame('tabler:bell', $this->component->getTransportIcon('unknown'));
     }
 

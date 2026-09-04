@@ -187,7 +187,7 @@ final class NotificationMarketplace extends AbstractController
             'Vonage' => 'tabler:phone',
             'AmazonSns' => 'tabler:brand-aws',
             'MessageBird', 'MicrosoftTeams' => 'tabler:message-circle',
-            'Infobip' => 'tabler:message',
+            'Infobip' => 'tabler:message-2',
             'Telnyx' => 'tabler:phone-call',
             'Sinch' => 'tabler:device-mobile',
             'Clickatell', 'Zulip' => 'tabler:messages',
