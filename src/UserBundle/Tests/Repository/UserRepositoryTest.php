@@ -84,7 +84,6 @@ final class UserRepositoryTest extends KernelTestCase
 
         $this->repository->save($user);
 
-        self::assertNotNull($user->getId());
         self::assertCount(1, $this->repository->findAll());
     }
 
@@ -97,7 +96,6 @@ final class UserRepositoryTest extends KernelTestCase
 
         $this->repository->save($user);
 
-        self::assertNotNull($user->getId());
         self::assertCount(0, $this->repository->findAll());
     }
 

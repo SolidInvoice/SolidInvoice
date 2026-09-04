@@ -147,9 +147,7 @@ class McpAccessToken implements AccessTokenEntityInterface
 
     public function getUserIdentifier(): string | null
     {
-        $id = $this->user->getId();
-
-        return $id?->toRfc4122();
+        return $this->user->getId()->toRfc4122();
     }
 
     public function setUserIdentifier(string $identifier): void

@@ -87,7 +87,7 @@ final class EmailVerifierTest extends TestCase
                     function ($params) use ($user): bool {
                         self::assertArrayHasKey('expires', $params);
                         self::assertArrayHasKey('token', $params);
-                        self::assertSame($user->getId()?->toBase58(), $params['id']);
+                        self::assertSame($user->getId()->toBase58(), $params['id']);
                         return true;
                     }
                 ),

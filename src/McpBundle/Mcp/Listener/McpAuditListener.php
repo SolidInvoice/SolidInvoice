@@ -118,7 +118,7 @@ final class McpAuditListener
             'tool' => $toolName,
             'status' => $event->getResponse()->getStatusCode(),
             'latency_ms' => $latencyMs,
-            'user_id' => $user instanceof User ? $user->getId()?->toRfc4122() : null,
+            'user_id' => $user instanceof User ? $user->getId()->toRfc4122() : null,
             'company_id' => $request->attributes->get(McpOAuthAuthenticator::ATTR_COMPANY_ID),
             'scopes' => $request->attributes->get(McpOAuthAuthenticator::ATTR_SCOPES, []),
             'access_token_id' => $request->attributes->get(McpOAuthAuthenticator::ATTR_ACCESS_TOKEN_ID),

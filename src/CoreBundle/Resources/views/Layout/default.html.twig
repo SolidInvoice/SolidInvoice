@@ -19,106 +19,44 @@
     {% endif %}
 {% endblock %}
 
-{% block header %}
+{% block navbar_actions %}
+    {% include "@SolidInvoiceCore/Menu/search.html.twig" with {"title" : block('title') ?? '', "header_content" : header_content|default('')} %}
+{% endblock navbar_actions %}
+
+{% block user_menu %}
     {% include "@SolidInvoiceCore/Menu/top.html.twig" with {"title" : block('title') ?? '', "header_content" : header_content|default('')} %}
-{% endblock header %}
+    {{ parent() }}
+{% endblock user_menu %}
+
+{% block user_menu_items %}
+    <a href="{{ path('_profile') }}" class="dropdown-item">
+        {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
+        {{ 'layout.profile'|trans }}
+    </a>
+    <div class="dropdown-divider"></div>
+    <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
+        {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}
+        {{ 'layout.api_keys'|trans }}
+    </a>
+    <a href="{{ path('_export_list') }}" class="dropdown-item">
+        {{ ux_icon('tabler:database-export', {width: 16, height: 16}) }}
+        {{ 'layout.data_export'|trans }}
+    </a>
+    <div class="dropdown-divider"></div>
+    <twig:Ui:Security:LogoutLink />
+{% endblock user_menu_items %}
 
 {% block footer %}
     <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %}</small>
 {% endblock footer %}
 
-{% block body_bottom %}
-    <div id="modal-container" class="modal" tabindex="-1"></div>
-{% endblock body_bottom %}
-
-{% block body %}
-    <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark" data-bs-theme="dark">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="{{ 'layout.aria.toggle_navigation'|trans }}">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="navbar-brand">
-                <a href="{{ path('_dashboard') }}" aria-label="{{ company_name() }}" class="d-flex align-items-center text-decoration-none link-white">
-                    {{ app_logo(showDefault: true) }}
-                    <small class="d-flex flex-column text-wrap lh-sm text-start">
-                        {{ company_name() }}
-                    </small>
-                </a>
-            </div>
-
-            <div class="navbar-nav flex-row d-lg-none">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0 px-2" data-bs-toggle="dropdown" aria-label="{{ 'layout.aria.open_user_menu'|trans }}">
-                        <span class="avatar avatar-sm">
-                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'layout.user_image'|trans }}">
-                        </span>
-                        <div class="d-none d-xl-block ps-2">
-                            <div>{{ app.user.email }}</div>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <a href="{{ path('_profile') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
-                            {{ 'layout.profile'|trans }}
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="{{ path('_api_keys_index') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}{{ 'layout.api_keys'|trans }}
-                        </a>
-                        <twig:Ui:Security:LogoutLink />
-                    </div>
-                </div>
-            </div>
-
-            <div class="collapse navbar-collapse" id="sidebar-menu">
-                <div class="d-flex flex-column">
-                    {{ render_menu('sidebar') }}
-
-                    {% if block('sidebar') is defined %}
-                        <nav class="mt-2">
-                            {{ block('sidebar') }}
-                        </nav>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </aside>
-    {{ block('header') }}
-
-    <div class="page-wrapper">
-        {% if block('title') is defined and block('title')|trim is not empty %}
-            <div class="page-header d-print-none">
-                <div class="container-xl">
-                    <div class="row g-2 align-items-center">
-                        <div class="col">
-                            {% if block('pretitle') is defined and block('pretitle')|trim is not empty %}
-                                <div class="page-pretitle">
-                                    {{ block('pretitle')|raw }}
-                                </div>
-                            {% endif %}
-                            <h2 class="page-title">
-                                {{ block('title')|raw }}
-                            </h2>
-                        </div>
-                        {% if block('heading') is defined and block('heading')|trim is not empty %}
-                            <div class="col-auto ms-auto d-print-none">
-                                <div class="btn-list">
-                                    {{ block('heading') }}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        <div class="page-body">
-            <div class="container-xl">
-                {% include "@SolidInvoiceCore/flash.html.twig" %}
-
-                {{ block('content') is defined ? block('content') }}
-            </div>
-        </div>
+{% block sidebar_brand %}
+    <div class="navbar-brand">
+        <a href="{{ path('_dashboard') }}" aria-label="{{ company_name() }}" class="d-flex align-items-center text-decoration-none link-white">
+            {{ app_logo(showDefault: true) }}
+            <small class="d-flex flex-column text-wrap lh-sm text-start">
+                {{ company_name() }}
+            </small>
+        </a>
     </div>
-{% endblock body %}
+{% endblock sidebar_brand %}

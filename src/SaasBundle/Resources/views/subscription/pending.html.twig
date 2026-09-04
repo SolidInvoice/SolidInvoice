@@ -9,10 +9,6 @@
 
 {% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
 
-{% block heading %}
-    {% include '@SolidInvoiceSaas/subscription/_header.html.twig' %}
-{% endblock heading %}
-
 {% block content %}
     {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
 

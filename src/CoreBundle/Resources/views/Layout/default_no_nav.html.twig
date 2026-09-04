@@ -7,35 +7,24 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
+{# @var ui_layout_condensed string #}
 
-{% block heading %}
-    {% set title = block('title') is defined ? block('title') %}
+{% extends ui_layout_condensed %}
 
-    {% if title is not empty %}
-        <h1>{{ block('title') }}</h1>
-    {% endif %}
-{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock stylesheets %}
 
-{% block body %}
-    <div class="page-wrapper">
-        {% if block('heading') is defined and block('heading')|trim is not empty %}
-            <div class="page-header d-print-none">
-                <div class="container-xl">
-                    <div class="row g-2 align-items-center">
-                        <div class="col">
-                            {{ block('heading') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock javascripts %}
 
-        <div class="page-body">
-            <div class="container-xl">
-                {% include "@SolidInvoiceCore/flash.html.twig" %}
-                {{ block('content') is defined ? block('content') }}
-            </div>
-        </div>
+{% block brand %}
+    <div class="company-page-logo">
+        {{ app_logo('48', showDefault: true, showOnlyAppIcon: true) }}
     </div>
-{% endblock body %}
+    <div class="company-page-brand">
+        <h1 class="h3 mb-0">{{ app_name }}</h1>
+    </div>
+{% endblock brand %}

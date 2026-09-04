@@ -97,7 +97,7 @@ final class DispatchOnboardingEmailsCommand extends Command
                     }
 
                     $this->logger->error('Onboarding dispatcher failed for user', [
-                        'user_id' => $user->getId()?->toString(),
+                        'user_id' => $user->getId()->toString(),
                         'subscription_id' => $subscription->getId()->toBase58(),
                         'exception' => $e->getMessage(),
                     ]);
