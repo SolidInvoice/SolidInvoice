@@ -17,7 +17,6 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -113,12 +112,11 @@ class OAuthAuthCode implements AuthCodeEntityInterface
         return $this->oauthClient;
     }
 
+    /**
+     * @param OAuthClient $client
+     */
     public function setClient(ClientEntityInterface $client): void
     {
-        if (! $client instanceof OAuthClient) {
-            throw new InvalidArgumentException('Expected OAuthClient instance.');
-        }
-
         $this->oauthClient = $client;
     }
 
@@ -134,11 +132,9 @@ class OAuthAuthCode implements AuthCodeEntityInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string | null
+    public function getUserIdentifier(): string
     {
-        $id = $this->user->getId();
-
-        return $id?->toRfc4122();
+        return $this->user->getId()->toRfc4122();
     }
 
     public function setUserIdentifier(string $identifier): void

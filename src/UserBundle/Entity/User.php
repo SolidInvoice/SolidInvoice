@@ -20,7 +20,6 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
 use SolidWorx\Platform\SaasBundle\Trial\TrialUserInterface;
 
 #[ORM\Table(name: User::TABLE_NAME)]
@@ -31,7 +30,6 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
     final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
-    use UserTwoFactor;
 
     /**
      * @var Collection<int, ApiToken>

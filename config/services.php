@@ -27,7 +27,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
     $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
-
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
     $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
@@ -39,7 +38,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SITE_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)', null);
-
     $parameters->set('env(SOLIDINVOICE_SENTRY_DSN)', null);
     $parameters->set('env(SOLIDINVOICE_SENTRY_RELEASE)', '');
     $parameters->set('env(SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII)', '0');
@@ -49,22 +47,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_SENTRY_HTTP_CONNECT_TIMEOUT)', '2');
     $parameters->set('env(SOLIDINVOICE_MAILER_DSN)', 'null://null');
     $parameters->set('env(SOLIDINVOICE_MAILER_SENDER)', 'SolidInvoice <no-reply@solidinvoice.co>');
-
-    // Translation provider DSN (e.g. crowdin://PROJECT_ID:API_TOKEN@default). Empty by
-    // default: the provider is only contacted by the translation:push / translation:pull
-    // commands, so self-hosted installs need no configuration.
     $parameters->set('env(SOLIDINVOICE_TRANSLATION_DSN)', '');
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
     $parameters->set('env(SOLIDINVOICE_PLATFORM)', null);
-
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_URL)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_API_KEY)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_PREFIX)', 'solidinvoice_%env(SOLIDINVOICE_ENV)%_');
-
     $parameters->set('env(SOLIDINVOICE_MCP_ACCESS_TOKEN_TTL)', 'P1D');
     $parameters->set('env(SOLIDINVOICE_MCP_REFRESH_TOKEN_TTL)', 'P90D');
     $parameters->set('env(SOLIDINVOICE_MCP_AUTH_CODE_TTL)', 'PT10M');
-
     $parameters->set('env(SOLIDINVOICE_TELEMETRY_URL)', 'https://insights.solidworx.co');
     $parameters->set('env(SOLIDINVOICE_ENABLE_TELEMETRY)', '0'); // default OFF; '1' enables
     $parameters->set('env(SOLIDINVOICE_INSTALL_TYPE)', '');       // '' → auto-detect (docker vs manual)

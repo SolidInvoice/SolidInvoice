@@ -42,7 +42,7 @@ final readonly class EmailVerifier
             $verifyEmailRouteName,
             $user->getId()->toString(),
             $user->getEmail(),
-            ['id' => $user->getId()?->toBase58()]
+            ['id' => $user->getId()->toBase58()]
         );
 
         $context = $email->getContext();

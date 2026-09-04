@@ -27,7 +27,7 @@
                     </div>
         
                                             <div class="card-body">
-                    <form name="notification_transport_setting" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                    <form name="notification_transport_setting" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save">
             <div class="mb-4">
                     <div class="mb-3">                
                                 <label class="control-label required form-label required" for="notification_transport_setting_name">Name</label><input type="text" id="notification_transport_setting_name" name="notification_transport_setting[name]" data-required="required" maxlength="255" class="form-control" value="Twilio Test">
@@ -50,7 +50,7 @@
 </fieldset>
     
             </div>
-        <input type="hidden" id="notification_transport_setting___dynamic_error" name="notification_transport_setting[__dynamic_error]"><input type="hidden" id="notification_transport_setting__token" name="notification_transport_setting[_token]" data-controller="csrf-protection">
+        <input type="hidden" id="notification_transport_setting___dynamic_error" name="notification_transport_setting[__dynamic_error]"><input type="hidden" id="notification_transport_setting__token" name="notification_transport_setting[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
 
         

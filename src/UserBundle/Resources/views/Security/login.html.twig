@@ -14,6 +14,7 @@
 {% block stylesheets %}
     {{ parent() }}
 
+    {{ encore_entry_link_tags('app') }}
     {{ encore_entry_link_tags('login') }}
 {% endblock stylesheets %}
 
@@ -34,12 +35,14 @@
     {% endtoggle %}
 {% endblock social_login %}
 
+{% block brand %}
+    <span class="text-white h1">
+        {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
+    </span>
+
+{% endblock brand %}
+
 {% block content %}
-    <div class="text-center mb-4">
-        <span class="navbar-brand navbar-brand-autodark text-white h1">
-            {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
-        </span>
-    </div>
 
     {{ parent() }}
 
