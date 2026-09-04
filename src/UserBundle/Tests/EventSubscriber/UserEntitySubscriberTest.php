@@ -94,7 +94,7 @@ final class UserEntitySubscriberTest extends TestCase
         $verifyEmailHelper
             ->expects($this->once())
             ->method('generateSignature')
-            ->with('_verify_email', '00000000000000000000000000', 'test@example.com', ['id' => '1111111111111111111111'])
+            ->with('_verify_email', $user->getId()->toString(), 'test@example.com', ['id' => $user->getId()->toBase58()])
             ->willReturn(new VerifyEmailSignatureComponents(Carbon::parse('NOW'), 'https://example.com', 0))
         ;
 

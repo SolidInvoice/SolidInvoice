@@ -1,6 +1,6 @@
 <html><body>
 <div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","contacts":[],"addresses":[],"taxIdentifiers":[],"customFields":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
+    <form name="client" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save" class="client-form">
 
     
 
@@ -320,7 +320,7 @@
 <fieldset class="mb-3">                
     <div id="client_customFields"></div>
 </fieldset>
-<input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
+<input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 
                 <div class="form-page-actions">
             <div class="form-page-actions-inner form-page-actions-inner--medium">
