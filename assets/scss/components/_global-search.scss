@@ -155,6 +155,12 @@
     }
 }
 
+#searchHelpModal .modal-body {
+    // The search guide lays out its own full-bleed sections (bands, dividers,
+    // columns), so the modal body must not add padding of its own.
+    padding: 0;
+}
+
 .search-dropdown {
     display: none;
     position: absolute;
