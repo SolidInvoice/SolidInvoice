@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Step;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
+use InvalidArgumentException;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -52,7 +53,7 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
             $params['dbname'] = match ($params['driver']) {
                 'pdo_mysql' => 'information_schema',
                 'pdo_pgsql' => 'postgres',
-                default => throw new \InvalidArgumentException(sprintf('Unsupported database driver "%s".', $params['driver'])),
+                default => throw new InvalidArgumentException(sprintf('Unsupported database driver "%s".', $params['driver'])),
             };
         } else {
             $dbName = str_replace($this->projectDir . '/', './', $params['path']);
