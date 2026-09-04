@@ -10,7 +10,7 @@
 <div {{ attributes.defaults({class: 'form-page'}) }}>
     {{ form_start(form, {
         attr: {
-            'data-action': (form.vars.attr['data-action']|default('')) ~ ' live#action:prevent',
+            'data-action': 'live#action:prevent',
             'data-live-action-param': 'save',
             'class': 'client-form'
         }
