@@ -5,6 +5,10 @@
                 "enabled": true,
                 "fetch": "lazy"
             },
+            "modal-prefill": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
             "csrf-protection": {
                 "enabled": true,
                 "fetch": "lazy"
