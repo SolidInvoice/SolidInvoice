@@ -9,16 +9,6 @@
 
 {% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
-{% block scripts %}
-    {% set script = block("script") ?? null %}
-
-    {% if script is not empty %}
-        <script>
-            {{ script|raw }}
-        </script>
-    {% endif %}
-{% endblock %}
-
 {% block navbar_actions %}
     {% include "@SolidInvoiceCore/Menu/search.html.twig" with {"title" : block('title') ?? '', "header_content" : header_content|default('')} %}
 {% endblock navbar_actions %}

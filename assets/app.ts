@@ -12,10 +12,18 @@ import CheckboxSelectAll from '@stimulus-components/checkbox-select-all';
 import PasswordVisibility from '@stimulus-components/password-visibility';
 import Clipboard from '@stimulus-components/clipboard';
 
-import { startStimulusApp } from '@symfony/stimulus-bridge';
 import PasswordStrength from './controllers/password-strength-controller';
 
-export const app = startStimulusApp(require.context(
+// Reuse the Stimulus application bootstrapped by the platform's `_platform_ui`
+// entry instead of starting a second one, which would register every
+// controller twice. Required at runtime so `core.ts` is not pulled into
+// TypeScript's program, as it does not type-check under `noImplicitAny`.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { getApp, registerControllers } = require('@solidworx/platform/core');
+
+export const app = getApp();
+
+registerControllers(require.context(
     '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
     true,
     /\.[jt]sx?$/
