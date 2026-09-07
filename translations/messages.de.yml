@@ -1,53 +1,53 @@
-client: Client
-email: Email
-clients: Clients
-add_client: 'Add Client'
-save: Save
-contact_details: 'Contact Details'
+client: Kunde
+email: E-Mail
+clients: Kunden
+add_client: 'Kunde hinzufügen'
+save: Speichern
+contact_details: Kontakt-Details
 id: Id
 name: Name
-website: Website
-all_clients: 'All Clients'
-active_clients: 'Active Clients'
-inactive_clients: 'In-Active Clients'
+website: Webseite
+all_clients: 'Alle Kunden'
+active_clients: 'Aktive Kunden'
+inactive_clients: 'Inaktive Kunden'
 status: Status
-invoices: Invoices
-quotes: Quotes
-view: View
-edit_client: 'Edit Client'
-no_quotes: 'This client does not have any quotes yet.'
-no_invoices: 'This client does not have any invoices yet.'
-create_now: 'Create one now.'
-created: Created
-delete_client: 'Delete Client'
-contact_delete_success: 'The contact was deleted successfully'
-contact_delete: 'Delete Contact'
-contact_edit: 'Edit Contact'
-contact_saved: 'The contact was saved successfully'
-success: Success
-close: Close
-change: Change
-client_create: 'Create Client'
-add_info: 'Add Info'
+invoices: Rechnungen
+quotes: Angebote
+view: Anzeigen
+edit_client: 'Kunden bearbeiten'
+no_quotes: 'Dieser Kunde hat noch keine Angebote.'
+no_invoices: 'Dieser Kunde hat noch keine Rechnungen.'
+create_now: 'Jetzt anlegen'
+created: Erstellt
+delete_client: 'Kunde löschen'
+contact_delete_success: 'Der Kunde wurde erfolgreich gelöscht'
+contact_delete: 'Kontakt löschen'
+contact_edit: 'Kontakt bearbeiten'
+contact_saved: 'Der Kunde wurde erfolgreich gelöscht'
+success: Erfolgreich
+close: Schließen
+change: Ändern
+client_create: 'Kunden erstellen'
+add_info: 'Information hinzufügen'
 menu:
     button:
-        create: Create
+        create: Erstellen
     top:
-        profile: Profile
-        api: 'API Tokens'
-        logout: Logout
+        profile: Profil
+        api: API-Token
+        logout: Abmelden
         system: System
-        settings: Settings
-        integrations: Integrations
-        tax: 'Tax Rates'
-        users: Users
+        settings: Einstellungen
+        integrations: Integrationen
+        tax: Steuersätze
+        users: Benutzer
         custom_fields: 'Custom Fields'
         dashboard: Dashboard
 exception:
     error:
-        text: 'The following error occurred:'
+        text: 'Der folgende Fehler ist aufgetreten:'
     not_found:
-        text: 'Sorry, but the page you were trying to view does not exist.'
+        text: 'Es tut uns leid, die angeforderte Seite existiert nicht.'
     403:
         text: "You don't have permission to view this page."
         title: 'Access denied'
@@ -65,134 +65,134 @@ exception:
         text: 'An unexpected error occurred. Please try again.'
         title: 'Oops, something went wrong'
 billing: __billing
-powered_by: 'Powered By'
-invalid_file: 'Invalid File'
-create_new: 'Create New'
-invoice: Invoice
-quote: Quote
-client.create.success: 'Client Successfully Saved!'
-client.confirm_delete: 'Are you sure you want to delete this client?'
-client.delete_success: 'The client was deleted successfully'
-client.archive.success: 'Client Successfully Archived'
-client.restore.success: 'Client Successfully Restored'
-client.info: 'Client Info'
-client.save: 'Save Client'
-client.cancel: Cancel
-client.address.info: 'Address Info'
-client.address.add: 'Add Address'
+powered_by: 'Powered by'
+invalid_file: 'Ungültige Datei'
+create_new: 'Neue Erstellen'
+invoice: Rechnung
+quote: Angebot
+client.create.success: 'Kunde erfolgreich gespeichert!'
+client.confirm_delete: 'Wollen Sie diesen Kunden wirklich löschen?'
+client.delete_success: 'Der Kunde wurde erfolgreich gelöscht'
+client.archive.success: 'Kunde erfolgreich archiviert'
+client.restore.success: 'Kunde erfolgreich wiederhergestellt'
+client.info: Kundeninformationen
+client.save: 'Kunde speichern'
+client.cancel: Abbrechen
+client.address.info: Adresse
+client.address.add: 'Adresse hinzufügen'
 client.address.delete: 'Delete Address'
-client.address.edit: 'Edit Address'
-client.address.delete_confirm: 'Are you sure you want to delete this address?'
-client.address.country.select: 'Select Country'
-client.address.view_map: 'View Map'
-client.contact.at_least_1: 'This client needs to have at least 1 contact'
-client.contact.info: 'Contact Info'
-client.contact.add: 'Add Contact'
-client.contact.delete: 'Delete Contact'
-client.contact.delete_confirm: 'Are you sure you want to delete this contact?'
-client.contact.details.choose: Choose
-client.contact.details.extra: 'Additional Contact Details'
-client.contact.details.email: Email
-client.grid.actions.view: View
-client.grid.actions.edit: Edit
-client.grid.actions.delete: Delete
+client.address.edit: 'Adresse bearbeiten'
+client.address.delete_confirm: 'Sind Sie sicher, dass Sie diese Adresse löschen wollen?'
+client.address.country.select: 'Land auswählen'
+client.address.view_map: 'Karte ansehen'
+client.contact.at_least_1: 'Dieser Kunde muss mindestens 1 Kontakt haben'
+client.contact.info: Kontaktinformationen
+client.contact.add: 'Kontakt hinzufügen'
+client.contact.delete: 'Kontakt löschen'
+client.contact.delete_confirm: 'Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?'
+client.contact.details.choose: Auswählen
+client.contact.details.extra: 'Weitere Kontaktdaten'
+client.contact.details.email: E-Mail
+client.grid.actions.view: Anzeigen
+client.grid.actions.edit: Bearbeiten
+client.grid.actions.delete: Löschen
 client.stats.income: 'Total Income'
-client.stats.credit: 'Credit Balance'
-client.stats.outstanding: Outstanding
-client.stats.outstanding_invoices: 'Outstanding Invoices'
-client.stats.paid_invoices: 'Paid Invoices'
-client.stats.number_quotes: '{0} Quotes|{1} Quote|]1,Inf] Quotes'
-client.stats.number_invoices: '{0} Invoices|{1} Invoice|]1,Inf] Invoices'
-client.stats.tooltip.total_invoices: 'Total invoices for this client'
-client.stats.tooltip.total_quotes: 'Total quotes for this client'
-client.stats.tooltip.total_outstanding: 'Total number of outstanding invoices for this client'
-client.stats.tooltip.total_paid: 'Total number of paid invoices for this client'
-client.view.actions.create_quote: 'Create Quote'
-client.view.actions.create_invoice: 'Create Invoice'
-client.view.actions.add_contact: 'Add Contact'
-client.view.actions.edit: Edit
-client.view.actions.delete: Delete
-client.view.actions.add_credit: 'Add Credit'
+client.stats.credit: Guthaben
+client.stats.outstanding: Offen
+client.stats.outstanding_invoices: 'Offene Rechnungen'
+client.stats.paid_invoices: 'Bezahlte Rechnungen'
+client.stats.number_quotes: '{0} Angebote|{1} Angebot|]1,Inf] Angebote'
+client.stats.number_invoices: '{0} Rechnungen|{1} Rechnung|]1,Inf] Rechnungen'
+client.stats.tooltip.total_invoices: 'Rechnungen für diesen Kunden'
+client.stats.tooltip.total_quotes: 'Angebote für diesen Kunden'
+client.stats.tooltip.total_outstanding: 'Offene Rechnungen für diesen Kunden'
+client.stats.tooltip.total_paid: 'Bezahlte Rechnungen für diesen Kunden'
+client.view.actions.create_quote: 'Angebot erstellen'
+client.view.actions.create_invoice: 'Rechnung erstellen'
+client.view.actions.add_contact: 'Kontakt hinzufügen'
+client.view.actions.edit: Bearbeiten
+client.view.actions.delete: Löschen
+client.view.actions.add_credit: 'Guthaben hinzufügen'
 client.view.tabs.info: Info
-client.view.tabs.quotes: Quotes
-client.view.tabs.invoices: Invoices
-client.view.tabs.payments: Payments
-client.view.currency: 'Currency:'
-client.heading.payments: Payments
-client.heading.addresses: Addresses
-client.heading.contacts: Contacts
-client.modal.add_credit: 'Add Credit'
-client.modal.add_contact: 'Add Contact'
-client.modal.edit_contact: 'Edit Contact'
-client.modal.edit_address: 'Edit Address'
-client.modal.credit.amount: Amount
+client.view.tabs.quotes: Angebote
+client.view.tabs.invoices: Rechnungen
+client.view.tabs.payments: Zahlungen
+client.view.currency: 'Währung:'
+client.heading.payments: Zahlungen
+client.heading.addresses: Adressen
+client.heading.contacts: Kontakte
+client.modal.add_credit: 'Guthaben hinzufügen'
+client.modal.add_contact: 'Kontakt hinzufügen'
+client.modal.edit_contact: 'Kontakt bearbeiten'
+client.modal.edit_address: 'Adresse bearbeiten'
+client.modal.credit.amount: Betrag
 client.modal.credit.tip: "<strong>Tip:</strong> To subtract an amount, add a '-' before the amount, E.G <code>%amount%</code>"
-client.modal.action.close: Close
-client.modal.action.save: Save
-client.menu.main: Clients
-client.menu.list: 'List Clients'
-client.menu.add: 'Add Client'
-client.menu.view: 'View Client'
-client.menu.create.invoice: 'Create Invoice'
-client.menu.create.quote: 'Create Quote'
-client.form.currency.empty_value: 'System Default'
-client.contacts.info.list: 'Select contacts to send %type% to'
+client.modal.action.close: Schließen
+client.modal.action.save: Speichern
+client.menu.main: Kunden
+client.menu.list: 'Kunden anzeigen'
+client.menu.add: 'Kunde hinzufügen'
+client.menu.view: 'Kunde anzeigen'
+client.menu.create.invoice: 'Rechnung erstellen'
+client.menu.create.quote: 'Angebot erstellen'
+client.form.currency.empty_value: Standardeinstellung
+client.contacts.info.list: 'Kontakte zum Senden von %type% auswählen'
 dashboard:
-    title: Dashboard
-    active_clients: 'Active Clients'
-    income_received: 'Income Received'
-    pending_quotes: 'Pending Quotes'
-    outstanding_invoices: 'Outstanding Invoices'
+    title: Übersicht
+    active_clients: 'Aktive Kunden'
+    income_received: 'Erhaltene Einnahmen'
+    pending_quotes: 'Ausstehende Angebote'
+    outstanding_invoices: 'Offene Rechnungen'
     create:
-        new: 'Create New'
-        client: Client
-        invoice: Invoice
-        quote: Quote
+        new: 'Neu erstellen'
+        client: Kunde
+        invoice: Rechnung
+        quote: Angebot
     quick_nav:
         title: 'Quick Nav'
-        clients: Clients
-        invoices: Invoices
-        quotes: Quotes
-        settings: Settings
-        profile: Profile
+        clients: Kunden
+        invoices: Rechnungen
+        quotes: Angebote
+        settings: Einstellungen
+        profile: Profil
     client:
-        recent: 'Recent Clients'
-        create: 'Create New Client'
-        empty: 'There are no clients available'
-        view_all: 'View All Clients'
+        recent: 'Letzte Kunden'
+        create: 'Neuen Kunden erstellen'
+        empty: 'Es sind keine Kunden verfügbar'
+        view_all: 'Alle Kunden anzeigen'
         actions:
-            view: View
-            edit: Edit
-            created: 'Created:'
+            view: Anzeigen
+            edit: Bearbeiten
+            created: 'Erstellt:'
             create:
-                quote: 'Create Quote'
-                invoice: 'Create Invoice'
+                quote: 'Angebot erstellen'
+                invoice: 'Rechnung erstellen'
     quote:
-        recent: 'Recent Quotes'
-        create: 'Create New Quote'
-        empty: 'There are no quotes available'
-        view_all: 'View All Quotes'
+        recent: 'Letzte Angebote'
+        create: 'Neues Angebot erstellen'
+        empty: 'Es sind keine Angebote verfügbar'
+        view_all: 'Alle Angebote anzeigen'
         actions:
-            view: View
-            edit: Edit
-            created: 'Created:'
+            view: Anzeigen
+            edit: Bearbeiten
+            created: 'Erstellt:'
     invoice:
-        recent: 'Recent Invoices'
-        create: 'Create New Invoice'
-        empty: 'There are no invoices available'
-        view_all: 'View All Invoices'
+        recent: 'Letzte Rechnungen'
+        create: 'Neue Rechnung erstellen'
+        empty: 'Es sind keine Rechnungen verfügbar'
+        view_all: 'Alle Rechnungen anzeigen'
         actions:
-            view: View
-            pay: 'Pay Now'
-            edit: Edit
-            created: 'Created:'
+            view: Anzeigen
+            pay: 'Jetzt bezahlen'
+            edit: Bearbeiten
+            created: 'Erstellt:'
     payment:
-        recent: 'Recent Payments'
-        view_all: 'View All Payments'
+        recent: 'Letzte Zahlungen'
+        view_all: 'Alle Zahlungen anzeigen'
         actions:
-            created: 'Created:'
-            invoice: 'Invoice:'
-        no_payments: 'There are no recent payments available'
+            created: 'Erstellt:'
+            invoice: 'Rechnung:'
+        no_payments: 'Keine kürzlichen Zahlungen verfügbar'
     actions:
         add_client: 'Add Client'
         create_invoice: 'New Invoice'
@@ -304,58 +304,58 @@ dashboard:
         retry: 'Try again'
         title: "This didn't load"
 installation:
-    already_installed: 'The application is already installed'
+    already_installed: 'Die Anwendung ist bereits installiert'
     title: '%app_name% Installation'
     step:
-        license_agreement: 'License Agreement'
-        system_check: 'System Check'
-        database_configuration: 'Database Configuration'
-        system_information: 'System Information'
+        license_agreement: Lizenzvereinbarung
+        system_check: Systemprüfung
+        database_configuration: Datenbankkonfiguration
+        system_information: Systeminformationen
         info:
-            company: 'Company Information'
-            user: 'Admin User Information'
+            company: Unternehmensinformationen
+            user: Admin-Benutzerinformationen
     action:
-        previous: Previous
-        next: Next
-        refresh: Refresh
-        restart: Restart
-        restart_process: 'Restart the installation process'
+        previous: Zurück
+        next: Nächste
+        refresh: Aktualisieren
+        restart: Neustart
+        restart_process: 'Installationsvorgang neu starten'
     requirements:
-        not_met: 'Some requirements were not met'
-        message: 'Please ensure your system meets the minimum requirements before proceeding.'
+        not_met: 'Einige Voraussetzungen wurden nicht erfüllt'
+        message: 'Bitte stellen Sie sicher, dass Ihr System die Mindestanforderungen erfüllt, bevor Sie fortfahren.'
         mandatory: Required
         optional: Recommended
         all_met: 'All system requirements are met'
         all_met_message: 'You can proceed with the installation.'
     progress:
         step:
-            system_check: 'Requirements Check'
-            config: 'Database Config'
-            process: 'Installation Process'
-            setup: 'System Setup'
-            finish: Finish
+            system_check: Anforderungsüberprüfung
+            config: Datenbank-Konfiguration
+            process: Installationsprozess
+            setup: Systemeinrichtung
+            finish: Abschließen
     process:
         title:
-            busy: Installing...
-            done: Done
+            busy: Installiere...
+            done: Fertig
         step:
-            createdb: 'Creating database'
-            migrations: 'Creating database schema'
+            createdb: 'Erstelle Datenbank'
+            migrations: 'Datenbankschema wird erstellt'
     config:
         title:
-            requirements_check: 'System Requirements Check'
-            database_config: 'Database Config'
-            email_settings: 'Email Settings'
+            requirements_check: 'Überprüfung der Systemanforderungen'
+            database_config: Datenbank-Konfiguration
+            email_settings: 'E-Mail Einstellungen'
     setup:
         title:
-            system_settings: 'System Settings'
-            admin_user: 'Admin User'
-        notice: Notice
-        user_exists: 'The database already contains an admin user.'
+            system_settings: Systemeinstellungen
+            admin_user: Administrator
+        notice: Hinweis
+        user_exists: 'Die Datenbank enthält bereits einen Admin Benutzer.'
     finish:
-        success: Success
-        success_message: 'You have successfully installed SolidInvoice!'
-        login: 'Log In Now'
+        success: Erfolgreich
+        success_message: 'SolidInvoice wurde erfolgreich installiert!'
+        login: 'Jetzt Einloggen'
     database:
         name: 'Database Name'
         recommended: Recommended
@@ -439,118 +439,118 @@ installation:
         locale_placeholder: 'Please select a locale'
         telemetry: 'Send anonymous usage statistics'
         telemetry_help: 'Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.'
-invoice.list.status_legend: 'Invoice Status Legend'
-invoice.list.title: Invoices
-invoice.list.recurring_title: 'Recurring Invoices'
-invoice.list.outstanding: Outstanding
-invoice.list.income: Income
-invoice.created: Created
+invoice.list.status_legend: 'Rechnungsstatus Legende'
+invoice.list.title: Rechnungen
+invoice.list.recurring_title: 'Wiederkehrende Rechnungen'
+invoice.list.outstanding: Offen
+invoice.list.income: Einnahmen
+invoice.created: Erstellt
 invoice.status: Status
-invoice.summary: 'Invoice Summary'
-invoice.total: Total
-invoice.subtotal: Sub-Total
-invoice.tax: Tax
-invoice.discount: Discount
-invoice.title: 'Invoice #%id%'
-invoice.notes: Notes
-invoice.terms: Terms
-invoice.client.choose: 'Choose a client'
-invoice.client.empty: 'You have not created any clients yet.'
-invoice.client.create: 'Please add one now'
-invoice.create.new: 'Create Invoice'
-invoice.create.success: 'Invoice created successfully'
-invoice.edit.success: 'Invoice updated successfully'
-invoice.edit.paid: "You can't edit invoices that is already paid"
-invoice.item.add: 'Add Item'
-invoice.item.remove: 'Remove Item'
-invoice.item.heading.description: Description
-invoice.item.heading.price: Price
-invoice.item.heading.qty: Qty
-invoice.item.heading.total: Total
-invoice.item.heading.tax: Tax
-invoice.save.send: 'Save and Send'
-invoice.save.enable: 'Save and Enable'
-invoice.save.draft: 'Save as Draft'
-invoice.save.cancel: Cancel
-invoice.save.update: Update
-invoice.view.online: 'View this invoice online at: %url%'
-invoice.view.toolbar.mark_paid: 'Mark Paid'
-invoice.view.toolbar.send: Send
-invoice.view.toolbar.pay_now: 'Pay Now'
-invoice.view.toolbar.cancel: Cancel
-invoice.view.toolbar.edit: Edit
-invoice.view.toolbar.reopen: Re-Open
-invoice.view.toolbar.clone: Clone
-invoice.view.toolbar.view_quote: 'View Quote'
-invoice.view.payments: Payments
-invoice.clone.success: 'Invoice cloned successfully'
+invoice.summary: Rechnungsübersicht
+invoice.total: Gesamt
+invoice.subtotal: Zwischensumme
+invoice.tax: Steuer
+invoice.discount: Rabatt
+invoice.title: 'Rechnung #%id%'
+invoice.notes: Anmerkungen
+invoice.terms: Bedingungen
+invoice.client.choose: 'Kunde auswählen'
+invoice.client.empty: 'Sie haben noch keine Kunden erstellt.'
+invoice.client.create: 'Bitte fügen Sie jetzt einen hinzu'
+invoice.create.new: 'Rechnung erstellen'
+invoice.create.success: 'Rechnung erfolgreich erstellt'
+invoice.edit.success: 'Rechnung erfolgreich aktualisiert'
+invoice.edit.paid: 'Bereits bezahlte Rechnungen können nicht bearbeitet werden.'
+invoice.item.add: 'Neuer Eintrag'
+invoice.item.remove: 'Eintrag entfernen'
+invoice.item.heading.description: Beschreibung
+invoice.item.heading.price: Preis
+invoice.item.heading.qty: Anzahl
+invoice.item.heading.total: Gesamt
+invoice.item.heading.tax: Steuer
+invoice.save.send: 'Speichern und Senden'
+invoice.save.enable: 'Speichern und Aktivieren'
+invoice.save.draft: 'Als Entwurf speichern'
+invoice.save.cancel: Abbrechen
+invoice.save.update: Aktualisieren
+invoice.view.online: 'Diese Rechnung online ansehen unter: %url%'
+invoice.view.toolbar.mark_paid: 'Als bezahlt markieren'
+invoice.view.toolbar.send: Absenden
+invoice.view.toolbar.pay_now: 'Jetzt Bezahlen'
+invoice.view.toolbar.cancel: Abbrechen
+invoice.view.toolbar.edit: Bearbeiten
+invoice.view.toolbar.reopen: 'Erneut öffnen'
+invoice.view.toolbar.clone: Duplizieren
+invoice.view.toolbar.view_quote: 'Angebot anzeigen'
+invoice.view.payments: Zahlungen
+invoice.clone.success: 'Rechnung erfolgreich dupliziert'
 invoice.payment.capture: 'Do you want to capture a payment for this invoice?'
-invoice.mark_paid: 'Mark Paid'
+invoice.mark_paid: 'Als bezahlt markieren'
 invoice.capture_payment: 'Capture Payment'
-invoice.add_payment: 'Add Payment'
-invoice.transition.exception.accept: 'Invoice cannot be accepted'
-invoice.transition.exception.cancel: 'Invoice cannot be cancelled'
-invoice.transition.exception.pay: 'Invoice cannot be paid'
-invoice.transition.exception.sent: 'Invoice cannot be sent'
-invoice.transition.exception.reopen: 'Invoice cannot be re-opened'
-invoice.transition.exception.archive: 'Invoice cannot be archived'
-invoice.transition.action.accept: 'Invoice has been accepted'
-invoice.transition.action.cancel: 'Invoice has been cancelled'
-invoice.transition.action.pay: 'Invoice has been paid'
-invoice.transition.action.sent: 'Invoice has been sent'
-invoice.transition.action.reopen: 'Invoice has been re-opened'
-invoice.transition.action.archive: 'Invoice has been archived'
-invoice.transition.action.activate: 'Invoice has been activated'
-invoice.stats.count.pending: '{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices'
-invoice.stats.count.draft: '{0} Draft Invoices|{1} Draft Invoice|]1,Inf] Draft Invoices'
-invoice.stats.count.paid: '{0} Paid Invoices|{1} Paid Invoice|]1,Inf] Paid Invoices'
-invoice.stats.count.cancelled: '{0} Cancelled Invoices|{1} Cancelled Invoice|]1,Inf] Cancelled Invoices'
-invoice.stats.count.overdue: '{0} Overdue Invoices|{1} Overdue Invoice|]1,Inf] Overdue Invoices'
-invoice.grid.actions.view: View
-invoice.grid.actions.edit: Edit
-invoice.grid.actions.delete: Delete
-invoice.action.create: 'Create Invoice'
-invoice.action.create_recurring: 'Create Recurring Invoice'
-invoice.action.edit: 'Edit Invoice'
-invoice.action.view: 'View Invoice'
-invoice.action.pay_now: 'Pay Now'
-invoice.action.print: Print
+invoice.add_payment: 'Zahlung hinzufügen'
+invoice.transition.exception.accept: 'Rechnung kann nicht angenommen werden'
+invoice.transition.exception.cancel: 'Rechnung kann nicht widerrufen werden.'
+invoice.transition.exception.pay: 'Rechnung kann nicht bezahlt werden'
+invoice.transition.exception.sent: 'Rechnung kann nicht gesendet werden'
+invoice.transition.exception.reopen: 'Rechnung kann nicht erneut geöffnet werden'
+invoice.transition.exception.archive: 'Rechnung kann nicht archiviert werden'
+invoice.transition.action.accept: 'Rechnung wurde angenommen'
+invoice.transition.action.cancel: 'Rechnung wurde storniert'
+invoice.transition.action.pay: 'Rechnung wurde bezahlt'
+invoice.transition.action.sent: 'Rechnung wurde versandt'
+invoice.transition.action.reopen: 'Rechnung wurde erneut geöffnet'
+invoice.transition.action.archive: 'Rechnung wurde archiviert'
+invoice.transition.action.activate: 'Rechnung wurde aktiviert'
+invoice.stats.count.pending: '{0} Ausstehende Rechnungen|{1} Ausstehende Rechnungen|]1,Inf] Ausstehende Rechnungen'
+invoice.stats.count.draft: '{0} Rechnungsentwürfe |{1} Rechnungsentwürfe|]1,Inf] Rechnungsentwürfe'
+invoice.stats.count.paid: '{0} Bezahlte Rechnungen|{1} Bezahlte Rechnung|]1,Inf] Rechnungen'
+invoice.stats.count.cancelled: '{0} Stornierte Rechnungen|{1} Stornierte Rechnungen|]1,Inf] Stornierte Rechnungen'
+invoice.stats.count.overdue: '{0} Überfällige Rechnungen|{1} Überfällige Rechnungen|]1,Inf] Überfällige Rechnungen'
+invoice.grid.actions.view: Anzeigen
+invoice.grid.actions.edit: Bearbeiten
+invoice.grid.actions.delete: Löschen
+invoice.action.create: 'Rechnung erstellen'
+invoice.action.create_recurring: 'Wiederkehrende Rechnungen erstellen'
+invoice.action.edit: 'Rechnung bearbeiten'
+invoice.action.view: 'Rechnung anzeigen'
+invoice.action.pay_now: 'Jetzt Bezahlen'
+invoice.action.print: Drucken
 invoice.action.pdf: PDF
-invoice.balance: 'Outstanding Balance'
-invoice.archive.success: 'Invoice has been archived'
-invoice.recurring.date_start: 'Start Date'
-invoice.recurring.date_end: 'End Date'
+invoice.balance: 'Ausstehender Betrag'
+invoice.archive.success: 'Rechnung wurde archiviert'
+invoice.recurring.date_start: Startdatum
+invoice.recurring.date_end: Enddatum
 invoice.recurring.date_end_info: 'If no end date is specified, the invoice will recur indefinitely'
-invoice.recurring.view.starting: starting
-invoice.recurring.view.ending: 'ending on'
-invoice.recurring.view.label: Recurring
+invoice.recurring.view.starting: Startet
+invoice.recurring.view.ending: 'Endet am'
+invoice.recurring.view.label: Wiederkehrend
 invoice.recurring.variables.text: 'You can use the following placeholders in item descriptions that will be replaced when invoices are generated:'
 invoice.recurring.variables.day: 'The day of the invoice (e.g. "15")'
 invoice.recurring.variables.day_name: 'The name of the day (e.g. "Wednesday")'
 invoice.recurring.variables.month: 'The name of the month (e.g. "January")'
 invoice.recurring.variables.year: 'The year (e.g. "2026")'
-invoice.menu.main: Invoices
-invoice.menu.list: 'List Invoices'
-invoice.menu.create: 'Create Invoice'
-invoice.menu.view: 'View Invoice'
-invoice.menu.recurring.main: 'Recurring Invoices'
-invoice.menu.recurring.list: 'List Recurring Invoices'
-invoice.menu.recurring.create: 'Create Recurring Invoice'
-invoice.menu.recurring.view: 'View Recurring Invoice'
-invoice_status_update: 'Invoice Status Update'
+invoice.menu.main: Rechnungen
+invoice.menu.list: 'Rechnungen anzeigen'
+invoice.menu.create: 'Rechnung erstellen'
+invoice.menu.view: 'Rechnung anzeigen'
+invoice.menu.recurring.main: 'Wiederkehrende Rechnungen'
+invoice.menu.recurring.list: 'Wiederkehrende Rechnungen anzeigen'
+invoice.menu.recurring.create: 'Wiederkehrende Rechnungen erstellen'
+invoice.menu.recurring.view: 'Wiederkehrende Rechnungen anzeigen'
+invoice_status_update: 'Rechnungsstatus aktualisieren'
 payment:
     create:
-        cancel: Cancel
+        cancel: Abbrechen
         force: 'Force payment status (Optional)'
-        discount: Discount
+        discount: Rabatt
         base_total: 'Base Total'
-        total: Total
-        tite: 'Payment for invoice #%id%'
-        balance: 'Outstanding balance'
-        credit: 'Credit:'
+        total: Gesamt
+        tite: 'Zahlung für Rechnung #%id%'
+        balance: 'Ausstehender Betrag'
+        credit: 'Guthaben:'
         exception:
-            not_enough_credit: 'Not have enough credit available'
-            amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
+            not_enough_credit: 'Nicht genügend Guthaben verfügbar'
+            amount_exceeds_balance: 'Erfasster Betrag überschreitet den ausstehenden Kontostand'
             invoice_cannot_be_paid: 'This invoice cannot be paid'
             no_payment_methods: 'No payment methods are currently available'
         invoice_date: 'Invoice Date'
@@ -559,53 +559,53 @@ payment:
         title: 'Pay Invoice #%id%'
     flash:
         status:
-            success: 'Payment has been completed'
-            cancelled: 'Payment has been cancelled'
-            pending: 'Payment is pending'
-            expired: 'Payment has expired'
-            failed: 'Payment failed'
-            new: 'New payment created'
-            suspended: 'Payment has been suspended'
-            unknown: 'An unknown error occurred'
-            authorized: 'Payment has been authorized'
-            refunded: 'Payment has been refunded'
+            success: 'Zahlung abgeschlossen'
+            cancelled: 'Zahlung abgebrochen'
+            pending: 'Zahlung ausstehend'
+            expired: 'Zahlung abgelaufen'
+            failed: 'Zahlung fehlgeschlagen'
+            new: 'Neue Zahlung erstellt'
+            suspended: 'Zahlung wurde abgebrochen'
+            unknown: 'Ein unbekannter Fehler ist aufgetreten'
+            authorized: 'Zahlung wurde autorisiert'
+            refunded: 'Zahlung wurde zurückerstattet'
     form:
         help:
             internal: "Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment."
         label:
-            internal: 'Internal use only'
+            internal: 'Nur zur internen Verwendung'
         payment_method:
             placeholder: 'Choose Payment Method'
     action:
-        pay: 'Pay Now'
+        pay: 'Jetzt Bezahlen'
     list:
-        title: Payments
-        status_legend: 'Payment Status Legend'
+        title: Zahlungen
+        status_legend: 'Zahlungsstatus Legende'
         grid:
-            invoice: Invoice
-            payment_id: 'Payment Id'
-            method: 'Payment Method'
-            amount: Amount
-            currency: Currency
-            payment_date: 'Payment Date'
+            invoice: Rechnung
+            payment_id: Zahlungs-ID
+            method: Zahlungsart
+            amount: Anzahl
+            currency: Währung
+            payment_date: Zahlungsdatum
             status: Status
     method:
-        add: 'Add Payment Method'
-        added: 'Payment Method Successfully Added!'
-        updated: 'Payment Method Successfully Updated!'
+        add: 'Zahlungsart hinzufügen'
+        added: 'Zahlungsart erfolgreich hinzugefügt!'
+        updated: 'Zahlungsart erfolgreich aktualisiert!'
         credit: Credit
         label: 'Payment Method'
         offline: Offline
         online: Online
     methods:
-        title: 'Payment Methods'
+        title: Zahlungsarten
         available: 'Available Payment Methods'
     menu:
-        main: Payments
-        methods: 'Payment Methods'
+        main: Zahlungen
+        methods: Zahlungsarten
     settings:
         password:
-            hint: 'Keep this empty to keep the existing value'
+            hint: 'Leer lassen, um den vorhandenen Wert zu behalten'
         configure_gateway: 'Configure %method%'
         delete_aria: 'Delete payment method'
         delete_modal:
@@ -796,82 +796,82 @@ payment:
         pending: Pending
         this_month: 'This Month'
         total_received: 'Total Received'
-payment_made: 'Payment has been received'
-quote.list.status_legend: 'Quote Status Legend'
-quote.list.title: Quotes
-quote.summary: 'Quote Summary'
-quote.create: 'Create Quote'
-quote.created: Created
-quote.total: Total
-quote.subtotal: Sub-Total
-quote.tax: Tax
-quote.discount: Discount
-quote.edit: 'Edit Quote'
-quote.terms: Terms
-quote.notes: Notes
-quote.title: 'Quote #%id%'
-quote.save.send: 'Save and Send'
-quote.save.draft: 'Save as Draft'
-quote.save.update: Update
-quote.save.cancel: Cancel
-quote.item.add: 'Add Item'
-quote.item.remove: 'Remove Item'
-quote.item.heading.description: Description
-quote.item.heading.price: Price
-quote.item.heading.qty: Qty
-quote.item.heading.tax: Tax
-quote.item.heading.total: Total
-quote.action.edit.success: 'Quote updated successfully'
-quote.action.create.success: 'Quote created successfully'
-quote.action.print: Print
+payment_made: 'Zahlung wurde empfangen'
+quote.list.status_legend: Angebotsstatus-Legende
+quote.list.title: Angebote
+quote.summary: Angebotszusammenfassung
+quote.create: 'Angebot erstellen'
+quote.created: Erstellt
+quote.total: Gesamt
+quote.subtotal: Zwischensumme
+quote.tax: Steuer
+quote.discount: Rabatt
+quote.edit: 'Angebot bearbeiten'
+quote.terms: Bedingungen
+quote.notes: Notizen
+quote.title: 'Angebot #%id%'
+quote.save.send: 'Speichern und Senden'
+quote.save.draft: 'Als Entwurf speichern'
+quote.save.update: Aktualisieren
+quote.save.cancel: Abbrechen
+quote.item.add: 'Neuer Eintrag'
+quote.item.remove: 'Element entfernen'
+quote.item.heading.description: Beschreibung
+quote.item.heading.price: Preis
+quote.item.heading.qty: Anzahl
+quote.item.heading.tax: Steuer
+quote.item.heading.total: Gesamt
+quote.action.edit.success: 'Angebot erfolgreich aktualisiert'
+quote.action.create.success: 'Angebot erfolgreich erstellt'
+quote.action.print: Drucken
 quote.action.pdf: PDF
-quote.view.toolbar.accept: Accept
-quote.view.toolbar.decline: Decline
-quote.view.toolbar.send: Send
-quote.view.toolbar.cancel: Cancel
-quote.view.toolbar.edit: Edit
-quote.view.toolbar.reopen: Re-Open
-quote.view.toolbar.clone: Clone
-quote.view.toolbar.view_invoice: 'View Invoice'
-quote.view.online: 'View this quote online at: %url%'
-quote.clone.success: 'Quote cloned successfully'
-quote.accepted: 'Quote Accepted and invoice created'
-quote.declined: 'Quote Declined'
-quote.cancelled: 'Quote Cancelled'
-quote.reopened: 'Quote Re-Opened'
-quote.sent: 'Quote Sent'
-quote.client.choose: 'Choose a client'
-quote.client.empty: 'You have not created any clients yet.'
-quote.client.create: 'Please add one now'
-quote.transition.exception.accept: 'Quote cannot be accepted'
-quote.transition.exception.archive: 'Quote cannot be archived'
-quote.transition.action.accept: 'Quote Accepted and invoice created'
-quote.transition.action.decline: 'Quote Declined'
-quote.transition.action.cancel: 'Quote Cancelled'
-quote.transition.action.reopen: 'Quote Re-Opened'
-quote.transition.action.sent: 'Quote Sent'
-quote.transition.action.publish: 'Quote Published'
-quote.transition.action.send: 'Quote Sent'
-quote.archive.success: 'Quote Archived'
-quote.grid.actions.view: View
-quote.grid.actions.edit: Edit
-quote.grid.actions.delete: Delete
-quote.stats.count.pending: '{0} Pending Quotes|{1} Pending Quote|]1,Inf] Pending Quotes'
-quote.stats.count.accepted: '{0} Accepted Quotes|{1} Accepted Quote|]1,Inf] Accepted Quotes'
-quote.stats.count.draft: '{0} Draft Quotes|{1} Draft Quote|]1,Inf] Draft Quotes'
-quote.stats.count.cancelled: '{0} Cancelled Quotes|{1} Cancelled Quote|]1,Inf] Cancelled Quotes'
-quote.stats.count.declined: '{0} Declined Quotes|{1} Declined Quote|]1,Inf] Declined Quotes'
-quote.menu.main: Quotes
-quote.menu.list: 'List Quotes'
-quote.menu.create: 'Create Quote'
-quote.menu.view: 'View Quote'
-search: Search
-title: messages
-quote_status_update: 'Quote Status Update'
+quote.view.toolbar.accept: Akzeptieren
+quote.view.toolbar.decline: Ablehnen
+quote.view.toolbar.send: Absenden
+quote.view.toolbar.cancel: Abbrechen
+quote.view.toolbar.edit: Bearbeiten
+quote.view.toolbar.reopen: 'Erneut öffnen'
+quote.view.toolbar.clone: Duplizieren
+quote.view.toolbar.view_invoice: 'Rechnung anzeigen'
+quote.view.online: 'Dieses Angebot online ansehen unter: %url%'
+quote.clone.success: 'Angebot erfolgreich dupliziert'
+quote.accepted: 'Angebot angenommen und Rechnung erstellt'
+quote.declined: 'Angebot abgelehnt'
+quote.cancelled: 'Angebot abgebrochen'
+quote.reopened: 'Angebot erneut geöffnet'
+quote.sent: 'Angebot gesendet'
+quote.client.choose: 'Kunde auswählen'
+quote.client.empty: 'Noch keine Kunden erstellt.'
+quote.client.create: 'Bitte fügen Sie jetzt einen hinzu'
+quote.transition.exception.accept: 'Angebot kann nicht angenommen werden'
+quote.transition.exception.archive: 'Angebot kann nicht archiviert werden'
+quote.transition.action.accept: 'Angebot angenommen und Rechnung erstellt'
+quote.transition.action.decline: 'Angebot abgelehnt'
+quote.transition.action.cancel: 'Angebot annulliert'
+quote.transition.action.reopen: 'Angebot erneut geöffnet'
+quote.transition.action.sent: 'Angebot gesendet'
+quote.transition.action.publish: 'Angebot veröffentlicht'
+quote.transition.action.send: 'Angebot gesendet'
+quote.archive.success: 'Angebot archiviert'
+quote.grid.actions.view: Anzeigen
+quote.grid.actions.edit: Bearbeiten
+quote.grid.actions.delete: Löschen
+quote.stats.count.pending: '{0} Ausstehende Angebote |{1} Ausstehende Angebote | ]1,Inf] Ausstehende Angebote'
+quote.stats.count.accepted: '{0} Akzeptierte Angebote|{1} Akzeptierte Angebote|]1,Inf] Akzeptierte Angebote'
+quote.stats.count.draft: '{0} Angebotsentwürfe |{1} Angebotsentwürfe|]1,Inf] Angebotsentwürfe'
+quote.stats.count.cancelled: '{0} Stornierte Angebote|{1} Stornierte Angebote|]1,Inf] Stornierte Angebote'
+quote.stats.count.declined: '{0} Abgelehnte Angebote|{1} Abgelehnte Angebote|]1,Inf] Abgelehnte Angebote'
+quote.menu.main: Angebote
+quote.menu.list: 'Angebote anzeigen'
+quote.menu.create: 'Angebot erstellen'
+quote.menu.view: 'Angebot anzeigen'
+search: Suchen
+title: Nachrichten
+quote_status_update: 'Angebotsstatus Update'
 settings:
-    save: Save
+    save: Speichern
     saved:
-        success: 'Settings saved successfully!'
+        success: 'Einstellungen erfolgreich gespeichert!'
     address:
         city: City
         city_placeholder: City
@@ -1006,27 +1006,27 @@ settings:
         help: 'Display a visual watermark (e.g., PAID, DRAFT) on the %type% document.'
 tax:
     rates:
-        title: 'Tax Rates'
-        add: 'Add Tax Rate'
-        save: Save
+        title: Steuersätze
+        add: 'Steuersatz hinzufügen'
+        save: Speichern
         explanation: "<b>Inclusive</b>: The Tax is already included in the item price<br />\n<b>Exclusive</b>: Tax is calculated on top of the item price<br />\n<b>Flat Rate</b>: A fixed amount is charged regardless of the item price<br />\n"
         type:
-            select: Select
+            select: Auswählen
         cancel: Cancel
         details: 'Tax Details'
         edit: 'Edit Tax Rate'
         form:
             description: 'Set up the tax rate details and calculation method'
             subtitle: 'Configure tax rates for invoices and quotes'
-    inclusive: Inclusive
-    exclusive: Exclusive
+    inclusive: Inklusive
+    exclusive: Exklusive
     grid:
         actions:
-            edit: Edit
+            edit: Bearbeiten
     form:
         input:
-            validate: Validate
-    vat_number: 'Vat Number:'
+            validate: Bestätigen
+    vat_number: 'Steuernummer:'
     company_identifiers:
         add: 'Add tax identifier'
         description: 'Add the tax identifiers (VAT, GST, TIN, ABN, etc.) for your own business — these will appear on the invoices and quotes you issue.'
@@ -1050,25 +1050,25 @@ tax:
     line_tax:
         tax:
             placeholder: 'No Tax'
-inclusive: Inclusive
-exclusive: Exclusive
+inclusive: Inklusive
+exclusive: Exklusive
 rate: Rate
-type: Type
+type: Typ
 profile:
     show:
-        title: 'Profile - %username%'
-        'yes': 'Yes'
-        'no': 'No'
-        username: Username
-        email: Email
+        title: 'Profil - %username%'
+        'yes': Ja
+        'no': Nein
+        username: Benutzername
+        email: E-Mail
         mobile: Mobile
-        last_login: 'Last Login'
-        enabled: Enabled
-        locked: Locked
-        expired: Expired
-        roles: Roles
-        change_password: 'Change Password'
-        update_profile: 'Update Profile'
+        last_login: 'Letzter Login'
+        enabled: Aktiviert
+        locked: Gesperrt
+        expired: Abgelaufen
+        roles: Rollen
+        change_password: 'Passwort ändern'
+        update_profile: 'Profil aktualisieren'
         first_name: 'First Name'
         last_name: 'Last Name'
         personal:
@@ -1090,9 +1090,9 @@ profile:
                 title: Password
             title: Security
     edit:
-        success: 'Your profile has been updated'
-        cancel: Cancel
-        submit: Save
+        success: 'Profil wurde aktualisiert'
+        cancel: Abbrechen
+        submit: Speichern
         section:
             personal:
                 description: 'Your name and contact information'
@@ -1101,16 +1101,16 @@ profile:
         title: 'Update Profile'
     api:
         title: 'API Tokens'
-        create: 'Create Token'
+        create: 'Token erstellen'
         tokens:
-            empty: "You don't have any API tokens"
-            revoke: Revoke
-            revoke_message: 'Are you sure you want to revoke this token? This is irreversible, and all applications using the token will be affected'
-            history: 'View History'
+            empty: 'Sie haben keine API-Token'
+            revoke: Widerrufen
+            revoke_message: 'Sind Sie sicher, dass Sie diesen Token widerrufen möchten? Dies kann nicht rückgängig gemacht werden und alle Anwendungen, die diesen Token verwenden, werden davon betroffen sein'
+            history: 'Verlauf anzeigen'
             used:
-                text: '%date% from %ip%'
-                never: Never
-                last: 'Last Used:'
+                text: '%date% von %ip%'
+                never: Niemals
+                last: 'Zuletzt verwendet:'
             created:
                 done: Done
                 title: 'Your new API token'
@@ -1118,10 +1118,10 @@ profile:
                     body: 'For security reasons it will not be shown again. If you lose it, revoke this token and create a new one.'
                     title: 'Copy this token now.'
         form:
-            title: 'Create API Token'
+            title: 'API-Token erstellen'
             actions:
-                save: Save
-                close: Close
+                save: Speichern
+                close: Schließen
             description_placeholder: 'Optional description for this token...'
             token_confirmed: 'I have copied the token'
             token_copy: Copy
@@ -1131,16 +1131,16 @@ profile:
             token_usage: 'Use this token in the X-API-TOKEN header for API requests.'
             token_value: 'Token Value'
         history:
-            title: 'API History'
+            title: 'API Historie'
             actions:
-                close: Close
-            last_calls_shown: 'Only the last 100 calls are shown'
-            last_calls_shown_note: 'Note:'
+                close: Schließen
+            last_calls_shown: 'Nur die letzten 100 Aufrufe werden angezeigt'
+            last_calls_shown_note: 'Anmerkungen:'
             list:
-                date: Date
-                ip: 'IP Address'
-                resource: Resource
-                user_agent: 'User Agent'
+                date: Datum
+                ip: IP-Adresse
+                resource: Ressource
+                user_agent: User-Agent
         doc_link: 'API documentation'
         doc_notice: 'To view the API documentation, visit the %link% page.'
         flash:
@@ -1152,7 +1152,7 @@ profile:
             last_activity: 'Last Activity'
             most_used: 'Most Used Token'
     password_change:
-        success: 'Your password has been updated'
+        success: 'Passwort wurde aktualisiert'
     nav:
         api_keys: 'API Keys'
         change_password: 'Change Password'
@@ -1164,22 +1164,22 @@ profile:
         two_factor: 'Two-Factor Authentication'
 security:
     login:
-        login: Login
-        username: 'Email Address'
-        password: Password
-        remember: 'Keep me logged in'
-        forgot_password: 'Forgot Password'
+        login: Anmelden
+        username: E-Mail-Adresse
+        password: Passwort
+        remember: 'Angemeldet bleiben'
+        forgot_password: 'Passwort vergessen'
         login_with_google: 'Login with Google'
         no_account: "Don't have an account yet?"
         or: or
         register_now: 'Register Now'
     register:
-        title: Register
+        title: Registrieren
         email: 'Email Address'
-        password: Password
-        password_confirm: 'Confirm Password'
-        submit: Register
-        success: 'Your account has been created. Please verify your email address before logging in.'
+        password: Passwort
+        password_confirm: 'Passwort wiederholen'
+        submit: Registrieren
+        success: 'Ihr Konto wurde erstellt. Bitte verifizieren Sie Ihre E-Mail-Adresse, bevor Sie sich anmelden.'
         cta: 'Create your free account'
         features:
             clients:
@@ -1288,28 +1288,28 @@ security:
             invalid: 'The email verification link is invalid.'
             success: 'Your email address has been verified.'
 users:
-    invite: 'Invite User'
+    invite: 'Benutzer einladen'
     invitation:
-        success: 'Invitation sent successfully!'
+        success: 'Einladung erfolgreich gesendet!'
         accept:
-            success: 'Invitation accepted successfully! You can now log in.'
-        exists: 'There is already an existing invitation for this email address'
+            success: 'Einladung erfolgreich angenommen! Sie können sich jetzt anmelden.'
+        exists: 'Es existiert bereits eine Einladung für diese E-Mail-Adresse'
         delete:
             success: 'Invitation deleted successfully!'
-    add: 'Add User'
-    edit: 'Edit User'
-    title: Users
+    add: 'Benutzer hinzufügen'
+    edit: 'Benutzer bearbeiten'
+    title: Benutzer
     create:
-        generate_password: 'Generate Random Password'
-        success: 'User created successfully!'
-    save: Save
+        generate_password: 'Zufälliges Passwort generieren'
+        success: 'Benutzer erfolgreich erstellt'
+    save: Speichern
     grid:
         invitation:
             actions:
-                resend: 'Resend Invitation'
+                resend: 'Einladung erneut senden'
         actions:
-            edit: Edit
-            delete: Delete
+            edit: Bearbeiten
+            delete: Löschen
     empty:
         description: 'Get started by inviting your first team member to collaborate.'
         title: 'No users yet'
@@ -1334,7 +1334,7 @@ users:
         active_users: 'Active Users'
         pending_invitations: 'Pending Invitations'
 change_password:
-    submit: Save
+    submit: Speichern
     form:
         confirm_password: 'Confirm New Password'
         current_password: 'Current Password'
@@ -1351,13 +1351,13 @@ change_password:
     subtitle: 'Update your password to keep your account secure'
 forgot_password:
     request:
-        submit: 'Reset Password'
-        username: 'Email address'
+        submit: 'Passwort zurücksetzen'
+        username: E-Mail-Adresse
         back_to_login: 'Back to login'
         description: 'Forgot your password? Enter your email to reset your password.'
         heading: 'Forgot your password?'
         title: 'Forgot your password?'
-    check_email: "An email has been sent. It contains a link you must click to reset your password.\n\nIf you don't get an email check your spam folder or try again.\n"
+    check_email: "Eine E-Mail wurde gesendet. Sie enthält einen Link, den Sie anklicken müssen, um Ihr Passwort zurückzusetzen.\n\nWenn Sie keine E-Mail erhalten haben, überprüfen Sie Ihren Spam-Ordner oder versuchen Sie es erneut.\n"
     check_email.content: "An email has been sent. It contains a link you must click to reset your password.\n\nIf you don't get an email check your spam folder or try again.\n"
     check_email.expiry: 'This link will expire in %tokenLifetime%'
     check_email.heading: 'Check your email'
@@ -1367,128 +1367,124 @@ forgot_password:
             success: 'Your password has been changed successfully. You can now log in.'
         heading: 'Reset your password'
         title: 'Reset Password'
-'EU Countries Only': ''
-Address: ''
-'User Image': ''
-'Add Company': ''
-Currency: __Currency
-'Total Balance': '__Total Balance'
-'Outstanding Balance': '__Outstanding Balance'
-billing.subtotal: SubTotal
-billing.tax: Tax
-billing.discount: Discount
-billing.total: Total
-'System Default': '__System Default'
+Currency: __Währung
+'Total Balance': __Gesamtbetrag
+'Outstanding Balance': '__Ausstehender Betrag'
+billing.subtotal: Zwischensumme
+billing.tax: Steuer
+billing.discount: Rabatt
+billing.total: Gesamt
+'System Default': __Standardeinstellung
 user: __user
 abc: __abc
-'View output': '__View output'
-waiting: __waiting
-'Invoice Date': '__Invoice Date'
-'Due Date': '__Due Date'
-Activate: __Activate
-more: __more
+'View output': '__Zeige Ausgabe'
+waiting: __warten
+'Invoice Date': __Rechnungsdatum
+'Due Date': __Fälligkeitsdatum
+Activate: __Aktivieren
+more: __mehr
 'Upcoming Occurrences': '__Upcoming Occurrences'
-'View active invoices': '__View active invoices'
-'View archived invoices': '__View archived invoices'
-Publish: __Publish
-Payments: __Payments
-'Save Recurring Invoice': '__Save Recurring Invoice'
-'Recurring Settings': '__Recurring Settings'
-'Invoice #': '__Invoice #'
-Save: __Save
-Cancel: __Cancel
-'Save Invoice': '__Save Invoice'
-'Forgot your password? Enter your email to reset your password.': '__Forgot your password? Enter your email to reset your password.'
-'This link will expire in %tokenLifetime%': '__This link will expire in %tokenLifetime%'
-Profile: __Profile
-Notifications: __Notifications
+'View active invoices': '__Zeige aktive Rechnungen'
+'View archived invoices': '__Zeige archivierte Rechnungen'
+Publish: __Veröffentlichen
+Payments: __Zahlungen
+'Save Recurring Invoice': '__Wiederkehrende Rechnungen speichern'
+'Recurring Settings': '__Wiederkehrende Einstellungen'
+'Invoice #': '__Rechnung #'
+Save: __Speichern
+Cancel: __Abbrechen
+'Save Invoice': '__Rechnung speichern'
+'Forgot your password? Enter your email to reset your password.': '__Passwort vergessen? Geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen.'
+'This link will expire in %tokenLifetime%': '__Dieser Link läuft ab in %tokenLifetime%'
+Profile: __Profil
+Notifications: __Benachrichtigungen
 'API Keys': '__API Keys'
-Confirm: __Confirm
-Close: __Close
-'Are you sure you want to revoke this token?': '__Are you sure you want to revoke this token?'
-'Request history for token %name%': '__Request history for token %name%'
-'Copy to clipboard': '__Copy to clipboard'
-'View Token': '__View Token'
-'Manage Notifications': '__Manage Notifications'
+Confirm: __Bestätigen
+Close: __Schließen
+'Are you sure you want to revoke this token?': '__Sind Sie sich sicher diesen Token zu widerrufen?'
+'Request history for token %name%': '__Anfrage-Verlauf für Token %name%'
+'Copy to clipboard': '__In Zwischenablage kopieren'
+'View Token': '__Zeige Token'
+'Manage Notifications': '__Benachrichtigungen verwalten'
 Name: __Name
-'Link account with Google': '__Link account with Google'
-'Already Linked': '__Already Linked'
-'Two Factor Authentication': '__Two Factor Authentication'
-Enabled: __Enabled
-'Not Enabled': '__Not Enabled'
-Configure: __Configure
-Preferences: __Preferences
-Users: __Users
-Invitations: __Invitations
-'This link will expire in %resetTimestamp%.': '__This link will expire in %resetTimestamp%.'
-'View active quotes': '__View active quotes'
-'View archived quotes': '__View archived quotes'
-'Quote #': '__Quote #'
-'Save Quote': '__Save Quote'
-'Add Additional Details': '__Add Additional Details'
-'View active clients': '__View active clients'
-'View archived clients': '__View archived clients'
-Website: __Website
-payments: __payments
-'Add Address': '__Add Address'
-'Add Contact': '__Add Contact'
-'Are you sure you want to delete the address?': '__Are you sure you want to delete the address?'
-'Are you sure you want to delete the contact?': '__Are you sure you want to delete the contact?'
-Settings: __Settings
-'Danger Zone': '__Danger Zone'
-'This section allows you to delete your company and all associated data.': '__This section allows you to delete your company and all associated data.'
-'Please proceed with caution since this action cannot be undone.': '__Please proceed with caution since this action cannot be undone.'
-'Delete Company': '__Delete Company'
-'Confirm Company Deletion': '__Confirm Company Deletion'
-Warning!: __Warning!
+'Link account with Google': '__Konto mit Google verknüpfen'
+'Already Linked': '__bereits verknüpft'
+'Two Factor Authentication': __Zwei-Faktor-Authentifizierung
+Enabled: __Aktiviert
+'Not Enabled': '__Nicht aktiviert'
+Configure: __Konfigurieren
+Preferences: __Einstellungen
+Users: __Benutzer
+Invitations: __Einladungen
+'This link will expire in %resetTimestamp%.': '__Dieser Link läuft ab in %resetTimestamp%.'
+'View active quotes': '__Zeige aktive Angebote'
+'View archived quotes': '__Zeige archivierte Angebote'
+'Quote #': '__Angebot #'
+'Save Quote': '__Angebot speichern'
+'Add Additional Details': '__Zusätzliche Details hinzufügen'
+'View active clients': '__Zeige aktive Kunden'
+'View archived clients': '__Zeige archivierte Kunden'
+Website: __Webseite
+payments: __Zahlungen
+'Add Address': '__Adresse hinzufügen'
+'Add Contact': '__Kontakt bearbeiten'
+'Are you sure you want to delete the address?': '__Sind Sie sicher, dass Sie diese Adresse löschen wollen?'
+'Are you sure you want to delete the contact?': '__Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?'
+Settings: __Einstellungen
+'Danger Zone': __Gefahrenbereich
+'This section allows you to delete your company and all associated data.': '__Dieser Bereich erlaubt das gesamte Unternehmen und alle zugehörigen Daten zu löschen.'
+'Please proceed with caution since this action cannot be undone.': '__Bitte gehen Sie mit äußerster Vorsicht vor, da diese Aktion nicht rückgängig gemacht werden kann.'
+'Delete Company': '__Unternehmen löschen'
+'Confirm Company Deletion': '__Unternehmenslöschung bestätigen'
+Warning!: __Achtung!
 'This action will permanently delete your company and all associated data':
-    ' This cannot be undone.': '__This action will permanently delete your company and all associated data. This cannot be undone.'
-'To confirm deletion, please type the company name exactly as shown below:': '__To confirm deletion, please type the company name exactly as shown below:'
-'Company Name': '__Company Name'
-'Enter company name to confirm': '__Enter company name to confirm'
-'Subscription is canceleld': '__Subscription is canceleld'
+    ' This cannot be undone.': '__Diese Aktion wird Ihr Unternehmen und alle zugehörigen Daten dauerhaft löschen. Dies kann nicht rückgängig gemacht werden.'
+'To confirm deletion, please type the company name exactly as shown below:': '__Um die Löschung zu bestätigen, geben Sie bitte den Unternehmensnamen genau wie unten angezeigt ein:'
+'Company Name': __Unternehmensname
+'Enter company name to confirm': '__Unternehmensnamen zur Bestätigung eingeben'
+'Subscription is canceleld': '__Abonnement ist storniert'
 'Your subscription is not canceled':
-    ' If you would like to activate your subscription again, please click the button below.': '__Your subscription is not canceled. If you would like to activate your subscription again, please click the button below.'
+    ' If you would like to activate your subscription again, please click the button below.': '__Ihr Abonnement ist nicht gekündigt. Wenn du dein Abonnement erneut aktivieren möchtest, klicke bitte auf den Button unten.'
 Checkout: __Checkout
-'Subscription not active': '__Subscription not active'
+'Subscription not active': '__Abonnement nicht aktiv'
 'Your subscription is not active':
-    ' If you have just completed the checkout, please wait a few moments then refresh the page.': '__Your subscription is not active. If you have just completed the checkout, please wait a few moments then refresh the page.'
+    ' If you have just completed the checkout, please wait a few moments then refresh the page.': '__Ihr Abonnement ist nicht aktiv. Wenn Sie gerade den Checkout abgeschlossen haben, warten Sie bitte ein paar Augenblicke und aktualisieren Sie die Seite.'
 'If you have not completed the checkout, please click checkout below to continue.': '__If you have not completed the checkout, please click checkout below to continue.'
-Refresh: __Refresh
+Refresh: __Aktualisieren
 SMS: __SMS
 Chat: __Chat
-'Configure notification integrations': '__Configure notification integrations'
-'Add and configure notification integrations to send notifications.': '__Add and configure notification integrations to send notifications.'
+'Configure notification integrations': '__Benachrichtigungsintegrationen konfigurieren'
+'Add and configure notification integrations to send notifications.': '__Hinzufügen und konfigurieren von Benachrichtigungsintegrationen zum Senden von Benachrichtigungen.'
 Actions: __Actions
-'No results found.': '__No results found.'
-'2-step verification': '__2-step verification'
-'Please enter the code from your authenticator app.': '__Please enter the code from your authenticator app.'
-'Lost access to your authenticator app? You can use one of your backup codes.': '__Lost access to your authenticator app? You can use one of your backup codes.'
-'Trust this device': '__Trust this device'
-'Or use another method:': '__Or use another method:'
-'We sent a verification code to your email.': '__We sent a verification code to your email.'
-'Please enter the code in the field below.': '__Please enter the code in the field below.'
-"Didn't receive it?": "__Didn't receive it?"
-'Resend code': '__Resend code'
-Regenerate: __Regenerate
-'Two-factor Authentication': '__Two-factor Authentication'
-Email: __Email
-Disable: __Disable
-Disabled: __Disabled
-Enable: __Enable
-'Authenticator app': '__Authenticator app'
-'Recovery Options': '__Recovery Options'
+'No results found.': '__Keine Ergebnisse gefunden.'
+'2-step verification': '__2-Schritt Verifizierung'
+'Please enter the code from your authenticator app.': '__Bitte geben Sie den Code aus der Authentifizierungs-App ein.'
+'Lost access to your authenticator app? You can use one of your backup codes.': '__Zugriff auf Ihre Authentifizierungs-App verloren? Sie können einen Ihrer Backup-Codes verwenden.'
+'Trust this device': '__Diesem Gerät vertrauen'
+'Or use another method:': '__oder eine andere Methode verwenden:'
+'We sent a verification code to your email.': 'Wir haben einen Bestätigungscode an die E-Mail-Adresse gesendet.'
+'Please enter the code in the field below.': '__Bitte geben Sie den Code in das Feld unten ein.'
+"Didn't receive it?": '__Nicht erhalten?'
+'Resend code': '__Code erneut senden'
+Regenerate: '__Erneut generieren'
+'Two-factor Authentication': __Zwei-Faktor-Authentifizierung
+Email: __E-Mail
+Disable: __Deaktivieren
+Disabled: __Deaktiviert
+Enable: __Aktivieren
+'Authenticator app': __Authenticator-App
+'Recovery Options': __Wiederherstellungsoptionen
 'Backup Codes': '__Backup Codes'
-View: __View
-'Trusted Device': '__Trusted Device'
-'Browser Trusted': '__Browser Trusted'
-"This device is trusted and won't require a 2FA code.": "__This device is trusted and won't require a 2FA code."
-Logout: __Logout
-'Login to your account': '__Login to your account'
-'Email address': '__Email address'
-Password: __Password
-'Remember me on this device': '__Remember me on this device'
-'Sign in': '__Sign in'
+View: __Anzeigen
+'Trusted Device': '__Vertrauenswürdiges Gerät'
+'Browser Trusted': '__Browser vertraut'
+"This device is trusted and won't require a 2FA code.": '__Diesem Gerät wird vertraut und es benötigt keinen 2FA-Code.'
+Logout: __Abmelden
+'Login to your account': '__In Account einloggen'
+'Email address': __E-Mail-Adresse
+Password: __Passwort
+'Remember me on this device': '__Dieses Gerät merken'
+'Sign in': __Anmelden
 action:
     add: Add
     back: 'Go back'
