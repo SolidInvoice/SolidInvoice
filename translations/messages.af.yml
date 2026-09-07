@@ -1367,10 +1367,6 @@ forgot_password:
             success: 'Your password has been changed successfully. You can now log in.'
         heading: 'Reset your password'
         title: 'Reset Password'
-'EU Countries Only': ''
-Address: ''
-'User Image': ''
-'Add Company': ''
 Currency: __Currency
 'Total Balance': '__Total Balance'
 'Outstanding Balance': '__Outstanding Balance'
