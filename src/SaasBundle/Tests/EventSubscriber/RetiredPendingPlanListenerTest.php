@@ -72,7 +72,7 @@ final class RetiredPendingPlanListenerTest extends TestCase
 
     private function listenerFor(?Subscription $subscription): RetiredPendingPlanListener
     {
-        $repository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $repository = $this->createStub(SubscriptionRepositoryInterface::class);
         $repository->method('findOneBy')->willReturn($subscription);
 
         return new RetiredPendingPlanListener($repository, new NullLogger());

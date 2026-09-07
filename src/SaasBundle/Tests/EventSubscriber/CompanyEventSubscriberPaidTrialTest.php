@@ -78,7 +78,7 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
     {
         $trialManager = $this->createMock(TrialManagerInterface::class);
         $trialManager->method('userHasTrial')->willReturn(false);
-        $trialManager->expects(self::once())->method('createTrial')->willReturn(new Trial());
+        $trialManager->expects($this->once())->method('createTrial')->willReturn(new Trial());
 
         $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager);
     }
@@ -87,7 +87,7 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
     {
         $trialManager = $this->createMock(TrialManagerInterface::class);
         $trialManager->method('userHasTrial')->willReturn(true);
-        $trialManager->expects(self::never())->method('createTrial');
+        $trialManager->expects($this->never())->method('createTrial');
 
         $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager);
     }
@@ -116,14 +116,14 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         $plan->setPrice(1000);
         $plan->setTrialDuration(new DateInterval('P14D'));
 
-        $planRepository = $this->createMock(PlanRepositoryInterface::class);
+        $planRepository = $this->createStub(PlanRepositoryInterface::class);
         $planRepository->method('find')->willReturn($plan);
         $planRepository->method('findDefault')->willReturn($plan);
 
         // SubscriptionManager persists through save() on every mutation, so the
         // last saved entity is the subscription in its final state.
         $saved = null;
-        $subscriptionRepository = $this->createMock(SubscriptionRepositoryInterface::class);
+        $subscriptionRepository = $this->createStub(SubscriptionRepositoryInterface::class);
         $subscriptionRepository->method('save')->willReturnCallback(
             static function (object $entity) use (&$saved): void {
                 if ($entity instanceof Subscription) {
@@ -139,20 +139,20 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         );
 
         if (! $trialManager instanceof TrialManagerInterface) {
-            $trialManager = $this->createMock(TrialManagerInterface::class);
+            $trialManager = $this->createStub(TrialManagerInterface::class);
             $trialManager->method('userHasTrial')->willReturn(false);
             $trialManager->method('createTrial')->willReturn(new Trial());
         }
 
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn(new User());
 
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('wrapInTransaction')->willReturnCallback(
             static fn (callable $callback): mixed => $callback($entityManager),
         );
 
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturnCallback(
             static fn (string $route): string => match ($route) {
                 'saas_subscription_welcome' => '/billing/subscription/welcome',
