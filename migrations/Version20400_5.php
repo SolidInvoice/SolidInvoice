@@ -24,7 +24,7 @@ final class Version20400_5 extends AbstractMigration
         $usersTable = $schema->getTable('users');
         $usersTable->addColumn('totp_secret', Types::STRING, [
             'notnull' => false,
-            'length' => 45,
+            'length' => 64,
         ]);
         $usersTable->addColumn('auth_code', Types::STRING, [
             'notnull' => false,
