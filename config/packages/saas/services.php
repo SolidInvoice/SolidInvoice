@@ -24,9 +24,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS)', '7');
     $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS)', '2');
 
-    // '1' requires payment details up front: the trial is started by Lemon
-    // Squeezy once the user completes checkout, instead of locally at signup.
-    // Defined here rather than under config/packages/saas/ because
-    // config/packages/toggler.php is loaded on every platform.
+    // '1' requires payment details up front: the trial is started
+    // once the user completes checkout, instead of locally at signup.
     $parameters->set('env(SOLIDINVOICE_SAAS_PAID_TRIAL)', '0');
 };
