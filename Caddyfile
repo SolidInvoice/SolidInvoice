@@ -7,6 +7,7 @@
 
 	servers {
 		trusted_proxies static {$CADDY_TRUSTED_PROXIES:private_ranges}
+		client_ip_headers Cf-Connecting-Ip X-Forwarded-For
 	}
 
 	# Logging
