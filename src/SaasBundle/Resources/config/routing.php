@@ -15,6 +15,7 @@ use SolidInvoice\SaasBundle\Action\CancelDowngradeAction;
 use SolidInvoice\SaasBundle\Action\ChangePlanAction;
 use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\SaasBundle\Action\ConfirmPlanChangeAction;
+use SolidInvoice\SaasBundle\Action\CustomerPortalAction;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
 use SolidInvoice\SaasBundle\Action\SubscriptionOverviewAction;
 use SolidInvoice\SaasBundle\Action\TemplatePreviewAction;
@@ -48,6 +49,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('saas_subscription_change', '/subscription/change')
         ->controller(ChangePlanAction::class)
+        ->methods(['GET']);
+
+    $routingConfigurator->add('saas_customer_portal', '/subscription/portal')
+        ->controller(CustomerPortalAction::class)
         ->methods(['GET']);
 
     $routingConfigurator->add('saas_subscription_change_confirm', '/subscription/change/confirm')

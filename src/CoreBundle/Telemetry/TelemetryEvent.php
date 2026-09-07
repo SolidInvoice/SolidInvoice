@@ -40,4 +40,5 @@ enum TelemetryEvent: string
     case SaasCheckoutStarted = 'saas_checkout_started';
     case SaasCheckoutFailed = 'saas_checkout_failed';
     case SaasSubscriptionActivated = 'saas_subscription_activated';
+    case SaasCustomerPortalOpened = 'saas_customer_portal_opened';
 }
