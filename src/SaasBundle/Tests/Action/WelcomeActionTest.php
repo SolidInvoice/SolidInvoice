@@ -48,7 +48,7 @@ final class WelcomeActionTest extends TestCase
         // The welcome page belongs to card-required onboarding only; free-trial
         // mode keeps the plan picker, and never even looks up a subscription.
         $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->expects(self::never())->method('getSubscriptionFor');
+        $subscriptionProvider->expects($this->never())->method('getSubscriptionFor');
 
         $action = $this->action(
             BillingModeFactory::freeTrial(),
@@ -70,13 +70,13 @@ final class WelcomeActionTest extends TestCase
     {
         $bus = new CollectingMessageBus();
 
-        $companySelector = $this->createMock(CompanySelectorInterface::class);
+        $companySelector = $this->createStub(CompanySelectorInterface::class);
         $companySelector->method('getCompany')->willReturn(new Ulid());
 
-        $companyRepository = $this->createMock(CompanyRepository::class);
+        $companyRepository = $this->createStub(CompanyRepository::class);
         $companyRepository->method('find')->willReturn(new Company());
 
-        $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
+        $subscriptionProvider = $this->createStub(SubscriptionProviderInterface::class);
         $subscriptionProvider->method('getSubscriptionFor')->willReturn(
             $this->subscription(SubscriptionStatus::PENDING),
         );
@@ -90,7 +90,7 @@ final class WelcomeActionTest extends TestCase
         );
 
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())
+        $twig->expects($this->once())
             ->method('render')
             ->with('@SolidInvoiceSaas/subscription/welcome.html.twig', self::anything())
             ->willReturn('<html></html>');
@@ -110,7 +110,7 @@ final class WelcomeActionTest extends TestCase
 
     public function testPaidTrialWithoutSubscriptionRedirectsToTheDashboard(): void
     {
-        $companySelector = $this->createMock(CompanySelectorInterface::class);
+        $companySelector = $this->createStub(CompanySelectorInterface::class);
         $companySelector->method('getCompany')->willReturn(null);
 
         $action = $this->action(
@@ -121,7 +121,7 @@ final class WelcomeActionTest extends TestCase
             new CollectingMessageBus(),
         );
 
-        $router = $this->createMock(UrlGeneratorInterface::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
         $router->method('generate')->willReturnCallback(
             static fn (string $route): string => '/' . $route,
         );
@@ -140,13 +140,13 @@ final class WelcomeActionTest extends TestCase
 
     public function testPaidTrialActiveSubscriptionRedirectsToBilling(): void
     {
-        $companySelector = $this->createMock(CompanySelectorInterface::class);
+        $companySelector = $this->createStub(CompanySelectorInterface::class);
         $companySelector->method('getCompany')->willReturn(new Ulid());
 
-        $companyRepository = $this->createMock(CompanyRepository::class);
+        $companyRepository = $this->createStub(CompanyRepository::class);
         $companyRepository->method('find')->willReturn(new Company());
 
-        $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
+        $subscriptionProvider = $this->createStub(SubscriptionProviderInterface::class);
         $subscriptionProvider->method('getSubscriptionFor')->willReturn(
             $this->subscription(SubscriptionStatus::ACTIVE),
         );
@@ -159,7 +159,7 @@ final class WelcomeActionTest extends TestCase
             new CollectingMessageBus(),
         );
 
-        $router = $this->createMock(UrlGeneratorInterface::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
         $router->method('generate')->willReturnCallback(
             static fn (string $route): string => '/' . $route,
         );
@@ -207,7 +207,7 @@ final class WelcomeActionTest extends TestCase
 
     private function routerContainer(): Container
     {
-        $router = $this->createMock(UrlGeneratorInterface::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
         $router->method('generate')->willReturnCallback(
             static fn (string $route): string => match ($route) {
                 'saas_subscription_plans' => '/plans',
@@ -226,15 +226,13 @@ final class WelcomeActionTest extends TestCase
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
-        $requestStack = new RequestStack([$request]);
-
-        return $requestStack;
+        return new RequestStack([$request]);
     }
 
     private function makeTelemetry(CollectingMessageBus $bus): Telemetry
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
+        $vault->expects($this->never())->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
             $bus,

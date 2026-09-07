@@ -42,16 +42,16 @@ final class SelectPlanActionTest extends TestCase
         $bus = new CollectingMessageBus();
 
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->expects(self::once())->method('findAllOrdered')->willReturn([
+        $planRepository->expects($this->once())->method('findAllOrdered')->willReturn([
             $this->makePlan('Free'),
             $this->makePlan('Solo'),
         ]);
 
         $subscriptionProvider = $this->createMock(SubscriptionProviderInterface::class);
-        $subscriptionProvider->expects(self::never())->method('getSubscriptionFor')->willReturn(null);
+        $subscriptionProvider->expects($this->never())->method('getSubscriptionFor')->willReturn(null);
 
         $companyRepository = $this->createMock(CompanyRepository::class);
-        $companyRepository->expects(self::never())->method('find')->willReturn(new Company());
+        $companyRepository->expects($this->never())->method('find')->willReturn(new Company());
 
         // CompanySelector is final; a real instance with no selected company
         // returns null from getCompany(), which short-circuits subscription
@@ -68,7 +68,7 @@ final class SelectPlanActionTest extends TestCase
         );
 
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())->method('render')->willReturn('<html></html>');
+        $twig->expects($this->once())->method('render')->willReturn('<html></html>');
 
         $container = new Container();
         $container->set('twig', $twig);
@@ -87,7 +87,7 @@ final class SelectPlanActionTest extends TestCase
         // The plan picker must never be reached in card-required onboarding —
         // the default plan is activated from the dedicated welcome page instead.
         $planRepository = $this->createMock(PlanRepositoryInterface::class);
-        $planRepository->expects(self::never())->method('findAllOrdered');
+        $planRepository->expects($this->never())->method('findAllOrdered');
 
         $subscriptionProvider = $this->createStub(SubscriptionProviderInterface::class);
         $companyRepository = $this->createStub(CompanyRepository::class);
@@ -102,7 +102,7 @@ final class SelectPlanActionTest extends TestCase
             BillingModeFactory::paidTrial(),
         );
 
-        $router = $this->createMock(UrlGeneratorInterface::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
         $router->method('generate')->willReturn('/billing/subscription/welcome');
 
         $container = new Container();
@@ -124,7 +124,7 @@ final class SelectPlanActionTest extends TestCase
     private function makeTelemetry(CollectingMessageBus $bus): Telemetry
     {
         $vault = $this->createMock(AbstractVault::class);
-        $vault->expects(self::never())->method('generateKeys')->willReturn(true);
+        $vault->expects($this->never())->method('generateKeys')->willReturn(true);
 
         return new Telemetry(
             $bus,
