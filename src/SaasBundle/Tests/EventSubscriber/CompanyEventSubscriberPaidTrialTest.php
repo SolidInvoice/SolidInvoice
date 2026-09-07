@@ -44,7 +44,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * In paid-trial mode the trial belongs to the payment provider, so signup must
  * not start one locally — it leaves the subscription PENDING (which is what
- * makes RequestListener gate the app) and sends the user to pick a plan.
+ * makes RequestListener gate the app) and sends the user to the welcome page to
+ * activate the default plan.
  *
  * SubscriptionManager is final, so these assert the resulting subscription
  * state rather than mocking the call.
@@ -59,14 +60,14 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         self::assertSame(SubscriptionStatus::PENDING, $subscription->getStatus());
     }
 
-    public function testPaidTrialModeRedirectsToPlanSelection(): void
+    public function testPaidTrialModeRedirectsToTheWelcomePage(): void
     {
         [$event] = $this->dispatchSignup(BillingModeFactory::paidTrial());
 
         $response = $event->getResponse();
 
         self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/billing/subscription/plans', $response->getTargetUrl());
+        self::assertSame('/billing/subscription/welcome', $response->getTargetUrl());
     }
 
     /**
@@ -152,7 +153,12 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         );
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')->willReturn('/billing/subscription/plans');
+        $urlGenerator->method('generate')->willReturnCallback(
+            static fn (string $route): string => match ($route) {
+                'saas_subscription_welcome' => '/billing/subscription/welcome',
+                default => '/billing/subscription/plans',
+            },
+        );
 
         $subscriber = new CompanyEventSubscriber(
             new DefaultPlanProvider($planRepository),

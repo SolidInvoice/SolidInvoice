@@ -24,11 +24,14 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Tests\Telemetry\CollectingMessageBus;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
+use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 #[CoversClass(SelectPlanAction::class)]
@@ -61,6 +64,7 @@ final class SelectPlanActionTest extends TestCase
             $companyRepository,
             $companySelector,
             $this->makeTelemetry($bus),
+            BillingModeFactory::freeTrial(),
         );
 
         $twig = $this->createMock(Environment::class);
@@ -76,6 +80,40 @@ final class SelectPlanActionTest extends TestCase
         self::assertCount(1, $bus->messages);
         self::assertSame('event', $bus->messages[0]->type);
         self::assertSame('saas_pricing_page_viewed', $bus->messages[0]->payload['event']);
+    }
+
+    public function testPaidTrialModeRedirectsToTheWelcomePage(): void
+    {
+        // The plan picker must never be reached in card-required onboarding —
+        // the default plan is activated from the dedicated welcome page instead.
+        $planRepository = $this->createMock(PlanRepositoryInterface::class);
+        $planRepository->expects(self::never())->method('findAllOrdered');
+
+        $subscriptionProvider = $this->createStub(SubscriptionProviderInterface::class);
+        $companyRepository = $this->createStub(CompanyRepository::class);
+        $companySelector = new CompanySelector($this->createStub(ManagerRegistry::class));
+
+        $action = new SelectPlanAction(
+            $planRepository,
+            $subscriptionProvider,
+            $companyRepository,
+            $companySelector,
+            $this->makeTelemetry(new CollectingMessageBus()),
+            BillingModeFactory::paidTrial(),
+        );
+
+        $router = $this->createMock(UrlGeneratorInterface::class);
+        $router->method('generate')->willReturn('/billing/subscription/welcome');
+
+        $container = new Container();
+        $container->set('router', $router);
+
+        $action->setContainer($container);
+
+        $response = $action();
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/billing/subscription/welcome', $response->getTargetUrl());
     }
 
     private function makePlan(string $name): Plan

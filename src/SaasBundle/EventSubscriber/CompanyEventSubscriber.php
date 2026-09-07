@@ -69,7 +69,7 @@ final class CompanyEventSubscriber
 
             if ($this->billingMode->requiresCardForTrial()) {
                 $this->recordTrialEntry($user);
-                $event->setResponse($this->createPlanSelectionRedirect());
+                $event->setResponse($this->createWelcomeRedirect());
                 $this->subscription = null;
 
                 return;
@@ -125,5 +125,10 @@ final class CompanyEventSubscriber
     private function createPlanSelectionRedirect(): RedirectResponse
     {
         return new RedirectResponse($this->urlGenerator->generate('saas_subscription_plans'));
+    }
+
+    private function createWelcomeRedirect(): RedirectResponse
+    {
+        return new RedirectResponse($this->urlGenerator->generate('saas_subscription_welcome'));
     }
 }

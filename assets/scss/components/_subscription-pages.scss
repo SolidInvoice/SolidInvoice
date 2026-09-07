@@ -459,6 +459,66 @@
 }
 
 // ============================================================================
+// WELCOME / ACTIVATION PAGE (card-required onboarding)
+// ============================================================================
+// One plan, one call to action. The page reassures rather than sells: the
+// plan is a calm summary, not a pick-me card, and the three guarantees below it
+// exist to melt the hesitation of entering a card before the trial starts.
+
+.subscription-welcome-page {
+
+    .subscription-container {
+        max-width: 720px;
+    }
+}
+
+.welcome-plan {
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-xs);
+
+    .card-body {
+        padding: var(--swp-space-6);
+    }
+
+    // The plan's own feature list is reused from the picker; here it sits inside
+    // a summary card, so drop the picker's bottom margin.
+
+    .plan-card-features {
+        margin-bottom: 0;
+    }
+}
+
+.welcome-plan-pricing {
+    white-space: nowrap;
+}
+
+.welcome-plan-price {
+    font-size: var(--swp-text-2xl);
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+// Three quiet reassurances; the Bootstrap grid stacks them on mobile.
+
+.welcome-reassure-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-2-5);
+    height: 100%;
+    padding: var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+
+    svg {
+        flex-shrink: 0;
+        margin-top: var(--swp-space-0-5);
+        color: var(--swp-success);
+    }
+}
+
+// ============================================================================
 // RESPONSIVE DESIGN
 // ============================================================================
 

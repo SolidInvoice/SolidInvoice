@@ -1997,17 +1997,17 @@ saas:
         while_paused: 'While paused'
         while_paused_message: "Your data is safe and will be waiting for you. You won't be charged during this time, but you won't have access to features until you resume."
     pending:
-        activate: 'Activate Subscription'
+        activate: 'Get started'
         already_activated: 'Already activated?'
         just_completed_message: 'If you just completed the payment process, your subscription may take a moment to activate. You can refresh this page or wait a few seconds.'
         just_completed_title: 'Just completed checkout?'
         need_help: 'Need a hand?'
         secure_checkout: 'Secure checkout · Cancel anytime · No hidden fees'
         secure_checkout_paid_trial: 'Secure checkout · Cancel anytime during your trial · No hidden fees'
-        subtitle: 'Pick a plan and start running your business with SolidInvoice in minutes.'
+        subtitle: 'Choose a plan to unlock invoicing, online payments, and reports — then keep your business running. Change or cancel any time.'
         subtitle_paid_trial: 'Pick a plan and add your payment details to get started. You can cancel at any time.'
         switch_company: 'Switch to another company'
-        title: 'Activate Your Subscription'
+        title: 'Get full access to SolidInvoice'
         title_paid_trial: 'Choose Your Plan'
     plan:
         choose: 'Choose plan'
@@ -2059,6 +2059,28 @@ saas:
         promo_message: 'Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>%percent%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.'
         subtitle: 'Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.'
         title: 'Your trial has ended'
+    welcome:
+        cancel_anytime: 'Cancel anytime'
+        cancel_anytime_detail: "Change your mind before your trial ends and you won't pay a cent."
+        cta_caption: "You won't be charged until your trial ends."
+        cta_no_trial: 'Unlock full access'
+        cta_trial: '{1}Start my 1-day free trial|]1,Inf[Start my %days%-day free trial'
+        included_heading: "What's included"
+        just_completed_message: 'If you just entered your payment details, it can take a few seconds to confirm. Refresh the page, or hold tight and it will update on its own.'
+        just_completed_title: 'Just finished checkout?'
+        need_help: 'Have a question before you start?'
+        no_charge: 'No charge today'
+        no_charge_detail: "We'll only bill you once your free trial ends."
+        plan_free_for: '{1}Free for 1 day|]1,Inf[Free for %days% days'
+        plan_label: 'Your plan'
+        plan_then: 'then %price%/month'
+        secure_checkout: 'Secure checkout'
+        secure_checkout_detail: 'Your card details are encrypted and handled by our payment provider.'
+        subtitle: "{1}Add your card to unlock a full day of everything SolidInvoice can do, free. We won't charge you until your trial ends, and you can cancel any time before then.|]1,Inf[Add your card to unlock %days% days of everything SolidInvoice can do, free. We won't charge you until your trial ends, and you can cancel any time before then."
+        subtitle_no_trial: 'Add your payment details to activate your subscription and start sending invoices, tracking payments, and getting paid — all from one place.'
+        title: 'Welcome aboard, %name%'
+        title_no_name: 'Welcome aboard'
+        title_no_trial: "You're one step from full access"
 save: Save
 search:
     and: and
