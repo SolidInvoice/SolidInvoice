@@ -18,6 +18,7 @@ use SolidInvoice\SaasBundle\Action\ConfirmPlanChangeAction;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
 use SolidInvoice\SaasBundle\Action\SubscriptionOverviewAction;
 use SolidInvoice\SaasBundle\Action\TemplatePreviewAction;
+use SolidInvoice\SaasBundle\Action\WelcomeAction;
 use SolidInvoice\SaasBundle\Controller\PaymentSuccess;
 use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -32,6 +33,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('saas_subscription_checkout', '/subscription/activate')
         ->controller(SubscribeController::class);
+
+    $routingConfigurator->add('saas_subscription_welcome', '/subscription/welcome')
+        ->controller(WelcomeAction::class)
+        ->methods(['GET']);
 
     $routingConfigurator->add('saas_subscription_plans', '/subscription/plans')
         ->controller(SelectPlanAction::class)

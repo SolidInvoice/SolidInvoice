@@ -1,0 +1,171 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # The card-required onboarding activation page. Expects:
+ #   - subscription: Subscription (PENDING)
+ #   - plan: Plan (the default plan the subscription will activate on)
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
+
+{% block heading %}
+    {% include '@SolidInvoiceSaas/subscription/_header.html.twig' %}
+{% endblock heading %}
+
+{% block content %}
+    {% import '@SolidInvoiceSaas/subscription/_plans_grid.html.twig' as grid %}
+    {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
+    {% set trialDays = saas_plan_trial_days(plan) %}
+    {% set firstName = app.user.firstName|default('') %}
+    {% set price = plan.price|formatCurrency('USD') %}
+
+    <div class="subscription-page subscription-welcome-page">
+        <div class="subscription-container">
+            {# Hero #}
+            <div class="subscription-icon subscription-icon-info">
+                {{ ux_icon('tabler:rocket', {width: 32, height: 32}) }}
+            </div>
+
+            <h1 class="subscription-title">
+                {% if trialDays %}
+                    {{ (firstName is not empty ? 'saas.welcome.title' : 'saas.welcome.title_no_name')|trans({'%name%': firstName}) }}
+                {% else %}
+                    {{ 'saas.welcome.title_no_trial'|trans }}
+                {% endif %}
+            </h1>
+            <p class="subscription-subtitle">
+                {% if trialDays %}
+                    {{ 'saas.welcome.subtitle'|trans({'%days%': trialDays, '%count%': trialDays}) }}
+                {% else %}
+                    {{ 'saas.welcome.subtitle_no_trial'|trans }}
+                {% endif %}
+            </p>
+
+            {# The one plan on offer — shown, not chosen. #}
+            <div class="card welcome-plan text-start mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-3">
+                        <div>
+                            <div class="text-uppercase text-subtle small fw-semibold mb-1">
+                                {{ 'saas.welcome.plan_label'|trans }}
+                            </div>
+                            <h2 class="h3 mb-0">{{ plan.name }}</h2>
+                        </div>
+                        <div class="text-end welcome-plan-pricing">
+                            {% if trialDays %}
+                                <div class="welcome-plan-price text-primary">
+                                    {{ 'saas.welcome.plan_free_for'|trans({'%days%': trialDays, '%count%': trialDays}) }}
+                                </div>
+                                <div class="text-subtle small">{{ 'saas.welcome.plan_then'|trans({'%price%': price}) }}</div>
+                            {% else %}
+                                <div class="welcome-plan-price">{{ price }}</div>
+                                <div class="text-subtle small">{{ 'saas.plan.per_month'|trans }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if plan.description is not empty %}
+                        <p class="text-subtle mb-3">{{ plan.description }}</p>
+                    {% endif %}
+
+                    {% if plan.features|length > 0 %}
+                        <div class="text-uppercase text-subtle small fw-semibold mb-2">
+                            {{ 'saas.welcome.included_heading'|trans }}
+                        </div>
+                        {{ grid.feature_list(plan.features) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Reassurance — the three things that melt card hesitation. #}
+            <div class="row welcome-reassure g-3 text-start mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="welcome-reassure-item">
+                        {{ ux_icon('tabler:shield-check', {width: 22, height: 22}) }}
+                        <div>
+                            <div class="fw-semibold">{{ 'saas.welcome.no_charge'|trans }}</div>
+                            {% if trialDays %}
+                                <div class="text-subtle small">{{ 'saas.welcome.no_charge_detail'|trans }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="welcome-reassure-item">
+                        {{ ux_icon('tabler:calendar-x', {width: 22, height: 22}) }}
+                        <div>
+                            <div class="fw-semibold">{{ 'saas.welcome.cancel_anytime'|trans }}</div>
+                            <div class="text-subtle small">{{ 'saas.welcome.cancel_anytime_detail'|trans }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="welcome-reassure-item">
+                        {{ ux_icon('tabler:lock', {width: 22, height: 22}) }}
+                        <div>
+                            <div class="fw-semibold">{{ 'saas.welcome.secure_checkout'|trans }}</div>
+                            <div class="text-subtle small">{{ 'saas.welcome.secure_checkout_detail'|trans }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Primary CTA — the only choice on the page. #}
+            <div class="subscription-actions">
+                <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-primary btn-lg">
+                    {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }}
+                    {% if trialDays %}
+                        {{ 'saas.welcome.cta_trial'|trans({'%days%': trialDays, '%count%': trialDays}) }}
+                    {% else %}
+                        {{ 'saas.welcome.cta_no_trial'|trans }}
+                    {% endif %}
+                </a>
+            </div>
+            {% if trialDays %}
+                <p class="text-subtle small mt-2 mb-0">
+                    {{ ux_icon('tabler:lock', {width: 14, height: 14, class: 'me-1'}) }}
+                    {{ 'saas.welcome.cta_caption'|trans }}
+                </p>
+            {% endif %}
+
+            {# Edge case: the user just came back from checkout, webhook still in flight. #}
+            <twig:Ui:Alert type="info" class="mt-4 text-start">
+                <div class="d-flex align-items-start gap-2">
+                    {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
+                    <div>
+                        <strong>{{ 'saas.welcome.just_completed_title'|trans }}</strong><br>
+                        {{ 'saas.welcome.just_completed_message'|trans }}
+                    </div>
+                </div>
+            </twig:Ui:Alert>
+
+            {# The user has another company they can already use. #}
+            {% if availableCompanies|length > 0 %}
+                <twig:Ui:Alert type="info" class="mt-3 text-start">
+                    <div class="d-flex align-items-center gap-2">
+                        {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
+                        <div>
+                            {{ 'saas.company.access_other'|trans }}
+                            <a href="{{ path('_switch_company', {'id': availableCompanies|first.id}) }}" class="alert-link">
+                                {{ 'saas.company.switch_to'|trans({'%company%': availableCompanies|first}) }}
+                            </a>
+                        </div>
+                    </div>
+                </twig:Ui:Alert>
+            {% endif %}
+
+            {# Help #}
+            <p class="text-subtle small mt-4 mb-0">
+                {{ 'saas.welcome.need_help'|trans }}
+                <a href="https://solidinvoice.co/contact" target="_blank" rel="external noreferrer noopener">
+                    {{ 'saas.action.contact_support_short'|trans }}
+                </a>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

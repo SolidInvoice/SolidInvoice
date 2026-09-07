@@ -17,6 +17,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
@@ -36,6 +37,7 @@ final class SelectPlanAction extends AbstractController
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
         private readonly Telemetry $telemetry,
+        private readonly BillingMode $billingMode,
     ) {
     }
 
@@ -45,6 +47,13 @@ final class SelectPlanAction extends AbstractController
 
         if ($subscription instanceof Subscription && $subscription->getStatus() === SubscriptionStatus::ACTIVE) {
             return $this->redirectToRoute('billing_index');
+        }
+
+        // Card-required onboarding has no plan choice — the default plan is
+        // activated from the dedicated welcome page. Keep the picker out of that
+        // flow entirely, even if a stale link points here.
+        if ($this->billingMode->requiresCardForTrial()) {
+            return $this->redirectToRoute('saas_subscription_welcome');
         }
 
         $plans = $this->planRepository->findAllOrdered();

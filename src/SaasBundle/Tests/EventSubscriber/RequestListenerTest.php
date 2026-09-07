@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
 use SolidInvoice\SaasBundle\Plan\TrialPeriod;
+use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidInvoice\Test\SaasKernel;
@@ -38,6 +39,7 @@ use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -125,6 +127,31 @@ final class RequestListenerTest extends KernelTestCase
         $response = $event->getResponse();
         self::assertInstanceOf(Response::class, $response);
         self::assertStringContainsString('Pending Page', (string) $response->getContent());
+    }
+
+    public function testOnRequestWithPendingStatusInPaidTrialModeRedirectsToWelcome(): void
+    {
+        $subscription = $this->createSubscription(SubscriptionStatus::PENDING);
+        $listener = $this->createListener(
+            new User(),
+            subscription: $subscription,
+            billingMode: BillingModeFactory::paidTrial(),
+        );
+
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        $event = new RequestEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        $listener->onRequest($event);
+
+        $response = $event->getResponse();
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertStringContainsString('/subscription/welcome', $response->getTargetUrl());
     }
 
     public function testOnRequestWithPausedStatus(): void
@@ -425,6 +452,7 @@ final class RequestListenerTest extends KernelTestCase
         ?callable $onTrialExpiredRender = null,
         ?callable $onBannerRender = null,
         int $couponPercent = 30,
+        ?BillingMode $billingMode = null,
     ): RequestListener {
         // Get real services from container
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -484,7 +512,7 @@ final class RequestListenerTest extends KernelTestCase
 
         $translator = self::getContainer()->get(TranslatorInterface::class);
 
-        $billingMode = BillingModeFactory::freeTrial($couponCode, $couponPercent);
+        $billingMode ??= BillingModeFactory::freeTrial($couponCode, $couponPercent);
 
         $trialBannerResolver = new TrialBannerResolver(
             $clock,

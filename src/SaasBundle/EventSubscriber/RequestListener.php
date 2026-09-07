@@ -26,6 +26,7 @@ use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -53,6 +54,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         '_view_invoice_external',
         'billing_index',
         'saas_subscription_checkout',
+        'saas_subscription_welcome',
         'saas_subscription_plans',
         'saas_subscription_choose',
         'saas_subscription_change',
@@ -103,6 +105,20 @@ final readonly class RequestListener implements EventSubscriberInterface
 
         switch ($subscription->getStatus()) {
             case SubscriptionStatus::PENDING:
+                if ($this->billingMode->requiresCardForTrial()) {
+                    // Card-required onboarding funnels to one welcoming
+                    // activation page instead of the plan picker. Redirecting
+                    // (rather than rendering inline) keeps that page on a single
+                    // canonical URL, and because the redirect stands for as long
+                    // as the subscription is PENDING, a user who logs out and
+                    // comes back weeks later lands straight back on it.
+                    $event->setResponse(
+                        new RedirectResponse($this->urlGenerator->generate('saas_subscription_welcome'))
+                    );
+
+                    break;
+                }
+
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
