@@ -9318,12 +9318,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "fef7596878c784a567ed7cb010bec71c560b31b2"
+                "reference": "34d68433316006e13238c0922d7b89ecd7b9b509"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/fef7596878c784a567ed7cb010bec71c560b31b2",
-                "reference": "fef7596878c784a567ed7cb010bec71c560b31b2",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/34d68433316006e13238c0922d7b89ecd7b9b509",
+                "reference": "34d68433316006e13238c0922d7b89ecd7b9b509",
                 "shasum": ""
             },
             "require": {
@@ -9369,7 +9369,7 @@
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.52",
                 "ergebnis/phpunit-slow-test-detector": "^2.24",
-                "monolog/monolog": "^3.0",
+                "monolog/monolog": "^3.10",
                 "phpstan/extension-installer": "^1.4",
                 "phpstan/phpstan": "^2.2",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
@@ -9408,7 +9408,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-09-06T17:08:51+00:00"
+            "time": "2026-09-07T11:27:49+00:00"
         },
         {
             "name": "solidworx/toggler",
