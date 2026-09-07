@@ -13,35 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Twig;
 
-use Override;
 use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * Exposes a plan's trial length to templates so plan-picker copy can promise
  * the real number of days. Whether a card is required up front is already
  * available in Twig as `toggle('saas_paid_trial')`.
  */
-final class SubscriptionExtension extends AbstractExtension
+final readonly class SubscriptionExtension
 {
     public function __construct(
-        private readonly TrialPeriod $trialPeriod,
+        private TrialPeriod $trialPeriod,
     ) {
     }
 
-    /**
-     * @return list<TwigFunction>
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('saas_plan_trial_days', $this->planTrialDays(...)),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'saas_plan_trial_days')]
     public function planTrialDays(Plan $plan): ?int
     {
         return $this->trialPeriod->days($plan);
