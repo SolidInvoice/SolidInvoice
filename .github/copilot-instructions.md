@@ -752,7 +752,6 @@ bin/console doctrine:migrations:migrate prev
 
 ### Custom Doctrine Types
 
-- `json_array` - Legacy JSON storage
 - `uuid` - Standard UUID type
 - Custom hydrators for Money objects
 
