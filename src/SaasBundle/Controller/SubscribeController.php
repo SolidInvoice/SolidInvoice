@@ -137,6 +137,10 @@ class SubscribeController extends AbstractController
      */
     private function grantsProviderTrial(Subscription $subscription): bool
     {
+        if ($subscription->isExternallyBilled()) {
+            return false;
+        }
+
         if ($this->billingMode->requiresCardForTrial()) {
             return true;
         }
