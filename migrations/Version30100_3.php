@@ -24,7 +24,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use function array_chunk;
 use function is_array;
 use function json_decode;
 use function json_encode;
@@ -52,10 +51,10 @@ final class Version30100_3 extends AbstractMigration
     ];
 
     /**
-     * api_token_history holds a row per API request, so the rewrite is batched rather than issued
-     * per row.
+     * Rows read, and at most rows updated, per round trip. Bounds both the memory the rewrite
+     * holds and the size of its IN () lists.
      */
-    private const int CHUNK_SIZE = 500;
+    private const int PAGE_SIZE = 500;
 
     public function getDescription(): string
     {
@@ -121,6 +120,14 @@ final class Version30100_3 extends AbstractMigration
                 ->setLength(null);
         }
 
+        // The property behind this column is a plain `array` with an empty default, and the legacy
+        // type turned a null into `[]` on the way out. Doctrine's json type hands back the null
+        // instead, so make the column say what the mapping has always assumed. preUp has already
+        // replaced any null with `[]`.
+        $schema->getTable('payment_methods')
+            ->getColumn('config')
+            ->setNotnull(true);
+
         $schema->getTable('users')
             ->getColumn('totp_secret')
             ->setLength(64);
@@ -133,6 +140,10 @@ final class Version30100_3 extends AbstractMigration
                 ->getColumn($column)
                 ->setType(Type::getType(Types::TEXT));
         }
+
+        $schema->getTable('payment_methods')
+            ->getColumn('config')
+            ->setNotnull(false);
 
         $schema->getTable('users')
             ->getColumn('totp_secret')
@@ -163,8 +174,8 @@ final class Version30100_3 extends AbstractMigration
     }
 
     /**
-     * Rewrites every value in a column, grouping rows by their new value so that tens of thousands
-     * of rows sharing a handful of payloads cost a handful of statements.
+     * Rewrites every value in a column, grouping each page of rows by their new value so that the
+     * handful of distinct payloads these columns hold cost a handful of statements per page.
      *
      * Grouping happens in PHP rather than with SELECT DISTINCT to keep the match byte exact:
      * MySQL's case-insensitive collations would fold two payloads that differ only in case into
@@ -176,26 +187,48 @@ final class Version30100_3 extends AbstractMigration
      */
     private function rewrite(string $table, string $column, callable $convert): void
     {
-        /** @var array<string, list<string>> $rowIds */
-        $rowIds = [];
+        // Paged by id rather than read in one go: api_token_history grows with every API request,
+        // and the ids of a table that size do not belong in memory all at once. Ordering by the
+        // primary key makes the cursor stable, and each page is small enough to be its own IN ().
+        $lastId = null;
 
-        foreach ($this->connection->iterateAssociative(sprintf('SELECT id, %s AS value FROM %s', $column, $table)) as $row) {
-            $converted = $convert((string) $row['value']);
+        while (true) {
+            $rows = $this->connection->fetchAllAssociative(
+                sprintf(
+                    'SELECT id, %s AS value FROM %s%s ORDER BY id ASC LIMIT %d',
+                    $column,
+                    $table,
+                    $lastId === null ? '' : ' WHERE id > ?',
+                    self::PAGE_SIZE,
+                ),
+                $lastId === null ? [] : [$lastId],
+            );
 
-            if ($converted === null) {
-                continue;
+            if ($rows === []) {
+                return;
             }
 
-            $rowIds[$converted][] = $row['id'];
-        }
+            /** @var array<string, list<string>> $rowIds */
+            $rowIds = [];
 
-        foreach ($rowIds as $value => $ids) {
-            foreach (array_chunk($ids, self::CHUNK_SIZE) as $chunk) {
-                // Ids bind as strings on every platform: they are raw bytes in a BINARY(16) column
-                // on MySQL and SQLite, and RFC 4122 text in a UUID column on Postgres.
+            foreach ($rows as $row) {
+                $lastId = $row['id'];
+                $converted = $convert((string) $row['value']);
+
+                if ($converted === null) {
+                    continue;
+                }
+
+                $rowIds[$converted][] = $row['id'];
+            }
+
+            foreach ($rowIds as $value => $ids) {
+                // Ids bind as strings on every platform: raw BINARY(16) bytes on MySQL, the same
+                // bytes with TEXT storage class on SQLite, and the ULID rendered as RFC 4122 text
+                // in a UUID column on Postgres, which is what Symfony's UlidType writes there.
                 $this->connection->executeStatement(
                     sprintf('UPDATE %s SET %s = ? WHERE id IN (?)', $table, $column),
-                    [(string) $value, $chunk],
+                    [(string) $value, $ids],
                     [ParameterType::STRING, ArrayParameterType::STRING],
                 );
             }
