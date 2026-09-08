@@ -43,6 +43,11 @@
 	request_header @cloudflare X-Forwarded-Proto "https"
 	request_header @cloudflare X-Forwarded-Port "443"
 
+	# Caddy resolves the real client IP from client_ip_headers + trusted_proxies.
+	# PHP only sees headers, so write it back into X-Forwarded-For (which Symfony
+	# trusts). Untrusted peers get their own IP here, so XFF cannot be forged.
+	request_header X-Forwarded-For {client_ip}
+
 	# Basic security headers (for self-hosted deployments)
 	header {
 		X-Content-Type-Options "nosniff"
