@@ -17957,16 +17957,16 @@
         },
         {
             "name": "symfony/telegram-notifier",
-            "version": "v8.1.4",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/telegram-notifier.git",
-                "reference": "8761336a0100010260febf8518d6c7d85f4f8b11"
+                "reference": "cdb67afba1133880a57fe7eb54255c53636a8231"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/8761336a0100010260febf8518d6c7d85f4f8b11",
-                "reference": "8761336a0100010260febf8518d6c7d85f4f8b11",
+                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/cdb67afba1133880a57fe7eb54255c53636a8231",
+                "reference": "cdb67afba1133880a57fe7eb54255c53636a8231",
                 "shasum": ""
             },
             "require": {
@@ -18005,7 +18005,7 @@
                 "telegram"
             ],
             "support": {
-                "source": "https://github.com/symfony/telegram-notifier/tree/v8.1.4"
+                "source": "https://github.com/symfony/telegram-notifier/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -18025,7 +18025,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T16:08:50+00:00"
+            "time": "2026-08-25T14:18:42+00:00"
         },
         {
             "name": "symfony/telnyx-notifier",
