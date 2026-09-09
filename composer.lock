@@ -288,16 +288,16 @@
         },
         {
             "name": "async-aws/core",
-            "version": "1.29.2",
+            "version": "1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/async-aws/core.git",
-                "reference": "aefe81449ea19f6ed43944bbb29874a0a5e54d18"
+                "reference": "dc0c26832e44db34466dd68d450293d573e732d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/async-aws/core/zipball/aefe81449ea19f6ed43944bbb29874a0a5e54d18",
-                "reference": "aefe81449ea19f6ed43944bbb29874a0a5e54d18",
+                "url": "https://api.github.com/repos/async-aws/core/zipball/dc0c26832e44db34466dd68d450293d573e732d1",
+                "reference": "dc0c26832e44db34466dd68d450293d573e732d1",
                 "shasum": ""
             },
             "require": {
@@ -323,7 +323,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.29-dev"
+                    "dev-master": "1.30-dev"
                 }
             },
             "autoload": {
@@ -344,7 +344,7 @@
                 "sts"
             ],
             "support": {
-                "source": "https://github.com/async-aws/core/tree/1.29.2"
+                "source": "https://github.com/async-aws/core/tree/1.30.0"
             },
             "funding": [
                 {
@@ -356,20 +356,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T12:54:05+00:00"
+            "time": "2026-09-09T11:10:02+00:00"
         },
         {
             "name": "async-aws/ses",
-            "version": "1.16.0",
+            "version": "1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/async-aws/ses.git",
-                "reference": "1f7e88f6afaee5e3e665341cbb59ed32b5b6c740"
+                "reference": "8cf52ad5b8d432c996dacb07cf57d50bee56d875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/async-aws/ses/zipball/1f7e88f6afaee5e3e665341cbb59ed32b5b6c740",
-                "reference": "1f7e88f6afaee5e3e665341cbb59ed32b5b6c740",
+                "url": "https://api.github.com/repos/async-aws/ses/zipball/8cf52ad5b8d432c996dacb07cf57d50bee56d875",
+                "reference": "8cf52ad5b8d432c996dacb07cf57d50bee56d875",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +385,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -406,7 +406,7 @@
                 "ses"
             ],
             "support": {
-                "source": "https://github.com/async-aws/ses/tree/1.16.0"
+                "source": "https://github.com/async-aws/ses/tree/1.17.0"
             },
             "funding": [
                 {
@@ -418,7 +418,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T12:54:05+00:00"
+            "time": "2026-09-09T11:10:02+00:00"
         },
         {
             "name": "async-aws/sns",
@@ -9775,16 +9775,16 @@
         },
         {
             "name": "symfony/amazon-mailer",
-            "version": "v8.1.2",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amazon-mailer.git",
-                "reference": "1b5c67c7e1770633f9926d78c682ec6ec2e01a54"
+                "reference": "053c95a45b71ae830cb6b482d0cc137daa32bb4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amazon-mailer/zipball/1b5c67c7e1770633f9926d78c682ec6ec2e01a54",
-                "reference": "1b5c67c7e1770633f9926d78c682ec6ec2e01a54",
+                "url": "https://api.github.com/repos/symfony/amazon-mailer/zipball/053c95a45b71ae830cb6b482d0cc137daa32bb4f",
+                "reference": "053c95a45b71ae830cb6b482d0cc137daa32bb4f",
                 "shasum": ""
             },
             "require": {
@@ -9821,7 +9821,7 @@
             "description": "Symfony Amazon Mailer Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amazon-mailer/tree/v8.1.2"
+                "source": "https://github.com/symfony/amazon-mailer/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -9841,7 +9841,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-28T07:35:25+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/amazon-sns-notifier",
@@ -13331,16 +13331,16 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v8.1.2",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "221c7f326ace1ac2baee8331d829d5b7f04f4d53"
+                "reference": "89f43137da74b8f1aab37c99926482b7084f51b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/221c7f326ace1ac2baee8331d829d5b7f04f4d53",
-                "reference": "221c7f326ace1ac2baee8331d829d5b7f04f4d53",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/89f43137da74b8f1aab37c99926482b7084f51b9",
+                "reference": "89f43137da74b8f1aab37c99926482b7084f51b9",
                 "shasum": ""
             },
             "require": {
@@ -13387,7 +13387,7 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailer/tree/v8.1.2"
+                "source": "https://github.com/symfony/mailer/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -13407,7 +13407,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-28T07:35:25+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/mailgun-mailer",
