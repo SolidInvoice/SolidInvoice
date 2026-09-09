@@ -17115,16 +17115,16 @@
         },
         {
             "name": "symfony/sendgrid-mailer",
-            "version": "v8.1.4",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/sendgrid-mailer.git",
-                "reference": "0473570e0f67fb28e285d9e1f8cbee0054f08dd2"
+                "reference": "ff242f1c167dbec3e9eb82ccc148c3d058bf18a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/sendgrid-mailer/zipball/0473570e0f67fb28e285d9e1f8cbee0054f08dd2",
-                "reference": "0473570e0f67fb28e285d9e1f8cbee0054f08dd2",
+                "url": "https://api.github.com/repos/symfony/sendgrid-mailer/zipball/ff242f1c167dbec3e9eb82ccc148c3d058bf18a4",
+                "reference": "ff242f1c167dbec3e9eb82ccc148c3d058bf18a4",
                 "shasum": ""
             },
             "require": {
@@ -17164,7 +17164,7 @@
             "description": "Symfony Sendgrid Mailer Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/sendgrid-mailer/tree/v8.1.4"
+                "source": "https://github.com/symfony/sendgrid-mailer/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -17184,7 +17184,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T16:08:50+00:00"
+            "time": "2026-08-30T01:03:44+00:00"
         },
         {
             "name": "symfony/serializer",
