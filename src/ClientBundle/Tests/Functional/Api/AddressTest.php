@@ -51,6 +51,41 @@ final class AddressTest extends ApiTestCase
         ], $data);
     }
 
+    /**
+     * testGetCollection builds its addresses with the factory, so it never exercised
+     * posting twice — which used to return the same address for both posts.
+     */
+    public function testCreatingASecondAddressDoesNotOverwriteTheFirst(): void
+    {
+        $client = ClientFactory::createOne();
+        $addresses = $this->getIriFromResource($client) . '/addresses';
+
+        $this->requestPost($addresses, ['street1' => 'First', 'city' => 'city', 'country' => 'US']);
+        $this->requestPost($addresses, ['street1' => 'Second', 'city' => 'city', 'country' => 'US']);
+
+        $data = $this->requestGetCollection($addresses);
+
+        self::assertSame(2, $data['totalItems']);
+        self::assertSame(['First', 'Second'], array_column($data['member'], 'street1'));
+    }
+
+    public function testCreateOnAMissingClientIs404(): void
+    {
+        self::$client->request(
+            'POST',
+            '/api/clients/' . new Ulid()->toString() . '/addresses',
+            [
+                'json' => ['street1' => 'Orphan', 'city' => 'city', 'country' => 'US'],
+                'headers' => [
+                    'content-type' => 'application/ld+json',
+                    'accept' => 'application/ld+json',
+                ],
+            ]
+        );
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
     public function testCannotAccessAddressFromDifferentCompany(): void
     {
         $otherCompany = CompanyFactory::new()->create();

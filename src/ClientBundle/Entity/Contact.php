@@ -117,6 +117,10 @@ use Symfony\Component\Validator\Constraints as Assert;
                     fromClass: Client::class,
                 ),
             ],
+            // Without this, the `contacts` link makes API Platform read the client's existing
+            // contact and deserialize into it, so a second post overwrites the first instead
+            // of adding one. A create has nothing to read.
+            read: false,
             processor: ContactPersistProcessor::class,
         ),
         new Get(

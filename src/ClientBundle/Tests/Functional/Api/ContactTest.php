@@ -43,6 +43,41 @@ final class ContactTest extends ApiTestCase
         ], $data);
     }
 
+    /**
+     * testGetCollection builds its contacts with the factory, so it never exercised
+     * posting twice — which used to return the same contact for both posts.
+     */
+    public function testCreatingASecondContactDoesNotOverwriteTheFirst(): void
+    {
+        $client = ClientFactory::createOne();
+        $contacts = $this->getIriFromResource($client) . '/contacts';
+
+        $this->requestPost($contacts, ['firstName' => 'First', 'email' => 'first@example.com']);
+        $this->requestPost($contacts, ['firstName' => 'Second', 'email' => 'second@example.com']);
+
+        $data = $this->requestGetCollection($contacts);
+
+        self::assertSame(2, $data['totalItems']);
+        self::assertSame(['First', 'Second'], array_column($data['member'], 'firstName'));
+    }
+
+    public function testCreateOnAMissingClientIs404(): void
+    {
+        self::$client->request(
+            'POST',
+            '/api/clients/' . new Ulid()->toString() . '/contacts',
+            [
+                'json' => ['firstName' => 'Orphan', 'email' => 'orphan@example.com'],
+                'headers' => [
+                    'content-type' => 'application/ld+json',
+                    'accept' => 'application/ld+json',
+                ],
+            ]
+        );
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
     public function testCannotCreateContactForClientFromDifferentCompany(): void
     {
         $otherCompany = CompanyFactory::new()->create();
