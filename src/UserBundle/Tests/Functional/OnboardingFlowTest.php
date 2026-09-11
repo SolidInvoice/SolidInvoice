@@ -95,7 +95,7 @@ final class OnboardingFlowTest extends WebTestCase
         // Verify invoice was created
         $invoices = $this->em->getRepository(Invoice::class)->findBy(['company' => $user->getCompanies()->first()]);
         self::assertCount(1, $invoices);
-        self::assertSame('Website Design', $invoices[0]->getLines()->first()->getDescription());
+        self::assertSame('Website Design', $invoices[0]->getLines()->first()->getName());
     }
 
     public function testSkipClientStep(): void

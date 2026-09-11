@@ -1,4 +1,6 @@
 {# Studio / Agency preview #}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
 {% set currency = invoice.client.currency %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
@@ -45,7 +47,7 @@
                 <tbody>
                     {% for line in invoice.lines %}
                         <tr>
-                            <td>{{ line.description|nl2br }}</td>
+                            <td>{{ line.name }}{{ inv.line_description(line) }}</td>
                             <td class="text-end">{{ line.qty }}</td>
                             <td class="text-end">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>

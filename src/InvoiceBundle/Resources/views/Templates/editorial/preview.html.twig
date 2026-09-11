@@ -1,4 +1,6 @@
 {# Editorial preview #}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
 {% set currency = invoice.client.currency %}
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap">
@@ -35,7 +37,7 @@
                     {% for line in invoice.lines %}
                         <tr style="border-bottom: 1px solid #e8dcc4;">
                             <td>
-                                <em>{{ line.description|nl2br }}</em>
+                                <em>{{ line.name }}</em>{{ inv.line_description(line) }}
                                 <div class="text-muted small">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
                             </td>
                             <td class="text-end fs-5">{{ line.total|formatCurrency(currency) }}</td>

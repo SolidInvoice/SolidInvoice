@@ -139,7 +139,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $lineTax->snapshotFrom($tax);
 
         $line->addTax($lineTax);
-        $line->setDescription('Line Description');
+        $line->setName('Line Description');
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
@@ -182,7 +182,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
-        self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
+        self::assertSame($line->getName(), $invoiceLine[0]->getName());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
@@ -202,7 +202,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $sourceLineTax->setSequence(1);
 
         $line = new Line();
-        $line->setDescription('Service');
+        $line->setName('Service');
         $line->setPrice(120);
         $line->setQty(1);
         $line->setTotal(120);
@@ -259,7 +259,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $sourceLineTax->setTypeSnapshot(TaxType::Exclusive);
 
         $line = new RecurringInvoiceLine();
-        $line->setDescription('Recurring Service');
+        $line->setName('Recurring Service');
         $line->setPrice(1000);
         $line->setQty(1);
         $line->setTotal(1000);
@@ -313,7 +313,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $lineTax->snapshotFrom($tax);
 
         $line->addTax($lineTax);
-        $line->setDescription('Line Description {day} {day_name} {month} {year}');
+        $line->setName('Line Description {day} {day_name} {month} {year}');
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
@@ -355,7 +355,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
-        self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getDescription());
+        self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getName());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));

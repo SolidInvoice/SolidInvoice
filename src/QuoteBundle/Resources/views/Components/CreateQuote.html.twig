@@ -165,8 +165,13 @@
                                 <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">{{ 'quote.item.heading.description'|trans }}</span>
-                                        {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2}}) }}
-                                        {{ form_errors(item.description) }}
+                                        {{ form_widget(item.name, {attr: {placeholder: 'quote.item.name.placeholder'|trans}}) }}
+                                        {{ form_errors(item.name) }}
+                                        <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
+                                            <summary class="line-description-toggle">{{ 'quote.item.description.add'|trans }}</summary>
+                                            {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2}}) }}
+                                            {{ form_errors(item.description) }}
+                                        </details>
                                     </div>
                                     <div class="column-price">
                                         <span class="mobile-label">{{ 'quote.item.heading.price'|trans }}</span>

@@ -76,9 +76,9 @@ final readonly class PreviewInvoiceFactory
             ['Brand identity design', 120000, 1],
             ['Landing page implementation', 85000, 1],
             ['Consulting & support', 15000, 3],
-        ] as [$description, $price, $qty]) {
+        ] as [$name, $price, $qty]) {
             $line = new Line();
-            $line->setDescription($description);
+            $line->setName($name);
             $line->setPrice($price);
             $line->setQty($qty);
             $line->setTotal((int) ($price * $qty));

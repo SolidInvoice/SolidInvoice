@@ -1,4 +1,6 @@
 {# Freelancer Friendly preview #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
 {% set currency = quote.client.currency %}
 {% set primary = quote.users|first %}
 {% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
@@ -61,7 +63,7 @@
                 <tbody>
                     {% for line in quote.lines %}
                         <tr style="border-bottom: 1px solid #f1eada;">
-                            <td>{{ line.description|nl2br }}</td>
+                            <td>{{ line.name }}{{ q.line_description(line) }}</td>
                             <td class="text-end text-muted">{{ line.qty }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>

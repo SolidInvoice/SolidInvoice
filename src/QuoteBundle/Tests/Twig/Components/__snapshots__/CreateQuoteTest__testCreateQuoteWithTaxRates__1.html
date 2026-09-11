@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
@@ -106,8 +106,13 @@
                                                             <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
-                                        <textarea id="quote_lines_0_description" name="quote[lines][0][description]" class="input-medium quote-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
+                                        <input type="text" id="quote_lines_0_name" name="quote[lines][0][name]" class="input-medium quote-item-name form-control" placeholder="e.g. Website design">
                                         
+                                        <details class="line-description">
+                                            <summary class="line-description-toggle">Add description</summary>
+                                            <textarea id="quote_lines_0_description" name="quote[lines][0][description]" class="input-medium quote-item-description form-control" placeholder="Describe the service or product..." rows="2"></textarea>
+                                            
+                                        </details>
                                     </div>
                                     <div class="column-price">
                                         <span class="mobile-label">Price</span>

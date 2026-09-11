@@ -183,6 +183,7 @@ final class EntityNormalizer
         foreach ($lines as $line) {
             $result[] = [
                 'id' => $line->getId()->toRfc4122(),
+                'name' => $line->getName(),
                 'description' => $line->getDescription(),
                 'price' => $this->bigNumber($line->getPrice()),
                 'qty' => $this->bigNumber($line->getQty()),

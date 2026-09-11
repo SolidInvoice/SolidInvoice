@@ -97,7 +97,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessageIsOrContains('description');
+        $this->expectExceptionMessageIsOrContains('name');
 
         $tool->createInvoice(
             $client->getId()
