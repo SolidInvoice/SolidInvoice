@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Twig\Components;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Twig\Components\ReordersLines;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
@@ -34,6 +35,7 @@ final class CreateRecurringInvoice extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use ReordersLines;
 
     #[LiveProp(writable: true, fieldName: 'formData')]
     public RecurringInvoice $invoice;

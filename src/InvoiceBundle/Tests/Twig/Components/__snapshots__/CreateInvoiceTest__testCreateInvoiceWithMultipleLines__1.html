@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="billing-items-body">
-                                                                                        <div class="billing-items-list">
+                                                                                        <div class="billing-items-list" data-controller="line-reorder">
                             <div class="billing-items-header-row">
                                 <div class="column-description">Description</div>
                                 <div class="column-price">Price</div>
@@ -110,7 +110,7 @@
                                 <div class="column-actions"></div>
                             </div>
 
-                                                            <div class="billing-item-row">
+                                                            <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="invoice_lines_0_description" name="invoice[lines][0][description]" class="input-medium invoice-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
@@ -133,10 +133,13 @@
                                         <span class="item-total-value">$0.00</span>
                                     </div>
                                     <div class="column-actions">
+                                        <span class="line-drag-handle" data-line-reorder-handle role="button" tabindex="0" title="Drag to reorder item" aria-label="Drag to reorder item">
+                                            <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m6-14a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path></svg>
+                                        </span>
                                                                                     <button type="button" id="invoice_lines_0_delete" name="invoice[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="0" class="btn btn-sm remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
                                                                             </div>
                                 </div>
-                                                            <div class="billing-item-row">
+                                                            <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="invoice_lines_1_description" name="invoice[lines][1][description]" class="input-medium invoice-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
@@ -159,6 +162,9 @@
                                         <span class="item-total-value">$0.00</span>
                                     </div>
                                     <div class="column-actions">
+                                        <span class="line-drag-handle" data-line-reorder-handle role="button" tabindex="0" title="Drag to reorder item" aria-label="Drag to reorder item">
+                                            <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m6-14a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path></svg>
+                                        </span>
                                                                                     <button type="button" id="invoice_lines_1_delete" name="invoice[lines][1][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="1" class="btn btn-sm remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
                                                                             </div>
                                 </div>

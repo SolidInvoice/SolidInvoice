@@ -341,7 +341,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 24px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -373,11 +373,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 24px;
+        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
     }
 
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 24px;
+        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -393,7 +393,7 @@
 
     .billing-items-header-row,
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.2fr) minmax(130px, 1.1fr) 56px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 24px;
+        grid-template-columns: minmax(0, 3.2fr) minmax(130px, 1.1fr) 56px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 52px;
     }
 
     .billing-item-row {
@@ -405,7 +405,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 24px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -491,6 +491,25 @@
         padding-top: 0;
     }
 
+    // Quiet until the row is hovered or the handle is tabbed to, so a column of grips does
+    // not compete with the fields for attention.
+    .line-drag-handle {
+        display: flex;
+        align-items: center;
+        color: var(--swp-text-muted);
+        cursor: grab;
+        opacity: 0;
+        transition: opacity var(--swp-transition-fast);
+
+        &:focus-visible {
+            opacity: 1;
+        }
+    }
+
+    &:hover .line-drag-handle {
+        opacity: 1;
+    }
+
     .mobile-label {
         display: none;
     }
@@ -569,6 +588,11 @@
             justify-content: flex-start;
             padding-top: var(--swp-space-3);
             border-top: 1px dashed var(--swp-border);
+        }
+
+        // No hover to reveal it on a touch screen.
+        .line-drag-handle {
+            opacity: 1;
         }
 
         .column-total {

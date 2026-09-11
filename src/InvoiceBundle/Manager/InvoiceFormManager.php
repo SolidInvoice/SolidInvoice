@@ -17,6 +17,7 @@ use Carbon\CarbonImmutable;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
@@ -101,10 +102,12 @@ final readonly class InvoiceFormManager
         $invoice->setBaseTotal($dto->baseTotal);
         $invoice->setTax($dto->tax);
 
-        // Sync lines collection
+        // Sync lines collection. The DTO's order is the order the user just saw, so the
+        // lines are unplaced before being re-added and addLine() appends them in that order —
+        // otherwise the positions they arrived with would decide, and a reorder would not stick.
         $invoice->getLines()->clear();
         foreach ($dto->lines as $line) {
-            $invoice->addLine($line);
+            $invoice->addLine($line->setPosition(LineInterface::UNPLACED));
         }
 
         // Sync invoice-level taxes

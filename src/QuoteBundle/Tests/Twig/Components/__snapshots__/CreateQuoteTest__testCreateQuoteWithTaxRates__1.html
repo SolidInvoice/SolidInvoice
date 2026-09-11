@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="billing-items-body">
-                                                                                        <div class="billing-items-list">
+                                                                                        <div class="billing-items-list" data-controller="line-reorder">
                             <div class="billing-items-header-row">
                                 <div class="column-description">Description</div>
                                 <div class="column-price">Price</div>
@@ -103,7 +103,7 @@
                                 <div class="column-actions"></div>
                             </div>
 
-                                                            <div class="billing-item-row">
+                                                            <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="quote_lines_0_description" name="quote[lines][0][description]" class="input-medium quote-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
@@ -132,6 +132,9 @@
                                         <span class="item-total-value">$0.00</span>
                                     </div>
                                     <div class="column-actions">
+                                        <span class="line-drag-handle" data-line-reorder-handle role="button" tabindex="0" title="Drag to reorder item" aria-label="Drag to reorder item">
+                                            <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m6-14a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path></svg>
+                                        </span>
                                                                             </div>
                                 </div>
                                                     </div>

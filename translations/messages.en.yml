@@ -853,6 +853,7 @@ invoice:
             tax: Tax
             total: Total
         number: 'Item %number%'
+        reorder: 'Drag to reorder item'
         remove: 'Remove Item'
         tax:
             add: '+ Add tax'
@@ -1793,6 +1794,7 @@ quote:
             tax: Tax
             total: Total
         number: 'Item %number%'
+        reorder: 'Drag to reorder item'
         remove: 'Remove Item'
         tax:
             add: '+ Add tax'
