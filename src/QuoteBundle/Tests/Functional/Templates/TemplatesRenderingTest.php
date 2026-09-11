@@ -169,7 +169,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $em->flush();
     }
 
-    private function createFixtureQuote(bool $withDescription = true): Quote
+    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.'): Quote
     {
         $this->seedCompanyLogo();
 
@@ -204,7 +204,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             'lines' => [
                 new Line()
                     ->setName('Sample line item')
-                    ->setDescription($withDescription ? 'Two rounds of revisions included.' : null)
+                    ->setDescription($description)
                     ->setPrice(BigInteger::of(75000))
                     ->setQty(2)
                     ->setTotal(BigInteger::of(150000)),
@@ -220,7 +220,28 @@ final class TemplatesRenderingTest extends KernelTestCase
     #[DataProvider('lineChannelProvider')]
     public function testTemplateOmitsAnEmptyDescription(string $slug, string $channel): void
     {
-        $quote = $this->createFixtureQuote(withDescription: false);
+        $quote = $this->createFixtureQuote(null);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/%s.html.twig', $slug, $channel),
+            ['quote' => $quote]
+        );
+
+        self::assertStringContainsString('Sample line item', $output);
+        self::assertStringNotContainsString('line-item-description', $output);
+    }
+
+    /**
+     * A line whose description is the name over again — what a client that only knows about
+     * `description` produces — must print the text once, not twice.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testTemplateOmitsADescriptionThatRepeatsTheName(string $slug, string $channel): void
+    {
+        $quote = $this->createFixtureQuote('Sample line item');
 
         $twig = self::getContainer()->get('twig');
         self::assertInstanceOf(Environment::class, $twig);

@@ -310,10 +310,11 @@ final class InvoiceLineTest extends ApiTestCase
     }
 
     /**
-     * A one-line description is the whole name, so keeping it would print the same text
-     * twice on the invoice.
+     * A one-line description becomes the name in full, and is still stored. Not printing
+     * the same text twice is the `line_description` macro's job; the API keeps what it
+     * was sent.
      */
-    public function testASingleLineDescriptionBecomesTheNameOutright(): void
+    public function testASingleLineDescriptionBecomesTheNameAndIsKept(): void
     {
         $invoice = InvoiceFactory::createOne();
         $invoiceId = $invoice->getId()
@@ -326,6 +327,36 @@ final class InvoiceLineTest extends ApiTestCase
         ]);
 
         self::assertSame('Website design', $result['name']);
-        self::assertNull($result['description']);
+        self::assertSame('Website design', $result['description']);
+    }
+
+    /**
+     * The serializer calls setters in payload key order, so a client that happens to
+     * serialise `description` first must not get a different line from one that does not.
+     */
+    public function testBothFieldsSurviveEitherKeyOrder(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $descriptionFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Consulting',
+            'name' => 'Widget',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $nameFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'name' => 'Widget',
+            'description' => 'Consulting',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Widget', $descriptionFirst['name']);
+        self::assertSame('Consulting', $descriptionFirst['description']);
+        self::assertSame($nameFirst['name'], $descriptionFirst['name']);
+        self::assertSame($nameFirst['description'], $descriptionFirst['description']);
     }
 }

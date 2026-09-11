@@ -222,7 +222,7 @@
                         <tbody>
                             {% for item in invoice.lines %}
                                 <tr>
-                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}{{ inv.line_description(item) }}</td>
+                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}{{ inv.line_description(item, false) }}</td>
                                     <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
                                     <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
                                     {% if invoice.tax.positive %}

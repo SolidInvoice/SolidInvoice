@@ -47,7 +47,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
-use function trim;
 
 #[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: LineRepository::class)]
@@ -252,6 +251,12 @@ class Line implements LineInterface, Stringable
      * Deriving the name here, rather than in a lifecycle callback, is what keeps a caller
      * that only sends a description valid: `name` is `NotBlank`, so it has to hold a value
      * by the time the object is validated, which is long before it is persisted.
+     *
+     * The description itself is stored exactly as given, never cleared. The serializer
+     * calls setters in payload key order, so anything this setter does to another field
+     * would make `{"description": …, "name": …}` and `{"name": …, "description": …}`
+     * persist differently. Not printing the same text twice is the `line_description`
+     * macro's job, where it costs no data.
      */
     public function setDescription(?string $description): static
     {
@@ -263,14 +268,9 @@ class Line implements LineInterface, Stringable
 
         $derived = LineName::fromDescription($description);
 
-        if ($derived === '') {
-            return $this;
+        if ($derived !== '') {
+            $this->name = $derived;
         }
-
-        $this->name = $derived;
-        // The description is dropped only when the name is all of it — whitespace aside.
-        // Anything longer stays, so nothing the caller wrote is lost.
-        $this->description = trim($description) === $derived ? null : $description;
 
         return $this;
     }

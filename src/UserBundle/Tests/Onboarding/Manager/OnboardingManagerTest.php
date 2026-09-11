@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\Onboarding\Manager;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -185,6 +186,39 @@ final class OnboardingManagerTest extends KernelTestCase
         $invoices = $this->invoiceRepository->findBy(['company' => $company]);
         self::assertCount(1, $invoices);
         self::assertSame('Test Service', $invoices[0]->getLines()->first()->getName());
+    }
+
+    /**
+     * "Service Description" is an unbounded textarea and this invoice is never validated,
+     * so a long answer has to fit the line's VARCHAR(255) name without being thrown away.
+     * The tests run on SQLite, which ignores the column width, so assert the length here —
+     * on MySQL the flush itself would fail.
+     */
+    public function testALongServiceDescriptionFitsTheLineName(): void
+    {
+        $user = $this->createUser('test-long-description@example.com');
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $description = str_repeat('Consulting and advisory work, billed monthly. ', 10);
+
+        $data = new OnboardingData();
+        $data->companyName = 'Test Company';
+        $data->companyCurrency = 'USD';
+        $data->clientName = 'Test Client';
+        $data->clientEmail = 'client@example.com';
+        $data->invoiceDescription = $description;
+        $data->invoiceAmount = '1000.00';
+
+        $invoice = $this->manager->completeOnboarding($user, $data);
+
+        self::assertInstanceOf(Invoice::class, $invoice);
+
+        $line = $invoice->getLines()
+            ->first();
+
+        self::assertLessThanOrEqual(LineName::MAX_LENGTH, mb_strlen($line->getName()));
+        self::assertSame($description, $line->getDescription());
     }
 
     public function testCompleteOnboardingWithoutClientAndInvoice(): void
