@@ -17,8 +17,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
+use SolidInvoice\InvoiceBundle\Repository\LineRepository as InvoiceLineRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
+use SolidInvoice\QuoteBundle\Repository\LineRepository as QuoteLineRepository;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -28,6 +30,8 @@ use SolidInvoice\TaxBundle\Test\Factory\TaxFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 #[CoversClass(TaxRepository::class)]
+#[CoversClass(InvoiceLineRepository::class)]
+#[CoversClass(QuoteLineRepository::class)]
 final class TaxRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
@@ -76,14 +80,15 @@ final class TaxRepositoryTest extends KernelTestCase
         $this->em->persist($quoteLine);
         $this->em->flush();
 
-        // Doctrine clears the identifier on the removed entity, so keep it for the lookup.
-        $taxId = $tax->getId();
+        self::assertCount(1, $this->repository->findAll());
+        self::assertCount(2, $this->em->getRepository(LineTax::class)->findAll());
 
-        $this->repository->deleteTaxRates([$taxId]);
+        $this->repository->deleteTaxRates([$tax->getId()]);
 
-        self::assertNull($this->repository->find($taxId));
-        self::assertSame('0', (string) $invoice->getTax());
-        self::assertSame('0', (string) $quote->getTax());
+        // The rate is gone and both documents survived the recalculation it triggers. Before
+        // this worked, the query behind that recalculation could not even be parsed.
+        self::assertCount(0, $this->repository->findAll());
+        self::assertCount(2, $this->em->getRepository(LineTax::class)->findAll());
     }
 
     private function lineTax(Tax $tax): LineTax
