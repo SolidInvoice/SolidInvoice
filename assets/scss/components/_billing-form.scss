@@ -795,6 +795,7 @@
 
 .billing-invoice-tax-row {
     display: grid;
+
     // The direction select carries both a caret and a clear button, so a bare `1fr` collapses
     // far enough for the longest option ("Informational") to run underneath them.
     grid-template-columns: minmax(0, 2fr) minmax(10rem, 1fr) minmax(0, 3fr) auto;

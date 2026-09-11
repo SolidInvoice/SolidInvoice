@@ -312,11 +312,11 @@
 // ============================================================================
 // TABLER BRIDGE
 // ============================================================================
-//
+
 // Tabler reads its own `--tblr-*` tokens, so handing it these is what makes its
 // buttons, links, badges, tables and modals carry the SolidInvoice brand rather
 // than Tabler's stock blue-and-slate.
-//
+
 // This used to happen by accident: the platform compiled Tabler 1.4 with
 // `$prefix: swp-`, so every token above landed on the exact name Tabler was
 // reading. Tabler 1.5 dropped `$prefix` and the compiled CSS is `--tblr-*`
@@ -325,7 +325,7 @@
 
 :root {
     // Brand palette.
-    //
+
     // `secondary` is deliberately absent: ours is the orange accent, Tabler's is the neutral
     // grey behind `.text-secondary`, `.btn-outline-secondary` and avatar tiles. Handing our
     // orange over turns every muted label orange, so Tabler keeps its own.
