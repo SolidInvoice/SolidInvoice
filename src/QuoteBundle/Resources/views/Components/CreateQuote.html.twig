@@ -188,6 +188,7 @@
                                             {{ form_widget(item.unitCode, {attr: {'aria-label': 'quote.item.heading.unit'|trans}}) }}
                                         </div>
                                         {{ form_errors(item.qty) }}
+                                        {{ form_errors(item.unitCode) }}
                                     </div>
                                     {% if this.hasTax %}
                                         <div class="column-tax">
