@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
@@ -134,6 +135,7 @@ final readonly class LineItemBuilder
             $description = $data['description'] ?? null;
             $price = $data['price'] ?? null;
             $qty = $data['qty'] ?? ($data['quantity'] ?? null);
+            $unitCode = $data['unit_code'] ?? null;
 
             $hasName = \is_string($name) && $name !== '';
             $hasDescription = \is_string($description) && $description !== '';
@@ -187,6 +189,13 @@ final readonly class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d has an invalid "qty": %s', $index, $this->describe($qty)));
             }
 
+            // Omitted means the entity default (C62), the same as a form that leaves the
+            // field out. An unrecognised code is rejected here rather than stored, because a
+            // code outside the enum is one a tax authority would reject on the e-invoice.
+            if ($unitCode !== null) {
+                $line->setUnitCode($this->parseUnitCode($unitCode, $index));
+            }
+
             $this->attachTaxes($line, $data, $index);
 
             $built[] = $line;
@@ -207,6 +216,26 @@ final readonly class LineItemBuilder
     private function toExactString(mixed $value): mixed
     {
         return \is_float($value) ? sprintf('%.14G', $value) : $value;
+    }
+
+    /**
+     * The tool call is the only caller that names a unit without a form to constrain it, so
+     * the error lists what is accepted — an agent can then correct itself in one turn.
+     */
+    private function parseUnitCode(mixed $unitCode, int $index): UnitCode
+    {
+        $parsed = \is_string($unitCode) ? UnitCode::tryFrom($unitCode) : null;
+
+        if (! $parsed instanceof UnitCode) {
+            throw new ToolCallException(sprintf(
+                'Line item #%d has an invalid "unit_code": %s. Expected one of: %s.',
+                $index,
+                $this->describe($unitCode),
+                implode(', ', array_column(UnitCode::cases(), 'value')),
+            ));
+        }
+
+        return $parsed;
     }
 
     /**

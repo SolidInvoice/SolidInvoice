@@ -18,9 +18,11 @@ use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
+use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -273,6 +275,74 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(Quote::class, $quote);
         self::assertSame($this->company->getId()->toRfc4122(), $quote->getCompany()->getId()->toRfc4122());
         self::assertCount(1, $quote->getLines());
+    }
+
+    /**
+     * The unit is only worth persisting if an agent can both set it and see it again — a
+     * write path without a matching read path leaves a line silently disagreeing with what
+     * the agent that created it believes.
+     */
+    public function testALineUnitOfMeasureRoundTripsThroughTheTools(): void
+    {
+        $this->activateScopes([McpScope::Write->value, McpScope::Read->value]);
+
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        $writeTool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $writeTool);
+
+        $result = $writeTool->createInvoice(
+            $client->getId()
+                ->toRfc4122(),
+            [
+                ['name' => 'Consulting', 'price' => 10000, 'qty' => 10, 'unit_code' => 'HUR'],
+                ['name' => 'Setup fee', 'price' => 5000, 'qty' => 1],
+            ],
+        );
+
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        self::assertInstanceOf(Invoice::class, $invoice);
+        self::assertSame(UnitCode::HOUR, $invoice->getLines()[0]->getUnitCode());
+
+        // A line that names no unit gets the default rather than nothing.
+        self::assertSame(UnitCode::UNIT, $invoice->getLines()[1]->getUnitCode());
+
+        $readTool = self::getContainer()->get(ResourceQueryTools::class);
+        self::assertInstanceOf(ResourceQueryTools::class, $readTool);
+
+        $read = $readTool->getResource('invoice', $result['id']);
+
+        self::assertSame('HUR', $read['lines'][0]['unit_code']);
+        self::assertSame('C62', $read['lines'][1]['unit_code']);
+    }
+
+    /**
+     * The enum has no free-text case on purpose, so a code outside it has to fail on the
+     * tool call — the alternative is a stored code that a tax authority rejects later.
+     */
+    public function testAnUnknownUnitCodeIsRejected(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('Line item #0 has an invalid "unit_code": HOURS. Expected one of: C62, HUR');
+
+        $tool->createInvoice(
+            $client->getId()
+                ->toRfc4122(),
+            [['name' => 'Consulting', 'price' => 10000, 'qty' => 10, 'unit_code' => 'HOURS']],
+        );
     }
 
     /**
