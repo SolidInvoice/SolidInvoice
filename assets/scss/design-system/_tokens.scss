@@ -308,3 +308,72 @@
     // not a second number, and reads as subordinate rather than competing.
     --swp-money-currency-scale: 0.75em;
 }
+
+// ============================================================================
+// TABLER BRIDGE
+// ============================================================================
+//
+// Tabler reads its own `--tblr-*` tokens, so handing it these is what makes its
+// buttons, links, badges, tables and modals carry the SolidInvoice brand rather
+// than Tabler's stock blue-and-slate.
+//
+// This used to happen by accident: the platform compiled Tabler 1.4 with
+// `$prefix: swp-`, so every token above landed on the exact name Tabler was
+// reading. Tabler 1.5 dropped `$prefix` and the compiled CSS is `--tblr-*`
+// again, so the same 39 tokens have to be handed over by name. Values stay
+// single-sourced above — only the aliases live here.
+
+:root {
+    // Brand palette.
+    //
+    // `secondary` is deliberately absent: ours is the orange accent, Tabler's is the neutral
+    // grey behind `.text-secondary`, `.btn-outline-secondary` and avatar tiles. Handing our
+    // orange over turns every muted label orange, so Tabler keeps its own.
+    --tblr-primary: var(--swp-primary);
+    --tblr-primary-rgb: var(--swp-primary-rgb);
+    --tblr-success: var(--swp-success);
+    --tblr-success-rgb: var(--swp-success-rgb);
+    --tblr-danger: var(--swp-danger);
+    --tblr-danger-rgb: var(--swp-danger-rgb);
+    --tblr-warning: var(--swp-warning);
+    --tblr-warning-rgb: var(--swp-warning-rgb);
+    --tblr-info: var(--swp-info);
+    --tblr-info-rgb: var(--swp-info-rgb);
+
+    // Links
+    --tblr-link-color: var(--swp-link-color);
+    --tblr-link-hover-color: var(--swp-link-hover-color);
+
+    // Surfaces
+    --tblr-body-bg: var(--swp-body-bg);
+    --tblr-body-color: var(--swp-body-color);
+    --tblr-card-bg: var(--swp-card-bg);
+    --tblr-modal-bg: var(--swp-modal-bg);
+    --tblr-table-bg: var(--swp-table-bg);
+
+    // Neutral ramp
+    --tblr-gray-50: var(--swp-gray-50);
+    --tblr-gray-100: var(--swp-gray-100);
+    --tblr-gray-200: var(--swp-gray-200);
+    --tblr-gray-300: var(--swp-gray-300);
+    --tblr-gray-400: var(--swp-gray-400);
+    --tblr-gray-500: var(--swp-gray-500);
+    --tblr-gray-600: var(--swp-gray-600);
+    --tblr-gray-700: var(--swp-gray-700);
+    --tblr-gray-800: var(--swp-gray-800);
+    --tblr-gray-900: var(--swp-gray-900);
+
+    // Elevation
+    --tblr-shadow-xs: var(--swp-shadow-xs);
+    --tblr-shadow-sm: var(--swp-shadow-sm);
+    --tblr-shadow-md: var(--swp-shadow-md);
+    --tblr-shadow-lg: var(--swp-shadow-lg);
+    --tblr-shadow-xl: var(--swp-shadow-xl);
+    --tblr-shadow-2xl: var(--swp-shadow-2xl);
+
+    // Component metrics
+    --tblr-btn-font-weight: var(--swp-btn-font-weight);
+    --tblr-btn-padding-x: var(--swp-btn-padding-x);
+    --tblr-btn-padding-y: var(--swp-btn-padding-y);
+    --tblr-modal-padding: var(--swp-modal-padding);
+}

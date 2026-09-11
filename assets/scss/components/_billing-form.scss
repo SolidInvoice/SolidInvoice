@@ -795,7 +795,9 @@
 
 .billing-invoice-tax-row {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 3fr) auto;
+    // The direction select carries both a caret and a clear button, so a bare `1fr` collapses
+    // far enough for the longest option ("Informational") to run underneath them.
+    grid-template-columns: minmax(0, 2fr) minmax(10rem, 1fr) minmax(0, 3fr) auto;
     gap: var(--swp-space-3);
     align-items: start;
     padding: var(--swp-space-3);
@@ -1498,9 +1500,9 @@
 .recurring-variables-help {
     margin-block-start: var(--swp-space-3);
     padding: var(--swp-space-3);
-    border: 1px solid var(--swp-info-border-subtle);
+    border: 1px solid var(--tblr-info-border-subtle);
     border-radius: var(--swp-radius-md);
-    background: var(--swp-info-bg-subtle);
+    background: var(--tblr-info-bg-subtle);
 
     .variables-summary {
         display: flex;
@@ -1522,14 +1524,14 @@
         }
 
         &:hover {
-            color: var(--swp-info-emphasis);
+            color: var(--tblr-info-text-emphasis);
         }
     }
 
     .variables-content {
         margin-block-start: var(--swp-space-3);
         padding-block-start: var(--swp-space-3);
-        border-block-start: 1px solid var(--swp-info-border-subtle);
+        border-block-start: 1px solid var(--tblr-info-border-subtle);
 
         .variables-description {
             font-size: var(--swp-text-sm);

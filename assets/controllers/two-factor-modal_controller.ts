@@ -8,7 +8,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { Modal } from 'bootstrap';
+import { Modal } from '@tabler/core';
 import { getComponent } from '@symfony/ux-live-component';
 
 /**
