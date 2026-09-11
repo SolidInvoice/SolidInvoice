@@ -19,9 +19,11 @@ use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends EntityRepository<Tax>
+ * @see \SolidInvoice\TaxBundle\Tests\Repository\TaxRepositoryTest
  */
 class TaxRepository extends EntityRepository
 {
@@ -68,7 +70,8 @@ class TaxRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $data
+     * @param list<Ulid|string> $data The datagrid sends ULID strings; callers holding the
+     *                                entity's identifier pass the Ulid itself.
      */
     public function deleteTaxRates(array $data): void
     {
