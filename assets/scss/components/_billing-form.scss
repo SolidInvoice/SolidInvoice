@@ -439,6 +439,7 @@
     // The description is secondary to the name, and most lines never get one. A closed
     // `<details>` keeps the common case to the single input it was before the name existed,
     // and costs a click — not a trip elsewhere — when a line does need detail.
+
     .line-description {
         margin-top: 0.25rem;
 
