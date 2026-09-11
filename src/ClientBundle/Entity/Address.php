@@ -59,6 +59,10 @@ use function array_filter;
                     fromClass: Client::class,
                 ),
             ],
+            // Without this, the `addresses` link makes API Platform read the client's existing
+            // address and deserialize into it, so a second post overwrites the first instead
+            // of adding one. A create has nothing to read.
+            read: false,
         ),
         new Get(
             uriTemplate: '/clients/{clientId}/address/{id}',

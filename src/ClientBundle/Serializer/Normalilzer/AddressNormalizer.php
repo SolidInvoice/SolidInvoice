@@ -16,6 +16,7 @@ namespace SolidInvoice\ClientBundle\Serializer\Normalilzer;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -24,6 +25,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use function is_array;
+use function sprintf;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Serializer\Normalizer\AddressNormalizerTest
@@ -47,8 +49,18 @@ final class AddressNormalizer implements NormalizerAwareInterface, NormalizerInt
         $address = $this->denormalizer->denormalize($data, $type, $format, $context + [self::class => true]);
 
         if (isset($context['uri_variables']['clientId'])) {
-            $clientRepository = $this->registry->getRepository(Client::class);
-            $address->setClient($clientRepository->find($context['uri_variables']['clientId']));
+            $clientId = $context['uri_variables']['clientId'];
+            $client = $this->registry->getRepository(Client::class)
+                ->find($clientId);
+
+            // The post operation does not read an existing address first, so refusing an
+            // address whose client is not there is this normalizer's job rather than the
+            // framework's. Without it setClient() fatals on null.
+            if (! $client instanceof Client) {
+                throw new NotFoundHttpException(sprintf('Client "%s" not found.', $clientId));
+            }
+
+            $address->setClient($client);
         }
 
         return $address;
