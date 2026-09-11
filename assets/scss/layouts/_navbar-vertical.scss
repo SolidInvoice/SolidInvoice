@@ -56,24 +56,29 @@
             box-shadow: var(--swp-ring-primary);
             color: var(--swp-gray-50);
         }
+    }
 
-        // Active route: tinted background pulled from Trust Green family.
-        // Looks like a soft "button" on the dark slate without any side stripe.
+    // Active route: tinted background pulled from Trust Green family.
+    // Looks like a soft "button" on the dark slate without any side stripe.
+    //
+    // Tabler paints the active item through `.nav-item.active > .nav-link`, which outranks a bare
+    // `.nav-link.active` and would otherwise leave the dark green text sitting on Tabler's own
+    // faint overlay, so the pill matches that shape too.
 
-        &.active {
+    .nav-link.active,
+    .navbar-nav .nav-item.active > .nav-link.active {
+        background-color: var(--swp-primary-light);
+        color: var(--swp-primary-dark);
+        font-weight: var(--swp-font-semibold);
+
+        .nav-link-icon,
+        .nav-link-title {
+            color: var(--swp-primary-dark);
+        }
+
+        &:hover {
             background-color: var(--swp-primary-light);
             color: var(--swp-primary-dark);
-            font-weight: var(--swp-font-semibold);
-
-            .nav-link-icon,
-            .nav-link-title {
-                color: var(--swp-primary-dark);
-            }
-
-            &:hover {
-                background-color: var(--swp-primary-light);
-                color: var(--swp-primary-dark);
-            }
         }
     }
 
@@ -106,6 +111,11 @@
         .dropdown-item {
             color: var(--swp-text-secondary);
             border-radius: var(--swp-radius-sm);
+
+            // Tabler colours `.nav-link-icon` from its own token, which defaults to a 50% tint
+            // of the sidebar's white nav colour — invisible on this paper surface. Following the
+            // item's own colour keeps the icon legible in every state.
+            --tblr-nav-link-icon-color: currentcolor;
 
             &:hover,
             &:focus {
