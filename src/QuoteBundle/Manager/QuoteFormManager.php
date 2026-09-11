@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Manager;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
@@ -98,10 +99,12 @@ final readonly class QuoteFormManager
         $quote->setBaseTotal($dto->baseTotal);
         $quote->setTax($dto->tax);
 
-        // Sync lines collection
+        // Sync lines collection. The DTO's order is the order the user just saw, so the
+        // lines are unplaced before being re-added and addLine() appends them in that order —
+        // otherwise the positions they arrived with would decide, and a reorder would not stick.
         $quote->getLines()->clear();
         foreach ($dto->lines as $line) {
-            $quote->addLine($line);
+            $quote->addLine($line->setPosition(LineInterface::UNPLACED));
         }
 
         // Sync invoice-level taxes

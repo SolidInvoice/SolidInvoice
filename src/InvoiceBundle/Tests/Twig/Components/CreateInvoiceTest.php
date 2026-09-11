@@ -254,4 +254,70 @@ final class CreateInvoiceTest extends LiveComponentTest
         self::assertInstanceOf(CreateInvoice::class, $componentInstance);
         self::assertSame((string) $client->getId(), $componentInstance->previousClientId);
     }
+
+    /**
+     * A drag in the line editor calls moveLine, and the saved invoice has to come back in the
+     * dragged order — not the order the lines were entered in.
+     *
+     * @throws MathException
+     */
+    public function testMoveLineReordersTheSavedLines(): void
+    {
+        $em = self::getContainer()->get('doctrine')->getManager();
+
+        $client = ClientFactory::createOne([
+            'name' => 'Reorder Corp',
+            'currencyCode' => 'USD',
+        ]);
+
+        $contact = ContactFactory::createOne([
+            'firstName' => 'Rita',
+            'lastName' => 'Ordered',
+            'email' => 'rita@example.com',
+            'client' => $client,
+        ]);
+
+        $invoice = new Invoice();
+        $invoice->setStatus(InvoiceStatus::Draft);
+        $invoice->setClient($client);
+        $invoice->setInvoiceId('INV-REORDER-001');
+        $invoice->setInvoiceDate(CarbonImmutable::parse('2024-01-15'));
+        $invoice->addUser($contact);
+
+        foreach (['First', 'Second', 'Third'] as $description) {
+            $invoice->addLine(new Line()->setDescription($description)->setPrice(10000)->setQty(1));
+        }
+
+        $em->persist($invoice);
+        $em->flush();
+
+        /** @var InvoiceFormManager $formManager */
+        $formManager = self::getContainer()->get(InvoiceFormManager::class);
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: [
+                'dto' => $formManager->createDTOFromInvoice($invoice),
+                'isEdit' => true,
+                'invoice' => $invoice,
+            ],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        // Drag the last line to the top.
+        $component->call('moveLine', ['from' => 2, 'to' => 0]);
+        $component->call('saveUpdate');
+
+        $em->clear();
+        $refreshed = $em->find(Invoice::class, $invoice->getId());
+
+        self::assertNotNull($refreshed);
+        self::assertSame(
+            ['Third', 'First', 'Second'],
+            $refreshed->getLines()
+                ->map(static fn (Line $line): ?string => $line->getDescription())
+                ->toArray(),
+        );
+        self::assertSame([0, 1, 2], $refreshed->getLines()->map(static fn (Line $line): int => $line->getPosition())->toArray());
+    }
 }

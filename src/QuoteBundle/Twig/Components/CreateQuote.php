@@ -23,6 +23,7 @@ use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
+use SolidInvoice\CoreBundle\Twig\Components\ReordersLines;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -57,6 +58,7 @@ final class CreateQuote extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use ReordersLines;
 
     public QuoteFormDTO $dto;
 
