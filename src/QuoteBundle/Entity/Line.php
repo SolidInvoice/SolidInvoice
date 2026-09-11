@@ -140,6 +140,14 @@ class Line implements LineInterface, Stringable
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $description = null;
 
+    /**
+     * {@see LineInterface::UNPLACED} until an owner places the line, which is what lets
+     * {@see Quote::addLine()} tell an append from a caller that asked for a specific slot.
+     */
+    #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private int $position = LineInterface::UNPLACED;
+
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
     #[Groups(['quote_api', 'client_api', 'create_quote_api', 'quote_api:read', 'quote_api:write'])]
@@ -221,6 +229,31 @@ class Line implements LineInterface, Stringable
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * A line attached with {@see self::setQuote()} rather than {@see Quote::addLine()} is
+     * never renumbered, so it would store the sentinel. Zero, because a line its owner never
+     * placed has no established slot to keep.
+     */
+    #[ORM\PrePersist]
+    public function placeUnplacedLine(): void
+    {
+        if ($this->position === LineInterface::UNPLACED) {
+            $this->position = 0;
+        }
     }
 
     /**
