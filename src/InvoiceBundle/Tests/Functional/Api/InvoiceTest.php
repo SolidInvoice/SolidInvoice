@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -140,6 +141,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::UNIT->value,
                 ],
             ],
             'users' => $contacts,
@@ -224,6 +226,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::UNIT->value,
                 ],
             ],
             'users' => array_map($this->getIriFromResource(...), $contacts),
@@ -317,6 +320,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::UNIT->value,
                 ],
             ],
             'users' => array_map($this->getIriFromResource(...), $contacts),
