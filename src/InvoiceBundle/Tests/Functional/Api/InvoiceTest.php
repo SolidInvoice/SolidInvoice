@@ -114,6 +114,10 @@ final class InvoiceTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'name' => 'Foo Item',
+                    // Deliberately not the default: the write group is only proven by a
+                    // value the entity would not have arrived at on its own. testGet and
+                    // testEdit cover the C62 a line gets when the field is left out.
+                    'unitCode' => UnitCode::HOUR->value,
                 ],
             ],
         ];
@@ -141,7 +145,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
-                    'unitCode' => UnitCode::UNIT->value,
+                    'unitCode' => UnitCode::HOUR->value,
                 ],
             ],
             'users' => $contacts,
