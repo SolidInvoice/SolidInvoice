@@ -1,4 +1,6 @@
 {# Classic Professional preview — Bootstrap 5.3 / Tabler #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
 {% set currency = quote.client.currency %}
 
 <div class="quote-template quote-template-classic">
@@ -39,7 +41,7 @@
                 <tbody>
                     {% for line in quote.lines %}
                         <tr>
-                            <td>{{ line.description|nl2br }}</td>
+                            <td>{{ line.name }}{{ q.line_description(line) }}</td>
                             <td class="text-end font-monospace">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="text-end">{{ line.qty }}</td>
                             <td class="text-end font-monospace fw-bold">{{ line.total|formatCurrency(currency) }}</td>

@@ -129,12 +129,18 @@ final readonly class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d must be an object.', $index));
             }
 
+            $name = $data['name'] ?? null;
             $description = $data['description'] ?? null;
             $price = $data['price'] ?? null;
             $qty = $data['qty'] ?? ($data['quantity'] ?? null);
 
-            if (! \is_string($description) || $description === '') {
-                throw new ToolCallException(sprintf('Line item #%d requires a non-empty "description".', $index));
+            $hasName = \is_string($name) && $name !== '';
+            $hasDescription = \is_string($description) && $description !== '';
+
+            // Either will do: a caller that predates the name still sends a description,
+            // and the line derives its name from it.
+            if (! $hasName && ! $hasDescription) {
+                throw new ToolCallException(sprintf('Line item #%d requires a non-empty "name".', $index));
             }
 
             if ($price === null) {
@@ -146,7 +152,14 @@ final readonly class LineItemBuilder
             }
 
             $line = $factory();
-            $line->setDescription($description);
+
+            if ($hasName) {
+                $line->setName($name);
+            }
+
+            if ($hasDescription) {
+                $line->setDescription($description);
+            }
 
             try {
                 $line->setPrice(BigDecimal::of($this->toExactString($price)));

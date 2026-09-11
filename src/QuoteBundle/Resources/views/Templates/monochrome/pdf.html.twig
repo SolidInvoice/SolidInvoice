@@ -104,7 +104,7 @@
                             <tbody>
                                 {% for line in quote.lines %}
                                     <tr>
-                                        <td style="padding: 12px 0; font-size: 10pt; color: #1a1a1a; border-bottom: 1px solid #ebe3d0;">{{ line.description|nl2br }}</td>
+                                        <td style="padding: 12px 0; font-size: 10pt; color: #1a1a1a; border-bottom: 1px solid #ebe3d0;">{{ line.name }}{{ q.line_description(line) }}</td>
                                         <td style="padding: 12px 0; font-size: 10pt; color: #6b6b6b; border-bottom: 1px solid #ebe3d0; text-align: right; font-family: Georgia, serif;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</td>
                                         <td style="padding: 12px 0; font-size: 11pt; color: #1a1a1a; border-bottom: 1px solid #ebe3d0; text-align: right; font-family: Georgia, serif; font-weight: bold;">{{ line.total|formatCurrency(currency) }}</td>
                                     </tr>

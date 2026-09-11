@@ -217,7 +217,7 @@ final readonly class OnboardingManager
 
         // Create a single line item
         $line = new Line();
-        $line->setDescription($data->invoiceDescription);
+        $line->setName($data->invoiceDescription);
 
         // Parse amount and create Money object
         $amount = BigNumber::of($data->invoiceAmount);

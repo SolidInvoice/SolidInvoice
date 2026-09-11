@@ -82,7 +82,7 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
             // keeps the item amounts summing to ITEMAMT — what PayPal actually validates.
             $isWholeUnits = $qty->getFractionalPart()->isZero();
 
-            $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
+            $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getName();
             $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(
                 MoneyFormatter::toFloat($isWholeUnits ? $item->getPrice() : $item->getTotal()),
                 2

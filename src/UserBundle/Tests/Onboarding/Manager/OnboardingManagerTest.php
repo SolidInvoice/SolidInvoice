@@ -184,7 +184,7 @@ final class OnboardingManagerTest extends KernelTestCase
         // Verify invoice was created
         $invoices = $this->invoiceRepository->findBy(['company' => $company]);
         self::assertCount(1, $invoices);
-        self::assertSame('Test Service', $invoices[0]->getLines()->first()->getDescription());
+        self::assertSame('Test Service', $invoices[0]->getLines()->first()->getName());
     }
 
     public function testCompleteOnboardingWithoutClientAndInvoice(): void
