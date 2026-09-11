@@ -21,6 +21,7 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator;
 use SolidInvoice\CronBundle\Enum\ScheduleEndType;
@@ -64,6 +65,7 @@ final class InvoiceClonerTest extends TestCase
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
+        $line->setUnitCode(UnitCode::HOUR);
         $line->setTotal(120 * 10);
 
         $invoice = new Invoice();
@@ -133,6 +135,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+        self::assertSame(UnitCode::HOUR, $invoiceLine[0]->getUnitCode());
     }
 
     public function testCloneWithRecurring(): void
@@ -158,6 +161,7 @@ final class InvoiceClonerTest extends TestCase
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
+        $line->setUnitCode(UnitCode::HOUR);
         $line->setTotal(120 * 10);
 
         $invoice = new RecurringInvoice();
@@ -209,6 +213,7 @@ final class InvoiceClonerTest extends TestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+        self::assertSame(UnitCode::HOUR, $invoiceLine[0]->getUnitCode());
         self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
         self::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
     }
