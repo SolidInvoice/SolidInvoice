@@ -29,12 +29,15 @@ export default class extends Controller<HTMLElement> {
             handle: '[data-line-reorder-handle]',
             draggable: '[data-line-reorder-row]',
             animation: 150,
-            onEnd: ({ oldIndex, newIndex }) => {
-                if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) {
+            // The header row is a child of this list too, so oldIndex/newIndex — which count
+            // every child — are each one ahead of the line the server knows about. The
+            // *Draggable* pair counts only the rows.
+            onEnd: ({ oldDraggableIndex, newDraggableIndex }) => {
+                if (oldDraggableIndex === undefined || newDraggableIndex === undefined || oldDraggableIndex === newDraggableIndex) {
                     return;
                 }
 
-                this.component?.action('moveLine', { from: oldIndex, to: newIndex });
+                this.component?.action('moveLine', { from: oldDraggableIndex, to: newDraggableIndex });
             },
         });
     }
