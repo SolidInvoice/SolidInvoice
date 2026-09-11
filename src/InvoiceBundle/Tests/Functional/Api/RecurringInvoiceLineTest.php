@@ -17,6 +17,8 @@ use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
 
 #[Group('functional')]
@@ -135,5 +137,36 @@ final class RecurringInvoiceLineTest extends ApiTestCase
         self::assertArraySubset([
             '@type' => 'Collection',
         ], $data);
+
+        // Both posts have to survive. Asserting only the collection's type let the second
+        // post silently overwrite the first, because the response looked the same either way.
+        self::assertSame(2, $data['totalItems']);
+        self::assertSame(
+            ['Collection Item 1', 'Collection Item 2'],
+            array_column($data['member'], 'description')
+        );
+    }
+
+    /**
+     * The post operation does not read an existing line first, so refusing a line whose
+     * recurring invoice is not there is the processor's job rather than the framework's.
+     */
+    public function testCreateOnAMissingOwnerIs404(): void
+    {
+        $missingId = new Ulid()->toString();
+
+        self::$client->request(
+            method: Request::METHOD_POST,
+            url: '/api/recurring-invoices/' . $missingId . '/lines',
+            options: [
+                'json' => ['description' => 'Orphan', 'price' => 100, 'qty' => 1.0],
+                'headers' => [
+                    'content-type' => 'application/ld+json',
+                    'accept' => 'application/ld+json',
+                ],
+            ]
+        );
+
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }

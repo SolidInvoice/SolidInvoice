@@ -45,6 +45,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
                     fromClass: RecurringInvoice::class,
                 ),
             ],
+            // Without this, the `lines` link makes API Platform read the owner's existing
+            // line and deserialize into it, so a second post overwrites the first instead
+            // of adding one. A create has nothing to read.
+            read: false,
             processor: RecurringInvoiceLinePersistProcessor::class,
         ),
         new Get(

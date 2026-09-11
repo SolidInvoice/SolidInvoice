@@ -70,6 +70,10 @@ use Symfony\Component\Validator\Constraints as Assert;
                     fromClass: Quote::class,
                 ),
             ],
+            // Without this, the `lines` link makes API Platform read the owner's existing
+            // line and deserialize into it, so a second post overwrites the first instead
+            // of adding one. A create has nothing to read.
+            read: false,
             processor: QuoteLinePersistProcessor::class,
         ),
         new Get(
