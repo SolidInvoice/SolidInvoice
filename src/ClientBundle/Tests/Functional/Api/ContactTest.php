@@ -58,7 +58,9 @@ final class ContactTest extends ApiTestCase
         $data = $this->requestGetCollection($contacts);
 
         self::assertSame(2, $data['totalItems']);
-        self::assertSame(['First', 'Second'], array_column($data['member'], 'firstName'));
+        // Canonicalizing: the association carries no OrderBy, so collection order is
+        // unspecified. What matters here is that neither post replaced the other.
+        self::assertEqualsCanonicalizing(['First', 'Second'], array_column($data['member'], 'firstName'));
     }
 
     public function testCreateOnAMissingClientIs404(): void

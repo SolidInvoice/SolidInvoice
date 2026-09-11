@@ -53,8 +53,8 @@ final class AddressNormalizerTest extends TestCase
 
         $clientRepository = $this->createMock(ObjectRepository::class);
         $clientRepository->expects($this->once())
-            ->method('find')
-            ->with(1)
+            ->method('findOneBy')
+            ->with(['id' => 1])
             ->willReturn($client);
 
         /** @var ManagerRegistry&MockObject $registry */

@@ -66,7 +66,9 @@ final class AddressTest extends ApiTestCase
         $data = $this->requestGetCollection($addresses);
 
         self::assertSame(2, $data['totalItems']);
-        self::assertSame(['First', 'Second'], array_column($data['member'], 'street1'));
+        // Canonicalizing: the association carries no OrderBy, so collection order is
+        // unspecified. What matters here is that neither post replaced the other.
+        self::assertEqualsCanonicalizing(['First', 'Second'], array_column($data['member'], 'street1'));
     }
 
     public function testCreateOnAMissingClientIs404(): void
@@ -82,6 +84,21 @@ final class AddressTest extends ApiTestCase
                 ],
             ]
         );
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testCannotCreateAddressForClientFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        self::$client->request('POST', $this->getIriFromResource($foreignClient) . '/addresses', [
+            'json' => ['street1' => 'Hacker', 'city' => 'city', 'country' => 'US'],
+            'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
+        ]);
 
         self::assertResponseStatusCodeSame(404);
     }
