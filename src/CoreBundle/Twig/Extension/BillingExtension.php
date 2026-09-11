@@ -27,7 +27,7 @@ use Twig\TwigFunction;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\BillingExtensionTest
  */
-class BillingExtension extends AbstractExtension
+final class BillingExtension extends AbstractExtension
 {
     public function __construct(
         private readonly FieldRenderer $fieldRenderer,
