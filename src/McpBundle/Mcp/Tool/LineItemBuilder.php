@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Mcp\Tool;
 use Brick\Math\BigDecimal;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Exception\ToolCallException;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
@@ -152,6 +153,19 @@ final readonly class LineItemBuilder
             }
 
             $line = $factory();
+
+            // A tool call is never validated, so an over-long name would reach VARCHAR(255)
+            // intact and blow up on flush. Anything that long is a description wearing the
+            // wrong label, so keep it as one and cut the name the way every other caller's
+            // name is cut.
+            if ($hasName && mb_strlen($name) > LineName::MAX_LENGTH) {
+                if (! $hasDescription) {
+                    $description = $name;
+                    $hasDescription = true;
+                }
+
+                $name = LineName::fromDescription($name);
+            }
 
             if ($hasName) {
                 $line->setName($name);
