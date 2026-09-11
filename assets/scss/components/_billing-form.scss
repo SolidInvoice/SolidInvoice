@@ -511,6 +511,7 @@
     // The quantity and its unit read as one value, so they sit on one line. The number keeps
     // a fixed width — it is only ever a few digits — and the select takes what is left, since
     // it is the side whose content ("hours", "m²") varies.
+
     .qty-unit-group {
         display: flex;
         gap: var(--swp-space-1);
