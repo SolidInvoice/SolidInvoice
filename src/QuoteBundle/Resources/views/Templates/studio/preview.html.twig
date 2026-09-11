@@ -1,4 +1,6 @@
 {# Studio / Agency preview #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
 {% set currency = quote.client.currency %}
 
 <div class="quote-template quote-template-studio">
@@ -48,7 +50,7 @@
                 <tbody>
                     {% for line in quote.lines %}
                         <tr>
-                            <td>{{ line.description|nl2br }}</td>
+                            <td>{{ line.name }}{{ q.line_description(line) }}</td>
                             <td class="text-end">{{ line.qty }}</td>
                             <td class="text-end">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>

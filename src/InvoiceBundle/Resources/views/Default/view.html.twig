@@ -6,7 +6,6 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
@@ -14,6 +13,7 @@
 {% endblock page_title %}
 
 {% block content %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 {% set currency = invoice.client.currency %}
 <div class="doc-view-page">
     <div class="doc-view-header no-print">
@@ -292,7 +292,7 @@
                         <tbody>
                             {% for item in invoice.lines %}
                                 <tr>
-                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.description|nl2br }}</td>
+                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}{{ inv.line_description(item) }}</td>
                                     <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
                                     <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
                                     {% if invoice.tax.positive %}

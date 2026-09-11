@@ -117,7 +117,7 @@ final readonly class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                     $qty = random_int(1, 10);
 
                     $line = new Line();
-                    $line->setDescription($this->faker->sentence(5))
+                    $line->setName($this->faker->sentence(5))
                         ->setPrice($price)
                         ->setQty($qty)
                         ->setCompany($company);

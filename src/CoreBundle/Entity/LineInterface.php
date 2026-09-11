@@ -32,6 +32,16 @@ interface LineInterface
 
     public function getId(): Ulid;
 
+    public function setName(string $name): self;
+
+    public function getName(): string;
+
+    /**
+     * Setting a description on a line that has no name yet derives one from it, so a caller
+     * that only knows about the description still produces a valid line.
+     *
+     * @see \SolidInvoice\CoreBundle\Billing\LineName
+     */
     public function setDescription(?string $description): self;
 
     public function getDescription(): ?string;

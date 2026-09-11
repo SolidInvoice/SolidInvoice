@@ -31,6 +31,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
 use SolidInvoice\ApiBundle\State\Processor\QuoteLinePersistProcessor;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
@@ -46,6 +47,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
+use function trim;
 
 #[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: LineRepository::class)]
@@ -135,8 +137,13 @@ class Line implements LineInterface, Stringable
     #[Groups(['quote_api:read'])]
     private ?Ulid $id = null;
 
-    #[ORM\Column(name: 'description', type: Types::TEXT)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: LineName::MAX_LENGTH, options: ['default' => ''])]
     #[Assert\NotBlank]
+    #[Assert\Length(max: LineName::MAX_LENGTH)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private string $name = '';
+
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $description = null;
 
@@ -225,9 +232,41 @@ class Line implements LineInterface, Stringable
         return $this->id;
     }
 
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Deriving the name here, rather than in a lifecycle callback, is what keeps a caller
+     * that only sends a description valid: `name` is `NotBlank`, so it has to hold a value
+     * by the time the object is validated, which is long before it is persisted.
+     */
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        if ($this->name !== '' || ($description ?? '') === '') {
+            return $this;
+        }
+
+        $derived = LineName::fromDescription($description);
+
+        if ($derived === '') {
+            return $this;
+        }
+
+        $this->name = $derived;
+        // The description is dropped only when the name is all of it — whitespace aside.
+        // Anything longer stays, so nothing the caller wrote is lost.
+        $this->description = trim($description) === $derived ? null : $description;
 
         return $this;
     }
@@ -380,6 +419,6 @@ class Line implements LineInterface, Stringable
 
     public function __toString(): string
     {
-        return (string) $this->description;
+        return $this->name;
     }
 }

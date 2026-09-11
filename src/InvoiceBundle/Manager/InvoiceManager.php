@@ -78,27 +78,29 @@ class InvoiceManager
 
         $now = CarbonImmutable::instance($this->clock->now());
 
+        $tokens = [
+            '{day}',
+            '{day_name}',
+            '{month}',
+            '{year}',
+        ];
+
+        $values = [
+            (string) $now->day,
+            $now->format('l'),
+            $now->format('F'),
+            (string) $now->year,
+        ];
+
         /** @var Line $item */
         foreach ($invoice->getLines() as $item) {
-            $description = $item->getDescription();
+            // The name carries the date tokens as readily as the description does — a
+            // recurring line called "Hosting — {month}" is the ordinary case.
+            $item->setName(str_replace($tokens, $values, $item->getName()));
 
-            $description = str_replace(
-                [
-                    '{day}',
-                    '{day_name}',
-                    '{month}',
-                    '{year}',
-                ],
-                [
-                    $now->day,
-                    $now->format('l'),
-                    $now->format('F'),
-                    $now->year,
-                ],
-                $description
-            );
-
-            $item->setDescription($description);
+            if (($description = $item->getDescription()) !== null) {
+                $item->setDescription(str_replace($tokens, $values, $description));
+            }
         }
 
         return $invoice;
@@ -138,6 +140,7 @@ class InvoiceManager
             $invoiceItem = new Line();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setName($item->getName());
             $invoiceItem->setDescription($item->getDescription());
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());

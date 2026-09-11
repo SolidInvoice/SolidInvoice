@@ -6,8 +6,9 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #
- # Shared macros for invoice templates. Used by every template under
- # `Templates/{slug}/{pdf,email,preview}.html.twig` to keep markup consistent.
+ # Shared macros for the views that render an invoice or a quote — every template
+ # under `Templates/{slug}/{pdf,email,preview}.html.twig`, plus the in-app and
+ # external views — to keep markup consistent.
  #}
 
 {% macro bill_to_block(invoice, label='invoice.to') %}
@@ -236,3 +237,11 @@
         </table>
     {% endif %}
 {% endmacro %}
+
+{#
+ # line_description
+ #
+ # A line's description, under its name. A description is optional now that a line has a
+ # name, so every view that renders a line needs the same "omit it when absent" rule.
+ #}
+{% macro line_description(line) %}{% if line.description is not empty %}<div class="line-item-description" style="font-size: 0.85em; color: #64748b; margin-top: 3px;">{{ line.description|nl2br }}</div>{% endif %}{% endmacro %}

@@ -6,6 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
 {% set currency = quote.client.currency %}
 
@@ -231,7 +232,7 @@
         {% for line in quote.lines %}
             <tr{% if loop.index is even %} style="background-color: #fafbfc;"{% endif %}>
                 <td class="col-description" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
-                    {{ line.description|nl2br }}
+                    {{ line.name }}{{ q.line_description(line) }}
                 </td>
                 <td class="col-price" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace;">
                     {{ line.price|formatCurrency(currency) }}

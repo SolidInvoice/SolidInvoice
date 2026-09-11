@@ -43,7 +43,7 @@
     {% for line in invoice.lines %}
         <tr>
             <td style="padding: 14px 0; font-size: 11pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; vertical-align: top;">
-                <em>{{ line.description|nl2br }}</em>
+                <em>{{ line.name }}</em>{{ inv.line_description(line) }}
                 <div style="font-size: 9pt; color: #6b6b6b; margin-top: 2px;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
             </td>
             <td style="padding: 14px 0; font-size: 13pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; text-align: right; vertical-align: top; width: 25%;">

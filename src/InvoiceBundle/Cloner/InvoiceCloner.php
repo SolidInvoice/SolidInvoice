@@ -122,6 +122,7 @@ final readonly class InvoiceCloner
 
             $invoiceLine->setCreated($now);
             $invoiceLine->setTotal($line->getTotal());
+            $invoiceLine->setName($line->getName());
             $invoiceLine->setDescription($line->getDescription());
             $invoiceLine->setPrice($line->getPrice());
             $invoiceLine->setQty($line->getQty());

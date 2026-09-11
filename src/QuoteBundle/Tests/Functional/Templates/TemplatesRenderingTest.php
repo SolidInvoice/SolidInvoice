@@ -100,8 +100,8 @@ final class TemplatesRenderingTest extends KernelTestCase
             // PDF and preview render every line item, the client block and the
             // company logo — assert all surface so a regression that drops
             // `{% for line in quote.lines %}` or the logo block is caught.
-            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item', (string) $quote->getClient(), 'data:image/png;base64']),
-            'preview' => $this->assertChannelContains($output, ['Sample line item', (string) $quote->getClient(), 'data:image/png;base64']),
+            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item', 'Two rounds of revisions included.', (string) $quote->getClient(), 'data:image/png;base64']),
+            'preview' => $this->assertChannelContains($output, ['Sample line item', 'Two rounds of revisions included.', (string) $quote->getClient(), 'data:image/png;base64']),
             // Email is a summary addressed to the client (totals only, no
             // per-line breakdown or client block), so we verify the schema.org
             // payload + the displayed total instead.
@@ -169,7 +169,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $em->flush();
     }
 
-    private function createFixtureQuote(): Quote
+    private function createFixtureQuote(bool $withDescription = true): Quote
     {
         $this->seedCompanyLogo();
 
@@ -203,12 +203,47 @@ final class TemplatesRenderingTest extends KernelTestCase
                 ->setType(null),
             'lines' => [
                 new Line()
-                    ->setDescription('Sample line item')
+                    ->setName('Sample line item')
+                    ->setDescription($withDescription ? 'Two rounds of revisions included.' : null)
                     ->setPrice(BigInteger::of(75000))
                     ->setQty(2)
                     ->setTotal(BigInteger::of(150000)),
             ],
             'users' => [$contact],
         ]);
+    }
+
+    /**
+     * The description is optional, so the block that renders it has to disappear entirely
+     * for a line that has only a name — not leave an empty div under every item.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testTemplateOmitsAnEmptyDescription(string $slug, string $channel): void
+    {
+        $quote = $this->createFixtureQuote(withDescription: false);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/%s.html.twig', $slug, $channel),
+            ['quote' => $quote]
+        );
+
+        self::assertStringContainsString('Sample line item', $output);
+        self::assertStringNotContainsString('line-item-description', $output);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function lineChannelProvider(): iterable
+    {
+        // Only the channels that render a line breakdown; email is a totals summary.
+        foreach (self::slugs() as $slug) {
+            foreach (['pdf', 'preview'] as $channel) {
+                yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
+            }
+        }
     }
 }

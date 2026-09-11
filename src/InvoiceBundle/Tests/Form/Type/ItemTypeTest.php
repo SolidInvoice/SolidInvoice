@@ -26,11 +26,13 @@ final class ItemTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
+        $name = $this->faker->sentence(3);
         $description = $this->faker->text();
         $price = $this->faker->randomNumber(3);
         $qty = '12.345678';
 
         $formData = [
+            'name' => $name,
             'description' => $description,
             'price' => $price,
             'qty' => $qty,
@@ -39,6 +41,7 @@ final class ItemTypeTest extends FormTestCase
         $currency = new Currency('USD');
 
         $object = new Line();
+        $object->setName($name);
         $object->setDescription($description);
         $object->setQty($qty);
         $object->setPrice(BigDecimal::of($price * 100));
@@ -48,12 +51,12 @@ final class ItemTypeTest extends FormTestCase
 
     public function testSubmitPreservesSpecialCharacters(): void
     {
-        $description = 'Item + discount & "special" chars: 100% off';
+        $name = 'Item + discount & "special" chars: 100% off';
         $price = 100;
         $qty = '1';
 
         $formData = [
-            'description' => $description,
+            'name' => $name,
             'price' => $price,
             'qty' => $qty,
         ];
@@ -61,11 +64,39 @@ final class ItemTypeTest extends FormTestCase
         $currency = new Currency('USD');
 
         $object = new Line();
-        $object->setDescription($description);
+        $object->setName($name);
         $object->setQty($qty);
         $object->setPrice(BigDecimal::of($price * 100));
 
         $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
+    }
+
+    /**
+     * The name field comes first so that a line submitted with only a description still
+     * derives one. Nothing in the UI submits this shape today, but the form has to survive
+     * a stale browser tab that does.
+     */
+    public function testSubmitWithOnlyADescriptionDerivesTheName(): void
+    {
+        $formData = [
+            'name' => '',
+            'description' => "Website design\nIncluding two rounds of revisions.",
+            'price' => 100,
+            'qty' => '1',
+        ];
+
+        $object = new Line();
+        $object->setDescription("Website design\nIncluding two rounds of revisions.");
+        $object->setQty('1');
+        $object->setPrice(BigDecimal::of(10000));
+
+        self::assertSame('Website design', $object->getName());
+
+        $this->assertFormData(
+            $this->factory->create(ItemType::class, null, ['currency' => new Currency('USD')]),
+            $formData,
+            $object
+        );
     }
 
     /**

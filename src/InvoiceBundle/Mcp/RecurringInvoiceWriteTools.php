@@ -58,7 +58,7 @@ final readonly class RecurringInvoiceWriteTools
      * use `apply_recurring_transition` to activate it.
      *
      * @param string                          $client_id   Client ULID
-     * @param list<array<string, mixed>>      $lines       Line items: [{description, price, qty, tax_id?}, ...]
+     * @param list<array<string, mixed>>      $lines       Line items: [{name, description?, price, qty, tax_id?}, ...]
      * @param string                          $date_start  ISO-8601 date the first invoice should be generated
      * @param array<string, mixed>            $schedule    {"type": "daily"|"weekly"|"monthly"|"yearly",
      *                                                     "end_type": "never"|"on"|"after" (default "never"),

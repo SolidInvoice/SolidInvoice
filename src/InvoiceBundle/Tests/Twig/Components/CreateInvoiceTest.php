@@ -166,7 +166,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         // Build a persisted Pending invoice (accept transition already applied).
         $line = new Line()
-            ->setDescription('Consulting')
+            ->setName('Consulting')
             ->setPrice(10000)
             ->setQty(1);
 
@@ -284,8 +284,8 @@ final class CreateInvoiceTest extends LiveComponentTest
         $invoice->setInvoiceDate(CarbonImmutable::parse('2024-01-15'));
         $invoice->addUser($contact);
 
-        foreach (['First', 'Second', 'Third'] as $description) {
-            $invoice->addLine(new Line()->setDescription($description)->setPrice(10000)->setQty(1));
+        foreach (['First', 'Second', 'Third'] as $name) {
+            $invoice->addLine(new Line()->setName($name)->setPrice(10000)->setQty(1));
         }
 
         $em->persist($invoice);
@@ -315,7 +315,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         self::assertSame(
             ['Third', 'First', 'Second'],
             $refreshed->getLines()
-                ->map(static fn (Line $line): ?string => $line->getDescription())
+                ->map(static fn (Line $line): string => $line->getName())
                 ->toArray(),
         );
         self::assertSame([0, 1, 2], $refreshed->getLines()->map(static fn (Line $line): int => $line->getPosition())->toArray());

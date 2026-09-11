@@ -436,6 +436,42 @@
         }
     }
 
+    // The description is secondary to the name, and most lines never get one. A closed
+    // `<details>` keeps the common case to the single input it was before the name existed,
+    // and costs a click — not a trip elsewhere — when a line does need detail.
+    .line-description {
+        margin-top: 0.25rem;
+
+        > summary {
+            color: var(--tblr-secondary);
+            cursor: pointer;
+            font-size: 0.75rem;
+            list-style: none;
+            width: fit-content;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &::before {
+                content: '+';
+                margin-right: 0.25rem;
+            }
+
+            &:hover {
+                color: var(--tblr-primary);
+            }
+        }
+
+        &[open] > summary {
+            margin-bottom: 0.25rem;
+
+            &::before {
+                content: '−';
+            }
+        }
+    }
+
     .column-price,
     .column-qty,
     .column-tax {

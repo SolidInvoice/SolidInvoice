@@ -52,7 +52,7 @@
     <tbody>
         {% for line in quote.lines %}
             <tr>
-                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9;">{{ line.description|nl2br }}</td>
+                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9;">{{ line.name }}{{ q.line_description(line) }}</td>
                 <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.qty }}</td>
                 <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.price|formatCurrency(currency) }}</td>
                 <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
