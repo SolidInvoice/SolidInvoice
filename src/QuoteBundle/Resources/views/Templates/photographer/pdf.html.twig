@@ -52,7 +52,7 @@
                     <tr>
                         <td style="padding: 12px 0; font-size: 10pt; color: #2a2418; border-bottom: 1px solid #e8d7b8; vertical-align: top;">
                             <div style="font-family: Georgia, serif; font-size: 11pt;">{{ line.name }}</div>{{ q.line_description(line) }}
-                            <div style="font-size: 8pt; color: #7a6a4a; margin-top: 2px;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+                            <div style="font-size: 8pt; color: #7a6a4a; margin-top: 2px;">{{ quantity(line) }} × {{ line.price|formatCurrency(currency) }}</div>
                         </td>
                         <td style="padding: 12px 0; font-size: 12pt; color: #a2492b; border-bottom: 1px solid #e8d7b8; text-align: right; font-family: Georgia, serif; font-weight: bold; width: 28%;">
                             {{ line.total|formatCurrency(currency) }}

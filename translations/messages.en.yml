@@ -855,6 +855,7 @@ invoice:
             qty: Qty
             tax: Tax
             total: Total
+            unit: Unit
         name:
             label: 'Item name'
             placeholder: 'e.g. Website design'
@@ -1127,6 +1128,20 @@ layout:
     profile: Profile
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
     user_image: 'User Image'
+line:
+    unit:
+        ANN: years
+        C62: units
+        DAY: days
+        E48: services
+        HUR: hours
+        KGM: kg
+        LTR: L
+        MON: months
+        MTK: m²
+        MTQ: m³
+        MTR: m
+        TNE: t
 mcp:
     connected_apps:
         empty: "You haven't connected any AI agents yet."
@@ -1802,6 +1817,7 @@ quote:
             qty: Qty
             tax: Tax
             total: Total
+            unit: Unit
         name:
             label: 'Item name'
             placeholder: 'e.g. Website design'

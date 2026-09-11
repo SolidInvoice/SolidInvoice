@@ -49,7 +49,7 @@
                     {% for line in quote.lines %}
                         <tr class="border-bottom">
                             <td class="py-3">{{ line.name }}{{ q.line_description(line) }}</td>
-                            <td class="py-3 text-end">{{ line.qty }}</td>
+                            <td class="py-3 text-end">{{ quantity(line) }}</td>
                             <td class="py-3 text-end">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="py-3 text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>

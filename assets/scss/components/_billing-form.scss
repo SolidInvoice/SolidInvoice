@@ -341,7 +341,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 132px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -373,11 +373,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
+        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 132px minmax(60px, 0.4fr) 52px;
     }
 
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
+        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 132px minmax(60px, 0.4fr) 52px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -393,7 +393,7 @@
 
     .billing-items-header-row,
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.2fr) minmax(130px, 1.1fr) 56px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 52px;
+        grid-template-columns: minmax(0, 3.2fr) minmax(130px, 1.1fr) 132px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 52px;
     }
 
     .billing-item-row {
@@ -405,7 +405,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
+    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 132px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -505,6 +505,25 @@
 
         input {
             text-align: center;
+        }
+    }
+
+    // The quantity and its unit read as one value, so they sit on one line. The number keeps
+    // a fixed width — it is only ever a few digits — and the select takes what is left, since
+    // it is the side whose content ("hours", "m²") varies.
+    .qty-unit-group {
+        display: flex;
+        gap: var(--swp-space-1);
+
+        input {
+            flex: 0 0 52px;
+        }
+
+        select {
+            flex: 1 1 auto;
+            min-width: 0;
+            padding-right: var(--swp-space-4);
+            font-size: var(--swp-text-xs);
         }
     }
 

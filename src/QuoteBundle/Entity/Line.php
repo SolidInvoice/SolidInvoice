@@ -35,6 +35,7 @@ use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\QuoteBundle\Repository\LineRepository;
@@ -189,6 +190,15 @@ class Line implements LineInterface, Stringable
         ]
     )]
     private BigNumber $qty;
+
+    /**
+     * Not nullable, so {@see UnitCode::UNIT} is what a line that never mentions a unit holds
+     * rather than something callers have to branch on. It renders as nothing, which is how
+     * every line that predates this column stays exactly as it was.
+     */
+    #[ORM\Column(name: 'unit_code', length: 3, enumType: UnitCode::class, options: ['default' => UnitCode::UNIT->value])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private UnitCode $unitCode = UnitCode::UNIT;
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'lines')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
@@ -361,6 +371,18 @@ class Line implements LineInterface, Stringable
     public function getQty(): BigNumber
     {
         return $this->qty;
+    }
+
+    public function setUnitCode(UnitCode $unitCode): static
+    {
+        $this->unitCode = $unitCode;
+
+        return $this;
+    }
+
+    public function getUnitCode(): UnitCode
+    {
+        return $this->unitCode;
     }
 
     public function setQuote(?Quote $quote = null): static

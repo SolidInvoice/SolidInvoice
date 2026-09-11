@@ -109,7 +109,13 @@
                                     </div>
                                     <div class="column-qty">
                                         <span class="mobile-label">{{ 'invoice.item.heading.qty'|trans }}</span>
-                                        {{ form_widget(item.qty) }}
+                                        {#- The unit sits beside the quantity rather than in a column of its
+                                            own: it is already set to "units", so a line that bills in units
+                                            needs nothing done to it. -#}
+                                        <div class="qty-unit-group">
+                                            {{ form_widget(item.qty) }}
+                                            {{ form_widget(item.unitCode, {attr: {'aria-label': 'invoice.item.heading.unit'|trans}}) }}
+                                        </div>
                                         {{ form_errors(item.qty) }}
                                     </div>
                                     {% if hasTax %}

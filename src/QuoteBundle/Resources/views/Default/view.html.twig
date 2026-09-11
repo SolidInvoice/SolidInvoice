@@ -276,7 +276,7 @@
                                 <tr>
                                     <td class="column-description" data-label="{{ 'quote.item.heading.description'|trans }}">{{ item.name }}{{ q.line_description(item, false) }}</td>
                                     <td class="column-price" data-label="{{ 'quote.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
-                                    <td class="column-qty" data-label="{{ 'quote.item.heading.qty'|trans }}">{{ item.qty }}</td>
+                                    <td class="column-qty" data-label="{{ 'quote.item.heading.qty'|trans }}">{{ quantity(item) }}</td>
                                     {% if quote.tax.positive %}
                                         <td class="column-tax" data-label="{{ 'quote.item.heading.tax'|trans }}">
                                             {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}

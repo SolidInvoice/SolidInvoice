@@ -77,7 +77,7 @@
             {% for line in quote.lines %}
                 <tr>
                     <td style="padding: 12px; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1eada;">{{ line.name }}{{ q.line_description(line) }}</td>
-                    <td style="padding: 12px; font-size: 10pt; color: #475569; border-bottom: 1px solid #f1eada; text-align: right;">{{ line.qty }}</td>
+                    <td style="padding: 12px; font-size: 10pt; color: #475569; border-bottom: 1px solid #f1eada; text-align: right;">{{ quantity(line) }}</td>
                     <td style="padding: 12px; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1eada; text-align: right; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
                 </tr>
             {% endfor %}

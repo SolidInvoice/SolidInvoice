@@ -59,7 +59,7 @@
             <tr{% if loop.index0 is divisible by(2) %} style="background-color: #f8fafc;"{% endif %}>
                 <td style="padding: 8px 12px; font-size: 8pt; text-align: center; color: #64748b;">{{ loop.index }}</td>
                 <td style="padding: 8px 12px; font-size: 8pt; color: #1e293b;">{{ line.name }}{{ q.line_description(line) }}</td>
-                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.qty }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ quantity(line) }}</td>
                 <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.price|formatCurrency(currency) }}</td>
                 <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
             </tr>
