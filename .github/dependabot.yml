@@ -20,6 +20,12 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      # init/autobuild/analyze are separate dependencies to Dependabot, but CodeQL
+      # refuses to run when they are on different versions. Bump them in one PR.
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
 
   - package-ecosystem: "gomod"
     directory: "/frankenphp"
