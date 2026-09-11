@@ -143,6 +143,14 @@ class Line implements LineInterface, Stringable
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $description = null;
 
+    /**
+     * {@see LineInterface::UNPLACED} until an owner places the line, which is what lets
+     * {@see Invoice::addLine()} tell an append from a caller that asked for a specific slot.
+     */
+    #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected int $position = LineInterface::UNPLACED;
+
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -225,6 +233,31 @@ class Line implements LineInterface, Stringable
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * A line attached with {@see self::setInvoice()} rather than {@see Invoice::addLine()} is
+     * never renumbered, so it would store the sentinel. Zero, because a line its owner never
+     * placed has no established slot to keep.
+     */
+    #[ORM\PrePersist]
+    public function placeUnplacedLine(): void
+    {
+        if ($this->position === LineInterface::UNPLACED) {
+            $this->position = 0;
+        }
     }
 
     /**

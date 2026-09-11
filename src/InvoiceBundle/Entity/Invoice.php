@@ -43,6 +43,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -116,6 +117,7 @@ class Invoice extends BaseInvoice implements Stringable
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;
     }
+    use LinePositions;
     use TimeStampable;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: InvoiceStatus::class)]
@@ -199,6 +201,7 @@ class Invoice extends BaseInvoice implements Stringable
      * @var Collection<int, Line>
      */
     #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'invoice.lines.min')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
@@ -335,6 +338,8 @@ class Invoice extends BaseInvoice implements Stringable
             $line->setCompany($this->getCompany());
         }
 
+        $this->compactLinePositions($this->lines);
+
         return $this;
     }
 
@@ -342,6 +347,9 @@ class Invoice extends BaseInvoice implements Stringable
     {
         $this->lines->removeElement($line);
         $line->setInvoice(null);
+
+        $this->compactLinePositions($this->lines);
+
         return $this;
     }
 

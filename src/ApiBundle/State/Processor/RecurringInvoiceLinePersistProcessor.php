@@ -40,7 +40,9 @@ final readonly class RecurringInvoiceLinePersistProcessor implements ProcessorIn
             throw new NotFoundHttpException(sprintf('Recurring invoice "%s" not found.', $invoiceId));
         }
 
-        $data->setRecurringInvoice($recurringInvoice);
+        // addLine() rather than setRecurringInvoice(), so a line posted without a position
+        // lands after the invoice's existing ones instead of ahead of them.
+        $recurringInvoice->addLine($data);
 
         $em = $this->registry->getManager();
         $em->persist($data);

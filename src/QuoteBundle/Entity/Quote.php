@@ -46,6 +46,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -127,6 +128,7 @@ class Quote
     use QuoteStatusTrait {
         Archivable::isArchived insteadof QuoteStatusTrait;
     }
+    use LinePositions;
     use TimeStampable;
     use CompanyAware;
 
@@ -282,6 +284,7 @@ class Quote
      * @var Collection<int, Line>
      */
     #[ORM\OneToMany(targetEntity: Line::class, mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'quote.lines.min')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -465,6 +468,9 @@ class Quote
         assert($line instanceof Line);
         $this->lines->add($line);
         $line->setQuote($this);
+
+        $this->compactLinePositions($this->lines);
+
         return $this;
     }
 
@@ -472,6 +478,9 @@ class Quote
     {
         $this->lines->removeElement($line);
         $line->setQuote();
+
+        $this->compactLinePositions($this->lines);
+
         return $this;
     }
 
