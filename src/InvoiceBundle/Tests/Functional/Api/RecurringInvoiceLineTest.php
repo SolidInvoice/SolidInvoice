@@ -141,7 +141,9 @@ final class RecurringInvoiceLineTest extends ApiTestCase
         // Both posts have to survive. Asserting only the collection's type let the second
         // post silently overwrite the first, because the response looked the same either way.
         self::assertSame(2, $data['totalItems']);
-        self::assertSame(
+        // Canonicalizing: the lines association carries no OrderBy, so collection order
+        // is unspecified. What matters here is that neither post replaced the other.
+        self::assertEqualsCanonicalizing(
             ['Collection Item 1', 'Collection Item 2'],
             array_column($data['member'], 'description')
         );
