@@ -16,7 +16,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use SolidInvoice\CoreBundle\Enum\UnitCode;
 
 /**
  * `Version30100_6` belongs to PR 2 of the same stack (GH #2706), which this branch is based on.
@@ -42,10 +41,14 @@ final class Version30100_7 extends AbstractMigration
             if (! $table->hasColumn('unit_code')) {
                 // No backfill pass: the column default is what every existing row gets, and
                 // C62 renders as nothing, so an existing invoice looks exactly as it did.
+                //
+                // Spelled out rather than read off UnitCode, because a migration has to keep
+                // replaying after the enum is renamed, moved or dropped. C62 is the UN/ECE
+                // code for "one", which is not a value that can change under us.
                 $table->addColumn('unit_code', Types::STRING, [
                     'length' => 3,
                     'notnull' => true,
-                    'default' => UnitCode::UNIT->value,
+                    'default' => 'C62',
                 ]);
             }
         }
