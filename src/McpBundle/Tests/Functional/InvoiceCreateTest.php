@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -70,6 +71,41 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(Invoice::class, $invoice);
         self::assertSame($this->company->getId()->toRfc4122(), $invoice->getCompany()->getId()->toRfc4122());
         self::assertCount(2, $invoice->getLines());
+    }
+
+    /**
+     * A tool call goes to the database without passing a validator, so a name longer than
+     * the line's VARCHAR(255) would fail on flush. It is kept, as the description, and the
+     * name is cut to fit. SQLite ignores the column width, hence the explicit length check.
+     */
+    public function testAnOverLongLineNameIsKeptAsTheDescription(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $name = str_repeat('An unreasonably verbose line item name. ', 10);
+
+        $result = $tool->createInvoice(
+            $client->getId()
+                ->toRfc4122(),
+            [['name' => $name, 'price' => 1000, 'qty' => 1]],
+        );
+
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        self::assertInstanceOf(Invoice::class, $invoice);
+
+        $line = $invoice->getLines()
+            ->first();
+
+        self::assertLessThanOrEqual(LineName::MAX_LENGTH, mb_strlen($line->getName()));
+        self::assertSame($name, $line->getDescription());
     }
 
     public function testCreateInvoiceRequiresAtLeastOneLine(): void

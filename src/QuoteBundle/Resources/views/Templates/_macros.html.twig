@@ -236,6 +236,10 @@
  # line_description
  #
  # A line's description, under its name. A description is optional now that a line has a
- # name, so every view that renders a line needs the same "omit it when absent" rule.
+ # name, and a description that is only the name over again would print the same text
+ # twice, so every view that renders a line needs the same "omit it" rule.
+ #
+ # `inline` for the PDF and email templates, which have no stylesheet to reach; the in-app
+ # views pass false and take the Tabler utilities instead, so the text follows the theme.
  #}
-{% macro line_description(line) %}{% if line.description is not empty %}<div class="line-item-description" style="font-size: 0.85em; color: #64748b; margin-top: 3px;">{{ line.description|nl2br }}</div>{% endif %}{% endmacro %}
+{% macro line_description(line, inline = true) %}{% if line.description is not empty and line.description|trim != line.name %}<div class="line-item-description{% if not inline %} text-secondary small{% endif %}"{% if inline %} style="font-size: 0.85em; color: #64748b; margin-top: 3px;"{% endif %}>{{ line.description|nl2br }}</div>{% endif %}{% endmacro %}
