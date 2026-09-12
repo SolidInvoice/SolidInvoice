@@ -38,7 +38,11 @@ final class BillingExtensionTest extends TestCase
     {
         yield 'bare number for a plain unit' => [UnitCode::UNIT, '2', '2'];
         yield 'unit appended' => [UnitCode::HOUR, '12', '12 hours'];
+        yield 'one of a countable unit is singular' => [UnitCode::HOUR, '1', '1 hour'];
+        yield 'a fraction is not one' => [UnitCode::HOUR, '0.5', '0.5 hours'];
+        yield 'none of a countable unit is plural' => [UnitCode::DAY, '0', '0 days'];
         yield 'symbol appended' => [UnitCode::SQUARE_METRE, '40.5', '40.5 m²'];
+        yield 'a symbol does not inflect' => [UnitCode::SQUARE_METRE, '1', '1 m²'];
     }
 
     #[DataProvider('quantityProvider')]
@@ -61,7 +65,19 @@ final class BillingExtensionTest extends TestCase
             $key = 'line.unit.' . $unitCode->value;
 
             self::assertNotSame($key, $unitCode->trans($translator), sprintf('%s has no label', $unitCode->name));
+            // A message left as `hour|hours` would otherwise reach an invoice verbatim.
+            self::assertStringNotContainsString('|', $unitCode->trans($translator), $unitCode->name);
+            self::assertStringNotContainsString('|', $unitCode->forQuantity($translator, 1), $unitCode->name);
         }
+    }
+
+    /**
+     * The dropdown names the unit rather than one of anything, so it takes the plural form
+     * whatever the line it sits on is billing.
+     */
+    public function testTheListLabelIsAlwaysThePlural(): void
+    {
+        self::assertSame('hours', UnitCode::HOUR->trans($this->createTranslator()));
     }
 
     private function createExtension(): BillingExtension

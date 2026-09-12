@@ -46,12 +46,27 @@ enum UnitCode: string implements TranslatableInterface
     case LITRE = 'LTR';
 
     /**
-     * Reads as the suffix after a quantity — "12 hours", "40 kg" — because that is where it
-     * is shown, and a line editor offering "hours" rather than "Hour" loses nothing.
+     * How the unit reads in a list — the line editor's dropdown, which offers "hours" rather
+     * than "Hour" because that is how it reads after a quantity.
+     *
+     * The plural form, which is what a list wants: the entry names the unit, not one of
+     * anything. {@see forQuantity()} is the one that has to agree with a number.
      */
     #[Override]
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return $translator->trans('line.unit.' . $this->value, locale: $locale);
+        return $this->forQuantity($translator, 2, $locale);
+    }
+
+    /**
+     * The unit as it reads after a given quantity — "1 hour", "12 hours", "40 kg".
+     *
+     * Takes the quantity, because an invoice billing a single hour has to say "1 hour" and
+     * not "1 hours". The units written as symbols do not inflect, and their messages carry
+     * no plural form for the translator to choose between.
+     */
+    public function forQuantity(TranslatorInterface $translator, float $quantity, ?string $locale = null): string
+    {
+        return $translator->trans('line.unit.' . $this->value, ['%count%' => $quantity], locale: $locale);
     }
 }
