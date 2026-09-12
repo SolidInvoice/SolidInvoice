@@ -21,6 +21,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use SolidInvoice\ApiBundle\State\Processor\RecurringInvoiceLinePersistProcessor;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceLineRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -111,5 +112,17 @@ class RecurringInvoiceLine extends Line
     public function getRecurringInvoice(): ?RecurringInvoice
     {
         return $this->recurringInvoice;
+    }
+
+    /**
+     * {@see Line::detachFromOwner()} for a line that hangs off a recurring invoice instead.
+     *
+     * No `#[ORM\PreRemove]` of its own: Doctrine inherits the parent's callbacks by method
+     * name, and the name it already has resolves here.
+     */
+    #[Override]
+    public function detachFromOwner(): void
+    {
+        $this->recurringInvoice?->removeLine($this);
     }
 }

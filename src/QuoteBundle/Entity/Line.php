@@ -141,11 +141,17 @@ class Line implements LineInterface, Stringable
     private ?string $description = null;
 
     /**
-     * {@see LineInterface::UNPLACED} until an owner places the line, which is what lets
-     * {@see Quote::addLine()} tell an append from a caller that asked for a specific slot.
+     * {@see LineInterface::UNPLACED} until an owner places the line, which is what makes an
+     * added line an append.
+     *
+     * Read over the API, never written. A position is not something a line carries but the
+     * index its owner gave it, so the way to change one is to send the quote's `lines` in the
+     * order you want them; setting it on a single line is the one way to end up with the
+     * duplicates and gaps that `0..n-1` exists to rule out.
      */
     #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
-    #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(writable: false)]
     private int $position = LineInterface::UNPLACED;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
@@ -254,6 +260,21 @@ class Line implements LineInterface, Stringable
         if ($this->position === LineInterface::UNPLACED) {
             $this->position = 0;
         }
+    }
+
+    /**
+     * A line deleted through its own endpoint — `DELETE /quotes/{id}/line/{id}` — never passes
+     * through {@see Quote::removeLine()}, so the lines after it would keep their old numbers
+     * and leave the gap the deleted line used to fill. Routing the removal back through the
+     * owner closes it.
+     *
+     * PreRemove fires from `EntityManager::remove()`, before the flush works out what changed,
+     * so the renumbered siblings go out in the same flush as the delete.
+     */
+    #[ORM\PreRemove]
+    public function detachFromOwner(): void
+    {
+        $this->quote?->removeLine($this);
     }
 
     /**

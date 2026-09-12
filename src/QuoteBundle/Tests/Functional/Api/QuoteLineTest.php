@@ -15,11 +15,17 @@ namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\QuoteBundle\Entity\Line;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function array_map;
+use function count;
 
 #[Group('functional')]
 final class QuoteLineTest extends ApiTestCase
@@ -170,5 +176,71 @@ final class QuoteLineTest extends ApiTestCase
         );
 
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * A position is the index the quote gave the line, not a value the caller carries, so a
+     * `position` in the payload is ignored. Were it not, two lines could claim the same slot
+     * and the order of the collection would stop being a fact about it.
+     */
+    public function testPositionIsReadOnly(): void
+    {
+        ['id' => $quoteId, 'lines' => $lines] = $this->createQuoteWithLines('First', 'Second');
+
+        self::assertSame([0, 1], array_column($lines, 'position'));
+
+        $patched = $this->requestPatch(
+            '/api/quotes/' . $quoteId . '/line/' . $lines[1]['id'],
+            ['position' => 0]
+        );
+
+        self::assertSame(1, $patched['position']);
+    }
+
+    /**
+     * Deleting a line out of the middle would otherwise leave the ones after it numbered
+     * around the hole — `0, 2` for what the reader sees as two lines.
+     */
+    public function testDeletingALineRenumbersTheOnesAfterIt(): void
+    {
+        ['id' => $quoteId, 'lines' => $lines] = $this->createQuoteWithLines('First', 'Second', 'Third');
+
+        $this->requestDelete('/api/quotes/' . $quoteId . '/line/' . $lines[1]['id']);
+
+        self::assertSame(0, $this->requestGet('/api/quotes/' . $quoteId . '/line/' . $lines[0]['id'])['position']);
+        self::assertSame(1, $this->requestGet('/api/quotes/' . $quoteId . '/line/' . $lines[2]['id'])['position']);
+    }
+
+    /**
+     * Through the quote rather than a line at a time, so the fixture does not depend on what
+     * `POST /quotes/{id}/lines` does with a line that is already there.
+     *
+     * @return array{id: string, lines: list<array<string, mixed>>}
+     */
+    private function createQuoteWithLines(string ...$descriptions): array
+    {
+        $client = ClientFactory::createOne();
+
+        $quote = $this->requestPostExpecting(
+            '/api/quotes',
+            [
+                'client' => $this->getIriFromResource($client),
+                'users' => [$this->getIriFromResource(ContactFactory::createOne(['client' => $client]))],
+                'lines' => array_map(
+                    static fn (string $description): array => [
+                        'description' => $description,
+                        'price' => 100,
+                        'qty' => 1,
+                        // The same out-of-range slot for every line: if it were honoured
+                        // they would all share it, rather than coming back as 0..n-1.
+                        'position' => count($descriptions),
+                    ],
+                    $descriptions,
+                ),
+            ],
+            Quote::class,
+        );
+
+        return ['id' => $quote['id'], 'lines' => $quote['lines']];
     }
 }
