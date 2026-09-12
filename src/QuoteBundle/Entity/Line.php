@@ -231,8 +231,22 @@ class Line implements LineInterface, Stringable
         return $this->id;
     }
 
+    /**
+     * An empty name with a description already set derives from it, the same way
+     * {@see self::setDescription()} does when the name is the field that is missing.
+     *
+     * Without that, `{"description": …, "name": ""}` and `{"name": "", "description": …}`
+     * would not mean the same thing: the serializer calls setters in payload key order, so
+     * the first would land on an empty name and be rejected while the second derived one.
+     * A name can never legitimately be cleared — it is `NotBlank` — so there is nothing lost
+     * in reading an empty one as "work it out from the description".
+     */
     public function setName(string $name): static
     {
+        if ($name === '' && ($this->description ?? '') !== '') {
+            $name = LineName::fromDescription($this->description);
+        }
+
         $this->name = $name;
 
         return $this;

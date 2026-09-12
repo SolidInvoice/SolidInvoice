@@ -359,4 +359,33 @@ final class InvoiceLineTest extends ApiTestCase
         self::assertSame($nameFirst['name'], $descriptionFirst['name']);
         self::assertSame($nameFirst['description'], $descriptionFirst['description']);
     }
+
+    /**
+     * The same, for a client that sends the name as an empty string rather than leaving the
+     * key out — which is what a form-ish serialiser does. Whichever way round the two keys
+     * arrive, the name has to come from the description.
+     */
+    public function testAnEmptyNameIsDerivedInEitherKeyOrder(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $descriptionFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Website design',
+            'name' => '',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $nameFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'name' => '',
+            'description' => 'Website design',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $descriptionFirst['name']);
+        self::assertSame($nameFirst['name'], $descriptionFirst['name']);
+    }
 }
