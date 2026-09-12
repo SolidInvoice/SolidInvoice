@@ -34,7 +34,10 @@ final readonly class RecurringInvoiceLinePersistProcessor implements ProcessorIn
         assert($data instanceof RecurringInvoiceLine);
 
         $invoiceId = $uriVariables['invoiceId'] ?? null;
-        $recurringInvoice = $this->recurringInvoiceRepository->find($invoiceId);
+        // findOneBy() rather than find(): the CompanyFilter applies to both, but find() can
+        // answer from the identity map without querying, and 0a27718dc left this lookup as the
+        // only check between a posted line and its owner. See CompanyFilter's docblock.
+        $recurringInvoice = $this->recurringInvoiceRepository->findOneBy(['id' => $invoiceId]);
 
         if ($recurringInvoice === null) {
             throw new NotFoundHttpException(sprintf('Recurring invoice "%s" not found.', $invoiceId));

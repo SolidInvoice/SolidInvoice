@@ -15,6 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -162,6 +164,34 @@ final class RecurringInvoiceLineTest extends ApiTestCase
             url: '/api/recurring-invoices/' . $missingId . '/lines',
             options: [
                 'json' => ['description' => 'Orphan', 'price' => 100, 'qty' => 1.0],
+                'headers' => [
+                    'content-type' => 'application/ld+json',
+                    'accept' => 'application/ld+json',
+                ],
+            ]
+        );
+
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Seeding the other tenant through this EntityManager leaves its recurring invoice managed, so a
+     * find() lookup in the processor would answer from the identity map and skip the
+     * CompanyFilter. That is the case this guards; see CompanyFilterLookupTest for why a
+     * cold request filters either way.
+     */
+    public function testCannotCreateLineOnARecurringInvoiceFromADifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignInvoice = RecurringInvoiceFactory::createOne(['company' => $otherCompany]);
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        self::$client->request(
+            method: Request::METHOD_POST,
+            url: '/api/recurring-invoices/' . $foreignInvoice->getId()->toString() . '/lines',
+            options: [
+                'json' => ['description' => 'Hacker', 'price' => 100, 'qty' => 1.0],
                 'headers' => [
                     'content-type' => 'application/ld+json',
                     'accept' => 'application/ld+json',
