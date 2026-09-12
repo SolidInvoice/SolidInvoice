@@ -49,6 +49,10 @@ class ItemType extends AbstractType
             TextType::class,
             [
                 'empty_data' => '',
+                // Not required in the browser, so that a line with only a description still
+                // submits and derives its name from it, the same way the API does. The
+                // entity's NotBlank is what rejects a line with neither.
+                'required' => false,
                 'attr' => [
                     'class' => 'input-medium invoice-item-name',
                 ],

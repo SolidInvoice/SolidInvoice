@@ -151,7 +151,7 @@
                         <div class="billing-items-list" {{ stimulus_controller('line-reorder') }}
                              {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
-                                <div class="column-description">{{ 'quote.item.heading.description'|trans }}</div>
+                                <div class="column-description">{{ 'quote.item.heading.name'|trans }}</div>
                                 <div class="column-price">{{ 'quote.item.heading.price'|trans }}</div>
                                 <div class="column-qty">{{ 'quote.item.heading.qty'|trans }}</div>
                                 {% if this.hasTax %}
@@ -164,12 +164,12 @@
                             {% for index, item in form.lines %}
                                 <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
-                                        <span class="mobile-label">{{ 'quote.item.heading.description'|trans }}</span>
-                                        {{ form_widget(item.name, {attr: {placeholder: 'quote.item.name.placeholder'|trans}}) }}
+                                        <span class="mobile-label">{{ 'quote.item.heading.name'|trans }}</span>
+                                        {{ form_widget(item.name, {attr: {placeholder: 'quote.item.name.placeholder'|trans, 'aria-label': 'quote.item.name.label'|trans}}) }}
                                         {{ form_errors(item.name) }}
                                         <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
                                             <summary class="line-description-toggle">{{ 'quote.item.description.add'|trans }}</summary>
-                                            {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2}}) }}
+                                            {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2, 'aria-label': 'quote.item.description.label'|trans}}) }}
                                             {{ form_errors(item.description) }}
                                         </details>
                                     </div>

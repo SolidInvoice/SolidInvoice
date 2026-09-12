@@ -104,6 +104,9 @@ final class InvoiceCreateTest extends KernelTestCase
         $line = $invoice->getLines()
             ->first();
 
+        // The exact value, not just a bounded one: a builder that cut the name its own way
+        // would still fit the column while disagreeing with every other caller.
+        self::assertSame(LineName::fromDescription($name), $line->getName());
         self::assertLessThanOrEqual(LineName::MAX_LENGTH, mb_strlen($line->getName()));
         self::assertSame($name, $line->getDescription());
     }
