@@ -144,11 +144,17 @@ class Line implements LineInterface, Stringable
     protected ?string $description = null;
 
     /**
-     * {@see LineInterface::UNPLACED} until an owner places the line, which is what lets
-     * {@see Invoice::addLine()} tell an append from a caller that asked for a specific slot.
+     * {@see LineInterface::UNPLACED} until an owner places the line, which is what makes an
+     * added line an append.
+     *
+     * Read over the API, never written. A position is not something a line carries but the
+     * index its owner gave it, so the way to change one is to send the owner's `lines` in the
+     * order you want them; setting it on a single line is the one way to end up with the
+     * duplicates and gaps that `0..n-1` exists to rule out.
      */
     #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(writable: false)]
     protected int $position = LineInterface::UNPLACED;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
@@ -258,6 +264,21 @@ class Line implements LineInterface, Stringable
         if ($this->position === LineInterface::UNPLACED) {
             $this->position = 0;
         }
+    }
+
+    /**
+     * A line deleted through its own endpoint — `DELETE /invoices/{id}/line/{id}` — never passes
+     * through {@see Invoice::removeLine()}, so the lines after it would keep their old numbers
+     * and leave the gap the deleted line used to fill. Routing the removal back through the
+     * owner closes it.
+     *
+     * PreRemove fires from `EntityManager::remove()`, before the flush works out what changed,
+     * so the renumbered siblings go out in the same flush as the delete.
+     */
+    #[ORM\PreRemove]
+    public function detachFromOwner(): void
+    {
+        $this->invoice?->removeLine($this);
     }
 
     /**

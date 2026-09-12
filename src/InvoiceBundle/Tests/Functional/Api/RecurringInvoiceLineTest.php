@@ -13,13 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
+use DateTimeInterface;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function array_map;
+use function count;
+use function date;
 
 #[Group('functional')]
 final class RecurringInvoiceLineTest extends ApiTestCase
@@ -170,5 +180,75 @@ final class RecurringInvoiceLineTest extends ApiTestCase
         );
 
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * A position is the index the recurring invoice gave the line, not a value the caller
+     * carries, so a `position` in the payload is ignored.
+     */
+    public function testPositionIsReadOnly(): void
+    {
+        ['id' => $invoiceId, 'lines' => $lines] = $this->createRecurringInvoiceWithLines('First', 'Second');
+
+        self::assertSame([0, 1], array_column($lines, 'position'));
+
+        $patched = $this->requestPatch(
+            '/api/recurring-invoices/' . $invoiceId . '/line/' . $lines[1]['id'],
+            ['position' => 0]
+        );
+
+        self::assertSame(1, $patched['position']);
+    }
+
+    /**
+     * The recurring lines reach their owner through a different association than invoice lines
+     * do, and the callback that closes the gap is an override — so it is the one most easily
+     * left behind.
+     */
+    public function testDeletingALineRenumbersTheOnesAfterIt(): void
+    {
+        ['id' => $invoiceId, 'lines' => $lines] = $this->createRecurringInvoiceWithLines('First', 'Second', 'Third');
+
+        $this->requestDelete('/api/recurring-invoices/' . $invoiceId . '/line/' . $lines[1]['id']);
+
+        self::assertSame(0, $this->requestGet('/api/recurring-invoices/' . $invoiceId . '/line/' . $lines[0]['id'])['position']);
+        self::assertSame(1, $this->requestGet('/api/recurring-invoices/' . $invoiceId . '/line/' . $lines[2]['id'])['position']);
+    }
+
+    /**
+     * @return array{id: string, lines: list<array<string, mixed>>}
+     */
+    private function createRecurringInvoiceWithLines(string ...$descriptions): array
+    {
+        $client = ClientFactory::createOne();
+
+        $invoice = $this->requestPostExpecting(
+            '/api/recurring-invoices',
+            [
+                'client' => $this->getIriFromResource($client),
+                'users' => [$this->getIriFromResource(ContactFactory::createOne(['client' => $client]))],
+                'dateStart' => date(DateTimeInterface::ATOM),
+                'recurringOptions' => [
+                    'type' => ScheduleRecurringType::WEEKLY,
+                    'endType' => ScheduleEndType::AFTER,
+                    'days' => [4, 5],
+                    'endOccurrence' => 1,
+                ],
+                'lines' => array_map(
+                    static fn (string $description): array => [
+                        'description' => $description,
+                        'price' => 100,
+                        'qty' => 1,
+                        // The same out-of-range slot for every line: if it were honoured
+                        // they would all share it, rather than coming back as 0..n-1.
+                        'position' => count($descriptions),
+                    ],
+                    $descriptions,
+                ),
+            ],
+            RecurringInvoice::class,
+        );
+
+        return ['id' => $invoice['id'], 'lines' => $invoice['lines']];
     }
 }
