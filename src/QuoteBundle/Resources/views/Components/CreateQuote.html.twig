@@ -148,7 +148,8 @@
                         </div>
                     {% else %}
                         {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
-                        <div class="billing-items-list">
+                        <div class="billing-items-list" {{ stimulus_controller('line-reorder', {announcement: 'quote.item.reordered'|trans}) }}
+                             {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
                                 <div class="column-description">{{ 'quote.item.heading.description'|trans }}</div>
                                 <div class="column-price">{{ 'quote.item.heading.price'|trans }}</div>
@@ -161,7 +162,7 @@
                             </div>
 
                             {% for index, item in form.lines %}
-                                <div class="billing-item-row">
+                                <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
                                         <span class="mobile-label">{{ 'quote.item.heading.description'|trans }}</span>
                                         {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2}}) }}
@@ -215,6 +216,11 @@
                                         <span class="item-total-value">{{ item.vars.value.total|formatCurrency(currency) }}</span>
                                     </div>
                                     <div class="column-actions">
+                                        <button type="button" class="line-drag-handle" data-line-reorder-handle
+                                                title="{{ 'quote.item.reorder'|trans }}"
+                                                aria-label="{{ 'quote.item.reorder'|trans }}">
+                                            {{ ux_icon('tabler:grip-vertical', {width: 16, height: 16}) }}
+                                        </button>
                                         {% if form.lines|length > 1 %}
                                             {{ form_widget(item.vars.button_delete, {
                                                 label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,

@@ -40,7 +40,9 @@ final readonly class InvoiceLinePersistProcessor implements ProcessorInterface
             throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $invoiceId));
         }
 
-        $data->setInvoice($invoice);
+        // addLine() rather than setInvoice(), so a line posted without a position lands after
+        // the invoice's existing ones instead of ahead of them.
+        $invoice->addLine($data);
 
         $em = $this->registry->getManager();
         $em->persist($data);

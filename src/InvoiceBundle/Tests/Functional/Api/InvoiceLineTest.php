@@ -15,11 +15,17 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function array_map;
+use function count;
 
 #[Group('functional')]
 final class InvoiceLineTest extends ApiTestCase
@@ -157,6 +163,72 @@ final class InvoiceLineTest extends ApiTestCase
         $lineId = $created['id'];
 
         $this->requestDelete('/api/invoices/' . $invoiceId . '/line/' . $lineId);
+    }
+
+    /**
+     * A position is the index the invoice gave the line, not a value the caller carries, so a
+     * `position` in the payload is ignored. Were it not, two lines could claim the same slot
+     * and the order of the collection would stop being a fact about it.
+     */
+    public function testPositionIsReadOnly(): void
+    {
+        ['id' => $invoiceId, 'lines' => $lines] = $this->createInvoiceWithLines('First', 'Second');
+
+        self::assertSame([0, 1], array_column($lines, 'position'));
+
+        $patched = $this->requestPatch(
+            '/api/invoices/' . $invoiceId . '/line/' . $lines[1]['id'],
+            ['position' => 0]
+        );
+
+        self::assertSame(1, $patched['position']);
+    }
+
+    /**
+     * Deleting a line out of the middle would otherwise leave the ones after it numbered
+     * around the hole — `0, 2` for what the reader sees as two lines.
+     */
+    public function testDeletingALineRenumbersTheOnesAfterIt(): void
+    {
+        ['id' => $invoiceId, 'lines' => $lines] = $this->createInvoiceWithLines('First', 'Second', 'Third');
+
+        $this->requestDelete('/api/invoices/' . $invoiceId . '/line/' . $lines[1]['id']);
+
+        self::assertSame(0, $this->requestGet('/api/invoices/' . $invoiceId . '/line/' . $lines[0]['id'])['position']);
+        self::assertSame(1, $this->requestGet('/api/invoices/' . $invoiceId . '/line/' . $lines[2]['id'])['position']);
+    }
+
+    /**
+     * Through the invoice rather than a line at a time, so the fixture does not depend on
+     * what `POST /invoices/{id}/lines` does with a line that is already there.
+     *
+     * @return array{id: string, lines: list<array<string, mixed>>}
+     */
+    private function createInvoiceWithLines(string ...$descriptions): array
+    {
+        $client = ClientFactory::createOne();
+
+        $invoice = $this->requestPostExpecting(
+            '/api/invoices',
+            [
+                'client' => $this->getIriFromResource($client),
+                'users' => [$this->getIriFromResource(ContactFactory::createOne(['client' => $client]))],
+                'lines' => array_map(
+                    static fn (string $description): array => [
+                        'description' => $description,
+                        'price' => 100,
+                        'qty' => 1,
+                        // The same out-of-range slot for every line: if it were honoured
+                        // they would all share it, rather than coming back as 0..n-1.
+                        'position' => count($descriptions),
+                    ],
+                    $descriptions,
+                ),
+            ],
+            Invoice::class,
+        );
+
+        return ['id' => $invoice['id'], 'lines' => $invoice['lines']];
     }
 
     public function testGetCollection(): void
