@@ -37,7 +37,8 @@ final readonly class ContactPersistProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         if ($data instanceof Contact && isset($uriVariables['clientId'])) {
-            // findOneBy (not find) ensures the global CompanyFilter is applied, preventing cross-company access.
+            // findOneBy() rather than find(): the CompanyFilter applies to both, but findOneBy()
+            // cannot answer from the identity map. See CompanyFilter's docblock.
             $client = $this->clientRepository->findOneBy(['id' => $uriVariables['clientId']]);
             if (! $client instanceof Client) {
                 throw new NotFoundHttpException(sprintf('Client "%s" not found.', $uriVariables['clientId']));
