@@ -215,7 +215,10 @@ final readonly class OnboardingManager
         $invoice->setInvoiceId('1');
         $invoice->setStatus(InvoiceStatus::Draft);
 
-        // Create a single line item
+        // Create a single line item. "Service Description" is a free-text area with no
+        // length limit, and this invoice is saved without ever being validated, so the
+        // text goes to the description — TEXT — and the line derives a name that fits
+        // its column instead of overflowing it on the last step of signup.
         $line = new Line();
         $line->setDescription($data->invoiceDescription);
 

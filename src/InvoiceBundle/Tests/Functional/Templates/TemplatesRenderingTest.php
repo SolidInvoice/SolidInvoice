@@ -97,8 +97,8 @@ final class TemplatesRenderingTest extends KernelTestCase
             // PDF and preview render every line item and the company logo —
             // assert both surface so a regression that drops
             // `{% for line in invoice.lines %}` or the logo block is caught.
-            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item', 'data:image/png;base64']),
-            'preview' => $this->assertChannelContains($output, ['Sample line item', 'data:image/png;base64']),
+            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item', 'Two rounds of revisions included.', 'data:image/png;base64']),
+            'preview' => $this->assertChannelContains($output, ['Sample line item', 'Two rounds of revisions included.', 'data:image/png;base64']),
             // Email is a summary (totals only, no per-line breakdown), so we
             // verify the schema.org payload + the displayed total instead.
             'email' => $this->assertChannelContains($output, ['schema.org', '$1,500.00']),
@@ -165,7 +165,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $em->flush();
     }
 
-    private function createFixtureInvoice(): Invoice
+    private function createFixtureInvoice(?string $description = 'Two rounds of revisions included.'): Invoice
     {
         $this->seedCompanyLogo();
 
@@ -201,12 +201,68 @@ final class TemplatesRenderingTest extends KernelTestCase
                 ->setType(null),
             'lines' => [
                 new Line()
-                    ->setDescription('Sample line item')
+                    ->setName('Sample line item')
+                    ->setDescription($description)
                     ->setPrice(BigInteger::of(75000))
                     ->setQty(2)
                     ->setTotal(BigInteger::of(150000)),
             ],
             'users' => [$contact],
         ]);
+    }
+
+    /**
+     * The description is optional, so the block that renders it has to disappear entirely
+     * for a line that has only a name — not leave an empty div under every item.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testTemplateOmitsAnEmptyDescription(string $slug, string $channel): void
+    {
+        $invoice = $this->createFixtureInvoice(null);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceInvoice/Templates/%s/%s.html.twig', $slug, $channel),
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringContainsString('Sample line item', $output);
+        self::assertStringNotContainsString('line-item-description', $output);
+    }
+
+    /**
+     * A line whose description is the name over again — what a client that only knows about
+     * `description` produces — must print the text once, not twice.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testTemplateOmitsADescriptionThatRepeatsTheName(string $slug, string $channel): void
+    {
+        $invoice = $this->createFixtureInvoice('Sample line item');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceInvoice/Templates/%s/%s.html.twig', $slug, $channel),
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringContainsString('Sample line item', $output);
+        self::assertStringNotContainsString('line-item-description', $output);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function lineChannelProvider(): iterable
+    {
+        // Only the channels that render a line breakdown; email is a totals summary.
+        foreach (self::slugs() as $slug) {
+            foreach (['pdf', 'preview'] as $channel) {
+                yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
+            }
+        }
     }
 }

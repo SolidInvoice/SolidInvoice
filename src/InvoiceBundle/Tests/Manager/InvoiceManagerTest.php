@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
+use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
@@ -23,6 +24,7 @@ use Mockery as M;
 use Money\Currency;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
@@ -54,6 +56,8 @@ use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use function mb_strlen;
+use function str_repeat;
 
 final class InvoiceManagerTest extends KernelTestCase
 {
@@ -69,7 +73,7 @@ final class InvoiceManagerTest extends KernelTestCase
     /**
      * @param list<Transition> $transitions
      */
-    private function buildManager(array $transitions): InvoiceManager
+    private function buildManager(array $transitions, string $now = '2024-01-15 10:30:00'): InvoiceManager
     {
         $entityManager = M::mock(EntityManagerInterface::class);
         $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $entityManager]);
@@ -94,7 +98,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $clock = $this->createStub(ClockInterface::class);
         $clock->method('now')
-            ->willReturn(CarbonImmutable::parse('2024-01-15 10:30:00'));
+            ->willReturn(CarbonImmutable::parse($now));
 
         $manager = new InvoiceManager(
             $doctrine,
@@ -139,7 +143,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $lineTax->snapshotFrom($tax);
 
         $line->addTax($lineTax);
-        $line->setDescription('Line Description');
+        $line->setName('Line Description');
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
@@ -182,7 +186,7 @@ final class InvoiceManagerTest extends KernelTestCase
 
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
-        self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
+        self::assertSame($line->getName(), $invoiceLine[0]->getName());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
@@ -202,7 +206,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $sourceLineTax->setSequence(1);
 
         $line = new Line();
-        $line->setDescription('Service');
+        $line->setName('Service');
         $line->setPrice(120);
         $line->setQty(1);
         $line->setTotal(120);
@@ -259,7 +263,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $sourceLineTax->setTypeSnapshot(TaxType::Exclusive);
 
         $line = new RecurringInvoiceLine();
-        $line->setDescription('Recurring Service');
+        $line->setName('Recurring Service');
         $line->setPrice(1000);
         $line->setQty(1);
         $line->setTotal(1000);
@@ -313,7 +317,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $lineTax->snapshotFrom($tax);
 
         $line->addTax($lineTax);
-        $line->setDescription('Line Description {day} {day_name} {month} {year}');
+        $line->setName('Line Description {day} {day_name} {month} {year}');
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
@@ -355,10 +359,47 @@ final class InvoiceManagerTest extends KernelTestCase
 
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
-        self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getDescription());
+        self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getName());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+    }
+
+    /**
+     * Expanding a token makes the name longer — `{month}` is seven characters and September
+     * is nine — so a name that fitted VARCHAR(255) can stop fitting it. Nothing validates a
+     * generated invoice, so an over-long name would reach the column and fail the flush; on
+     * MySQL in production, not on the SQLite the suite runs against.
+     *
+     * @throws MathException
+     */
+    public function testAGeneratedNameIsCutToFitItsColumn(): void
+    {
+        // September, because that is when `{month}` expands to more than it replaces.
+        $manager = $this->buildManager([new Transition('new', 'new', 'draft')], '2024-09-15 10:30:00');
+
+        $client = new Client();
+        $client->setName('Test Client');
+        $client->setCurrencyCode('USD');
+
+        $line = new RecurringInvoiceLine();
+        // Exactly the column width before expansion, and two characters over it after.
+        $line->setName(str_repeat('a', LineName::MAX_LENGTH - mb_strlen('{month}')) . '{month}');
+        $line->setPrice(100);
+        $line->setQty(1);
+        $line->setTotal(100);
+
+        $recurringInvoice = new RecurringInvoice();
+        $recurringInvoice->setClient($client);
+        $recurringInvoice->setCompany(new Company());
+        $recurringInvoice->addLine($line);
+
+        $generated = $manager->createFromRecurring($recurringInvoice)->getLines()->first();
+
+        self::assertInstanceOf(InvoiceLine::class, $generated);
+        self::assertSame(LineName::MAX_LENGTH, mb_strlen($generated->getName()));
+        self::assertStringEndsWith('…', $generated->getName());
+        self::assertStringStartsWith(str_repeat('a', 100), $generated->getName());
     }
 
     public function testCreateThrowsInvalidTransitionExceptionWhenTransitionNotAllowed(): void

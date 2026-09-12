@@ -19,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
@@ -78,27 +79,34 @@ class InvoiceManager
 
         $now = CarbonImmutable::instance($this->clock->now());
 
+        $tokens = [
+            '{day}',
+            '{day_name}',
+            '{month}',
+            '{year}',
+        ];
+
+        $values = [
+            (string) $now->day,
+            $now->format('l'),
+            $now->format('F'),
+            (string) $now->year,
+        ];
+
         /** @var Line $item */
         foreach ($invoice->getLines() as $item) {
-            $description = $item->getDescription();
+            // The name carries the date tokens as readily as the description does — a
+            // recurring line called "Hosting — {month}" is the ordinary case.
+            //
+            // Cut to fit, because expanding a token makes the name longer: `{month}` is seven
+            // characters and September is nine, so a name that fit its column can stop
+            // fitting it. Nothing validates this invoice — the scheduler generates it — so an
+            // over-long name would go straight at the column and fail the flush.
+            $item->setName(LineName::truncate(str_replace($tokens, $values, $item->getName())));
 
-            $description = str_replace(
-                [
-                    '{day}',
-                    '{day_name}',
-                    '{month}',
-                    '{year}',
-                ],
-                [
-                    $now->day,
-                    $now->format('l'),
-                    $now->format('F'),
-                    $now->year,
-                ],
-                $description
-            );
-
-            $item->setDescription($description);
+            if (($description = $item->getDescription()) !== null) {
+                $item->setDescription(str_replace($tokens, $values, $description));
+            }
         }
 
         return $invoice;
@@ -138,6 +146,7 @@ class InvoiceManager
             $invoiceItem = new Line();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());
+            $invoiceItem->setName($item->getName());
             $invoiceItem->setDescription($item->getDescription());
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());

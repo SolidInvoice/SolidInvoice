@@ -1,4 +1,6 @@
 {# Photographer preview #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+
 {% set currency = quote.client.currency %}
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap">
@@ -43,7 +45,7 @@
                     {% for line in quote.lines %}
                         <tr style="border-bottom: 1px solid #e8d7b8;">
                             <td>
-                                <div class="fs-5">{{ line.description|nl2br }}</div>
+                                <div class="fs-5">{{ line.name }}</div>{{ q.line_description(line) }}
                                 <div class="text-muted small">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
                             </td>
                             <td class="text-end fs-4 fw-bold" style="color: #a2492b;">{{ line.total|formatCurrency(currency) }}</td>

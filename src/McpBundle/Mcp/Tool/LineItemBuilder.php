@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Mcp\Tool;
 use Brick\Math\BigDecimal;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Exception\ToolCallException;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
@@ -129,12 +130,18 @@ final readonly class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d must be an object.', $index));
             }
 
+            $name = $data['name'] ?? null;
             $description = $data['description'] ?? null;
             $price = $data['price'] ?? null;
             $qty = $data['qty'] ?? ($data['quantity'] ?? null);
 
-            if (! \is_string($description) || $description === '') {
-                throw new ToolCallException(sprintf('Line item #%d requires a non-empty "description".', $index));
+            $hasName = \is_string($name) && $name !== '';
+            $hasDescription = \is_string($description) && $description !== '';
+
+            // Either will do: a caller that predates the name still sends a description,
+            // and the line derives its name from it.
+            if (! $hasName && ! $hasDescription) {
+                throw new ToolCallException(sprintf('Line item #%d requires a non-empty "name".', $index));
             }
 
             if ($price === null) {
@@ -146,7 +153,27 @@ final readonly class LineItemBuilder
             }
 
             $line = $factory();
-            $line->setDescription($description);
+
+            // A tool call is never validated, so an over-long name would reach VARCHAR(255)
+            // intact and blow up on flush. Anything that long is a description wearing the
+            // wrong label, so keep it as one and cut the name the way every other caller's
+            // name is cut.
+            if ($hasName && mb_strlen($name) > LineName::MAX_LENGTH) {
+                if (! $hasDescription) {
+                    $description = $name;
+                    $hasDescription = true;
+                }
+
+                $name = LineName::fromDescription($name);
+            }
+
+            if ($hasName) {
+                $line->setName($name);
+            }
+
+            if ($hasDescription) {
+                $line->setDescription($description);
+            }
 
             try {
                 $line->setPrice(BigDecimal::of($this->toExactString($price)));

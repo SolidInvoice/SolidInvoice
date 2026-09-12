@@ -42,7 +42,7 @@ final class QuoteLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Item 1',
+            'name' => 'Item 1',
             'price' => 1000,
             'qty' => 2.0,
         ];
@@ -51,7 +51,7 @@ final class QuoteLineTest extends ApiTestCase
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
-        self::assertSame('Item 1', $result['description']);
+        self::assertSame('Item 1', $result['name']);
         self::assertEquals(2.0, $result['qty']);
         self::assertArrayHasKey('total', $result);
     }
@@ -63,7 +63,7 @@ final class QuoteLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Test Item',
+            'name' => 'Test Item',
             'price' => 500,
             'qty' => 1.0,
         ];
@@ -73,7 +73,7 @@ final class QuoteLineTest extends ApiTestCase
 
         $data = $this->requestGet('/api/quotes/' . $quoteId . '/line/' . $lineId);
 
-        self::assertSame('Test Item', $data['description']);
+        self::assertSame('Test Item', $data['name']);
         self::assertSame($lineId, $data['id']);
         self::assertEquals(1.0, $data['qty']);
     }
@@ -85,7 +85,7 @@ final class QuoteLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Original Item',
+            'name' => 'Original Item',
             'price' => 300,
             'qty' => 1.0,
         ];
@@ -95,10 +95,10 @@ final class QuoteLineTest extends ApiTestCase
 
         $data = $this->requestPatch(
             '/api/quotes/' . $quoteId . '/line/' . $lineId,
-            ['description' => 'Updated Item']
+            ['name' => 'Updated Item']
         );
 
-        self::assertSame('Updated Item', $data['description']);
+        self::assertSame('Updated Item', $data['name']);
         self::assertSame($lineId, $data['id']);
     }
 
@@ -109,7 +109,7 @@ final class QuoteLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Item To Delete',
+            'name' => 'Item To Delete',
             'price' => 100,
             'qty' => 1.0,
         ];
@@ -127,13 +127,13 @@ final class QuoteLineTest extends ApiTestCase
             ->toString();
 
         $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
-            'description' => 'Collection Item 1',
+            'name' => 'Collection Item 1',
             'price' => 100,
             'qty' => 1.0,
         ]);
 
         $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
-            'description' => 'Collection Item 2',
+            'name' => 'Collection Item 2',
             'price' => 200,
             'qty' => 2.0,
         ]);
@@ -147,11 +147,13 @@ final class QuoteLineTest extends ApiTestCase
         // Both posts have to survive. Asserting only the collection's type let the second
         // post silently overwrite the first, because the response looked the same either way.
         self::assertSame(2, $data['totalItems']);
-        // Canonicalizing: the lines association carries no OrderBy, so collection order
-        // is unspecified. What matters here is that neither post replaced the other.
-        self::assertEqualsCanonicalizing(
+        // In the posted order, not canonicalized: the lines association carries an OrderBy
+        // on `position` now, so a posted line lands after the ones already there and the
+        // collection comes back in a specified order rather than whatever the database
+        // happened to return. Asserted on `name`, which is what these posts set.
+        self::assertSame(
             ['Collection Item 1', 'Collection Item 2'],
-            array_column($data['member'], 'description')
+            array_column($data['member'], 'name')
         );
     }
 
@@ -176,6 +178,77 @@ final class QuoteLineTest extends ApiTestCase
         );
 
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * A client written before lines had a name sends only a description. It has to keep
+     * working, and the line it creates has to end up with a name all the same.
+     */
+    public function testCreateWithOnlyADescriptionDerivesTheName(): void
+    {
+        $quote = QuoteFactory::createOne();
+        $quoteId = $quote->getId()
+            ->toString();
+
+        $result = $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
+            'description' => "Website design\nIncluding two rounds of revisions.",
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $result['name']);
+        self::assertSame("Website design\nIncluding two rounds of revisions.", $result['description']);
+    }
+
+    /**
+     * A one-line description becomes the name in full, and is still stored. Not printing
+     * the same text twice is the `line_description` macro's job; the API keeps what it
+     * was sent.
+     */
+    public function testASingleLineDescriptionBecomesTheNameAndIsKept(): void
+    {
+        $quote = QuoteFactory::createOne();
+        $quoteId = $quote->getId()
+            ->toString();
+
+        $result = $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
+            'description' => 'Website design',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $result['name']);
+        self::assertSame('Website design', $result['description']);
+    }
+
+    /**
+     * The serializer calls setters in payload key order, so a client that happens to
+     * serialise `description` first must not get a different line from one that does not.
+     */
+    public function testBothFieldsSurviveEitherKeyOrder(): void
+    {
+        $quote = QuoteFactory::createOne();
+        $quoteId = $quote->getId()
+            ->toString();
+
+        $descriptionFirst = $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
+            'description' => 'Consulting',
+            'name' => 'Widget',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $nameFirst = $this->requestPost('/api/quotes/' . $quoteId . '/lines', [
+            'name' => 'Widget',
+            'description' => 'Consulting',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Widget', $descriptionFirst['name']);
+        self::assertSame('Consulting', $descriptionFirst['description']);
+        self::assertSame($nameFirst['name'], $descriptionFirst['name']);
+        self::assertSame($nameFirst['description'], $descriptionFirst['description']);
     }
 
     /**

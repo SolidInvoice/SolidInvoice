@@ -6,6 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
 {% set currency = quote.client.currency %}
 
@@ -158,7 +159,7 @@
                                 <tbody>
                                     {% for item in quote.lines %}
                                         <tr>
-                                            <td class="item-description">{{ item.description|nl2br }}</td>
+                                            <td class="item-description">{{ item.name }}{{ q.line_description(item) }}</td>
                                             <td class="text-end item-amount">{{ item.price|formatCurrency(currency) }}</td>
                                             <td class="text-center">{{ item.qty }}</td>
                                             {% if quote.tax.positive %}

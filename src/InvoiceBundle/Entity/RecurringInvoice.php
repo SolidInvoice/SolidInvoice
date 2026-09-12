@@ -374,12 +374,14 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['searchable'])]
     public function getLineDescriptions(): array
     {
-        return array_values(
-            $this->lines
-                ->map(static fn (RecurringInvoiceLine $line) => $line->getDescription())
-                ->filter(static fn (?string $d) => $d !== null && $d !== '')
-                ->toArray()
-        );
+        $text = [];
+
+        foreach ($this->lines as $line) {
+            $text[] = $line->getName();
+            $text[] = (string) $line->getDescription();
+        }
+
+        return array_values(array_filter($text, static fn (string $value) => $value !== ''));
     }
 
     /**

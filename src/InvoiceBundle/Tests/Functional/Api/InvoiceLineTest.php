@@ -42,7 +42,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Item 1',
+            'name' => 'Item 1',
             'price' => 1000,
             'qty' => 2.0,
         ];
@@ -51,7 +51,7 @@ final class InvoiceLineTest extends ApiTestCase
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
-        self::assertSame('Item 1', $result['description']);
+        self::assertSame('Item 1', $result['name']);
         self::assertEquals(2.0, $result['qty']);
         self::assertArrayHasKey('total', $result);
     }
@@ -67,7 +67,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $result = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
-            'description' => 'Metered usage',
+            'name' => 'Metered usage',
             'price' => 1000,
             'qty' => 2.5,
         ]);
@@ -88,7 +88,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $created = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
-            'description' => 'Metered usage',
+            'name' => 'Metered usage',
             'price' => 1000,
             'qty' => 1,
         ]);
@@ -108,7 +108,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Test Item',
+            'name' => 'Test Item',
             'price' => 500,
             'qty' => 1.0,
         ];
@@ -118,7 +118,7 @@ final class InvoiceLineTest extends ApiTestCase
 
         $data = $this->requestGet('/api/invoices/' . $invoiceId . '/line/' . $lineId);
 
-        self::assertSame('Test Item', $data['description']);
+        self::assertSame('Test Item', $data['name']);
         self::assertSame($lineId, $data['id']);
         self::assertEquals(1.0, $data['qty']);
     }
@@ -130,7 +130,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Original Item',
+            'name' => 'Original Item',
             'price' => 300,
             'qty' => 1.0,
         ];
@@ -140,10 +140,10 @@ final class InvoiceLineTest extends ApiTestCase
 
         $data = $this->requestPatch(
             '/api/invoices/' . $invoiceId . '/line/' . $lineId,
-            ['description' => 'Updated Item']
+            ['name' => 'Updated Item']
         );
 
-        self::assertSame('Updated Item', $data['description']);
+        self::assertSame('Updated Item', $data['name']);
         self::assertSame($lineId, $data['id']);
     }
 
@@ -154,7 +154,7 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $lineData = [
-            'description' => 'Item To Delete',
+            'name' => 'Item To Delete',
             'price' => 100,
             'qty' => 1.0,
         ];
@@ -238,13 +238,13 @@ final class InvoiceLineTest extends ApiTestCase
             ->toString();
 
         $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
-            'description' => 'Collection Item 1',
+            'name' => 'Collection Item 1',
             'price' => 100,
             'qty' => 1.0,
         ]);
 
         $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
-            'description' => 'Collection Item 2',
+            'name' => 'Collection Item 2',
             'price' => 200,
             'qty' => 2.0,
         ]);
@@ -258,11 +258,13 @@ final class InvoiceLineTest extends ApiTestCase
         // Both posts have to survive. Asserting only the collection's type let the second
         // post silently overwrite the first, because the response looked the same either way.
         self::assertSame(2, $data['totalItems']);
-        // Canonicalizing: the lines association carries no OrderBy, so collection order
-        // is unspecified. What matters here is that neither post replaced the other.
-        self::assertEqualsCanonicalizing(
+        // In the posted order, not canonicalized: the lines association carries an OrderBy
+        // on `position` now, so a posted line lands after the ones already there and the
+        // collection comes back in a specified order rather than whatever the database
+        // happened to return. Asserted on `name`, which is what these posts set.
+        self::assertSame(
             ['Collection Item 1', 'Collection Item 2'],
-            array_column($data['member'], 'description')
+            array_column($data['member'], 'name')
         );
     }
 
@@ -287,5 +289,105 @@ final class InvoiceLineTest extends ApiTestCase
         );
 
         self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * A client written before lines had a name sends only a description. It has to keep
+     * working, and the line it creates has to end up with a name all the same.
+     */
+    public function testCreateWithOnlyADescriptionDerivesTheName(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $result = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => "Website design\nIncluding two rounds of revisions.",
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $result['name']);
+        self::assertSame("Website design\nIncluding two rounds of revisions.", $result['description']);
+    }
+
+    /**
+     * A one-line description becomes the name in full, and is still stored. Not printing
+     * the same text twice is the `line_description` macro's job; the API keeps what it
+     * was sent.
+     */
+    public function testASingleLineDescriptionBecomesTheNameAndIsKept(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $result = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Website design',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $result['name']);
+        self::assertSame('Website design', $result['description']);
+    }
+
+    /**
+     * The serializer calls setters in payload key order, so a client that happens to
+     * serialise `description` first must not get a different line from one that does not.
+     */
+    public function testBothFieldsSurviveEitherKeyOrder(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $descriptionFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Consulting',
+            'name' => 'Widget',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $nameFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'name' => 'Widget',
+            'description' => 'Consulting',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Widget', $descriptionFirst['name']);
+        self::assertSame('Consulting', $descriptionFirst['description']);
+        self::assertSame($nameFirst['name'], $descriptionFirst['name']);
+        self::assertSame($nameFirst['description'], $descriptionFirst['description']);
+    }
+
+    /**
+     * The same, for a client that sends the name as an empty string rather than leaving the
+     * key out — which is what a form-ish serialiser does. Whichever way round the two keys
+     * arrive, the name has to come from the description.
+     */
+    public function testAnEmptyNameIsDerivedInEitherKeyOrder(): void
+    {
+        $invoice = InvoiceFactory::createOne();
+        $invoiceId = $invoice->getId()
+            ->toString();
+
+        $descriptionFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'description' => 'Website design',
+            'name' => '',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        $nameFirst = $this->requestPost('/api/invoices/' . $invoiceId . '/lines', [
+            'name' => '',
+            'description' => 'Website design',
+            'price' => 1000,
+            'qty' => 1,
+        ]);
+
+        self::assertSame('Website design', $descriptionFirst['name']);
+        self::assertSame($nameFirst['name'], $descriptionFirst['name']);
     }
 }

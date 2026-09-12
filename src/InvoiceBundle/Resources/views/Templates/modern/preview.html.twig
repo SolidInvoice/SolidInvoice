@@ -1,4 +1,6 @@
 {# Modern Minimal preview #}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
 {% set currency = invoice.client.currency %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
@@ -47,7 +49,7 @@
                 <tbody>
                     {% for line in invoice.lines %}
                         <tr class="border-bottom">
-                            <td class="py-3">{{ line.description|nl2br }}</td>
+                            <td class="py-3">{{ line.name }}{{ inv.line_description(line) }}</td>
                             <td class="py-3 text-end">{{ line.qty }}</td>
                             <td class="py-3 text-end">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="py-3 text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>

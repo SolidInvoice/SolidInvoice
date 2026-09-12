@@ -31,6 +31,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
 use SolidInvoice\ApiBundle\State\Processor\QuoteLinePersistProcessor;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
@@ -135,8 +136,13 @@ class Line implements LineInterface, Stringable
     #[Groups(['quote_api:read'])]
     private ?Ulid $id = null;
 
-    #[ORM\Column(name: 'description', type: Types::TEXT)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: LineName::MAX_LENGTH, options: ['default' => ''])]
     #[Assert\NotBlank]
+    #[Assert\Length(max: LineName::MAX_LENGTH)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private string $name = '';
+
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $description = null;
 
@@ -225,9 +231,56 @@ class Line implements LineInterface, Stringable
         return $this->id;
     }
 
+    /**
+     * An empty name with a description already set derives from it, the same way
+     * {@see self::setDescription()} does when the name is the field that is missing.
+     *
+     * Without that, `{"description": …, "name": ""}` and `{"name": "", "description": …}`
+     * would not mean the same thing: the serializer calls setters in payload key order, so
+     * the first would land on an empty name and be rejected while the second derived one.
+     * A name can never legitimately be cleared — it is `NotBlank` — so there is nothing lost
+     * in reading an empty one as "work it out from the description".
+     */
+    public function setName(string $name): static
+    {
+        if ($name === '' && ($this->description ?? '') !== '') {
+            $name = LineName::fromDescription($this->description);
+        }
+
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Deriving the name here, rather than in a lifecycle callback, is what keeps a caller
+     * that only sends a description valid: `name` is `NotBlank`, so it has to hold a value
+     * by the time the object is validated, which is long before it is persisted.
+     *
+     * The description itself is stored exactly as given, never cleared. The serializer
+     * calls setters in payload key order, so anything this setter does to another field
+     * would make `{"description": …, "name": …}` and `{"name": …, "description": …}`
+     * persist differently. Not printing the same text twice is the `line_description`
+     * macro's job, where it costs no data.
+     */
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        if ($this->name !== '' || ($description ?? '') === '') {
+            return $this;
+        }
+
+        $derived = LineName::fromDescription($description);
+
+        if ($derived !== '') {
+            $this->name = $derived;
+        }
 
         return $this;
     }
@@ -380,6 +433,6 @@ class Line implements LineInterface, Stringable
 
     public function __toString(): string
     {
-        return (string) $this->description;
+        return $this->name;
     }
 }

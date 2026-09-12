@@ -103,7 +103,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                 [
                     'price' => 100.1,
                     'qty' => 1.0,
-                    'description' => 'Foo Line',
+                    'name' => 'Foo Line',
                 ],
             ],
         ];
@@ -126,10 +126,11 @@ final class RecurringInvoiceTest extends ApiTestCase
             'lines' => [
                 [
                     '@type' => 'RecurringInvoiceLine',
-                    'description' => 'Foo Line',
+                    'name' => 'Foo Line',
                     'price' => 100.1,
                     'qty' => 1,
                     'total' => 100.1,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],
@@ -181,7 +182,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'users' => $contacts,
             'lines' => [
                 new RecurringInvoiceLine()
-                    ->setDescription('Test Line')
+                    ->setName('Test Line')
                     ->setPrice(100)
                     ->setQty(1)
             ],
@@ -221,10 +222,11 @@ final class RecurringInvoiceTest extends ApiTestCase
                         ->first()
                         ->getId()
                         ->toString(),
-                    'description' => 'Test Line',
+                    'name' => 'Test Line',
                     'price' => 1,
                     'qty' => 1,
                     'total' => 1,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],
@@ -261,7 +263,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'users' => $contacts,
             'lines' => [
                 new RecurringInvoiceLine()
-                    ->setDescription('Test Line')
+                    ->setName('Test Line')
                     ->setPrice(100)
                     ->setQty(1)
             ],
@@ -282,7 +284,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                     [
                         'price' => 100.0,
                         'qty' => 1.0,
-                        'description' => 'Foo Line',
+                        'name' => 'Foo Line',
                     ],
                 ],
             ]
@@ -315,10 +317,11 @@ final class RecurringInvoiceTest extends ApiTestCase
                         ->first()
                         ->getId()
                         ->toString(),
-                    'description' => 'Foo Line',
+                    'name' => 'Foo Line',
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],

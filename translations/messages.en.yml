@@ -845,13 +845,19 @@ invoice:
     item:
         add: 'Add Item'
         description:
+            add: 'Add description'
+            label: 'Item description'
             placeholder: 'Describe the service or product...'
         heading:
             description: Description
+            name: Item
             price: Price
             qty: Qty
             tax: Tax
             total: Total
+        name:
+            label: 'Item name'
+            placeholder: 'e.g. Website design'
         number: 'Item %number%'
         reorder: 'Reorder item: drag it, or move it with the up and down arrow keys'
         remove: 'Remove Item'
@@ -1786,13 +1792,19 @@ quote:
     item:
         add: 'Add Item'
         description:
+            add: 'Add description'
+            label: 'Item description'
             placeholder: 'Describe the service or product...'
         heading:
             description: Description
+            name: Item
             price: Price
             qty: Qty
             tax: Tax
             total: Total
+        name:
+            label: 'Item name'
+            placeholder: 'e.g. Website design'
         number: 'Item %number%'
         reorder: 'Reorder item: drag it, or move it with the up and down arrow keys'
         remove: 'Remove Item'

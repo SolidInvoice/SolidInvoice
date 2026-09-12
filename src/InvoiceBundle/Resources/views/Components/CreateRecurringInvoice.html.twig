@@ -80,7 +80,7 @@
                         <div class="billing-items-list" {{ stimulus_controller('line-reorder') }}
                              {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
-                                <div class="column-description">{{ 'invoice.item.heading.description'|trans }}</div>
+                                <div class="column-description">{{ 'invoice.item.heading.name'|trans }}</div>
                                 <div class="column-price">{{ 'invoice.item.heading.price'|trans }}</div>
                                 <div class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</div>
                                 {% if hasTax %}
@@ -93,9 +93,14 @@
                             {% for index, item in form.lines %}
                                 <div class="billing-item-row" data-line-reorder-row>
                                     <div class="column-description">
-                                        <span class="mobile-label">{{ 'invoice.item.heading.description'|trans }}</span>
-                                        {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2}}) }}
-                                        {{ form_errors(item.description) }}
+                                        <span class="mobile-label">{{ 'invoice.item.heading.name'|trans }}</span>
+                                        {{ form_widget(item.name, {attr: {placeholder: 'invoice.item.name.placeholder'|trans, 'aria-label': 'invoice.item.name.label'|trans}}) }}
+                                        {{ form_errors(item.name) }}
+                                        <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
+                                            <summary class="line-description-toggle">{{ 'invoice.item.description.add'|trans }}</summary>
+                                            {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2, 'aria-label': 'invoice.item.description.label'|trans}}) }}
+                                            {{ form_errors(item.description) }}
+                                        </details>
                                     </div>
                                     <div class="column-price">
                                         <span class="mobile-label">{{ 'invoice.item.heading.price'|trans }}</span>
