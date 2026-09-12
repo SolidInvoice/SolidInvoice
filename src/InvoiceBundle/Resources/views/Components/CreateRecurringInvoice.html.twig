@@ -77,7 +77,8 @@
                         </div>
                     {% else %}
                         {# Responsive Line Items #}
-                        <div class="billing-items-list" {{ stimulus_controller('line-reorder') }}>
+                        <div class="billing-items-list" {{ stimulus_controller('line-reorder') }}
+                             {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
                                 <div class="column-description">{{ 'invoice.item.heading.description'|trans }}</div>
                                 <div class="column-price">{{ 'invoice.item.heading.price'|trans }}</div>
@@ -144,12 +145,11 @@
                                         <span class="item-total-value">{{ item.vars.value.total|formatCurrency(currency) }}</span>
                                     </div>
                                     <div class="column-actions">
-                                        <span class="line-drag-handle" data-line-reorder-handle
-                                              role="button" tabindex="0"
-                                              title="{{ 'invoice.item.reorder'|trans }}"
-                                              aria-label="{{ 'invoice.item.reorder'|trans }}">
+                                        <button type="button" class="line-drag-handle" data-line-reorder-handle
+                                                title="{{ 'invoice.item.reorder'|trans }}"
+                                                aria-label="{{ 'invoice.item.reorder'|trans }}">
                                             {{ ux_icon('tabler:grip-vertical', {width: 16, height: 16}) }}
-                                        </span>
+                                        </button>
                                         {% if form.lines|length > 1 %}
                                             {{ form_widget(item.vars.button_delete, {
                                                 label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,

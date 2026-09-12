@@ -493,9 +493,13 @@
 
     // Quiet until the row is hovered or the handle is tabbed to, so a column of grips does
     // not compete with the fields for attention.
+
     .line-drag-handle {
         display: flex;
         align-items: center;
+        padding: 0;
+        border: 0;
+        background: none;
         color: var(--swp-text-muted);
         cursor: grab;
         opacity: 0;
@@ -591,6 +595,7 @@
         }
 
         // No hover to reveal it on a touch screen.
+
         .line-drag-handle {
             opacity: 1;
         }
