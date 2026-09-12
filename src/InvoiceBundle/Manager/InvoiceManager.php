@@ -19,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
+use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
@@ -96,7 +97,12 @@ class InvoiceManager
         foreach ($invoice->getLines() as $item) {
             // The name carries the date tokens as readily as the description does — a
             // recurring line called "Hosting — {month}" is the ordinary case.
-            $item->setName(str_replace($tokens, $values, $item->getName()));
+            //
+            // Cut to fit, because expanding a token makes the name longer: `{month}` is seven
+            // characters and September is nine, so a name that fit its column can stop
+            // fitting it. Nothing validates this invoice — the scheduler generates it — so an
+            // over-long name would go straight at the column and fail the flush.
+            $item->setName(LineName::truncate(str_replace($tokens, $values, $item->getName())));
 
             if (($description = $item->getDescription()) !== null) {
                 $item->setDescription(str_replace($tokens, $values, $description));
