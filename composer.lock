@@ -14498,16 +14498,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v8.1.2",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f"
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/e4c1236171800cdb3e5dbe189121454204f1654f",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/fdb4670b8b4183c3ff45381e93343823cb9e17ea",
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea",
                 "shasum": ""
             },
             "require": {
@@ -14556,7 +14556,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v8.1.2"
+                "source": "https://github.com/symfony/notifier/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -14576,7 +14576,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-05T10:41:02+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/object-mapper",
@@ -19587,16 +19587,16 @@
         },
         {
             "name": "symfony/vonage-notifier",
-            "version": "v8.1.0",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/vonage-notifier.git",
-                "reference": "33d481dfcf420b0dec63491610aca47a23967962"
+                "reference": "dec5525d49c7c03a70e624a22b2c3c4c22372359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/vonage-notifier/zipball/33d481dfcf420b0dec63491610aca47a23967962",
-                "reference": "33d481dfcf420b0dec63491610aca47a23967962",
+                "url": "https://api.github.com/repos/symfony/vonage-notifier/zipball/dec5525d49c7c03a70e624a22b2c3c4c22372359",
+                "reference": "dec5525d49c7c03a70e624a22b2c3c4c22372359",
                 "shasum": ""
             },
             "require": {
@@ -19638,7 +19638,7 @@
                 "vonage"
             ],
             "support": {
-                "source": "https://github.com/symfony/vonage-notifier/tree/v8.1.0"
+                "source": "https://github.com/symfony/vonage-notifier/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -19658,7 +19658,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-08-30T01:03:44+00:00"
         },
         {
             "name": "symfony/web-link",
