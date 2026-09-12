@@ -150,6 +150,9 @@ class InvoiceManager
             $invoiceItem->setDescription($item->getDescription());
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());
+            // A quantity without its unit is a different quantity: 40 of something billed in
+            // hours is not 40 of something billed in kilograms.
+            $invoiceItem->setUnitCode($item->getUnitCode());
 
             // Snapshot fresh LineTax rows so the new invoice owns its own tax history.
             $invoiceItem->getTaxes()->clear();

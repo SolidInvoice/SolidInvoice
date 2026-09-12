@@ -27,6 +27,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -147,6 +148,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
+        $line->setUnitCode(UnitCode::HOUR);
         $line->setTotal(120 * 10);
 
         $quote = new Quote();
@@ -187,6 +189,8 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getName(), $invoiceLine[0]->getName());
+        // 10 of something billed in hours is not 10 of something billed in units.
+        self::assertSame(UnitCode::HOUR, $invoiceLine[0]->getUnitCode());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
@@ -321,6 +325,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $line->setCreated(Carbon::now());
         $line->setPrice(120);
         $line->setQty(10);
+        $line->setUnitCode(UnitCode::HOUR);
         $line->setTotal(120 * 10);
 
         $recurringInvoice = new RecurringInvoice();
@@ -360,6 +365,8 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getName());
+        // Every cycle generates a fresh invoice, so a unit dropped here is dropped for good.
+        self::assertSame(UnitCode::HOUR, $invoiceLine[0]->getUnitCode());
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
