@@ -6325,16 +6325,16 @@
         },
         {
             "name": "pagerfanta/core",
-            "version": "v4.8.0",
+            "version": "v4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pagerfanta/core.git",
-                "reference": "9d014cecdfdb8f377ce4923df9603b741b7353ea"
+                "reference": "b636b080cf91c8cbe16a59ef79977e2300edd522"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pagerfanta/core/zipball/9d014cecdfdb8f377ce4923df9603b741b7353ea",
-                "reference": "9d014cecdfdb8f377ce4923df9603b741b7353ea",
+                "url": "https://api.github.com/repos/Pagerfanta/core/zipball/b636b080cf91c8cbe16a59ef79977e2300edd522",
+                "reference": "b636b080cf91c8cbe16a59ef79977e2300edd522",
                 "shasum": ""
             },
             "require": {
@@ -6362,9 +6362,9 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/Pagerfanta/core/tree/v4.8.0"
+                "source": "https://github.com/Pagerfanta/core/tree/v4.9.0"
             },
-            "time": "2026-01-22T13:51:30+00:00"
+            "time": "2026-09-08T17:43:17+00:00"
         },
         {
             "name": "pagerfanta/doctrine-orm-adapter",
@@ -6415,7 +6415,7 @@
         },
         {
             "name": "pagerfanta/twig",
-            "version": "v4.8.0",
+            "version": "v4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pagerfanta/twig.git",
@@ -6453,7 +6453,7 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/Pagerfanta/twig/tree/v4.8.0"
+                "source": "https://github.com/Pagerfanta/twig/tree/v4.9.0"
             },
             "time": "2025-03-08T02:17:34+00:00"
         },
