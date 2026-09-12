@@ -1,5 +1,5 @@
 import { Context, Controller } from '@hotwired/stimulus';
-import { Modal } from 'bootstrap';
+import { Modal } from '@tabler/core';
 import { getComponent } from '@symfony/ux-live-component';
 
 /**
@@ -43,7 +43,7 @@ export default class extends Controller<HTMLElement> {
         this.shouldClearOnHide = true;
 
         // Close the modal - Bootstrap will handle animation and cleanup
-        const modalInstance = Modal.getInstance(this.modalElement);
+        const modalInstance = Modal.getInstance(this.modalElement) as Modal | null;
         if (modalInstance) {
             modalInstance.hide();
         }

@@ -207,6 +207,10 @@
                                                         attr: {class: 'line-tax-add-btn'}
                                                     }) }}
                                                 </div>
+
+                                                {# Hand-rendered, so mark it rendered — see the
+                                                   note on the invoice-level taxes below. #}
+                                                {%- do item.taxes.setRendered() -%}
                                             {% endif %}
                                         </div>
                                     {% endif %}
@@ -288,6 +292,10 @@
                         </div>
                     </div>
                 {% endif %}
+
+                {# The rows above are rendered by hand, so the collection itself still counts as
+                   unrendered and `form_end()` would dump a second, unstyled copy below the form. #}
+                {%- do form.invoiceTaxes.setRendered() -%}
             </div>
 
             {# Totals Sidebar #}
@@ -347,6 +355,10 @@
                 </div>
             </details>
         {% endif %}
+
+        {# Same as the taxes above: the children are rendered by hand, so mark the collection
+           rendered to keep `form_end()` from repeating it unstyled. #}
+        {%- if form.customFields is defined %}{% do form.customFields.setRendered() %}{% endif -%}
 
         {# Terms & Notes - Collapsible Section #}
         <details class="billing-terms-section"{{ this.hasTermsOrNotes ? ' open' : '' }}>

@@ -28,6 +28,14 @@
     }
 }
 
+// Tom Select marks a control that holds a selection with `.full`, and Tabler tints those with
+// the page background — which reads as a disabled field next to the white inputs beside it.
+// A select that has an answer is not a different kind of control to one that does not.
+
+.ts-wrapper.full .ts-control {
+    background-color: var(--swp-surface);
+}
+
 // ============================================================================
 // FORM LABELS
 // ============================================================================
