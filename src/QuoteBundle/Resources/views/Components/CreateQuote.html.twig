@@ -148,7 +148,7 @@
                         </div>
                     {% else %}
                         {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
-                        <div class="billing-items-list" {{ stimulus_controller('line-reorder') }}
+                        <div class="billing-items-list" {{ stimulus_controller('line-reorder', {announcement: 'quote.item.reordered'|trans}) }}
                              {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
                                 <div class="column-description">{{ 'quote.item.heading.description'|trans }}</div>

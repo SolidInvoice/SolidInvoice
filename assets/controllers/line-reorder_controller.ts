@@ -18,8 +18,13 @@ const HANDLE = '[data-line-reorder-handle]';
  */
 /* stimulusFetch: 'lazy' */
 export default class extends Controller<HTMLElement> {
+    static values = { announcement: String };
+    declare announcementValue: string;
+    declare readonly hasAnnouncementValue: boolean;
+
     private sortable: Sortable | null = null;
     private component: Component | null = null;
+    private liveRegion: HTMLElement | null = null;
 
     async connect() {
         // getComponent() only resolves the component's own root element, and this controller
@@ -31,6 +36,7 @@ export default class extends Controller<HTMLElement> {
         }
 
         this.component = await getComponent(root);
+        this.liveRegion = this.createLiveRegion();
 
         this.sortable = Sortable.create(this.element, {
             handle: HANDLE,
@@ -53,6 +59,8 @@ export default class extends Controller<HTMLElement> {
         this.sortable?.destroy();
         this.sortable = null;
         this.component = null;
+        this.liveRegion?.remove();
+        this.liveRegion = null;
     }
 
     /*
@@ -94,6 +102,38 @@ export default class extends Controller<HTMLElement> {
         // the document — so put it on the handle of the line the user just moved, leaving them
         // able to press the key again.
         this.rows()[to]?.querySelector<HTMLElement>(HANDLE)?.focus();
+
+        this.announce(to);
+    }
+
+    /*
+     * Focus returns to a handle whose accessible name is the same one it had before the move,
+     * so a screen reader is told nothing about what changed. Where the line landed is the
+     * whole outcome of the action, so it is said out loud.
+     */
+    private announce(index: number) {
+        if (this.liveRegion === null || !this.hasAnnouncementValue) {
+            return;
+        }
+
+        this.liveRegion.textContent = this.announcementValue
+            .replace('%position%', String(index + 1))
+            .replace('%total%', String(this.rows().length));
+    }
+
+    /*
+     * Outside the component rather than inside it: the live component re-renders the row list
+     * on every move, and a region morphed away mid-announcement is not read.
+     */
+    private createLiveRegion(): HTMLElement {
+        const region = document.createElement('div');
+
+        region.className = 'visually-hidden';
+        region.setAttribute('role', 'status');
+        region.setAttribute('aria-live', 'polite');
+        document.body.append(region);
+
+        return region;
     }
 
     private rows(): HTMLElement[] {
