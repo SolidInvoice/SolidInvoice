@@ -24,6 +24,7 @@ use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use function array_map;
 use function array_values;
+use function assert;
 
 /**
  * The three line owners share {@see \SolidInvoice\CoreBundle\Traits\Entity\LinePositions}, so
@@ -162,6 +163,92 @@ final class LinePositionsTest extends TestCase
 
         self::assertSame(0, $first->getPosition());
         self::assertSame(1, $second->getPosition());
+    }
+
+    /**
+     * A line that reached the collection without `addLine()` is placed by the owner's own
+     * insert, not left on the sentinel — and several of them get a slot each rather than all
+     * landing on the first.
+     */
+    #[DataProvider('owners')]
+    public function testTheOwnerPlacesLinesThatSkippedAddLine(callable $newOwner, callable $newLine): void
+    {
+        $owner = $newOwner();
+
+        $owner->addLine($placed = $newLine());
+        $owner->getLines()->add($skipped = $newLine());
+        $owner->getLines()->add($alsoSkipped = $newLine());
+
+        $owner->updateLines();
+
+        self::assertSame(0, $placed->getPosition());
+        self::assertSame(1, $skipped->getPosition());
+        self::assertSame(2, $alsoSkipped->getPosition());
+    }
+
+    /**
+     * The line's own fallback, for the case the owner's insert cannot cover: a line persisted
+     * against an owner that is already in the database.
+     */
+    #[DataProvider('attachedLines')]
+    public function testALineAttachedWithoutAddLineAppends(callable $newOwner, callable $newLine, callable $attach): void
+    {
+        $owner = $newOwner();
+
+        $owner->addLine($newLine());
+        $owner->addLine($newLine());
+
+        $attach($owner, $attached = $newLine());
+        $attached->placeUnplacedLine();
+
+        // 2, not 0 — the slot the collection's first line is holding.
+        self::assertSame(2, $attached->getPosition());
+    }
+
+    #[DataProvider('owners')]
+    public function testALineWithNoOwnerTakesTheFirstSlot(callable $newOwner, callable $newLine): void
+    {
+        $line = $newLine();
+
+        $line->placeUnplacedLine();
+
+        self::assertSame(0, $line->getPosition());
+    }
+
+    /**
+     * @return iterable<string, array{callable(): object, callable(): LineInterface, callable(object, LineInterface): void}>
+     */
+    public static function attachedLines(): iterable
+    {
+        yield 'invoice' => [
+            static fn (): Invoice => new Invoice(),
+            static fn (): InvoiceLine => new InvoiceLine(),
+            static function (object $owner, LineInterface $line): void {
+                assert($owner instanceof Invoice && $line instanceof InvoiceLine);
+
+                $line->setInvoice($owner);
+            },
+        ];
+
+        yield 'recurring invoice' => [
+            static fn (): RecurringInvoice => new RecurringInvoice(),
+            static fn (): RecurringInvoiceLine => new RecurringInvoiceLine(),
+            static function (object $owner, LineInterface $line): void {
+                assert($owner instanceof RecurringInvoice && $line instanceof RecurringInvoiceLine);
+
+                $line->setRecurringInvoice($owner);
+            },
+        ];
+
+        yield 'quote' => [
+            static fn (): Quote => new Quote(),
+            static fn (): QuoteLine => new QuoteLine(),
+            static function (object $owner, LineInterface $line): void {
+                assert($owner instanceof Quote && $line instanceof QuoteLine);
+
+                $line->setQuote($owner);
+            },
+        ];
     }
 
     /**
