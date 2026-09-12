@@ -290,6 +290,24 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
+     * The owner's last word on its lines before they are written, as
+     * {@see Invoice::updateLines()} is for an invoice.
+     *
+     * A line that reached the collection without {@see self::addLine()} is still unplaced,
+     * and would otherwise be left to {@see RecurringInvoiceLine::placeUnplacedLine()}, which
+     * cannot see its siblings. Renumbering here gives every line a distinct slot.
+     */
+    #[ORM\PrePersist]
+    public function updateLines(): void
+    {
+        foreach ($this->lines as $line) {
+            $line->setRecurringInvoice($this);
+        }
+
+        $this->compactLinePositions($this->lines);
+    }
+
+    /**
      * @return Collection<int, Contact>
      */
     public function getUsers(): Collection

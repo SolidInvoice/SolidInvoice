@@ -361,12 +361,22 @@ class Invoice extends BaseInvoice implements Stringable
         return $this->lines;
     }
 
+    /**
+     * The owner's last word on its lines before they are written.
+     *
+     * A line that reached the collection without {@see self::addLine()} — added straight to
+     * `getLines()`, or bound by a form that never called it — is still unplaced, and would
+     * otherwise be left to {@see Line::placeUnplacedLine()}, which cannot see its siblings.
+     * Renumbering here gives every line in the collection a distinct slot.
+     */
     #[ORM\PrePersist]
     public function updateLines(): void
     {
         foreach ($this->lines as $line) {
             $line->setInvoice($this);
         }
+
+        $this->compactLinePositions($this->lines);
     }
 
     public function addPayment(Payment $payment): self

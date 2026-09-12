@@ -529,12 +529,22 @@ class Quote
         return $this;
     }
 
+    /**
+     * The owner's last word on its lines before they are written.
+     *
+     * A line that reached the collection without {@see self::addLine()} — added straight to
+     * `getLines()`, or bound by a form that never called it — is still unplaced, and would
+     * otherwise be left to {@see Line::placeUnplacedLine()}, which cannot see its siblings.
+     * Renumbering here gives every line in the collection a distinct slot.
+     */
     #[ORM\PrePersist]
     public function updateLines(): void
     {
         foreach ($this->lines as $line) {
             $line->setQuote($this);
         }
+
+        $this->compactLinePositions($this->lines);
     }
 
     #[Groups(['searchable'])]

@@ -34,6 +34,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\LinePosition;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
 use SolidInvoice\InvoiceBundle\Repository\LineRepository;
@@ -130,6 +131,7 @@ class Line implements LineInterface, Stringable
 
     use TimeStampable;
     use CompanyAware;
+    use LinePosition;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -255,15 +257,24 @@ class Line implements LineInterface, Stringable
 
     /**
      * A line attached with {@see self::setInvoice()} rather than {@see Invoice::addLine()} is
-     * never renumbered, so it would store the sentinel. Zero, because a line its owner never
-     * placed has no established slot to keep.
+     * never renumbered, so it would store the sentinel. It appends instead, which is where
+     * `addLine()` would have put it.
+     *
+     * {@see Invoice::updateLines()} places such a line properly whenever the owner's own
+     * insert can see it. This is the case it cannot: a line persisted against an owner that
+     * is already in the database. Two of those in one flush still collide — neither is in the
+     * collection, so neither can see the other — and nothing short of `addLine()` fixes that.
      */
     #[ORM\PrePersist]
     public function placeUnplacedLine(): void
     {
-        if ($this->position === LineInterface::UNPLACED) {
-            $this->position = 0;
+        if ($this->position !== LineInterface::UNPLACED) {
+            return;
         }
+
+        $this->position = $this->invoice instanceof Invoice
+            ? $this->positionAfter($this->invoice->getLines())
+            : 0;
     }
 
     /**

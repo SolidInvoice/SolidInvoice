@@ -23,6 +23,7 @@ use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use SolidInvoice\ApiBundle\State\Processor\RecurringInvoiceLinePersistProcessor;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceLineRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
@@ -112,6 +113,26 @@ class RecurringInvoiceLine extends Line
     public function getRecurringInvoice(): ?RecurringInvoice
     {
         return $this->recurringInvoice;
+    }
+
+    /**
+     * {@see Line::placeUnplacedLine()} for a line that hangs off a recurring invoice instead.
+     *
+     * No `#[ORM\PrePersist]` of its own: Doctrine inherits the parent's callbacks by method
+     * name, and the name it already has resolves here.
+     */
+    #[Override]
+    public function placeUnplacedLine(): void
+    {
+        if ($this->getPosition() !== LineInterface::UNPLACED) {
+            return;
+        }
+
+        $this->setPosition(
+            $this->recurringInvoice instanceof RecurringInvoice
+                ? $this->positionAfter($this->recurringInvoice->getLines())
+                : 0
+        );
     }
 
     /**
