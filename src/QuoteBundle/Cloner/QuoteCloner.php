@@ -88,6 +88,7 @@ final readonly class QuoteCloner
             $quoteLine->setDescription($line->getDescription());
             $quoteLine->setPrice($line->getPrice());
             $quoteLine->setQty($line->getQty());
+            $quoteLine->setUnitCode($line->getUnitCode());
 
             $quoteLine->getTaxes()->clear();
             foreach ($line->getTaxes() as $sourceLineTax) {

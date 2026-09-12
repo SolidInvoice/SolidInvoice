@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1","unitCode":"C62","taxes":[]}],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
@@ -122,8 +122,22 @@
                                         
                                     </div>
                                     <div class="column-qty">
-                                        <span class="mobile-label">Qty</span>
-                                        <input type="text" id="quote_lines_0_qty" name="quote[lines][0][qty]" class="input-mini quote-item-qty form-control" inputmode="decimal" value="1">
+                                        <span class="mobile-label">Qty</span><div class="qty-unit-group">
+                                            <input type="text" id="quote_lines_0_qty" name="quote[lines][0][qty]" class="input-mini quote-item-qty form-control" inputmode="decimal" value="1">
+                                            <select id="quote_lines_0_unitCode" name="quote[lines][0][unitCode]" class="input-mini invoice-item-unit form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-label="Unit"><option value="C62" selected>units</option>
+<option value="HUR">hours</option>
+<option value="DAY">days</option>
+<option value="MON">months</option>
+<option value="ANN">years</option>
+<option value="E48">services</option>
+<option value="KGM">kg</option>
+<option value="TNE">t</option>
+<option value="MTR">m</option>
+<option value="MTK">m&Acirc;&sup2;</option>
+<option value="MTQ">m&Acirc;&sup3;</option>
+<option value="LTR">L</option></select>
+                                        </div>
+                                        
                                         
                                     </div>
                                                                             <div class="column-tax">

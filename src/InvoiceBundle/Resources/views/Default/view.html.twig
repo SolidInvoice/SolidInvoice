@@ -294,7 +294,7 @@
                                 <tr>
                                     <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}{{ inv.line_description(item, false) }}</td>
                                     <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
-                                    <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
+                                    <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ quantity(item) }}</td>
                                     {% if invoice.tax.positive %}
                                         <td class="column-tax" data-label="{{ 'invoice.item.heading.tax'|trans }}">
                                             {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}

@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\QuoteBundle\Entity\Line;
@@ -28,6 +29,7 @@ use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use function basename;
 use function dirname;
@@ -84,14 +86,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     public function testTemplateRenders(string $slug, string $channel): void
     {
         $quote = $this->createFixtureQuote();
-
-        $twig = self::getContainer()->get('twig');
-        self::assertInstanceOf(Environment::class, $twig);
-
-        $output = $twig->render(
-            sprintf('@SolidInvoiceQuote/Templates/%s/%s.html.twig', $slug, $channel),
-            ['quote' => $quote]
-        );
+        $output = $this->renderTemplate($slug, $channel, $quote);
 
         self::assertNotEmpty($output, sprintf('Template %s/%s produced empty output', $slug, $channel));
         self::assertStringContainsString($quote->getQuoteId(), $output);
@@ -130,14 +125,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             self::markTestSkipped('PDF generation requires mbstring + gd extensions.');
         }
 
-        $quote = $this->createFixtureQuote();
-        $twig = self::getContainer()->get('twig');
-        self::assertInstanceOf(Environment::class, $twig);
-
-        $html = $twig->render(
-            sprintf('@SolidInvoiceQuote/Templates/%s/pdf.html.twig', $slug),
-            ['quote' => $quote]
-        );
+        $html = $this->renderTemplate($slug, 'pdf', $this->createFixtureQuote());
 
         $pdf = $generator->generate($html);
         self::assertNotEmpty($pdf);
@@ -169,7 +157,11 @@ final class TemplatesRenderingTest extends KernelTestCase
         $em->flush();
     }
 
-    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.'): Quote
+    /**
+     * @param list<Line> $lines Replaces the default line outright, for a test that needs to
+     *                          dictate the line rather than just its description.
+     */
+    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.', array $lines = []): Quote
     {
         $this->seedCompanyLogo();
 
@@ -201,7 +193,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             'tax' => BigInteger::of(0),
             'discount' => new Discount()
                 ->setType(null),
-            'lines' => [
+            'lines' => $lines !== [] ? $lines : [
                 new Line()
                     ->setName('Sample line item')
                     ->setDescription($description)
@@ -256,6 +248,43 @@ final class TemplatesRenderingTest extends KernelTestCase
     }
 
     /**
+     * The unit is an inline suffix on the quantity, not a column, so a template needs no
+     * markup of its own for it — but it does have to route the quantity through
+     * {@see \SolidInvoice\CoreBundle\Twig\Extension\BillingExtension::quantity()} to show it.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testUnitOfMeasureRenders(string $slug, string $channel): void
+    {
+        $output = $this->renderTemplate($slug, $channel, $this->createFixtureQuote(lines: [
+            new Line()
+                ->setName('Consulting')
+                ->setPrice(BigInteger::of(12500))
+                ->setQty(12)
+                ->setUnitCode(UnitCode::HOUR)
+                ->setTotal(BigInteger::of(150000)),
+        ]));
+
+        self::assertStringContainsString('12 hours', $output);
+    }
+
+    /**
+     * Nothing about a unit may reach the page when every line bills in plain units, which is
+     * every quote that existed before the column did.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testUnitOfMeasureIsSuppressedForPlainUnits(string $slug, string $channel): void
+    {
+        $output = $this->renderTemplate($slug, $channel, $this->createFixtureQuote());
+        $translator = self::getContainer()->get(TranslatorInterface::class);
+        self::assertInstanceOf(TranslatorInterface::class, $translator);
+
+        self::assertStringNotContainsString(
+            sprintf('2 %s', UnitCode::UNIT->trans($translator)),
+            $output
+        );
+    }
+
+    /**
      * @return iterable<string, array{string, string}>
      */
     public static function lineChannelProvider(): iterable
@@ -266,5 +295,16 @@ final class TemplatesRenderingTest extends KernelTestCase
                 yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
         }
+    }
+
+    private function renderTemplate(string $slug, string $channel, Quote $quote): string
+    {
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        return $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/%s.html.twig', $slug, $channel),
+            ['quote' => $quote]
+        );
     }
 }
