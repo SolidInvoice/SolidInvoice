@@ -20,6 +20,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\QuoteBundle\Cloner\QuoteCloner;
@@ -62,6 +63,7 @@ final class QuoteClonerTest extends TestCase
         $item->setCreated(Carbon::now());
         $item->setPrice(BigInteger::of(120));
         $item->setQty(10);
+        $item->setUnitCode(UnitCode::HOUR);
         $item->setTotal(BigInteger::of(120 * 10));
 
         $quote = new Quote();
@@ -131,6 +133,8 @@ final class QuoteClonerTest extends TestCase
         self::assertCount(1, $quoteItem[0]->getTaxes());
         self::assertSame('VAT', $quoteItem[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
+        // 10 of something billed in hours is not 10 of something billed in units.
+        self::assertSame(UnitCode::HOUR, $quoteItem[0]->getUnitCode());
         self::assertInstanceOf(DateTimeImmutable::class, $quoteItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
         self::assertTrue($item->getQty()->isEqualTo($quoteItem[0]->getQty()));
