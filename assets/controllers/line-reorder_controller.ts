@@ -71,6 +71,11 @@ export default class extends Controller<HTMLElement> {
             return;
         }
 
+        // Before the bounds check, not after: an arrow key pressed on the first or last
+        // handle has to do nothing, and scrolling the page out from under a control that
+        // just refused to move is not nothing.
+        event.preventDefault();
+
         const rows = this.rows();
         const from = rows.indexOf(handle.closest<HTMLElement>(ROW) as HTMLElement);
         const to = event.key === 'ArrowUp' ? from - 1 : from + 1;
@@ -78,9 +83,6 @@ export default class extends Controller<HTMLElement> {
         if (from === -1 || to < 0 || to >= rows.length) {
             return;
         }
-
-        // Otherwise the page scrolls under the line that just moved.
-        event.preventDefault();
 
         void this.move(from, to);
     }
