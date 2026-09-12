@@ -110,6 +110,18 @@ final class LineNameMigrationTest extends TestCase
             "Website design\n",
         ];
 
+        yield 'lone carriage returns separate lines too' => [
+            "Website design\rIncluding two rounds of revisions.",
+            'Website design',
+            "Website design\rIncluding two rounds of revisions.",
+        ];
+
+        yield 'a leading blank line does not leave the line unnamed' => [
+            "\n \nWebsite design\nIncluding two rounds of revisions.",
+            'Website design',
+            "\n \nWebsite design\nIncluding two rounds of revisions.",
+        ];
+
         yield 'blank description names nothing' => [
             '   ',
             '',

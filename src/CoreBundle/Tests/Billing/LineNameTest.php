@@ -30,6 +30,8 @@ final class LineNameTest extends TestCase
         yield 'surrounding whitespace' => ["  Website design \n", 'Website design'];
         yield 'multi line keeps the first line' => ["Website design\nIncluding two rounds of revisions.", 'Website design'];
         yield 'windows line endings' => ["Website design\r\nWith revisions.", 'Website design'];
+        yield 'lone carriage returns' => ["Website design\rWith revisions.", 'Website design'];
+        yield 'leading blank lines are skipped' => ["\n \nWebsite design\nWith revisions.", 'Website design'];
         yield 'blank' => ['   ', ''];
         yield 'empty' => ['', ''];
     }
@@ -38,6 +40,15 @@ final class LineNameTest extends TestCase
     public function testItNamesALineAfterTheFirstLineOfItsDescription(string $description, string $expected): void
     {
         self::assertSame($expected, LineName::fromDescription($description));
+    }
+
+    /**
+     * A description that opens with a blank line still has to name its line: `name` is
+     * `NotBlank`, and onboarding persists the invoice it builds without ever validating it.
+     */
+    public function testALeadingBlankLineDoesNotLeaveTheLineUnnamed(): void
+    {
+        self::assertSame('Website design', LineName::fromDescription("\nWebsite design"));
     }
 
     public function testItTruncatesALineTooLongForTheColumn(): void

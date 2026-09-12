@@ -38,20 +38,43 @@ final class LineName
     private const string ELLIPSIS = '…';
 
     /**
-     * The first line of the description, trimmed, and cut to fit the column.
+     * The first line of the description that has anything on it, trimmed, and cut to fit the
+     * column.
      *
      * The first line rather than the first sentence: a description someone wrote as a
      * heading with detail under it already says where the name ends, and a description
      * written as prose has no line break to find, so it falls back to the truncation.
+     *
+     * The first line *with something on it*, because a description that opens with a blank
+     * line is still a description — taking the empty string would leave the line with a name
+     * that fails its own `NotBlank`, on a path like onboarding that persists without
+     * validating.
      */
     public static function fromDescription(string $description): string
     {
-        $firstLine = trim(explode("\n", str_replace("\r\n", "\n", $description), 2)[0]);
+        // Lone CR as well as CRLF: a textarea or an older client can still send one, and a
+        // description that arrives as a single `\r`-separated run would otherwise be read as
+        // one very long line.
+        foreach (explode("\n", str_replace(["\r\n", "\r"], "\n", $description)) as $line) {
+            $line = trim($line);
 
-        if (mb_strlen($firstLine) <= self::MAX_LENGTH) {
-            return $firstLine;
+            if ($line !== '') {
+                return self::truncate($line);
+            }
         }
 
-        return rtrim(mb_substr($firstLine, 0, self::MAX_LENGTH - mb_strlen(self::ELLIPSIS))) . self::ELLIPSIS;
+        return '';
+    }
+
+    /**
+     * Cuts a name to fit the column, marking where it was cut.
+     */
+    public static function truncate(string $name): string
+    {
+        if (mb_strlen($name) <= self::MAX_LENGTH) {
+            return $name;
+        }
+
+        return rtrim(mb_substr($name, 0, self::MAX_LENGTH - mb_strlen(self::ELLIPSIS))) . self::ELLIPSIS;
     }
 }

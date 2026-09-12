@@ -187,12 +187,23 @@ final class Version30100_6 extends AbstractMigration
 
     private function nameFor(string $description): string
     {
-        $firstLine = trim(explode("\n", str_replace("\r\n", "\n", $description), 2)[0]);
+        // Lone CR as well as CRLF: a description stored by an older client can use either,
+        // and one that arrives as a single `\r`-separated run would otherwise be read as one
+        // very long line and truncated in the middle of it.
+        foreach (explode("\n", str_replace(["\r\n", "\r"], "\n", $description)) as $line) {
+            $line = trim($line);
 
-        if (mb_strlen($firstLine) <= self::NAME_MAX_LENGTH) {
-            return $firstLine;
+            if ($line === '') {
+                continue;
+            }
+
+            if (mb_strlen($line) <= self::NAME_MAX_LENGTH) {
+                return $line;
+            }
+
+            return rtrim(mb_substr($line, 0, self::NAME_MAX_LENGTH - mb_strlen(self::ELLIPSIS))) . self::ELLIPSIS;
         }
 
-        return rtrim(mb_substr($firstLine, 0, self::NAME_MAX_LENGTH - mb_strlen(self::ELLIPSIS))) . self::ELLIPSIS;
+        return '';
     }
 }
