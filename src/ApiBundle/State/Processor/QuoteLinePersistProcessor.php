@@ -34,7 +34,10 @@ final readonly class QuoteLinePersistProcessor implements ProcessorInterface
         assert($data instanceof Line);
 
         $quoteId = $uriVariables['quoteId'] ?? null;
-        $quote = $this->quoteRepository->find($quoteId);
+        // findOneBy() rather than find(): the CompanyFilter applies to both, but find() can
+        // answer from the identity map without querying, and 0a27718dc left this lookup as the
+        // only check between a posted line and its owner. See CompanyFilter's docblock.
+        $quote = $this->quoteRepository->findOneBy(['id' => $quoteId]);
 
         if ($quote === null) {
             throw new NotFoundHttpException(sprintf('Quote "%s" not found.', $quoteId));

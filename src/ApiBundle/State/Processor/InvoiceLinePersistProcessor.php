@@ -34,7 +34,10 @@ final readonly class InvoiceLinePersistProcessor implements ProcessorInterface
         assert($data instanceof Line);
 
         $invoiceId = $uriVariables['invoiceId'] ?? null;
-        $invoice = $this->invoiceRepository->find($invoiceId);
+        // findOneBy() rather than find(): the CompanyFilter applies to both, but find() can
+        // answer from the identity map without querying, and 0a27718dc left this lookup as the
+        // only check between a posted line and its owner. See CompanyFilter's docblock.
+        $invoice = $this->invoiceRepository->findOneBy(['id' => $invoiceId]);
 
         if ($invoice === null) {
             throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $invoiceId));
