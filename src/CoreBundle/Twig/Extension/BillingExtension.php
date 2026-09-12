@@ -50,7 +50,7 @@ final class BillingExtension extends AbstractExtension
     }
 
     /**
-     * A line's quantity with its unit of measure after it — "12 hours", "40 kg".
+     * A line's quantity with its unit of measure after it — "1 hour", "12 hours", "40 kg".
      *
      * {@see UnitCode::UNIT} renders as the bare number, which is what keeps the unit off the
      * invoices of everyone who never sets one instead of printing "2 units" on all of them.
@@ -63,6 +63,6 @@ final class BillingExtension extends AbstractExtension
             return (string) $line->getQty();
         }
 
-        return $line->getQty() . ' ' . $line->getUnitCode()->trans($this->translator);
+        return $line->getQty() . ' ' . $line->getUnitCode()->forQuantity($this->translator, $line->getQty()->toFloat());
     }
 }
