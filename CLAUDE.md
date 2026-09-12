@@ -196,6 +196,29 @@ Currencies come from Client entity. Never use default currency.
 - PCI-compliant payments via Payum
 - Use env vars for secrets
 
+### `find()` applies the CompanyFilter
+
+Doctrine SQL filters are applied in the WHERE clause of every generated SELECT, including the one
+`find()` produces. `find()` is **not** a filter bypass and swapping it for `findOneBy(['id' => ...])`
+is **not** a cross-tenant fix. Do not write otherwise without reading the source first:
+
+| Path | Filtered? | Where |
+|------|-----------|-------|
+| `find()` / `findOneBy()` / `findBy()` / `findAll()` | yes | `BasicEntityPersister::getSelectSQL()` — `vendor/doctrine/orm/src/Persisters/Entity/BasicEntityPersister.php:1146` |
+| DQL / QueryBuilder | yes | `SqlWalker::generateFilterConditionSQL()` — `vendor/doctrine/orm/src/Query/SqlWalker.php:454` |
+| `find()` on an **already-managed** entity | no | returns from the identity map before any SQL — `vendor/doctrine/orm/src/EntityManager.php:325-347` |
+| `getReference()` | on initialisation | the proxy emits no SQL until used, then loads via `loadById()` and throws `EntityNotFoundException` if filtered out — `vendor/doctrine/orm/src/Proxy/ProxyFactory.php:223,295` |
+
+The identity-map row is the only real difference between `find()` and `findOneBy()`. It is why
+`findOneBy(['id' => ...])` is still the better default where the EntityManager may be warm (message
+handlers, worker-mode requests, and functional tests that seed more than one tenant) — defence in
+depth, not a live vulnerability.
+
+`CompanyFilter`'s class docblock carries the full trace, and
+`CoreBundle/Tests/Functional/CompanyFilterLookupTest` proves all four combinations of
+{`find`, `findOneBy`} × {warm, cold identity map} against a real database. Cite those rather than
+guessing.
+
 ---
 
 ## Quick Reference
