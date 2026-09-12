@@ -258,11 +258,13 @@ final class InvoiceLineTest extends ApiTestCase
         // Both posts have to survive. Asserting only the collection's type let the second
         // post silently overwrite the first, because the response looked the same either way.
         self::assertSame(2, $data['totalItems']);
-        // Canonicalizing: the lines association carries no OrderBy, so collection order
-        // is unspecified. What matters here is that neither post replaced the other.
-        self::assertEqualsCanonicalizing(
+        // In the posted order, not canonicalized: the lines association carries an OrderBy
+        // on `position` now, so a posted line lands after the ones already there and the
+        // collection comes back in a specified order rather than whatever the database
+        // happened to return. Asserted on `name`, which is what these posts set.
+        self::assertSame(
             ['Collection Item 1', 'Collection Item 2'],
-            array_column($data['member'], 'description')
+            array_column($data['member'], 'name')
         );
     }
 
