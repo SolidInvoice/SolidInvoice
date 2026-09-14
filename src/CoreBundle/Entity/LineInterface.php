@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use const PHP_INT_MAX;
 use Brick\Math\BigNumber;
 use Doctrine\Common\Collections\Collection;
 use SolidInvoice\TaxBundle\Entity\LineTax;
@@ -20,11 +21,27 @@ use Symfony\Component\Uid\Ulid;
 
 interface LineInterface
 {
+    /**
+     * The position of a line whose owner has not placed it yet.
+     *
+     * A sentinel rather than null, so the property matches its `NOT NULL` column and a line
+     * can never be persisted without a position. It is the largest int there is, so an
+     * unplaced line sorts after every placed one and renumbering turns it into an append.
+     */
+    public const int UNPLACED = PHP_INT_MAX;
+
     public function getId(): Ulid;
 
     public function setDescription(?string $description): self;
 
     public function getDescription(): ?string;
+
+    public function setPosition(int $position): self;
+
+    /**
+     * {@see self::UNPLACED} until an owner places the line.
+     */
+    public function getPosition(): int;
 
     public function setPrice(BigNumber | int | string $price): self;
 

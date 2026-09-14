@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
@@ -28,8 +29,10 @@ use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
+use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceLineType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
@@ -87,6 +90,56 @@ final class RecurringInvoiceTypeTest extends FormTestCase
     }
 
     /**
+     * A recurring invoice is saved by submitting its form, not through a form manager, so the
+     * dragged order has to survive that submit on its own.
+     *
+     * The rows come back from the drag renumbered `0..n-1`, so the third line's values arrive
+     * as row 0. What moves is the values, not the objects — line 0 keeps its id and picks up
+     * what used to be on line 2 — but the order the reader gets is the order they dragged,
+     * and the positions stay contiguous.
+     *
+     * @throws MathException
+     */
+    public function testSubmittingLinesInADraggedOrderKeepsThatOrder(): void
+    {
+        $client = new Client()->setCompany($this->company)->setCurrencyCode('USD');
+        $this->registry->getManager()->persist($client);
+
+        $invoice = new RecurringInvoice();
+        $invoice->setRecurringOptions(new RecurringOptions());
+        $invoice->setClient($client);
+
+        foreach (['First', 'Second', 'Third'] as $description) {
+            $invoice->addLine(new RecurringInvoiceLine()->setDescription($description)->setPrice(10000)->setQty(1));
+        }
+
+        $form = $this->factory->create(RecurringInvoiceType::class, $invoice);
+
+        $form->submit([
+            'client' => ['autocomplete' => $client->getId()->toString()],
+            'lines' => [
+                ['description' => 'Third', 'price' => '100.00', 'qty' => '1'],
+                ['description' => 'First', 'price' => '100.00', 'qty' => '1'],
+                ['description' => 'Second', 'price' => '100.00', 'qty' => '1'],
+            ],
+            'total' => 0,
+            'baseTotal' => 0,
+            'tax' => 0,
+            'date_start' => $this->faker->dateTime()->format('Y-m-d'),
+        ]);
+
+        self::assertSame(
+            ['Third', 'First', 'Second'],
+            $invoice->getLines()->map(static fn (RecurringInvoiceLine $line): ?string => $line->getDescription())->toArray(),
+        );
+
+        self::assertSame(
+            [0, 1, 2],
+            $invoice->getLines()->map(static fn (RecurringInvoiceLine $line): int => $line->getPosition())->toArray(),
+        );
+    }
+
+    /**
      * @return array<FormExtensionInterface>
      */
     #[Override]
@@ -116,6 +169,7 @@ final class RecurringInvoiceTypeTest extends FormTestCase
             new PreloadedExtension([
                 $invoiceType,
                 $itemType,
+                new RecurringInvoiceLineType($this->registry),
                 new DiscountType($systemConfig),
                 $customFieldsType,
             ], []),
