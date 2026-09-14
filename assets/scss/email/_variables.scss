@@ -2,7 +2,7 @@
  * Email Design Tokens
  *
  * Maps SolidInvoice design system tokens to email-safe values.
- * Email clients don't support CSS custom properties (var(--swp-*)),
+ * Email clients don't support CSS custom properties (var(--tblr-*)),
  * so we use SCSS variables that compile to static values.
  */
 
