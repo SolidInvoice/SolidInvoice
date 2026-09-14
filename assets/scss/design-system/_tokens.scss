@@ -326,11 +326,14 @@
 :root {
     // Brand palette.
 
-    // `secondary` is deliberately absent: ours is the orange accent, Tabler's is the neutral
-    // grey behind `.text-secondary`, `.btn-outline-secondary` and avatar tiles. Handing our
-    // orange over turns every muted label orange, so Tabler keeps its own.
+    // `secondary` carries further than its name suggests: Tabler builds `.text-secondary`
+    // out of it, so the orange reaches muted labels as well as buttons and badges. That is
+    // how the app has always looked — under the old prefix our orange landed on the same
+    // token — so it is handed over with the rest.
     --tblr-primary: var(--swp-primary);
     --tblr-primary-rgb: var(--swp-primary-rgb);
+    --tblr-secondary: var(--swp-secondary);
+    --tblr-secondary-rgb: var(--swp-secondary-rgb);
     --tblr-success: var(--swp-success);
     --tblr-success-rgb: var(--swp-success-rgb);
     --tblr-danger: var(--swp-danger);
