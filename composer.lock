@@ -10748,16 +10748,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v8.1.0",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "dc0e2be45c9b5588c82414f02ac574b4b986abcd"
+                "reference": "08e2905152a39cf3fd1745d83f8c483e258887d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/dc0e2be45c9b5588c82414f02ac574b4b986abcd",
-                "reference": "dc0e2be45c9b5588c82414f02ac574b4b986abcd",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/08e2905152a39cf3fd1745d83f8c483e258887d9",
+                "reference": "08e2905152a39cf3fd1745d83f8c483e258887d9",
                 "shasum": ""
             },
             "require": {
@@ -10793,7 +10793,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v8.1.0"
+                "source": "https://github.com/symfony/css-selector/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -10813,7 +10813,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-08-23T10:06:25+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -27379,16 +27379,16 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v8.1.1",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "f2ac86001ca9f487e8c6d0e11c8e33e6a9b8b2d5"
+                "reference": "f6766c9fb232e72897d6d55cf8f6aec38db2dbbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/f2ac86001ca9f487e8c6d0e11c8e33e6a9b8b2d5",
-                "reference": "f2ac86001ca9f487e8c6d0e11c8e33e6a9b8b2d5",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/f6766c9fb232e72897d6d55cf8f6aec38db2dbbf",
+                "reference": "f6766c9fb232e72897d6d55cf8f6aec38db2dbbf",
                 "shasum": ""
             },
             "require": {
@@ -27427,7 +27427,7 @@
             "description": "Simulates the behavior of a web browser, allowing you to make requests, click on links and submit forms programmatically",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/browser-kit/tree/v8.1.1"
+                "source": "https://github.com/symfony/browser-kit/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -27447,7 +27447,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-09T10:54:51+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/debug-bundle",
@@ -27526,16 +27526,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v8.1.1",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "1dfadd25537c8fcb6752cce5775f24647d976bdc"
+                "reference": "94f70e1b2e5b7b8f8618871fd9eaad3e39e9f03d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/1dfadd25537c8fcb6752cce5775f24647d976bdc",
-                "reference": "1dfadd25537c8fcb6752cce5775f24647d976bdc",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/94f70e1b2e5b7b8f8618871fd9eaad3e39e9f03d",
+                "reference": "94f70e1b2e5b7b8f8618871fd9eaad3e39e9f03d",
                 "shasum": ""
             },
             "require": {
@@ -27572,7 +27572,7 @@
             "description": "Eases DOM navigation for HTML and XML documents",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dom-crawler/tree/v8.1.1"
+                "source": "https://github.com/symfony/dom-crawler/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -27592,7 +27592,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:23:12+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/maker-bundle",
@@ -28032,21 +28032,21 @@
         },
         {
             "name": "zenstruck/browser",
-            "version": "v1.10.1",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/browser.git",
-                "reference": "c9097f8f4d5faace4be0335e42952d1168fb316f"
+                "reference": "26c1b6d1e052dfdd9a2eef13d4f7134e824da00c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/browser/zipball/c9097f8f4d5faace4be0335e42952d1168fb316f",
-                "reference": "c9097f8f4d5faace4be0335e42952d1168fb316f",
+                "url": "https://api.github.com/repos/zenstruck/browser/zipball/26c1b6d1e052dfdd9a2eef13d4f7134e824da00c",
+                "reference": "26c1b6d1e052dfdd9a2eef13d4f7134e824da00c",
                 "shasum": ""
             },
             "require": {
                 "behat/mink": "^1.8",
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "symfony/browser-kit": "^6.4|^7.0|^8.0",
                 "symfony/css-selector": "^6.4|^7.0|^8.0",
                 "symfony/dom-crawler": "^6.4|^7.0|^8.0",
@@ -28055,11 +28055,13 @@
                 "zenstruck/callback": "^1.4.2"
             },
             "require-dev": {
-                "dbrekelmans/bdi": "^1.0",
+                "brianium/paratest": "^6.11|^7.0",
                 "justinrainbow/json-schema": "^5.3",
                 "mtdowling/jmespath.php": "^2.6",
                 "phpstan/phpstan": "^2.0",
-                "phpunit/phpunit": "^9.6.21|^10.4",
+                "phpunit/phpunit": "^9.6.21|^10.4|^11.5|^12.0|^13.0",
+                "playwright-php/playwright": "^1.4",
+                "playwright-php/playwright-symfony": "^0.10",
                 "symfony/console": "^6.4|^7.0|^8.0",
                 "symfony/mime": "^6.4|^7.0|^8.0",
                 "symfony/panther": "^1.1|^2.0.1",
@@ -28095,7 +28097,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/browser/issues",
-                "source": "https://github.com/zenstruck/browser/tree/v1.10.1"
+                "source": "https://github.com/zenstruck/browser/tree/v1.12.0"
             },
             "funding": [
                 {
@@ -28107,7 +28109,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-28T15:54:04+00:00"
+            "time": "2026-08-24T16:02:16+00:00"
         },
         {
             "name": "zenstruck/callback",
