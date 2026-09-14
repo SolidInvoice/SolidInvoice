@@ -11466,16 +11466,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v8.1.1",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "13b74638d9c7c6854fcbb7e89a42a90fdca51f57"
+                "reference": "bda5b15a7658d256bcfe67d23eb0e10d437dc708"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/13b74638d9c7c6854fcbb7e89a42a90fdca51f57",
-                "reference": "13b74638d9c7c6854fcbb7e89a42a90fdca51f57",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/bda5b15a7658d256bcfe67d23eb0e10d437dc708",
+                "reference": "bda5b15a7658d256bcfe67d23eb0e10d437dc708",
                 "shasum": ""
             },
             "require": {
@@ -11509,7 +11509,7 @@
             "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/expression-language/tree/v8.1.1"
+                "source": "https://github.com/symfony/expression-language/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -11529,7 +11529,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-09T10:54:51+00:00"
+            "time": "2026-08-30T01:03:44+00:00"
         },
         {
             "name": "symfony/fake-chat-notifier",
