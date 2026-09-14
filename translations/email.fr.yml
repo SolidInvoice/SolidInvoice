@@ -1,32 +1,32 @@
 client:
     create:
-        subject: 'A new client has been created'
-        heading: 'A new client has been created.'
+        subject: 'Un nouveau client a été créé'
+        heading: 'Un nouveau client a été créé'
         contacts:
             heading: Contacts
-            name: Name
+            name: Nom
         details:
             id: ID
             name: 'Client Name'
-            website: Website
+            website: 'Site Internet'
             email: Email
             vat_number: 'VAT Number'
         message: 'A new client has been added.'
         view_client: 'View Client'
 invoice:
-    pay_now: 'Pay Now'
+    pay_now: 'Payer maintenant'
     status:
-        subject: 'Invoice Status Change'
+        subject: "Changer le statut d'une facture"
     status_change:
-        heading: 'An Invoice status has changed'
+        heading: "Le statut d'une facture a été modifié"
         id: Invoice
-        old_status: 'Original Status'
-        new_status: 'New Status'
-        status: Status
-        view_invoice: 'View Invoice'
+        old_status: 'Statut original'
+        new_status: 'Nouveau statut'
+        status: Statut
+        view_invoice: 'Voir la facture'
         client: Client
         message: 'An invoice status has been updated.'
-    info: 'You have received an invoice from %company% generated on %created%'
+    info: 'Vous avez reçu une facture de %company% générée sur %created%'
     amount_payable: 'Amount payable'
     balance: 'Balance Due'
     created: Created
@@ -65,33 +65,33 @@ invoice:
         online: 'View this online at %url%'
     withholding: Withholding
 payment:
-    description: 'A new payment has been made'
+    description: 'Un nouveau paiement a été effectué'
     capture:
-        subject: 'A Payment has been made'
+        subject: 'Un paiement a été effectué'
     details:
-        amount: Amount
-        currency: Currency
-        invoice: Invoice
+        amount: Montant
+        currency: "Devise\_"
+        invoice: Facture
         client: Client
-        status: Status
-        method: 'Payment Method'
+        status: Statut
+        method: 'Mode de paiement'
         date: Date
     notification:
         message: 'A payment has been received.'
     view_invoice: 'View Invoice'
 quote:
     status:
-        subject: 'Quote Status Change'
+        subject: 'Statut du devis modifié'
     status_change:
-        heading: 'A Quote status has changed'
+        heading: "Le statut d'un devis a changé"
         id: Quote
-        old_status: 'Original Status'
-        new_status: 'New Status'
-        status: Status
-        view_quote: 'View Quote'
+        old_status: "Statut d'origine"
+        new_status: 'Nouveau statut'
+        status: Statut
+        view_quote: 'Voir le devis'
         client: Client
         message: 'A quote status has been updated.'
-    info: 'You have received a quote from %company% generated on %created%'
+    info: 'Vous avez reçu un devis de la part de %company% généré sur %created%'
     amount_payable: 'Amount payable'
     created: Created
     discount: Discount
@@ -106,14 +106,14 @@ quote:
     withholding: Withholding
 reset_password:
     subject: 'Reset your password for %username%'
-    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
-    message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
-    button_text: 'Reset Password'
+    message_text: "Une réinitialisation du mot de passe a été demandée pour l'utilisateur %username%.\n\nSi vous n'avez pas demandé la réinitialisation de votre mot de passe, vous pouvez ignorer ce message en toute sécurité.\n\nPour réinitialiser votre mot de passe, veuillez copier et coller le lien ci-dessous dans votre navigateur\n\n%confirmationUrl%\n"
+    message_html: "Une réinitialisation du mot de passe a été demandée pour l'utilisateur <strong>%username%</strong>.\n\nSi vous n'avez pas demandé la réinitialisation de votre mot de passe, vous pouvez ignorer ce message en toute sécurité.\n\nPour réinitialiser votre mot de passe, veuillez suivre le lien ci-dessous\n"
+    button_text: 'Réinitialiser le mot de passe'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"
     expires: 'This link will expire in %resetTimestamp%.'
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
 invitation:
-    accept: 'Accept Invitation'
+    accept: 'Accepter l’Invitation'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"
     company: Company
     email: 'Your Email'
@@ -127,7 +127,7 @@ invitation:
         message: 'Your invitation to join %company% on SolidInvoice will expire in 2 days.'
         title: 'Your invitation to join %company% is about to expire'
     title: 'Invitation to join %company%'
-Confirm: __Confirm
+Confirm: Confirmer
 email:
     confirmation:
         alternative: "If the button above doesn't work, copy and paste this link into your browser:"
