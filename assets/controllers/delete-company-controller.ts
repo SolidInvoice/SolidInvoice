@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { Modal } from 'bootstrap';
+import { Modal } from '@tabler/core';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller<HTMLElement> {
@@ -15,7 +15,7 @@ export default class extends Controller<HTMLElement> {
 
     connect() {
         if (this.modalTarget) {
-            this.modalInstance = Modal.getOrCreateInstance(this.modalTarget);
+            this.modalInstance = Modal.getOrCreateInstance(this.modalTarget) as Modal;
         }
     }
 

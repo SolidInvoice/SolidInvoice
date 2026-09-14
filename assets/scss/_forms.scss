@@ -11,21 +11,29 @@
 
 .form-control,
 .form-select {
-    border-radius: var(--swp-input-radius);
-    border-color: var(--swp-input-border);
-    padding: var(--swp-input-padding-y) var(--swp-input-padding-x);
-    font-size: var(--swp-text-base);
-    transition: border-color var(--swp-transition-fast),
-                box-shadow var(--swp-transition-fast);
+    border-radius: var(--tblr-input-radius);
+    border-color: var(--tblr-input-border);
+    padding: var(--tblr-input-padding-y) var(--tblr-input-padding-x);
+    font-size: var(--tblr-text-base);
+    transition: border-color var(--tblr-transition-fast),
+                box-shadow var(--tblr-transition-fast);
 
     &:focus {
-        border-color: var(--swp-input-focus-border);
-        box-shadow: var(--swp-input-focus-ring);
+        border-color: var(--tblr-input-focus-border);
+        box-shadow: var(--tblr-input-focus-ring);
     }
 
     &::placeholder {
-        color: var(--swp-text-light);
+        color: var(--tblr-text-light);
     }
+}
+
+// Tom Select marks a control that holds a selection with `.full`, and Tabler tints those with
+// the page background — which reads as a disabled field next to the white inputs beside it.
+// A select that has an answer is not a different kind of control to one that does not.
+
+.ts-wrapper.full .ts-control {
+    background-color: var(--tblr-surface);
 }
 
 // ============================================================================
@@ -33,16 +41,16 @@
 // ============================================================================
 
 .form-label {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-secondary);
-    margin-bottom: var(--swp-space-2);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-secondary);
+    margin-bottom: var(--tblr-space-2);
 
     // Required indicator
 
     &.required::after {
         content: ' *';
-        color: var(--swp-danger);
+        color: var(--tblr-danger);
     }
 }
 
@@ -53,27 +61,27 @@
 .form-field {
 
     .form-label {
-        font-weight: var(--swp-font-medium);
-        color: var(--swp-body-color);
-        margin-bottom: var(--swp-space-2);
+        font-weight: var(--tblr-font-medium);
+        color: var(--tblr-body-color);
+        margin-bottom: var(--tblr-space-2);
     }
 
     .form-control,
     .form-select {
-        border-color: var(--swp-border);
-        transition: border-color var(--swp-transition-fast),
-                    box-shadow var(--swp-transition-fast);
+        border-color: var(--tblr-border);
+        transition: border-color var(--tblr-transition-fast),
+                    box-shadow var(--tblr-transition-fast);
 
         &:focus {
-            border-color: var(--swp-primary);
-            box-shadow: var(--swp-ring-primary);
+            border-color: var(--tblr-primary);
+            box-shadow: var(--tblr-ring-primary);
         }
     }
 
     .input-group-text {
-        background-color: var(--swp-gray-50);
-        border-color: var(--swp-border);
-        color: var(--swp-text-muted);
+        background-color: var(--tblr-gray-50);
+        border-color: var(--tblr-border);
+        color: var(--tblr-text-muted);
     }
 }
 
@@ -84,10 +92,10 @@
 .form-help,
 .form-text,
 .form-help-text {
-    color: var(--swp-text-muted);
-    font-size: var(--swp-text-sm);
-    line-height: var(--swp-leading-normal);
-    margin-top: var(--swp-space-1);
+    color: var(--tblr-text-muted);
+    font-size: var(--tblr-text-sm);
+    line-height: var(--tblr-leading-normal);
+    margin-top: var(--tblr-space-1);
 
     small {
         font-size: inherit;
@@ -99,23 +107,23 @@
 // ============================================================================
 
 .form-switch-field {
-    padding: var(--swp-space-3-5) var(--swp-space-4);
-    background-color: var(--swp-gray-50);
-    border-radius: var(--swp-radius-md);
-    border: 1px solid var(--swp-border);
-    transition: border-color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    padding: var(--tblr-space-3-5) var(--tblr-space-4);
+    background-color: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-md);
+    border: 1px solid var(--tblr-border);
+    transition: border-color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
 
     &:hover {
-        border-color: rgba(var(--swp-primary-rgb), 0.3);
-        background-color: var(--swp-primary-lighter);
+        border-color: rgba(var(--tblr-primary-rgb), 0.3);
+        background-color: var(--tblr-primary-lighter);
     }
 }
 
 .form-switch-wrapper {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
     margin-bottom: 0;
 
     .form-check-input {
@@ -123,21 +131,21 @@
         height: 1.25rem;
         margin-top: 0;
         cursor: pointer;
-        background-color: var(--swp-gray-300);
+        background-color: var(--tblr-gray-300);
         border: none;
-        transition: background-color var(--swp-transition-fast);
+        transition: background-color var(--tblr-transition-fast);
 
         &:checked {
-            background-color: var(--swp-primary);
+            background-color: var(--tblr-primary);
         }
 
         &:focus {
-            box-shadow: var(--swp-ring-primary);
+            box-shadow: var(--tblr-ring-primary);
         }
     }
 
     .form-check-label {
-        font-weight: var(--swp-font-medium);
+        font-weight: var(--tblr-font-medium);
         cursor: pointer;
         margin-bottom: 0;
         margin-left: 0.5rem;
@@ -152,9 +160,9 @@
 .input-icon-group {
 
     .input-group-text {
-        background-color: var(--swp-gray-50);
-        border-color: var(--swp-border);
-        color: var(--swp-text-muted);
+        background-color: var(--tblr-gray-50);
+        border-color: var(--tblr-border);
+        color: var(--tblr-text-muted);
 
         svg {
             width: 18px;
@@ -166,12 +174,12 @@
         border-left: none;
 
         &:focus {
-            border-color: var(--swp-primary);
-            box-shadow: var(--swp-ring-primary);
+            border-color: var(--tblr-primary);
+            box-shadow: var(--tblr-ring-primary);
 
             ~ .input-group-text,
             + .input-group-text {
-                border-color: var(--swp-primary);
+                border-color: var(--tblr-primary);
             }
         }
     }
@@ -196,8 +204,8 @@
     .btn-validate {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-1-5);
-        font-size: var(--swp-text-sm);
+        gap: var(--tblr-space-1-5);
+        font-size: var(--tblr-text-sm);
 
         svg {
             width: 16px;
@@ -211,19 +219,19 @@
 // ============================================================================
 
 .form-group-card {
-    padding: var(--swp-space-5);
-    background-color: var(--swp-gray-50);
-    border-radius: var(--swp-radius-lg);
-    border: 1px solid var(--swp-border);
+    padding: var(--tblr-space-5);
+    background-color: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-lg);
+    border: 1px solid var(--tblr-border);
 
     .form-group-header {
-        margin-bottom: var(--swp-space-4);
+        margin-bottom: var(--tblr-space-4);
     }
 
     .form-group-title {
-        font-size: var(--swp-text-base);
-        font-weight: var(--swp-font-semibold);
-        color: var(--swp-body-color);
+        font-size: var(--tblr-text-base);
+        font-weight: var(--tblr-font-semibold);
+        color: var(--tblr-body-color);
         margin: 0;
     }
 
@@ -243,17 +251,17 @@
 .address-widget {
 
     .card-body {
-        padding: var(--swp-space-4);
+        padding: var(--tblr-space-4);
     }
 
     .form-label {
-        font-size: var(--swp-text-sm);
-        font-weight: var(--swp-font-medium);
+        font-size: var(--tblr-text-sm);
+        font-weight: var(--tblr-font-medium);
     }
 
     .form-control,
     .form-select {
-        font-size: var(--swp-text-base);
+        font-size: var(--tblr-text-base);
     }
 }
 
@@ -263,7 +271,7 @@
 
 .form-control.is-invalid,
 .form-select.is-invalid {
-    border-color: var(--swp-danger);
+    border-color: var(--tblr-danger);
     padding-right: calc(1.5em + 0.75rem);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -271,31 +279,31 @@
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 
     &:focus {
-        border-color: var(--swp-danger);
-        box-shadow: var(--swp-ring-danger);
+        border-color: var(--tblr-danger);
+        box-shadow: var(--tblr-ring-danger);
     }
 }
 
 .form-control.is-valid,
 .form-select.is-valid {
-    border-color: var(--swp-success);
+    border-color: var(--tblr-success);
 
     &:focus {
-        border-color: var(--swp-success);
+        border-color: var(--tblr-success);
         box-shadow: 0 0 0 3px rgb(16 185 129 / 15%);
     }
 }
 
 .invalid-feedback {
-    color: var(--swp-danger);
-    font-size: var(--swp-text-sm);
-    margin-top: var(--swp-space-1-5);
+    color: var(--tblr-danger);
+    font-size: var(--tblr-text-sm);
+    margin-top: var(--tblr-space-1-5);
 }
 
 .valid-feedback {
-    color: var(--swp-success);
-    font-size: var(--swp-text-sm);
-    margin-top: var(--swp-space-1-5);
+    color: var(--tblr-success);
+    font-size: var(--tblr-text-sm);
+    margin-top: var(--tblr-space-1-5);
 }
 
 // ============================================================================
@@ -303,24 +311,24 @@
 // ============================================================================
 
 .file-upload-area {
-    border: 2px dashed var(--swp-gray-300);
-    border-radius: var(--swp-radius-md);
-    padding: var(--swp-space-6);
+    border: 2px dashed var(--tblr-gray-300);
+    border-radius: var(--tblr-radius-md);
+    padding: var(--tblr-space-6);
     text-align: center;
-    background: var(--swp-surface);
-    transition: border-color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    background: var(--tblr-surface);
+    transition: border-color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
     cursor: pointer;
 
     &:hover,
     &.dragover {
-        border-color: var(--swp-primary);
-        background-color: var(--swp-primary-lighter);
+        border-color: var(--tblr-primary);
+        background-color: var(--tblr-primary-lighter);
     }
 
     .upload-icon {
-        color: var(--swp-text-light);
-        margin-bottom: var(--swp-space-2);
+        color: var(--tblr-text-light);
+        margin-bottom: var(--tblr-space-2);
 
         svg {
             width: 32px;
@@ -329,33 +337,33 @@
     }
 
     .upload-text {
-        color: var(--swp-text-muted);
-        font-size: var(--swp-text-sm);
+        color: var(--tblr-text-muted);
+        font-size: var(--tblr-text-sm);
     }
 
     .upload-hint {
-        color: var(--swp-text-light);
-        font-size: var(--swp-text-xs);
-        margin-top: var(--swp-space-1);
+        color: var(--tblr-text-light);
+        font-size: var(--tblr-text-xs);
+        margin-top: var(--tblr-space-1);
     }
 }
 
 // Symfony UX Dropzone styling
 
 .dropzone {
-    border: 2px dashed var(--swp-gray-300);
-    border-radius: var(--swp-radius-md);
-    padding: var(--swp-space-4);
+    border: 2px dashed var(--tblr-gray-300);
+    border-radius: var(--tblr-radius-md);
+    padding: var(--tblr-space-4);
     text-align: center;
-    background: var(--swp-surface);
-    transition: border-color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    background: var(--tblr-surface);
+    transition: border-color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
     min-height: auto;
 
     &:hover,
     &.dropzone-dragover {
-        border-color: var(--swp-primary);
-        background-color: var(--swp-primary-lighter);
+        border-color: var(--tblr-primary);
+        background-color: var(--tblr-primary-lighter);
     }
 }
 
@@ -364,17 +372,17 @@
 // ============================================================================
 
 .form-section-title {
-    font-size: var(--swp-text-md);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-body-color);
+    font-size: var(--tblr-text-md);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-body-color);
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    margin-bottom: var(--swp-space-4);
+    gap: var(--tblr-space-2);
+    margin-bottom: var(--tblr-space-4);
 
     svg,
     i {
-        color: var(--swp-primary);
+        color: var(--tblr-primary);
         opacity: 0.9;
         width: 20px;
         height: 20px;
@@ -400,10 +408,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4) var(--swp-space-6);
-    background: var(--swp-gray-50);
-    border-top: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4) var(--tblr-space-6);
+    background: var(--tblr-gray-50);
+    border-top: 1px solid var(--tblr-border-light);
 
     // When used in a card footer
 
@@ -427,7 +435,7 @@
 .form-inline {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
     flex-wrap: wrap;
 
     .form-control,
@@ -447,7 +455,7 @@
     .mb-4 {
         display: grid;
         grid-template-columns: 200px 1fr;
-        gap: var(--swp-space-4);
+        gap: var(--tblr-space-4);
         align-items: start;
 
         @media (width <= 768px) {
@@ -456,7 +464,7 @@
     }
 
     .form-label {
-        padding-top: var(--swp-space-2-5);
+        padding-top: var(--tblr-space-2-5);
         margin-bottom: 0;
         text-align: right;
 
@@ -475,18 +483,18 @@
 
     .mb-3,
     .mb-4 {
-        margin-bottom: var(--swp-space-3) !important;
+        margin-bottom: var(--tblr-space-3) !important;
     }
 
     .form-control,
     .form-select {
-        padding: var(--swp-space-2) var(--swp-space-3);
-        font-size: var(--swp-text-sm);
+        padding: var(--tblr-space-2) var(--tblr-space-3);
+        font-size: var(--tblr-text-sm);
     }
 
     .form-label {
-        font-size: var(--swp-text-xs);
-        margin-bottom: var(--swp-space-1);
+        font-size: var(--tblr-text-xs);
+        margin-bottom: var(--tblr-space-1);
     }
 }
 
@@ -498,7 +506,7 @@
 // but does not set gap. Add consistent spacing between icon and text.
 
 .btn {
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 // ============================================================================
@@ -512,7 +520,7 @@
     width: 32px;
     height: 32px;
     padding: 0;
-    border-radius: var(--swp-radius-md);
+    border-radius: var(--tblr-radius-md);
 
     svg {
         width: 18px;
@@ -521,17 +529,17 @@
 }
 
 .btn-ghost-danger {
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
     background: transparent;
     border: none;
 
     &:hover {
-        color: var(--swp-danger);
-        background: var(--swp-danger-lighter);
+        color: var(--tblr-danger);
+        background: var(--tblr-danger-lighter);
     }
 
     &:focus {
-        box-shadow: var(--swp-ring-danger);
+        box-shadow: var(--tblr-ring-danger);
     }
 }
 
@@ -558,7 +566,7 @@
 @media (width <= 576px) {
 
     .form-switch-field {
-        padding: var(--swp-space-3);
+        padding: var(--tblr-space-3);
     }
 
     .form-switch-wrapper {
@@ -570,11 +578,11 @@
     }
 
     .form-group-card {
-        padding: var(--swp-space-4);
+        padding: var(--tblr-space-4);
     }
 
     .form-actions {
-        padding: var(--swp-space-3) var(--swp-space-4);
+        padding: var(--tblr-space-3) var(--tblr-space-4);
         flex-wrap: wrap;
 
         .btn {

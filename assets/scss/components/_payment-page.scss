@@ -17,7 +17,7 @@
 .payment-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding-bottom: var(--swp-space-12);
+    padding-bottom: var(--tblr-space-12);
 }
 
 // ============================================================================
@@ -25,14 +25,14 @@
 // ============================================================================
 
 .payment-header {
-    margin-bottom: var(--swp-space-6);
-    padding: var(--swp-space-6) 0;
+    margin-bottom: var(--tblr-space-6);
+    padding: var(--tblr-space-6) 0;
 }
 
 .payment-header-content {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-4);
+    gap: var(--tblr-space-4);
 }
 
 .payment-header-icon {
@@ -41,23 +41,23 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
-    border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
+    background: linear-gradient(135deg, var(--tblr-primary-light) 0%, rgba(var(--tblr-primary-rgb), 0.15) 100%);
+    border-radius: var(--tblr-radius-lg);
+    color: var(--tblr-primary);
 }
 
 .payment-header-title {
     font-size: 1.75rem;
-    font-weight: var(--swp-font-bold);
-    color: var(--swp-text-primary);
+    font-weight: var(--tblr-font-bold);
+    color: var(--tblr-text-primary);
     margin: 0;
     letter-spacing: -0.025em;
 }
 
 .payment-header-subtitle {
-    font-size: var(--swp-text-base);
-    color: var(--swp-text-muted);
-    margin: var(--swp-space-1) 0 0 0;
+    font-size: var(--tblr-text-base);
+    color: var(--tblr-text-muted);
+    margin: var(--tblr-space-1) 0 0 0;
 }
 
 // ============================================================================
@@ -67,7 +67,7 @@
 .payment-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--swp-space-6);
+    gap: var(--tblr-space-6);
     align-items: start;
 
     @media (width <= 992px) {
@@ -81,7 +81,7 @@
 
 .payment-invoice-summary {
     position: sticky;
-    top: var(--swp-space-6);
+    top: var(--tblr-space-6);
 
     @media (width <= 992px) {
         position: static;
@@ -90,19 +90,19 @@
 }
 
 .invoice-summary-card {
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
     overflow: hidden;
 }
 
 .invoice-summary-header {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4) var(--swp-space-5);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4) var(--tblr-space-5);
+    background: var(--tblr-gray-50);
+    border-bottom: 1px solid var(--tblr-border-light);
 }
 
 .invoice-summary-icon {
@@ -111,27 +111,27 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-info-light) 0%, rgba(var(--swp-info-rgb), 0.2) 100%);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-info);
+    background: linear-gradient(135deg, var(--tblr-info-light) 0%, rgba(var(--tblr-info-rgb), 0.2) 100%);
+    border-radius: var(--tblr-radius-md);
+    color: var(--tblr-info);
 }
 
 .invoice-summary-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-lg);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     margin: 0;
 }
 
 .invoice-summary-body {
-    padding: var(--swp-space-5);
+    padding: var(--tblr-space-5);
 }
 
 // Summary Sections
 
 .summary-section {
-    padding: var(--swp-space-4) 0;
-    border-bottom: 1px solid var(--swp-border-light);
+    padding: var(--tblr-space-4) 0;
+    border-bottom: 1px solid var(--tblr-border-light);
 
     &:first-child {
         padding-top: 0;
@@ -146,38 +146,38 @@
 .summary-section-label {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-semibold);
+    gap: var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--swp-text-muted);
-    margin-bottom: var(--swp-space-3);
+    color: var(--tblr-text-muted);
+    margin-bottom: var(--tblr-space-3);
 }
 
 .summary-client-info {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     flex-wrap: wrap;
 
     .client-name {
-        font-size: var(--swp-text-lg);
-        font-weight: var(--swp-font-semibold);
-        color: var(--swp-text-primary);
+        font-size: var(--tblr-text-lg);
+        font-weight: var(--tblr-font-semibold);
+        color: var(--tblr-text-primary);
     }
 }
 
 .client-credit-badge {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    padding: var(--swp-space-1-5) var(--swp-space-3);
-    margin-top: var(--swp-space-2);
-    font-size: var(--swp-text-sm);
-    color: var(--swp-success);
-    background: var(--swp-success-lighter);
-    border-radius: var(--swp-radius-full);
+    gap: var(--tblr-space-1);
+    padding: var(--tblr-space-1-5) var(--tblr-space-3);
+    margin-top: var(--tblr-space-2);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-success);
+    background: var(--tblr-success-lighter);
+    border-radius: var(--tblr-radius-full);
 }
 
 // Invoice Details Grid
@@ -185,24 +185,24 @@
 .invoice-details-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
 }
 
 .detail-item {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
 }
 
 .detail-label {
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
 }
 
 .detail-value {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-primary);
 }
 
 // Line Items Preview
@@ -210,21 +210,21 @@
 .line-items-preview {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .line-item-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--swp-space-2) var(--swp-space-3);
-    background: var(--swp-gray-50);
-    border-radius: var(--swp-radius-sm);
+    padding: var(--tblr-space-2) var(--tblr-space-3);
+    background: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-sm);
 }
 
 .line-item-desc {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-secondary);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -232,9 +232,9 @@
 }
 
 .line-item-amount {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-primary);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
@@ -242,51 +242,51 @@
 // Summary Totals
 
 .summary-totals {
-    margin-top: var(--swp-space-4);
-    padding-top: var(--swp-space-4);
-    border-top: 1px solid var(--swp-border);
+    margin-top: var(--tblr-space-4);
+    padding-top: var(--tblr-space-4);
+    border-top: 1px solid var(--tblr-border);
 }
 
 .summary-totals .totals-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--swp-space-2) 0;
+    padding: var(--tblr-space-2) 0;
 }
 
 .summary-totals .totals-label {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-secondary);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-secondary);
 }
 
 .summary-totals .totals-value {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-primary);
     font-variant-numeric: tabular-nums;
 }
 
 // A discount is a deduction, not an error. Stay neutral.
 
 .summary-totals .totals-row-discount .totals-value {
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
 }
 
 // Payments already received are positive money in.
 
 .summary-totals .totals-row-payment .totals-value {
-    color: var(--swp-success);
+    color: var(--tblr-success);
 }
 
 .summary-totals .totals-row-balance {
-    margin-top: var(--swp-space-2);
-    padding-top: var(--swp-space-3);
-    border-top: 1px solid var(--swp-border-dark);
+    margin-top: var(--tblr-space-2);
+    padding-top: var(--tblr-space-3);
+    border-top: 1px solid var(--tblr-border-dark);
 
     .totals-label {
-        font-size: var(--swp-text-base);
-        font-weight: var(--swp-font-semibold);
-        color: var(--swp-text-primary);
+        font-size: var(--tblr-text-base);
+        font-weight: var(--tblr-font-semibold);
+        color: var(--tblr-text-primary);
     }
 
     // The amount-to-pay is informational; green would imply "Paid", which it
@@ -294,9 +294,9 @@
     // already carries the attention.
 
     .totals-value {
-        font-size: var(--swp-text-xl);
-        font-weight: var(--swp-font-bold);
-        color: var(--swp-text-primary);
+        font-size: var(--tblr-text-xl);
+        font-weight: var(--tblr-font-bold);
+        color: var(--tblr-text-primary);
         font-variant-numeric: tabular-nums;
         letter-spacing: -0.02em;
     }
@@ -313,19 +313,19 @@
 }
 
 .payment-form-card {
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
     overflow: hidden;
 }
 
 .payment-form-header {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4) var(--swp-space-5);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4) var(--tblr-space-5);
+    background: var(--tblr-gray-50);
+    border-bottom: 1px solid var(--tblr-border-light);
 }
 
 .payment-form-icon {
@@ -334,29 +334,29 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-success);
+    background: linear-gradient(135deg, var(--tblr-success-light) 0%, rgba(var(--tblr-success-rgb), 0.2) 100%);
+    border-radius: var(--tblr-radius-md);
+    color: var(--tblr-success);
 }
 
 .payment-form-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-lg);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     margin: 0;
 }
 
 .payment-form-body {
-    padding: var(--swp-space-5);
+    padding: var(--tblr-space-5);
 }
 
 .payment-form-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--swp-space-4) var(--swp-space-5);
-    background: var(--swp-gray-50);
-    border-top: 1px solid var(--swp-border-light);
+    padding: var(--tblr-space-4) var(--tblr-space-5);
+    background: var(--tblr-gray-50);
+    border-top: 1px solid var(--tblr-border-light);
 }
 
 // ============================================================================
@@ -368,14 +368,14 @@
 
     .form-label {
         display: block;
-        font-size: var(--swp-text-sm);
-        font-weight: var(--swp-font-medium);
-        color: var(--swp-text-secondary);
-        margin-bottom: var(--swp-space-2);
+        font-size: var(--tblr-text-sm);
+        font-weight: var(--tblr-font-medium);
+        color: var(--tblr-text-secondary);
+        margin-bottom: var(--tblr-space-2);
 
         &.required::after {
             content: ' *';
-            color: var(--swp-danger);
+            color: var(--tblr-danger);
         }
     }
 
@@ -383,7 +383,7 @@
 
     .form-text {
         display: block;
-        margin-top: var(--swp-space-2);
+        margin-top: var(--tblr-space-2);
     }
 
     // Fix for money type input groups
@@ -413,30 +413,30 @@
 .payment-methods-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
 }
 
 .payment-method-card {
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4);
-    background: var(--swp-surface);
-    border: 2px solid var(--swp-border);
-    border-radius: var(--swp-radius-md);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4);
+    background: var(--tblr-surface);
+    border: 2px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-md);
     cursor: pointer;
-    transition: all var(--swp-transition-fast);
+    transition: all var(--tblr-transition-fast);
 
     &:hover {
-        border-color: var(--swp-primary);
-        background: var(--swp-primary-lighter);
+        border-color: var(--tblr-primary);
+        background: var(--tblr-primary-lighter);
     }
 
     &:has(.payment-method-input:checked) {
-        border-color: var(--swp-primary);
-        background: var(--swp-primary-lighter);
-        box-shadow: var(--swp-ring-primary);
+        border-color: var(--tblr-primary);
+        background: var(--tblr-primary-lighter);
+        box-shadow: var(--tblr-ring-primary);
 
         .payment-method-check {
             opacity: 1;
@@ -444,13 +444,13 @@
         }
 
         .payment-method-icon {
-            background: var(--swp-primary);
+            background: var(--tblr-primary);
             color: #ffffff;
         }
     }
 
     &:has(.payment-method-input:focus-visible) {
-        outline: 2px solid var(--swp-primary);
+        outline: 2px solid var(--tblr-primary);
         outline-offset: 2px;
     }
 }
@@ -469,7 +469,7 @@
 .payment-method-content {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
     flex: 1;
 }
 
@@ -479,16 +479,16 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: var(--swp-gray-100);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-text-secondary);
-    transition: all var(--swp-transition-fast);
+    background: var(--tblr-gray-100);
+    border-radius: var(--tblr-radius-md);
+    color: var(--tblr-text-secondary);
+    transition: all var(--tblr-transition-fast);
 }
 
 .payment-method-name {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-primary);
 }
 
 .payment-method-badge {
@@ -496,22 +496,22 @@
     align-self: flex-start;
     padding: 2px 8px;
     font-size: 10px;
-    font-weight: var(--swp-font-semibold);
+    font-weight: var(--tblr-font-semibold);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--swp-text-muted);
-    background: var(--swp-gray-200);
-    border-radius: var(--swp-radius-full);
+    color: var(--tblr-text-muted);
+    background: var(--tblr-gray-200);
+    border-radius: var(--tblr-radius-full);
 }
 
 .payment-method-badge-online {
-    color: var(--swp-info);
-    background: var(--swp-info-light);
+    color: var(--tblr-info);
+    background: var(--tblr-info-light);
 }
 
 .payment-method-badge-credit {
-    color: var(--swp-success);
-    background: var(--swp-success-light);
+    color: var(--tblr-success);
+    background: var(--tblr-success-light);
 }
 
 .payment-method-check {
@@ -520,12 +520,12 @@
     justify-content: center;
     width: 24px;
     height: 24px;
-    background: var(--swp-primary);
+    background: var(--tblr-primary);
     color: #ffffff;
-    border-radius: var(--swp-radius-full);
+    border-radius: var(--tblr-radius-full);
     opacity: 0;
     transform: scale(0.8);
-    transition: all var(--swp-transition-fast);
+    transition: all var(--tblr-transition-fast);
 }
 
 // ============================================================================
@@ -536,8 +536,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--swp-space-2);
-    margin-bottom: var(--swp-space-2);
+    gap: var(--tblr-space-2);
+    margin-bottom: var(--tblr-space-2);
     flex-wrap: wrap;
 
     .form-label,
@@ -547,16 +547,16 @@
 }
 
 .amount-balance-hint {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
     white-space: nowrap;
-    padding: var(--swp-space-1) var(--swp-space-2);
-    background: var(--swp-primary-lighter);
-    border-radius: var(--swp-radius-sm);
+    padding: var(--tblr-space-1) var(--tblr-space-2);
+    background: var(--tblr-primary-lighter);
+    border-radius: var(--tblr-radius-sm);
 
     strong {
-        color: var(--swp-primary);
-        font-weight: var(--swp-font-semibold);
+        color: var(--tblr-primary);
+        font-weight: var(--tblr-font-semibold);
     }
 }
 
@@ -565,16 +565,16 @@
 // ============================================================================
 
 .capture-online-field {
-    padding: var(--swp-space-4);
-    background: var(--swp-gray-50);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-md);
+    padding: var(--tblr-space-4);
+    background: var(--tblr-gray-50);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-md);
 
     .form-check {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-2);
-        margin-bottom: var(--swp-space-2);
+        gap: var(--tblr-space-2);
+        margin-bottom: var(--tblr-space-2);
         padding-left: 0;
     }
 
@@ -588,14 +588,14 @@
     }
 
     .form-check-label {
-        font-weight: var(--swp-font-medium);
-        color: var(--swp-text-primary);
+        font-weight: var(--tblr-font-medium);
+        color: var(--tblr-text-primary);
         margin-bottom: 0;
     }
 
     .form-help {
         margin-left: 0;
-        padding-left: calc(2.5rem + var(--swp-space-2));
+        padding-left: calc(2.5rem + var(--tblr-space-2));
     }
 }
 
@@ -613,19 +613,19 @@
 .invoice-id-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    color: var(--swp-primary);
+    gap: var(--tblr-space-1);
+    color: var(--tblr-primary);
     text-decoration: none;
-    font-weight: var(--swp-font-semibold);
-    transition: color var(--swp-transition-fast);
+    font-weight: var(--tblr-font-semibold);
+    transition: color var(--tblr-transition-fast);
 
     svg {
         opacity: 0.5;
-        transition: opacity var(--swp-transition-fast);
+        transition: opacity var(--tblr-transition-fast);
     }
 
     &:hover {
-        color: var(--swp-primary-dark);
+        color: var(--tblr-primary-dark);
         text-decoration: underline;
 
         svg {
@@ -635,12 +635,12 @@
 }
 
 .client-name-link {
-    font-size: var(--swp-text-lg);
+    font-size: var(--tblr-text-lg);
 }
 
 .invoice-id-link {
-    font-size: var(--swp-text-sm);
-    font-family: var(--swp-font-mono, monospace);
+    font-size: var(--tblr-text-sm);
+    font-family: var(--tblr-font-mono, monospace);
 }
 
 // ============================================================================
@@ -648,20 +648,20 @@
 // ============================================================================
 
 .payment-history-card {
-    margin-top: var(--swp-space-4);
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
+    margin-top: var(--tblr-space-4);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
     overflow: hidden;
 }
 
 .payment-history-header {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4) var(--swp-space-5);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4) var(--tblr-space-5);
+    background: var(--tblr-gray-50);
+    border-bottom: 1px solid var(--tblr-border-light);
 }
 
 .payment-history-icon {
@@ -670,16 +670,16 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, var(--swp-warning-light, #fef3c7) 0%, rgb(245 158 11 / 20%) 100%);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-warning, #f59e0b);
+    background: linear-gradient(135deg, var(--tblr-warning-light, #fef3c7) 0%, rgb(245 158 11 / 20%) 100%);
+    border-radius: var(--tblr-radius-md);
+    color: var(--tblr-warning, #f59e0b);
 }
 
 .payment-history-title {
     flex: 1;
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     margin: 0;
 }
 
@@ -689,16 +689,16 @@
     justify-content: center;
     min-width: 24px;
     height: 24px;
-    padding: 0 var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-bold);
-    color: var(--swp-text-muted);
-    background: var(--swp-gray-200);
-    border-radius: var(--swp-radius-full);
+    padding: 0 var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-bold);
+    color: var(--tblr-text-muted);
+    background: var(--tblr-gray-200);
+    border-radius: var(--tblr-radius-full);
 }
 
 .payment-history-body {
-    padding: var(--swp-space-4) var(--swp-space-5);
+    padding: var(--tblr-space-4) var(--tblr-space-5);
 }
 
 // ============================================================================
@@ -708,52 +708,52 @@
 .payments-list {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
 }
 
 .payment-card {
-    padding: var(--swp-space-3);
-    background: var(--swp-gray-50);
-    border-radius: var(--swp-radius-md);
-    border-left: 3px solid var(--swp-gray-300);
-    transition: all var(--swp-transition-fast);
+    padding: var(--tblr-space-3);
+    background: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-md);
+    border-left: 3px solid var(--tblr-gray-300);
+    transition: all var(--tblr-transition-fast);
 }
 
 .payment-card-captured {
-    border-left-color: var(--swp-success);
-    background: var(--swp-success-lighter, rgb(16 185 129 / 5%));
+    border-left-color: var(--tblr-success);
+    background: var(--tblr-success-lighter, rgb(16 185 129 / 5%));
 }
 
 .payment-card-failed {
-    border-left-color: var(--swp-danger);
-    background: var(--swp-danger-lighter, rgb(239 68 68 / 5%));
+    border-left-color: var(--tblr-danger);
+    background: var(--tblr-danger-lighter, rgb(239 68 68 / 5%));
 }
 
 .payment-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: var(--swp-space-2);
+    margin-bottom: var(--tblr-space-2);
 }
 
 .payment-amount {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-bold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-bold);
+    color: var(--tblr-text-primary);
 }
 
 .payment-card-body {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
 }
 
 .payment-detail {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
+    gap: var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
 
     svg {
         flex-shrink: 0;
@@ -762,12 +762,12 @@
 }
 
 .payment-message {
-    margin-top: var(--swp-space-2);
-    padding-top: var(--swp-space-2);
-    border-top: 1px solid var(--swp-border-light);
-    font-size: var(--swp-text-xs);
+    margin-top: var(--tblr-space-2);
+    padding-top: var(--tblr-space-2);
+    border-top: 1px solid var(--tblr-border-light);
+    font-size: var(--tblr-text-xs);
     font-style: italic;
-    color: var(--swp-text-secondary);
+    color: var(--tblr-text-secondary);
 }
 
 // ============================================================================
@@ -775,12 +775,12 @@
 // ============================================================================
 
 .btn-pay {
-    padding: var(--swp-space-3) var(--swp-space-6);
-    font-weight: var(--swp-font-semibold);
-    box-shadow: var(--swp-shadow-primary);
+    padding: var(--tblr-space-3) var(--tblr-space-6);
+    font-weight: var(--tblr-font-semibold);
+    box-shadow: var(--tblr-shadow-primary);
 
     &:hover {
-        box-shadow: var(--swp-shadow-primary-lg);
+        box-shadow: var(--tblr-shadow-primary-lg);
         transform: translateY(-1px);
     }
 
@@ -796,13 +796,13 @@
 @media (width <= 768px) {
 
     .payment-container {
-        padding: 0 var(--swp-space-4);
-        padding-bottom: var(--swp-space-16);
+        padding: 0 var(--tblr-space-4);
+        padding-bottom: var(--tblr-space-16);
     }
 
     .payment-header {
-        margin-bottom: var(--swp-space-4);
-        padding: var(--swp-space-4) 0;
+        margin-bottom: var(--tblr-space-4);
+        padding: var(--tblr-space-4) 0;
     }
 
     .payment-header-icon {
@@ -824,7 +824,7 @@
 
     .payment-form-footer {
         flex-direction: column-reverse;
-        gap: var(--swp-space-3);
+        gap: var(--tblr-space-3);
 
         .btn {
             width: 100%;
@@ -835,6 +835,6 @@
     .amount-field-wrapper {
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--swp-space-1);
+        gap: var(--tblr-space-1);
     }
 }
