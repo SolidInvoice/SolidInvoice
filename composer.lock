@@ -13715,20 +13715,20 @@
         },
         {
             "name": "symfony/mercure",
-            "version": "v0.7.2",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mercure.git",
-                "reference": "3ba1d19c9792d6bf66cf6cb4412ea289e9a42565"
+                "reference": "920f08c73793f37e94981e5d9fc1a84351ec8c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mercure/zipball/3ba1d19c9792d6bf66cf6cb4412ea289e9a42565",
-                "reference": "3ba1d19c9792d6bf66cf6cb4412ea289e9a42565",
+                "url": "https://api.github.com/repos/symfony/mercure/zipball/920f08c73793f37e94981e5d9fc1a84351ec8c6c",
+                "reference": "920f08c73793f37e94981e5d9fc1a84351ec8c6c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "symfony/deprecation-contracts": "^2.0|^3.0",
                 "symfony/http-client": "^6.4|^7.3|^8.0",
                 "symfony/http-foundation": "^6.4|^7.3|^8.0",
@@ -13740,10 +13740,12 @@
                 "symfony/http-kernel": "^6.4|^7.3|^8.0",
                 "symfony/phpunit-bridge": "^7.3.4|^8.0",
                 "symfony/stopwatch": "^6.4|^7.3|^8.0",
-                "twig/twig": "^2.0|^3.0|^4.0"
+                "twig/twig": "^2.0|^3.0|^4.0",
+                "web-token/jwt-library": "^4.1"
             },
             "suggest": {
-                "symfony/stopwatch": "Integration with the profiler performances"
+                "symfony/stopwatch": "Integration with the profiler performances",
+                "web-token/jwt-library": "To build Mercure protocol 1.0-compatible JSON Web Tokens with WebTokenFactory"
             },
             "type": "library",
             "extra": {
@@ -13752,7 +13754,7 @@
                     "name": "dunglas/mercure"
                 },
                 "branch-alias": {
-                    "dev-main": "0.6.x-dev"
+                    "dev-main": "0.8.x-dev"
                 }
             },
             "autoload": {
@@ -13784,7 +13786,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/mercure/issues",
-                "source": "https://github.com/symfony/mercure/tree/v0.7.2"
+                "source": "https://github.com/symfony/mercure/tree/v0.8.0"
             },
             "funding": [
                 {
@@ -13796,25 +13798,25 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-15T15:22:09+00:00"
+            "time": "2026-08-11T07:23:36+00:00"
         },
         {
             "name": "symfony/mercure-notifier",
-            "version": "v8.1.0",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mercure-notifier.git",
-                "reference": "0b6682f5903496aa1535b0cc706c14e143991701"
+                "reference": "23a96e43f4ddc515a077851a957ba6afd81078e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mercure-notifier/zipball/0b6682f5903496aa1535b0cc706c14e143991701",
-                "reference": "0b6682f5903496aa1535b0cc706c14e143991701",
+                "url": "https://api.github.com/repos/symfony/mercure-notifier/zipball/23a96e43f4ddc515a077851a957ba6afd81078e9",
+                "reference": "23a96e43f4ddc515a077851a957ba6afd81078e9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4.1",
-                "symfony/mercure": "^0.5.2|^0.6|^0.7",
+                "symfony/mercure": "^0.5.2|^0.6|^0.7|^0.8",
                 "symfony/notifier": "^7.4|^8.0",
                 "symfony/service-contracts": "^2.5|^3"
             },
@@ -13848,7 +13850,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/mercure-notifier/tree/v8.1.0"
+                "source": "https://github.com/symfony/mercure-notifier/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -13868,7 +13870,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-08-17T17:15:37+00:00"
         },
         {
             "name": "symfony/message-bird-notifier",
@@ -14498,16 +14500,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v8.1.2",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f"
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/e4c1236171800cdb3e5dbe189121454204f1654f",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/fdb4670b8b4183c3ff45381e93343823cb9e17ea",
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea",
                 "shasum": ""
             },
             "require": {
@@ -14556,7 +14558,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v8.1.2"
+                "source": "https://github.com/symfony/notifier/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -14576,7 +14578,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-05T10:41:02+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/object-mapper",
