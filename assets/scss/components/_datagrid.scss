@@ -18,7 +18,7 @@
     // Flash messages inside the datagrid
 
     > .alert {
-        margin-bottom: var(--swp-space-4);
+        margin-bottom: var(--tblr-space-4);
     }
 }
 
@@ -26,16 +26,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--swp-space-4);
-    padding: var(--swp-space-4) var(--swp-space-6);
-    border-bottom: 1px solid var(--swp-border-light);
-    background: var(--swp-surface);
+    gap: var(--tblr-space-4);
+    padding: var(--tblr-space-4) var(--tblr-space-6);
+    border-bottom: 1px solid var(--tblr-border-light);
+    background: var(--tblr-surface);
 }
 
 .datagrid-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-lg);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     margin: 0;
 }
 
@@ -47,10 +47,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--swp-space-4);
-    padding: var(--swp-space-4) var(--swp-space-6);
-    background: var(--swp-surface);
-    border-bottom: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-4);
+    padding: var(--tblr-space-4) var(--tblr-space-6);
+    background: var(--tblr-surface);
+    border-bottom: 1px solid var(--tblr-border-light);
 
     @media (width <= 768px) {
         flex-direction: column;
@@ -61,7 +61,7 @@
 .datagrid-toolbar-start {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
     flex: 1;
     min-width: 0;
 }
@@ -69,7 +69,7 @@
 .datagrid-toolbar-end {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     flex-shrink: 0;
 }
 
@@ -80,10 +80,10 @@
 
     .datagrid-search-icon {
         position: absolute;
-        left: var(--swp-space-3);
+        left: var(--tblr-space-3);
         top: 50%;
         transform: translateY(-50%);
-        color: var(--swp-text-muted);
+        color: var(--tblr-text-muted);
         pointer-events: none;
         width: 18px;
         height: 18px;
@@ -91,28 +91,28 @@
 
     .datagrid-search-input {
         width: 100%;
-        padding: var(--swp-space-2) var(--swp-space-4) var(--swp-space-2) var(--swp-space-10);
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-primary);
-        background: var(--swp-gray-50);
+        padding: var(--tblr-space-2) var(--tblr-space-4) var(--tblr-space-2) var(--tblr-space-10);
+        font-size: var(--tblr-text-sm);
+        color: var(--tblr-text-primary);
+        background: var(--tblr-gray-50);
         border: 1px solid transparent;
-        border-radius: var(--swp-radius-md);
-        transition: background-color var(--swp-transition-fast),
-                    border-color var(--swp-transition-fast),
-                    box-shadow var(--swp-transition-fast);
+        border-radius: var(--tblr-radius-md);
+        transition: background-color var(--tblr-transition-fast),
+                    border-color var(--tblr-transition-fast),
+                    box-shadow var(--tblr-transition-fast);
 
         &::placeholder {
-            color: var(--swp-text-muted);
+            color: var(--tblr-text-muted);
         }
 
         &:hover {
-            background: var(--swp-gray-100);
+            background: var(--tblr-gray-100);
         }
 
         &:focus {
-            background: var(--swp-surface);
-            border-color: var(--swp-primary);
-            box-shadow: var(--swp-ring-primary);
+            background: var(--tblr-surface);
+            border-color: var(--tblr-primary);
+            box-shadow: var(--tblr-ring-primary);
             outline: none;
         }
     }
@@ -125,39 +125,39 @@
 .datagrid-active-filters {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     flex-wrap: wrap;
 }
 
 .datagrid-active-filter {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    padding: var(--swp-space-1) var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-primary);
-    background: var(--swp-gray-100);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-md);
+    gap: var(--tblr-space-1);
+    padding: var(--tblr-space-1) var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-primary);
+    background: var(--tblr-gray-100);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-md);
     cursor: pointer;
-    transition: all var(--swp-transition-fast);
+    transition: all var(--tblr-transition-fast);
 
     &:hover {
-        background: var(--swp-danger-lighter);
-        border-color: var(--swp-danger-light);
+        background: var(--tblr-danger-lighter);
+        border-color: var(--tblr-danger-light);
 
         .datagrid-active-filter-remove {
-            color: var(--swp-danger);
+            color: var(--tblr-danger);
         }
     }
 
     .datagrid-active-filter-key {
-        font-weight: var(--swp-font-medium);
-        color: var(--swp-text-muted);
+        font-weight: var(--tblr-font-medium);
+        color: var(--tblr-text-muted);
 
         &::after {
             content: ':';
-            margin-right: var(--swp-space-1);
+            margin-right: var(--tblr-space-1);
         }
     }
 
@@ -171,9 +171,9 @@
     .datagrid-active-filter-remove {
         width: 14px;
         height: 14px;
-        margin-left: var(--swp-space-1);
-        color: var(--swp-text-muted);
-        transition: color var(--swp-transition-fast);
+        margin-left: var(--tblr-space-1);
+        color: var(--tblr-text-muted);
+        transition: color var(--tblr-transition-fast);
     }
 }
 
@@ -189,9 +189,9 @@
     width: 320px;
     max-height: calc(100vh - 200px);
     padding: 0 !important;
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    box-shadow: var(--swp-shadow-lg);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
+    box-shadow: var(--tblr-shadow-lg);
     overflow: hidden;
 
     // Ensure nested dropdowns (like select2) appear above the panel
@@ -206,29 +206,29 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--swp-space-3) var(--swp-space-4);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border-light);
+    padding: var(--tblr-space-3) var(--tblr-space-4);
+    background: var(--tblr-gray-50);
+    border-bottom: 1px solid var(--tblr-border-light);
 }
 
 .datagrid-filter-panel-title {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     margin: 0;
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
 
     svg {
         width: 16px;
         height: 16px;
-        color: var(--swp-text-muted);
+        color: var(--tblr-text-muted);
     }
 }
 
 .datagrid-filter-panel-body {
-    padding: var(--swp-space-4);
+    padding: var(--tblr-space-4);
     max-height: calc(100vh - 350px);
     overflow-y: auto;
 }
@@ -236,13 +236,13 @@
 .datagrid-filter-form {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-4);
+    gap: var(--tblr-space-4);
 }
 
 .datagrid-filter-field {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 
     // Ensure dropdowns within fields have proper z-index
 
@@ -260,9 +260,9 @@
 }
 
 .datagrid-filter-label {
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -276,17 +276,17 @@
     > div:has(> div > input[type="date"]) {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: var(--swp-space-2);
+        gap: var(--tblr-space-2);
 
         > div {
             // Each date field container
 
             .form-label {
                 display: block;
-                font-size: var(--swp-text-xs);
-                font-weight: var(--swp-font-medium);
-                color: var(--swp-text-muted);
-                margin-bottom: var(--swp-space-1);
+                font-size: var(--tblr-text-xs);
+                font-weight: var(--tblr-font-medium);
+                color: var(--tblr-text-muted);
+                margin-bottom: var(--tblr-space-1);
             }
 
             input[type="date"] {
@@ -300,20 +300,20 @@
     .form-check {
         display: flex !important;
         align-items: center;
-        gap: var(--swp-space-2);
-        padding: var(--swp-space-2) var(--swp-space-3);
+        gap: var(--tblr-space-2);
+        padding: var(--tblr-space-2) var(--tblr-space-3);
         margin: 0;
-        border-radius: var(--swp-radius-sm);
-        transition: background-color var(--swp-transition-fast);
+        border-radius: var(--tblr-radius-sm);
+        transition: background-color var(--tblr-transition-fast);
 
         &:hover {
-            background: var(--swp-gray-50);
+            background: var(--tblr-gray-50);
         }
 
         // Override any switch styles - force regular checkbox appearance
 
         &.form-switch {
-            padding-left: var(--swp-space-3);
+            padding-left: var(--tblr-space-3);
         }
 
         .form-check-input {
@@ -323,17 +323,17 @@
             margin: 0 !important;
             flex-shrink: 0;
             border-radius: 3px !important;
-            border: 1px solid var(--swp-border-dark);
-            background-color: var(--swp-surface);
+            border: 1px solid var(--tblr-border-dark);
+            background-color: var(--tblr-surface);
             cursor: pointer;
 
             &:checked {
-                background-color: var(--swp-primary);
-                border-color: var(--swp-primary);
+                background-color: var(--tblr-primary);
+                border-color: var(--tblr-primary);
             }
 
             &:focus {
-                box-shadow: var(--swp-ring-primary);
+                box-shadow: var(--tblr-ring-primary);
             }
 
             // Remove switch/pill appearance
@@ -350,11 +350,11 @@
 
         .form-check-label {
             display: inline-block !important;
-            font-size: var(--swp-text-sm);
-            font-weight: var(--swp-font-normal);
-            color: var(--swp-text-primary);
+            font-size: var(--tblr-text-sm);
+            font-weight: var(--tblr-font-normal);
+            color: var(--tblr-text-primary);
             cursor: pointer;
-            margin-left: var(--swp-space-2);
+            margin-left: var(--tblr-space-2);
             user-select: none;
         }
     }
@@ -362,14 +362,14 @@
     // Space between checkboxes
 
     .form-check + .form-check {
-        margin-top: var(--swp-space-1);
+        margin-top: var(--tblr-space-1);
     }
 }
 
 .datagrid-filter-panel-footer {
-    padding-top: var(--swp-space-4);
-    margin-top: var(--swp-space-2);
-    border-top: 1px solid var(--swp-border-light);
+    padding-top: var(--tblr-space-4);
+    margin-top: var(--tblr-space-2);
+    border-top: 1px solid var(--tblr-border-light);
 }
 
 // Form elements within filter panel
@@ -379,14 +379,14 @@
 
     .form-control,
     .form-select {
-        font-size: var(--swp-text-sm);
-        padding: var(--swp-space-2) var(--swp-space-3);
-        border-radius: var(--swp-radius-md);
-        border-color: var(--swp-border);
+        font-size: var(--tblr-text-sm);
+        padding: var(--tblr-space-2) var(--tblr-space-3);
+        border-radius: var(--tblr-radius-md);
+        border-color: var(--tblr-border);
 
         &:focus {
-            border-color: var(--swp-primary);
-            box-shadow: var(--swp-ring-primary);
+            border-color: var(--tblr-primary);
+            box-shadow: var(--tblr-ring-primary);
         }
     }
 
@@ -402,15 +402,15 @@
 
         .form-label {
             display: block;
-            font-size: var(--swp-text-xs);
-            font-weight: var(--swp-font-normal);
-            color: var(--swp-text-muted);
-            margin-bottom: var(--swp-space-1);
+            font-size: var(--tblr-text-xs);
+            font-weight: var(--tblr-font-normal);
+            color: var(--tblr-text-muted);
+            margin-bottom: var(--tblr-space-1);
         }
 
         > div {
-            padding-left: var(--swp-space-1);
-            padding-right: var(--swp-space-1);
+            padding-left: var(--tblr-space-1);
+            padding-right: var(--tblr-space-1);
 
             &:first-child {
                 padding-left: 0;
@@ -427,14 +427,14 @@
     .form-check {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-2);
-        padding: var(--swp-space-1-5) var(--swp-space-2);
+        gap: var(--tblr-space-2);
+        padding: var(--tblr-space-1-5) var(--tblr-space-2);
         margin: 0;
-        border-radius: var(--swp-radius-sm);
-        transition: background-color var(--swp-transition-fast);
+        border-radius: var(--tblr-radius-sm);
+        transition: background-color var(--tblr-transition-fast);
 
         &:hover {
-            background: var(--swp-gray-50);
+            background: var(--tblr-gray-50);
         }
 
         .form-check-input {
@@ -445,8 +445,8 @@
         }
 
         .form-check-label {
-            font-size: var(--swp-text-sm);
-            color: var(--swp-text-primary);
+            font-size: var(--tblr-text-sm);
+            color: var(--tblr-text-primary);
             cursor: pointer;
         }
     }
@@ -454,22 +454,22 @@
     // When multiple checkboxes in a list
 
     .form-check + .form-check {
-        margin-top: var(--swp-space-1);
+        margin-top: var(--tblr-space-1);
     }
 
     // Select dropdown adjustments
 
     select[multiple] {
         min-height: 120px;
-        padding: var(--swp-space-1);
+        padding: var(--tblr-space-1);
 
         option {
-            padding: var(--swp-space-2);
-            border-radius: var(--swp-radius-sm);
+            padding: var(--tblr-space-2);
+            border-radius: var(--tblr-radius-sm);
 
             &:checked {
-                background: var(--swp-primary-lighter);
-                color: var(--swp-primary-dark);
+                background: var(--tblr-primary-lighter);
+                color: var(--tblr-primary-dark);
             }
         }
     }
@@ -486,63 +486,63 @@
 .datagrid-export-menu {
     width: 280px;
     padding: 0 !important;
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    box-shadow: var(--swp-shadow-lg);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
+    box-shadow: var(--tblr-shadow-lg);
     overflow: hidden;
 }
 
 .datagrid-export-menu-header {
-    padding: var(--swp-space-3) var(--swp-space-4);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border-light);
+    padding: var(--tblr-space-3) var(--tblr-space-4);
+    background: var(--tblr-gray-50);
+    border-bottom: 1px solid var(--tblr-border-light);
 }
 
 .datagrid-export-menu-title {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     margin: 0;
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
 
     svg {
         width: 16px;
         height: 16px;
-        color: var(--swp-text-muted);
+        color: var(--tblr-text-muted);
     }
 }
 
 .datagrid-export-menu-subtitle {
-    margin: var(--swp-space-1) 0 0;
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
+    margin: var(--tblr-space-1) 0 0;
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
 }
 
 .datagrid-export-menu-body {
     display: flex;
     flex-direction: column;
-    padding: var(--swp-space-2);
-    gap: var(--swp-space-1);
+    padding: var(--tblr-space-2);
+    gap: var(--tblr-space-1);
 }
 
 .datagrid-export-option {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-2) var(--swp-space-3);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-text-primary);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-2) var(--tblr-space-3);
+    border-radius: var(--tblr-radius-md);
+    color: var(--tblr-text-primary);
     text-decoration: none;
-    transition: background-color var(--swp-transition-fast),
-                color var(--swp-transition-fast);
+    transition: background-color var(--tblr-transition-fast),
+                color var(--tblr-transition-fast);
     cursor: pointer;
 
     &:hover,
     &:focus-visible {
-        background: var(--swp-gray-50);
-        color: var(--swp-text-primary);
+        background: var(--tblr-gray-50);
+        color: var(--tblr-text-primary);
         outline: none;
     }
 }
@@ -554,16 +554,16 @@
     width: 36px;
     height: 36px;
     flex-shrink: 0;
-    color: var(--swp-text-secondary);
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border-light);
-    border-radius: var(--swp-radius-md);
+    color: var(--tblr-text-secondary);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border-light);
+    border-radius: var(--tblr-radius-md);
 
     .datagrid-export-option:hover &,
     .datagrid-export-option:focus-visible & {
-        color: var(--swp-primary);
-        border-color: var(--swp-primary-light);
-        background: var(--swp-primary-lighter);
+        color: var(--tblr-primary);
+        border-color: var(--tblr-primary-light);
+        background: var(--tblr-primary-lighter);
     }
 }
 
@@ -574,15 +574,15 @@
 }
 
 .datagrid-export-option-label {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     letter-spacing: 0.02em;
 }
 
 .datagrid-export-option-hint {
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
 }
 
 // ============================================================================
@@ -598,19 +598,19 @@
         width: 36px;
         height: 36px;
         padding: 0;
-        color: var(--swp-text-secondary);
+        color: var(--tblr-text-secondary);
         background: transparent;
-        border: 1px solid var(--swp-border);
-        border-radius: var(--swp-radius-md);
+        border: 1px solid var(--tblr-border);
+        border-radius: var(--tblr-radius-md);
         cursor: pointer;
-        transition: color var(--swp-transition-fast),
-                    background-color var(--swp-transition-fast),
-                    border-color var(--swp-transition-fast);
+        transition: color var(--tblr-transition-fast),
+                    background-color var(--tblr-transition-fast),
+                    border-color var(--tblr-transition-fast);
 
         &:hover {
-            color: var(--swp-text-primary);
-            background: var(--swp-gray-50);
-            border-color: var(--swp-border-dark);
+            color: var(--tblr-text-primary);
+            background: var(--tblr-gray-50);
+            border-color: var(--tblr-border-dark);
         }
 
         &::after {
@@ -622,27 +622,27 @@
         min-width: 200px;
         max-height: 320px;
         overflow-y: auto;
-        padding: var(--swp-space-2);
+        padding: var(--tblr-space-2);
     }
 
     .dropdown-item {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-2);
-        padding: var(--swp-space-2) var(--swp-space-3);
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-primary);
-        border-radius: var(--swp-radius-sm);
+        gap: var(--tblr-space-2);
+        padding: var(--tblr-space-2) var(--tblr-space-3);
+        font-size: var(--tblr-text-sm);
+        color: var(--tblr-text-primary);
+        border-radius: var(--tblr-radius-sm);
         cursor: pointer;
 
         &:hover {
-            background: var(--swp-gray-50);
+            background: var(--tblr-gray-50);
         }
 
         input[type="checkbox"] {
             width: 16px;
             height: 16px;
-            accent-color: var(--swp-primary);
+            accent-color: var(--tblr-primary);
         }
     }
 }
@@ -658,23 +658,23 @@
 .datagrid-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--swp-text-sm);
+    font-size: var(--tblr-text-sm);
 
     th,
     td {
-        padding: var(--swp-space-3) var(--swp-space-4);
+        padding: var(--tblr-space-3) var(--tblr-space-4);
         text-align: left;
         vertical-align: middle;
-        border-bottom: 1px solid var(--swp-border-light);
+        border-bottom: 1px solid var(--tblr-border-light);
     }
 
     th {
-        font-size: var(--swp-text-xs);
-        font-weight: var(--swp-font-semibold);
-        color: var(--swp-text-muted);
+        font-size: var(--tblr-text-xs);
+        font-weight: var(--tblr-font-semibold);
+        color: var(--tblr-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background: var(--swp-gray-50);
+        background: var(--tblr-gray-50);
         white-space: nowrap;
         user-select: none;
     }
@@ -685,17 +685,17 @@
     }
 
     tbody tr {
-        transition: background-color var(--swp-transition-fast);
+        transition: background-color var(--tblr-transition-fast);
 
         &:hover {
-            background: var(--swp-surface-hover);
+            background: var(--tblr-surface-hover);
         }
 
         &.selected {
-            background: var(--swp-primary-lighter);
+            background: var(--tblr-primary-lighter);
 
             &:hover {
-                background: var(--swp-primary-light);
+                background: var(--tblr-primary-light);
             }
         }
     }
@@ -713,9 +713,9 @@
     }
 
     .col-id {
-        font-family: var(--swp-font-mono);
-        font-size: var(--swp-text-xs);
-        color: var(--swp-text-muted);
+        font-family: var(--tblr-font-mono);
+        font-size: var(--tblr-text-xs);
+        color: var(--tblr-text-muted);
     }
 
     .col-date {
@@ -729,7 +729,7 @@
     .col-money {
         text-align: right;
         font-variant-numeric: tabular-nums;
-        font-weight: var(--swp-font-medium);
+        font-weight: var(--tblr-font-medium);
     }
 
     th.col-amount,
@@ -757,16 +757,16 @@
     // Tabler badges live inside status cells. The design system mandates pill chips.
 
     tbody .badge {
-        border-radius: var(--swp-radius-full);
+        border-radius: var(--tblr-radius-full);
         padding: 2px 10px;
-        font-weight: var(--swp-font-medium);
+        font-weight: var(--tblr-font-medium);
         letter-spacing: 0;
 
         // `text-gray-fg` is amber-bound; neutralise the Cancelled chip explicitly.
 
         &.bg-gray.text-gray-fg {
-            background-color: var(--swp-gray-100);
-            color: var(--swp-text-secondary);
+            background-color: var(--tblr-gray-100);
+            color: var(--tblr-text-secondary);
         }
     }
 }
@@ -776,17 +776,17 @@
 .datagrid-sort-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    color: var(--swp-text-muted);
+    gap: var(--tblr-space-1);
+    color: var(--tblr-text-muted);
     text-decoration: none;
-    transition: color var(--swp-transition-fast);
+    transition: color var(--tblr-transition-fast);
 
     &:hover {
-        color: var(--swp-text-primary);
+        color: var(--tblr-text-primary);
     }
 
     &.sorted {
-        color: var(--swp-primary);
+        color: var(--tblr-primary);
     }
 
     .datagrid-sort-icon {
@@ -794,7 +794,7 @@
         width: 14px;
         height: 14px;
         opacity: 0.35;
-        transition: opacity var(--swp-transition-fast);
+        transition: opacity var(--tblr-transition-fast);
 
         &.is-active {
             opacity: 1;
@@ -814,7 +814,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
 }
 
 .datagrid-action-btn {
@@ -824,14 +824,14 @@
     width: 32px;
     height: 32px;
     padding: 0;
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--swp-radius-md);
+    border-radius: var(--tblr-radius-md);
     text-decoration: none;
     cursor: pointer;
-    transition: color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    transition: color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
 
     svg {
         width: 18px;
@@ -839,23 +839,23 @@
     }
 
     &:hover {
-        color: var(--swp-primary);
-        background: var(--swp-primary-lighter);
+        color: var(--tblr-primary);
+        background: var(--tblr-primary-lighter);
     }
 
     &.action-view:hover {
-        color: var(--swp-info);
-        background: var(--swp-info-lighter);
+        color: var(--tblr-info);
+        background: var(--tblr-info-lighter);
     }
 
     &.action-edit:hover {
-        color: var(--swp-primary);
-        background: var(--swp-primary-lighter);
+        color: var(--tblr-primary);
+        background: var(--tblr-primary-lighter);
     }
 
     &.action-delete:hover {
-        color: var(--swp-danger);
-        background: var(--swp-danger-lighter);
+        color: var(--tblr-danger);
+        background: var(--tblr-danger-lighter);
     }
 }
 
@@ -863,15 +863,15 @@
 
 .datagrid-more-btn {
     opacity: 0.6;
-    transition: opacity var(--swp-transition-fast),
-                color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    transition: opacity var(--tblr-transition-fast),
+                color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
 
     &:hover,
     &[aria-expanded="true"] {
         opacity: 1;
-        color: var(--swp-text-primary);
-        background: var(--swp-gray-100);
+        color: var(--tblr-text-primary);
+        background: var(--tblr-gray-100);
     }
 }
 
@@ -881,46 +881,46 @@
 
     .dropdown-menu {
         min-width: 160px;
-        padding: var(--swp-space-1);
-        border-radius: var(--swp-radius-md);
-        box-shadow: var(--swp-shadow-md);
+        padding: var(--tblr-space-1);
+        border-radius: var(--tblr-radius-md);
+        box-shadow: var(--tblr-shadow-md);
     }
 
     .dropdown-item {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-2);
-        padding: var(--swp-space-2) var(--swp-space-3);
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-primary);
-        border-radius: var(--swp-radius-sm);
+        gap: var(--tblr-space-2);
+        padding: var(--tblr-space-2) var(--tblr-space-3);
+        font-size: var(--tblr-text-sm);
+        color: var(--tblr-text-primary);
+        border-radius: var(--tblr-radius-sm);
         cursor: pointer;
 
         svg {
             width: 16px;
             height: 16px;
-            color: var(--swp-text-muted);
+            color: var(--tblr-text-muted);
         }
 
         &:hover {
-            background: var(--swp-gray-50);
+            background: var(--tblr-gray-50);
         }
 
         &.text-danger {
-            color: var(--swp-danger);
+            color: var(--tblr-danger);
 
             svg {
-                color: var(--swp-danger);
+                color: var(--tblr-danger);
             }
 
             &:hover {
-                background: var(--swp-danger-lighter);
+                background: var(--tblr-danger-lighter);
             }
         }
     }
 
     .dropdown-divider {
-        margin: var(--swp-space-1) 0;
+        margin: var(--tblr-space-1) 0;
     }
 }
 
@@ -948,7 +948,7 @@ tbody tr:hover .datagrid-more-btn,
         width: 18px;
         height: 18px;
         margin: 0;
-        accent-color: var(--swp-primary);
+        accent-color: var(--tblr-primary);
         cursor: pointer;
     }
 }
@@ -958,7 +958,7 @@ tbody tr:hover .datagrid-more-btn,
 // ============================================================================
 
 .datagrid-empty {
-    padding: var(--swp-space-16) var(--swp-space-6);
+    padding: var(--tblr-space-16) var(--tblr-space-6);
     text-align: center;
 }
 
@@ -968,10 +968,10 @@ tbody tr:hover .datagrid-more-btn,
     justify-content: center;
     width: 80px;
     height: 80px;
-    margin: 0 auto var(--swp-space-6);
-    color: var(--swp-gray-300);
-    background: var(--swp-gray-50);
-    border-radius: var(--swp-radius-full);
+    margin: 0 auto var(--tblr-space-6);
+    color: var(--tblr-gray-300);
+    background: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-full);
 
     svg {
         width: 40px;
@@ -980,16 +980,16 @@ tbody tr:hover .datagrid-more-btn,
 }
 
 .datagrid-empty-title {
-    margin: 0 0 var(--swp-space-2);
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    margin: 0 0 var(--tblr-space-2);
+    font-size: var(--tblr-text-lg);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
 }
 
 .datagrid-empty-message {
-    margin: 0 0 var(--swp-space-6);
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    margin: 0 0 var(--tblr-space-6);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
@@ -998,7 +998,7 @@ tbody tr:hover .datagrid-more-btn,
 .datagrid-empty-action {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 // ============================================================================
@@ -1032,17 +1032,17 @@ tbody tr:hover .datagrid-more-btn,
 .datagrid-bulk-bar-inner {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-4);
-    padding: var(--swp-space-3) var(--swp-space-4) var(--swp-space-3) var(--swp-space-6);
-    background: var(--swp-gray-900);
-    border-radius: var(--swp-radius-xl);
-    box-shadow: var(--swp-shadow-xl);
+    gap: var(--tblr-space-4);
+    padding: var(--tblr-space-3) var(--tblr-space-4) var(--tblr-space-3) var(--tblr-space-6);
+    background: var(--tblr-gray-900);
+    border-radius: var(--tblr-radius-xl);
+    box-shadow: var(--tblr-shadow-xl);
 }
 
 .datagrid-bulk-count {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-inverse);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-inverse);
     white-space: nowrap;
 
     .count {
@@ -1051,34 +1051,34 @@ tbody tr:hover .datagrid-more-btn,
         justify-content: center;
         min-width: 24px;
         height: 24px;
-        padding: 0 var(--swp-space-2);
-        margin-right: var(--swp-space-1);
-        font-size: var(--swp-text-xs);
-        color: var(--swp-gray-900);
-        background: var(--swp-gray-100);
-        border-radius: var(--swp-radius-full);
+        padding: 0 var(--tblr-space-2);
+        margin-right: var(--tblr-space-1);
+        font-size: var(--tblr-text-xs);
+        color: var(--tblr-gray-900);
+        background: var(--tblr-gray-100);
+        border-radius: var(--tblr-radius-full);
     }
 }
 
 .datagrid-bulk-actions {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .datagrid-bulk-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    padding: var(--swp-space-2) var(--swp-space-4);
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    color: var(--swp-text-inverse);
+    gap: var(--tblr-space-2);
+    padding: var(--tblr-space-2) var(--tblr-space-4);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    color: var(--tblr-text-inverse);
     background: rgb(255 255 255 / 10%);
     border: none;
-    border-radius: var(--swp-radius-md);
+    border-radius: var(--tblr-radius-md);
     cursor: pointer;
-    transition: background-color var(--swp-transition-fast);
+    transition: background-color var(--tblr-transition-fast);
 
     svg {
         width: 16px;
@@ -1090,7 +1090,7 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     &.btn-danger {
-        color: var(--swp-danger-light);
+        color: var(--tblr-danger-light);
 
         &:hover {
             background: rgb(239 68 68 / 20%);
@@ -1111,13 +1111,13 @@ tbody tr:hover .datagrid-more-btn,
     width: 32px;
     height: 32px;
     padding: 0;
-    color: var(--swp-gray-400);
+    color: var(--tblr-gray-400);
     background: transparent;
     border: none;
-    border-radius: var(--swp-radius-md);
+    border-radius: var(--tblr-radius-md);
     cursor: pointer;
-    transition: color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    transition: color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
 
     svg {
         width: 18px;
@@ -1125,7 +1125,7 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     &:hover {
-        color: var(--swp-text-inverse);
+        color: var(--tblr-text-inverse);
         background: rgb(255 255 255 / 10%);
     }
 }
@@ -1138,41 +1138,41 @@ tbody tr:hover .datagrid-more-btn,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--swp-space-4);
-    padding: var(--swp-space-4) var(--swp-space-6);
-    border-top: 1px solid var(--swp-border-light);
-    background: var(--swp-surface);
+    gap: var(--tblr-space-4);
+    padding: var(--tblr-space-4) var(--tblr-space-6);
+    border-top: 1px solid var(--tblr-border-light);
+    background: var(--tblr-surface);
 
     @media (width <= 768px) {
         flex-direction: column;
-        gap: var(--swp-space-3);
+        gap: var(--tblr-space-3);
     }
 }
 
 .datagrid-footer-info {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
 }
 
 .datagrid-per-page {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    gap: var(--tblr-space-2);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
 
     select {
-        padding: var(--swp-space-1-5) var(--swp-space-3);
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-primary);
-        background: var(--swp-surface);
-        border: 1px solid var(--swp-border);
-        border-radius: var(--swp-radius-md);
+        padding: var(--tblr-space-1-5) var(--tblr-space-3);
+        font-size: var(--tblr-text-sm);
+        color: var(--tblr-text-primary);
+        background: var(--tblr-surface);
+        border: 1px solid var(--tblr-border);
+        border-radius: var(--tblr-radius-md);
         cursor: pointer;
 
         &:focus {
-            border-color: var(--swp-primary);
-            box-shadow: var(--swp-ring-primary);
+            border-color: var(--tblr-primary);
+            box-shadow: var(--tblr-ring-primary);
             outline: none;
         }
     }
@@ -1183,7 +1183,7 @@ tbody tr:hover .datagrid-more-btn,
     .pagination {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-1);
+        gap: var(--tblr-space-1);
         margin: 0;
         padding: 0;
         list-style: none;
@@ -1197,33 +1197,33 @@ tbody tr:hover .datagrid-more-btn,
             justify-content: center;
             min-width: 32px;
             height: 32px;
-            padding: 0 var(--swp-space-2);
-            font-size: var(--swp-text-sm);
-            color: var(--swp-text-secondary);
+            padding: 0 var(--tblr-space-2);
+            font-size: var(--tblr-text-sm);
+            color: var(--tblr-text-secondary);
             background: transparent;
             border: 1px solid transparent;
-            border-radius: var(--swp-radius-md);
+            border-radius: var(--tblr-radius-md);
             text-decoration: none;
-            transition: color var(--swp-transition-fast),
-                        background-color var(--swp-transition-fast),
-                        border-color var(--swp-transition-fast);
+            transition: color var(--tblr-transition-fast),
+                        background-color var(--tblr-transition-fast),
+                        border-color var(--tblr-transition-fast);
 
             &:hover {
-                color: var(--swp-text-primary);
-                background: var(--swp-gray-50);
-                border-color: var(--swp-border);
+                color: var(--tblr-text-primary);
+                background: var(--tblr-gray-50);
+                border-color: var(--tblr-border);
             }
         }
 
         &.active .page-link {
-            color: var(--swp-primary);
-            background: var(--swp-primary-lighter);
-            border-color: var(--swp-primary-light);
-            font-weight: var(--swp-font-medium);
+            color: var(--tblr-primary);
+            background: var(--tblr-primary-lighter);
+            border-color: var(--tblr-primary-light);
+            font-weight: var(--tblr-font-medium);
         }
 
         &.disabled .page-link {
-            color: var(--swp-text-light);
+            color: var(--tblr-text-light);
             cursor: not-allowed;
             pointer-events: none;
         }
@@ -1237,42 +1237,42 @@ tbody tr:hover .datagrid-more-btn,
 .datagrid-status {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    padding: var(--swp-space-0-5) var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-medium);
+    gap: var(--tblr-space-1);
+    padding: var(--tblr-space-0-5) var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-medium);
     text-transform: uppercase;
     letter-spacing: 0.025em;
-    border-radius: var(--swp-radius-sm);
+    border-radius: var(--tblr-radius-sm);
 
     &.status-success {
         color: #065f46;
-        background: var(--swp-success-lighter);
+        background: var(--tblr-success-lighter);
     }
 
     &.status-danger {
         color: #991b1b;
-        background: var(--swp-danger-lighter);
+        background: var(--tblr-danger-lighter);
     }
 
     &.status-warning {
         color: #92400e;
-        background: var(--swp-warning-lighter);
+        background: var(--tblr-warning-lighter);
     }
 
     &.status-info {
         color: #1e40af;
-        background: var(--swp-info-lighter);
+        background: var(--tblr-info-lighter);
     }
 
     &.status-primary {
-        color: var(--swp-primary-dark);
-        background: var(--swp-primary-lighter);
+        color: var(--tblr-primary-dark);
+        background: var(--tblr-primary-lighter);
     }
 
     &.status-secondary {
-        color: var(--swp-gray-700);
-        background: var(--swp-gray-100);
+        color: var(--tblr-gray-700);
+        background: var(--tblr-gray-100);
     }
 }
 
@@ -1282,7 +1282,7 @@ tbody tr:hover .datagrid-more-btn,
 
 .datagrid-relative-date {
     cursor: help;
-    text-decoration: underline dotted var(--swp-border-dark);
+    text-decoration: underline dotted var(--tblr-border-dark);
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
 }
@@ -1330,15 +1330,15 @@ tbody tr:hover .datagrid-more-btn,
 
         th,
         td {
-            padding: var(--swp-space-2) var(--swp-space-3);
+            padding: var(--tblr-space-2) var(--tblr-space-3);
         }
     }
 
     .datagrid-bulk-bar-inner {
         flex-wrap: wrap;
         justify-content: center;
-        gap: var(--swp-space-3);
-        padding: var(--swp-space-4);
+        gap: var(--tblr-space-3);
+        padding: var(--tblr-space-4);
     }
 
     .datagrid-bulk-divider {
@@ -1356,7 +1356,7 @@ tbody tr:hover .datagrid-more-btn,
     .col-expand {
         width: 40px;
         text-align: center;
-        padding-right: var(--swp-space-2);
+        padding-right: var(--tblr-space-2);
     }
 }
 
@@ -1367,13 +1367,13 @@ tbody tr:hover .datagrid-more-btn,
     width: 28px;
     height: 28px;
     padding: 0;
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
     background: transparent;
     border: none;
-    border-radius: var(--swp-radius-sm);
+    border-radius: var(--tblr-radius-sm);
     cursor: pointer;
-    transition: color var(--swp-transition-fast),
-                background-color var(--swp-transition-fast);
+    transition: color var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast);
 
     span {
         display: inline-flex;
@@ -1381,8 +1381,8 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     &:hover {
-        color: var(--swp-text-primary);
-        background: var(--swp-gray-100);
+        color: var(--tblr-text-primary);
+        background: var(--tblr-gray-100);
     }
 }
 
@@ -1390,7 +1390,7 @@ tbody tr:hover .datagrid-more-btn,
 
 .datagrid-detail-row {
     display: none;
-    background: var(--swp-gray-50);
+    background: var(--tblr-gray-50);
 
     &.visible {
         display: table-row;
@@ -1403,14 +1403,14 @@ tbody tr:hover .datagrid-more-btn,
 }
 
 .datagrid-detail-content {
-    padding: var(--swp-space-4) var(--swp-space-6);
+    padding: var(--tblr-space-4) var(--tblr-space-6);
     animation: datagrid-slide-down 200ms ease;
 
     // Override nested datagrid card styles when inside detail row
 
     .card {
         box-shadow: none;
-        border: 1px solid var(--swp-border-light);
+        border: 1px solid var(--tblr-border-light);
     }
 }
 
@@ -1436,14 +1436,14 @@ tbody tr:hover .datagrid-more-btn,
     h4 {
         font-size: 1rem;
         font-weight: var(--tblr-font-weight-semibold);
-        color: var(--swp-text-primary);
+        color: var(--tblr-text-primary);
     }
 
     .table {
         margin-bottom: 0;
         background: var(--tblr-white);
-        border: 1px solid var(--swp-border-light);
-        border-radius: var(--swp-radius-md);
+        border: 1px solid var(--tblr-border-light);
+        border-radius: var(--tblr-radius-md);
         overflow: hidden;
 
         thead th {
@@ -1451,26 +1451,26 @@ tbody tr:hover .datagrid-more-btn,
             font-weight: var(--tblr-font-weight-semibold);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--swp-text-muted);
-            background: var(--swp-gray-50);
-            border-bottom: 2px solid var(--swp-border-light);
-            padding: var(--swp-space-2) var(--swp-space-3);
+            color: var(--tblr-text-muted);
+            background: var(--tblr-gray-50);
+            border-bottom: 2px solid var(--tblr-border-light);
+            padding: var(--tblr-space-2) var(--tblr-space-3);
         }
 
         tbody {
 
             tr {
-                transition: background-color var(--swp-transition-fast);
+                transition: background-color var(--tblr-transition-fast);
 
                 &:hover {
-                    background-color: var(--swp-surface-hover);
+                    background-color: var(--tblr-surface-hover);
                 }
 
                 td {
-                    padding: var(--swp-space-2) var(--swp-space-3);
+                    padding: var(--tblr-space-2) var(--tblr-space-3);
                     vertical-align: middle;
                     font-size: 0.875rem;
-                    border-bottom: 1px solid var(--swp-border-light);
+                    border-bottom: 1px solid var(--tblr-border-light);
                 }
             }
 

@@ -4,7 +4,7 @@
  * Billing, plan-picker, and subscription-state pages (pricing, overview,
  * change, cancelled, paused, pending, trial expired).
  *
- * All values are `--swp-*` design tokens. State is carried by a soft icon
+ * All values are `--tblr-*` design tokens. State is carried by a soft icon
  * medallion + heading, never by a decorative accent stripe, a colored glow, or
  * a looping animation. Colour stays on the brand: Trust Green is the only
  * accent; there is no Tabler blue and no amber-by-accident here.
@@ -15,22 +15,22 @@
 // ============================================================================
 
 .subscription-page {
-    min-height: calc(100vh - var(--swp-space-24));
+    min-height: calc(100vh - var(--tblr-space-24));
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--swp-space-12) var(--swp-space-4);
+    padding: var(--tblr-space-12) var(--tblr-space-4);
 }
 
 .subscription-container {
     max-width: 640px;
     width: 100%;
     text-align: center;
-    padding: var(--swp-space-10);
-    background: var(--swp-surface);
+    padding: var(--tblr-space-10);
+    background: var(--tblr-surface);
     border: none;
-    border-radius: var(--swp-radius-xl);
-    box-shadow: var(--swp-shadow-xl);
+    border-radius: var(--tblr-radius-xl);
+    box-shadow: var(--tblr-shadow-xl);
     animation: subscription-fade-in 0.3s ease-out;
 }
 
@@ -54,13 +54,13 @@
 // Page header (above subscription container)
 
 .subscription-page-header {
-    background: var(--swp-surface);
-    border-bottom: 1px solid var(--swp-border);
-    box-shadow: var(--swp-shadow-sm);
+    background: var(--tblr-surface);
+    border-bottom: 1px solid var(--tblr-border);
+    box-shadow: var(--tblr-shadow-sm);
 
     .h4 {
         font-weight: 600;
-        color: var(--swp-text-primary);
+        color: var(--tblr-text-primary);
     }
 }
 
@@ -73,8 +73,8 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    border-radius: var(--swp-radius-xl);
-    margin: 0 auto var(--swp-space-8);
+    border-radius: var(--tblr-radius-xl);
+    margin: 0 auto var(--tblr-space-8);
 
     svg {
         width: 32px;
@@ -83,38 +83,38 @@
 }
 
 .subscription-icon-warning {
-    background: var(--swp-warning-light);
-    color: var(--swp-warning);
+    background: var(--tblr-warning-light);
+    color: var(--tblr-warning);
 }
 
 .subscription-icon-danger {
-    background: var(--swp-danger-light);
-    color: var(--swp-danger);
+    background: var(--tblr-danger-light);
+    color: var(--tblr-danger);
 }
 
 .subscription-icon-info {
-    background: var(--swp-info-light);
-    color: var(--swp-info);
+    background: var(--tblr-info-light);
+    color: var(--tblr-info);
 }
 
 .subscription-icon-paused {
-    background: var(--swp-gray-100);
-    color: var(--swp-text-secondary);
+    background: var(--tblr-gray-100);
+    color: var(--tblr-text-secondary);
 }
 
 .subscription-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--swp-text-primary);
-    margin: 0 0 var(--swp-space-3);
+    color: var(--tblr-text-primary);
+    margin: 0 0 var(--tblr-space-3);
     letter-spacing: -0.02em;
     line-height: 1.2;
 }
 
 .subscription-subtitle {
-    font-size: var(--swp-text-lg);
-    color: var(--swp-text-secondary);
-    margin: 0 0 var(--swp-space-10);
+    font-size: var(--tblr-text-lg);
+    color: var(--tblr-text-secondary);
+    margin: 0 0 var(--tblr-space-10);
     line-height: 1.7;
 }
 
@@ -123,19 +123,19 @@
 // ============================================================================
 
 .subscription-benefits {
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    padding: var(--swp-space-6);
-    margin-bottom: var(--swp-space-8);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
+    padding: var(--tblr-space-6);
+    margin-bottom: var(--tblr-space-8);
     text-align: left;
-    box-shadow: var(--swp-shadow-xs);
+    box-shadow: var(--tblr-shadow-xs);
 
     h3 {
-        font-size: var(--swp-text-md);
+        font-size: var(--tblr-text-md);
         font-weight: 600;
-        color: var(--swp-text-primary);
-        margin: 0 0 var(--swp-space-4);
+        color: var(--tblr-text-primary);
+        margin: 0 0 var(--tblr-space-4);
     }
 
     ul {
@@ -147,15 +147,15 @@
     li {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-3);
-        padding: var(--swp-space-2-5) 0;
-        color: var(--swp-text-secondary);
-        font-size: var(--swp-text-base);
+        gap: var(--tblr-space-3);
+        padding: var(--tblr-space-2-5) 0;
+        color: var(--tblr-text-secondary);
+        font-size: var(--tblr-text-base);
 
         svg {
             width: 20px;
             height: 20px;
-            color: var(--swp-success);
+            color: var(--tblr-success);
             flex-shrink: 0;
         }
     }
@@ -165,7 +165,7 @@
 // to a feature you chose to cancel is information, not an error.
 
 .subscription-cancelled-page .subscription-benefits li svg {
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
 }
 
 // ============================================================================
@@ -175,15 +175,15 @@
 .subscription-actions {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-3);
-    margin-bottom: var(--swp-space-4);
+    gap: var(--tblr-space-3);
+    margin-bottom: var(--tblr-space-4);
 
     .btn-lg {
-        padding: var(--swp-space-3-5) var(--swp-space-6);
-        font-size: var(--swp-text-md);
+        padding: var(--tblr-space-3-5) var(--tblr-space-6);
+        font-size: var(--tblr-text-md);
         font-weight: 600;
-        box-shadow: var(--swp-shadow-sm);
-        transition: box-shadow var(--swp-transition-base);
+        box-shadow: var(--tblr-shadow-sm);
+        transition: box-shadow var(--tblr-transition-base);
 
         svg {
             width: 20px;
@@ -191,12 +191,12 @@
         }
 
         &:hover {
-            box-shadow: var(--swp-shadow-md);
+            box-shadow: var(--tblr-shadow-md);
         }
 
         &:focus-visible {
             outline: none;
-            box-shadow: var(--swp-shadow-md), var(--swp-ring-primary);
+            box-shadow: var(--tblr-shadow-md), var(--tblr-ring-primary);
         }
     }
 
@@ -208,12 +208,12 @@
         }
 
         &:hover {
-            background: var(--swp-gray-50);
+            background: var(--tblr-gray-50);
         }
 
         &:focus-visible {
             outline: none;
-            box-shadow: var(--swp-ring-primary);
+            box-shadow: var(--tblr-ring-primary);
         }
     }
 }
@@ -232,7 +232,7 @@
     // are simply on hold.
 
     .subscription-benefits li svg {
-        color: var(--swp-text-secondary);
+        color: var(--tblr-text-secondary);
     }
 }
 
@@ -246,7 +246,7 @@
     border-right: 0;
     border-top: 0;
     margin-bottom: 0;
-    padding: var(--swp-space-3) var(--swp-space-4);
+    padding: var(--tblr-space-3) var(--tblr-space-4);
 
     .d-flex {
         align-items: center;
@@ -267,17 +267,17 @@
     // Warning banner (trial)
 
     &.alert-warning {
-        background: var(--swp-warning-lighter);
-        border-bottom-color: var(--swp-warning-light);
-        color: var(--swp-text-primary);
+        background: var(--tblr-warning-lighter);
+        border-bottom-color: var(--tblr-warning-light);
+        color: var(--tblr-text-primary);
 
         .btn-warning {
-            background: var(--swp-warning);
-            color: var(--swp-text-inverse);
+            background: var(--tblr-warning);
+            color: var(--tblr-text-inverse);
             border: none;
 
             &:hover {
-                background: var(--swp-warning-hover);
+                background: var(--tblr-warning-hover);
             }
         }
     }
@@ -285,17 +285,17 @@
     // Danger banner (cancelled)
 
     &.alert-danger {
-        background: var(--swp-danger-lighter);
-        border-bottom-color: var(--swp-danger-light);
-        color: var(--swp-text-primary);
+        background: var(--tblr-danger-lighter);
+        border-bottom-color: var(--tblr-danger-light);
+        color: var(--tblr-text-primary);
 
         .btn-danger {
-            background: var(--swp-danger);
-            color: var(--swp-text-inverse);
+            background: var(--tblr-danger);
+            color: var(--tblr-text-inverse);
             border: none;
 
             &:hover {
-                background: var(--swp-danger-hover);
+                background: var(--tblr-danger-hover);
             }
         }
     }
@@ -317,14 +317,14 @@
     position: relative;
     overflow: hidden;
     transition:
-        box-shadow var(--swp-transition-base),
-        border-color var(--swp-transition-base);
+        box-shadow var(--tblr-transition-base),
+        border-color var(--tblr-transition-base);
 
     // Hover lifts by shadow only (no transform), per the design system's card
     // rules.
 
     &:hover {
-        box-shadow: var(--swp-shadow-md);
+        box-shadow: var(--tblr-shadow-md);
     }
 
     // Reserve the banner's height on every paid card so the price baseline is
@@ -332,16 +332,16 @@
     // taken out of flow below).
 
     > .card-body {
-        padding-top: var(--swp-space-9);
+        padding-top: var(--tblr-space-9);
     }
 }
 
 .plan-card-recommended {
     border-width: 2px;
-    box-shadow: var(--swp-shadow-md);
+    box-shadow: var(--tblr-shadow-md);
 
     &:hover {
-        box-shadow: var(--swp-shadow-xl);
+        box-shadow: var(--tblr-shadow-xl);
     }
 }
 
@@ -357,14 +357,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--swp-space-1);
-    padding: var(--swp-space-2) var(--swp-space-3);
-    font-size: var(--swp-text-xs);
+    gap: var(--tblr-space-1);
+    padding: var(--tblr-space-2) var(--tblr-space-3);
+    font-size: var(--tblr-text-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--swp-text-inverse);
-    background: var(--swp-primary);
+    color: var(--tblr-text-inverse);
+    background: var(--tblr-primary);
 
     svg {
         flex-shrink: 0;
@@ -374,27 +374,27 @@
 // Free plan: presented as a slim secondary card below the main grid.
 
 .plan-card-free {
-    background: var(--swp-gray-50);
-    border: 1px dashed var(--swp-border);
+    background: var(--tblr-gray-50);
+    border: 1px dashed var(--tblr-border);
     box-shadow: none;
     transition:
-        border-color var(--swp-transition-base),
-        background var(--swp-transition-base);
+        border-color var(--tblr-transition-base),
+        background var(--tblr-transition-base);
 
     &:hover {
-        border-color: var(--swp-primary);
-        background: var(--swp-surface);
+        border-color: var(--tblr-primary);
+        background: var(--tblr-surface);
     }
 
     .card-body {
-        padding: var(--swp-space-4) var(--swp-space-6);
+        padding: var(--tblr-space-4) var(--tblr-space-6);
     }
 
     .plan-card-features {
-        font-size: var(--swp-text-sm);
+        font-size: var(--tblr-text-sm);
 
         li {
-            margin-bottom: var(--swp-space-1);
+            margin-bottom: var(--tblr-space-1);
         }
     }
 }
@@ -413,13 +413,13 @@
 .plan-card-features-inline {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--swp-space-2) var(--swp-space-4);
-    font-size: var(--swp-text-sm);
+    gap: var(--tblr-space-2) var(--tblr-space-4);
+    font-size: var(--tblr-text-sm);
 
     li {
         display: inline-flex;
         align-items: center;
-        gap: var(--swp-space-1);
+        gap: var(--tblr-space-1);
         white-space: nowrap;
     }
 }
@@ -428,13 +428,13 @@
 // which inherits its size from here; the interval sits quietly beside it.
 
 .plan-card-price {
-    font-size: var(--swp-text-4xl);
+    font-size: var(--tblr-text-4xl);
     line-height: 1.1;
 }
 
 .plan-card-interval {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-normal);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-normal);
 }
 
 .plan-card-features {
@@ -445,16 +445,16 @@
 // replacing the off-system Tabler `azure` utilities.
 
 .subscription-coupon {
-    background: var(--swp-primary-lighter);
-    border: 1px solid var(--swp-primary-light);
-    border-radius: var(--swp-radius-lg);
+    background: var(--tblr-primary-lighter);
+    border: 1px solid var(--tblr-primary-light);
+    border-radius: var(--tblr-radius-lg);
 
     // The coupon code itself, in solid Trust Green so it reads as the one thing
     // to copy. Without this a bare `.badge` falls back to the theme's amber.
 
     .badge {
-        background: var(--swp-primary);
-        color: var(--swp-text-inverse);
+        background: var(--tblr-primary);
+        color: var(--tblr-text-inverse);
     }
 }
 
@@ -473,12 +473,12 @@
 }
 
 .welcome-plan {
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    box-shadow: var(--swp-shadow-xs);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
+    box-shadow: var(--tblr-shadow-xs);
 
     .card-body {
-        padding: var(--swp-space-6);
+        padding: var(--tblr-space-6);
     }
 
     // The plan's own feature list is reused from the picker; here it sits inside
@@ -494,7 +494,7 @@
 }
 
 .welcome-plan-price {
-    font-size: var(--swp-text-2xl);
+    font-size: var(--tblr-text-2xl);
     font-weight: 700;
     line-height: 1.1;
 }
@@ -504,17 +504,17 @@
 .welcome-reassure-item {
     display: flex;
     align-items: flex-start;
-    gap: var(--swp-space-2-5);
+    gap: var(--tblr-space-2-5);
     height: 100%;
-    padding: var(--swp-space-4);
-    background: var(--swp-gray-50);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
+    padding: var(--tblr-space-4);
+    background: var(--tblr-gray-50);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-lg);
 
     svg {
         flex-shrink: 0;
-        margin-top: var(--swp-space-0-5);
-        color: var(--swp-success);
+        margin-top: var(--tblr-space-0-5);
+        color: var(--tblr-success);
     }
 }
 
@@ -525,7 +525,7 @@
 @media (width <= 767.98px) {
 
     .subscription-page {
-        padding: var(--swp-space-6) var(--swp-space-3);
+        padding: var(--tblr-space-6) var(--tblr-space-3);
     }
 
     .subscription-page-header {
@@ -533,7 +533,7 @@
         .d-flex {
             flex-direction: column;
             align-items: flex-start !important;
-            gap: var(--swp-space-3);
+            gap: var(--tblr-space-3);
         }
 
         .btn-group {
@@ -546,7 +546,7 @@
     }
 
     .subscription-container {
-        padding: var(--swp-space-6);
+        padding: var(--tblr-space-6);
     }
 
     .subscription-icon {
@@ -564,11 +564,11 @@
     }
 
     .subscription-subtitle {
-        font-size: var(--swp-text-md);
+        font-size: var(--tblr-text-md);
     }
 
     .subscription-benefits {
-        padding: var(--swp-space-4);
+        padding: var(--tblr-space-4);
     }
 
     .subscription-actions {
@@ -583,7 +583,7 @@
         .d-flex {
             flex-direction: column;
             align-items: flex-start;
-            gap: var(--swp-space-3);
+            gap: var(--tblr-space-3);
         }
 
         .btn-sm {
@@ -597,7 +597,7 @@
 
     .subscription-container {
         max-width: 600px;
-        padding: var(--swp-space-8);
+        padding: var(--tblr-space-8);
     }
 }
 
@@ -632,7 +632,7 @@
 
     .subscription-container {
         box-shadow: none;
-        border: 1px solid var(--swp-border);
+        border: 1px solid var(--tblr-border);
     }
 
     .subscription-actions {

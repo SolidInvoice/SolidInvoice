@@ -16,7 +16,7 @@
 
 .dashboard-hero-stats {
     display: grid;
-    gap: var(--swp-space-4);
+    gap: var(--tblr-space-4);
     grid-template-columns: 1fr;
 
     @media (width >= 577px) {
@@ -29,11 +29,11 @@
 }
 
 .stat-card {
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border-light);
-    border-radius: var(--swp-radius-lg);
-    box-shadow: var(--swp-shadow-sm);
-    padding: var(--swp-space-6);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border-light);
+    border-radius: var(--tblr-radius-lg);
+    box-shadow: var(--tblr-shadow-sm);
+    padding: var(--tblr-space-6);
 
     // No hover treatment: the tile is an inert div with no link and no handler.
     // Nothing here transitions, so there is nothing for reduced-motion to undo.
@@ -50,8 +50,8 @@
     // a $0.00 total in success green, mirrored.
 
     &--danger {
-        background: var(--swp-danger-lighter);
-        border-color: var(--swp-danger-light);
+        background: var(--tblr-danger-lighter);
+        border-color: var(--tblr-danger-light);
     }
 
     // "Overdue" is the only actionable number in the row, so it must not read as
@@ -64,7 +64,7 @@
         }
 
         .stat-value {
-            font-size: var(--swp-text-3xl);
+            font-size: var(--tblr-text-3xl);
         }
     }
 }
@@ -72,72 +72,72 @@
 .stat-card-content {
     display: flex;
     align-items: flex-start;
-    gap: var(--swp-space-4);
+    gap: var(--tblr-space-4);
 }
 
 .stat-icon {
     width: 48px;
     height: 48px;
-    border-radius: var(--swp-radius-md);
+    border-radius: var(--tblr-radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 
     &--primary {
-        background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary);
     }
 
     &--success {
-        background: var(--swp-success-light);
-        color: var(--swp-success);
+        background: var(--tblr-success-light);
+        color: var(--tblr-success);
     }
 
     &--danger {
-        background: var(--swp-danger-light);
-        color: var(--swp-danger);
+        background: var(--tblr-danger-light);
+        color: var(--tblr-danger);
     }
 
     &--warning {
-        background: var(--swp-warning-light);
-        color: var(--swp-warning);
+        background: var(--tblr-warning-light);
+        color: var(--tblr-warning);
     }
 
     &--info {
-        background: var(--swp-info-light);
-        color: var(--swp-info);
+        background: var(--tblr-info-light);
+        color: var(--tblr-info);
     }
 }
 
 .stat-info {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
     min-width: 0;
 }
 
 .stat-label {
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
-    font-weight: var(--swp-font-semibold);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
+    font-weight: var(--tblr-font-semibold);
     text-transform: uppercase;
-    letter-spacing: var(--swp-tracking-wider);
+    letter-spacing: var(--tblr-tracking-wider);
 }
 
 .stat-value {
-    font-size: var(--swp-text-2xl);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-2xl);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     line-height: 1.2;
-    letter-spacing: var(--swp-tracking-tight);
+    letter-spacing: var(--tblr-tracking-tight);
     font-variant-numeric: tabular-nums;
 
     // Green means "Paid". A lifetime revenue aggregate is not a payment state,
     // so there is no `--success` here; paid semantics live in `.money--paid`.
 
     &--danger {
-        color: var(--swp-danger-hover);
+        color: var(--tblr-danger-hover);
     }
 
     // The tile already carries the emphasis: `.stat-value` is the largest text in
@@ -154,8 +154,8 @@
 }
 
 .stat-subvalue {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
     font-variant-numeric: tabular-nums;
 }
 
@@ -194,7 +194,7 @@
     // compensates. It is a fixed distance rather than a percentage of this
     // element's own height, so changing the total's type size or wrapping its
     // label can no longer drag the number off the ring's centre.
-    transform: translate(-50%, calc(-50% - var(--swp-space-1-5)));
+    transform: translate(-50%, calc(-50% - var(--tblr-space-1-5)));
     text-align: center;
     pointer-events: none;
     z-index: 1;
@@ -205,22 +205,22 @@
 
     // Demoted from 32px: the least actionable widget on the page should not own
     // its largest number. That now belongs to the overdue count.
-    font-size: var(--swp-text-2xl);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-2xl);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     line-height: 1;
-    letter-spacing: var(--swp-tracking-tight);
+    letter-spacing: var(--tblr-tracking-tight);
     font-variant-numeric: tabular-nums;
 }
 
 .dashboard-donut-label {
     display: block;
-    font-size: var(--swp-text-xs);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-xs);
+    color: var(--tblr-text-muted);
     text-transform: uppercase;
-    letter-spacing: var(--swp-tracking-wider);
-    font-weight: var(--swp-font-semibold);
-    margin-top: var(--swp-space-1);
+    letter-spacing: var(--tblr-tracking-wider);
+    font-weight: var(--tblr-font-semibold);
+    margin-top: var(--tblr-space-1);
 }
 
 .dashboard-chart-empty {
@@ -228,22 +228,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--swp-space-8);
+    padding: var(--tblr-space-8);
     text-align: center;
 }
 
 .dashboard-chart-empty-icon {
-    // Was `--swp-text-light` (2.56:1 on surface): technically decoration, but
+    // Was `--tblr-text-light` (2.56:1 on surface): technically decoration, but
     // close enough to invisible that it read as a rendering fault. `--text-muted`
     // clears 1.4.11 for a meaningful graphic and still sits a step lighter than
     // the text below it, so the icon supports the message instead of leading it.
-    color: var(--swp-text-muted);
-    margin-bottom: var(--swp-space-3);
+    color: var(--tblr-text-muted);
+    margin-bottom: var(--tblr-space-3);
 }
 
 .dashboard-chart-empty-text {
-    color: var(--swp-text-secondary);
-    margin-bottom: var(--swp-space-2);
+    color: var(--tblr-text-secondary);
+    margin-bottom: var(--tblr-space-2);
 }
 
 // A failed query is not an empty account, and must never impersonate one. The
@@ -256,7 +256,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--swp-space-8);
+    padding: var(--tblr-space-8);
     text-align: center;
 }
 
@@ -266,13 +266,13 @@
     // so the two states are told apart by form before colour is read at all.
     width: 64px;
     height: 64px;
-    border-radius: var(--swp-radius-full);
-    background: var(--swp-danger-light);
-    color: var(--swp-danger);
+    border-radius: var(--tblr-radius-full);
+    background: var(--tblr-danger-light);
+    color: var(--tblr-danger);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--swp-space-3);
+    margin-bottom: var(--tblr-space-3);
 
     svg {
         width: 32px;
@@ -283,16 +283,16 @@
 .dashboard-chart-error-title {
     // Heavier and darker than `.dashboard-chart-empty-text`: a statement of what
     // went wrong, not a shrug.
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
-    margin: 0 0 var(--swp-space-1);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
+    margin: 0 0 var(--tblr-space-1);
 }
 
 .dashboard-chart-error-text {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
-    margin: 0 0 var(--swp-space-4);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
+    margin: 0 0 var(--tblr-space-4);
     max-width: 42ch;
 }
 
@@ -305,132 +305,132 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--swp-space-8);
+    padding: var(--tblr-space-8);
     text-align: center;
 }
 
 .attention-empty-icon {
     width: 64px;
     height: 64px;
-    border-radius: var(--swp-radius-full);
-    background: var(--swp-success-lighter);
-    color: var(--swp-success);
+    border-radius: var(--tblr-radius-full);
+    background: var(--tblr-success-lighter);
+    color: var(--tblr-success);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--swp-space-3);
+    margin-bottom: var(--tblr-space-3);
 }
 
 .attention-empty-text {
-    color: var(--swp-text-secondary);
+    color: var(--tblr-text-secondary);
     margin: 0;
 }
 
 .attention-sections {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-4);
+    gap: var(--tblr-space-4);
 }
 
 .attention-section {
 
     &:not(:last-child) {
-        padding-bottom: var(--swp-space-4);
-        border-bottom: 1px solid var(--swp-border-light);
+        padding-bottom: var(--tblr-space-4);
+        border-bottom: 1px solid var(--tblr-border-light);
     }
 }
 
 .attention-section-header {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-semibold);
+    gap: var(--tblr-space-2);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-semibold);
     text-transform: uppercase;
-    letter-spacing: var(--swp-tracking-wider);
-    margin-bottom: var(--swp-space-3);
+    letter-spacing: var(--tblr-tracking-wider);
+    margin-bottom: var(--tblr-space-3);
 
     &--danger {
-        color: var(--swp-danger);
+        color: var(--tblr-danger);
     }
 
     &--warning {
-        color: var(--swp-warning-hover);
+        color: var(--tblr-warning-hover);
     }
 
     &--info {
-        color: var(--swp-info);
+        color: var(--tblr-info);
     }
 
     &--primary {
-        color: var(--swp-primary);
+        color: var(--tblr-primary);
     }
 }
 
 .attention-badge {
     // Was 11px, off-ramp. Badge text is the documented Label step (12px).
-    font-size: var(--swp-text-xs);
+    font-size: var(--tblr-text-xs);
     padding: 2px 6px;
-    border-radius: var(--swp-radius-full);
-    font-weight: var(--swp-font-semibold);
+    border-radius: var(--tblr-radius-full);
+    font-weight: var(--tblr-font-semibold);
 
     &--danger {
-        background: var(--swp-danger-light);
-        color: var(--swp-danger);
+        background: var(--tblr-danger-light);
+        color: var(--tblr-danger);
     }
 
     &--warning {
-        background: var(--swp-warning-light);
-        color: var(--swp-warning-hover);
+        background: var(--tblr-warning-light);
+        color: var(--tblr-warning-hover);
     }
 
     &--info {
-        background: var(--swp-info-light);
-        color: var(--swp-info);
+        background: var(--tblr-info-light);
+        color: var(--tblr-info);
     }
 
     &--primary {
-        background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary);
     }
 }
 
 .attention-items {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .attention-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-3);
-    border-radius: var(--swp-radius-md);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-3);
+    border-radius: var(--tblr-radius-md);
     text-decoration: none;
     color: inherit;
-    transition: background-color var(--swp-transition-fast),
-                box-shadow var(--swp-transition-fast);
+    transition: background-color var(--tblr-transition-fast),
+                box-shadow var(--tblr-transition-fast);
 
     &:hover {
-        background: var(--swp-surface-hover);
+        background: var(--tblr-surface-hover);
     }
 
     &:focus-visible {
         outline: none;
-        box-shadow: var(--swp-ring-primary);
+        box-shadow: var(--tblr-ring-primary);
     }
 
     &--danger {
-        background: var(--swp-danger-lighter);
+        background: var(--tblr-danger-lighter);
 
         &:hover {
-            background: var(--swp-danger-light);
+            background: var(--tblr-danger-light);
         }
 
         &:focus-visible {
-            box-shadow: var(--swp-ring-danger);
+            box-shadow: var(--tblr-ring-danger);
         }
     }
 }
@@ -438,20 +438,20 @@
 .attention-item-main {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     min-width: 0;
     flex: 1;
 }
 
 .attention-item-id {
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
-    font-family: var(--swp-font-mono);
-    font-size: var(--swp-text-sm);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
+    font-family: var(--tblr-font-mono);
+    font-size: var(--tblr-text-sm);
 }
 
 .attention-item-client {
-    color: var(--swp-text-secondary);
+    color: var(--tblr-text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -460,19 +460,19 @@
 .attention-item-meta {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
     flex-shrink: 0;
 }
 
 .attention-item-amount {
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     font-variant-numeric: tabular-nums;
 }
 
 .attention-item-date {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
     font-variant-numeric: tabular-nums;
 }
 
@@ -483,7 +483,7 @@
 .quick-actions-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
 }
 
 .quick-action-btn {
@@ -491,57 +491,57 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--swp-space-2);
-    padding: var(--swp-space-4);
-    border-radius: var(--swp-radius-md);
+    gap: var(--tblr-space-2);
+    padding: var(--tblr-space-4);
+    border-radius: var(--tblr-radius-md);
     text-decoration: none;
-    transition: transform var(--swp-transition-fast),
-                background-color var(--swp-transition-fast),
-                box-shadow var(--swp-transition-fast);
+    transition: transform var(--tblr-transition-fast),
+                background-color var(--tblr-transition-fast),
+                box-shadow var(--tblr-transition-fast);
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: var(--swp-shadow-md);
+        box-shadow: var(--tblr-shadow-md);
     }
 
     &:focus-visible {
         outline: none;
-        box-shadow: var(--swp-ring-primary);
+        box-shadow: var(--tblr-ring-primary);
     }
 
     &--primary {
-        background: var(--swp-primary-lighter);
-        color: var(--swp-primary-dark);
+        background: var(--tblr-primary-lighter);
+        color: var(--tblr-primary-dark);
 
         &:hover {
-            background: var(--swp-primary-light);
+            background: var(--tblr-primary-light);
         }
     }
 
     &--secondary {
-        background: var(--swp-secondary-lighter);
-        color: var(--swp-secondary-dark);
+        background: var(--tblr-secondary-lighter);
+        color: var(--tblr-secondary-dark);
 
         &:hover {
-            background: var(--swp-secondary-light);
+            background: var(--tblr-secondary-light);
         }
     }
 
     &--info {
-        background: var(--swp-info-lighter);
-        color: var(--swp-info-hover);
+        background: var(--tblr-info-lighter);
+        color: var(--tblr-info-hover);
 
         &:hover {
-            background: var(--swp-info-light);
+            background: var(--tblr-info-light);
         }
     }
 
     &--success {
-        background: var(--swp-success-lighter);
-        color: var(--swp-success-hover);
+        background: var(--tblr-success-lighter);
+        color: var(--tblr-success-hover);
 
         &:hover {
-            background: var(--swp-success-light);
+            background: var(--tblr-success-light);
         }
     }
 
@@ -564,8 +564,8 @@
 }
 
 .quick-action-label {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-semibold);
     text-align: center;
 }
 
@@ -582,9 +582,9 @@
 .activity-item {
     display: flex;
     align-items: flex-start;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4) 0;
-    border-bottom: 1px solid var(--swp-border-light);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4) 0;
+    border-bottom: 1px solid var(--tblr-border-light);
 
     &:last-child {
         border-bottom: none;
@@ -594,7 +594,7 @@
 .activity-icon {
     width: 36px;
     height: 36px;
-    border-radius: var(--swp-radius-full);
+    border-radius: var(--tblr-radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -602,29 +602,29 @@
     margin-top: 2px;
 
     &--payment {
-        background: var(--swp-success-light);
-        color: var(--swp-success);
+        background: var(--tblr-success-light);
+        color: var(--tblr-success);
     }
 
     &--invoice,
     &--invoice_sent {
-        background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary);
     }
 
     &--quote_accepted {
-        background: var(--swp-success-light);
-        color: var(--swp-success);
+        background: var(--tblr-success-light);
+        color: var(--tblr-success);
     }
 
     &--quote_declined {
-        background: var(--swp-danger-light);
-        color: var(--swp-danger);
+        background: var(--tblr-danger-light);
+        color: var(--tblr-danger);
     }
 
     &--recurring_generated {
-        background: var(--swp-info-light);
-        color: var(--swp-info);
+        background: var(--tblr-info-light);
+        color: var(--tblr-info);
     }
 }
 
@@ -633,71 +633,71 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .activity-description {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     flex-wrap: wrap;
     line-height: 1.4;
 }
 
 
 .activity-text {
-    color: var(--swp-text-secondary);
+    color: var(--tblr-text-secondary);
 
     // Was 14px, off-ramp. Body is 15px, and it pairs with the 13px mono doc-link
     // nested inside it exactly as the ramp intends. It also keeps this row a step
     // above `.activity-details` below, which the 13px step would have flattened.
-    font-size: var(--swp-text-base);
+    font-size: var(--tblr-text-base);
 }
 
 .activity-doc-link {
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-primary);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-primary);
     text-decoration: none;
-    font-family: var(--swp-font-mono);
-    font-size: var(--swp-text-sm);
-    border-radius: var(--swp-radius-sm);
+    font-family: var(--tblr-font-mono);
+    font-size: var(--tblr-text-sm);
+    border-radius: var(--tblr-radius-sm);
 
     &:hover {
         text-decoration: underline;
-        color: var(--swp-primary-dark);
+        color: var(--tblr-primary-dark);
     }
 
     &:focus-visible {
         outline: none;
-        box-shadow: var(--swp-ring-primary);
+        box-shadow: var(--tblr-ring-primary);
     }
 }
 
 .activity-details {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
     flex-wrap: wrap;
-    font-size: var(--swp-text-sm);
+    font-size: var(--tblr-text-sm);
 }
 
 .activity-client-link {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: var(--swp-text-secondary);
+    color: var(--tblr-text-secondary);
     text-decoration: none;
-    border-radius: var(--swp-radius-sm);
-    transition: color var(--swp-transition-fast);
+    border-radius: var(--tblr-radius-sm);
+    transition: color var(--tblr-transition-fast);
 
     &:hover {
-        color: var(--swp-primary);
+        color: var(--tblr-primary);
     }
 
     &:focus-visible {
         outline: none;
-        box-shadow: var(--swp-ring-primary);
-        color: var(--swp-primary);
+        box-shadow: var(--tblr-ring-primary);
+        color: var(--tblr-primary);
     }
 
     svg {
@@ -706,18 +706,18 @@
 }
 
 .activity-separator {
-    // This is text, not a rule or a graphic. `--swp-text-light` is 2.56:1 on the
+    // This is text, not a rule or a graphic. `--tblr-text-light` is 2.56:1 on the
     // card surface and fails AA outright.
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
 }
 
 .activity-amount {
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
     font-variant-numeric: tabular-nums;
 }
 
 .activity-time {
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
 }
 

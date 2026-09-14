@@ -13,16 +13,16 @@
 
 .navbar.navbar-vertical,
 .navbar.navbar-vertical.navbar-dark {
-    background-color: var(--swp-gray-700);
-    color: var(--swp-gray-300);
-    border-right: 1px solid var(--swp-gray-800);
+    background-color: var(--tblr-gray-700);
+    color: var(--tblr-gray-300);
+    border-right: 1px solid var(--tblr-gray-800);
     box-shadow: none;
 
     // Brand: logo + product name at the top of the sidebar.
 
     .navbar-brand {
-        color: var(--swp-gray-50);
-        font-weight: var(--swp-font-semibold);
+        color: var(--tblr-gray-50);
+        font-weight: var(--tblr-font-semibold);
     }
 
     .navbar-brand-autodark {
@@ -32,10 +32,10 @@
     // Nav link default state.
 
     .nav-link {
-        color: var(--swp-gray-300);
-        border-radius: var(--swp-radius-md);
-        transition: background-color var(--swp-transition-fast),
-                    color var(--swp-transition-fast);
+        color: var(--tblr-gray-300);
+        border-radius: var(--tblr-radius-md);
+        transition: background-color var(--tblr-transition-fast),
+                    color var(--tblr-transition-fast);
 
         .nav-link-icon,
         .nav-link-title {
@@ -45,16 +45,16 @@
         // Hover: lift to a slightly lighter slate, brighter text.
 
         &:hover {
-            background-color: var(--swp-gray-600);
-            color: var(--swp-gray-50);
+            background-color: var(--tblr-gray-600);
+            color: var(--tblr-gray-50);
         }
 
         // Keyboard focus halo, per The Focus Halo Rule.
 
         &:focus-visible {
             outline: none;
-            box-shadow: var(--swp-ring-primary);
-            color: var(--swp-gray-50);
+            box-shadow: var(--tblr-ring-primary);
+            color: var(--tblr-gray-50);
         }
     }
 
@@ -67,18 +67,18 @@
 
     .nav-link.active,
     .navbar-nav .nav-item.active > .nav-link.active {
-        background-color: var(--swp-primary-light);
-        color: var(--swp-primary-dark);
-        font-weight: var(--swp-font-semibold);
+        background-color: var(--tblr-primary-light);
+        color: var(--tblr-primary-dark);
+        font-weight: var(--tblr-font-semibold);
 
         .nav-link-icon,
         .nav-link-title {
-            color: var(--swp-primary-dark);
+            color: var(--tblr-primary-dark);
         }
 
         &:hover {
-            background-color: var(--swp-primary-light);
-            color: var(--swp-primary-dark);
+            background-color: var(--tblr-primary-light);
+            color: var(--tblr-primary-dark);
         }
     }
 
@@ -86,31 +86,31 @@
 
     .nav-subtitle,
     .nav-header {
-        color: var(--swp-gray-400);
+        color: var(--tblr-gray-400);
         text-transform: uppercase;
-        letter-spacing: var(--swp-tracking-wider);
-        font-weight: var(--swp-font-semibold);
-        font-size: var(--swp-text-xs);
+        letter-spacing: var(--tblr-tracking-wider);
+        font-weight: var(--tblr-font-semibold);
+        font-size: var(--tblr-text-xs);
     }
 
     // Dropdown chevrons match secondary text.
 
     .nav-link-toggle,
     .dropdown-toggle::after {
-        color: var(--swp-gray-400);
+        color: var(--tblr-gray-400);
     }
 
     // Nested dropdown menus inside the sidebar lift onto a paper surface so
     // submenu content reads like content, not nav chrome.
 
     .navbar-nav .dropdown-menu {
-        background-color: var(--swp-surface);
-        border: 1px solid var(--swp-border-light);
-        box-shadow: var(--swp-shadow-md);
+        background-color: var(--tblr-surface);
+        border: 1px solid var(--tblr-border-light);
+        box-shadow: var(--tblr-shadow-md);
 
         .dropdown-item {
-            color: var(--swp-text-secondary);
-            border-radius: var(--swp-radius-sm);
+            color: var(--tblr-text-secondary);
+            border-radius: var(--tblr-radius-sm);
 
             // Tabler colours `.nav-link-icon` from its own token, which defaults to a 50% tint
             // of the sidebar's white nav colour — invisible on this paper surface. Following the
@@ -119,13 +119,13 @@
 
             &:hover,
             &:focus {
-                background-color: var(--swp-surface-hover);
-                color: var(--swp-text-primary);
+                background-color: var(--tblr-surface-hover);
+                color: var(--tblr-text-primary);
             }
 
             &.active {
-                background-color: var(--swp-primary-light);
-                color: var(--swp-primary-dark);
+                background-color: var(--tblr-primary-light);
+                color: var(--tblr-primary-dark);
             }
         }
     }
@@ -133,12 +133,12 @@
     // Collapsed expand toggle (hamburger on mobile).
 
     .navbar-toggler {
-        color: var(--swp-gray-200);
-        border-color: var(--swp-gray-600);
+        color: var(--tblr-gray-200);
+        border-color: var(--tblr-gray-600);
 
         &:focus-visible {
             outline: none;
-            box-shadow: var(--swp-ring-primary);
+            box-shadow: var(--tblr-ring-primary);
         }
     }
 }
@@ -147,7 +147,7 @@
 
 .navbar.navbar-vertical.navbar-expand-lg .navbar-collapse {
     @media (width < 992px) {
-        background-color: var(--swp-gray-700);
+        background-color: var(--tblr-gray-700);
     }
 }
 

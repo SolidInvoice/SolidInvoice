@@ -84,7 +84,7 @@
     transition: opacity 0.3s ease;
 
     .progress {
-        background-color: var(--swp-gray-200, #e9ecef);
+        background-color: var(--tblr-gray-200, #e9ecef);
         border-radius: 2px;
         overflow: hidden;
     }
@@ -95,19 +95,19 @@
         // Weak password (red)
 
         &[data-strength="weak"] {
-            background-color: var(--swp-danger, #d63939);
+            background-color: var(--tblr-danger, #d63939);
         }
 
         // Medium password (orange)
 
         &[data-strength="medium"] {
-            background-color: var(--swp-warning, #f76707);
+            background-color: var(--tblr-warning, #f76707);
         }
 
         // Strong password (green)
 
         &[data-strength="strong"] {
-            background-color: var(--swp-success, #2fb344);
+            background-color: var(--tblr-success, #2fb344);
         }
     }
 }
@@ -141,7 +141,7 @@
     .bg-white {
 
         .tabler-icon {
-            color: var(--swp-primary, #066fd1);
+            color: var(--tblr-primary, #066fd1);
         }
     }
 }

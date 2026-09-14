@@ -557,7 +557,124 @@ Tax:
 
 ---
 
-## 11. Dates and time
+## 11. Design System Guide
+
+This section provides comprehensive guidelines for implementing consistent, modern UI across all SolidInvoice pages. **All UI changes MUST follow these guidelines.**
+
+### Design Philosophy
+
+SolidInvoice follows a **Clean & Minimal** design aesthetic:
+
+- **Content-focused**: Reduce visual noise, let data speak
+- **Consistent spacing**: Use the 8px-based spacing scale
+- **Subtle interactions**: Purposeful animations, no decorative effects
+- **Accessible by default**: Proper contrast, focus states, ARIA attributes
+
+### Design Tokens
+
+All design values are defined as CSS custom properties with the `--tblr-` prefix in `/assets/scss/design-system/_tokens.scss`.
+
+#### Color Palette
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-primary` | `#2e963a` | Main CTAs, links, active states |
+| `--tblr-primary-dark` | `#1f6c29` | Hover/active states |
+| `--tblr-primary-light` | `#e8f5e9` | Backgrounds, badges |
+| `--tblr-secondary` | `#f0a015` | Accent color (use sparingly) |
+| `--tblr-success` | `#10b981` | Success states, confirmations |
+| `--tblr-danger` | `#ef4444` | Errors, destructive actions |
+| `--tblr-warning` | `#f59e0b` | Warnings, cautions |
+| `--tblr-info` | `#3b82f6` | Informational content |
+
+**Gray Scale (Slate-based):**
+- `--tblr-gray-50` to `--tblr-gray-900` for text and backgrounds
+- `--tblr-text-primary`, `--tblr-text-secondary`, `--tblr-text-muted` for text hierarchy
+
+#### Spacing Scale (8px base)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-space-1` | `0.25rem` (4px) | Tiny gaps |
+| `--tblr-space-2` | `0.5rem` (8px) | Icon gaps, tight spacing |
+| `--tblr-space-3` | `0.75rem` (12px) | Button padding |
+| `--tblr-space-4` | `1rem` (16px) | Standard form spacing |
+| `--tblr-space-6` | `1.5rem` (24px) | Card padding |
+| `--tblr-space-8` | `2rem` (32px) | Section spacing |
+
+#### Border Radius
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-radius-sm` | `6px` | Small elements, badges |
+| `--tblr-radius-md` | `8px` | Buttons, form controls |
+| `--tblr-radius-lg` | `12px` | Cards |
+| `--tblr-radius-xl` | `16px` | Modals |
+
+#### Shadows
+
+| Token | Usage |
+|-------|-------|
+| `--tblr-shadow-sm` | Cards, subtle elevation |
+| `--tblr-shadow-md` | Hover states, dropdowns |
+| `--tblr-shadow-lg` | Modals, popovers |
+| `--tblr-shadow-primary` | Primary button glow |
+
+### Typography Guidelines
+
+| Element | Size Token | Weight | Color |
+|---------|------------|--------|-------|
+| Page title | `--tblr-text-2xl` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Card title | `--tblr-text-lg` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Section title | `--tblr-text-md` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Body text | `--tblr-text-base` | `--tblr-font-normal` | `--tblr-body-color` |
+| Help text | `--tblr-text-sm` | `--tblr-font-normal` | `--tblr-text-muted` |
+| Labels | `--tblr-text-sm` | `--tblr-font-medium` | `--tblr-text-secondary` |
+| Table headers | `--tblr-text-xs` | `--tblr-font-semibold` | `--tblr-text-muted` |
+
+---
+
+### Platform UI Components (REQUIRED)
+
+**Always use SolidWorx/Platform UI components when available.** These are Twig components that provide consistent, accessible UI elements.
+
+**Available Components:**
+
+| Component | Location | Docs |
+|-----------|----------|------|
+| `<twig:Ui:Alert>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Alert.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Alert.md` |
+| `<twig:Ui:Card>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Card.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Card.md` |
+| `<twig:Ui:Modal>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Modal.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Modal.md` |
+
+**Usage Examples:**
+
+```twig
+{# Card Component #}
+<twig:Ui:Card title="Invoice Details" subtitle="View and edit">
+    <p>Card body content here</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary">{{ ux_icon('tabler:device-floppy') }} Save</button>
+    </twig:block>
+</twig:Ui:Card>
+
+{# Alert Component #}
+<twig:Ui:Alert type="success" icon="tabler:check" title="Saved!" :dismissible="true">
+    Your changes have been saved successfully.
+</twig:Ui:Alert>
+
+{# Modal Component #}
+<twig:Ui:Modal id="confirm-modal" title="Confirm Action" status="danger">
+    <p>Are you sure you want to proceed?</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger">Confirm</button>
+    </twig:block>
+</twig:Ui:Modal>
+```
+## 12. Dates and time
 
 `platform.yaml` sets `platform.doctrine.types.enable_utc_date: true` — Platform installs
 UTC date types. **Store UTC, convert at the edge.**
@@ -572,7 +689,7 @@ UTC date types. **Store UTC, convert at the edge.**
 
 ---
 
-## 12. Generated files — do not hand-edit
+## 13. Generated files — do not hand-edit
 
 - `src/NotificationBundle/Form/Type/Transport/*Type.php` — ~40 files, each headed
   `// !! This file is autogenerated. Do not edit. !!`. They are produced by
@@ -584,7 +701,7 @@ UTC date types. **Store UTC, convert at the edge.**
 
 ---
 
-## 13. Testing expectations
+## 14. Testing expectations
 
 **There is no numeric coverage threshold, and that is deliberate — do not invent one.**
 `phpunit.xml.dist` sets no minimum, there is no `codecov.yml` target, and the Codecov
@@ -644,7 +761,7 @@ gated. The bar below is the real one.
 
 ---
 
-## 14. PR conventions
+## 15. PR conventions
 
 ### Branches
 
@@ -693,6 +810,24 @@ On a PR, expect: `CS` (ECS, composer-normalize, super-linter, lint:css, lint:js)
 `Unit Tests` (PHP 8.4 + 8.5), `DB Tests` (14 databases), `Security Checker`, `CodeQL`,
 `Dependency Review`, `Qodana`. All of it green.
 
+---
+
+### Tables/DataGrids
+
+**Table styling:**
+- Headers: Uppercase, small text (`--tblr-text-xs`), muted color
+- Rows: Adequate padding (`1rem 1.5rem`), subtle hover
+- Borders: Light gray (`--tblr-border-light`), minimal
+- No alternating row colors (hover is enough)
+
+**Column types:**
+- `.table-actions`: Right-aligned, action buttons
+- `.table-checkbox`: Checkbox column (narrow)
+- `.table-date`: Date column (no wrap)
+- `.table-amount`: Right-aligned, monospace
+- `.table-id`: Monospace, muted
+
+---
 ### Never merge a pull request
 
 Not your own, not anyone else's, on any SolidWorx repository, regardless of its size, its approval state, whether CI is green, or how obvious the change looks. This includes the merge button, `gh pr merge`, the merge API, squash, rebase, auto-merge, adding to a merge queue, and pushing merge commits to `main` or any release branch directly.
@@ -719,7 +854,7 @@ If you believe a merge is urgent — a broken build, a security fix, a release b
 
 ---
 
-## 15. Other agent-instruction files in this repo
+## 16. Other agent-instruction files in this repo
 
 **This file is the source of truth. Every other instruction file points here.**
 

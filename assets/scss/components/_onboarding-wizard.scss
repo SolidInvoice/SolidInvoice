@@ -10,7 +10,7 @@
  * on the canvas / step icon / badge, a 3px `border-left` side-stripe on the
  * benefits box (a hard ban), and a bounce/elastic celebration with an infinite
  * pulse and no reduced-motion fallback. This file replaces all of it with
- * `--swp-*` tokens, flat surfaces, and ease-out motion.
+ * `--tblr-*` tokens, flat surfaces, and ease-out motion.
  *
  * Everything is scoped under `.onboarding-container` because the class names
  * (`step-icon`, `step-benefits`, `welcome-badge`, ...) are generic and used
@@ -23,20 +23,20 @@
 .onboarding-container {
     // Paper-on-desk canvas: the app's own flat body background. The previous
     // grey diagonal gradient was decoration the design system does not permit.
-    background: var(--swp-body-bg);
+    background: var(--tblr-body-bg);
 
     // ========================================================================
     // PROGRESS HEADER
     // ========================================================================
 
     .onboarding-progress {
-        box-shadow: var(--swp-shadow-xs);
+        box-shadow: var(--tblr-shadow-xs);
     }
 
     .step-indicator {
         display: flex;
         align-items: center;
-        gap: var(--swp-space-2);
+        gap: var(--tblr-space-2);
     }
 
     // Upcoming step at rest: neutral slate.
@@ -47,36 +47,36 @@
         justify-content: center;
         width: 2rem;
         height: 2rem;
-        border-radius: var(--swp-radius-full);
-        background: var(--swp-gray-100);
-        color: var(--swp-text-muted);
+        border-radius: var(--tblr-radius-full);
+        background: var(--tblr-gray-100);
+        color: var(--tblr-text-muted);
         transition:
-            background-color var(--swp-duration-slow) var(--swp-ease-out),
-            color var(--swp-duration-slow) var(--swp-ease-out),
-            box-shadow var(--swp-duration-slow) var(--swp-ease-out);
+            background-color var(--tblr-duration-slow) var(--tblr-ease-out),
+            color var(--tblr-duration-slow) var(--tblr-ease-out),
+            box-shadow var(--tblr-duration-slow) var(--tblr-ease-out);
     }
 
     // Reached (the current step or an earlier one): a soft green tint.
 
     .step-indicator.active .step-number {
-        background: var(--swp-primary-light);
-        color: var(--swp-primary-dark);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary-dark);
     }
 
     // The current step: filled Trust Green with the standard focus halo, so the
     // user's position reads at a glance.
 
     .step-indicator.current .step-number {
-        background: var(--swp-primary);
-        color: var(--swp-text-inverse);
-        box-shadow: var(--swp-ring-primary);
+        background: var(--tblr-primary);
+        color: var(--tblr-text-inverse);
+        box-shadow: var(--tblr-ring-primary);
     }
 
     .step-label {
-        font-size: var(--swp-text-sm);
-        font-weight: var(--swp-font-medium);
-        color: var(--swp-text-muted);
-        transition: color var(--swp-duration-slow) var(--swp-ease-out);
+        font-size: var(--tblr-text-sm);
+        font-weight: var(--tblr-font-medium);
+        color: var(--tblr-text-muted);
+        transition: color var(--tblr-duration-slow) var(--tblr-ease-out);
     }
 
     // primary-dark (#1f6c29) on the white header holds AA comfortably; the raw
@@ -84,23 +84,23 @@
 
     .step-indicator.active .step-label,
     .step-indicator.current .step-label {
-        color: var(--swp-primary-dark);
+        color: var(--tblr-primary-dark);
     }
 
     .step-indicator.current .step-label {
-        font-weight: var(--swp-font-semibold);
+        font-weight: var(--tblr-font-semibold);
     }
 
     .step-connector {
         flex: 1;
         height: 2px;
-        margin: 0 var(--swp-space-4);
-        background: var(--swp-border);
-        transition: background-color var(--swp-duration-slow) var(--swp-ease-out);
+        margin: 0 var(--tblr-space-4);
+        background: var(--tblr-border);
+        transition: background-color var(--tblr-duration-slow) var(--tblr-ease-out);
     }
 
     .step-connector.completed {
-        background: var(--swp-primary);
+        background: var(--tblr-primary);
     }
 
     // ========================================================================
@@ -111,11 +111,11 @@
     // heavier custom shadow - the design system's `shadow-sm` is the card rest.
 
     .onboarding-step-card {
-        padding: var(--swp-space-12);
-        background: var(--swp-surface);
-        border: 1px solid var(--swp-border-light);
-        border-radius: var(--swp-radius-xl);
-        box-shadow: var(--swp-shadow-sm);
+        padding: var(--tblr-space-12);
+        background: var(--tblr-surface);
+        border: 1px solid var(--tblr-border-light);
+        border-radius: var(--tblr-radius-xl);
+        box-shadow: var(--tblr-shadow-sm);
     }
 
     // ========================================================================
@@ -132,10 +132,10 @@
         justify-content: center;
         width: 4rem;
         height: 4rem;
-        margin: 0 auto var(--swp-space-6);
-        border-radius: var(--swp-radius-full);
-        background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        margin: 0 auto var(--tblr-space-6);
+        border-radius: var(--tblr-radius-full);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary);
     }
 
     // ========================================================================
@@ -143,21 +143,21 @@
     // ========================================================================
 
     .welcome-section {
-        margin-bottom: var(--swp-space-8);
+        margin-bottom: var(--tblr-space-8);
         text-align: center;
     }
 
     .welcome-badge {
         display: inline-flex;
         align-items: center;
-        gap: var(--swp-space-2);
-        margin-bottom: var(--swp-space-4);
-        padding: var(--swp-space-2) var(--swp-space-4);
-        border-radius: var(--swp-radius-full);
-        background: var(--swp-primary-light);
-        color: var(--swp-primary-dark);
-        font-size: var(--swp-text-sm);
-        font-weight: var(--swp-font-semibold);
+        gap: var(--tblr-space-2);
+        margin-bottom: var(--tblr-space-4);
+        padding: var(--tblr-space-2) var(--tblr-space-4);
+        border-radius: var(--tblr-radius-full);
+        background: var(--tblr-primary-light);
+        color: var(--tblr-primary-dark);
+        font-size: var(--tblr-text-sm);
+        font-weight: var(--tblr-font-semibold);
     }
 
     // ========================================================================
@@ -169,20 +169,20 @@
     // already carries the accent.
 
     .step-benefits {
-        margin-bottom: var(--swp-space-6);
-        padding: var(--swp-space-5);
-        background: var(--swp-primary-lighter);
-        border: 1px solid var(--swp-border-light);
-        border-radius: var(--swp-radius-lg);
+        margin-bottom: var(--tblr-space-6);
+        padding: var(--tblr-space-5);
+        background: var(--tblr-primary-lighter);
+        border: 1px solid var(--tblr-border-light);
+        border-radius: var(--tblr-radius-lg);
 
         ul {
             margin: 0;
-            padding-left: var(--swp-space-5);
-            color: var(--swp-text-secondary);
+            padding-left: var(--tblr-space-5);
+            color: var(--tblr-text-secondary);
         }
 
         li + li {
-            margin-top: var(--swp-space-2);
+            margin-top: var(--tblr-space-2);
         }
     }
 
@@ -204,10 +204,10 @@
         justify-content: center;
         width: 6rem;
         height: 6rem;
-        border-radius: var(--swp-radius-full);
-        background: var(--swp-success-light);
-        color: var(--swp-success-dark);
-        animation: onboarding-celebrate var(--swp-duration-slow) var(--swp-ease-out) both;
+        border-radius: var(--tblr-radius-full);
+        background: var(--tblr-success-light);
+        color: var(--tblr-success-dark);
+        animation: onboarding-celebrate var(--tblr-duration-slow) var(--tblr-ease-out) both;
     }
 
     // A quiet, neutral tip note - distinct from the green benefits box and no
@@ -216,18 +216,18 @@
     .onboarding-tip {
         display: flex;
         align-items: flex-start;
-        gap: var(--swp-space-3);
-        padding: var(--swp-space-4);
-        background: var(--swp-gray-50);
-        border: 1px solid var(--swp-border-light);
-        border-radius: var(--swp-radius-lg);
+        gap: var(--tblr-space-3);
+        padding: var(--tblr-space-4);
+        background: var(--tblr-gray-50);
+        border: 1px solid var(--tblr-border-light);
+        border-radius: var(--tblr-radius-lg);
         text-align: left;
-        color: var(--swp-text-secondary);
+        color: var(--tblr-text-secondary);
 
         svg {
             flex-shrink: 0;
-            margin-top: var(--swp-space-0-5);
-            color: var(--swp-secondary-dark);
+            margin-top: var(--tblr-space-0-5);
+            color: var(--tblr-secondary-dark);
         }
     }
 
@@ -238,11 +238,11 @@
     @media (width <= 768px) {
 
         .onboarding-step-card {
-            padding: var(--swp-space-8) var(--swp-space-6);
+            padding: var(--tblr-space-8) var(--tblr-space-6);
         }
 
         .step-connector {
-            margin: 0 var(--swp-space-2);
+            margin: 0 var(--tblr-space-2);
         }
     }
 }
