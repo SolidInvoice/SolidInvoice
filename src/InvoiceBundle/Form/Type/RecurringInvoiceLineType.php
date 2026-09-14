@@ -24,6 +24,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
@@ -41,12 +42,30 @@ class RecurringInvoiceLineType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // Before `description`, so that a line submitted with only a description still gets
+        // a name out of it. See Line::setDescription().
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'empty_data' => '',
+                // Not required in the browser, so that a line with only a description still
+                // submits and derives its name from it, the same way the API does. The
+                // entity's NotBlank is what rejects a line with neither.
+                'required' => false,
+                'attr' => [
+                    'class' => 'input-medium invoice-item-name',
+                ],
+            ]
+        );
+
         $builder->add(
             'description',
             TextareaType::class,
             [
+                'required' => false,
                 'attr' => [
-                    'class' => 'input-medium invoice-item-name',
+                    'class' => 'input-medium invoice-item-description',
                 ],
             ]
         );

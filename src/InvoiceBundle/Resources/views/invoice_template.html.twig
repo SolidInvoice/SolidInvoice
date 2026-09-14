@@ -6,6 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
 {% set footerSpan = invoice.tax.positive ? 4 : 3 %}
 
@@ -126,7 +127,7 @@
                             {% for item in invoice.lines %}
                                 <tr>
                                     <td class="column-description">
-                                        {{ item.description|nl2br }}
+                                        {{ item.name }}{{ inv.line_description(item) }}
                                     </td>
                                     <td class="column-price">
                                         {{ item.price|formatCurrency(invoice.client.currency) }}

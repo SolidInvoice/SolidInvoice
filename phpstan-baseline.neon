@@ -565,12 +565,6 @@ parameters:
 			path: src/InvoiceBundle/Entity/Line.php
 
 		-
-			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$description type mapping mismatch\: property can contain string\|null but database expects string\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/InvoiceBundle/Entity/Line.php
-
-		-
 			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Line\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
@@ -617,12 +611,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, array\<int, int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/InvoiceBundle/Manager/InvoiceManager.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -914,12 +902,6 @@ parameters:
 
 		-
 			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
-			identifier: doctrine.columnType
-			count: 1
-			path: src/QuoteBundle/Entity/Line.php
-
-		-
-			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$description type mapping mismatch\: property can contain string\|null but database expects string\.$#'
 			identifier: doctrine.columnType
 			count: 1
 			path: src/QuoteBundle/Entity/Line.php

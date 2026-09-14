@@ -110,7 +110,7 @@ final class QuoteTest extends ApiTestCase
                 [
                     'price' => 100,
                     'qty' => 1,
-                    'description' => 'Foo Item',
+                    'name' => 'Foo Item',
                 ],
             ],
         ];
@@ -128,10 +128,11 @@ final class QuoteTest extends ApiTestCase
             'due' => null,
             'lines' => [
                 [
-                    'description' => 'Foo Item',
+                    'name' => 'Foo Item',
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],
@@ -174,7 +175,7 @@ final class QuoteTest extends ApiTestCase
                 ->setValue(0),
             'lines' => [
                 new Line()
-                    ->setDescription('Test Item')
+                    ->setName('Test Item')
                     ->setQty(1)
                     ->setPrice(10000),
             ],
@@ -211,10 +212,11 @@ final class QuoteTest extends ApiTestCase
                         ->first()
                         ->getId()
                         ->toString(),
-                    'description' => 'Test Item',
+                    'name' => 'Test Item',
                     'price' => 100,
                     'qty' => 1,
                     'total' => 100,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],
@@ -244,7 +246,7 @@ final class QuoteTest extends ApiTestCase
                 ->setValue(0),
             'lines' => [
                 new Line()
-                    ->setDescription('Test Item')
+                    ->setName('Test Item')
                     ->setQty(1)
                     ->setPrice(10000),
             ],
@@ -261,12 +263,12 @@ final class QuoteTest extends ApiTestCase
                     [
                         'price' => 10000,
                         'qty' => 1,
-                        'description' => 'Foo Item',
+                        'name' => 'Foo Item',
                     ],
                     [
                         'price' => 500,
                         'qty' => 5,
-                        'description' => 'Foo Items',
+                        'name' => 'Foo Items',
                     ],
                 ],
             ]
@@ -301,10 +303,11 @@ final class QuoteTest extends ApiTestCase
                         ->get(0)
                         ->getId()
                         ->toString(),
-                    'description' => 'Foo Item',
+                    'name' => 'Foo Item',
                     'price' => 10000,
                     'qty' => 1,
                     'total' => 10000,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 0,
                 ],
@@ -315,10 +318,11 @@ final class QuoteTest extends ApiTestCase
                         ->get(1)
                         ->getId()
                         ->toString(),
-                    'description' => 'Foo Items',
+                    'name' => 'Foo Items',
                     'price' => 500,
                     'qty' => 5,
                     'total' => 2500,
+                    'description' => null,
                     'taxes' => [],
                     'position' => 1,
                 ],

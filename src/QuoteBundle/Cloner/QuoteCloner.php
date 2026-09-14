@@ -84,6 +84,7 @@ final readonly class QuoteCloner
             $quoteLine = new Line();
             $quoteLine->setCreated($now);
             $quoteLine->setTotal($line->getTotal());
+            $quoteLine->setName($line->getName());
             $quoteLine->setDescription($line->getDescription());
             $quoteLine->setPrice($line->getPrice());
             $quoteLine->setQty($line->getQty());

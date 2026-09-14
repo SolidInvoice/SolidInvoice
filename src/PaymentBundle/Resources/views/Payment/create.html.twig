@@ -113,7 +113,7 @@
                                 <div class="line-items-preview">
                                     {% for item in invoice.lines %}
                                         <div class="line-item-row">
-                                            <span class="line-item-desc">{{ item.description|striptags|u.truncate(40, '...') }}</span>
+                                            <span class="line-item-desc">{{ item.name|u.truncate(40, '...') }}</span>
                                             <span class="line-item-amount">{{ item.total|formatCurrency(invoice.client.currency) }}</span>
                                         </div>
                                     {% endfor %}
