@@ -8,41 +8,46 @@ Clean & Minimal aesthetic: content-focused, 8px spacing scale, subtle interactio
 
 ## Design Tokens
 
-All CSS custom properties use `--swp-` prefix. Defined in `/assets/scss/design-system/_tokens.scss`.
+All CSS custom properties use the `--tblr-` prefix. Defined in `/assets/scss/design-system/_tokens.scss`.
+
+That prefix is Tabler's, not ours, and it is deliberate: Tabler 1.5 dropped the `$prefix` Sass
+variable, so a token named after one of Tabler's overwrites it outright. Setting `--tblr-primary`
+recolours every button, link and badge Tabler builds from it — there is no separate app namespace
+and no mapping layer. Tokens with no Tabler counterpart (`--tblr-space-4`) live here too.
 
 ### Colors
 
 | Token                                | Usage                           |
 |--------------------------------------|---------------------------------|
-| `--swp-primary` (#2e963a)            | Main CTAs, links, active states |
-| `--swp-primary-dark` (#1f6c29)       | Hover/active states             |
-| `--swp-primary-light` (#e8f5e9)      | Backgrounds, badges             |
-| `--swp-secondary` (#f0a015)          | Accent (use sparingly)          |
-| `--swp-success/danger/warning/info`  | Status colors                   |
-| `--swp-gray-50` to `--swp-gray-900`  | Text and backgrounds            |
-| `--swp-text-primary/secondary/muted` | Text hierarchy                  |
+| `--tblr-primary` (#2e963a)            | Main CTAs, links, active states |
+| `--tblr-primary-dark` (#1f6c29)       | Hover/active states             |
+| `--tblr-primary-light` (#e8f5e9)      | Backgrounds, badges             |
+| `--tblr-secondary` (#f0a015)          | Accent (use sparingly)          |
+| `--tblr-success/danger/warning/info`  | Status colors                   |
+| `--tblr-gray-50` to `--tblr-gray-900`  | Text and backgrounds            |
+| `--tblr-text-primary/secondary/muted` | Text hierarchy                  |
 
 ### Spacing (8px base)
 
-`--swp-space-1` (4px), `--swp-space-2` (8px), `--swp-space-3` (12px), `--swp-space-4` (16px), `--swp-space-6` (24px), `--swp-space-8` (32px)
+`--tblr-space-1` (4px), `--tblr-space-2` (8px), `--tblr-space-3` (12px), `--tblr-space-4` (16px), `--tblr-space-6` (24px), `--tblr-space-8` (32px)
 
 ### Border Radius
 
-`--swp-radius-sm` (6px), `--swp-radius-md` (8px), `--swp-radius-lg` (12px), `--swp-radius-xl` (16px)
+`--tblr-radius-sm` (6px), `--tblr-radius-md` (8px), `--tblr-radius-lg` (12px), `--tblr-radius-xl` (16px)
 
 ### Shadows
 
-`--swp-shadow-sm` (cards), `--swp-shadow-md` (hover/dropdowns), `--swp-shadow-lg` (modals), `--swp-shadow-primary` (button glow)
+`--tblr-shadow-sm` (cards), `--tblr-shadow-md` (hover/dropdowns), `--tblr-shadow-lg` (modals), `--tblr-shadow-primary` (button glow)
 
 ## Typography
 
 | Element       | Size              | Weight        |
 |---------------|-------------------|---------------|
-| Page title    | `--swp-text-2xl`  | semibold      |
-| Card title    | `--swp-text-lg`   | semibold      |
-| Body          | `--swp-text-base` | normal        |
-| Help/labels   | `--swp-text-sm`   | normal/medium |
-| Table headers | `--swp-text-xs`   | semibold      |
+| Page title    | `--tblr-text-2xl`  | semibold      |
+| Card title    | `--tblr-text-lg`   | semibold      |
+| Body          | `--tblr-text-base` | normal        |
+| Help/labels   | `--tblr-text-sm`   | normal/medium |
+| Table headers | `--tblr-text-xs`   | semibold      |
 
 ## Platform UI Components (REQUIRED)
 
@@ -150,7 +155,7 @@ Wrap form in card with header, body (fields), footer (form-actions).
 
 ## Tables
 
-- Headers: uppercase, `--swp-text-xs`, muted
+- Headers: uppercase, `--tblr-text-xs`, muted
 - Column classes: `.table-actions`, `.table-checkbox`, `.table-date`, `.table-amount`, `.table-id`
 - No alternating row colors
 

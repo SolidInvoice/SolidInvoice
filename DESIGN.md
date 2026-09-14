@@ -308,7 +308,7 @@ One shared primitive for every "nothing here yet" surface: `@SolidInvoiceDataGri
 - **First-run copy names the entity.** Generic "create your first item" is a missed onboarding moment. A grid supplies its own copy through `getEmptyTitle()` / `getEmptyDescription()` (base class returns the generic fallback); the four core lists — clients, invoices, quotes, payments — override it with encouraging, plain-English copy per Design Principle 2 (Reduce admin dread).
 - **No dead ends.** Every first-run empty state offers the next action. Where an entity is not created directly (Payments arrive when an invoice is paid), the CTA points at the real next step (`Create an invoice`) rather than showing nothing. A filtered-to-empty result is different: it shows the generic "no results" copy and *no* create CTA.
 
-The first-run onboarding wizard (`/onboarding`) follows the same system — Trust Green, `--swp-*` tokens, flat surfaces, ease-out motion — via `assets/scss/components/_onboarding-wizard.scss`. It is the activation surface, so it is held to the design system as strictly as any in-app screen.
+The first-run onboarding wizard (`/onboarding`) follows the same system — Trust Green, `--tblr-*` tokens, flat surfaces, ease-out motion — via `assets/scss/components/_onboarding-wizard.scss`. It is the activation surface, so it is held to the design system as strictly as any in-app screen.
 
 ### Modals
 

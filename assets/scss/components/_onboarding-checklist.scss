@@ -3,7 +3,7 @@
  *
  * The first component a new user meets. Priorities, in order:
  *   1. Convey state (todo / done / hovered / focused). Never decoration.
- *   2. Stay on the SolidInvoice design system - `--swp-*` tokens only.
+ *   2. Stay on the SolidInvoice design system - `--tblr-*` tokens only.
  *   3. Read correctly whether a row is an <a> (actionable) or a <span> (done).
  *
  * Structure comes from Tabler (`card`, `card-stamp`, `card-link-pop`,
@@ -21,8 +21,8 @@
 // the state; the card keeps Tabler's resting `shadow-sm`.
 
 .card.card-active {
-    border-color: var(--swp-success);
-    background: var(--swp-success-lighter);
+    border-color: var(--tblr-success);
+    background: var(--tblr-success-lighter);
 }
 
 // Decorative watermark behind the card title (Tabler `.card-stamp`).
@@ -38,7 +38,7 @@
 .checklist-items-wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2-5);
+    gap: var(--tblr-space-2-5);
 }
 
 // Renders as <a> while incomplete and <span> once complete, so every
@@ -47,38 +47,38 @@
 .checklist-item {
     display: flex;
     align-items: flex-start;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-4);
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-md);
+    gap: var(--tblr-space-3);
+    padding: var(--tblr-space-4);
+    background: var(--tblr-surface);
+    border: 1px solid var(--tblr-border);
+    border-radius: var(--tblr-radius-md);
     text-decoration: none;
     color: inherit;
     transition:
-        color var(--swp-duration-fast) var(--swp-ease-out),
-        background-color var(--swp-duration-fast) var(--swp-ease-out),
-        border-color var(--swp-duration-fast) var(--swp-ease-out),
-        box-shadow var(--swp-duration-fast) var(--swp-ease-out);
+        color var(--tblr-duration-fast) var(--tblr-ease-out),
+        background-color var(--tblr-duration-fast) var(--tblr-ease-out),
+        border-color var(--tblr-duration-fast) var(--tblr-ease-out),
+        box-shadow var(--tblr-duration-fast) var(--tblr-ease-out);
 
     // Hover and focus resolve to the same surface so pointer and keyboard
     // users are shown the same target; focus adds the halo below.
 
     &:not(.completed):is(:hover, :focus-visible) {
-        background: var(--swp-primary-lighter);
-        border-color: var(--swp-primary);
+        background: var(--tblr-primary-lighter);
+        border-color: var(--tblr-primary);
 
         .checklist-item-action {
-            color: var(--swp-primary);
+            color: var(--tblr-primary);
         }
     }
 
-    // Focus Halo. `--swp-ring-primary` is a 15%-alpha green (~1.1:1 on white)
+    // Focus Halo. `--tblr-ring-primary` is a 15%-alpha green (~1.1:1 on white)
     // and cannot carry a focus indicator on its own, so the border shifts to
-    // full `--swp-primary` alongside it to meet WCAG 2.1 SC 2.4.11.
+    // full `--tblr-primary` alongside it to meet WCAG 2.1 SC 2.4.11.
 
     &:not(.completed):focus-visible {
         outline: none;
-        box-shadow: var(--swp-ring-primary);
+        box-shadow: var(--tblr-ring-primary);
     }
 
     // Done. Signalled by tint + strikethrough + weight drop + de-emphasis, so
@@ -86,18 +86,18 @@
     // visually-hidden status text, not anything in here.
 
     &.completed {
-        background: var(--swp-success-lighter);
-        border-color: var(--swp-success-light);
+        background: var(--tblr-success-lighter);
+        border-color: var(--tblr-success-light);
         cursor: default;
 
         .item-name {
-            color: var(--swp-text-muted);
-            font-weight: var(--swp-font-normal);
+            color: var(--tblr-text-muted);
+            font-weight: var(--tblr-font-normal);
             text-decoration: line-through;
         }
 
         .item-icon {
-            color: var(--swp-text-light);
+            color: var(--tblr-text-light);
         }
 
         // Nothing left to navigate to.
@@ -117,12 +117,12 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: var(--swp-space-0-5);
-    color: var(--swp-success);
+    margin-top: var(--tblr-space-0-5);
+    color: var(--tblr-success);
 }
 
 .checklist-item:not(.completed) .checklist-item-icon {
-    color: var(--swp-gray-400);
+    color: var(--tblr-gray-400);
 }
 
 .checklist-item-content {
@@ -133,8 +133,8 @@
 .checklist-item-header {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    margin-bottom: var(--swp-space-1);
+    gap: var(--tblr-space-2);
+    margin-bottom: var(--tblr-space-1);
 }
 
 // Scoped to the row: `item-icon` / `item-name` are too generic to own globally.
@@ -142,20 +142,20 @@
 .checklist-item .item-icon {
     display: flex;
     align-items: center;
-    color: var(--swp-primary);
+    color: var(--tblr-primary);
 }
 
 .checklist-item .item-name {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
 }
 
 .checklist-item-description {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    color: var(--tblr-text-muted);
     margin: 0;
-    line-height: var(--swp-leading-normal);
+    line-height: var(--tblr-leading-normal);
 }
 
 // Always visible, not hover-revealed: hover never fires on touch, so a
@@ -168,8 +168,8 @@
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-    margin-top: var(--swp-space-0-5);
-    color: var(--swp-text-light);
+    margin-top: var(--tblr-space-0-5);
+    color: var(--tblr-text-light);
 }
 
 // ============================================================================
@@ -186,9 +186,9 @@
 // every offcanvas in the app.
 
 .onboarding-offcanvas .offcanvas-body .card {
-    border: 1px solid var(--swp-border-light);
-    background: var(--swp-primary-lighter);
-    box-shadow: var(--swp-shadow-sm);
+    border: 1px solid var(--tblr-border-light);
+    background: var(--tblr-primary-lighter);
+    box-shadow: var(--tblr-shadow-sm);
 }
 
 .onboarding-progress-label {

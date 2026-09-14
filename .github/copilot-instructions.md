@@ -1034,65 +1034,65 @@ SolidInvoice follows a **Clean & Minimal** design aesthetic:
 
 ### Design Tokens
 
-All design values are defined as CSS custom properties with the `--swp-` prefix in `/assets/scss/design-system/_tokens.scss`.
+All design values are defined as CSS custom properties with the `--tblr-` prefix in `/assets/scss/design-system/_tokens.scss`.
 
 #### Color Palette
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--swp-primary` | `#2e963a` | Main CTAs, links, active states |
-| `--swp-primary-dark` | `#1f6c29` | Hover/active states |
-| `--swp-primary-light` | `#e8f5e9` | Backgrounds, badges |
-| `--swp-secondary` | `#f0a015` | Accent color (use sparingly) |
-| `--swp-success` | `#10b981` | Success states, confirmations |
-| `--swp-danger` | `#ef4444` | Errors, destructive actions |
-| `--swp-warning` | `#f59e0b` | Warnings, cautions |
-| `--swp-info` | `#3b82f6` | Informational content |
+| `--tblr-primary` | `#2e963a` | Main CTAs, links, active states |
+| `--tblr-primary-dark` | `#1f6c29` | Hover/active states |
+| `--tblr-primary-light` | `#e8f5e9` | Backgrounds, badges |
+| `--tblr-secondary` | `#f0a015` | Accent color (use sparingly) |
+| `--tblr-success` | `#10b981` | Success states, confirmations |
+| `--tblr-danger` | `#ef4444` | Errors, destructive actions |
+| `--tblr-warning` | `#f59e0b` | Warnings, cautions |
+| `--tblr-info` | `#3b82f6` | Informational content |
 
 **Gray Scale (Slate-based):**
-- `--swp-gray-50` to `--swp-gray-900` for text and backgrounds
-- `--swp-text-primary`, `--swp-text-secondary`, `--swp-text-muted` for text hierarchy
+- `--tblr-gray-50` to `--tblr-gray-900` for text and backgrounds
+- `--tblr-text-primary`, `--tblr-text-secondary`, `--tblr-text-muted` for text hierarchy
 
 #### Spacing Scale (8px base)
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--swp-space-1` | `0.25rem` (4px) | Tiny gaps |
-| `--swp-space-2` | `0.5rem` (8px) | Icon gaps, tight spacing |
-| `--swp-space-3` | `0.75rem` (12px) | Button padding |
-| `--swp-space-4` | `1rem` (16px) | Standard form spacing |
-| `--swp-space-6` | `1.5rem` (24px) | Card padding |
-| `--swp-space-8` | `2rem` (32px) | Section spacing |
+| `--tblr-space-1` | `0.25rem` (4px) | Tiny gaps |
+| `--tblr-space-2` | `0.5rem` (8px) | Icon gaps, tight spacing |
+| `--tblr-space-3` | `0.75rem` (12px) | Button padding |
+| `--tblr-space-4` | `1rem` (16px) | Standard form spacing |
+| `--tblr-space-6` | `1.5rem` (24px) | Card padding |
+| `--tblr-space-8` | `2rem` (32px) | Section spacing |
 
 #### Border Radius
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--swp-radius-sm` | `6px` | Small elements, badges |
-| `--swp-radius-md` | `8px` | Buttons, form controls |
-| `--swp-radius-lg` | `12px` | Cards |
-| `--swp-radius-xl` | `16px` | Modals |
+| `--tblr-radius-sm` | `6px` | Small elements, badges |
+| `--tblr-radius-md` | `8px` | Buttons, form controls |
+| `--tblr-radius-lg` | `12px` | Cards |
+| `--tblr-radius-xl` | `16px` | Modals |
 
 #### Shadows
 
 | Token | Usage |
 |-------|-------|
-| `--swp-shadow-sm` | Cards, subtle elevation |
-| `--swp-shadow-md` | Hover states, dropdowns |
-| `--swp-shadow-lg` | Modals, popovers |
-| `--swp-shadow-primary` | Primary button glow |
+| `--tblr-shadow-sm` | Cards, subtle elevation |
+| `--tblr-shadow-md` | Hover states, dropdowns |
+| `--tblr-shadow-lg` | Modals, popovers |
+| `--tblr-shadow-primary` | Primary button glow |
 
 ### Typography Guidelines
 
 | Element | Size Token | Weight | Color |
 |---------|------------|--------|-------|
-| Page title | `--swp-text-2xl` | `--swp-font-semibold` | `--swp-text-primary` |
-| Card title | `--swp-text-lg` | `--swp-font-semibold` | `--swp-text-primary` |
-| Section title | `--swp-text-md` | `--swp-font-semibold` | `--swp-text-primary` |
-| Body text | `--swp-text-base` | `--swp-font-normal` | `--swp-body-color` |
-| Help text | `--swp-text-sm` | `--swp-font-normal` | `--swp-text-muted` |
-| Labels | `--swp-text-sm` | `--swp-font-medium` | `--swp-text-secondary` |
-| Table headers | `--swp-text-xs` | `--swp-font-semibold` | `--swp-text-muted` |
+| Page title | `--tblr-text-2xl` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Card title | `--tblr-text-lg` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Section title | `--tblr-text-md` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Body text | `--tblr-text-base` | `--tblr-font-normal` | `--tblr-body-color` |
+| Help text | `--tblr-text-sm` | `--tblr-font-normal` | `--tblr-text-muted` |
+| Labels | `--tblr-text-sm` | `--tblr-font-medium` | `--tblr-text-secondary` |
+| Table headers | `--tblr-text-xs` | `--tblr-font-semibold` | `--tblr-text-muted` |
 
 ---
 
@@ -1497,9 +1497,9 @@ All design values are defined as CSS custom properties with the `--swp-` prefix 
 ### Tables/DataGrids
 
 **Table styling:**
-- Headers: Uppercase, small text (`--swp-text-xs`), muted color
+- Headers: Uppercase, small text (`--tblr-text-xs`), muted color
 - Rows: Adequate padding (`1rem 1.5rem`), subtle hover
-- Borders: Light gray (`--swp-border-light`), minimal
+- Borders: Light gray (`--tblr-border-light`), minimal
 - No alternating row colors (hover is enough)
 
 **Column types:**

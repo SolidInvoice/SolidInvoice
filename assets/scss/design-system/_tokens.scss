@@ -2,8 +2,14 @@
  * SolidInvoice Design System - Design Tokens
  *
  * Core design tokens defining colors, spacing, shadows, border radius,
- * and transitions. All values are exposed as CSS custom properties
- * with the `--swp-` prefix for runtime theming support.
+ * and transitions. All values are exposed as CSS custom properties.
+ *
+ * These are Tabler's own tokens, not a parallel namespace. Tabler 1.5 removed the `$prefix`
+ * Sass variable, so there is no way to compile it under a name of ours; a token declared here
+ * with a name Tabler also uses — `--tblr-primary`, the grey ramp, the shadows — overwrites
+ * Tabler's and carries the brand through every component built on it. Tokens with no Tabler
+ * counterpart sit in the same namespace rather than a private one, so there is a single answer
+ * to "where does this value come from".
  */
 
 // ============================================================================
@@ -16,35 +22,35 @@
     // -------------------------------------------------------------------------
 
     // Primary: Green - Used for main CTAs, links, active states
-    --swp-primary: #2e963a;
-    --swp-primary-rgb: 46, 150, 58;
-    --swp-primary-hover: #268032;
-    --swp-primary-dark: #1f6c29;
-    --swp-primary-light: #e8f5e9;
-    --swp-primary-lighter: #f1f9f2;
+    --tblr-primary: #2e963a;
+    --tblr-primary-rgb: 46, 150, 58;
+    --tblr-primary-hover: #268032;
+    --tblr-primary-dark: #1f6c29;
+    --tblr-primary-light: #e8f5e9;
+    --tblr-primary-lighter: #f1f9f2;
 
     // Secondary: Orange - Used sparingly for accents
-    --swp-secondary: #f0a015;
-    --swp-secondary-rgb: 240, 160, 21;
-    --swp-secondary-hover: #d89012;
-    --swp-secondary-dark: #c8820e;
-    --swp-secondary-light: #fff8e1;
-    --swp-secondary-lighter: #fffcf0;
+    --tblr-secondary: #f0a015;
+    --tblr-secondary-rgb: 240, 160, 21;
+    --tblr-secondary-hover: #d89012;
+    --tblr-secondary-dark: #c8820e;
+    --tblr-secondary-light: #fff8e1;
+    --tblr-secondary-lighter: #fffcf0;
 
     // -------------------------------------------------------------------------
     // Neutral Colors (Slate-based gray scale for modern feel)
     // -------------------------------------------------------------------------
 
-    --swp-gray-50: #f8fafc;
-    --swp-gray-100: #f1f5f9;
-    --swp-gray-200: #e2e8f0;
-    --swp-gray-300: #cbd5e1;
-    --swp-gray-400: #94a3b8;
-    --swp-gray-500: #64748b;
-    --swp-gray-600: #475569;
-    --swp-gray-700: #334155;
-    --swp-gray-800: #1e293b;
-    --swp-gray-900: #0f172a;
+    --tblr-gray-50: #f8fafc;
+    --tblr-gray-100: #f1f5f9;
+    --tblr-gray-200: #e2e8f0;
+    --tblr-gray-300: #cbd5e1;
+    --tblr-gray-400: #94a3b8;
+    --tblr-gray-500: #64748b;
+    --tblr-gray-600: #475569;
+    --tblr-gray-700: #334155;
+    --tblr-gray-800: #1e293b;
+    --tblr-gray-900: #0f172a;
 
     // -------------------------------------------------------------------------
     // Semantic Colors (Feedback & Status)
@@ -54,46 +60,46 @@
     // NOTE: `success` (2.54:1 on surface) and `success-hover` (3.77:1) are fill
     // colours, not text colours - both fail WCAG AA as text. Use `success-dark`
     // for any success-coloured *text*. See DESIGN.md - The Legible Status Rule.
-    --swp-success: #10b981;
-    --swp-success-rgb: 16, 185, 129;
-    --swp-success-hover: #059669;
-    --swp-success-dark: #047857;   // Emerald-700 - AA-safe success text (5.48:1 on surface, 5.06:1 on body-bg)
-    --swp-success-light: #d1fae5;
-    --swp-success-lighter: #ecfdf5;
+    --tblr-success: #10b981;
+    --tblr-success-rgb: 16, 185, 129;
+    --tblr-success-hover: #059669;
+    --tblr-success-dark: #047857;   // Emerald-700 - AA-safe success text (5.48:1 on surface, 5.06:1 on body-bg)
+    --tblr-success-light: #d1fae5;
+    --tblr-success-lighter: #ecfdf5;
 
     // Danger
     // NOTE: `danger` (3.76:1 on surface) is a fill colour, not a text colour.
     // Use `danger-dark` for danger-coloured *text*.
-    --swp-danger: #ef4444;
-    --swp-danger-rgb: 239, 68, 68;
-    --swp-danger-hover: #dc2626;
-    --swp-danger-dark: #b91c1c;    // Red-700 - AA-safe danger text (6.47:1 on surface, 5.97:1 on body-bg)
-    --swp-danger-light: #fee2e2;
-    --swp-danger-lighter: #fef2f2;
+    --tblr-danger: #ef4444;
+    --tblr-danger-rgb: 239, 68, 68;
+    --tblr-danger-hover: #dc2626;
+    --tblr-danger-dark: #b91c1c;    // Red-700 - AA-safe danger text (6.47:1 on surface, 5.97:1 on body-bg)
+    --tblr-danger-light: #fee2e2;
+    --tblr-danger-lighter: #fef2f2;
 
     // Warning
-    --swp-warning: #f59e0b;
-    --swp-warning-rgb: 245, 158, 11;
-    --swp-warning-hover: #d97706;
-    --swp-warning-light: #fef3c7;
-    --swp-warning-lighter: #fffbeb;
+    --tblr-warning: #f59e0b;
+    --tblr-warning-rgb: 245, 158, 11;
+    --tblr-warning-hover: #d97706;
+    --tblr-warning-light: #fef3c7;
+    --tblr-warning-lighter: #fffbeb;
 
     // Info
-    --swp-info: #3b82f6;
-    --swp-info-rgb: 59, 130, 246;
-    --swp-info-hover: #2563eb;
-    --swp-info-light: #dbeafe;
-    --swp-info-lighter: #eff6ff;
+    --tblr-info: #3b82f6;
+    --tblr-info-rgb: 59, 130, 246;
+    --tblr-info-hover: #2563eb;
+    --tblr-info-light: #dbeafe;
+    --tblr-info-lighter: #eff6ff;
 
     // -------------------------------------------------------------------------
     // Surface Colors
     // -------------------------------------------------------------------------
 
-    --swp-body-bg: #f4f6f8;
-    --swp-surface: #ffffff;
-    --swp-surface-hover: #f8fafc;
-    --swp-surface-elevated: #ffffff;
-    --swp-surface-overlay: rgb(15 23 42 / 50%);
+    --tblr-body-bg: #f4f6f8;
+    --tblr-surface: #ffffff;
+    --tblr-surface-hover: #f8fafc;
+    --tblr-surface-elevated: #ffffff;
+    --tblr-surface-overlay: rgb(15 23 42 / 50%);
 
     // -------------------------------------------------------------------------
     // Text Colors
@@ -102,31 +108,31 @@
     // Default body text. Aliases `text-primary` rather than duplicating the
     // literal - it was a pure #333333 gray, which the Tinted Neutrals Rule
     // prohibits, and there is no reason for the two to ever diverge.
-    --swp-body-color: var(--swp-text-primary);
-    --swp-text-primary: #1e293b;
-    --swp-text-secondary: #475569;
-    --swp-text-muted: #64748b;
+    --tblr-body-color: var(--tblr-text-primary);
+    --tblr-text-primary: #1e293b;
+    --tblr-text-secondary: #475569;
+    --tblr-text-muted: #64748b;
 
     // WARNING: 2.56:1 on surface, 2.37:1 on body-bg - FAILS WCAG AA (1.4.3).
     // Safe ONLY for disabled text (exempt from 1.4.3) and decorative glyphs.
     // Never use for placeholders or any other meaningful text.
-    --swp-text-light: #94a3b8;
-    --swp-text-inverse: #ffffff;
+    --tblr-text-light: #94a3b8;
+    --tblr-text-inverse: #ffffff;
 
     // -------------------------------------------------------------------------
     // Border Colors
     // -------------------------------------------------------------------------
 
-    --swp-border: #e2e8f0;
-    --swp-border-light: #f1f5f9;
-    --swp-border-dark: #cbd5e1;
+    --tblr-border: #e2e8f0;
+    --tblr-border-light: #f1f5f9;
+    --tblr-border-dark: #cbd5e1;
 
     // -------------------------------------------------------------------------
     // Link Colors
     // -------------------------------------------------------------------------
 
-    --swp-link-color: var(--swp-primary);
-    --swp-link-hover-color: var(--swp-primary-dark);
+    --tblr-link-color: var(--tblr-primary);
+    --tblr-link-hover-color: var(--tblr-primary-dark);
 }
 
 // ============================================================================
@@ -134,28 +140,28 @@
 // ============================================================================
 
 :root {
-    --swp-space-0: 0;
-    --swp-space-px: 1px;
-    --swp-space-0-5: 0.125rem;  // 2px
-    --swp-space-1: 0.25rem;     // 4px
-    --swp-space-1-5: 0.375rem;  // 6px
-    --swp-space-2: 0.5rem;      // 8px
-    --swp-space-2-5: 0.625rem;  // 10px
-    --swp-space-3: 0.75rem;     // 12px
-    --swp-space-3-5: 0.875rem;  // 14px
-    --swp-space-4: 1rem;        // 16px
-    --swp-space-5: 1.25rem;     // 20px
-    --swp-space-6: 1.5rem;      // 24px
-    --swp-space-7: 1.75rem;     // 28px
-    --swp-space-8: 2rem;        // 32px
-    --swp-space-9: 2.25rem;     // 36px
-    --swp-space-10: 2.5rem;     // 40px
-    --swp-space-11: 2.75rem;    // 44px
-    --swp-space-12: 3rem;       // 48px
-    --swp-space-14: 3.5rem;     // 56px
-    --swp-space-16: 4rem;       // 64px
-    --swp-space-20: 5rem;       // 80px
-    --swp-space-24: 6rem;       // 96px
+    --tblr-space-0: 0;
+    --tblr-space-px: 1px;
+    --tblr-space-0-5: 0.125rem;  // 2px
+    --tblr-space-1: 0.25rem;     // 4px
+    --tblr-space-1-5: 0.375rem;  // 6px
+    --tblr-space-2: 0.5rem;      // 8px
+    --tblr-space-2-5: 0.625rem;  // 10px
+    --tblr-space-3: 0.75rem;     // 12px
+    --tblr-space-3-5: 0.875rem;  // 14px
+    --tblr-space-4: 1rem;        // 16px
+    --tblr-space-5: 1.25rem;     // 20px
+    --tblr-space-6: 1.5rem;      // 24px
+    --tblr-space-7: 1.75rem;     // 28px
+    --tblr-space-8: 2rem;        // 32px
+    --tblr-space-9: 2.25rem;     // 36px
+    --tblr-space-10: 2.5rem;     // 40px
+    --tblr-space-11: 2.75rem;    // 44px
+    --tblr-space-12: 3rem;       // 48px
+    --tblr-space-14: 3.5rem;     // 56px
+    --tblr-space-16: 4rem;       // 64px
+    --tblr-space-20: 5rem;       // 80px
+    --tblr-space-24: 6rem;       // 96px
 }
 
 // ============================================================================
@@ -163,13 +169,13 @@
 // ============================================================================
 
 :root {
-    --swp-radius-none: 0;
-    --swp-radius-sm: 0.375rem;    // 6px - Small elements, tags
-    --swp-radius-md: 0.5rem;      // 8px - Form controls, buttons
-    --swp-radius-lg: 0.75rem;     // 12px - Cards, modals
-    --swp-radius-xl: 1rem;        // 16px - Large cards, dialogs
-    --swp-radius-2xl: 1.5rem;     // 24px - Extra large elements
-    --swp-radius-full: 9999px;    // Pill shape
+    --tblr-radius-none: 0;
+    --tblr-radius-sm: 0.375rem;    // 6px - Small elements, tags
+    --tblr-radius-md: 0.5rem;      // 8px - Form controls, buttons
+    --tblr-radius-lg: 0.75rem;     // 12px - Cards, modals
+    --tblr-radius-xl: 1rem;        // 16px - Large cards, dialogs
+    --tblr-radius-2xl: 1.5rem;     // 24px - Extra large elements
+    --tblr-radius-full: 9999px;    // Pill shape
 }
 
 // ============================================================================
@@ -178,26 +184,26 @@
 
 :root {
     // Elevation shadows
-    --swp-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
-    --swp-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-    --swp-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
-    --swp-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
-    --swp-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
-    --swp-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    --tblr-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
+    --tblr-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+    --tblr-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
+    --tblr-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+    --tblr-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
+    --tblr-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 25%);
 
     // Inner shadow
-    --swp-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 5%);
+    --tblr-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 5%);
 
     // Colored shadows for buttons and interactive elements
-    --swp-shadow-primary: 0 4px 14px 0 rgb(46 150 58 / 25%);
-    --swp-shadow-primary-lg: 0 8px 20px 0 rgb(46 150 58 / 30%);
-    --swp-shadow-danger: 0 4px 14px 0 rgb(239 68 68 / 25%);
-    --swp-shadow-danger-lg: 0 8px 20px 0 rgb(239 68 68 / 30%);
+    --tblr-shadow-primary: 0 4px 14px 0 rgb(46 150 58 / 25%);
+    --tblr-shadow-primary-lg: 0 8px 20px 0 rgb(46 150 58 / 30%);
+    --tblr-shadow-danger: 0 4px 14px 0 rgb(239 68 68 / 25%);
+    --tblr-shadow-danger-lg: 0 8px 20px 0 rgb(239 68 68 / 30%);
 
     // Focus ring shadow
-    --swp-ring-primary: 0 0 0 3px rgb(46 150 58 / 15%);
-    --swp-ring-danger: 0 0 0 3px rgb(239 68 68 / 15%);
-    --swp-ring-offset: 0 0 0 2px var(--swp-surface);
+    --tblr-ring-primary: 0 0 0 3px rgb(46 150 58 / 15%);
+    --tblr-ring-danger: 0 0 0 3px rgb(239 68 68 / 15%);
+    --tblr-ring-offset: 0 0 0 2px var(--tblr-surface);
 }
 
 // ============================================================================
@@ -206,29 +212,29 @@
 
 :root {
     // Durations
-    --swp-duration-fast: 150ms;
-    --swp-duration-base: 200ms;
-    --swp-duration-slow: 300ms;
-    --swp-duration-slower: 400ms;
+    --tblr-duration-fast: 150ms;
+    --tblr-duration-base: 200ms;
+    --tblr-duration-slow: 300ms;
+    --tblr-duration-slower: 400ms;
 
     // Timing functions
-    --swp-ease-linear: linear;
-    --swp-ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --swp-ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --swp-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --tblr-ease-linear: linear;
+    --tblr-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --tblr-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --tblr-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
     // Common transitions
-    --swp-transition-fast: var(--swp-duration-fast) var(--swp-ease-in-out);
-    --swp-transition-base: var(--swp-duration-base) var(--swp-ease-in-out);
-    --swp-transition-slow: var(--swp-duration-slow) var(--swp-ease-in-out);
+    --tblr-transition-fast: var(--tblr-duration-fast) var(--tblr-ease-in-out);
+    --tblr-transition-base: var(--tblr-duration-base) var(--tblr-ease-in-out);
+    --tblr-transition-slow: var(--tblr-duration-slow) var(--tblr-ease-in-out);
 
     // Property-specific transitions
-    --swp-transition-colors: color var(--swp-transition-fast),
-                             background-color var(--swp-transition-fast),
-                             border-color var(--swp-transition-fast);
-    --swp-transition-shadow: box-shadow var(--swp-transition-base);
-    --swp-transition-transform: transform var(--swp-transition-base);
-    --swp-transition-all: all var(--swp-transition-base);
+    --tblr-transition-colors: color var(--tblr-transition-fast),
+                             background-color var(--tblr-transition-fast),
+                             border-color var(--tblr-transition-fast);
+    --tblr-transition-shadow: box-shadow var(--tblr-transition-base);
+    --tblr-transition-transform: transform var(--tblr-transition-base);
+    --tblr-transition-all: all var(--tblr-transition-base);
 }
 
 // ============================================================================
@@ -236,14 +242,14 @@
 // ============================================================================
 
 :root {
-    --swp-z-dropdown: 1000;
-    --swp-z-sticky: 1020;
-    --swp-z-fixed: 1030;
-    --swp-z-modal-backdrop: 1040;
-    --swp-z-modal: 1050;
-    --swp-z-popover: 1060;
-    --swp-z-tooltip: 1070;
-    --swp-z-toast: 1080;
+    --tblr-z-dropdown: 1000;
+    --tblr-z-sticky: 1020;
+    --tblr-z-fixed: 1030;
+    --tblr-z-modal-backdrop: 1040;
+    --tblr-z-modal: 1050;
+    --tblr-z-popover: 1060;
+    --tblr-z-tooltip: 1070;
+    --tblr-z-toast: 1080;
 }
 
 // ============================================================================
@@ -252,131 +258,59 @@
 
 :root {
     // Card
-    --swp-card-bg: var(--swp-surface);
-    --swp-card-border: var(--swp-border-light);
-    --swp-card-radius: var(--swp-radius-lg);
-    --swp-card-shadow: var(--swp-shadow-sm);
-    --swp-card-padding: var(--swp-space-6);
-    --swp-card-header-padding: var(--swp-space-4) var(--swp-space-6);
-    --swp-card-footer-padding: var(--swp-space-4) var(--swp-space-6);
+    --tblr-card-bg: var(--tblr-surface);
+    --tblr-card-border: var(--tblr-border-light);
+    --tblr-card-radius: var(--tblr-radius-lg);
+    --tblr-card-shadow: var(--tblr-shadow-sm);
+    --tblr-card-padding: var(--tblr-space-6);
+    --tblr-card-header-padding: var(--tblr-space-4) var(--tblr-space-6);
+    --tblr-card-footer-padding: var(--tblr-space-4) var(--tblr-space-6);
 
     // Form controls
-    --swp-input-bg: var(--swp-surface);
-    --swp-input-border: var(--swp-border);
-    --swp-input-radius: var(--swp-radius-md);
-    --swp-input-padding-y: var(--swp-space-2-5);
-    --swp-input-padding-x: var(--swp-space-4);
-    --swp-input-focus-border: var(--swp-primary);
-    --swp-input-focus-ring: var(--swp-ring-primary);
+    --tblr-input-bg: var(--tblr-surface);
+    --tblr-input-border: var(--tblr-border);
+    --tblr-input-radius: var(--tblr-radius-md);
+    --tblr-input-padding-y: var(--tblr-space-2-5);
+    --tblr-input-padding-x: var(--tblr-space-4);
+    --tblr-input-focus-border: var(--tblr-primary);
+    --tblr-input-focus-ring: var(--tblr-ring-primary);
 
     // Buttons
-    --swp-btn-radius: var(--swp-radius-md);
-    --swp-btn-padding-y: var(--swp-space-2-5);
-    --swp-btn-padding-x: var(--swp-space-4);
-    --swp-btn-font-weight: 500;
+    --tblr-btn-radius: var(--tblr-radius-md);
+    --tblr-btn-padding-y: var(--tblr-space-2-5);
+    --tblr-btn-padding-x: var(--tblr-space-4);
+    --tblr-btn-font-weight: 500;
 
     // Modal
-    --swp-modal-bg: var(--swp-surface);
-    --swp-modal-radius: var(--swp-radius-xl);
-    --swp-modal-shadow: var(--swp-shadow-xl);
-    --swp-modal-padding: var(--swp-space-6);
+    --tblr-modal-bg: var(--tblr-surface);
+    --tblr-modal-radius: var(--tblr-radius-xl);
+    --tblr-modal-shadow: var(--tblr-shadow-xl);
+    --tblr-modal-padding: var(--tblr-space-6);
 
     // Table
-    --swp-table-bg: var(--swp-surface);
-    --swp-table-border: var(--swp-border-light);
-    --swp-table-header-bg: var(--swp-gray-50);
-    --swp-table-row-hover-bg: var(--swp-gray-50);
-    --swp-table-cell-padding: var(--swp-space-4) var(--swp-space-6);
+    --tblr-table-bg: var(--tblr-surface);
+    --tblr-table-border: var(--tblr-border-light);
+    --tblr-table-header-bg: var(--tblr-gray-50);
+    --tblr-table-row-hover-bg: var(--tblr-gray-50);
+    --tblr-table-cell-padding: var(--tblr-space-4) var(--tblr-space-6);
 
     // Alert
-    --swp-alert-radius: var(--swp-radius-md);
-    --swp-alert-padding: var(--swp-space-4);
+    --tblr-alert-radius: var(--tblr-radius-md);
+    --tblr-alert-padding: var(--tblr-space-4);
 
     // Money display (signature component - see components/_money.scss)
     // Every colour here is AA-compliant against BOTH `surface` and `body-bg`,
     // because money must never be misreadable on any surface it lands on.
-    --swp-money-currency: var(--swp-text-secondary);  // 7.58:1 / 6.99:1
-    --swp-money-neutral: var(--swp-text-primary);     // 14.63:1 / 13.50:1
-    --swp-money-paid: var(--swp-success-dark);        // 5.48:1 / 5.06:1
-    --swp-money-overdue: var(--swp-danger-dark);      // 6.47:1 / 5.97:1
+    --tblr-money-currency: var(--tblr-text-secondary);  // 7.58:1 / 6.99:1
+    --tblr-money-neutral: var(--tblr-text-primary);     // 14.63:1 / 13.50:1
+    --tblr-money-paid: var(--tblr-success-dark);        // 5.48:1 / 5.06:1
+    --tblr-money-overdue: var(--tblr-danger-dark);      // 6.47:1 / 5.97:1
 
     // Relative step applied to a `.money--total` amount. Unitless multiplier so
     // the step is correct at every inherited base size.
-    --swp-money-total-scale: 1.125;
+    --tblr-money-total-scale: 1.125;
 
     // Relative size of the currency code against its amount. The code is a unit,
     // not a second number, and reads as subordinate rather than competing.
-    --swp-money-currency-scale: 0.75em;
-}
-
-// ============================================================================
-// TABLER BRIDGE
-// ============================================================================
-
-// Tabler reads its own `--tblr-*` tokens, so handing it these is what makes its
-// buttons, links, badges, tables and modals carry the SolidInvoice brand rather
-// than Tabler's stock blue-and-slate.
-
-// This used to happen by accident: the platform compiled Tabler 1.4 with
-// `$prefix: swp-`, so every token above landed on the exact name Tabler was
-// reading. Tabler 1.5 dropped `$prefix` and the compiled CSS is `--tblr-*`
-// again, so the same 39 tokens have to be handed over by name. Values stay
-// single-sourced above — only the aliases live here.
-
-:root {
-    // Brand palette.
-
-    // `secondary` carries further than its name suggests: Tabler builds `.text-secondary`
-    // out of it, so the orange reaches muted labels as well as buttons and badges. That is
-    // how the app has always looked — under the old prefix our orange landed on the same
-    // token — so it is handed over with the rest.
-    --tblr-primary: var(--swp-primary);
-    --tblr-primary-rgb: var(--swp-primary-rgb);
-    --tblr-secondary: var(--swp-secondary);
-    --tblr-secondary-rgb: var(--swp-secondary-rgb);
-    --tblr-success: var(--swp-success);
-    --tblr-success-rgb: var(--swp-success-rgb);
-    --tblr-danger: var(--swp-danger);
-    --tblr-danger-rgb: var(--swp-danger-rgb);
-    --tblr-warning: var(--swp-warning);
-    --tblr-warning-rgb: var(--swp-warning-rgb);
-    --tblr-info: var(--swp-info);
-    --tblr-info-rgb: var(--swp-info-rgb);
-
-    // Links
-    --tblr-link-color: var(--swp-link-color);
-    --tblr-link-hover-color: var(--swp-link-hover-color);
-
-    // Surfaces
-    --tblr-body-bg: var(--swp-body-bg);
-    --tblr-body-color: var(--swp-body-color);
-    --tblr-card-bg: var(--swp-card-bg);
-    --tblr-modal-bg: var(--swp-modal-bg);
-    --tblr-table-bg: var(--swp-table-bg);
-
-    // Neutral ramp
-    --tblr-gray-50: var(--swp-gray-50);
-    --tblr-gray-100: var(--swp-gray-100);
-    --tblr-gray-200: var(--swp-gray-200);
-    --tblr-gray-300: var(--swp-gray-300);
-    --tblr-gray-400: var(--swp-gray-400);
-    --tblr-gray-500: var(--swp-gray-500);
-    --tblr-gray-600: var(--swp-gray-600);
-    --tblr-gray-700: var(--swp-gray-700);
-    --tblr-gray-800: var(--swp-gray-800);
-    --tblr-gray-900: var(--swp-gray-900);
-
-    // Elevation
-    --tblr-shadow-xs: var(--swp-shadow-xs);
-    --tblr-shadow-sm: var(--swp-shadow-sm);
-    --tblr-shadow-md: var(--swp-shadow-md);
-    --tblr-shadow-lg: var(--swp-shadow-lg);
-    --tblr-shadow-xl: var(--swp-shadow-xl);
-    --tblr-shadow-2xl: var(--swp-shadow-2xl);
-
-    // Component metrics
-    --tblr-btn-font-weight: var(--swp-btn-font-weight);
-    --tblr-btn-padding-x: var(--swp-btn-padding-x);
-    --tblr-btn-padding-y: var(--swp-btn-padding-y);
-    --tblr-modal-padding: var(--swp-modal-padding);
+    --tblr-money-currency-scale: 0.75em;
 }
