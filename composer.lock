@@ -14498,16 +14498,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v8.1.2",
+            "version": "v8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f"
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/e4c1236171800cdb3e5dbe189121454204f1654f",
-                "reference": "e4c1236171800cdb3e5dbe189121454204f1654f",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/fdb4670b8b4183c3ff45381e93343823cb9e17ea",
+                "reference": "fdb4670b8b4183c3ff45381e93343823cb9e17ea",
                 "shasum": ""
             },
             "require": {
@@ -14556,7 +14556,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v8.1.2"
+                "source": "https://github.com/symfony/notifier/tree/v8.1.5"
             },
             "funding": [
                 {
@@ -14576,7 +14576,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-05T10:41:02+00:00"
+            "time": "2026-08-21T17:47:34+00:00"
         },
         {
             "name": "symfony/object-mapper",
@@ -18457,16 +18457,16 @@
         },
         {
             "name": "symfony/twilio-notifier",
-            "version": "v8.1.0",
+            "version": "v8.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twilio-notifier.git",
-                "reference": "5d6ab6c5c7cbbc3f32419cf2eb3391aa5d81a079"
+                "reference": "1fb4631dde1b7885415e2cdf591cde28f408ddd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twilio-notifier/zipball/5d6ab6c5c7cbbc3f32419cf2eb3391aa5d81a079",
-                "reference": "5d6ab6c5c7cbbc3f32419cf2eb3391aa5d81a079",
+                "url": "https://api.github.com/repos/symfony/twilio-notifier/zipball/1fb4631dde1b7885415e2cdf591cde28f408ddd1",
+                "reference": "1fb4631dde1b7885415e2cdf591cde28f408ddd1",
                 "shasum": ""
             },
             "require": {
@@ -18508,7 +18508,7 @@
                 "twilio"
             ],
             "support": {
-                "source": "https://github.com/symfony/twilio-notifier/tree/v8.1.0"
+                "source": "https://github.com/symfony/twilio-notifier/tree/v8.1.6"
             },
             "funding": [
                 {
@@ -18528,7 +18528,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-08-30T01:03:44+00:00"
         },
         {
             "name": "symfony/type-info",
