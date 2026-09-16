@@ -69,7 +69,7 @@ final class Version30100_3 extends AbstractMigration
         // converted before the column changes rather than after it.
         foreach (self::LEGACY_ARRAY_COLUMNS as $table => $column) {
             $this->connection->executeStatement(
-                sprintf('UPDATE %s SET %s = ? WHERE %s IS NULL', $table, $column, $column),
+                sprintf('UPDATE %s SET %s = ? WHERE %s IS NULL', $this->platform->quoteIdentifier($table), $this->platform->quoteIdentifier($column), $this->platform->quoteIdentifier($column)),
                 ['[]'],
             );
 
@@ -92,7 +92,7 @@ final class Version30100_3 extends AbstractMigration
                 // Postgres has no assignment cast from text to json, and the bare
                 // `ALTER <column> TYPE JSON` that DBAL emits is rejected outright. Written out
                 // here, and left out of the schema below so that statement is never generated.
-                $this->addSql(sprintf('ALTER TABLE %s ALTER %s TYPE JSON USING %s::json', $table, $column, $column));
+                $this->addSql(sprintf('ALTER TABLE %s ALTER %s TYPE JSON USING %s::json', $this->platform->quoteIdentifier($table), $this->platform->quoteIdentifier($column), $this->platform->quoteIdentifier($column)));
 
                 continue;
             }
@@ -168,8 +168,8 @@ final class Version30100_3 extends AbstractMigration
             $rows = $this->connection->fetchAllAssociative(
                 sprintf(
                     'SELECT id, %s AS value FROM %s%s ORDER BY id ASC LIMIT %d',
-                    $column,
-                    $table,
+                    $this->platform->quoteIdentifier($column),
+                    $this->platform->quoteIdentifier($table),
                     $lastId === null ? '' : ' WHERE id > ?',
                     self::PAGE_SIZE,
                 ),
@@ -198,7 +198,7 @@ final class Version30100_3 extends AbstractMigration
                 // Ids bind as strings on every platform: BINARY(16) bytes on MySQL and SQLite,
                 // RFC 4122 text in a UUID column on Postgres.
                 $this->connection->executeStatement(
-                    sprintf('UPDATE %s SET %s = ? WHERE id IN (?)', $table, $column),
+                    sprintf('UPDATE %s SET %s = ? WHERE id IN (?)', $this->platform->quoteIdentifier($table), $this->platform->quoteIdentifier($column)),
                     [(string) $value, $ids],
                     [ParameterType::STRING, ArrayParameterType::STRING],
                 );
