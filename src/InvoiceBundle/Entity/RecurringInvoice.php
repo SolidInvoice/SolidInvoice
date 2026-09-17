@@ -34,6 +34,7 @@ use SolidInvoice\ApiBundle\State\Provider\RecurringInvoiceItemProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
@@ -108,6 +109,7 @@ class RecurringInvoice extends BaseInvoice
     final public const string TABLE_NAME = 'recurring_invoices';
 
     use Archivable;
+    use LinePositions;
     use TimeStampable;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: RecurringInvoiceStatus::class)]
@@ -145,6 +147,7 @@ class RecurringInvoice extends BaseInvoice
      * @var Collection<int, RecurringInvoiceLine>
      */
     #[ORM\OneToMany(targetEntity: RecurringInvoiceLine::class, mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'recurring_invoice.lines.min')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -263,6 +266,8 @@ class RecurringInvoice extends BaseInvoice
         $this->lines->add($line);
         $line->setRecurringInvoice($this);
 
+        $this->compactLinePositions($this->lines);
+
         return $this;
     }
 
@@ -270,6 +275,8 @@ class RecurringInvoice extends BaseInvoice
     {
         $this->lines->removeElement($line);
         $line->setRecurringInvoice(null);
+
+        $this->compactLinePositions($this->lines);
 
         return $this;
     }
@@ -280,6 +287,24 @@ class RecurringInvoice extends BaseInvoice
     public function getLines(): Collection
     {
         return $this->lines;
+    }
+
+    /**
+     * The owner's last word on its lines before they are written, as
+     * {@see Invoice::updateLines()} is for an invoice.
+     *
+     * A line that reached the collection without {@see self::addLine()} is still unplaced,
+     * and would otherwise be left to {@see RecurringInvoiceLine::placeUnplacedLine()}, which
+     * cannot see its siblings. Renumbering here gives every line a distinct slot.
+     */
+    #[ORM\PrePersist]
+    public function updateLines(): void
+    {
+        foreach ($this->lines as $line) {
+            $line->setRecurringInvoice($this);
+        }
+
+        $this->compactLinePositions($this->lines);
     }
 
     /**

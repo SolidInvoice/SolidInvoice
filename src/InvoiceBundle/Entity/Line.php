@@ -34,6 +34,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\LinePosition;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
 use SolidInvoice\InvoiceBundle\Repository\LineRepository;
@@ -130,6 +131,7 @@ class Line implements LineInterface, Stringable
 
     use TimeStampable;
     use CompanyAware;
+    use LinePosition;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -142,6 +144,20 @@ class Line implements LineInterface, Stringable
     #[Assert\NotBlank]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $description = null;
+
+    /**
+     * {@see LineInterface::UNPLACED} until an owner places the line, which is what makes an
+     * added line an append.
+     *
+     * Read over the API, never written. A position is not something a line carries but the
+     * index its owner gave it, so the way to change one is to send the owner's `lines` in the
+     * order you want them; setting it on a single line is the one way to end up with the
+     * duplicates and gaps that `0..n-1` exists to rule out.
+     */
+    #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(writable: false)]
+    protected int $position = LineInterface::UNPLACED;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
@@ -225,6 +241,55 @@ class Line implements LineInterface, Stringable
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * A line attached with {@see self::setInvoice()} rather than {@see Invoice::addLine()} is
+     * never renumbered, so it would store the sentinel. It appends instead, which is where
+     * `addLine()` would have put it.
+     *
+     * {@see Invoice::updateLines()} places such a line properly whenever the owner's own
+     * insert can see it. This is the case it cannot: a line persisted against an owner that
+     * is already in the database. Two of those in one flush still collide — neither is in the
+     * collection, so neither can see the other — and nothing short of `addLine()` fixes that.
+     */
+    #[ORM\PrePersist]
+    public function placeUnplacedLine(): void
+    {
+        if ($this->position !== LineInterface::UNPLACED) {
+            return;
+        }
+
+        $this->position = $this->invoice instanceof Invoice
+            ? $this->positionAfter($this->invoice->getLines())
+            : 0;
+    }
+
+    /**
+     * A line deleted through its own endpoint — `DELETE /invoices/{id}/line/{id}` — never passes
+     * through {@see Invoice::removeLine()}, so the lines after it would keep their old numbers
+     * and leave the gap the deleted line used to fill. Routing the removal back through the
+     * owner closes it.
+     *
+     * PreRemove fires from `EntityManager::remove()`, before the flush works out what changed,
+     * so the renumbered siblings go out in the same flush as the delete.
+     */
+    #[ORM\PreRemove]
+    public function detachFromOwner(): void
+    {
+        $this->invoice?->removeLine($this);
     }
 
     /**

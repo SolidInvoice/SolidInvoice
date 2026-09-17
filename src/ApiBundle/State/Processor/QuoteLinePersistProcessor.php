@@ -40,7 +40,9 @@ final readonly class QuoteLinePersistProcessor implements ProcessorInterface
             throw new NotFoundHttpException(sprintf('Quote "%s" not found.', $quoteId));
         }
 
-        $data->setQuote($quote);
+        // addLine() rather than setQuote(), so a line posted without a position lands after
+        // the quote's existing ones instead of ahead of them.
+        $quote->addLine($data);
 
         $em = $this->registry->getManager();
         $em->persist($data);
