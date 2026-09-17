@@ -33,7 +33,7 @@
     //     sharing a baseline with its currency, instead of centring against it.
     display: inline-flex;
     align-items: baseline;
-    gap: var(--swp-space-1);
+    gap: var(--tblr-space-1);
 
     // Money clarity: a currency code must never be orphaned from its number.
     white-space: nowrap;
@@ -46,15 +46,15 @@
 // text rather than decoration, so it holds AA on every surface in the system.
 
 .money-currency {
-    color: var(--swp-money-currency);
+    color: var(--tblr-money-currency);
 }
 
 // The amount. Weight is normalised here so that the UA default of 700 on
 // `<strong>` does not pre-empt the `.money--total` step up to 600.
 
 .money-amount {
-    color: var(--swp-money-neutral);
-    font-weight: var(--swp-font-medium);
+    color: var(--tblr-money-neutral);
+    font-weight: var(--tblr-font-medium);
 }
 
 // ============================================================================
@@ -65,13 +65,13 @@
 // amount without an accompanying "Paid" label is a bug, not a style choice.
 
 .money--paid .money-amount {
-    color: var(--swp-money-paid);
+    color: var(--tblr-money-paid);
 }
 
 // Overdue. Same rule: always rendered with an explicit "Overdue" label.
 
 .money--overdue .money-amount {
-    color: var(--swp-money-overdue);
+    color: var(--tblr-money-overdue);
 }
 
 // Total. Heavier, and one size step up relative to the inherited context.
@@ -79,8 +79,8 @@
 // survives the step up.
 
 .money--total .money-amount {
-    font-size: calc(1em * var(--swp-money-total-scale));
-    font-weight: var(--swp-font-semibold);
+    font-size: calc(1em * var(--tblr-money-total-scale));
+    font-weight: var(--tblr-font-semibold);
 }
 
 // At display size the currency code is dimmed by size as well as by colour: at a
@@ -91,5 +91,5 @@
 // legibility problem rather than the fix, so the code stays full size there.
 
 .money--total .money-currency {
-    font-size: var(--swp-money-currency-scale);
+    font-size: var(--tblr-money-currency-scale);
 }

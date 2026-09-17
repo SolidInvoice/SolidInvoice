@@ -19,9 +19,9 @@
     // Application Header
 
     .company-page-header {
-        background: var(--swp-surface);
-        border-bottom: 1px solid var(--swp-border);
-        box-shadow: var(--swp-shadow-xs);
+        background: var(--tblr-surface);
+        border-bottom: 1px solid var(--tblr-border);
+        box-shadow: var(--tblr-shadow-xs);
     }
 
     .company-page-logo {
@@ -39,7 +39,7 @@
 
         h1 {
             font-weight: 700;
-            color: var(--swp-text-primary);
+            color: var(--tblr-text-primary);
         }
     }
 
@@ -49,7 +49,7 @@
 
         h2 {
             font-weight: 600;
-            color: var(--swp-text-primary);
+            color: var(--tblr-text-primary);
             font-size: 1.75rem;
         }
 
@@ -97,7 +97,7 @@
 
     .form-hint {
         font-size: 0.875rem;
-        color: var(--swp-text-secondary);
+        color: var(--tblr-text-secondary);
         display: flex;
         align-items: center;
     }
@@ -135,31 +135,31 @@
     // Main Card Container
 
     .card.shadow-sm {
-        box-shadow: var(--swp-shadow-lg) !important;
+        box-shadow: var(--tblr-shadow-lg) !important;
         border: none;
-        background: var(--swp-surface);
+        background: var(--tblr-surface);
     }
 
     // Company Cards
 
     .card-company {
-        transition: var(--swp-transition-all);
-        border: 2px solid var(--swp-border);
-        background: var(--swp-surface);
-        box-shadow: var(--swp-shadow-md);
-        border-radius: var(--swp-radius-lg);
+        transition: var(--tblr-transition-all);
+        border: 2px solid var(--tblr-border);
+        background: var(--tblr-surface);
+        box-shadow: var(--tblr-shadow-md);
+        border-radius: var(--tblr-radius-lg);
 
         &:hover {
             transform: translateY(-4px);
-            box-shadow: var(--swp-shadow-xl);
-            border-color: var(--swp-primary);
+            box-shadow: var(--tblr-shadow-xl);
+            border-color: var(--tblr-primary);
 
             .company-arrow {
                 transform: translateX(4px);
             }
 
             h3 {
-                color: var(--swp-primary);
+                color: var(--tblr-primary);
             }
         }
 
@@ -172,7 +172,7 @@
         flex-shrink: 0;
 
         .avatar {
-            box-shadow: var(--swp-shadow-sm);
+            box-shadow: var(--tblr-shadow-sm);
         }
 
         // Avatar with logo image
@@ -181,13 +181,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: var(--swp-space-2);
+            padding: var(--tblr-space-2);
         }
 
         // Avatar with initials - force solid primary background
 
         .avatar.bg-primary {
-            background-color: var(--swp-primary) !important;
+            background-color: var(--tblr-primary) !important;
             background-image: none !important;
         }
 
@@ -195,7 +195,7 @@
 
         .avatar-initials,
         .avatar.bg-primary span {
-            color: var(--swp-text-inverse) !important;
+            color: var(--tblr-text-inverse) !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -204,7 +204,7 @@
 
     .company-arrow {
         flex-shrink: 0;
-        transition: transform var(--swp-duration-base) var(--swp-ease-in-out);
+        transition: transform var(--tblr-duration-base) var(--tblr-ease-in-out);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -217,13 +217,13 @@
     // Create Company Card
 
     .card-create-company {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
-        border: 2px dashed var(--swp-border);
-        transition: var(--swp-transition-all);
+        background: linear-gradient(135deg, rgba(var(--tblr-success-rgb), 0.05) 0%, rgba(var(--tblr-success-rgb), 0.02) 100%);
+        border: 2px dashed var(--tblr-border);
+        transition: var(--tblr-transition-all);
 
         &:hover {
-            border-color: var(--swp-success);
-            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
+            border-color: var(--tblr-success);
+            background: linear-gradient(135deg, rgba(var(--tblr-success-rgb), 0.08) 0%, rgba(var(--tblr-success-rgb), 0.04) 100%);
         }
     }
 
@@ -249,33 +249,33 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: var(--swp-primary);
-            box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);
+            border-color: var(--tblr-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--tblr-primary-rgb), 0.1);
         }
     }
 
     .card {
-        box-shadow: var(--swp-shadow-lg);
+        box-shadow: var(--tblr-shadow-lg);
         border: none;
     }
 
     .alert {
-        border-radius: var(--swp-radius-lg);
+        border-radius: var(--tblr-radius-lg);
         border: 1px solid transparent;
 
         &.alert-info {
-            background-color: rgba(var(--swp-info-rgb), 0.08);
-            border-color: rgba(var(--swp-info-rgb), 0.2);
+            background-color: rgba(var(--tblr-info-rgb), 0.08);
+            border-color: rgba(var(--tblr-info-rgb), 0.2);
         }
 
         &.alert-warning {
-            background-color: rgba(var(--swp-warning-rgb), 0.08);
-            border-color: rgba(var(--swp-warning-rgb), 0.2);
+            background-color: rgba(var(--tblr-warning-rgb), 0.08);
+            border-color: rgba(var(--tblr-warning-rgb), 0.2);
         }
 
         &.alert-success {
-            background-color: rgba(var(--swp-success-rgb), 0.08);
-            border-color: rgba(var(--swp-success-rgb), 0.2);
+            background-color: rgba(var(--tblr-success-rgb), 0.08);
+            border-color: rgba(var(--tblr-success-rgb), 0.2);
         }
     }
 
