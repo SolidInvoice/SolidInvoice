@@ -155,6 +155,7 @@
                         <div class="billing-items-list" {{ stimulus_controller('line-reorder', {announcement: 'invoice.item.reordered'|trans}) }}
                              {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
                             <div class="billing-items-header-row">
+                                <div class="column-drag"></div>
                                 <div class="column-description">{{ 'invoice.item.heading.name'|trans }}</div>
                                 <div class="column-price">{{ 'invoice.item.heading.price'|trans }}</div>
                                 <div class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</div>
@@ -167,6 +168,13 @@
 
                             {% for index, item in form.lines %}
                                 <div class="billing-item-row" data-line-reorder-row>
+                                    <div class="column-drag">
+                                        <button type="button" class="line-drag-handle" data-line-reorder-handle
+                                                title="{{ 'invoice.item.reorder'|trans }}"
+                                                aria-label="{{ 'invoice.item.reorder'|trans }}">
+                                            {{ ux_icon('tabler:grip-vertical', {width: 16, height: 16}) }}
+                                        </button>
+                                    </div>
                                     <div class="column-description">
                                         <span class="mobile-label">{{ 'invoice.item.heading.name'|trans }}</span>
                                         {{ form_widget(item.name, {attr: {placeholder: 'invoice.item.name.placeholder'|trans, 'aria-label': 'invoice.item.name.label'|trans}}) }}
@@ -225,11 +233,6 @@
                                         <span class="item-total-value">{{ item.vars.value.total|formatCurrency(currency) }}</span>
                                     </div>
                                     <div class="column-actions">
-                                        <button type="button" class="line-drag-handle" data-line-reorder-handle
-                                                title="{{ 'invoice.item.reorder'|trans }}"
-                                                aria-label="{{ 'invoice.item.reorder'|trans }}">
-                                            {{ ux_icon('tabler:grip-vertical', {width: 16, height: 16}) }}
-                                        </button>
                                         {% if form.lines|length > 1 %}
                                             {{ form_widget(item.vars.button_delete, {
                                                 label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,

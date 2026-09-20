@@ -341,7 +341,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
+    grid-template-columns: 28px minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 24px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -373,11 +373,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
+        grid-template-columns: 28px minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 24px;
     }
 
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 52px;
+        grid-template-columns: 28px minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 24px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -393,7 +393,7 @@
 
     .billing-items-header-row,
     .billing-item-row {
-        grid-template-columns: minmax(0, 3.2fr) minmax(130px, 1.1fr) 56px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 52px;
+        grid-template-columns: 28px minmax(0, 3.2fr) minmax(130px, 1.1fr) 56px minmax(80px, 0.5fr) minmax(60px, 0.4fr) 24px;
     }
 
     .billing-item-row {
@@ -405,7 +405,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 52px;
+    grid-template-columns: 28px minmax(0, 2.6fr) minmax(130px, 1.1fr) 56px minmax(140px, 0.9fr) minmax(60px, 0.4fr) 24px;
     gap: var(--swp-space-2);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -528,22 +528,49 @@
         padding-top: 0;
     }
 
+    .column-drag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Aligns the grip with the first line of the description, not the top of its box.
+        padding-top: var(--swp-space-2);
+    }
+
     // Quiet until the row is hovered or the handle is tabbed to, so a column of grips does
     // not compete with the fields for attention.
 
     .line-drag-handle {
         display: flex;
         align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
         padding: 0;
         border: 0;
+        border-radius: var(--swp-radius-sm);
         background: none;
         color: var(--swp-text-muted);
         cursor: grab;
         opacity: 0;
-        transition: opacity var(--swp-transition-fast);
+        transition:
+            opacity var(--swp-transition-fast),
+            background var(--swp-transition-fast),
+            color var(--swp-transition-fast);
+
+        &:hover {
+            background: var(--swp-gray-100);
+            color: var(--swp-text-primary);
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
 
         &:focus-visible {
             opacity: 1;
+            outline: 2px solid var(--swp-primary);
+            outline-offset: 1px;
         }
     }
 
@@ -558,6 +585,7 @@
     // Mobile responsive layout
     @media (width <= 900px) {
         display: grid;
+        position: relative;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             'desc desc'
@@ -631,7 +659,15 @@
             border-top: 1px dashed var(--swp-border);
         }
 
-        // No hover to reveal it on a touch screen.
+        // Out of the stacked flow and into the card's corner: the areas below have no column
+        // to spare, and there is no hover to reveal it on a touch screen.
+
+        .column-drag {
+            position: absolute;
+            top: var(--swp-space-2);
+            right: var(--swp-space-2);
+            padding-top: 0;
+        }
 
         .line-drag-handle {
             opacity: 1;
