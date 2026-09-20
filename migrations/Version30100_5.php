@@ -114,16 +114,28 @@ final class Version30100_5 extends AbstractMigration
         $position = 0;
 
         while (true) {
-            $rows = $this->connection->fetchAllAssociative(
-                sprintf(
-                    'SELECT id, %1$s AS owner FROM %2$s WHERE %1$s IS NOT NULL%3$s ORDER BY %1$s ASC, id ASC LIMIT %4$d',
-                    $ownerColumn,
-                    $table,
-                    $lastId === null ? '' : sprintf(' AND (%1$s > ? OR (%1$s = ? AND id > ?))', $ownerColumn),
-                    self::PAGE_SIZE,
-                ),
-                $lastId === null ? [] : [$lastOwner, $lastOwner, $lastId],
-            );
+            $page = $this->connection->createQueryBuilder();
+            $expr = $page->expr();
+
+            $page
+                ->select('id', sprintf('%s AS owner', $ownerColumn))
+                ->from($table)
+                ->where($expr->isNotNull($ownerColumn))
+                ->orderBy($ownerColumn, 'ASC')
+                ->addOrderBy('id', 'ASC')
+                ->setMaxResults(self::PAGE_SIZE);
+
+            if ($lastId !== null) {
+                $page
+                    ->andWhere($expr->or(
+                        $expr->gt($ownerColumn, ':lastOwner'),
+                        $expr->and($expr->eq($ownerColumn, ':lastOwner'), $expr->gt('id', ':lastId')),
+                    ))
+                    ->setParameter('lastOwner', $lastOwner)
+                    ->setParameter('lastId', $lastId);
+            }
+
+            $rows = $page->executeQuery()->fetchAllAssociative();
 
             if ($rows === []) {
                 return;
@@ -146,17 +158,17 @@ final class Version30100_5 extends AbstractMigration
             }
 
             foreach ($idsByPosition as $value => $ids) {
-                // Ids bind as strings on every platform: BINARY(16) bytes on MySQL and SQLite,
-                // RFC 4122 text in a UUID column on Postgres.
-                $this->connection->executeStatement(
-                    sprintf(
-                        'UPDATE %s SET %s = ? WHERE id IN (?)',
-                        $table,
-                        $this->platform->quoteSingleIdentifier('position'),
-                    ),
-                    [$value, $ids],
-                    [ParameterType::INTEGER, ArrayParameterType::STRING],
-                );
+                $update = $this->connection->createQueryBuilder();
+
+                $update
+                    ->update($table)
+                    ->set($this->platform->quoteSingleIdentifier('position'), ':position')
+                    ->where($update->expr()->in('id', ':ids'))
+                    ->setParameter('position', $value, ParameterType::INTEGER)
+                    // Ids bind as strings on every platform: BINARY(16) bytes on MySQL and
+                    // SQLite, RFC 4122 text in a UUID column on Postgres.
+                    ->setParameter('ids', $ids, ArrayParameterType::STRING)
+                    ->executeStatement();
             }
         }
     }
