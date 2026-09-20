@@ -24,7 +24,6 @@ use function explode;
 use function mb_strlen;
 use function mb_substr;
 use function rtrim;
-use function sprintf;
 use function str_replace;
 use function trim;
 
@@ -87,13 +86,11 @@ final class Version30100_6 extends AbstractMigration
         // A description the backfill moved wholesale into the name has to come back before
         // the column is `NOT NULL` again, or down() fails on the first line it moved.
         foreach (self::LINE_TABLES as $table) {
-            $this->connection->executeStatement(
-                sprintf(
-                    'UPDATE %s SET description = %s WHERE description IS NULL',
-                    $table,
-                    $this->platform->quoteSingleIdentifier('name'),
-                )
-            );
+            $this->connection->createQueryBuilder()
+                ->update($table)
+                ->set('description', $this->platform->quoteSingleIdentifier('name'))
+                ->where('description IS NULL')
+                ->executeStatement();
         }
     }
 
@@ -131,16 +128,20 @@ final class Version30100_6 extends AbstractMigration
         $lastId = null;
 
         while (true) {
-            $rows = $this->connection->fetchAllAssociative(
-                sprintf(
-                    'SELECT id, description FROM %s WHERE %s = \'\'%s ORDER BY id ASC LIMIT %d',
-                    $table,
-                    $nameColumn,
-                    $lastId === null ? '' : ' AND id > ?',
-                    self::PAGE_SIZE,
-                ),
-                $lastId === null ? [] : [$lastId],
-            );
+            $query = $this->connection->createQueryBuilder()
+                ->select('id', 'description')
+                ->from($table)
+                ->where($nameColumn . ' = :empty')
+                ->setParameter('empty', '')
+                ->orderBy('id', 'ASC')
+                ->setMaxResults(self::PAGE_SIZE);
+
+            if ($lastId !== null) {
+                $query->andWhere('id > :lastId')
+                    ->setParameter('lastId', $lastId);
+            }
+
+            $rows = $query->executeQuery()->fetchAllAssociative();
 
             if ($rows === []) {
                 return;
@@ -169,18 +170,17 @@ final class Version30100_6 extends AbstractMigration
                     continue;
                 }
 
-                $this->connection->executeStatement(
-                    sprintf('UPDATE %s SET %s = ? WHERE id = ?', $table, $nameColumn),
-                    [$name, $lastId],
-                );
+                $this->connection->update($table, [$nameColumn => $name], ['id' => $lastId]);
             }
 
             if ($wholeDescriptions !== []) {
-                $this->connection->executeStatement(
-                    sprintf('UPDATE %s SET %s = description, description = NULL WHERE id IN (?)', $table, $nameColumn),
-                    [$wholeDescriptions],
-                    [ArrayParameterType::STRING],
-                );
+                $this->connection->createQueryBuilder()
+                    ->update($table)
+                    ->set($nameColumn, 'description')
+                    ->set('description', 'NULL')
+                    ->where('id IN (:ids)')
+                    ->setParameter('ids', $wholeDescriptions, ArrayParameterType::STRING)
+                    ->executeStatement();
             }
         }
     }
