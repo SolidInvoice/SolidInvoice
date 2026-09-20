@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use function max;
 
@@ -22,31 +22,48 @@ use function max;
  */
 trait LinePosition
 {
-    /**
-     * The slot after the last one the owner has placed — where an append would have put the
-     * line.
-     *
-     * The first slot is the wrong fallback for a line nobody placed: it is the slot the
-     * collection's first line already holds, so a line falling back to it lands ahead of
-     * lines that were placed deliberately, and a second one duplicates it.
-     *
-     * @template TLine of LineInterface
-     *
-     * @param Collection<int, TLine> $siblings
-     */
-    protected function positionAfter(Collection $siblings): int
+    public function getPosition(): int
     {
-        $position = 0;
+        return $this->position;
+    }
 
-        foreach ($siblings as $sibling) {
-            // An unplaced sibling has no slot to come after, and PHP_INT_MAX + 1 is a float.
-            if ($sibling === $this || $sibling->getPosition() === LineInterface::UNPLACED) {
-                continue;
-            }
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
 
-            $position = max($position, $sibling->getPosition() + 1);
+        return $this;
+    }
+
+    /**
+     * Places a line attached to its owner directly rather than through the owner's
+     * `addLine()`, so {@see LineInterface::UNPLACED} is never stored — it is `PHP_INT_MAX`,
+     * and the column is an `INTEGER`.
+     *
+     * The line lands after the siblings the owner has already placed, which is where
+     * `addLine()` would have put it. Two such lines in one flush still collide: neither is in
+     * the collection, so neither can see the other.
+     */
+    #[ORM\PrePersist]
+    public function placeUnplacedLine(): void
+    {
+        if ($this->position !== LineInterface::UNPLACED) {
+            return;
         }
 
-        return $position;
+        $this->position = 0;
+
+        foreach ($this->siblingLines() as $sibling) {
+            // An unplaced sibling has no slot to come after, and PHP_INT_MAX + 1 is a float.
+            if ($sibling !== $this && $sibling->getPosition() !== LineInterface::UNPLACED) {
+                $this->position = max($this->position, $sibling->getPosition() + 1);
+            }
+        }
     }
+
+    /**
+     * This line's owner's lines, or nothing while it has no owner.
+     *
+     * @return iterable<LineInterface>
+     */
+    abstract protected function siblingLines(): iterable;
 }

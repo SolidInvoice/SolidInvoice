@@ -29,10 +29,9 @@ trait ReordersLines
     /**
      * Moves the line at $from to $to.
      *
-     * The server owns the order rather than the browser: the drag reorders the submitted
-     * values and the component re-renders from them, so the rows survive the next re-render —
-     * which a reordered DOM on its own would not. The form manager turns the resulting order
-     * into positions on save.
+     * The server owns the order, not the browser: the drag reorders the submitted values and
+     * the component re-renders from them, so the rows survive the next re-render — which a
+     * reordered DOM alone would not.
      */
     #[LiveAction]
     public function moveLine(#[LiveArg] int $from, #[LiveArg] int $to): void
@@ -43,8 +42,8 @@ trait ReordersLines
             return;
         }
 
-        // Keys carry no meaning here — the collection form reads the entries in order — but
-        // they have to be a list for the splices below to address the right rows.
+        // The collection form reads the entries in order, but they have to be a list for the
+        // splices below to address the right rows.
         $lines = array_values($lines);
 
         if (! isset($lines[$from], $lines[$to])) {

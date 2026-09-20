@@ -28,9 +28,8 @@ final class Version30100_5 extends AbstractMigration
     /**
      * Every line collection that gains a position, as table => owning foreign key.
      *
-     * `invoice_lines` is listed twice because it is a single-table hierarchy: an invoice line
-     * and a recurring invoice line share the table but belong to different owners, so each
-     * side has to be numbered within its own parent.
+     * `invoice_lines` appears twice: it is a single-table hierarchy, so invoice lines and
+     * recurring invoice lines share it but must be numbered within their own parent.
      *
      * @var list<array{string, string}>
      */
@@ -96,14 +95,13 @@ final class Version30100_5 extends AbstractMigration
      * Numbers each owner's lines `0..n-1` in primary key order.
      *
      * Ids are ULIDs, so ascending id is the insertion order — the order these lines already
-     * came back in, in practice, before there was a column to make it explicit. Numbering from
-     * it is what keeps an existing invoice rendering exactly as it did.
+     * came back in before there was a column to make it explicit. Numbering from it keeps an
+     * existing invoice rendering exactly as it did.
      *
-     * The pass runs in PHP rather than as one `UPDATE … ROW_NUMBER()`, because the four
-     * supported platforms spell an update-from-a-derived-table three different ways and MySQL
-     * will not read the table it is updating in a correlated subquery. Rows are read a page at
-     * a time, and the ids are grouped by the position they are getting: an invoice has a
-     * handful of lines, so a page collapses into a handful of `IN (…)` updates.
+     * In PHP rather than one `UPDATE … ROW_NUMBER()`: the supported platforms spell an
+     * update-from-a-derived-table three different ways, and MySQL will not read the table it
+     * is updating in a correlated subquery. Ids are grouped by the position they are getting,
+     * so a page collapses into a handful of `IN (…)` updates.
      *
      * @throws Exception
      */

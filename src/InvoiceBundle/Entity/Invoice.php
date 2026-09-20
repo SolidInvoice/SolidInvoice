@@ -362,12 +362,9 @@ class Invoice extends BaseInvoice implements Stringable
     }
 
     /**
-     * The owner's last word on its lines before they are written.
-     *
-     * A line that reached the collection without {@see self::addLine()} — added straight to
-     * `getLines()`, or bound by a form that never called it — is still unplaced, and would
-     * otherwise be left to {@see Line::placeUnplacedLine()}, which cannot see its siblings.
-     * Renumbering here gives every line in the collection a distinct slot.
+     * The owner's last word before its lines are written: a line that reached the collection
+     * without {@see self::addLine()} is still unplaced, and the line's own fallback cannot see
+     * its siblings. Renumbering here gives every line a distinct slot.
      */
     #[ORM\PrePersist]
     public function updateLines(): void

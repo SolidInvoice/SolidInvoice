@@ -74,9 +74,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                     fromClass: Invoice::class,
                 ),
             ],
-            // Without this, the `lines` link makes API Platform read the owner's existing
-            // line and deserialize into it, so a second post overwrites the first instead
-            // of adding one. A create has nothing to read.
+            // The `lines` link would otherwise have API Platform deserialize into the owner's
+            // existing line, so a second post overwrites the first. A create has nothing to read.
             read: false,
             processor: InvoiceLinePersistProcessor::class,
         ),
@@ -146,13 +145,9 @@ class Line implements LineInterface, Stringable
     protected ?string $description = null;
 
     /**
-     * {@see LineInterface::UNPLACED} until an owner places the line, which is what makes an
-     * added line an append.
-     *
-     * Read over the API, never written. A position is not something a line carries but the
-     * index its owner gave it, so the way to change one is to send the owner's `lines` in the
-     * order you want them; setting it on a single line is the one way to end up with the
-     * duplicates and gaps that `0..n-1` exists to rule out.
+     * {@see LineInterface::UNPLACED} until an owner places it — that is what makes an added
+     * line an append. Read-only over the API: reorder by sending the owner's `lines` in the
+     * order you want, not by setting this on a single line.
      */
     #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
@@ -243,48 +238,22 @@ class Line implements LineInterface, Stringable
         return $this->description;
     }
 
-    public function setPosition(int $position): static
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
-    public function getPosition(): int
-    {
-        return $this->position;
-    }
-
     /**
-     * A line attached with {@see self::setInvoice()} rather than {@see Invoice::addLine()} is
-     * never renumbered, so it would store the sentinel. It appends instead, which is where
-     * `addLine()` would have put it.
-     *
-     * {@see Invoice::updateLines()} places such a line properly whenever the owner's own
-     * insert can see it. This is the case it cannot: a line persisted against an owner that
-     * is already in the database. Two of those in one flush still collide — neither is in the
-     * collection, so neither can see the other — and nothing short of `addLine()` fixes that.
+     * @return iterable<LineInterface>
      */
-    #[ORM\PrePersist]
-    public function placeUnplacedLine(): void
+    protected function siblingLines(): iterable
     {
-        if ($this->position !== LineInterface::UNPLACED) {
-            return;
+        if (! $this->invoice instanceof Invoice) {
+            return [];
         }
 
-        $this->position = $this->invoice instanceof Invoice
-            ? $this->positionAfter($this->invoice->getLines())
-            : 0;
+        return $this->invoice->getLines();
     }
 
     /**
-     * A line deleted through its own endpoint — `DELETE /invoices/{id}/line/{id}` — never passes
-     * through {@see Invoice::removeLine()}, so the lines after it would keep their old numbers
-     * and leave the gap the deleted line used to fill. Routing the removal back through the
-     * owner closes it.
-     *
-     * PreRemove fires from `EntityManager::remove()`, before the flush works out what changed,
-     * so the renumbered siblings go out in the same flush as the delete.
+     * `DELETE /invoices/{id}/line/{id}` never passes through {@see Invoice::removeLine()},
+     * which is what closes the gap. PreRemove fires before the flush computes changes, so the
+     * renumbered siblings go out with the delete.
      */
     #[ORM\PreRemove]
     public function detachFromOwner(): void

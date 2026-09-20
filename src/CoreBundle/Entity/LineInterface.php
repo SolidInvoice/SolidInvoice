@@ -24,9 +24,9 @@ interface LineInterface
     /**
      * The position of a line whose owner has not placed it yet.
      *
-     * A sentinel rather than null, so the property matches its `NOT NULL` column and a line
-     * can never be persisted without a position. It is the largest int there is, so an
-     * unplaced line sorts after every placed one and renumbering turns it into an append.
+     * A sentinel rather than null, so the property matches its `NOT NULL` column. It is the
+     * largest int there is, so an unplaced line sorts after every placed one and renumbering
+     * turns it into an append.
      */
     public const int UNPLACED = PHP_INT_MAX;
 
