@@ -380,7 +380,10 @@
         grid-template-columns: 28px minmax(0, 3.8fr) minmax(100px, 0.9fr) 56px minmax(60px, 0.4fr) 24px;
 
         @media (width <= 900px) {
-            grid-template-columns: 1fr;
+            // Two columns, not one: this undoes the desktop template above, and the stacked
+            // `grid-template-areas` puts price beside qty. A single column leaves the second
+            // one implicit and `auto`, which lets qty starve price of its width.
+            grid-template-columns: 1fr 1fr;
         }
     }
 }
@@ -398,7 +401,10 @@
 
     .billing-item-row {
         @media (width <= 900px) {
-            grid-template-columns: 1fr;
+            // Two columns, not one: this undoes the desktop template above, and the stacked
+            // `grid-template-areas` puts price beside qty. A single column leaves the second
+            // one implicit and `auto`, which lets qty starve price of its width.
+            grid-template-columns: 1fr 1fr;
         }
     }
 }
