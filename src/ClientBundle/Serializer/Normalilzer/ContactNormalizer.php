@@ -50,8 +50,9 @@ final class ContactNormalizer implements NormalizerAwareInterface, NormalizerInt
 
         if (isset($context['uri_variables']['clientId'])) {
             $clientId = $context['uri_variables']['clientId'];
-            // findOneBy() and not find(), so the CompanyFilter applies, matching what
-            // ContactPersistProcessor already does rather than relying on it.
+            // findOneBy() rather than find(), matching ContactPersistProcessor rather than
+            // relying on it. The CompanyFilter applies to both; findOneBy() additionally cannot
+            // answer from the identity map. See CompanyFilter's docblock.
             $client = $this->registry->getRepository(Client::class)
                 ->findOneBy(['id' => $clientId]);
 

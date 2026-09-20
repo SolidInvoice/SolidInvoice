@@ -50,9 +50,9 @@ final class AddressNormalizer implements NormalizerAwareInterface, NormalizerInt
 
         if (isset($context['uri_variables']['clientId'])) {
             $clientId = $context['uri_variables']['clientId'];
-            // findOneBy() and not find(), so the CompanyFilter applies: find() bypasses it,
-            // and the address post has no persist processor to re-check, so a post to another
-            // company's client URI attached the address to that client and returned 201.
+            // findOneBy() rather than find(): the CompanyFilter applies to both, but find() can
+            // answer from the identity map without querying when the client is already managed,
+            // and this post has no persist processor behind it. See CompanyFilter's docblock.
             $client = $this->registry->getRepository(Client::class)
                 ->findOneBy(['id' => $clientId]);
 
