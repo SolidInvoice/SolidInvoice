@@ -47,9 +47,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
                     fromClass: RecurringInvoice::class,
                 ),
             ],
-            // Without this, the `lines` link makes API Platform read the owner's existing
-            // line and deserialize into it, so a second post overwrites the first instead
-            // of adding one. A create has nothing to read.
+            // The `lines` link would otherwise have API Platform deserialize into the owner's
+            // existing line, so a second post overwrites the first. A create has nothing to read.
             read: false,
             processor: RecurringInvoiceLinePersistProcessor::class,
         ),
@@ -116,28 +115,21 @@ class RecurringInvoiceLine extends Line
     }
 
     /**
-     * {@see Line::placeUnplacedLine()} for a line that hangs off a recurring invoice instead.
+     * The owner is the recurring invoice, not the invoice the parent looks at.
      *
-     * No `#[ORM\PrePersist]` of its own: Doctrine inherits the parent's callbacks by method
-     * name, and the name it already has resolves here.
+     * @return iterable<LineInterface>
      */
     #[Override]
-    public function placeUnplacedLine(): void
+    protected function siblingLines(): iterable
     {
-        if ($this->getPosition() !== LineInterface::UNPLACED) {
-            return;
+        if (! $this->recurringInvoice instanceof RecurringInvoice) {
+            return [];
         }
 
-        $this->setPosition(
-            $this->recurringInvoice instanceof RecurringInvoice
-                ? $this->positionAfter($this->recurringInvoice->getLines())
-                : 0
-        );
+        return $this->recurringInvoice->getLines();
     }
 
     /**
-     * {@see Line::detachFromOwner()} for a line that hangs off a recurring invoice instead.
-     *
      * No `#[ORM\PreRemove]` of its own: Doctrine inherits the parent's callbacks by method
      * name, and the name it already has resolves here.
      */

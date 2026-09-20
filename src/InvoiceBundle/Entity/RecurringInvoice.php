@@ -290,12 +290,9 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * The owner's last word on its lines before they are written, as
-     * {@see Invoice::updateLines()} is for an invoice.
-     *
-     * A line that reached the collection without {@see self::addLine()} is still unplaced,
-     * and would otherwise be left to {@see RecurringInvoiceLine::placeUnplacedLine()}, which
-     * cannot see its siblings. Renumbering here gives every line a distinct slot.
+     * The owner's last word before its lines are written: a line that reached the collection
+     * without {@see self::addLine()} is still unplaced, and the line's own fallback cannot see
+     * its siblings. Renumbering here gives every line a distinct slot.
      */
     #[ORM\PrePersist]
     public function updateLines(): void

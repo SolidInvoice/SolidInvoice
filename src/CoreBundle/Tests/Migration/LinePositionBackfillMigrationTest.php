@@ -31,8 +31,7 @@ use function sprintf;
 use function str_pad;
 
 /**
- * `postUp()` is the only thing standing between an upgrade and a reshuffled invoice: it is
- * where the order lines already had becomes the order the new column records.
+ * `postUp()` is where the order lines already had becomes the order the new column records.
  *
  * @see Version30100_5
  */

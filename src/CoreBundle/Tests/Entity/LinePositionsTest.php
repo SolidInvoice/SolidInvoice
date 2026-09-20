@@ -28,8 +28,7 @@ use function assert;
 
 /**
  * The three line owners share {@see \SolidInvoice\CoreBundle\Traits\Entity\LinePositions}, so
- * every case runs against all three rather than against the trait in isolation — what matters
- * is that an invoice, a recurring invoice and a quote all behave the same.
+ * every case runs against all three: what matters is that they behave the same.
  */
 final class LinePositionsTest extends TestCase
 {
@@ -166,9 +165,8 @@ final class LinePositionsTest extends TestCase
     }
 
     /**
-     * A line that reached the collection without `addLine()` is placed by the owner's own
-     * insert, not left on the sentinel — and several of them get a slot each rather than all
-     * landing on the first.
+     * Lines that reached the collection without `addLine()` get a slot each from the owner's
+     * own insert, rather than all landing on the first.
      */
     #[DataProvider('owners')]
     public function testTheOwnerPlacesLinesThatSkippedAddLine(callable $newOwner, callable $newLine): void
@@ -188,7 +186,7 @@ final class LinePositionsTest extends TestCase
 
     /**
      * The line's own fallback, for the case the owner's insert cannot cover: a line persisted
-     * against an owner that is already in the database.
+     * against an owner already in the database.
      */
     #[DataProvider('attachedLines')]
     public function testALineAttachedWithoutAddLineAppends(callable $newOwner, callable $newLine, callable $attach): void
