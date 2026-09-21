@@ -603,23 +603,16 @@ If you believe a merge is urgent — a broken build, a security fix, a release b
 - Do not close PRs you did not open.
 - Do not enable auto-merge. It is a merge, just a deferred one.
 
-> **Repository note, not an exception to the above.** `.mergify.yml` in this repository
-> currently contains:
+> **Repository note, not an exception to the above.** This repository has no auto-merge
+> automation. It had a `.mergify.yml` with one rule, which merged any non-draft PR that
+> collected one approving review. That rule disagreed with this section, because an
+> approving review on your PR could start a merge that the founder did not do. The file is
+> deleted. Mergify also showed no sign that it was still installed.
 >
-> ```yaml
-> pull_request_rules:
->   - name: Automatic merge on approval
->     conditions:
->       - "#approved-reviews-by>=1"
->     actions:
->       merge:
->         method: merge
-> ```
->
-> Mergify will merge any non-draft PR that collects one approving review. Opening as a
-> **draft** is therefore not a formality here — it is the thing that keeps an approving
-> review from merging your PR automatically. Leave it in draft until the founder says
-> otherwise. This has been flagged to the founder.
+> Only the founder merges your PR. An approving review does not merge it. Keep opening
+> every PR as a draft and keep labelling it `agent`, but do not treat either one as the
+> control: there is no automation left for them to hold off. If auto-merge automation comes
+> back to this repository, change this note in the same PR.
 
 ---
 
