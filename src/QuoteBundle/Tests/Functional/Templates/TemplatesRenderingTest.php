@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Templates;
 
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -29,9 +30,13 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
+use function array_keys;
 use function basename;
 use function dirname;
 use function glob;
+use function in_array;
+use function preg_match;
+use function preg_quote;
 use function sort;
 use function sprintf;
 use function str_starts_with;
@@ -171,9 +176,14 @@ final class TemplatesRenderingTest extends KernelTestCase
 
     /**
      * @param positive-int $lineCount
+     * @throws MathException
      */
-    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.', int $lineCount = 1): Quote
-    {
+    private function createFixtureQuote(
+        ?string $description = 'Two rounds of revisions included.',
+        ?CarbonImmutable $due = null,
+        QuoteStatus $status = QuoteStatus::Pending,
+        int $lineCount = 1,
+    ): Quote {
         $this->seedCompanyLogo();
 
         $client = ClientFactory::createOne([
@@ -206,9 +216,9 @@ final class TemplatesRenderingTest extends KernelTestCase
         return QuoteFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => QuoteStatus::Pending,
+            'status' => $status,
             'quoteId' => 'QUOTE-FIXTURE-001',
-            'due' => CarbonImmutable::now()->addDays(14),
+            'due' => $due ?? CarbonImmutable::now()->addDays(14),
             'archived' => null,
             'terms' => 'Valid for 14 days.',
             'notes' => 'Thank you for your interest.',
@@ -315,5 +325,152 @@ final class TemplatesRenderingTest extends KernelTestCase
                 yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
         }
+    }
+
+    /**
+     * Templates whose `validity_indicator` call sits on a dark band and so passes
+     * its own palette. Every other template prints the indicator on light paper
+     * and takes the macro default.
+     */
+    private const array DARK_PAPER_SLUGS = ['compact'];
+
+    private const array LIGHT_PALETTE = ['danger' => '#b91c1c', 'urgent' => '#92400e', 'quiet' => '#475569'];
+
+    private const array DARK_PALETTE = ['danger' => '#fca5a5', 'urgent' => '#fbbf24', 'quiet' => '#cbd5e1'];
+
+    /**
+     * The offset is `days + 6 hours` so the floor division in the macro lands on
+     * `days` and not on `days - 1` when the template renders.
+     */
+    private const array URGENCY_STATES = [
+        'expired' => ['days' => -3, 'label' => 'EXPIRED', 'tone' => 'danger'],
+        'expires today' => ['days' => 0, 'label' => 'EXPIRES TODAY', 'tone' => 'urgent'],
+        'expires in 3 days' => ['days' => 3, 'label' => 'Valid for 3 days', 'tone' => 'urgent'],
+        'expires in 14 days' => ['days' => 14, 'label' => 'Valid for 14 days', 'tone' => 'quiet'],
+    ];
+
+    /**
+     * The urgency colour has to stay readable on the paper the template actually
+     * prints on, so the macro takes a palette instead of a fixed colour. A
+     * blanket repoint of the macro literals breaks one paper or the other.
+     *
+     * @return iterable<string, array{string, string}>
+     */
+    public static function urgencyProvider(): iterable
+    {
+        foreach (self::slugs() as $slug) {
+            foreach (array_keys(self::URGENCY_STATES) as $state) {
+                yield sprintf('%s/%s', $slug, $state) => [$slug, $state];
+            }
+        }
+    }
+
+    #[DataProvider('urgencyProvider')]
+    public function testUrgencyIndicatorUsesThePaletteForItsPaper(string $slug, string $state): void
+    {
+        $case = self::URGENCY_STATES[$state];
+
+        $quote = $this->createFixtureQuote(
+            due: CarbonImmutable::now()->addDays($case['days'])->addHours(6)
+        );
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/pdf.html.twig', $slug),
+            ['quote' => $quote]
+        );
+
+        $palette = in_array($slug, self::DARK_PAPER_SLUGS, true) ? self::DARK_PALETTE : self::LIGHT_PALETTE;
+        $unexpected = in_array($slug, self::DARK_PAPER_SLUGS, true) ? self::LIGHT_PALETTE : self::DARK_PALETTE;
+
+        $style = self::urgencyStyle($output, $case['label']);
+
+        self::assertStringContainsString(
+            sprintf('color: %s;', $palette[$case['tone']]),
+            $style,
+            sprintf('%s prints the %s indicator in the wrong palette', $slug, $state)
+        );
+
+        self::assertStringNotContainsString($unexpected[$case['tone']], $style);
+
+        // The fill colour this issue retires must not come back on any paper.
+        self::assertStringNotContainsString('#f59e0b', $output);
+    }
+
+    /**
+     * An accepted quote has nothing left to decide, so it prints no urgency hint
+     * at all — not a hint in a different colour.
+     */
+    public function testAnAcceptedQuotePrintsNoUrgencyIndicator(): void
+    {
+        $quote = $this->createFixtureQuote(
+            due: CarbonImmutable::now()->subDays(3),
+            status: QuoteStatus::Accepted
+        );
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        foreach (self::slugs() as $slug) {
+            $output = $twig->render(
+                sprintf('@SolidInvoiceQuote/Templates/%s/pdf.html.twig', $slug),
+                ['quote' => $quote]
+            );
+
+            self::assertStringNotContainsString('EXPIRED', $output, $slug . ' prints an indicator on an accepted quote');
+        }
+    }
+
+    /**
+     * `Pdf/quote.html.twig` is the standalone document. It has no macro to
+     * parameterise and always prints on white, so it carries the light literals.
+     *
+     * @return iterable<string, array{string, string}>
+     */
+    public static function standaloneUrgencyProvider(): iterable
+    {
+        foreach (self::URGENCY_STATES as $state => $case) {
+            yield $state => [$state, self::LIGHT_PALETTE[$case['tone']]];
+        }
+    }
+
+    #[DataProvider('standaloneUrgencyProvider')]
+    public function testStandaloneDocumentUsesTheLightPalette(string $state, string $expected): void
+    {
+        $case = self::URGENCY_STATES[$state];
+
+        $quote = $this->createFixtureQuote(
+            due: CarbonImmutable::now()->addDays($case['days'])->addHours(6)
+        );
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote]);
+
+        self::assertStringContainsString(
+            sprintf('color: %s;', $expected),
+            self::urgencyStyle($output, $case['label'])
+        );
+
+        self::assertStringNotContainsString('#f59e0b', $output);
+    }
+
+    /**
+     * Returns the `style` attribute of the span that carries the urgency label.
+     */
+    private static function urgencyStyle(string $output, string $label): string
+    {
+        $matched = preg_match(
+            '#<span style="([^"]*)">\s*' . preg_quote($label, '#') . '#',
+            $output,
+            $matches
+        );
+
+        self::assertSame(1, $matched, sprintf('No urgency indicator found for label "%s"', $label));
+
+        return $matches[1];
     }
 }

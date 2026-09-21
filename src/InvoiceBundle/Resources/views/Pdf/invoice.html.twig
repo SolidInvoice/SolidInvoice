@@ -129,19 +129,19 @@
                         <tr>
                             <td colspan="2" style="text-align: right; padding: 2px 0 4px 0;">
                                 {% if isOverdue %}
-                                    <span style="font-size: 8pt; font-weight: bold; color: #dc2626; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <span style="font-size: 8pt; font-weight: bold; color: #b91c1c; text-transform: uppercase; letter-spacing: 0.5px;">
                                         {{ 'invoice.pdf.overdue_by'|trans({'%days%': daysOverdue}) }}
                                     </span>
                                 {% elseif daysDiff == 0 %}
-                                    <span style="font-size: 8pt; font-weight: bold; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <span style="font-size: 8pt; font-weight: bold; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px;">
                                         {{ 'invoice.pdf.due_today'|trans }}
                                     </span>
                                 {% elseif daysDiff <= 7 %}
-                                    <span style="font-size: 8pt; font-weight: 600; color: #f59e0b;">
+                                    <span style="font-size: 8pt; font-weight: 600; color: #92400e;">
                                         {{ 'invoice.pdf.due_in_days'|trans({'%days%': daysDiff}) }}
                                     </span>
                                 {% else %}
-                                    <span style="font-size: 8pt; color: #64748b;">
+                                    <span style="font-size: 8pt; color: #475569;">
                                         {{ 'invoice.pdf.due_in_days'|trans({'%days%': daysDiff}) }}
                                     </span>
                                 {% endif %}

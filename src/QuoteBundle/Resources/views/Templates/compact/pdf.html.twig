@@ -29,7 +29,7 @@
                     <td style="vertical-align: middle; text-align: right; color: #ffffff;">
                         <div style="font-size: 8pt; color: #94a3b8;">{{ 'quote.pdf.date'|trans }}: {{ quote.created|date('Y-m-d') }}{% if quote.due %} · {{ 'quote.pdf.valid_until'|trans }}: {{ quote.due|date('Y-m-d') }}{% endif %}</div>
                         <div style="font-size: 16pt; font-weight: bold;">{{ quote.total|formatCurrency(currency) }}</div>
-                        <div style="margin-top: 2px;">{{ q.validity_indicator(quote) }}</div>
+                        <div style="margin-top: 2px;">{{ q.validity_indicator(quote, {danger: '#fca5a5', urgent: '#fbbf24', quiet: '#cbd5e1'}) }}</div>
                     </td>
                 </tr>
             </table>
