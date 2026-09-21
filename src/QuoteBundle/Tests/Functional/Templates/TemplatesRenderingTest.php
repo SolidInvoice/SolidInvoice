@@ -169,7 +169,10 @@ final class TemplatesRenderingTest extends KernelTestCase
         $em->flush();
     }
 
-    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.'): Quote
+    /**
+     * @param positive-int $lineCount
+     */
+    private function createFixtureQuote(?string $description = 'Two rounds of revisions included.', int $lineCount = 1): Quote
     {
         $this->seedCompanyLogo();
 
@@ -187,6 +190,19 @@ final class TemplatesRenderingTest extends KernelTestCase
             'email' => 'jane@example.com',
         ]);
 
+        $lines = [];
+
+        for ($number = 1; $number <= $lineCount; ++$number) {
+            $lines[] = new Line()
+                ->setName(1 === $number ? 'Sample line item' : sprintf('Sample line item %d', $number))
+                ->setDescription($description)
+                ->setPrice(BigInteger::of(75000))
+                ->setQty(2)
+                ->setTotal(BigInteger::of(150000));
+        }
+
+        $total = BigInteger::of(150000)->multipliedBy($lineCount);
+
         return QuoteFactory::createOne([
             'company' => $this->company,
             'client' => $client,
@@ -196,21 +212,54 @@ final class TemplatesRenderingTest extends KernelTestCase
             'archived' => null,
             'terms' => 'Valid for 14 days.',
             'notes' => 'Thank you for your interest.',
-            'total' => BigInteger::of(150000),
-            'baseTotal' => BigInteger::of(150000),
+            'total' => $total,
+            'baseTotal' => $total,
             'tax' => BigInteger::of(0),
             'discount' => new Discount()
                 ->setType(null),
-            'lines' => [
-                new Line()
-                    ->setName('Sample line item')
-                    ->setDescription($description)
-                    ->setPrice(BigInteger::of(75000))
-                    ->setQty(2)
-                    ->setTotal(BigInteger::of(150000)),
-            ],
+            'lines' => $lines,
             'users' => [$contact],
         ]);
+    }
+
+    /**
+     * `#94a3b8` (`--swp-text-light`) measures 2.56:1 on white, which fails WCAG 2.1 AA.
+     * The `modern` PDF used it for the document label and the four line-item table
+     * headers. Those carry meaning, so they now use `#475569` (7.58:1) and
+     * `#64748b` (4.76:1).
+     */
+    public function testModernPdfDoesNotUseTextLightForMeaningfulText(): void
+    {
+        $output = $this->renderPdf('modern');
+
+        self::assertStringNotContainsString('#94a3b8', $output);
+        self::assertStringContainsString('#475569', $output);
+        self::assertStringContainsString('#64748b', $output);
+    }
+
+    /**
+     * The `compact` PDF prints `#94a3b8` inside its `#0f172a` header band, where the
+     * same colour measures 6.96:1 and passes. It must survive the `modern` fix.
+     */
+    public function testCompactPdfKeepsTextLightInsideTheDarkBand(): void
+    {
+        self::assertStringContainsString('#94a3b8', $this->renderPdf('compact'));
+    }
+
+    /**
+     * Two line items, so every column of the line-item table renders.
+     */
+    private function renderPdf(string $slug): string
+    {
+        $quote = $this->createFixtureQuote(lineCount: 2);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        return $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/pdf.html.twig', $slug),
+            ['quote' => $quote]
+        );
     }
 
     /**
