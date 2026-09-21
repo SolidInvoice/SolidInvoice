@@ -1,6 +1,6 @@
 # CLAUDE.md — Documentation
 
-Scope: end-user documentation for SolidInvoice, served by **Docusaurus** from this directory. This file layers on top of the project root `CLAUDE.md` (which covers code). When editing files under `docs/`, follow this guide.
+Scope: end-user documentation for SolidInvoice, served by **Docusaurus** from this directory. This file layers on top of [`AGENTS.md`](../AGENTS.md) in the project root, which is the source of truth for repository conventions (including PR conventions and the no-merge rule) and covers the code. When editing files under `docs/`, follow this guide as well.
 
 ## Audience & purpose
 
