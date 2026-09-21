@@ -5,6 +5,10 @@ description: Use when the user asks to create, write, or add end-user documentat
 
 # SolidInvoice feature documentation
 
+> Repository conventions live in [`AGENTS.md`](../../../AGENTS.md) — read it first,
+> particularly §14 for PR conventions and the no-merge rule. This file covers only how to
+> write an end-user docs page.
+
 Produce a single, focused, end-user documentation page for one SolidInvoice feature, fitted to the project's Docusaurus site.
 
 ## Non-negotiables

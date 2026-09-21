@@ -1,67 +1,16 @@
 # Testing
 
-## Structure
+**Moved. See [`AGENTS.md`](../../AGENTS.md) — §13 (testing expectations) and §2 (test
+commands and the test database).**
 
-```
-src/BundleNameBundle/Tests/
-├── Functional/
-│   └── Api/       # API tests
-├── Form/          # Form type tests
-├── Repository/    # Repository tests
-└── ...            # Unit tests (top-level)
-```
+This file restated those conventions and had gone stale against them. It presented
+`bin/phpunit` as the way to run the suite, where CI runs `bin/paratest`, and it omitted
+the parts that actually catch people out:
 
-## PHPUnit Config
-
-- Random execution order
-- Strict mode (warnings = failures)
-- DAMA/DoctrineTestBundle for DB transaction isolation
-- Symfony Panther for E2E browser tests
-- Environment: `.env.test`
-
-## Commands
-
-```bash
-bin/phpunit                              # All tests
-bin/phpunit src/InvoiceBundle/Tests      # Specific bundle
-bin/phpunit path/to/TestFile.php         # Specific file
-bin/phpunit --filter testMethodName      # Specific test
-bin/phpunit --coverage-html coverage     # With coverage
-```
-
-## Test Types
-
-### Unit Tests
-
-- Test classes in isolation
-- Use Mockery for mocking
-- Fast, no database
-
-```php
-use Mockery as m;
-
-class InvoiceManagerTest extends TestCase
-{
-    public function testCreateInvoice(): void
-    {
-        $repository = m::mock(InvoiceRepository::class);
-        // ...
-    }
-}
-```
-
-### Functional Tests
-
-- Full request/response cycle
-- Uses database
-- Located in `Tests/Functional/`
-
-### API Tests
-
-- Test REST endpoints
-- Extend `ApiTestCase`
-- JSON-LD/HAL validation
-
-## Fixtures
-
-Use **Foundry** for factory-based fixtures.
+- Installation/Panther tests are excluded by default and must not be run under paratest —
+  `AGENTS.md` §2 explains why.
+- `.env.test` pins `FOUNDRY_FAKER_SEED`, so faker output is deterministic; a test that
+  passes on a lucky random value fails for everyone else.
+- There is deliberately **no** coverage threshold. Do not invent one.
+- `db-tests.yml` re-runs the suite across 14 database versions — the long pole on any
+  schema change.

@@ -1,5 +1,9 @@
 ## AI Mate Agent Instructions
 
+> Repository conventions live in [`AGENTS.md`](../AGENTS.md) — read it first. This file is
+> a tool reference only: which MCP tool to reach for instead of which CLI command. It
+> states no conventions of its own.
+
 This MCP server provides specialized tools for PHP development.
 The following extensions are installed and provide MCP tools that you should
 prefer over running CLI commands directly.

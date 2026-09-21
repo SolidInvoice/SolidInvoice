@@ -1,6 +1,15 @@
 # SolidInvoice Design System
 
+> Repository conventions live in [`AGENTS.md`](../../AGENTS.md) — read it first. This file
+> adds UI detail (tokens, component patterns, accessibility) that `AGENTS.md` §7
+> summarises but does not carry. It does not restate conventions; where it touches one, it
+> links. If this file and `AGENTS.md` disagree, `AGENTS.md` wins.
+
 Guidelines for implementing consistent, modern UI. **All UI changes MUST follow these guidelines.**
+
+Design tokens below are transcribed from `assets/scss/design-system/_tokens.scss`. That
+file is the source of truth for their values — if a value here disagrees with it, the SCSS
+is right.
 
 ## Philosophy
 
@@ -46,15 +55,12 @@ All CSS custom properties use `--swp-` prefix. Defined in `/assets/scss/design-s
 
 ## Platform UI Components (REQUIRED)
 
-**Always use SolidWorx/Platform UI components when available:**
+See [`AGENTS.md`](../../AGENTS.md) §6 — Platform's `UiBundle` supplies `<twig:Ui:Card>`,
+`<twig:Ui:Alert>` and `<twig:Ui:Modal>`, their props and blocks are documented in
+`vendor/solidworx/platform/src/Bundle/Ui/Docs/`, and the rule for when a component cannot
+do what you need is there too.
 
-| Component         | Usage           |
-|-------------------|-----------------|
-| `<twig:Ui:Card>`  | Card containers |
-| `<twig:Ui:Alert>` | Notifications   |
-| `<twig:Ui:Modal>` | Dialogs         |
-
-Docs in `vendor/solidworx/platform/src/Bundle/Ui/Docs/`
+Worked examples of each follow.
 
 ### Card Example
 
