@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Templates;
 
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -31,6 +32,8 @@ use SolidInvoice\InvoiceBundle\Twig\Extension\InvoiceTemplateExtension;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
+use function preg_match;
+use function preg_quote;
 
 #[CoversClass(InvoiceTemplateExtension::class)]
 final class TemplatesRenderingTest extends KernelTestCase
@@ -167,9 +170,14 @@ final class TemplatesRenderingTest extends KernelTestCase
 
     /**
      * @param positive-int $lineCount
+     * @throws MathException
      */
-    private function createFixtureInvoice(?string $description = 'Two rounds of revisions included.', int $lineCount = 1): Invoice
-    {
+    private function createFixtureInvoice(
+        ?string $description = 'Two rounds of revisions included.',
+        ?CarbonImmutable $due = null,
+        InvoiceStatus $status = InvoiceStatus::Pending,
+        int $lineCount = 1,
+    ): Invoice {
         $this->seedCompanyLogo();
 
         $client = ClientFactory::createOne([
@@ -202,9 +210,9 @@ final class TemplatesRenderingTest extends KernelTestCase
         return InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => InvoiceStatus::Pending,
+            'status' => $status,
             'invoiceId' => 'INV-FIXTURE-001',
-            'due' => CarbonImmutable::now()->addDays(14),
+            'due' => $due ?? CarbonImmutable::now()->addDays(14),
             'paidDate' => null,
             'archived' => null,
             'terms' => 'Payment due within 30 days.',
@@ -313,5 +321,67 @@ final class TemplatesRenderingTest extends KernelTestCase
                 yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
         }
+    }
+
+    /**
+     * `Pdf/invoice.html.twig` is the standalone document. It prints the due-date
+     * urgency hint inline rather than through a macro, and it always prints on
+     * white, so it carries the AA-safe light literals.
+     *
+     * The offset is `days + 6 hours` so the floor division in the template lands
+     * on `days` and not on `days - 1` when it renders.
+     *
+     * @return iterable<string, array{int, string, string}>
+     */
+    public static function urgencyProvider(): iterable
+    {
+        yield 'overdue' => [-3, 'OVERDUE BY 3 DAYS', '#b91c1c'];
+        yield 'due today' => [0, 'DUE TODAY', '#92400e'];
+        yield 'due in 3 days' => [3, 'Due in 3 days', '#92400e'];
+        yield 'due in 14 days' => [14, 'Due in 14 days', '#475569'];
+    }
+
+    #[DataProvider('urgencyProvider')]
+    public function testStandaloneDocumentUsesTheLightPalette(int $days, string $label, string $expected): void
+    {
+        $invoice = $this->createFixtureInvoice(
+            due: CarbonImmutable::now()->addDays($days)->addHours(6)
+        );
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
+
+        $matched = preg_match(
+            '#<span style="([^"]*)">\s*' . preg_quote($label, '#') . '#',
+            $output,
+            $matches
+        );
+
+        self::assertSame(1, $matched, sprintf('No urgency indicator found for label "%s"', $label));
+        self::assertStringContainsString(sprintf('color: %s;', $expected), $matches[1]);
+
+        // The fill colour this issue retires must not come back.
+        self::assertStringNotContainsString('#f59e0b', $output);
+    }
+
+    /**
+     * A paid invoice has nothing outstanding, so it prints no urgency hint at
+     * all — not a hint in a different colour.
+     */
+    public function testAPaidInvoicePrintsNoUrgencyIndicator(): void
+    {
+        $invoice = $this->createFixtureInvoice(
+            due: CarbonImmutable::now()->subDays(3),
+            status: InvoiceStatus::Paid
+        );
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringNotContainsString('OVERDUE BY', $output);
     }
 }

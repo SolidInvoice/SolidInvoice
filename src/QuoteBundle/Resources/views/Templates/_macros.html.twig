@@ -81,8 +81,12 @@
  #
  # Renders the "expired" / "expires today" / "valid for N days" hint when the
  # quote has an expiry date and is still awaiting a decision.
+ #
+ # palette keys: danger, urgent, quiet. The defaults are AA-safe on light paper.
+ # A template on dark paper must pass its own palette.
  #}
-{% macro validity_indicator(quote) %}
+{% macro validity_indicator(quote, palette={}) %}
+    {% set p = {danger: '#b91c1c', urgent: '#92400e', quiet: '#475569'}|merge(palette) %}
     {% if quote.due %}
         {% set daysDiff = ((quote.due|date("U") - "now"|date("U")) / 86400)|round(0, 'floor') %}
         {% if quote.status not in [
@@ -91,19 +95,19 @@
             enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Cancelled,
         ] %}
             {% if daysDiff < 0 %}
-                <span style="font-size: 8pt; font-weight: bold; color: #dc2626; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="font-size: 8pt; font-weight: bold; color: {{ p.danger }}; text-transform: uppercase; letter-spacing: 0.5px;">
                     {{ 'quote.pdf.expired'|trans }}
                 </span>
             {% elseif daysDiff == 0 %}
-                <span style="font-size: 8pt; font-weight: bold; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="font-size: 8pt; font-weight: bold; color: {{ p.urgent }}; text-transform: uppercase; letter-spacing: 0.5px;">
                     {{ 'quote.pdf.expires_today'|trans }}
                 </span>
             {% elseif daysDiff <= 7 %}
-                <span style="font-size: 8pt; font-weight: 600; color: #f59e0b;">
+                <span style="font-size: 8pt; font-weight: 600; color: {{ p.urgent }};">
                     {{ 'quote.pdf.valid_for_days'|trans({'%days%': daysDiff}) }}
                 </span>
             {% else %}
-                <span style="font-size: 8pt; color: #64748b;">
+                <span style="font-size: 8pt; color: {{ p.quiet }};">
                     {{ 'quote.pdf.valid_for_days'|trans({'%days%': daysDiff}) }}
                 </span>
             {% endif %}

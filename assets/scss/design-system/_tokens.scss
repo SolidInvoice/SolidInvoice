@@ -72,6 +72,8 @@
     --swp-danger-lighter: #fef2f2;
 
     // Warning
+    // NOTE: `warning` (2.15:1 on surface) is a fill colour, not a text colour.
+    // Use `warning-dark` for warning-coloured *text*.
     --swp-warning: #f59e0b;
     --swp-warning-rgb: 245, 158, 11;
     --swp-warning-hover: #d97706;
