@@ -54,7 +54,7 @@ class UserInvitation
     private string $email = '';
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    private readonly DateTimeInterface $created;
+    private DateTimeInterface $created;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $expiresAt = null;
