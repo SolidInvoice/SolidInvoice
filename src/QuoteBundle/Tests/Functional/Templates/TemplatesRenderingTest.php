@@ -385,7 +385,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $palette = in_array($slug, self::DARK_PAPER_SLUGS, true) ? self::DARK_PALETTE : self::LIGHT_PALETTE;
         $unexpected = in_array($slug, self::DARK_PAPER_SLUGS, true) ? self::LIGHT_PALETTE : self::DARK_PALETTE;
 
-        $style = self::urgencyStyle($output, $case['label']);
+        $style = $this->urgencyStyle($output, $case['label']);
 
         self::assertStringContainsString(
             sprintf('color: %s;', $palette[$case['tone']]),
@@ -452,7 +452,7 @@ final class TemplatesRenderingTest extends KernelTestCase
 
         self::assertStringContainsString(
             sprintf('color: %s;', $expected),
-            self::urgencyStyle($output, $case['label'])
+            $this->urgencyStyle($output, $case['label'])
         );
 
         self::assertStringNotContainsString('#f59e0b', $output);
@@ -461,7 +461,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     /**
      * Returns the `style` attribute of the span that carries the urgency label.
      */
-    private static function urgencyStyle(string $output, string $label): string
+    private function urgencyStyle(string $output, string $label): string
     {
         $matched = preg_match(
             '#<span style="([^"]*)">\s*' . preg_quote($label, '#') . '#',
