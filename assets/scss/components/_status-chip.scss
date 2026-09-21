@@ -1,0 +1,70 @@
+/**
+ * SolidInvoice Design System - Status Chip
+ *
+ * The one status chip (DESIGN.md section 5). Every status word in the
+ * application renders through `.status-chip`, on a five-value semantic set:
+ * neutral, info, success, warning, danger.
+ *
+ * Contract:
+ *   <span class="status-chip status-chip--success">Paid</span>
+ *
+ * Every variant is an AA-safe text colour on its own tint:
+ *   neutral   gray-100      / text-secondary   6.92:1
+ *   info      info-light    / info-dark        5.49:1
+ *   success   success-light / success-dark     4.84:1
+ *   warning   warning-light / warning-dark     6.37:1
+ *   danger    danger-light  / danger-dark      5.30:1
+ *
+ * The tint itself measures 1.05-1.22:1 against the page. That is deliberate.
+ * The chip's meaning is carried by its text label, so the pill is decoration
+ * around legible text, not a control whose boundary must be perceivable.
+ *
+ * A chip is never interactive: no shadow, no border, no hover, no transition,
+ * and it is never a focus target. A chip is also never truncated - a
+ * half-shown status is worse than a wider column.
+ */
+
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--swp-space-0-5) var(--swp-space-2-5);   // 2px 10px
+    border-radius: var(--swp-radius-full);
+    font-size: var(--swp-text-xs);                        // 12px
+    font-weight: var(--swp-font-medium);                  // 500
+    line-height: 1.25;
+    letter-spacing: 0;
+    white-space: nowrap;
+
+    // The base is the neutral treatment, so a chip with no modifier is still
+    // legible and still looks like a chip.
+    background-color: var(--swp-gray-100);
+    color: var(--swp-text-secondary);
+
+    &--neutral {
+        // The modifier exists so call sites can say `neutral` rather than say
+        // nothing. It repeats the base values instead of being empty, because
+        // an empty rule is dropped by the build and by stylelint.
+        background-color: var(--swp-gray-100);
+        color: var(--swp-text-secondary);
+    }
+
+    &--info {
+        background-color: var(--swp-info-light);
+        color: var(--swp-info-dark);
+    }
+
+    &--success {
+        background-color: var(--swp-success-light);
+        color: var(--swp-success-dark);
+    }
+
+    &--warning {
+        background-color: var(--swp-warning-light);
+        color: var(--swp-warning-dark);
+    }
+
+    &--danger {
+        background-color: var(--swp-danger-light);
+        color: var(--swp-danger-dark);
+    }
+}
