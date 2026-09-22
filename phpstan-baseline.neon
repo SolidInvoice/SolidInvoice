@@ -493,6 +493,12 @@ parameters:
 			path: src/InvoiceBundle/DataGrid/InvoiceGrid.php
 
 		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\CreditNote\:\:\$client type mapping mismatch\: property can contain SolidInvoice\\ClientBundle\\Entity\\Client\|null but database expects SolidInvoice\\ClientBundle\\Entity\\Client\.$#'
+			identifier: doctrine.associationType
+			count: 1
+			path: src/InvoiceBundle/Entity/CreditNote.php
+
+		-
 			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\Invoice\:\:\$client type mapping mismatch\: property can contain SolidInvoice\\ClientBundle\\Entity\\Client\|null but database expects SolidInvoice\\ClientBundle\\Entity\\Client\.$#'
 			identifier: doctrine.associationType
 			count: 1
