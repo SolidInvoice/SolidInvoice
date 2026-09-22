@@ -148,9 +148,7 @@ final readonly class LineItemBuilder
                 throw new ToolCallException(sprintf('Line item #%d requires a "price" (in the minor unit, e.g. cents).', $index));
             }
 
-            if ($qty === null) {
-                $qty = 1;
-            }
+            $qty ??= 1;
 
             $line = $factory();
 

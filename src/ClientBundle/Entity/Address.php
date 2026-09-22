@@ -234,9 +234,7 @@ class Address implements Stringable
 
     public function getCountryName(): ?string
     {
-        if (null === $this->countryName) {
-            $this->countryName = $this->getCountry() && Countries::exists($this->getCountry()) ? Countries::getName($this->getCountry()) : null;
-        }
+        $this->countryName ??= $this->getCountry() && Countries::exists($this->getCountry()) ? Countries::getName($this->getCountry()) : null;
 
         return $this->countryName;
     }

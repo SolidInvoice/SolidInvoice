@@ -102,14 +102,12 @@ final class CompanySelector implements CompanySelectorInterface, ResetInterface
             return;
         }
 
-        if ($this->originalRequestContext === null) {
-            $this->originalRequestContext = [
-                'host' => $this->requestContext->getHost(),
-                'scheme' => $this->requestContext->getScheme(),
-                'httpPort' => $this->requestContext->getHttpPort(),
-                'httpsPort' => $this->requestContext->getHttpsPort(),
-            ];
-        }
+        $this->originalRequestContext ??= [
+            'host' => $this->requestContext->getHost(),
+            'scheme' => $this->requestContext->getScheme(),
+            'httpPort' => $this->requestContext->getHttpPort(),
+            'httpsPort' => $this->requestContext->getHttpsPort(),
+        ];
 
         $this->requestContext->setHost($customDomain);
         $this->requestContext->setScheme('https');
