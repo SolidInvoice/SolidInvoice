@@ -287,9 +287,7 @@ class RecurringInvoiceRepository extends EntityRepository
                 ScheduleRecurringType::YEARLY => $total->dividedBy(12),
             };
 
-            if (! isset($results[$currencyCode])) {
-                $results[$currencyCode] = BigInteger::zero();
-            }
+            $results[$currencyCode] ??= BigInteger::zero();
 
             $results[$currencyCode] = $results[$currencyCode]->plus($monthlyAmount);
         }

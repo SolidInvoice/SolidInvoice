@@ -14,29 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Override;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class TaxExtension extends AbstractExtension
+class TaxExtension
 {
     public function __construct(
         private readonly ManagerRegistry $registry
     ) {
     }
 
-    /**
-     * @return TwigFunction[]
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('taxRatesConfigured', fn (): bool => $this->taxRatesConfigured()),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'taxRatesConfigured')]
     public function taxRatesConfigured(): bool
     {
         static $taxConfigured;

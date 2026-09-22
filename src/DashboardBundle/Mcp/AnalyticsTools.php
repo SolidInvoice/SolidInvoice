@@ -238,9 +238,7 @@ final readonly class AnalyticsTools
             $currency = (string) ($row['currency'] ?? 'USD');
             $amount = (int) ($row['amount'] ?? 0);
 
-            if (! isset($totals[$bucket])) {
-                $totals[$bucket] = [];
-            }
+            $totals[$bucket] ??= [];
 
             $totals[$bucket][$currency] = ($totals[$bucket][$currency] ?? 0) + $amount;
         }

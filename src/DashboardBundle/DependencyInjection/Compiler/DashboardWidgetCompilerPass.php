@@ -31,13 +31,9 @@ class DashboardWidgetCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (! isset($attributes['location'])) {
-                    $attributes['location'] = null;
-                }
+                $attributes['location'] ??= null;
 
-                if (! isset($attributes['priority'])) {
-                    $attributes['priority'] = null;
-                }
+                $attributes['priority'] ??= null;
 
                 $definition->addMethodCall(
                     'add',

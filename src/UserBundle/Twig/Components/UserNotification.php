@@ -130,9 +130,7 @@ final class UserNotification extends AbstractController
             }
 
             $categoryLabel = $attribute->category->getLabel();
-            if (! isset($grouped[$categoryLabel])) {
-                $grouped[$categoryLabel] = [];
-            }
+            $grouped[$categoryLabel] ??= [];
 
             $grouped[$categoryLabel][] = $event;
         }

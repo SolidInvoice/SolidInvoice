@@ -93,9 +93,7 @@ class PaymentRepository extends EntityRepository
 
     protected function getPaymentQueryBuilder(?string $orderField = null, string $sort = 'DESC'): QueryBuilder
     {
-        if (null === $orderField) {
-            $orderField = 'p.created';
-        }
+        $orderField ??= 'p.created';
 
         $queryBuilder = $this->createQueryBuilder('p');
 
@@ -234,9 +232,7 @@ class PaymentRepository extends EntityRepository
             $created = $result['created'];
 
             $date = $created->format($dateFormat);
-            if (! isset($payments[$date])) {
-                $payments[$date] = 0;
-            }
+            $payments[$date] ??= 0;
 
             $payments[$date] += $result['totalAmount'];
         }
@@ -365,13 +361,9 @@ class PaymentRepository extends EntityRepository
             $created = $result['created'];
             $month = $created->format('Y-m');
 
-            if (! isset($results[$month])) {
-                $results[$month] = [];
-            }
+            $results[$month] ??= [];
 
-            if (! isset($results[$month][$currency])) {
-                $results[$month][$currency] = BigInteger::zero();
-            }
+            $results[$month][$currency] ??= BigInteger::zero();
 
             $results[$month][$currency] = $results[$month][$currency]->plus(BigNumber::of($result['totalAmount']));
         }
