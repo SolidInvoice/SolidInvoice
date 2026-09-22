@@ -131,6 +131,6 @@ final class MigrationDryRunGuardTest extends TestCase
             $direction,
         );
 
-        $this->dependencyFactory->getMigrator()->migrate($plan, (new MigratorConfiguration())->setDryRun($dryRun));
+        $this->dependencyFactory->getMigrator()->migrate($plan, new MigratorConfiguration()->setDryRun($dryRun));
     }
 }
