@@ -154,7 +154,7 @@ final class InvoiceTaxCalculator
             default => null,
         };
 
-        if ($collection === null || $collection->isEmpty()) {
+        if ($collection->isEmpty()) {
             return [];
         }
 
