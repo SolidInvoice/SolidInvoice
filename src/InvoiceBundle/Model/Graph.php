@@ -23,6 +23,8 @@ final class Graph
 
     public const string TRANSITION_CANCEL = 'cancel';
 
+    public const string TRANSITION_ISSUE = 'issue';
+
     public const string TRANSITION_OVERDUE = 'overdue';
 
     public const string TRANSITION_PAY = 'pay';

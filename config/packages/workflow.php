@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
@@ -217,6 +219,36 @@ return App::config([
                             'name' => QuoteGraph::TRANSITION_ARCHIVE,
                             'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value],
                             'to' => [QuoteStatus::Archived->value],
+                        ],
+                    ],
+                ],
+                'credit_note' => [
+                    'type' => 'state_machine',
+                    'marking_store' => [
+                        'type' => 'method',
+                        'property' => 'statusValue',
+                    ],
+                    'audit_trail' => [
+                        'enabled' => true,
+                    ],
+                    'supports' => [
+                        CreditNote::class,
+                    ],
+                    'places' => [
+                        CreditNoteStatus::Draft->value,
+                        CreditNoteStatus::Issued->value,
+                        CreditNoteStatus::Cancelled->value,
+                    ],
+                    'transitions' => [
+                        [
+                            'name' => InvoiceGraph::TRANSITION_ISSUE,
+                            'from' => [CreditNoteStatus::Draft->value],
+                            'to' => [CreditNoteStatus::Issued->value],
+                        ],
+                        [
+                            'name' => InvoiceGraph::TRANSITION_CANCEL,
+                            'from' => [CreditNoteStatus::Draft->value, CreditNoteStatus::Issued->value],
+                            'to' => [CreditNoteStatus::Cancelled->value],
                         ],
                     ],
                 ],
