@@ -17,7 +17,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\AutoIncrementIdGenerator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Test\Factory\CreditNoteFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -36,6 +38,29 @@ final class AutoIncrementIdGeneratorTest extends KernelTestCase
 
         self::assertSame('1', $generator->generate(new Quote(), ['field' => 'quoteId']));
         self::assertSame('1', $generator->generate(new Quote(), ['field' => 'quoteId']));
+
+        self::assertSame('1', $generator->generate(new CreditNote(), ['field' => 'creditNoteId']));
+        self::assertSame('1', $generator->generate(new CreditNote(), ['field' => 'creditNoteId']));
+    }
+
+    public function testCreditNoteSequenceIsIndependentOfInvoiceAndQuoteSequences(): void
+    {
+        $client = ClientFactory::new([]);
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '1']);
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '2']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        // The first-ever credit note starts at 1, unaffected by the two invoices already saved.
+        self::assertSame('1', $generator->generate(new CreditNote(), ['field' => 'creditNoteId', 'prefix' => 'CN-', 'suffix' => '']));
+
+        CreditNoteFactory::createOne(['client' => $client, 'creditNoteId' => 'CN-1']);
+
+        self::assertSame('2', $generator->generate(new CreditNote(), ['field' => 'creditNoteId', 'prefix' => 'CN-', 'suffix' => '']));
+
+        // Saving another credit note does not disturb the invoice sequence.
+        self::assertSame('3', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
     }
 
     public function testItIncrementsTheId(): void

@@ -17,6 +17,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -148,11 +149,12 @@ final class InvoiceTaxCalculator
         $collection = match (true) {
             $document instanceof Invoice,
             $document instanceof RecurringInvoice,
+            $document instanceof CreditNote,
             $document instanceof Quote => $document->getInvoiceTaxes(),
             default => null,
         };
 
-        if ($collection->isEmpty()) {
+        if ($collection === null || $collection->isEmpty()) {
             return [];
         }
 
