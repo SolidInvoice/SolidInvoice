@@ -15,6 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
@@ -44,6 +45,11 @@ final class Version30100_7 extends AbstractMigration
     use DryRunAwareMigration;
 
     private const string INVOICE_TAX_CHECK_CONSTRAINT = 'invoice_tax_exactly_one_document';
+
+    // MariaDB's native error for "DROP CONSTRAINT" naming a constraint that does not exist.
+    // Doctrine\DBAL\Driver\API\MySQL\ExceptionConverter has no case for it, so it surfaces as
+    // the generic DriverException rather than DatabaseObjectNotFoundException.
+    private const int MARIADB_CONSTRAINT_NOT_FOUND = 1091;
 
     public function getDescription(): string
     {
@@ -162,6 +168,15 @@ final class Version30100_7 extends AbstractMigration
      * reaches the database under a dry run, leaving a production database with an invariant and
      * a foreign-key layout its own schema no longer matches.
      *
+     * Checks for credit-note-owned `invoice_tax` rows before touching the constraint. The
+     * pre-credit-note three-column CHECK has no column to attribute such a row to, so replacing
+     * the constraint would fail on that row regardless — but only after the four-column CHECK is
+     * already dropped. `isTransactional()` is false on MariaDB (DDL commits implicitly), so that
+     * ordering would strip the invariant entirely and leave the schema half-reverted while
+     * `migration_versions` still reports the migration applied. Aborting here, before either
+     * statement runs, means a failure here leaves both the schema and `migration_versions`
+     * exactly as they were.
+     *
      * @throws Exception
      */
     public function preDown(Schema $schema): void
@@ -170,8 +185,30 @@ final class Version30100_7 extends AbstractMigration
             return;
         }
 
+        $this->abortIf(
+            $this->hasCreditNoteOwnedInvoiceTaxRows(),
+            sprintf(
+                'Cannot revert %s: %s has at least one row owned by a credit note (credit_note_id ' .
+                'IS NOT NULL). The pre-credit-note schema has no column to attribute such a row to. ' .
+                'Reassign or remove these rows before reverting this migration.',
+                self::class,
+                InvoiceTax::TABLE_NAME,
+            ),
+        );
+
         $this->replaceExactlyOneDocumentCheck('invoice_id', 'quote_id', 'recurring_invoice_id');
         $this->dropInboundCreditNoteForeignKeys();
+    }
+
+    private function hasCreditNoteOwnedInvoiceTaxRows(): bool
+    {
+        if (! $this->columnExists(InvoiceTax::TABLE_NAME, 'credit_note_id')) {
+            return false;
+        }
+
+        return (int) $this->connection->fetchOne(
+            sprintf('SELECT COUNT(*) FROM %s WHERE credit_note_id IS NOT NULL', InvoiceTax::TABLE_NAME),
+        ) > 0;
     }
 
     /**
@@ -248,6 +285,13 @@ final class Version30100_7 extends AbstractMigration
      * `information_schema` the same way, so a failure here is read as "can't tell" rather than
      * "does not exist" — falling through to the existing try/catch around the `DROP` itself,
      * which is the same coverage this method's absence would leave those two platforms with.
+     *
+     * Scoped to the current database/schema: `information_schema.table_constraints` spans every
+     * schema the connection user can see on MySQL/MariaDB, and every schema in the current
+     * database on PostgreSQL, so an unscoped lookup answers "does this constraint name exist
+     * anywhere visible?" rather than "does it exist here?" — a false positive whenever another
+     * database on the same server (staging beside production, another tenant, a restored
+     * backup) happens to hold a same-named constraint.
      */
     private function constraintExists(string $table, string $constraint): bool
     {
@@ -255,11 +299,16 @@ final class Version30100_7 extends AbstractMigration
             return false;
         }
 
+        $sql = 'SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_name = ? AND constraint_name = ?';
+
+        if ($this->platform instanceof AbstractMySQLPlatform) {
+            $sql .= ' AND constraint_schema = DATABASE()';
+        } elseif ($this->platform instanceof PostgreSQLPlatform) {
+            $sql .= ' AND constraint_schema = current_schema()';
+        }
+
         try {
-            return (int) $this->connection->fetchOne(
-                'SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_name = ? AND constraint_name = ?',
-                [$table, $constraint],
-            ) > 0;
+            return (int) $this->connection->fetchOne($sql, [$table, $constraint]) > 0;
         } catch (Exception) {
             return true;
         }
@@ -313,6 +362,14 @@ final class Version30100_7 extends AbstractMigration
             // cannot introspect (see its own catch) — tolerate the constraint turning out not
             // to exist after all. Anything else, notably a syntax error, must propagate: this
             // migration cannot silently fail to establish the invariant it exists to enforce.
+        } catch (DriverException $e) {
+            // MariaDB raises 1091 for the same "constraint does not exist" case, but
+            // ExceptionConverter has no mapping for it, so it never becomes a
+            // DatabaseObjectNotFoundException on this platform. Only that one code is
+            // tolerated here; any other DriverException still propagates.
+            if ($e->getCode() !== self::MARIADB_CONSTRAINT_NOT_FOUND) {
+                throw $e;
+            }
         }
     }
 
