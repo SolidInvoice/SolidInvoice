@@ -40,6 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * modelling rationale.
  */
 #[ORM\Table(name: CreditNote::TABLE_NAME)]
+#[ORM\Index(columns: ['company_id', 'status'])]
+#[ORM\UniqueConstraint(columns: ['company_id', 'credit_note_id'])]
 #[ORM\Entity(repositoryClass: CreditNoteRepository::class)]
 class CreditNote extends BaseInvoice implements Stringable
 {

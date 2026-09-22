@@ -32,7 +32,7 @@ use SolidInvoice\InvoiceBundle\Repository\CreditNoteLineRepository;
 class CreditNoteLine extends Line
 {
     #[ORM\ManyToOne(targetEntity: CreditNote::class, inversedBy: 'lines')]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'credit_note_id', nullable: true, onDelete: 'CASCADE')]
     private ?CreditNote $creditNote = null;
 
     public function setCreditNote(?CreditNote $creditNote): self

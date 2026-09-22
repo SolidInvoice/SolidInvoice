@@ -72,7 +72,9 @@ final class Version30100_7 extends AbstractMigration
             $table->addColumn('payable_amount', BigIntegerType::NAME, ['notnull' => true, 'default' => 0]);
             $table->addColumn('discount_type', Types::STRING, ['length' => 255, 'notnull' => false]);
             $table->addColumn('discount_value_percentage', Types::FLOAT, ['notnull' => false]);
-            $table->addColumn('discount_valueMoney_amount', BigIntegerType::NAME, ['notnull' => false]);
+            // Discount::$valueMoney (Entity/Discount.php) is not nullable and carries no
+            // default, unlike its sibling columns in this embeddable — matches that exactly.
+            $table->addColumn('discount_valueMoney_amount', BigIntegerType::NAME, ['notnull' => true]);
             $table->addColumn('terms', Types::TEXT, ['notnull' => false]);
             $table->addColumn('notes', Types::TEXT, ['notnull' => false]);
             $table->addColumn('created', Types::DATETIME_IMMUTABLE);
@@ -81,6 +83,7 @@ final class Version30100_7 extends AbstractMigration
 
             $table->setPrimaryKey(['id']);
             $table->addIndex(['company_id', 'status']);
+            $table->addIndex(['client_id']);
             $table->addIndex(['invoice_id']);
             $table->addUniqueIndex(['company_id', 'credit_note_id']);
 
@@ -112,34 +115,81 @@ final class Version30100_7 extends AbstractMigration
      *
      * Best-effort exactly like {@see \DoctrineMigrations\Version30000_9::addInvoiceTaxCheckConstraint()}:
      * the `ExactlyOneDocumentValidator` remains the canonical enforcement, this is defence in depth.
+     *
+     * Guarded on the real `credit_note_id` column existing: `postUp()` always runs for real, even
+     * under `--dry-run`, where `up()`'s Schema-tool column addition never actually reaches the
+     * database. Without this guard, a dry run would drop the live three-column check for real
+     * and then fail to re-add the four-column one (the column it references does not exist yet),
+     * silently stripping the invariant from a production database that a dry run must not touch.
+     *
+     * @throws Exception
      */
     public function postUp(Schema $schema): void
     {
-        $this->dropCheckConstraintIfSupported(InvoiceTax::TABLE_NAME, self::INVOICE_TAX_CHECK_CONSTRAINT);
-        $this->addCheckConstraintIfSupported(
-            InvoiceTax::TABLE_NAME,
-            self::INVOICE_TAX_CHECK_CONSTRAINT,
-            'invoice_id',
-            'quote_id',
-            'recurring_invoice_id',
-            'credit_note_id',
-        );
+        if (! $this->columnExists(InvoiceTax::TABLE_NAME, 'credit_note_id')) {
+            return;
+        }
+
+        $this->replaceExactlyOneDocumentCheck('invoice_id', 'quote_id', 'recurring_invoice_id', 'credit_note_id');
     }
 
     /**
      * Restores the pre-credit-note three-column invariant before `down()` drops the column it
      * would otherwise still reference.
+     *
+     * @throws Exception
      */
     public function preDown(Schema $schema): void
     {
-        $this->dropCheckConstraintIfSupported(InvoiceTax::TABLE_NAME, self::INVOICE_TAX_CHECK_CONSTRAINT);
-        $this->addCheckConstraintIfSupported(
-            InvoiceTax::TABLE_NAME,
-            self::INVOICE_TAX_CHECK_CONSTRAINT,
-            'invoice_id',
-            'quote_id',
-            'recurring_invoice_id',
-        );
+        $this->replaceExactlyOneDocumentCheck('invoice_id', 'quote_id', 'recurring_invoice_id');
+    }
+
+    /**
+     * Drops the existing check (if it is actually there) and adds the given one in its place.
+     *
+     * The existence check before the `DROP` matters beyond the try/catch already wrapping it:
+     * on PostgreSQL, a `DROP CONSTRAINT` that errors — the constraint being absent is exactly
+     * such an error — aborts the whole transaction, and every statement after it (including the
+     * migration's own version-tracking write) fails with "current transaction is aborted",
+     * outside this method's try/catch. Never emitting a `DROP` we already know will fail avoids
+     * that entirely, rather than merely catching the PHP-level exception it raises.
+     *
+     * @throws Exception
+     */
+    private function replaceExactlyOneDocumentCheck(string ...$columns): void
+    {
+        if ($this->constraintExists(InvoiceTax::TABLE_NAME, self::INVOICE_TAX_CHECK_CONSTRAINT)) {
+            $this->dropCheckConstraintIfSupported(InvoiceTax::TABLE_NAME, self::INVOICE_TAX_CHECK_CONSTRAINT);
+        }
+
+        $this->addCheckConstraintIfSupported(InvoiceTax::TABLE_NAME, self::INVOICE_TAX_CHECK_CONSTRAINT, ...$columns);
+    }
+
+    private function columnExists(string $table, string $column): bool
+    {
+        return $this->sm->introspectSchema()->getTable($table)->hasColumn($column);
+    }
+
+    /**
+     * Portable across MySQL, MariaDB and PostgreSQL. Oracle and SQL Server don't expose
+     * `information_schema` the same way, so a failure here is read as "can't tell" rather than
+     * "does not exist" — falling through to the existing try/catch around the `DROP` itself,
+     * which is the same coverage this method's absence would leave those two platforms with.
+     */
+    private function constraintExists(string $table, string $constraint): bool
+    {
+        if (! $this->platformSupportsCheckConstraints()) {
+            return false;
+        }
+
+        try {
+            return (int) $this->connection->fetchOne(
+                'SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_name = ? AND constraint_name = ?',
+                [$table, $constraint],
+            ) > 0;
+        } catch (Exception) {
+            return true;
+        }
     }
 
     public function down(Schema $schema): void
