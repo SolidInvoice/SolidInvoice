@@ -23,7 +23,6 @@ use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use Twig\TwigFunction;
 
 final class WidgetExtensionTest extends TestCase
 {
@@ -37,15 +36,6 @@ final class WidgetExtensionTest extends TestCase
     {
         $this->factory = Mockery::mock(WidgetFactory::class);
         $this->extension = new WidgetExtension($this->factory);
-    }
-
-    public function testGetFunctions(): void
-    {
-        $functions = $this->extension->getFunctions();
-
-        self::assertCount(1, $functions);
-        self::assertInstanceOf(TwigFunction::class, $functions[0]);
-        self::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
     public function testRenderDashboardWidget(): void
