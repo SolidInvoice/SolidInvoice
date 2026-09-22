@@ -15,6 +15,7 @@ namespace SolidInvoice\TaxBundle\Tests\Functional\Api;
 
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
@@ -43,6 +44,26 @@ final class TaxIdentifierTest extends ApiTestCase
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
         self::assertSame('VAT', $result['label']);
         self::assertSame('GB123456789', $result['value']);
+        self::assertTrue($result['primary']);
+    }
+
+    public function testCreateWithClient(): void
+    {
+        $client = ClientFactory::createOne(['company' => $this->company]);
+
+        $data = [
+            'label' => 'VAT',
+            'value' => 'LV40001234567',
+            'primary' => true,
+            'client' => $this->getIriFromResource($client),
+        ];
+
+        $result = $this->requestPost('/api/tax-identifiers', $data);
+
+        self::assertArrayHasKey('id', $result);
+        self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
+        self::assertSame('VAT', $result['label']);
+        self::assertSame('LV40001234567', $result['value']);
         self::assertTrue($result['primary']);
     }
 
