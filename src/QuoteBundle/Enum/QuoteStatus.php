@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum QuoteStatus: string implements HasStatusLabel
 {
@@ -38,16 +39,16 @@ enum QuoteStatus: string implements HasStatusLabel
         };
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::New => 'gray',
-            self::Draft => 'secondary',
-            self::Pending => 'yellow',
-            self::Accepted => 'green',
-            self::Cancelled => 'gray',
-            self::Declined => 'red',
-            self::Archived => 'purple',
+            self::New => StatusVariant::Neutral,
+            self::Draft => StatusVariant::Neutral,
+            self::Pending => StatusVariant::Warning,
+            self::Accepted => StatusVariant::Success,
+            self::Cancelled => StatusVariant::Neutral,
+            self::Declined => StatusVariant::Danger,
+            self::Archived => StatusVariant::Neutral,
         };
     }
 }
