@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum RecurringInvoiceStatus: string implements HasStatusLabel
 {
@@ -38,16 +39,18 @@ enum RecurringInvoiceStatus: string implements HasStatusLabel
         };
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::New => 'gray',
-            self::Active => 'green',
-            self::Complete => 'teal',
-            self::Draft => 'secondary',
-            self::Paused => 'dark',
-            self::Cancelled => 'gray',
-            self::Archived => 'purple',
+            self::New => StatusVariant::Neutral,
+            self::Active => StatusVariant::Info,
+            // Complete is a resting, reversible state. The grid can restart it back to
+            // Active, and nothing is owed, so it does not take the money green.
+            self::Complete => StatusVariant::Neutral,
+            self::Draft => StatusVariant::Neutral,
+            self::Paused => StatusVariant::Warning,
+            self::Cancelled => StatusVariant::Neutral,
+            self::Archived => StatusVariant::Neutral,
         };
     }
 }

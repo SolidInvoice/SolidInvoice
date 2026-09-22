@@ -20,8 +20,5 @@ interface HasStatusLabel
      */
     public function getLabel(): string;
 
-    /**
-     * Returns the Tabler badge color (e.g. 'green', 'red', 'yellow').
-     */
-    public function getColor(): string;
+    public function getVariant(): StatusVariant;
 }

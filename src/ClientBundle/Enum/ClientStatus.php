@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum ClientStatus: string implements HasStatusLabel
 {
@@ -30,12 +31,14 @@ enum ClientStatus: string implements HasStatusLabel
         };
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::Active => 'green',
-            self::Inactive => 'cyan',
-            self::Archived => 'purple',
+            // Active is the normal state for most clients. Success is reserved for money,
+            // so a chip on nearly every row does not compete with the Paid amounts.
+            self::Active => StatusVariant::Info,
+            self::Inactive => StatusVariant::Neutral,
+            self::Archived => StatusVariant::Neutral,
         };
     }
 }
