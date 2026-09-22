@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use BackedEnum;
-use Override;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -22,45 +21,65 @@ use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 
-class StatusExtension extends AbstractExtension
+/**
+ * Each Twig function has its own method, so that the enum class stays fixed in PHP.
+ * Do not stack more than one AsTwigFunction attribute on a shared method. Twig then
+ * makes the enum class an argument of the template call, and every template that
+ * calls the function fails to compile.
+ *
+ * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\StatusExtensionTest
+ */
+final readonly class StatusExtension
 {
     public function __construct(
-        private readonly TranslatorInterface $translator,
+        private TranslatorInterface $translator,
     ) {
     }
 
     /**
-     * @return TwigFunction[]
+     * @return string|array<string, string>
      */
-    #[Override]
-    public function getFunctions(): array
+    #[AsTwigFunction(name: 'invoice_label', needsEnvironment: true, isSafe: ['html'])]
+    public function renderInvoiceStatusLabel(Environment $environment, InvoiceStatus | RecurringInvoiceStatus | null $status = null, ?string $tooltip = null): string | array
     {
-        return [
-            new TwigFunction(
-                'invoice_label',
-                fn (Environment $environment, InvoiceStatus | RecurringInvoiceStatus | null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
-                ['is_safe' => ['html'], 'needs_environment' => true]
-            ),
-            new TwigFunction(
-                'quote_label',
-                fn (Environment $environment, QuoteStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip),
-                ['is_safe' => ['html'], 'needs_environment' => true]
-            ),
-            new TwigFunction(
-                'payment_label',
-                fn (Environment $environment, PaymentStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip),
-                ['is_safe' => ['html'], 'needs_environment' => true]
-            ),
-            new TwigFunction(
-                'client_label',
-                fn (Environment $environment, ClientStatus | null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip),
-                ['is_safe' => ['html'], 'needs_environment' => true]
-            ),
-        ];
+        if ($status === null) {
+            return array_merge(
+                $this->getAllStatusLabels($environment, InvoiceStatus::class),
+                $this->getAllStatusLabels($environment, RecurringInvoiceStatus::class)
+            );
+        }
+
+        return $this->renderStatusLabel($environment, $status, $tooltip);
+    }
+
+    /**
+     * @return string|array<string, string>
+     */
+    #[AsTwigFunction(name: 'quote_label', needsEnvironment: true, isSafe: ['html'])]
+    public function renderQuoteStatusLabel(Environment $environment, ?QuoteStatus $status = null, ?string $tooltip = null): string | array
+    {
+        return $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip);
+    }
+
+    /**
+     * @return string|array<string, string>
+     */
+    #[AsTwigFunction(name: 'payment_label', needsEnvironment: true, isSafe: ['html'])]
+    public function renderPaymentStatusLabel(Environment $environment, ?PaymentStatus $status = null, ?string $tooltip = null): string | array
+    {
+        return $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip);
+    }
+
+    /**
+     * @return string|array<string, string>
+     */
+    #[AsTwigFunction(name: 'client_label', needsEnvironment: true, isSafe: ['html'])]
+    public function renderClientStatusLabel(Environment $environment, ?ClientStatus $status = null, ?string $tooltip = null): string | array
+    {
+        return $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip);
     }
 
     /**
@@ -73,21 +92,6 @@ class StatusExtension extends AbstractExtension
     {
         if (! $status instanceof HasStatusLabel) {
             return $this->getAllStatusLabels($environment, $enumClass);
-        }
-
-        return $this->renderStatusLabel($environment, $status, $tooltip);
-    }
-
-    /**
-     * @return string|array<string, string>
-     */
-    public function renderInvoiceStatusLabel(Environment $environment, InvoiceStatus | RecurringInvoiceStatus | null $status = null, ?string $tooltip = null): string | array
-    {
-        if ($status === null) {
-            return array_merge(
-                $this->getAllStatusLabels($environment, InvoiceStatus::class),
-                $this->getAllStatusLabels($environment, RecurringInvoiceStatus::class)
-            );
         }
 
         return $this->renderStatusLabel($environment, $status, $tooltip);
