@@ -745,6 +745,8 @@ The full map of what lives where:
 | `.claude/skills/code-quality.md` | Pointer. Restated §3/§4 and had gone stale. |
 | `.claude/skills/testing.md` | Pointer. Restated §13 and had gone stale. |
 
+Accepted architecture decisions are a different thing and live in `adr/` — see `adr/README.md`.
+
 The rule for you: **read `AGENTS.md`, and when you change a convention, change it here.**
 If another instruction file contradicts this one, this one wins — and that contradiction
 is a bug in the other file, so fix it in the same PR. Do not add a convention to a
