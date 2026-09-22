@@ -79,6 +79,12 @@ so the default suite is **SQLite, created per app-mode and per paratest worker t
 MariaDB 10.4–11.4 and PostgreSQL 16/17. If your change touches SQL, schema or a Doctrine
 filter, assume `db-tests.yml` is the job that will catch you.
 
+**A green local run does not mean the column fits.** SQLite ignores `VARCHAR(n)` — it
+stores whatever you give it — so a value that overflows a bounded column passes every
+test here and fails on MySQL in `db-tests.yml`, or in production. Lengths are not
+test-enforced on the default suite. If you add or widen a bounded column, trace every
+writer of it yourself rather than trusting the suite.
+
 ### Static analysis and style
 
 ```bash
@@ -228,6 +234,42 @@ HTTP entry points are single-purpose invokable classes in `Action/`:
 what they do. Business logic belongs in a `Manager/`, a service, or the entity — not in
 the Action.
 
+### API Platform resources
+
+Resources are configured with attributes **on the entity**, not in YAML/XML. Operations
+are declared explicitly in `operations:`; there is no reliance on the default set.
+Serialization is group-based (`normalizationContext` / `denormalizationContext`, e.g.
+`contact_api`, `invoice_api`) — a field is exposed by putting it in a group, never by
+leaving it ungrouped.
+
+**A sub-resource `Post` needs `read: false`.** This is the one that bites, and six
+entities carry it:
+
+```php
+new Post(
+    uriTemplate: '/invoices/{invoiceId}/lines',
+    uriVariables: [
+        'invoiceId' => new Link(fromProperty: 'lines', fromClass: Invoice::class),
+    ],
+    // The `lines` link would otherwise have API Platform deserialize into the owner's
+    // existing line, so a second post overwrites the first. A create has nothing to read.
+    read: false,
+    processor: InvoiceLinePersistProcessor::class,
+),
+```
+
+Without it the `Link` makes API Platform *read* the parent's existing child and
+denormalize onto it, so posting a second line silently overwrites the first instead of
+creating one. The endpoints that get this right:
+`src/InvoiceBundle/Entity/Line.php`, `src/InvoiceBundle/Entity/RecurringInvoiceLine.php`,
+`src/QuoteBundle/Entity/Line.php`, `src/ClientBundle/Entity/{Address,Contact}.php`,
+`src/CoreBundle/Entity/CustomField/CustomField.php`. Copy the pattern when you add another.
+
+Writes that are more than a persist go through a `ProcessorInterface`, not the entity —
+`InvoiceLinePersistProcessor` above is the shape. MCP tools live alongside in
+`src/*Bundle/Mcp/` (26 of them) and are a **separate** entry point to the same domain:
+fixing a rule in a processor does not fix it for the MCP tool, so check both.
+
 ### Services
 
 Wired in PHP: `config/services.php`, `config/services_test.php`, and per-bundle
@@ -281,6 +323,11 @@ Rules that hold throughout the codebase:
   it. `package.json` maps `@solidworx/platform` to
   `file:vendor/solidworx/platform/assets`. You configure entries; you do not reconfigure
   Encore.
+- **That `file:` dependency is copied into `node_modules`, not symlinked.** Editing
+  anything under `vendor/solidworx/platform/assets` therefore changes nothing until you
+  re-run `bun install`. The loop when you are working on both repos at once is: edit
+  Platform's assets → `bun install` → `bun run dev` → hard-reload the browser. Skipping the
+  `bun install` is the usual reason a Platform change "does not apply".
 - UI comes from Platform's `UiBundle` as Twig components: `<twig:Ui:Card>`,
   `<twig:Ui:Alert>`, `<twig:Ui:Modal>`. Props and blocks are documented in
   `vendor/solidworx/platform/src/Bundle/Ui/Docs/{Card,Alert,Modal}.md`. Read those before
@@ -294,8 +341,9 @@ Rules that hold throughout the codebase:
 
 ## 7. Frontend
 
-- Entry points are `assets/app.ts` and `assets/webmcp.ts` (`webpack.config.js`). There is
-  no `assets/core.ts` in this repo — that is Platform's.
+- There is **one** JS entry point: `assets/app.ts`. `webpack.config.js` has a single
+  `addEntry`; `assets/webmcp.ts` is imported *by* `app.ts` and is not an entry of its own.
+  There is no `assets/core.ts` in this repo — that is Platform's.
 - Style-only entries: `login`, `register`, `installation`, `pdf`, `email-colors`,
   `email-modern`.
 - Stimulus via `enableStimulusBridge('./assets/controllers.json')`.
@@ -309,6 +357,19 @@ Rules that hold throughout the codebase:
   using a `--swp-` custom-property prefix.
 - Tabler/Bootstrap supplies button, table, modal and alert styling. Do not write SCSS that
   duplicates it.
+- **A page rendered outside the app shell must also load `_platform_ui`.** `app.css`
+  carries this app's styles only — the Bootstrap/Tabler core lives in Platform's entry. A
+  standalone template (a preview, a print view, anything not extending the main layout)
+  needs both:
+
+  ```twig
+  {{ encore_entry_link_tags('_platform_ui') }}
+  {{ encore_entry_link_tags('app') }}
+  ```
+
+  `src/SaasBundle/Resources/views/Settings/template_preview.html.twig` is the one page in
+  the repo that does this. Without it the page renders unstyled and it looks like a build
+  problem.
 - Icons via `ux_icon('tabler:…')`; local icon set in `assets/icons/tabler`.
 
 Server-rendered Twig is the default. Interactivity is Stimulus controllers and Symfony UX
@@ -364,12 +425,16 @@ Migrations are `final`, live in namespace `DoctrineMigrations`, and are classmap
 `composer.json` `autoload-dev`.
 
 Written against the **Schema tool, not raw SQL**, and they must be idempotent and
-portable. `Version30100_1.php` is the model to copy:
+portable. Copy the `up()`/`down()` shape from `Version30100_1.php` and the
+`isTransactional()` guard from `Version30100_3.php` — `Version30100_1.php` still has the
+stale `MySQLPlatform` form the note below warns about:
 
 ```php
 public function isTransactional(): bool
 {
-    return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+    // MySQL and MariaDB commit implicitly on DDL. AbstractMySQLPlatform, because
+    // MariaDBPlatform is a sibling of MySQLPlatform rather than a subclass.
+    return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
 }
 
 public function up(Schema $schema): void
@@ -381,6 +446,13 @@ public function up(Schema $schema): void
     }
 }
 ```
+
+**`AbstractMySQLPlatform`, never `MySQLPlatform`, in any platform check.** `MariaDBPlatform`
+is a *sibling* of `MySQLPlatform`, not a subclass, so a bare `instanceof MySQLPlatform` is
+false on MariaDB — and `db-tests.yml` runs MariaDB 10.4 through 11.4. Only
+`Version30100_3.php` onwards get this right; the 29 older migrations still carry the bare
+form and are not a pattern to copy. The same applies to `preUp()`/`postUp()` guards, and to
+`FOREIGN_KEY_CHECKS` toggles.
 
 `down()` is implemented, guarded the same way. `getDescription()` is filled in. Comments
 explain only the non-obvious part (that one explains *why* `company_id` must not lead the
@@ -413,6 +485,22 @@ accordingly. Read it before touching anything tenant-scoped:
 
 Entities opt in via the `CompanyAware` trait (`src/CoreBundle/Traits/Entity/CompanyAware.php`).
 Other cross-cutting traits: `Archivable`, `TimeStampable`.
+
+### Line ordering — `LinePosition` / `LinePositions`
+
+Invoice, quote and recurring-invoice lines are ordered by an integer `position` the
+entities maintain themselves: `LinePositions` on the owner (`Invoice`, `Quote`,
+`RecurringInvoice`) and `LinePosition` on the line. The owner's `addLine()` places; the
+line's `#[ORM\PrePersist]` handles a line attached directly, and `compactLinePositions()`
+closes gaps after a removal.
+
+**Do not reach for Gedmo Sortable here.** It binds the sortable group untyped, so on a
+ULID primary key `getMaxPosition()` reads `-1` and reordering silently corrupts every
+position. That is why this bookkeeping is hand-rolled.
+
+`LineInterface::UNPLACED` is `PHP_INT_MAX` and is a sentinel, not a stored value — the
+column is an `INTEGER` and the `PrePersist` hook exists to make sure it never lands in the
+database.
 
 ### Hosted tier vs self-hosted
 
@@ -521,6 +609,19 @@ gated. The bar below is the real one.
   `spatie/phpunit-snapshot-assertions`.
 - DB isolation is `dama/doctrine-test-bundle` — each test runs in an uncommitted
   transaction. This is why the installation tests cannot join the pool.
+- **`tests/bootstrap.php` builds the schema before any test runs, and throws if it
+  cannot.** It runs `doctrine:schema:update --force --complete` for *two* kernels —
+  `SolidInvoice\Test\Kernel` and `SolidInvoice\Test\SaasKernel`, which have separate
+  cache dirs and therefore separate databases — because Foundry's auto-reset only builds
+  the one belonging to whichever test class runs first. A single unmapped or half-written
+  entity makes that command fail, and the bootstrap turns that into a `RuntimeException`
+  that takes down the **entire suite**, not one test. If every test suddenly dies with a
+  schema error, look at your working tree before you look at the tests — an untracked,
+  half-finished entity is the usual cause.
+- HTML snapshot assertions (`spatie/phpunit-snapshot-assertions`) mangle UTF-8 on the way
+  into the snapshot file — `m²` is stored as `m&Acirc;&sup2;`. That is the serialiser, not
+  the page, and the rendered output is correct. Do not "fix" it in the template, and
+  expect review bots to re-report it as a bug.
 - `phpunit.xml.dist` is strict: `failOnWarning`, `failOnRisky`, `failOnPhpunitDeprecation`,
   `beStrictAboutOutputDuringTests`, `beStrictAboutChangesToGlobalState`,
   `executionOrder="random"`. A test that leaks state or echoes will fail.
