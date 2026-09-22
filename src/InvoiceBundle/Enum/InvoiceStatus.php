@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum InvoiceStatus: string implements HasStatusLabel
 {
@@ -30,16 +31,19 @@ enum InvoiceStatus: string implements HasStatusLabel
         return 'status.' . $this->value;
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::New => 'gray',
-            self::Draft => 'secondary',
-            self::Pending => 'yellow',
-            self::Paid => 'green',
-            self::Overdue => 'red',
-            self::Cancelled => 'gray',
-            self::Archived => 'purple',
+            self::New => StatusVariant::Neutral,
+            self::Draft => StatusVariant::Neutral,
+            self::Pending => StatusVariant::Warning,
+            self::Paid => StatusVariant::Success,
+            // Active is an issued, awaiting-payment place that only legacy rows reach.
+            // It means the same as Pending, so it carries the same variant.
+            self::Active => StatusVariant::Warning,
+            self::Overdue => StatusVariant::Danger,
+            self::Cancelled => StatusVariant::Neutral,
+            self::Archived => StatusVariant::Neutral,
         };
     }
 }

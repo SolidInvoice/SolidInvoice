@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum InvitationStatus: string implements HasStatusLabel
 {
@@ -25,11 +26,11 @@ enum InvitationStatus: string implements HasStatusLabel
         return 'status.' . $this->value;
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::Pending => 'yellow',
-            self::Expired => 'red',
+            self::Pending => StatusVariant::Warning,
+            self::Expired => StatusVariant::Danger,
         };
     }
 }
