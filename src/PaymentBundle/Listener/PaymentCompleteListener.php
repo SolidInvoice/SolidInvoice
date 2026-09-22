@@ -17,6 +17,7 @@ use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -58,10 +59,35 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
         if ('credit' === $payment->getMethod()?->getGatewayName()) {
             $creditRepository = $this->registry->getRepository(Credit::class);
-            $creditRepository->deductCredit(
-                $payment->getClient(),
-                $payment->getTotalAmount(),
-            );
+
+            try {
+                $creditRepository->deductCredit(
+                    $payment->getClient(),
+                    $payment->getTotalAmount(),
+                );
+            } catch (InsufficientCreditException) {
+                // The atomic deduction guard fired — another concurrent payment
+                // already consumed the credit between Prepare's check and now.
+                // Mark this payment as failed so the invoice stays unpaid.
+                $payment->setStatus(PaymentStatus::Failed);
+                $this->registry->getManager()->flush();
+
+                $invoice = $event->getPayment()->getInvoice();
+                $redirectUrl = $invoice instanceof Invoice
+                    ? $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
+                    : $this->router->generate('_payments_index');
+
+                $event->setResponse(
+                    new class($redirectUrl) extends RedirectResponse implements FlashResponse {
+                        public function getFlash(): Generator
+                        {
+                            yield FlashResponse::FLASH_DANGER => 'payment.create.exception.not_enough_credit';
+                        }
+                    }
+                );
+
+                return;
+            }
         }
 
         if (($invoice = $event->getPayment()->getInvoice()) instanceof Invoice) {
