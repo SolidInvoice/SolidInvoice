@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception\DatabaseObjectNotFoundException;
+use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
@@ -23,6 +26,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use SolidInvoice\CoreBundle\Doctrine\Migrations\DryRunAwareMigration;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -37,6 +41,8 @@ use function sprintf;
 
 final class Version30100_7 extends AbstractMigration
 {
+    use DryRunAwareMigration;
+
     private const string INVOICE_TAX_CHECK_CONSTRAINT = 'invoice_tax_exactly_one_document';
 
     public function getDescription(): string
@@ -135,13 +141,80 @@ final class Version30100_7 extends AbstractMigration
 
     /**
      * Restores the pre-credit-note three-column invariant before `down()` drops the column it
-     * would otherwise still reference.
+     * would otherwise still reference, and drops the FKs that `invoice_lines` and `invoice_tax`
+     * hold into `credit_notes` before the `down()` schema diff runs.
+     *
+     * The FK drop matters beyond tidiness: `down()`'s target `Schema` diffs each table's changes
+     * independently, and the generated SQL is not guaranteed to drop these two inbound FKs
+     * before it drops the `credit_notes` table itself — on both MariaDB and PostgreSQL that
+     * ordering fails outright ("Cannot delete or update a parent row" / "other objects depend on
+     * it"). Dropping them here, directly through the connection, means the schema the down()
+     * diff computes its "from" state against (see {@see \Doctrine\Migrations\Version\DbalExecutor::executeMigration()},
+     * which clones the same lazily-introspected `$fromSchema` passed to this hook) already
+     * reflects their absence, so the diff never needs to emit them at all. Names are resolved via
+     * introspection rather than hardcoded: the generated `fk_…` identifiers differ per platform.
+     *
+     * Guarded on {@see DryRunAwareMigration::isDryRun()}: unlike `postUp()`, this hook runs
+     * *before* `down()` would drop `credit_note_id`, so the column still exists whether this is
+     * a real revert or a `--dry-run` one — a state check cannot tell them apart here. Without
+     * this guard, a dry-run down replaces the live four-column CHECK constraint with the
+     * three-column one for real, and drops the live FKs for real, while `down()` itself never
+     * reaches the database under a dry run, leaving a production database with an invariant and
+     * a foreign-key layout its own schema no longer matches.
      *
      * @throws Exception
      */
     public function preDown(Schema $schema): void
     {
+        if ($this->isDryRun()) {
+            return;
+        }
+
         $this->replaceExactlyOneDocumentCheck('invoice_id', 'quote_id', 'recurring_invoice_id');
+        $this->dropInboundCreditNoteForeignKeys();
+    }
+
+    /**
+     * SQLite has no `ALTER TABLE ... DROP CONSTRAINT`/`DROP FOREIGN KEY` at all — Doctrine's
+     * schema diff handles dropping a FK there by recreating the table, which is what `down()`'s
+     * own `dropForeignKeysOnColumn()` call still exists to drive. The ordering bug this method
+     * exists for is specific to platforms that emit separate `ALTER TABLE` statements.
+     *
+     * @throws Exception
+     */
+    private function dropInboundCreditNoteForeignKeys(): void
+    {
+        if ($this->platform instanceof SQLitePlatform) {
+            return;
+        }
+
+        foreach ([InvoiceLine::TABLE_NAME, InvoiceTax::TABLE_NAME] as $table) {
+            if (! $this->columnExists($table, 'credit_note_id')) {
+                continue;
+            }
+
+            foreach ($this->sm->introspectSchema()->getTable($table)->getForeignKeys() as $foreignKey) {
+                if (! in_array('credit_note_id', array_map(strtolower(...), $foreignKey->getLocalColumns()), true)) {
+                    continue;
+                }
+
+                $this->connection->executeStatement(sprintf(
+                    'ALTER TABLE %s %s %s',
+                    $table,
+                    $this->dropForeignKeyClause(),
+                    $foreignKey->getName(),
+                ));
+            }
+        }
+    }
+
+    /**
+     * MySQL and MariaDB both accept `DROP FOREIGN KEY` for a named FK — unlike `DROP CHECK`,
+     * this is not a MariaDB trap. `DROP CONSTRAINT` everywhere else that supports named FKs.
+     */
+    private function dropForeignKeyClause(): string
+    {
+        return $this->platform instanceof AbstractMySQLPlatform ? 'DROP FOREIGN KEY' : 'DROP CONSTRAINT';
     }
 
     /**
@@ -194,6 +267,11 @@ final class Version30100_7 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        // On every platform preDown() can reach with a real ALTER TABLE DROP FOREIGN KEY/
+        // CONSTRAINT, the FKs invoice_lines and invoice_tax hold into credit_notes are already
+        // gone by the time this runs, so removeForeignKey() below finds nothing to remove. On
+        // SQLite, which has no such statement, dropInboundCreditNoteForeignKeys() is a no-op and
+        // this is what still drives the diff to recreate the table without the FK.
         $invoiceTax = $schema->getTable(InvoiceTax::TABLE_NAME);
         if ($invoiceTax->hasColumn('credit_note_id')) {
             $this->dropForeignKeysOnColumn($invoiceTax, 'credit_note_id');
@@ -230,9 +308,11 @@ final class Version30100_7 extends AbstractMigration
 
         try {
             $this->connection->executeStatement($sql);
-        } catch (Exception) {
-            // Best-effort: the constraint may not exist on this platform/version. The
-            // ExactlyOneDocumentValidator remains the canonical enforcement.
+        } catch (DatabaseObjectNotFoundException) {
+            // constraintExists() already checked, but is itself best-effort on platforms it
+            // cannot introspect (see its own catch) — tolerate the constraint turning out not
+            // to exist after all. Anything else, notably a syntax error, must propagate: this
+            // migration cannot silently fail to establish the invariant it exists to enforce.
         }
     }
 
@@ -249,21 +329,30 @@ final class Version30100_7 extends AbstractMigration
 
         try {
             $this->connection->executeStatement($sql);
-        } catch (Exception) {
-            // Best-effort: older MySQL silently ignores CHECK constraints. The
-            // ExactlyOneDocumentValidator remains the canonical enforcement.
+        } catch (SyntaxErrorException) {
+            // Older MySQL parses CHECK syntax but silently ignores it rather than rejecting it,
+            // so it never reaches here; this tolerates a platform that genuinely does not
+            // understand ADD CONSTRAINT ... CHECK at all. The ExactlyOneDocumentValidator
+            // remains the canonical enforcement either way. A DatabaseObjectExistsException
+            // (duplicate constraint name) must propagate: it means the DROP above did not
+            // actually remove the old constraint, and the invariant this migration exists to
+            // establish was not established.
         }
     }
 
     /**
-     * `DROP CHECK` on MySQL/MariaDB (`DROP CONSTRAINT` there requires MySQL 8.0.19+, while
-     * `DROP CHECK` works from the version that introduced CHECK constraints at all), `DROP
-     * CONSTRAINT` everywhere else that supports it. Mirrors the platform support in
-     * {@see self::buildExactlyOneNullCheck()}.
+     * `DROP CHECK` on MySQL (`DROP CONSTRAINT` there requires 8.0.19+, while `DROP CHECK` works
+     * from the version that introduced CHECK constraints at all). `DROP CONSTRAINT` everywhere
+     * else, including MariaDB: `MariaDBPlatform` is a sibling of `MySQLPlatform`, not a
+     * subclass — matching on `AbstractMySQLPlatform` alone treats MariaDB as MySQL, but MariaDB
+     * has never supported `DROP CHECK` and rejects it with a syntax error. Mirrors the platform
+     * support in {@see self::buildExactlyOneNullCheck()}.
      */
     private function dropClause(): string
     {
-        return $this->platform instanceof AbstractMySQLPlatform ? 'DROP CHECK' : 'DROP CONSTRAINT';
+        return $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof MariaDBPlatform
+            ? 'DROP CHECK'
+            : 'DROP CONSTRAINT';
     }
 
     private function platformSupportsCheckConstraints(): bool
