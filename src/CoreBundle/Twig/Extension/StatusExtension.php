@@ -30,6 +30,10 @@ use Twig\Environment;
  * makes the enum class an argument of the template call, and every template that
  * calls the function fails to compile.
  *
+ * Each function still accepts a `$tooltip` argument. The chip no longer renders a
+ * tooltip, so the value is ignored. The parameter stays so that an existing
+ * `invoice_label(status, 'text')` call in a template does not become a Twig error.
+ *
  * @see \SolidInvoice\CoreBundle\Tests\Twig\Extension\StatusExtensionTest
  */
 final readonly class StatusExtension
@@ -52,7 +56,7 @@ final readonly class StatusExtension
             );
         }
 
-        return $this->renderStatusLabel($environment, $status, $tooltip);
+        return $this->renderStatusLabel($environment, $status);
     }
 
     /**
@@ -61,7 +65,7 @@ final readonly class StatusExtension
     #[AsTwigFunction(name: 'quote_label', needsEnvironment: true, isSafe: ['html'])]
     public function renderQuoteStatusLabel(Environment $environment, ?QuoteStatus $status = null, ?string $tooltip = null): string | array
     {
-        return $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip);
+        return $this->renderStatusOrAll($environment, $status, QuoteStatus::class);
     }
 
     /**
@@ -70,7 +74,7 @@ final readonly class StatusExtension
     #[AsTwigFunction(name: 'payment_label', needsEnvironment: true, isSafe: ['html'])]
     public function renderPaymentStatusLabel(Environment $environment, ?PaymentStatus $status = null, ?string $tooltip = null): string | array
     {
-        return $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip);
+        return $this->renderStatusOrAll($environment, $status, PaymentStatus::class);
     }
 
     /**
@@ -79,7 +83,7 @@ final readonly class StatusExtension
     #[AsTwigFunction(name: 'client_label', needsEnvironment: true, isSafe: ['html'])]
     public function renderClientStatusLabel(Environment $environment, ?ClientStatus $status = null, ?string $tooltip = null): string | array
     {
-        return $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip);
+        return $this->renderStatusOrAll($environment, $status, ClientStatus::class);
     }
 
     /**
@@ -88,13 +92,13 @@ final readonly class StatusExtension
      *
      * @return string|array<string, string>
      */
-    private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass, ?string $tooltip = null): string | array
+    private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass): string | array
     {
         if (! $status instanceof HasStatusLabel) {
             return $this->getAllStatusLabels($environment, $enumClass);
         }
 
-        return $this->renderStatusLabel($environment, $status, $tooltip);
+        return $this->renderStatusLabel($environment, $status);
     }
 
     /**
@@ -114,7 +118,7 @@ final readonly class StatusExtension
         return $response;
     }
 
-    private function renderStatusLabel(Environment $environment, HasStatusLabel $status, ?string $tooltip = null): string
+    private function renderStatusLabel(Environment $environment, HasStatusLabel $status): string
     {
         // Translate the status at this single display chokepoint via a shared `status.*`
         // key (keyed by the enum's backing value), so the catalog stays the source of
@@ -128,9 +132,8 @@ final readonly class StatusExtension
             [
                 'entity' => [
                     'name' => $this->translator->trans('status.' . $key),
-                    'label' => $status->getColor(),
+                    'label' => $status->getVariant()->value,
                 ],
-                'tooltip' => $tooltip,
             ]
         );
     }

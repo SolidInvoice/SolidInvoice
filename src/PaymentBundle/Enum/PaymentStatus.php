@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Enum;
 
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\CoreBundle\Enum\StatusVariant;
 
 enum PaymentStatus: string implements HasStatusLabel
 {
@@ -46,20 +47,24 @@ enum PaymentStatus: string implements HasStatusLabel
         };
     }
 
-    public function getColor(): string
+    public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::Unknown => 'primary',
-            self::Failed => 'red',
-            self::Suspended => 'dark',
-            self::Expired => 'purple',
-            self::Pending => 'yellow',
-            self::Cancelled => 'indigo',
-            self::New => 'blue',
-            self::Captured => 'green',
-            self::Authorized => 'cyan',
-            self::Refunded => 'pink',
-            self::Credit => 'azure',
+            // The gateway state could not be read, so the money is unaccounted for.
+            // Neutral would hide the row, and nothing has actually failed.
+            self::Unknown => StatusVariant::Warning,
+            self::Failed => StatusVariant::Danger,
+            self::Suspended => StatusVariant::Warning,
+            self::Expired => StatusVariant::Danger,
+            self::Pending => StatusVariant::Warning,
+            self::Cancelled => StatusVariant::Neutral,
+            self::New => StatusVariant::Info,
+            self::Captured => StatusVariant::Success,
+            self::Authorized => StatusVariant::Info,
+            // A refund drops out of the captured total while the invoice stays Paid.
+            // This chip is the only on-screen sign that the money went back.
+            self::Refunded => StatusVariant::Warning,
+            self::Credit => StatusVariant::Info,
         };
     }
 }
