@@ -73,7 +73,7 @@
         "@tiptap/starter-kit": "^3.27.4",
         "baseline-browser-mapping": "^2.10.43",
         "caniuse-lite": "^1.0.30001805",
-        "intl-messageformat": "^11.2.11",
+        "intl-messageformat": "^12.1.2",
         "jquery": "^3.7.1",
         "regenerator-runtime": "^0.14.1",
         "sortablejs": "^1.15.7"
