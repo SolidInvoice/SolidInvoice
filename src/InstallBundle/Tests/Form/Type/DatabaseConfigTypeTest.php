@@ -24,7 +24,7 @@ use function sprintf;
 #[CoversClass(DatabaseConfigStep::class)]
 final class DatabaseConfigTypeTest extends FormTestCase
 {
-    private static function requirePdoDriver(string $driver): void
+    private function requirePdoDriver(string $driver): void
     {
         if (! in_array($driver, PDO::getAvailableDrivers(), true)) {
             self::markTestSkipped(sprintf('The "%s" PDO driver is not available.', $driver));
@@ -33,7 +33,7 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmit(): void
     {
-        self::requirePdoDriver('mysql');
+        $this->requirePdoDriver('mysql');
 
         $formData = [
             'driver' => 'mysql',
@@ -60,7 +60,7 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithPostgres(): void
     {
-        self::requirePdoDriver('pgsql');
+        $this->requirePdoDriver('pgsql');
 
         $formData = [
             'driver' => 'pgsql',
@@ -87,7 +87,7 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithMariaDB(): void
     {
-        self::requirePdoDriver('mysql');
+        $this->requirePdoDriver('mysql');
 
         $formData = [
             'driver' => 'mariadb',
@@ -114,7 +114,7 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithSQLite(): void
     {
-        self::requirePdoDriver('sqlite');
+        $this->requirePdoDriver('sqlite');
 
         $formData = [
             'driver' => 'sqlite',
@@ -132,7 +132,7 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithOptionalFields(): void
     {
-        self::requirePdoDriver('mysql');
+        $this->requirePdoDriver('mysql');
 
         $formData = [
             'driver' => 'mysql',
