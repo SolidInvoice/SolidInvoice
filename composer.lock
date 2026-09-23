@@ -9918,16 +9918,16 @@
         },
         {
             "name": "symfony/amazon-sqs-messenger",
-            "version": "v8.1.5",
+            "version": "v8.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amazon-sqs-messenger.git",
-                "reference": "8a0fdb641ba293b7d7b94f0e0e869e03988b084e"
+                "reference": "2417cdc388e564c6acf27bede004a1371cb3fa93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amazon-sqs-messenger/zipball/8a0fdb641ba293b7d7b94f0e0e869e03988b084e",
-                "reference": "8a0fdb641ba293b7d7b94f0e0e869e03988b084e",
+                "url": "https://api.github.com/repos/symfony/amazon-sqs-messenger/zipball/2417cdc388e564c6acf27bede004a1371cb3fa93",
+                "reference": "2417cdc388e564c6acf27bede004a1371cb3fa93",
                 "shasum": ""
             },
             "require": {
@@ -9972,7 +9972,7 @@
             "description": "Symfony Amazon SQS extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amazon-sqs-messenger/tree/v8.1.5"
+                "source": "https://github.com/symfony/amazon-sqs-messenger/tree/v8.1.7"
             },
             "funding": [
                 {
@@ -9992,7 +9992,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-14T13:31:31+00:00"
+            "time": "2026-09-14T17:47:24+00:00"
         },
         {
             "name": "symfony/asset",
@@ -12584,16 +12584,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v8.1.6",
+            "version": "v8.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "fe91dd1ddf09b61aa01e73d29907acbf1775c0a9"
+                "reference": "099aae7d3619bffb5e68b33dbbadf6649c6d49c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/fe91dd1ddf09b61aa01e73d29907acbf1775c0a9",
-                "reference": "fe91dd1ddf09b61aa01e73d29907acbf1775c0a9",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/099aae7d3619bffb5e68b33dbbadf6649c6d49c5",
+                "reference": "099aae7d3619bffb5e68b33dbbadf6649c6d49c5",
                 "shasum": ""
             },
             "require": {
@@ -12657,7 +12657,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v8.1.6"
+                "source": "https://github.com/symfony/http-client/tree/v8.1.7"
             },
             "funding": [
                 {
@@ -12677,7 +12677,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-30T14:03:40+00:00"
+            "time": "2026-09-08T13:39:13+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -14016,16 +14016,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v8.1.6",
+            "version": "v8.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "fbd6c30c6b71ca95713aa3592f5112d39f9c073d"
+                "reference": "90019bfcb5c2c3d9e44a18186e2381c261be1717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/fbd6c30c6b71ca95713aa3592f5112d39f9c073d",
-                "reference": "fbd6c30c6b71ca95713aa3592f5112d39f9c073d",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/90019bfcb5c2c3d9e44a18186e2381c261be1717",
+                "reference": "90019bfcb5c2c3d9e44a18186e2381c261be1717",
                 "shasum": ""
             },
             "require": {
@@ -14084,7 +14084,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v8.1.6"
+                "source": "https://github.com/symfony/messenger/tree/v8.1.7"
             },
             "funding": [
                 {
@@ -14104,7 +14104,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-30T01:03:44+00:00"
+            "time": "2026-09-14T17:47:24+00:00"
         },
         {
             "name": "symfony/microsoft-teams-notifier",
