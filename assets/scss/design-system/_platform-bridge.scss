@@ -1,0 +1,43 @@
+// assets/scss/design-system/_platform-bridge.scss
+
+// The only place this application writes a custom property that the vendor
+// stylesheet owns. _tokens.scss must never write one of these names.
+
+// Targets solidworx/platform c78a9ab5 (Tabler 1.4.0, $prefix: 'swp-').
+// Platform main has since dropped $prefix; Tabler 1.5 renames this namespace
+// to --tblr-*. When the lock moves, every name in THIS FILE changes prefix
+// and nothing else under assets/scss does.
+
+// This file must load after the _platform_ui entry. It does: CoreBundle
+// Layout/base.html.twig:12-15 emits _platform_ui then app.
+
+:root {
+    // Tabler: --swp-primary-fg: var(--swp-light) => #f9fafb, derived from its
+    // own blue at a 1.5:1 threshold. Pin it to ours.
+    --swp-primary-fg: var(--swp-on-primary);
+
+    // Tabler emits --swp-primary-darken twice: a literal from its own blue,
+    // then color-mix(..., transparent 20%) which resolves *lighter*, not
+    // darker. Neither is a darker green. Pin it.
+    --swp-primary-darken: var(--swp-primary-fill-hover);
+}
+
+.btn-primary {
+    --swp-btn-bg: var(--swp-primary-fill);
+    --swp-btn-border-color: var(--swp-primary-fill);
+    --swp-btn-hover-bg: var(--swp-primary-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-primary-fill-hover);
+    --swp-btn-active-bg: var(--swp-primary-fill-active);
+    --swp-btn-active-border-color: var(--swp-primary-fill-active);
+}
+
+.btn-outline-primary,
+.btn-outline.btn-primary {
+    // SOL-176 (platform bridge PR #2862) introduces --swp-primary-text but is
+    // still open/unmerged on 3.1.x. Fall back to --swp-primary-dark so this
+    // resolves correctly whether or not that PR has landed yet - see SOL-184.
+    --swp-btn-color: var(--swp-primary-text, var(--swp-primary-dark));
+    --swp-btn-hover-bg: var(--swp-primary-fill);
+    --swp-btn-active-bg: var(--swp-primary-fill-hover);
+    --swp-btn-active-border-color: var(--swp-primary-fill-hover);
+}

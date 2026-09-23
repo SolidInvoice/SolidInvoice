@@ -9,5 +9,8 @@
 // Core design tokens (colors, spacing, shadows, etc.)
 @import 'tokens';
 
+// Platform bridge - custom properties the vendor stylesheet reads
+@import 'platform-bridge';
+
 // Typography system
 @import 'typography';

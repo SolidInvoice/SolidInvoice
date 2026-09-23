@@ -168,6 +168,9 @@ A slate-and-paper palette with a single warm-green accent. The neutral scale car
 ### Primary
 
 - **Trust Green** (`#2e963a` / oklch(57.6% 0.156 142)): The single accent. Used on primary CTAs ("Create Invoice", "Send", "Record Payment"), active nav states, "Paid" badges, focus borders on form fields, and links. A confident, slightly muted forest green — money-positive without being neon. Variants: `primary-hover` (#268032), `primary-dark` (#1f6c29) for active states, `primary-light` (#e8f5e9) for selected-row tints and success alert backgrounds, `primary-lighter` (#f1f9f2) for ambient hover surfaces.
+- **On Primary** (`#f9fafb`): The label color for text and icons on a Trust Green fill. Not `#ffffff` — The Tinted Neutrals Rule prohibits pure white as text. Tabler derives its own button label from its build-time blue at a 1.5:1 threshold; SolidInvoice overrides it because a button's label color is a design decision, not a derived one.
+- **Primary Darker** (`#17591f`): The bottom of the green ramp. Used only as the primary button's pressed (`:active`) fill. 8.09:1 under `on-primary`.
+- **Primary Fill Ramp** (`primary-fill` = `primary-hover`, `primary-fill-hover` = `primary-dark`, `primary-fill-active` = `primary-darker`): The primary *button* takes its fill from one step below `primary` at rest, because Trust Green itself does not carry a legible label (`on-primary` on `primary` measures 3.63:1, failing WCAG AA). Trust Green (`primary`) is untouched everywhere else — rings, borders, accents, icon fills.
 
 ### Secondary
 
@@ -208,6 +211,8 @@ A 10-step slate ramp. Every neutral is tinted cool, not pure gray.
 **The Money-Color Rule.** Color on money is informational, never decorative. Green amounts mean "Paid". Red amounts mean "Overdue". Black/text-primary amounts mean "neutral" (Draft, Pending, Sent) — this is the default and the common case. A green total without a "Paid" label is wrong — color alone is never the carrier of meaning.
 
 **The Legible Status Rule.** Status colors are fills, not text. `success`, `danger`, `warning`, and `info` are tuned for chip backgrounds and icon fills, and none of them clears 4.5:1 as text — on white or on their own `-light` tint. Status *text* uses the `-dark` step (`success-dark`, `danger-dark`). This matters most on money: an amount is the one value in the product that must never be hard to read, so the `.money` component binds its colors to AA-safe steps on every surface rather than to the raw status colors.
+
+**The Fill-Label Rule.** A light fill takes a dark label. A saturated mid fill (like Trust Green) does not carry a legible light label at its base value — it takes a light label and shifts one step down its own ramp instead. This is why the primary button's fill is `primary-fill` (`primary-hover`) rather than `primary` itself, and why Warm Amber's white-on-`#f0a015` pairing (2.06:1, §5) is a non-conformance rather than the pattern to copy.
 
 *Known non-conformance:* the chip variants in §5 still specify raw status text on `-light` tints (measured: Paid 2.24:1, Overdue 3.08:1, Warning 1.93:1, Info 3.01:1 — all fail). Chips were out of scope for the pass that introduced this rule. Repointing Paid and Overdue chips to `success-dark` / `danger-dark` clears them (4.84:1 and 5.30:1); Warning and Info need `-dark` steps that do not exist yet.
 
@@ -265,8 +270,17 @@ Soft and approachable. Generous radii, gentle shadows, restrained color. Buttons
 ### Buttons
 
 - **Shape:** Rounded with `radius-md` (8px). Buttons are never pill-shaped except when carrying icon-only actions on dense toolbars.
-- **Primary:** Trust Green background (`#2e963a`), white text, 10px × 16px padding, weight 500, `shadow-xs` at rest. Hover shifts background to `primary-hover` (`#268032`). Focus adds the green halo ring. Active uses `primary-dark` (`#1f6c29`).
-- **Secondary:** Warm Amber background (`#f0a015`), white text. Same shape rules. Used for "Save & Send", non-primary actions in the same flow as primary.
+- **Primary:** 10px × 16px padding, weight 500, `shadow-xs` at rest. The label is always `on-primary` (`#f9fafb`); the fill shifts one step down the green ramp per state so the label stays AA-legible — Trust Green itself does not carry a legible label (3.63:1, see The Fill-Label Rule). Focus adds the green halo ring.
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `primary-fill` (#268032) | `on-primary` (#f9fafb) | 4.77:1 |
+  | Hover | `primary-fill-hover` (#1f6c29) | `on-primary` (#f9fafb) | 6.21:1 |
+  | Active | `primary-fill-active` (#17591f) | `on-primary` (#f9fafb) | 8.09:1 |
+  | Disabled | `primary-fill` (#268032) | `on-primary` (#f9fafb) | 4.77:1 — exempt from 1.4.3 |
+
+- **Outline:** Transparent background, 1px `primary` (#2e963a) border, `primary-dark` (#1f6c29) text at rest — Trust Green itself fails as text (3.79:1 on surface, 3.50:1 on body-bg). Hover and active fill solid with `primary-fill` / `primary-fill-hover` and swap the label to `on-primary` (4.77:1 / 6.21:1). The border stays Trust Green in every state; only the fill and label shift. This is the most common button in the product.
+- **Secondary:** Warm Amber background (`#f0a015`), white text. Same shape rules. Used for "Save & Send", non-primary actions in the same flow as primary. *Known non-conformance:* white on Warm Amber measures 2.06:1 and fails WCAG AA (1.4.3). Per The Fill-Label Rule this needs a dark label, not a fill change; not yet ruled — pending follow-up.
 - **Ghost / Tertiary:** Transparent background, `text-primary` color, 1px transparent border that becomes `border` on hover. Hover background shifts to `surface-hover`. Used for "Cancel", row-action menus, secondary nav.
 - **Destructive:** Danger background (`#ef4444`), white text, used only on destructive confirmations ("Delete invoice"). Never on the primary flow.
 
