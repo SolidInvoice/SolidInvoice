@@ -16,6 +16,9 @@ namespace SolidInvoice\EInvoiceBundle\Validation;
 use SolidInvoice\EInvoiceBundle\Enum\ValidationStage;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileInterface;
 
+/**
+ * @see \SolidInvoice\EInvoiceBundle\Tests\Validation\ValidatorRegistryTest
+ */
 final readonly class ValidatorRegistry
 {
     /**
@@ -31,7 +34,7 @@ final readonly class ValidatorRegistry
      */
     public function all(): array
     {
-        return is_array($this->validators) ? array_values($this->validators) : iterator_to_array($this->validators, false);
+        return iterator_to_array($this->validators, false);
     }
 
     /**
