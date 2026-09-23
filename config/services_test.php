@@ -12,6 +12,8 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
+use SolidInvoice\EInvoiceBundle\Validation\ValidatorRegistry;
 use SolidInvoice\InstallBundle\Listener\UpgradeListener;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFeatureRestrictedExtension;
@@ -57,6 +59,8 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $services->alias('test.' . FeatureGate::class, FeatureGate::class);
     $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class);
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
+    $services->alias('test.' . ProfileRegistry::class, ProfileRegistry::class);
+    $services->alias('test.' . ValidatorRegistry::class, ValidatorRegistry::class);
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when the app mode is 'saas'. Mirror the same gate from bundles.php so
