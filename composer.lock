@@ -12584,16 +12584,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v8.1.6",
+            "version": "v8.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "fe91dd1ddf09b61aa01e73d29907acbf1775c0a9"
+                "reference": "099aae7d3619bffb5e68b33dbbadf6649c6d49c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/fe91dd1ddf09b61aa01e73d29907acbf1775c0a9",
-                "reference": "fe91dd1ddf09b61aa01e73d29907acbf1775c0a9",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/099aae7d3619bffb5e68b33dbbadf6649c6d49c5",
+                "reference": "099aae7d3619bffb5e68b33dbbadf6649c6d49c5",
                 "shasum": ""
             },
             "require": {
@@ -12657,7 +12657,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v8.1.6"
+                "source": "https://github.com/symfony/http-client/tree/v8.1.7"
             },
             "funding": [
                 {
@@ -12677,7 +12677,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-30T14:03:40+00:00"
+            "time": "2026-09-08T13:39:13+00:00"
         },
         {
             "name": "symfony/http-foundation",
