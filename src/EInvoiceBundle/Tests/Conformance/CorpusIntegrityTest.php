@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Tests\Conformance;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusEntry;
-use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusKind;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusManifest;
-use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusNotFetchedException;
 use function file_get_contents;
 use function sprintf;
 
@@ -32,10 +29,6 @@ use function sprintf;
  * This test needs no validation engine.
  */
 #[Group('conformance')]
-#[CoversClass(CorpusEntry::class)]
-#[CoversClass(CorpusKind::class)]
-#[CoversClass(CorpusManifest::class)]
-#[CoversClass(CorpusNotFetchedException::class)]
 final class CorpusIntegrityTest extends TestCase
 {
     /**
