@@ -175,6 +175,8 @@ A slate-and-paper palette with a single warm-green accent. The neutral scale car
 ### Secondary
 
 - **Warm Amber** (`#f0a015`): Used *sparingly* for non-primary attention — secondary buttons, "Sent" or "Pending" badges, secondary CTA accents on marketing-adjacent surfaces. Never paired with primary green at high saturation on the same screen; the two are alternates, not partners.
+- **Secondary Text** (`#90600d`): Warm Amber rendered as text — the outline/ghost rest label and border. `secondary-dark` (`#c8820e`) is a fill step, not a text step, and fails as text at 3.16:1 / 2.91:1. Named `-text` rather than `-dark` to match `primary-text`, because Warm Amber is a brand accent, not a status colour. 5.43:1 on surface, 5.02:1 on body-bg.
+- **Secondary Fill Ramp** (`secondary-fill` = `secondary`, `secondary-fill-hover` = `secondary-hover`, `secondary-fill-active` = `secondary-dark`): The secondary button's three fill steps. All three already existed as tokens; nothing new. See The Fill-Label Rule.
 
 ### Tertiary (Semantic / Status)
 
@@ -184,8 +186,8 @@ They are **fill** colors, not **text** colors. At full saturation none of them c
 
 - **Success** (`#10b981`): Distinct from primary green. Used on payment confirmation toasts, "Settled" states, and positive deltas. Pair with `success-light` (#d1fae5) for backgrounds. For success-colored text use **`success-dark`** (`#047857`, emerald-700 — 5.48:1 on surface, 5.06:1 on body-bg).
 - **Danger** (`#ef4444`): Overdue invoices, destructive confirmations, validation errors. Pair with `danger-light` (#fee2e2). For danger-colored text use **`danger-dark`** (`#b91c1c`, red-700 — 6.47:1 on surface, 5.97:1 on body-bg).
-- **Warning** (`#f59e0b`): "Due soon", soft alerts, partial-payment hints. Pair with `warning-light` (#fef3c7).
-- **Info** (`#3b82f6`): Neutral information, "Draft" badges, system messages. Pair with `info-light` (#dbeafe).
+- **Warning** (`#f59e0b`): "Due soon", soft alerts, partial-payment hints. Pair with `warning-light` (#fef3c7). For warning-colored text use **`warning-dark`** (`#92400e`, amber-800 — 7.09:1 on surface, 6.54:1 on body-bg).
+- **Info** (`#3b82f6`): Neutral information, "Draft" badges, system messages. Pair with `info-light` (#dbeafe). For info-colored text use **`info-dark`** (`#1d4ed8`, blue-700 — 6.70:1 on surface, 6.19:1 on body-bg).
 
 ### Neutral
 
@@ -212,9 +214,9 @@ A 10-step slate ramp. Every neutral is tinted cool, not pure gray.
 
 **The Legible Status Rule.** Status colors are fills, not text. `success`, `danger`, `warning`, and `info` are tuned for chip backgrounds and icon fills, and none of them clears 4.5:1 as text — on white or on their own `-light` tint. Status *text* uses the `-dark` step (`success-dark`, `danger-dark`). This matters most on money: an amount is the one value in the product that must never be hard to read, so the `.money` component binds its colors to AA-safe steps on every surface rather than to the raw status colors.
 
-**The Fill-Label Rule.** A light fill takes a dark label. A saturated mid fill (like Trust Green) does not carry a legible light label at its base value — it takes a light label and shifts one step down its own ramp instead. This is why the primary button's fill is `primary-fill` (`primary-hover`) rather than `primary` itself, and why Warm Amber's white-on-`#f0a015` pairing (2.06:1, §5) is a non-conformance rather than the pattern to copy.
+**The Fill-Label Rule.** A filled control's label is chosen from the fill's lightness, and it never changes across states: a light fill takes `text-primary` (`#1e293b`); a saturated mid fill takes `on-primary` / `on-{name}` (`#f9fafb`) and starts one step down its own ramp. Every step of that ramp must hold the one label at 4.5:1, measured — where the ramp runs out of legible steps, the ramp stops, not the label: a control that changes label color between rest and press has a bug, not a state. This is why the primary button's fill is `primary-fill` (`primary-hover`) rather than `primary` itself, and why the secondary, warning, success, danger and info buttons each take their own `on-{name}` label over a `{name}-fill` ramp rather than the raw status colour — see §5.
 
-*Known non-conformance:* the chip variants in §5 still specify raw status text on `-light` tints (measured: Paid 2.24:1, Overdue 3.08:1, Warning 1.93:1, Info 3.01:1 — all fail). Chips were out of scope for the pass that introduced this rule. Repointing Paid and Overdue chips to `success-dark` / `danger-dark` clears them (4.84:1 and 5.30:1); Warning and Info need `-dark` steps that do not exist yet.
+*Known non-conformance, closed:* the chip variants in §5 used to specify raw status text on `-light` tints (measured: Paid 2.24:1, Overdue 3.08:1, Warning 1.93:1, Info 3.01:1 — all failed). The `.status-chip` component now binds all four to their `-dark` step instead — Paid `success-dark` (4.84:1), Overdue `danger-dark` (5.30:1), Warning `warning-dark` (6.37:1 on its own tint), Info `info-dark` (5.49:1) — closing the non-conformance this rule originally flagged.
 
 ## 3. Typography
 
@@ -279,10 +281,64 @@ Soft and approachable. Generous radii, gentle shadows, restrained color. Buttons
   | Active | `primary-fill-active` (#17591f) | `on-primary` (#f9fafb) | 8.09:1 |
   | Disabled | `primary-fill` (#268032) | `on-primary` (#f9fafb) | 4.77:1 — exempt from 1.4.3 |
 
-- **Outline:** Transparent background, 1px `primary` (#2e963a) border, `primary-dark` (#1f6c29) text at rest — Trust Green itself fails as text (3.79:1 on surface, 3.50:1 on body-bg). Hover and active fill solid with `primary-fill` / `primary-fill-hover` and swap the label to `on-primary` (4.77:1 / 6.21:1). The border stays Trust Green in every state; only the fill and label shift. This is the most common button in the product.
-- **Secondary:** Warm Amber background (`#f0a015`), white text. Same shape rules. Used for "Save & Send", non-primary actions in the same flow as primary. *Known non-conformance:* white on Warm Amber measures 2.06:1 and fails WCAG AA (1.4.3). Per The Fill-Label Rule this needs a dark label, not a fill change; not yet ruled — pending follow-up.
-- **Ghost / Tertiary:** Transparent background, `text-primary` color, 1px transparent border that becomes `border` on hover. Hover background shifts to `surface-hover`. Used for "Cancel", row-action menus, secondary nav.
-- **Destructive:** Danger background (`#ef4444`), white text, used only on destructive confirmations ("Delete invoice"). Never on the primary flow.
+- **Outline:** Transparent background, 1px border, rest label at the variant's text step. Hover and active fill solid with that variant's `fill` / `fill-hover` step and swap the label to the solid button's label (see each variant's state table above/below). This is the most common button treatment in the product.
+
+  | Variant | Rest label | Ratio (surface / body-bg) | Rest border |
+  | --- | --- | --- | --- |
+  | Primary | `primary-dark` (#1f6c29) | 3.79:1 / 3.50:1 | `primary`, raw fill — passes 1.4.11 |
+  | Secondary | `secondary-text` (#90600d) | 5.43:1 / 5.02:1 | `secondary-text` — raw fill fails 1.4.11 at 2.16:1 / 1.99:1 |
+  | Warning | `warning-dark` (#92400e) | 7.09:1 / 6.54:1 | `warning-dark` — raw fill fails 1.4.11 at 2.15:1 / 1.98:1 |
+  | Success | `success-dark` (#047857) | 5.48:1 / 5.06:1 | `success-dark` — raw fill fails 1.4.11 at 2.54:1 / 2.34:1 |
+  | Danger | `danger-dark` (#b91c1c) | 6.47:1 / 5.97:1 | `danger`, raw fill — passes 1.4.11 at 3.76:1 / 3.47:1 |
+  | Info | `info-dark` (#1d4ed8) | 6.70:1 / 6.19:1 | `info`, raw fill — passes 1.4.11 at 3.68:1 / 3.39:1 |
+
+  The border only moves off the raw fill where it fails SC 1.4.11 as a non-text element: Secondary, Warning and Success. Danger and Info keep the raw accent as their border — it passes, and the border is the accent the user recognises.
+
+- **Secondary:** Same shape rules as Primary. The label is always `on-secondary` (`#1e293b`); the fill shifts one step down the amber ramp per state so the label stays AA-legible. Used for "Save & Send", non-primary actions in the same flow as primary.
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `secondary-fill` (#f0a015) | `on-secondary` (#1e293b) | 6.79:1 |
+  | Hover | `secondary-fill-hover` (#d89012) | `on-secondary` (#1e293b) | 5.52:1 |
+  | Active | `secondary-fill-active` (#c8820e) | `on-secondary` (#1e293b) | 4.64:1 |
+  | Disabled | `secondary-fill` (#f0a015) | `on-secondary` (#1e293b) | 6.79:1 — exempt from 1.4.3 |
+
+- **Warning:** Same shape rules as Primary. The label is always `on-warning` (`#1e293b`).
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `warning-fill` (#f59e0b) | `on-warning` (#1e293b) | 6.81:1 |
+  | Hover | `warning-fill-hover` (#e78b08) | `on-warning` (#1e293b) | 5.64:1 |
+  | Active | `warning-fill-active` (#d97706) | `on-warning` (#1e293b) | 4.59:1 |
+  | Disabled | `warning-fill` (#f59e0b) | `on-warning` (#1e293b) | 6.81:1 — exempt from 1.4.3 |
+
+- **Success:** Same shape rules as Primary. The label is always `on-success` (`#1e293b`). The ramp is shallow by necessity: `success-hover` (`#059669`) fails as a label under either `on-success` or `on-primary` (3.88:1 / 3.61:1) and cannot be used as a fill.
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `success-fill` (#10b981) | `on-success` (#1e293b) | 5.77:1 |
+  | Hover | `success-fill-hover` (#0cab77) | `on-success` (#1e293b) | 4.95:1 |
+  | Active | `success-fill-active` (#09a473) | `on-success` (#1e293b) | 4.58:1 |
+  | Disabled | `success-fill` (#10b981) | `on-success` (#1e293b) | 5.77:1 — exempt from 1.4.3 |
+
+- **Ghost / Tertiary:** Transparent background, 1px transparent border that becomes `border` on hover. The neutral ghost (`text-primary` label, `surface-hover` hover background) is used for "Cancel", row-action menus, secondary nav. A ghost variant also exists per status colour (`btn-ghost-{name}`): same label and hover/active fill as that variant's Outline row above, minus the border.
+- **Destructive:** Same shape rules as Primary, used only on destructive confirmations ("Delete invoice"). Never on the primary flow. The label is always `on-danger` (`#f9fafb`); the fill starts one step down the red ramp because the raw `danger` colour does not carry a legible light label (3.60:1).
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `danger-fill` (#dc2626) | `on-danger` (#f9fafb) | 4.62:1 |
+  | Hover | `danger-fill-hover` (#b91c1c) | `on-danger` (#f9fafb) | 6.19:1 |
+  | Active | `danger-fill-active` (#991b1b) | `on-danger` (#f9fafb) | 7.95:1 |
+  | Disabled | `danger-fill` (#dc2626) | `on-danger` (#f9fafb) | 4.62:1 — exempt from 1.4.3 |
+
+- **Info:** Same shape rules as Primary. The label is always `on-info` (`#f9fafb`); the fill starts one step down the blue ramp for the same reason as Destructive. `info-dark` does double duty here: it is both the AA-safe info text step (§2) and the hover fill. No solid `btn-info` renders in the product today; the ramp exists so the rule holds uniformly.
+
+  | State | Fill | Label | Ratio |
+  | --- | --- | --- | --- |
+  | Rest | `info-fill` (#2563eb) | `on-info` (#f9fafb) | 4.95:1 |
+  | Hover | `info-fill-hover` (#1d4ed8) | `on-info` (#f9fafb) | 6.41:1 |
+  | Active | `info-fill-active` (#1e40af) | `on-info` (#f9fafb) | 8.35:1 |
+  | Disabled | `info-fill` (#2563eb) | `on-info` (#f9fafb) | 4.95:1 — exempt from 1.4.3 |
 
 ### Chips / Badges
 

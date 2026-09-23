@@ -48,6 +48,21 @@
     --swp-secondary-light: #fff8e1;
     --swp-secondary-lighter: #fffcf0;
 
+    // The label on a Warm Amber fill. Constant across every state - see The
+    // Fill-Label Rule.
+    --swp-on-secondary: var(--swp-text-primary);  // #1e293b
+
+    // Warm Amber rendered as text: the outline/ghost rest label and border.
+    // --swp-secondary-dark is a fill step, not a text step - 3.16:1 / 2.91:1.
+    // Named -text rather than -dark to match --swp-primary-text, because
+    // secondary is a brand accent, not a status colour.
+    --swp-secondary-text: #90600d;   // 5.43:1 on surface, 5.02:1 on body-bg   NEW
+
+    // The secondary button's fill ramp. Three legible steps already exist.
+    --swp-secondary-fill:        var(--swp-secondary);        // #f0a015 - 6.79:1
+    --swp-secondary-fill-hover:  var(--swp-secondary-hover);  // #d89012 - 5.52:1
+    --swp-secondary-fill-active: var(--swp-secondary-dark);   // #c8820e - 4.64:1
+
     // -------------------------------------------------------------------------
     // Neutral Colors (Slate-based gray scale for modern feel)
     // -------------------------------------------------------------------------
@@ -78,6 +93,16 @@
     --swp-success-light: #d1fae5;
     --swp-success-lighter: #ecfdf5;
 
+    // The label on a success fill. Constant across every state.
+    --swp-on-success: var(--swp-text-primary);  // #1e293b
+
+    // The success button's fill ramp. --swp-success-hover fails as a label
+    // under either --swp-on-success or --swp-on-primary (3.88:1 / 3.61:1), so
+    // the ramp cannot pass through it - both new steps sit above that dead zone.
+    --swp-success-fill:        var(--swp-success);  // #10b981 - 5.77:1
+    --swp-success-fill-hover:  #0cab77;             //         - 4.95:1  NEW
+    --swp-success-fill-active: #09a473;             //         - 4.58:1  NEW
+
     // Danger
     // NOTE: `danger` (3.76:1 on surface) is a fill colour, not a text colour.
     // Use `danger-dark` for danger-coloured *text*.
@@ -87,6 +112,18 @@
     --swp-danger-dark: #b91c1c;    // Red-700 - AA-safe danger text (6.47:1 on surface, 5.97:1 on body-bg)
     --swp-danger-light: #fee2e2;
     --swp-danger-lighter: #fef2f2;
+
+    // The label on a danger fill. Constant across every state.
+    --swp-on-danger: var(--swp-on-primary);  // #f9fafb
+
+    // Bottom of the red ramp. The danger button's pressed state.
+    --swp-danger-darker: #991b1b;   // Red-800 - 7.95:1 under --swp-on-danger   NEW
+
+    // The danger button's fill ramp. A mid fill, so it starts one step down
+    // its ramp under a light label - same shape as --swp-primary-fill.
+    --swp-danger-fill:        var(--swp-danger-hover);   // #dc2626 - 4.62:1
+    --swp-danger-fill-hover:  var(--swp-danger-dark);    // #b91c1c - 6.19:1
+    --swp-danger-fill-active: var(--swp-danger-darker);  // #991b1b - 7.95:1
 
     // Warning
     // NOTE: `warning` (2.15:1 on surface) is a fill colour, not a text colour.
@@ -98,6 +135,16 @@
     --swp-warning-light: #fef3c7;
     --swp-warning-lighter: #fffbeb;
 
+    // The label on a warning fill. Constant across every state.
+    --swp-on-warning: var(--swp-text-primary);  // #1e293b
+
+    // The warning button's fill ramp. The ramp jumps straight from 6.81:1 to
+    // 4.59:1 with nothing between, so the hover step is a new literal on the
+    // same hue.
+    --swp-warning-fill:        var(--swp-warning);        // #f59e0b - 6.81:1
+    --swp-warning-fill-hover:  #e78b08;                   //         - 5.64:1  NEW
+    --swp-warning-fill-active: var(--swp-warning-hover);  // #d97706 - 4.59:1
+
     // Info
     --swp-info: #3b82f6;
     --swp-info-rgb: 59, 130, 246;
@@ -105,6 +152,19 @@
     --swp-info-dark: #1d4ed8;      // Blue-700 - AA-safe info text (6.70:1 on surface, 6.19:1 on body-bg, 5.49:1 on info-light)
     --swp-info-light: #dbeafe;
     --swp-info-lighter: #eff6ff;
+
+    // The label on an info fill. Constant across every state.
+    --swp-on-info: var(--swp-on-primary);  // #f9fafb
+
+    // Bottom of the blue ramp. The info button's pressed state.
+    --swp-info-darker: #1e40af;   // Blue-800 - 8.35:1 under --swp-on-info   NEW
+
+    // The info button's fill ramp. A mid fill, so it starts one step down its
+    // ramp under a light label. --swp-info-dark does double duty: it is both
+    // the AA-safe info text step above and a legible hover fill here.
+    --swp-info-fill:        var(--swp-info-hover);   // #2563eb - 4.95:1
+    --swp-info-fill-hover:  var(--swp-info-dark);    // #1d4ed8 - 6.41:1
+    --swp-info-fill-active: var(--swp-info-darker);  // #1e40af - 8.35:1
 
     // -------------------------------------------------------------------------
     // Surface Colors
