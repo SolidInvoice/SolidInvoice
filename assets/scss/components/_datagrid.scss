@@ -561,7 +561,7 @@
 
     .datagrid-export-option:hover &,
     .datagrid-export-option:focus-visible & {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         border-color: var(--swp-primary-light);
         background: var(--swp-primary-lighter);
     }
@@ -786,7 +786,7 @@
     }
 
     &.sorted {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 
     .datagrid-sort-icon {
@@ -839,7 +839,7 @@
     }
 
     &:hover {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         background: var(--swp-primary-lighter);
     }
 
@@ -849,7 +849,7 @@
     }
 
     &.action-edit:hover {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         background: var(--swp-primary-lighter);
     }
 
@@ -1216,7 +1216,7 @@ tbody tr:hover .datagrid-more-btn,
         }
 
         &.active .page-link {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             background: var(--swp-primary-lighter);
             border-color: var(--swp-primary-light);
             font-weight: var(--swp-font-medium);

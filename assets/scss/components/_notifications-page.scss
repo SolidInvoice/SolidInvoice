@@ -33,7 +33,7 @@
     height: 40px;
     background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.15) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
     border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     flex-shrink: 0;
 }
 
@@ -81,7 +81,7 @@
 
     svg {
         flex-shrink: 0;
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 }
 
@@ -114,7 +114,7 @@
     margin: 0 0 var(--swp-space-2);
 
     svg {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         flex-shrink: 0;
     }
 }
@@ -166,7 +166,7 @@
     height: 36px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.08) 100%);
     border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     flex-shrink: 0;
 }
 
@@ -251,7 +251,7 @@
         .form-check-input:checked + .form-check-label {
             background: var(--swp-primary-lighter);
             border-color: var(--swp-primary);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             font-weight: var(--swp-font-semibold);
         }
     }
