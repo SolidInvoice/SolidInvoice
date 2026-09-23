@@ -43,7 +43,7 @@
     height: 56px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .billing-form-title {
@@ -149,7 +149,7 @@
         transition: all var(--swp-transition-fast);
 
         &:hover {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             background: var(--swp-primary-light);
         }
     }
@@ -215,7 +215,7 @@
 
 .selected-client-change {
     font-size: var(--swp-text-sm);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
 
     &:hover {
@@ -319,7 +319,7 @@
     height: 36px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .billing-items-title {
@@ -696,7 +696,7 @@
             .item-total-value {
                 font-size: var(--swp-text-lg);
                 font-weight: var(--swp-font-semibold);
-                color: var(--swp-primary);
+                color: var(--swp-primary-text);
             }
         }
     }
@@ -748,7 +748,7 @@
     width: 100%;
     gap: var(--swp-space-2);
     font-weight: var(--swp-font-medium);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     background: transparent;
     border: 2px dashed var(--swp-border);
     border-radius: var(--swp-radius-md);
@@ -848,7 +848,7 @@
     font-size: var(--swp-text-xs);
     font-weight: var(--swp-font-medium);
     line-height: 1.4;
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     background: transparent;
     border: 1px dashed var(--swp-border);
     border-radius: var(--swp-radius-sm);
@@ -1214,10 +1214,10 @@
 
         &:hover {
             background: var(--swp-primary-lighter);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
 
             svg {
-                color: var(--swp-primary);
+                color: var(--swp-primary-text);
             }
         }
     }
@@ -1305,7 +1305,7 @@
     .item-total-value {
         font-size: var(--swp-text-lg);
         font-weight: var(--swp-font-semibold);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 }
 
@@ -1585,7 +1585,7 @@
         height: 36px;
         background: var(--swp-primary-light);
         border-radius: var(--swp-radius-md);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         flex-shrink: 0;
     }
 
@@ -1596,7 +1596,7 @@
 
         strong {
             font-weight: var(--swp-font-semibold);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
     }
 }
@@ -1665,7 +1665,7 @@
                     border-radius: var(--swp-radius-sm);
                     font-family: var(--swp-font-mono);
                     font-size: var(--swp-text-xs);
-                    color: var(--swp-primary);
+                    color: var(--swp-primary-text);
                     font-weight: var(--swp-font-medium);
                     white-space: nowrap;
                 }
@@ -1782,7 +1782,7 @@
     height: 32px;
     background: var(--swp-primary-lighter);
     border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     flex-shrink: 0;
 }
 
@@ -1831,10 +1831,10 @@
     transition: color var(--swp-transition-fast);
 
     &:hover {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
 
         .generated-invoice-number {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
     }
 }
@@ -1881,7 +1881,7 @@
     margin-top: var(--swp-space-2);
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-medium);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
     background: var(--swp-primary-lighter);
     border: 1px solid rgba(var(--swp-primary-rgb), 0.2);

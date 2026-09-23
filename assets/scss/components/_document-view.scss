@@ -51,7 +51,7 @@
     height: 56px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, var(--swp-primary-lighter) 100%);
     border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .doc-view-title-group {
@@ -294,7 +294,7 @@
     }
 
     a.detail-value {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
 
         &:hover {
             color: var(--swp-primary-dark);
@@ -621,7 +621,7 @@
     height: 32px;
     background: var(--swp-primary-light);
     border-radius: var(--swp-radius-sm);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .doc-sidebar-card-success .doc-sidebar-card-icon {
@@ -715,7 +715,7 @@
 .client-name {
     font-size: var(--swp-text-base, 1rem);
     font-weight: var(--swp-font-semibold, 600);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
 
     &:hover {
@@ -825,7 +825,7 @@
     gap: var(--swp-space-2);
     font-size: var(--swp-text-sm, 0.875rem);
     font-weight: var(--swp-font-medium, 500);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
 
     &:hover {

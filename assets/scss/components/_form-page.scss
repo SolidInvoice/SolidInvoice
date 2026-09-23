@@ -61,7 +61,7 @@
     height: 56px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     flex-shrink: 0;
 
     &--security {
@@ -137,7 +137,7 @@
     height: 40px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.1) 100%);
     border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     flex-shrink: 0;
 
     &--security {
