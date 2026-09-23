@@ -78,13 +78,20 @@ final class Version30100_7Test extends KernelTestCase
             $params = $params['primary'];
         }
 
+        // dama/doctrine-test-bundle's StaticDriver keys its cached connection on
+        // dama.connection_key alone and ignores dbname, so copying it here would hand back the
+        // shared, already-in-transaction application test connection instead of a genuinely
+        // separate one to the throwaway database. dbname_suffix is DAMA's own param and has no
+        // meaning on a connection it does not manage.
+        unset($params['dama.connection_key'], $params['dbname_suffix']);
+
         $this->databaseName = 'solidinvoice_version30100_7_' . bin2hex(random_bytes(4));
 
         $adminParams = $params;
         unset($adminParams['dbname']);
         $adminParams['dbname'] = $platform instanceof PostgreSQLPlatform
             ? ($params['default_dbname'] ?? 'postgres')
-            : 'information_schema';
+            : 'mysql';
 
         $this->adminConnection = DriverManager::getConnection($adminParams, $appConnection->getConfiguration());
         $this->adminConnection->createSchemaManager()->createDatabase(
@@ -318,15 +325,27 @@ final class Version30100_7Test extends KernelTestCase
     }
 
     /**
+     * `DbalExecutor` hands `preDown()` a lazy `Schema` proxy ({@see \Doctrine\Migrations\Provider\LazySchemaDiffProvider})
+     * that is not actually introspected from the database until something reads it — which
+     * `Version30100_7::preDown()` never does, since it drops the inbound foreign keys straight
+     * through the connection instead of mutating the `Schema` it is given. So by the time
+     * `fromSchema` is finally introspected for the `down()` diff, `preDown()`'s DDL has already
+     * committed and the dropped foreign keys are already gone from it. Introspecting only after
+     * `preDown()` has run reproduces that ordering; introspecting before it — the previous
+     * version of this method — hands the diff a `fromSchema` that still has the foreign keys
+     * `preDown()` already dropped for real, so the diff emits a second, now-invalid `DROP
+     * CONSTRAINT`/`DROP FOREIGN KEY` for each of them.
+     *
      * @throws Exception
      */
     private function applyDown(): void
     {
+        $migration = $this->migration();
+        $migration->preDown($this->connection->createSchemaManager()->introspectSchema());
+
         $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
         $toSchema = clone $fromSchema;
 
-        $migration = $this->migration();
-        $migration->preDown($toSchema);
         $migration->down($toSchema);
         $this->executeDiff($fromSchema, $toSchema);
     }
@@ -350,14 +369,27 @@ final class Version30100_7Test extends KernelTestCase
     }
 
     /**
+     * Scoped to the current database/schema for the same reason {@see Version30100_7::constraintExists()}
+     * is: `information_schema.check_constraints` spans every schema the connection user can see
+     * on MariaDB, and every schema in the current database on PostgreSQL, so an unscoped lookup
+     * can return another database's same-named constraint instead of this test's own throwaway
+     * one — for example another `Version30100_7Test` throwaway database left over on a shared
+     * MariaDB instance from an interrupted run.
+     *
      * @throws Exception
      */
     private function fetchCheckClause(): ?string
     {
-        $clause = $this->connection->fetchOne(
-            'SELECT check_clause FROM information_schema.check_constraints WHERE constraint_name = ?',
-            [self::CHECK_CONSTRAINT],
-        );
+        $sql = 'SELECT check_clause FROM information_schema.check_constraints WHERE constraint_name = ?';
+        $params = [self::CHECK_CONSTRAINT];
+
+        if ($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $sql .= ' AND constraint_schema = current_schema()';
+        } else {
+            $sql .= ' AND constraint_schema = DATABASE()';
+        }
+
+        $clause = $this->connection->fetchOne($sql, $params);
 
         return $clause === false ? null : (string) $clause;
     }
