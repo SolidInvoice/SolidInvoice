@@ -69,6 +69,19 @@ final class ValidationReportTest extends TestCase
         self::assertFalse($report->isValid());
     }
 
+    public function testMergeConcatenatesViolationsInArgumentOrder(): void
+    {
+        $first = $this->violation(ViolationSeverity::Error);
+        $second = $this->violation(ViolationSeverity::Warning);
+
+        $report = ValidationReport::merge(
+            new ValidationReport(ValidationOutcome::Invalid, [$first]),
+            new ValidationReport(ValidationOutcome::Valid, [$second]),
+        );
+
+        self::assertSame([$first, $second], $report->violations);
+    }
+
     public function testErrorsAndWarningsFilterBySeverity(): void
     {
         $error = $this->violation(ViolationSeverity::Error);

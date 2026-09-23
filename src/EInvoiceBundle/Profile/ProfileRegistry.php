@@ -52,6 +52,6 @@ final readonly class ProfileRegistry
      */
     public function all(): array
     {
-        return is_array($this->profiles) ? array_values($this->profiles) : iterator_to_array($this->profiles, false);
+        return iterator_to_array($this->profiles, false);
     }
 }
