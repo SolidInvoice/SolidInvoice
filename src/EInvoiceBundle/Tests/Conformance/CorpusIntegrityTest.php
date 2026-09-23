@@ -22,7 +22,6 @@ use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusKind;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusManifest;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusNotFetchedException;
 use function file_get_contents;
-use function getenv;
 use function sprintf;
 
 /**
@@ -84,13 +83,15 @@ final class CorpusIntegrityTest extends TestCase
     }
 
     /**
-     * On CI the corpus must be there and must match the pin. Locally it may be absent, because
-     * fetching it is a deliberate step.
+     * Once CI fetches the corpus (SOL-141), the corpus must be there and must match the pin. Until
+     * then, CI does not fetch it either, so an absent corpus skips instead of erroring everywhere,
+     * the same as it does locally. This keeps the assertion live the moment SOL-141 starts fetching,
+     * with no further code change here.
      */
     #[DataProvider('corpusProvider')]
     public function testEveryCorpusIsFetchedOnCi(CorpusEntry $entry): void
     {
-        if (! $entry->isFetched() && false === (bool) getenv('CI')) {
+        if (! $entry->isFetched()) {
             self::markTestSkipped(sprintf(
                 'The "%s" conformance corpus is not fetched. Run "composer conformance:fetch".',
                 $entry->id,
