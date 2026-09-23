@@ -41,3 +41,189 @@
     --swp-btn-active-bg: var(--swp-primary-fill-hover);
     --swp-btn-active-border-color: var(--swp-primary-fill-hover);
 }
+
+// Appended for SOL-189 (ruling on SOL-185): pins --swp-{name}-fg and
+// --swp-{name}-darken for the five remaining variants, and repoints their
+// solid/outline/ghost --swp-btn-* custom properties at the fill and text
+// lanes in _tokens.scss. Same file, same mechanism as .btn-primary above.
+
+:root {
+    // Tabler derives --swp-{name}-fg from its own build-time colour at a 1.5:1
+    // threshold (scss/_props.scss:36, _variables.scss:139). Pin all five.
+    --swp-secondary-fg: var(--swp-on-secondary);
+    --swp-warning-fg:   var(--swp-on-warning);
+    --swp-success-fg:   var(--swp-on-success);
+    --swp-danger-fg:    var(--swp-on-danger);
+    --swp-info-fg:      var(--swp-on-info);
+
+    // Tabler emits --swp-{name}-darken twice (_props.scss:37-38); the second,
+    // color-mix(..., transparent 20%), wins and resolves LIGHTER, not darker.
+    // Amber at 80% alpha over white is #f3b344: 1.77:1 under a light label.
+    --swp-secondary-darken: var(--swp-secondary-fill-hover);
+    --swp-warning-darken:   var(--swp-warning-fill-hover);
+    --swp-success-darken:   var(--swp-success-fill-hover);
+    --swp-danger-darken:    var(--swp-danger-fill-hover);
+    --swp-info-darken:      var(--swp-info-fill-hover);
+}
+
+.btn-secondary {
+    --swp-btn-bg: var(--swp-secondary-fill);
+    --swp-btn-border-color: var(--swp-secondary-fill);
+    --swp-btn-hover-bg: var(--swp-secondary-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-secondary-fill-hover);
+    --swp-btn-active-bg: var(--swp-secondary-fill-active);
+    --swp-btn-active-border-color: var(--swp-secondary-fill-active);
+}
+
+.btn-outline-secondary,
+.btn-outline.btn-secondary {
+    --swp-btn-color: var(--swp-secondary-text);
+
+    // The raw fill fails 1.4.11 as a border: 2.16:1 / 1.99:1.
+    --swp-btn-border-color: var(--swp-secondary-text);
+    --swp-btn-hover-bg: var(--swp-secondary-fill);
+    --swp-btn-hover-border-color: var(--swp-secondary-fill);
+    --swp-btn-active-bg: var(--swp-secondary-fill-hover);
+    --swp-btn-active-border-color: var(--swp-secondary-fill-hover);
+    --swp-btn-disabled-color: var(--swp-secondary-text);
+    --swp-btn-disabled-border-color: var(--swp-secondary-text);
+}
+
+.btn-ghost-secondary,
+.btn-ghost.btn-secondary {
+    --swp-btn-color: var(--swp-secondary-text);
+    --swp-btn-hover-bg: var(--swp-secondary-fill);
+    --swp-btn-hover-border-color: var(--swp-secondary-fill);
+    --swp-btn-active-bg: var(--swp-secondary-fill-hover);
+    --swp-btn-disabled-color: var(--swp-secondary-text);
+}
+
+.btn-warning {
+    --swp-btn-bg: var(--swp-warning-fill);
+    --swp-btn-border-color: var(--swp-warning-fill);
+    --swp-btn-hover-bg: var(--swp-warning-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-warning-fill-hover);
+    --swp-btn-active-bg: var(--swp-warning-fill-active);
+    --swp-btn-active-border-color: var(--swp-warning-fill-active);
+}
+
+.btn-outline-warning,
+.btn-outline.btn-warning {
+    --swp-btn-color: var(--swp-warning-dark);
+
+    // The raw fill fails 1.4.11 as a border: 2.15:1 / 1.98:1.
+    --swp-btn-border-color: var(--swp-warning-dark);
+    --swp-btn-hover-bg: var(--swp-warning-fill);
+    --swp-btn-hover-border-color: var(--swp-warning-fill);
+    --swp-btn-active-bg: var(--swp-warning-fill-hover);
+    --swp-btn-active-border-color: var(--swp-warning-fill-hover);
+    --swp-btn-disabled-color: var(--swp-warning-dark);
+    --swp-btn-disabled-border-color: var(--swp-warning-dark);
+}
+
+.btn-ghost-warning,
+.btn-ghost.btn-warning {
+    --swp-btn-color: var(--swp-warning-dark);
+    --swp-btn-hover-bg: var(--swp-warning-fill);
+    --swp-btn-hover-border-color: var(--swp-warning-fill);
+    --swp-btn-active-bg: var(--swp-warning-fill-hover);
+    --swp-btn-disabled-color: var(--swp-warning-dark);
+}
+
+.btn-success {
+    --swp-btn-bg: var(--swp-success-fill);
+    --swp-btn-border-color: var(--swp-success-fill);
+    --swp-btn-hover-bg: var(--swp-success-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-success-fill-hover);
+    --swp-btn-active-bg: var(--swp-success-fill-active);
+    --swp-btn-active-border-color: var(--swp-success-fill-active);
+}
+
+.btn-outline-success,
+.btn-outline.btn-success {
+    --swp-btn-color: var(--swp-success-dark);
+
+    // The raw fill fails 1.4.11 as a border: 2.54:1 / 2.34:1.
+    --swp-btn-border-color: var(--swp-success-dark);
+    --swp-btn-hover-bg: var(--swp-success-fill);
+    --swp-btn-hover-border-color: var(--swp-success-fill);
+    --swp-btn-active-bg: var(--swp-success-fill-hover);
+    --swp-btn-active-border-color: var(--swp-success-fill-hover);
+    --swp-btn-disabled-color: var(--swp-success-dark);
+    --swp-btn-disabled-border-color: var(--swp-success-dark);
+}
+
+.btn-ghost-success,
+.btn-ghost.btn-success {
+    --swp-btn-color: var(--swp-success-dark);
+    --swp-btn-hover-bg: var(--swp-success-fill);
+    --swp-btn-hover-border-color: var(--swp-success-fill);
+    --swp-btn-active-bg: var(--swp-success-fill-hover);
+    --swp-btn-disabled-color: var(--swp-success-dark);
+}
+
+.btn-danger {
+    --swp-btn-bg: var(--swp-danger-fill);
+    --swp-btn-border-color: var(--swp-danger-fill);
+    --swp-btn-hover-bg: var(--swp-danger-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-danger-fill-hover);
+    --swp-btn-active-bg: var(--swp-danger-fill-active);
+    --swp-btn-active-border-color: var(--swp-danger-fill-active);
+}
+
+.btn-outline-danger,
+.btn-outline.btn-danger {
+    --swp-btn-color: var(--swp-danger-dark);
+
+    // The raw fill passes 1.4.11 (3.76:1 / 3.47:1) - the border stays the
+    // accent the user recognises, same reasoning as SOL-179 §4.4 kept Trust
+    // Green. --swp-btn-border-color is intentionally left at Tabler's default
+    // (var(--swp-danger)).
+    --swp-btn-hover-bg: var(--swp-danger-fill);
+    --swp-btn-hover-border-color: var(--swp-danger-fill);
+    --swp-btn-active-bg: var(--swp-danger-fill-hover);
+    --swp-btn-active-border-color: var(--swp-danger-fill-hover);
+    --swp-btn-disabled-color: var(--swp-danger-dark);
+}
+
+.btn-ghost-danger,
+.btn-ghost.btn-danger {
+    --swp-btn-color: var(--swp-danger-dark);
+    --swp-btn-hover-bg: var(--swp-danger-fill);
+    --swp-btn-hover-border-color: var(--swp-danger-fill);
+    --swp-btn-active-bg: var(--swp-danger-fill-hover);
+    --swp-btn-disabled-color: var(--swp-danger-dark);
+}
+
+.btn-info {
+    --swp-btn-bg: var(--swp-info-fill);
+    --swp-btn-border-color: var(--swp-info-fill);
+    --swp-btn-hover-bg: var(--swp-info-fill-hover);
+    --swp-btn-hover-border-color: var(--swp-info-fill-hover);
+    --swp-btn-active-bg: var(--swp-info-fill-active);
+    --swp-btn-active-border-color: var(--swp-info-fill-active);
+}
+
+.btn-outline-info,
+.btn-outline.btn-info {
+    --swp-btn-color: var(--swp-info-dark);
+
+    // The raw fill passes 1.4.11 (3.68:1 / 3.39:1) - the border stays the
+    // accent the user recognises, same reasoning as SOL-179 §4.4 kept Trust
+    // Green. --swp-btn-border-color is intentionally left at Tabler's default
+    // (var(--swp-info)).
+    --swp-btn-hover-bg: var(--swp-info-fill);
+    --swp-btn-hover-border-color: var(--swp-info-fill);
+    --swp-btn-active-bg: var(--swp-info-fill-hover);
+    --swp-btn-active-border-color: var(--swp-info-fill-hover);
+    --swp-btn-disabled-color: var(--swp-info-dark);
+}
+
+.btn-ghost-info,
+.btn-ghost.btn-info {
+    --swp-btn-color: var(--swp-info-dark);
+    --swp-btn-hover-bg: var(--swp-info-fill);
+    --swp-btn-hover-border-color: var(--swp-info-fill);
+    --swp-btn-active-bg: var(--swp-info-fill-hover);
+    --swp-btn-disabled-color: var(--swp-info-dark);
+}
