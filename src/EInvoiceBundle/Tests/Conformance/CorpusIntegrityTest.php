@@ -25,10 +25,11 @@ use function file_get_contents;
 use function sprintf;
 
 /**
- * Guards the corpus pin itself, so an absent or moved corpus fails loudly instead of leaving the
- * conformance suite green and measuring nothing.
+ * Guards the corpus pin itself, so a fetched-but-moved corpus fails loudly instead of leaving the
+ * conformance suite green and measuring nothing. An unfetched corpus skips instead, since neither
+ * a local checkout nor CI (until SOL-141) is guaranteed to have run the fetch.
  *
- * This test needs no validation engine and no fetched corpus outside CI.
+ * This test needs no validation engine.
  */
 #[Group('conformance')]
 #[CoversClass(CorpusEntry::class)]
@@ -83,15 +84,13 @@ final class CorpusIntegrityTest extends TestCase
     }
 
     /**
-     * Once CI fetches the corpus (SOL-141), the corpus must be there and must match the pin. Until
-     * then, CI does not fetch it either, so an absent corpus skips instead of erroring everywhere,
-     * the same as it does locally. This keeps the assertion live the moment SOL-141 starts fetching,
-     * with no further code change here.
+     * Skips when nothing has been fetched. When something has been fetched, it must match the pin
+     * in corpus.lock.json: a stale fetch is a real defect, not a reason to skip.
      */
     #[DataProvider('corpusProvider')]
-    public function testEveryCorpusIsFetchedOnCi(CorpusEntry $entry): void
+    public function testEveryFetchedCorpusMatchesItsPin(CorpusEntry $entry): void
     {
-        if (! $entry->isFetched()) {
+        if (null === $entry->fetchedPin()) {
             self::markTestSkipped(sprintf(
                 'The "%s" conformance corpus is not fetched. Run "composer conformance:fetch".',
                 $entry->id,
