@@ -68,7 +68,7 @@
         border-color: var(--swp-primary);
 
         .checklist-item-action {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
     }
 
@@ -142,7 +142,7 @@
 .checklist-item .item-icon {
     display: flex;
     align-items: center;
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .checklist-item .item-name {

@@ -52,7 +52,7 @@
 
     &.active {
         background: var(--swp-primary-lighter);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         border-left-color: var(--swp-primary);
         font-weight: var(--swp-font-semibold);
     }
@@ -97,7 +97,7 @@
     height: 64px;
     border-radius: var(--swp-radius-full);
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     display: flex;
     align-items: center;
     justify-content: center;

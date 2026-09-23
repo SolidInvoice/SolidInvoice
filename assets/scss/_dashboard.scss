@@ -86,7 +86,7 @@
 
     &--primary {
         background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 
     &--success {
@@ -363,7 +363,7 @@
     }
 
     &--primary {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 }
 
@@ -391,7 +391,7 @@
 
     &--primary {
         background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 }
 
@@ -609,7 +609,7 @@
     &--invoice,
     &--invoice_sent {
         background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 
     &--quote_accepted {
@@ -656,7 +656,7 @@
 
 .activity-doc-link {
     font-weight: var(--swp-font-semibold);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
     font-family: var(--swp-font-mono);
     font-size: var(--swp-text-sm);
@@ -691,13 +691,13 @@
     transition: color var(--swp-transition-fast);
 
     &:hover {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 
     &:focus-visible {
         outline: none;
         box-shadow: var(--swp-ring-primary);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
     }
 
     svg {

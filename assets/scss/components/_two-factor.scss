@@ -87,7 +87,7 @@
 
     &.active {
         background: var(--swp-primary-light);
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         box-shadow: var(--swp-shadow-sm);
     }
 
@@ -137,7 +137,7 @@
 
     summary {
         cursor: pointer;
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         font-size: var(--swp-text-sm);
         font-weight: var(--swp-font-medium);
         user-select: none;
@@ -292,7 +292,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     box-shadow: 0 4px 12px rgba(var(--swp-primary-rgb), 0.2);
 
     &.two-factor-avatar-success {
@@ -357,7 +357,7 @@
     margin-top: var(--swp-space-2);
 
     a {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         text-decoration: none;
         font-weight: var(--swp-font-medium);
 
@@ -448,7 +448,7 @@
     }
 
     .resend-link {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         text-decoration: none;
         font-weight: var(--swp-font-medium);
 
