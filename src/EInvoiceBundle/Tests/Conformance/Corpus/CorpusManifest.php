@@ -41,7 +41,7 @@ use function sprintf;
  * The manifest is validated against the rules in corpus.lock.schema.json on load, so both the fetch
  * script and the test suite reject a malformed pin at the same point and with the same message.
  */
-final class CorpusManifest
+final readonly class CorpusManifest
 {
     private const string MANIFEST_FILE = 'corpus.lock.json';
 
@@ -78,8 +78,8 @@ final class CorpusManifest
      * @param array<string, CorpusEntry> $entries
      */
     private function __construct(
-        private readonly string $path,
-        private readonly array $entries,
+        private string $path,
+        private array $entries,
     ) {
     }
 
@@ -172,7 +172,7 @@ final class CorpusManifest
         try {
             $manifest = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw new RuntimeException(sprintf('The corpus manifest "%s" is not valid JSON: %s', $path, $e->getMessage()), previous: $e);
+            throw new RuntimeException(sprintf('The corpus manifest "%s" is not valid JSON: %s', $path, $e->getMessage()), $e->getCode(), previous: $e);
         }
 
         if (! is_array($manifest) || array_is_list($manifest)) {
@@ -198,7 +198,7 @@ final class CorpusManifest
         try {
             json_decode($schema, false, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw new RuntimeException(sprintf('The corpus manifest schema "%s" is not valid JSON: %s', $schemaPath, $e->getMessage()), previous: $e);
+            throw new RuntimeException(sprintf('The corpus manifest schema "%s" is not valid JSON: %s', $schemaPath, $e->getMessage()), $e->getCode(), previous: $e);
         }
     }
 

@@ -24,7 +24,6 @@ use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusNotFetchedExcepti
 use function file_get_contents;
 use function getenv;
 use function sprintf;
-use function str_contains;
 
 /**
  * Guards the corpus pin itself, so an absent or moved corpus fails loudly instead of leaving the
@@ -72,12 +71,14 @@ final class CorpusIntegrityTest extends TestCase
         $record = file_get_contents(CorpusManifest::fixturesDirectory() . '/CORPUS-LICENCES.md');
 
         self::assertIsString($record);
-        self::assertTrue(
-            str_contains($record, $entry->licence),
+        self::assertStringContainsString(
+            $entry->licence,
+            $record,
             sprintf('CORPUS-LICENCES.md does not record the "%s" licence of the "%s" corpus.', $entry->licence, $entry->id),
         );
-        self::assertTrue(
-            str_contains($record, $entry->licenceUrl),
+        self::assertStringContainsString(
+            $entry->licenceUrl,
+            $record,
             sprintf('CORPUS-LICENCES.md does not link the licence of the "%s" corpus at ref "%s".', $entry->id, $entry->ref),
         );
     }
