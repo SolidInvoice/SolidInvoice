@@ -5,6 +5,8 @@
 **Supersedes:** the *Target architecture* page in the Outline wiki, which is explicitly marked
 indicative. Where the two differ, this ADR wins.
 
+**Amendments:** two, both binding — §2.2, §7.4, §11 and §13 are corrected. See [§16](#16-amendments).
+
 Grounded in SolidInvoice `3.1.x` at `68ad56366`. Every file path and line reference below was read
 in that tree. Claims I could not verify are labelled **unverified** and are listed in §14.
 
@@ -890,3 +892,39 @@ Named rather than smoothed over. Each one blocks specific downstream work.
 | 16 | Jurisdictions are a data file | A class per country |
 | 17 | Mapper never rounds; float conversion only in `Syntax/`, test-enforced | Convenience conversions — `BR-DEC-*` failures nobody can locate |
 | 18 | `payload` / `receipt` excluded from API read groups | Exposing them — unbounded size, provider metadata |
+
+---
+
+## 16. Amendments
+
+Append-only. Each entry corrects a section above; the decision text there is left as it was written
+so the record of what was accepted on 2026-09-22 stays legible. Where an amendment and the section
+it names disagree, **the amendment wins**.
+
+| # | Corrects | What changed | Reasoning |
+|---|---|---|---|
+| 1 | §2.2, §11 | There is **no** `src/EInvoiceBundle/Resources/translations/`. Catalogs are app-level only. E-invoicing strings go in the existing `messages` domain, namespaced `einvoice.*`; no new `einvoice` domain. | `design` on SOL-83 §3.1; [#2655](https://github.com/SolidInvoice/SolidInvoice/issues/2655) *Scope amendments* §1 |
+| 2 | §7.4, §13 | §7.4's "one shape, three times" does not hold for `ValidatorRegistry`. It exposes `all()` and `supporting(ProfileInterface, ValidationStage)`, not `get()`/`has()`/`all()`, and there is no `UnknownValidatorException`. §13's registry test row reads, for this registry, as "`supporting()` on an empty registry returns `[]`". | `design` on SOL-83 §3.2; [#2655](https://github.com/SolidInvoice/SolidInvoice/issues/2655) *Scope amendments* §2 |
+
+### Amendment 1 is a defect, not a preference
+
+§2.2 and §11 are not merely inconsistent with house convention — following them would ship an
+untranslatable feature, silently.
+
+Verified in this tree:
+
+- `find src -type d -name translations` returns nothing. No bundle in this repository has one.
+- The catalogs are `translations/{messages,email,validators}.en.yml` — three files.
+- `AGENTS.md:388-389`: catalogs are app-level, one file per domain+locale, and are **not** split per
+  bundle.
+- `.github/workflows/translations-pull.yml:67-68` sets `add-paths: translations/**`.
+- `config/packages/translation.php:36` pins the pushed domain set to `['messages', 'email',
+  'validators']`.
+
+A bundle-level catalog sits outside the pull path; a new `einvoice` domain sits outside the pushed
+set. Either loads fine at runtime, is sent to no translator, and returns to every non-English user
+in English permanently — in a feature whose entire purpose is cross-border compliance across the EU,
+LatAm and APAC. Nothing fails; it just never gets translated.
+
+§11's own citation is part of the defect: it writes "No hard-coded strings — `Resources/
+translations/` (AGENTS.md §8)", where AGENTS.md §8 says the opposite of what it is cited for.
