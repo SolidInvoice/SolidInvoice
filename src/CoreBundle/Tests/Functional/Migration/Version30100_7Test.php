@@ -18,6 +18,8 @@ use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -42,7 +44,11 @@ use Symfony\Component\Uid\Ulid;
  * This test runs against the real connection the current test matrix provides (see
  * `.github/workflows/db-tests.yml`), in a throwaway database created for the duration of the
  * test so the migration's DDL — which commits immediately on MariaDB regardless of any
- * surrounding transaction — never touches the shared application test database.
+ * surrounding transaction — never touches the shared application test database. It covers every
+ * leg of that matrix whose server enforces CHECK constraints: PostgreSQL, MariaDB, and MySQL
+ * from 8.0.16 — see {@see self::enforcesCheckConstraints()}. MySQL matters on its own account
+ * and not as a MariaDB stand-in: `Version30100_7::dropClause()` sends MySQL `DROP CHECK` and
+ * MariaDB `DROP CONSTRAINT`, so each engine exercises a statement the other never issues.
  *
  * @see Version30100_7
  */
@@ -64,10 +70,10 @@ final class Version30100_7Test extends KernelTestCase
         $appConnection = self::getContainer()->get('doctrine')->getConnection();
         $platform = $appConnection->getDatabasePlatform();
 
-        if (! $platform instanceof MariaDBPlatform && ! $platform instanceof PostgreSQLPlatform) {
+        if (! $this->enforcesCheckConstraints($appConnection, $platform)) {
             self::markTestSkipped(sprintf(
-                '%s enforces a CHECK constraint at the database level; only MariaDB and PostgreSQL '
-                . 'enforce it in this test matrix (current platform: %s).',
+                '%s manipulates a CHECK constraint the database has to actually enforce '
+                . '(current platform: %s).',
                 Version30100_7::class,
                 $platform::class,
             ));
@@ -366,6 +372,41 @@ final class Version30100_7Test extends KernelTestCase
         foreach ($platform->getAlterSchemaSQL($diff) as $sql) {
             $this->connection->executeStatement($sql);
         }
+    }
+
+    /**
+     * MariaDB and PostgreSQL enforce CHECK constraints in every version `db-tests.yml` runs.
+     * MySQL only began enforcing them in 8.0.16 — before that its parser accepted
+     * `ALTER TABLE … ADD CONSTRAINT … CHECK` and silently discarded the constraint, so none of
+     * these assertions could hold on the 5.7 leg. SQLite accepts neither that statement nor the
+     * FK ordering `down()` depends on.
+     *
+     * The MySQL gate reads the server's own `VERSION()` rather than the DBAL platform class or
+     * `Connection::getServerVersion()`: `db-tests.yml` pins `?serverVersion=8.0.0` on the MySQL
+     * 8.0 leg, and both of those report that pinned literal instead of the 8.0.x server actually
+     * running behind it — which would skip the leg that matters most.
+     *
+     * @throws Exception
+     */
+    private function enforcesCheckConstraints(Connection $connection, AbstractPlatform $platform): bool
+    {
+        if ($platform instanceof PostgreSQLPlatform || $platform instanceof MariaDBPlatform) {
+            return true;
+        }
+
+        if (! $platform instanceof AbstractMySQLPlatform) {
+            return false;
+        }
+
+        return version_compare($this->serverVersion($connection), '8.0.16', '>=');
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function serverVersion(Connection $connection): string
+    {
+        return (string) $connection->fetchOne('SELECT VERSION()');
     }
 
     /**
