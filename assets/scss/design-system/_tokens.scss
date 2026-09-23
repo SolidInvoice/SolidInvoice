@@ -38,6 +38,21 @@
     --tblr-accent-light: #fff8e1;
     --tblr-accent-lighter: #fffcf0;
 
+    // The label on a Warm Amber fill. Constant across every state - see The
+    // Fill-Label Rule.
+    --tblr-on-secondary: var(--tblr-text-primary);  // #1e293b
+
+    // Warm Amber rendered as text: the outline/ghost rest label and border.
+    // --tblr-secondary-dark is a fill step, not a text step - 3.16:1 / 2.91:1.
+    // Named -text rather than -dark to match --tblr-primary-text, because
+    // secondary is a brand accent, not a status colour.
+    --tblr-secondary-text: #90600d;   // 5.43:1 on surface, 5.02:1 on body-bg   NEW
+
+    // The secondary button's fill ramp. Three legible steps already exist.
+    --tblr-secondary-fill:        var(--tblr-secondary);        // #f0a015 - 6.79:1
+    --tblr-secondary-fill-hover:  var(--tblr-secondary-hover);  // #d89012 - 5.52:1
+    --tblr-secondary-fill-active: var(--tblr-secondary-dark);   // #c8820e - 4.64:1
+
     // -------------------------------------------------------------------------
     // Neutral Colors (Slate-based gray scale for modern feel)
     // -------------------------------------------------------------------------
@@ -68,6 +83,16 @@
     --tblr-success-light: #d1fae5;
     --tblr-success-lighter: #ecfdf5;
 
+    // The label on a success fill. Constant across every state.
+    --tblr-on-success: var(--tblr-text-primary);  // #1e293b
+
+    // The success button's fill ramp. --tblr-success-hover fails as a label
+    // under either --tblr-on-success or --tblr-on-primary (3.88:1 / 3.61:1), so
+    // the ramp cannot pass through it - both new steps sit above that dead zone.
+    --tblr-success-fill:        var(--tblr-success);  // #10b981 - 5.77:1
+    --tblr-success-fill-hover:  #0cab77;             //         - 4.95:1  NEW
+    --tblr-success-fill-active: #09a473;             //         - 4.58:1  NEW
+
     // Danger
     // NOTE: `danger` (3.76:1 on surface) is a fill colour, not a text colour.
     // Use `danger-dark` for danger-coloured *text*.
@@ -77,6 +102,18 @@
     --tblr-danger-dark: #b91c1c;    // Red-700 - AA-safe danger text (6.47:1 on surface, 5.97:1 on body-bg)
     --tblr-danger-light: #fee2e2;
     --tblr-danger-lighter: #fef2f2;
+
+    // The label on a danger fill. Constant across every state.
+    --tblr-on-danger: var(--tblr-on-primary);  // #f9fafb
+
+    // Bottom of the red ramp. The danger button's pressed state.
+    --tblr-danger-darker: #991b1b;   // Red-800 - 7.95:1 under --tblr-on-danger   NEW
+
+    // The danger button's fill ramp. A mid fill, so it starts one step down
+    // its ramp under a light label - same shape as --tblr-primary-fill.
+    --tblr-danger-fill:        var(--tblr-danger-hover);   // #dc2626 - 4.62:1
+    --tblr-danger-fill-hover:  var(--tblr-danger-dark);    // #b91c1c - 6.19:1
+    --tblr-danger-fill-active: var(--tblr-danger-darker);  // #991b1b - 7.95:1
 
     // Warning
     // NOTE: `warning` (2.15:1 on surface) is a fill colour, not a text colour.
@@ -88,6 +125,16 @@
     --tblr-warning-light: #fef3c7;
     --tblr-warning-lighter: #fffbeb;
 
+    // The label on a warning fill. Constant across every state.
+    --tblr-on-warning: var(--tblr-text-primary);  // #1e293b
+
+    // The warning button's fill ramp. The ramp jumps straight from 6.81:1 to
+    // 4.59:1 with nothing between, so the hover step is a new literal on the
+    // same hue.
+    --tblr-warning-fill:        var(--tblr-warning);        // #f59e0b - 6.81:1
+    --tblr-warning-fill-hover:  #e78b08;                   //         - 5.64:1  NEW
+    --tblr-warning-fill-active: var(--tblr-warning-hover);  // #d97706 - 4.59:1
+
     // Info
     --tblr-info: #3b82f6;
     --tblr-info-rgb: 59, 130, 246;
@@ -95,6 +142,19 @@
     --tblr-info-dark: #1d4ed8; // Blue-700 - AA-safe info text (6.70:1 on surface, 6.19:1 on body-bg, 5.49:1 on info-light)
     --tblr-info-light: #dbeafe;
     --tblr-info-lighter: #eff6ff;
+
+    // The label on an info fill. Constant across every state.
+    --tblr-on-info: var(--tblr-on-primary);  // #f9fafb
+
+    // Bottom of the blue ramp. The info button's pressed state.
+    --tblr-info-darker: #1e40af;   // Blue-800 - 8.35:1 under --tblr-on-info   NEW
+
+    // The info button's fill ramp. A mid fill, so it starts one step down its
+    // ramp under a light label. --tblr-info-dark does double duty: it is both
+    // the AA-safe info text step above and a legible hover fill here.
+    --tblr-info-fill:        var(--tblr-info-hover);   // #2563eb - 4.95:1
+    --tblr-info-fill-hover:  var(--tblr-info-dark);    // #1d4ed8 - 6.41:1
+    --tblr-info-fill-active: var(--tblr-info-darker);  // #1e40af - 8.35:1
 
     // -------------------------------------------------------------------------
     // Surface Colors
