@@ -34,6 +34,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use function array_filter;
 use function array_map;
 use function count;
 use function implode;
@@ -46,10 +47,24 @@ final class Version30100_7 extends AbstractMigration
 
     private const string INVOICE_TAX_CHECK_CONSTRAINT = 'invoice_tax_exactly_one_document';
 
-    // MariaDB's native error for "DROP CONSTRAINT" naming a constraint that does not exist.
-    // Doctrine\DBAL\Driver\API\MySQL\ExceptionConverter has no case for it, so it surfaces as
-    // the generic DriverException rather than DatabaseObjectNotFoundException.
+    // Each platform's native "constraint does not exist" signal for DROP CONSTRAINT/DROP CHECK.
+    // Doctrine's ExceptionConverter has no mapping for any of these, so they surface as the
+    // generic DriverException handled in isConstraintNotFoundError() rather than becoming a
+    // DatabaseObjectNotFoundException.
+    //
+    // MariaDB and PostgreSQL are confirmed against real servers (11.8.6 / 17.11, see SOL-187).
+    // MySQL (Oracle) is not: no MySQL server was available to probe, so
+    // ER_CHECK_CONSTRAINT_NOT_FOUND is taken from MySQL's own error reference and must be
+    // confirmed on a real MySQL 8 instance before it is trusted.
     private const int MARIADB_CONSTRAINT_NOT_FOUND = 1091;
+
+    private const int MYSQL_CONSTRAINT_NOT_FOUND = 3940;
+
+    // PostgreSQL's DriverException::getCode() is not the SQLSTATE — it is whatever pdo_pgsql
+    // happens to report, observed as 7 against 17.11 — so PostgreSQL is matched on
+    // getSQLState() instead: '42704' is undefined_object, the SQLSTATE Postgres raises for
+    // DROP CONSTRAINT on a constraint that does not exist.
+    private const string POSTGRESQL_CONSTRAINT_NOT_FOUND_SQLSTATE = '42704';
 
     public function getDescription(): string
     {
@@ -168,46 +183,63 @@ final class Version30100_7 extends AbstractMigration
      * reaches the database under a dry run, leaving a production database with an invariant and
      * a foreign-key layout its own schema no longer matches.
      *
-     * Checks for credit-note-owned `invoice_tax` rows before touching the constraint. The
-     * pre-credit-note three-column CHECK has no column to attribute such a row to, so replacing
-     * the constraint would fail on that row regardless — but only after the four-column CHECK is
-     * already dropped. `isTransactional()` is false on MariaDB (DDL commits implicitly), so that
-     * ordering would strip the invariant entirely and leave the schema half-reverted while
-     * `migration_versions` still reports the migration applied. Aborting here, before either
-     * statement runs, means a failure here leaves both the schema and `migration_versions`
-     * exactly as they were.
+     * Checks for credit-note-owned `invoice_tax` and `invoice_lines` rows before touching the
+     * constraint or the schema, and before the `isDryRun()` early return below — a `--dry-run`
+     * revert is how an operator rehearses the real one, and it must report the same refusal the
+     * real `down()` would give, not a false green. The check itself is a `SELECT COUNT(*)`, safe
+     * to run under a dry run.
+     *
+     * The pre-credit-note three-column CHECK has no column to attribute a credit-note-owned
+     * `invoice_tax` row to, so replacing the constraint would fail on that row regardless — but
+     * only after the four-column CHECK is already dropped. `isTransactional()` is false on
+     * MariaDB (DDL commits implicitly), so that ordering would strip the invariant entirely and
+     * leave the schema half-reverted while `migration_versions` still reports the migration
+     * applied. Aborting here, before either statement runs, means a failure here leaves both the
+     * schema and `migration_versions` exactly as they were.
+     *
+     * `invoice_lines` has no equivalent CHECK constraint on any version, so nothing there would
+     * fail on its own — but `down()` drops its `credit_note_id` column unconditionally, which
+     * would silently orphan a credit-note-owned row (every owner column NULL, in a schema that
+     * no longer has `credit_notes` to explain it). Refusing here, same as `invoice_tax`, is the
+     * non-destructive choice: reassigning or deleting those rows is the operator's call, not
+     * this migration's.
      *
      * @throws Exception
      */
     public function preDown(Schema $schema): void
     {
-        if ($this->isDryRun()) {
-            return;
-        }
+        $blockingTables = array_filter(
+            [InvoiceTax::TABLE_NAME, InvoiceLine::TABLE_NAME],
+            fn (string $table): bool => $this->hasCreditNoteOwnedRows($table),
+        );
 
         $this->abortIf(
-            $this->hasCreditNoteOwnedInvoiceTaxRows(),
+            $blockingTables !== [],
             sprintf(
                 'Cannot revert %s: %s has at least one row owned by a credit note (credit_note_id ' .
                 'IS NOT NULL). The pre-credit-note schema has no column to attribute such a row to. ' .
                 'Reassign or remove these rows before reverting this migration.',
                 self::class,
-                InvoiceTax::TABLE_NAME,
+                implode(' and ', $blockingTables),
             ),
         );
+
+        if ($this->isDryRun()) {
+            return;
+        }
 
         $this->replaceExactlyOneDocumentCheck('invoice_id', 'quote_id', 'recurring_invoice_id');
         $this->dropInboundCreditNoteForeignKeys();
     }
 
-    private function hasCreditNoteOwnedInvoiceTaxRows(): bool
+    private function hasCreditNoteOwnedRows(string $table): bool
     {
-        if (! $this->columnExists(InvoiceTax::TABLE_NAME, 'credit_note_id')) {
+        if (! $this->columnExists($table, 'credit_note_id')) {
             return false;
         }
 
         return (int) $this->connection->fetchOne(
-            sprintf('SELECT COUNT(*) FROM %s WHERE credit_note_id IS NOT NULL', InvoiceTax::TABLE_NAME),
+            sprintf('SELECT COUNT(*) FROM %s WHERE credit_note_id IS NOT NULL', $table),
         ) > 0;
     }
 
@@ -363,14 +395,33 @@ final class Version30100_7 extends AbstractMigration
             // to exist after all. Anything else, notably a syntax error, must propagate: this
             // migration cannot silently fail to establish the invariant it exists to enforce.
         } catch (DriverException $e) {
-            // MariaDB raises 1091 for the same "constraint does not exist" case, but
-            // ExceptionConverter has no mapping for it, so it never becomes a
-            // DatabaseObjectNotFoundException on this platform. Only that one code is
-            // tolerated here; any other DriverException still propagates.
-            if ($e->getCode() !== self::MARIADB_CONSTRAINT_NOT_FOUND) {
+            // Only the current platform's own "constraint does not exist" signal is tolerated
+            // here; any other DriverException still propagates.
+            if (! $this->isConstraintNotFoundError($e)) {
                 throw $e;
             }
         }
+    }
+
+    /**
+     * See the *_CONSTRAINT_NOT_FOUND constants above for what each platform actually returns
+     * and how that was confirmed.
+     */
+    private function isConstraintNotFoundError(DriverException $e): bool
+    {
+        if ($this->platform instanceof MariaDBPlatform) {
+            return $e->getCode() === self::MARIADB_CONSTRAINT_NOT_FOUND;
+        }
+
+        if ($this->platform instanceof AbstractMySQLPlatform) {
+            return $e->getCode() === self::MYSQL_CONSTRAINT_NOT_FOUND;
+        }
+
+        if ($this->platform instanceof PostgreSQLPlatform) {
+            return $e->getSQLState() === self::POSTGRESQL_CONSTRAINT_NOT_FOUND_SQLSTATE;
+        }
+
+        return false;
     }
 
     /**
