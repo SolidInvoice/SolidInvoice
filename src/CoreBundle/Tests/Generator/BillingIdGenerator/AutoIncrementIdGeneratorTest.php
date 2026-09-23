@@ -43,6 +43,26 @@ final class AutoIncrementIdGeneratorTest extends KernelTestCase
         self::assertSame('1', $generator->generate(new CreditNote(), ['field' => 'creditNoteId']));
     }
 
+    /**
+     * A draft credit note is persisted with its default empty id before a number is
+     * ever assigned (the id is only set on the `issue` workflow transition). That row's
+     * id is shorter than the prefix, which made the SUBSTRING length argument negative.
+     * PostgreSQL rejects that outright ("negative substring length not allowed");
+     * SQLite and MySQL/MariaDB silently tolerate it, so this only ever broke on
+     * PostgreSQL in CI.
+     */
+    public function testItSkipsRowsShorterThanThePrefixAndSuffix(): void
+    {
+        $client = ClientFactory::new([]);
+
+        CreditNoteFactory::createOne(['client' => $client, 'creditNoteId' => '']);
+        CreditNoteFactory::createOne(['client' => $client, 'creditNoteId' => 'CN-1']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        self::assertSame('2', $generator->generate(new CreditNote(), ['field' => 'creditNoteId', 'prefix' => 'CN-', 'suffix' => '']));
+    }
+
     public function testCreditNoteSequenceIsIndependentOfInvoiceAndQuoteSequences(): void
     {
         $client = ClientFactory::new([]);
