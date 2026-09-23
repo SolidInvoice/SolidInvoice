@@ -13,16 +13,28 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Form\Type;
 
+use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\DTO\DatabaseConfig;
 use SolidInvoice\InstallBundle\Form\Step\DatabaseConfigStep;
+use function in_array;
+use function sprintf;
 
 #[CoversClass(DatabaseConfigStep::class)]
 final class DatabaseConfigTypeTest extends FormTestCase
 {
+    private static function requirePdoDriver(string $driver): void
+    {
+        if (! in_array($driver, PDO::getAvailableDrivers(), true)) {
+            self::markTestSkipped(sprintf('The "%s" PDO driver is not available.', $driver));
+        }
+    }
+
     public function testSubmit(): void
     {
+        self::requirePdoDriver('mysql');
+
         $formData = [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
@@ -48,6 +60,8 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithPostgres(): void
     {
+        self::requirePdoDriver('pgsql');
+
         $formData = [
             'driver' => 'pgsql',
             'host' => 'localhost',
@@ -73,6 +87,8 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithMariaDB(): void
     {
+        self::requirePdoDriver('mysql');
+
         $formData = [
             'driver' => 'mariadb',
             'host' => 'localhost',
@@ -98,6 +114,8 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithSQLite(): void
     {
+        self::requirePdoDriver('sqlite');
+
         $formData = [
             'driver' => 'sqlite',
         ];
@@ -114,6 +132,8 @@ final class DatabaseConfigTypeTest extends FormTestCase
 
     public function testSubmitWithOptionalFields(): void
     {
+        self::requirePdoDriver('mysql');
+
         $formData = [
             'driver' => 'mysql',
             'host' => 'db.example.com',
