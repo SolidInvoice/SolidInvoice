@@ -11,3 +11,6 @@
 
 // Typography system
 @import 'typography';
+
+// Vendor utility overrides - must come after tokens
+@import 'utilities';
