@@ -75,13 +75,13 @@
                                     </span>
                                     <div class="flex-fill">
                                         <strong>{{ row.field.label }}</strong>
-                                        <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
-                                        {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'label.required'|trans }}</span>{% endif %}
+                                        <span class="status-chip status-chip--neutral ms-2">{{ row.field.type.label }}</span>
+                                        {% if row.field.required %}<span class="status-chip status-chip--info ms-1">{{ 'label.required'|trans }}</span>{% endif %}
                                         {% if row.field.visibility is not null %}
                                             {% if row.field.visibility.value == 'CLIENT_VISIBLE' %}
-                                                <span class="badge bg-blue-lt ms-1">{{ 'custom_field.badge.client_visible'|trans }}</span>
+                                                <span class="status-chip status-chip--info ms-1">{{ 'custom_field.badge.client_visible'|trans }}</span>
                                             {% else %}
-                                                <span class="badge bg-secondary-lt ms-1">{{ 'custom_field.badge.internal'|trans }}</span>
+                                                <span class="status-chip status-chip--neutral ms-1">{{ 'custom_field.badge.internal'|trans }}</span>
                                             {% endif %}
                                         {% endif %}
                                         <div class="text-muted small">{{ row.count }} {{ 'custom_field.values'|trans }}</div>

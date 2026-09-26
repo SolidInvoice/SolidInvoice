@@ -4,7 +4,7 @@
         <h3 class="client-section-title">
             {{ ux_icon('tabler:building', {width: 20, height: 20, class: 'text-primary'}) }}
             {{ 'client.heading.addresses'|trans }}
-            <span class="badge bg-secondary-lt">{{ client.addresses|length }}</span>
+            <span class="status-chip status-chip--neutral">{{ client.addresses|length }}</span>
         </h3>
         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add-address">
             {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
