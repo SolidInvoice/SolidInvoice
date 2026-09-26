@@ -91,7 +91,7 @@
                         <div class="datagrid-item">
                             <div>Driver</div>
                             <div class="datagrid-content">
-                                <span class="badge bg-info-lt">{{ form.vars.data.databaseConfig.driver|upper }}</span>
+                                <span class="status-chip status-chip--neutral">{{ form.vars.data.databaseConfig.driver|upper }}</span>
                             </div>
                         </div>
                         {% if form.vars.data.databaseConfig.driver != 'sqlite' %}
@@ -210,9 +210,9 @@
                             <div>Usage statistics</div>
                             <div class="datagrid-content">
                                 {% if form.vars.data.telemetryEnabled %}
-                                    <span class="badge bg-success-lt">Enabled</span>
+                                    <span class="status-chip status-chip--success">Enabled</span>
                                 {% else %}
-                                    <span class="badge bg-secondary-lt">Disabled</span>
+                                    <span class="status-chip status-chip--neutral">Disabled</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -285,7 +285,7 @@
                             {% endif %}
                         </span>
                         {% if isSqlite %}
-                            <span class="badge bg-primary-lt position-absolute bottom-0 end-0">{{ 'installation.database.recommended'|trans }}</span>
+                            <span class="status-chip status-chip--info position-absolute bottom-0 end-0">{{ 'installation.database.recommended'|trans }}</span>
                         {% endif %}
                     </span>
                 </label>

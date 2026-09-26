@@ -17,16 +17,16 @@
 
 {% set status = subscription.status.value %}
 {% set statusBadge = {
-    'active':    {label: 'saas.overview.status.active',    color: 'success'},
-    'trial':     {label: 'saas.overview.status.trial',     color: 'info'},
-    'pending':   {label: 'saas.overview.status.pending',   color: 'secondary'},
-    'past_due':  {label: 'saas.overview.status.past_due',  color: 'danger'},
-    'paused':    {label: 'saas.overview.status.paused',    color: 'warning'},
-    'cancelled': {label: 'saas.overview.status.cancelled', color: 'secondary'},
-    'expired':   {label: 'saas.overview.status.expired',   color: 'secondary'},
-    'unpaid':    {label: 'saas.overview.status.unpaid',    color: 'danger'},
-    'inactive':  {label: 'saas.overview.status.inactive',  color: 'secondary'},
-}[status] ?? {label: status|capitalize, color: 'secondary'} %}
+    'active':    {label: 'saas.overview.status.active',    variant: 'success'},
+    'trial':     {label: 'saas.overview.status.trial',     variant: 'info'},
+    'pending':   {label: 'saas.overview.status.pending',   variant: 'info'},
+    'past_due':  {label: 'saas.overview.status.past_due',  variant: 'danger'},
+    'paused':    {label: 'saas.overview.status.paused',    variant: 'warning'},
+    'cancelled': {label: 'saas.overview.status.cancelled', variant: 'neutral'},
+    'expired':   {label: 'saas.overview.status.expired',   variant: 'neutral'},
+    'unpaid':    {label: 'saas.overview.status.unpaid',    variant: 'danger'},
+    'inactive':  {label: 'saas.overview.status.inactive',  variant: 'neutral'},
+}[status] ?? {label: status|capitalize, variant: 'neutral'} %}
 
 {% block title %}{{ ux_icon('tabler:receipt-2', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.overview.title'|trans }}{% endblock %}
 
@@ -85,7 +85,7 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h3 class="card-title mb-0">{{ 'saas.overview.current_plan'|trans }}</h3>
-                    <span class="badge bg-{{ statusBadge.color }}-lt">{{ statusBadge.label|trans }}</span>
+                    <span class="status-chip status-chip--{{ statusBadge.variant }}">{{ statusBadge.label|trans }}</span>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-baseline gap-3 mb-3">

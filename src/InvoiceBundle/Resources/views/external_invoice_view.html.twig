@@ -99,7 +99,7 @@
                                         <div class="ext-doc-metadata-value fw-medium {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'text-danger' : '' }}">
                                             {{ invoice.due|date('M d, Y') }}
                                             {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue %}
-                                                <span class="badge bg-danger-lt ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
+                                                <span class="status-chip status-chip--danger ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}
                                         </div>
                                     </div>

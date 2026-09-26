@@ -60,10 +60,10 @@
                                 {% endif %}
                             {% elseif t == 'multi_select' %}
                                 {% for label in row.formatted|split(', ') %}
-                                    <span class="badge bg-secondary-lt">{{ label }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ label }}</span>
                                 {% endfor %}
                             {% elseif t == 'select' %}
-                                <span class="badge bg-secondary-lt">{{ row.formatted }}</span>
+                                <span class="status-chip status-chip--neutral">{{ row.formatted }}</span>
                             {% else %}
                                 {{ row.formatted }}
                             {% endif %}
