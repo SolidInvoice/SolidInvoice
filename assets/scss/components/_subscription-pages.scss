@@ -364,11 +364,22 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--swp-text-inverse);
-    background: var(--swp-primary);
+
+    // Recommended banner: white text on --swp-primary is 3.79:1 at 12px.
+    // --swp-primary-dark is 6.49:1.
+
+    background: var(--swp-primary-dark);
 
     svg {
         flex-shrink: 0;
     }
+}
+
+// Current plan: the darker emerald step, because white on --swp-success is
+// 2.54:1 and this is 12px text. --swp-success-dark is 5.48:1.
+
+.plan-card-current .plan-card-banner {
+    background: var(--swp-success-dark);
 }
 
 // Free plan: presented as a slim secondary card below the main grid.
