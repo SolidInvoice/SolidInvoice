@@ -22,6 +22,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Validator\Constraints\CreditNoteWithinInvoiceTotalValidatorTest
+ */
 final class CreditNoteWithinInvoiceTotalValidator extends ConstraintValidator
 {
     public function __construct(
