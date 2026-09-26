@@ -27,6 +27,8 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
+use SolidInvoice\InvoiceBundle\Validator\Constraints\CreditNoteInvoiceBelongsToSameCompany;
+use SolidInvoice\InvoiceBundle\Validator\Constraints\CreditNoteWithinInvoiceTotal;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -44,6 +46,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['company_id', 'status'])]
 #[ORM\UniqueConstraint(columns: ['company_id', 'credit_note_id'])]
 #[ORM\Entity(repositoryClass: CreditNoteRepository::class)]
+#[CreditNoteInvoiceBelongsToSameCompany]
+#[CreditNoteWithinInvoiceTotal]
 class CreditNote extends BaseInvoice implements Stringable
 {
     final public const string TABLE_NAME = 'credit_notes';

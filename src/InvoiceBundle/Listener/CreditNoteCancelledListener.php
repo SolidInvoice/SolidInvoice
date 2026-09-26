@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use function assert;
@@ -26,6 +30,8 @@ final readonly class CreditNoteCancelledListener implements EventSubscriberInter
 {
     public function __construct(
         private ManagerRegistry $registry,
+        private TotalCalculator $totalCalculator,
+        private CreditRepository $creditRepository,
     ) {
     }
 
@@ -41,6 +47,8 @@ final readonly class CreditNoteCancelledListener implements EventSubscriberInter
 
     /**
      * @param CompletedEvent<CreditNote> $event
+     *
+     * @throws MathException
      */
     public function onCreditNoteCancelled(CompletedEvent $event): void
     {
@@ -49,11 +57,26 @@ final readonly class CreditNoteCancelledListener implements EventSubscriberInter
         assert($creditNote instanceof CreditNote);
 
         // The credit note keeps its number: cancellation is a sequence gap, not a reused id.
-        // Reversing the invoice balance and any granted client credit is stubbed here.
-        // See `design` §5/§6 on SOL-69 — CN-3 fills these in.
-
         $em = $this->registry->getManager();
         $em->persist($creditNote);
         $em->flush();
+
+        $invoice = $creditNote->getInvoice();
+
+        if ($invoice instanceof Invoice) {
+            $invoice->setBalance($this->totalCalculator->calculateBalance($invoice));
+
+            // The same marginal amount this credit note contributed when issued, computed the
+            // same way so sequential credit notes on one invoice do not over- or under-reverse
+            // client credit. See `design` §5/§6 on SOL-69.
+            $overflow = $this->totalCalculator->calculateOverflowContribution($creditNote);
+
+            if ($overflow->isPositive()) {
+                $this->creditRepository->deductCredit($invoice->getClient(), $overflow);
+            }
+
+            $em->persist($invoice);
+            $em->flush();
+        }
     }
 }

@@ -24,6 +24,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends EntityRepository<CreditNote>
@@ -41,10 +42,19 @@ class CreditNoteRepository extends EntityRepository
      * since {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator} calls this on every totals
      * recalculation — see `design` §5 on SOL-69.
      *
+     * $excluding leaves one specific credit note out of the sum regardless of its own persisted
+     * status. {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator::calculateOverflowContribution()}
+     * and the over-crediting cap validator both use it to isolate one credit note's own
+     * contribution from the rest, independent of flush ordering.
+     *
      * @throws MathException
      */
-    public function getTotalCreditedForInvoice(Invoice $invoice): BigNumber
+    public function getTotalCreditedForInvoice(Invoice $invoice, ?CreditNote $excluding = null): BigNumber
     {
+        if (! $invoice->getId() instanceof Ulid) {
+            return BigInteger::zero();
+        }
+
         $qb = $this->createQueryBuilder('cn');
 
         $qb->select('SUM(cn.total)')
@@ -52,6 +62,11 @@ class CreditNoteRepository extends EntityRepository
             ->andWhere('cn.status != :cancelled')
             ->setParameter('invoice', $invoice->getId(), UlidType::NAME)
             ->setParameter('cancelled', CreditNoteStatus::Cancelled);
+
+        if ($excluding instanceof CreditNote && $excluding->getId() instanceof Ulid) {
+            $qb->andWhere('cn.id != :excludedId')
+                ->setParameter('excludedId', $excluding->getId(), UlidType::NAME);
+        }
 
         try {
             $result = $qb->getQuery()->getSingleScalarResult();

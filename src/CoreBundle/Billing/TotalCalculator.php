@@ -18,7 +18,9 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -37,6 +39,7 @@ class TotalCalculator
         private readonly PaymentRepository $paymentRepository,
         private readonly Calculator $calculator,
         private readonly TaxCalculatorInterface $taxCalculator,
+        private readonly CreditNoteRepository $creditNoteRepository,
     ) {
     }
 
@@ -48,12 +51,73 @@ class TotalCalculator
         $this->updateTotal($entity);
 
         if ($entity instanceof Invoice) {
-            $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
-            $total = $entity->getTotal();
-            assert($total instanceof BigDecimal || $total instanceof BigInteger);
-
-            $entity->setBalance($total->minus($totalPaid));
+            $entity->setBalance($this->calculateBalance($entity));
         }
+    }
+
+    /**
+     * The single place an invoice balance is derived: total minus payments received minus
+     * issued credit notes, floored at zero. See `design` §0/§5 on SOL-69. Callers that used to
+     * inline this formula (such as `PaymentCompleteListener`) must route through here instead of
+     * duplicating it — otherwise paying an invoice that carries a credit note silently restores
+     * the credited amount.
+     *
+     * @throws MathException
+     */
+    public function calculateBalance(Invoice $invoice): BigNumber
+    {
+        return $this->netBalance($invoice, $this->creditNoteRepository->getTotalCreditedForInvoice($invoice));
+    }
+
+    /**
+     * The client-credit amount attributable to one specific credit note counting against its
+     * invoice, isolated from every other credit note on the same invoice. Used by both
+     * `CreditNoteIssuedListener` (to grant) and `CreditNoteCancelledListener` (to reverse) so that
+     * sequential credit notes on the same invoice do not double-grant or double-reverse client
+     * credit. See `design` §0/§6 on SOL-69.
+     *
+     * @throws MathException
+     */
+    public function calculateOverflowContribution(CreditNote $creditNote): BigNumber
+    {
+        $invoice = $creditNote->getInvoice();
+        assert($invoice instanceof Invoice);
+
+        $creditedByOthers = $this->creditNoteRepository->getTotalCreditedForInvoice($invoice, $creditNote);
+        $creditedWithThis = $this->narrow($creditedByOthers)->plus($creditNote->getTotal());
+
+        return $this->overflowAmount($invoice, $creditedWithThis)->minus($this->overflowAmount($invoice, $creditedByOthers));
+    }
+
+    /**
+     * @throws MathException
+     */
+    private function netBalance(Invoice $invoice, BigNumber $credited): BigDecimal | BigInteger
+    {
+        $balance = $this->narrow($invoice->getTotal())
+            ->minus($this->paymentRepository->getTotalPaidForInvoice($invoice))
+            ->minus($credited);
+
+        return $balance->isNegative() ? BigInteger::zero() : $balance;
+    }
+
+    /**
+     * @throws MathException
+     */
+    private function overflowAmount(Invoice $invoice, BigNumber $credited): BigDecimal | BigInteger
+    {
+        $overflow = $this->narrow($this->paymentRepository->getTotalPaidForInvoice($invoice))
+            ->plus($credited)
+            ->minus($invoice->getTotal());
+
+        return $overflow->isPositive() ? $overflow : BigInteger::zero();
+    }
+
+    private function narrow(BigNumber $value): BigDecimal | BigInteger
+    {
+        assert($value instanceof BigDecimal || $value instanceof BigInteger);
+
+        return $value;
     }
 
     /**
