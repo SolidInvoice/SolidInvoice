@@ -30,7 +30,7 @@ return App::config([
                     // (e.g. MariaDB was detected as plain MySQL, breaking schema introspection
                     // and the doctrine/migrations metadata check). DBAL detects the server
                     // version at runtime, and SQLite does not need one at all.
-                    'charset' => 'UTF8',
+                    'charset' => env('db_charset:SOLIDINVOICE_DATABASE_URL')->resolve(),
                 ],
             ],
             'types' => [
