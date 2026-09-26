@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use DoctrineMigrations\Version30100_8;
 use PHPUnit\Framework\Attributes\Group;
@@ -55,6 +56,15 @@ final class Version30100_8Test extends KernelTestCase
 
         $appConnection = self::getContainer()->get('doctrine')->getConnection();
         $platform = $appConnection->getDatabasePlatform();
+
+        if ($platform instanceof SQLitePlatform) {
+            self::markTestSkipped(sprintf(
+                '%s proves a NOT NULL DEFAULT backfill on the engines users actually run; SQLite cannot '
+                . 'create the throwaway database this test needs (current platform: %s).',
+                Version30100_8::class,
+                $platform::class,
+            ));
+        }
 
         $params = $appConnection->getParams();
         if (isset($params['primary'])) {
