@@ -20,6 +20,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
@@ -46,7 +47,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $this->clock = new MockClock(new DateTimeImmutable('2024-02-01 10:00:00', new DateTimeZone('UTC')));
 
         // Create repository with the frozen clock
-        $this->repository = new InvoiceRepository($registry, $this->clock);
+        $this->repository = new InvoiceRepository($registry, $this->clock, new CreditNoteRepository($registry));
     }
 
     public function testGetInvoicesNeedingPreDueRemindersReturnsInvoicesDueInSpecifiedDays(): void

@@ -14,15 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Billing;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Exception\NotSupported;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
+use SolidInvoice\InvoiceBundle\Entity\CreditNoteLine;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -39,13 +44,70 @@ final class TotalCalculatorTest extends KernelTestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
+    private function createUpdater(): TotalCalculator
+    {
+        return new TotalCalculator(
+            $this->em->getRepository(Payment::class),
+            new Calculator(),
+            new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()),
+            $this->em->getRepository(CreditNote::class),
+        );
+    }
+
+    /**
+     * A line, not a direct {@see Invoice::setTotal()} call: {@see \SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener}
+     * runs {@see TotalCalculator::calculateTotals()} on every persist/update of a
+     * {@see \SolidInvoice\InvoiceBundle\Entity\BaseInvoice}, which recomputes `total` from the
+     * line collection and would silently zero out a directly-set total on a lineless invoice.
+     */
+    private function persistInvoice(Client $client, int $total): Invoice
+    {
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+        $invoice->setStatus(InvoiceStatus::Pending);
+
+        $line = new Line();
+        $line->setQty(1);
+        $line->setPrice($total);
+        $invoice->addLine($line);
+
+        $this->em->persist($invoice);
+        $this->em->flush();
+
+        return $invoice;
+    }
+
+    private static int $creditNoteSequence = 0;
+
+    private function persistCreditNote(Client $client, Invoice $invoice, int $total, CreditNoteStatus $status = CreditNoteStatus::Issued): CreditNote
+    {
+        $creditNote = new CreditNote();
+        $creditNote->setClient($client);
+        $creditNote->setInvoice($invoice);
+        $creditNote->setStatus($status);
+        // Direct persists bypass CreditNoteIssuedListener, which is what normally assigns the
+        // number; the unique (company_id, credit_note_id) constraint still needs a distinct
+        // value whenever a test creates more than one credit note.
+        $creditNote->setCreditNoteId('CN-TEST-' . ++self::$creditNoteSequence);
+
+        $line = new CreditNoteLine();
+        $line->setQty(1);
+        $line->setPrice($total);
+        $creditNote->addLine($line);
+
+        $this->em->persist($creditNote);
+        $this->em->flush();
+
+        return $creditNote;
+    }
+
     /**
      * @throws MathException
      * @throws NotSupported
      */
     public function testUpdateWithSingleItem(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -64,7 +126,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -83,7 +145,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -107,7 +169,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne());
@@ -131,7 +193,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxIncl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -160,7 +222,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxFlat(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_FLAT_RATE)
@@ -189,7 +251,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExcl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -218,7 +280,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -251,7 +313,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -305,7 +367,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $this->em->persist($invoice);
         $this->em->flush();
 
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $updater->calculateTotals($invoice);
 
@@ -322,7 +384,7 @@ final class TotalCalculatorTest extends KernelTestCase
      */
     public function testUpdateWithTaxExclRoundingIssue(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = $this->createUpdater();
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -369,5 +431,103 @@ final class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(333), $invoice2->getBaseTotal());
         self::assertEquals(BigDecimal::of('70'), $invoice2->getTax()); // 3.33 * 0.21 = 0.6993, rounded to 70 cents
         self::assertEquals(BigDecimal::of('403'), $invoice2->getTotal()); // 333 + 69.93 = 403 cents
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateBalanceWithPartialCredit(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+        $this->persistCreditNote($client, $invoice, 3000);
+
+        self::assertTrue(BigDecimal::of(7000)->isEqualTo($this->createUpdater()->calculateBalance($invoice)));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateBalanceWithRepeatedCredits(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+        $this->persistCreditNote($client, $invoice, 3000);
+        $this->persistCreditNote($client, $invoice, 2000);
+
+        self::assertTrue(BigDecimal::of(5000)->isEqualTo($this->createUpdater()->calculateBalance($invoice)));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateBalanceWithCreditEqualToTotal(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+        $this->persistCreditNote($client, $invoice, 10000);
+
+        self::assertTrue(BigInteger::zero()->isEqualTo($this->createUpdater()->calculateBalance($invoice)));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateBalanceExcludesCancelledCredit(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+        $this->persistCreditNote($client, $invoice, 3000, CreditNoteStatus::Cancelled);
+
+        self::assertTrue(BigDecimal::of(10000)->isEqualTo($this->createUpdater()->calculateBalance($invoice)));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateOverflowContributionOnAnAlreadyPaidInvoice(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+
+        $payment = new Payment();
+        $payment->setTotalAmount(10000);
+        $payment->setStatus(PaymentStatus::Captured);
+        $invoice->addPayment($payment);
+        $this->em->persist($payment);
+        $this->em->flush();
+
+        $creditNote = $this->persistCreditNote($client, $invoice, 3000);
+
+        $updater = $this->createUpdater();
+
+        self::assertTrue(BigDecimal::of(3000)->isEqualTo($updater->calculateOverflowContribution($creditNote)));
+        self::assertTrue(BigInteger::zero()->isEqualTo($updater->calculateBalance($invoice)));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testCalculateOverflowContributionIsMarginalAcrossRepeatedCredits(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
+        $invoice = $this->persistInvoice($client, 10000);
+
+        $payment = new Payment();
+        $payment->setTotalAmount(10000);
+        $payment->setStatus(PaymentStatus::Captured);
+        $invoice->addPayment($payment);
+        $this->em->persist($payment);
+        $this->em->flush();
+
+        $updater = $this->createUpdater();
+
+        $first = $this->persistCreditNote($client, $invoice, 5000);
+        self::assertTrue(BigDecimal::of(5000)->isEqualTo($updater->calculateOverflowContribution($first)));
+
+        $second = $this->persistCreditNote($client, $invoice, 3000);
+        // Marginal, not cumulative: the first credit note's 5000 already counted, so the second
+        // contributes only its own 3000 rather than the cumulative 8000 overflow.
+        self::assertTrue(BigDecimal::of(3000)->isEqualTo($updater->calculateOverflowContribution($second)));
     }
 }

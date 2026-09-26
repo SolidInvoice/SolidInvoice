@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use function assert;
@@ -29,6 +33,8 @@ final readonly class CreditNoteIssuedListener implements EventSubscriberInterfac
     public function __construct(
         private ManagerRegistry $registry,
         private BillingIdGenerator $billingIdGenerator,
+        private TotalCalculator $totalCalculator,
+        private CreditRepository $creditRepository,
     ) {
     }
 
@@ -44,6 +50,8 @@ final readonly class CreditNoteIssuedListener implements EventSubscriberInterfac
 
     /**
      * @param CompletedEvent<CreditNote> $event
+     *
+     * @throws MathException
      */
     public function onCreditNoteIssued(CompletedEvent $event): void
     {
@@ -57,11 +65,23 @@ final readonly class CreditNoteIssuedListener implements EventSubscriberInterfac
 
         $creditNote->setCreditNoteDate(CarbonImmutable::now());
 
-        // Balance recalculation on the referenced invoice, and granting any overflow as client
-        // credit, are stubbed here. See `design` §5/§6 on SOL-69 — CN-3 fills these in.
-
         $em = $this->registry->getManager();
         $em->persist($creditNote);
         $em->flush();
+
+        $invoice = $creditNote->getInvoice();
+
+        if ($invoice instanceof Invoice) {
+            $invoice->setBalance($this->totalCalculator->calculateBalance($invoice));
+
+            $overflow = $this->totalCalculator->calculateOverflowContribution($creditNote);
+
+            if ($overflow->isPositive()) {
+                $this->creditRepository->addCredit($invoice->getClient(), $overflow);
+            }
+
+            $em->persist($invoice);
+            $em->flush();
+        }
     }
 }
