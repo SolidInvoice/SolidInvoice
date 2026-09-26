@@ -45,6 +45,7 @@ use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
@@ -124,6 +125,11 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['invoice_api:read', 'searchable'])]
     #[ApiProperty(writable: false)]
     protected ?InvoiceStatus $status = null;
+
+    #[ORM\Column(name: 'invoice_type_code', type: Types::STRING, length: 4, enumType: InvoiceTypeCode::class, options: ['default' => InvoiceTypeCode::CommercialInvoice->value])]
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(writable: false)]
+    private InvoiceTypeCode $invoiceTypeCode = InvoiceTypeCode::CommercialInvoice;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -265,6 +271,18 @@ class Invoice extends BaseInvoice implements Stringable
     public function setStatusValue(string $status): static
     {
         $this->status = InvoiceStatus::from($status);
+
+        return $this;
+    }
+
+    public function getInvoiceTypeCode(): InvoiceTypeCode
+    {
+        return $this->invoiceTypeCode;
+    }
+
+    public function setInvoiceTypeCode(InvoiceTypeCode $invoiceTypeCode): static
+    {
+        $this->invoiceTypeCode = $invoiceTypeCode;
 
         return $this;
     }

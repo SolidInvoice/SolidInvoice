@@ -24,6 +24,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
@@ -65,6 +66,9 @@ class CreditNote extends BaseInvoice implements Stringable
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: CreditNoteStatus::class)]
     private CreditNoteStatus $status = CreditNoteStatus::Draft;
+
+    #[ORM\Column(name: 'invoice_type_code', type: Types::STRING, length: 4, enumType: InvoiceTypeCode::class, options: ['default' => InvoiceTypeCode::CreditNote->value])]
+    private InvoiceTypeCode $invoiceTypeCode = InvoiceTypeCode::CreditNote;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
@@ -164,6 +168,18 @@ class CreditNote extends BaseInvoice implements Stringable
     public function setStatusValue(string $status): self
     {
         $this->status = CreditNoteStatus::from($status);
+
+        return $this;
+    }
+
+    public function getInvoiceTypeCode(): InvoiceTypeCode
+    {
+        return $this->invoiceTypeCode;
+    }
+
+    public function setInvoiceTypeCode(InvoiceTypeCode $invoiceTypeCode): self
+    {
+        $this->invoiceTypeCode = $invoiceTypeCode;
 
         return $this;
     }

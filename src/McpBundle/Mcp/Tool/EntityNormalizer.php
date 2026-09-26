@@ -87,6 +87,7 @@ final class EntityNormalizer
             'id' => $invoice->getId()?->toRfc4122(),
             'invoice_number' => $invoice->getInvoiceId(),
             'status' => $invoice->getStatus()?->value,
+            'invoice_type_code' => $invoice->getInvoiceTypeCode()->value,
             'client' => $this->clientSummary($invoice->getClient()),
             'currency' => $currency,
             'total' => $this->bigNumber($invoice->getTotal()),
