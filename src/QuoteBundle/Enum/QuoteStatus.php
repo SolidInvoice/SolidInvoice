@@ -35,14 +35,10 @@ enum QuoteStatus: string implements HasStatusLabel
     public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::New => StatusVariant::Neutral,
-            self::Draft => StatusVariant::Neutral,
-            self::Pending => StatusVariant::Warning,
+            self::New, self::Cancelled, self::Draft, self::Archived => StatusVariant::Neutral,
+            self::Pending, self::Expired => StatusVariant::Warning,
             self::Accepted => StatusVariant::Success,
-            self::Cancelled => StatusVariant::Neutral,
             self::Declined => StatusVariant::Danger,
-            self::Archived => StatusVariant::Neutral,
-            self::Expired => 'orange',
         };
     }
 }

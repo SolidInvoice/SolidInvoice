@@ -135,7 +135,7 @@
                 <{{ tag }}{{ ui.attributes(attrs) }}>
                 {{ block('label') }}
                 {% if item.getExtra('badge') %}
-                    <span class="badge {{ item.getExtra('badge_class', 'badge-sm bg-green-lt text-uppercase ms-auto') }}">{{ item.getExtra('badge') }}</span>
+                    <span class="{{ item.getExtra('badge_class', 'status-chip status-chip--neutral text-uppercase ms-auto') }}">{{ item.getExtra('badge') }}</span>
                 {% endif %}
                 </{{ tag }}>
             {% endif %}

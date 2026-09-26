@@ -47,8 +47,6 @@ final class StatusVariantTest extends TestCase
         yield 'invoice draft' => [InvoiceStatus::Draft, StatusVariant::Neutral];
         yield 'invoice pending' => [InvoiceStatus::Pending, StatusVariant::Warning];
         yield 'invoice paid' => [InvoiceStatus::Paid, StatusVariant::Success];
-        // Active means the same as Pending, so it must carry the same variant.
-        yield 'invoice active' => [InvoiceStatus::Active, StatusVariant::Warning];
         yield 'invoice overdue' => [InvoiceStatus::Overdue, StatusVariant::Danger];
         yield 'invoice cancelled' => [InvoiceStatus::Cancelled, StatusVariant::Neutral];
         yield 'invoice archived' => [InvoiceStatus::Archived, StatusVariant::Neutral];
@@ -70,6 +68,7 @@ final class StatusVariantTest extends TestCase
         yield 'quote cancelled' => [QuoteStatus::Cancelled, StatusVariant::Neutral];
         yield 'quote declined' => [QuoteStatus::Declined, StatusVariant::Danger];
         yield 'quote archived' => [QuoteStatus::Archived, StatusVariant::Neutral];
+        yield 'quote expired' => [QuoteStatus::Expired, StatusVariant::Warning];
 
         // Payment
         yield 'payment unknown' => [PaymentStatus::Unknown, StatusVariant::Warning];

@@ -19,16 +19,16 @@
                     <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
                         <h6 class="mb-0">{{ gateway.displayName }}</h6>
                         {% if gateway.recommended %}
-                            <span class="badge bg-primary-lt badge-sm">
+                            <span class="status-chip status-chip--info">
                                 {{ 'payment.gateway.badge.recommended'|trans }}
                             </span>
                         {% elseif gateway.advanced %}
-                            <span class="badge bg-secondary-lt badge-sm">
+                            <span class="status-chip status-chip--neutral">
                                 {{ 'payment.gateway.badge.advanced'|trans }}
                             </span>
                         {% endif %}
                         {% if gateway.isConfigured %}
-                            <span class="badge bg-success-lt badge-sm">
+                            <span class="status-chip status-chip--success">
                                 {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
                                 <span class="visually-hidden">{{ 'payment.marketplace.badge.configured'|trans }}</span>
                             </span>
@@ -73,7 +73,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'payment.marketplace.tab.active'|trans }} <span class="badge bg-secondary-lt ms-1">{{ activeMethods|length }}</span></span>
+                <span>{{ 'payment.marketplace.tab.active'|trans }} <span class="status-chip status-chip--neutral ms-1">{{ activeMethods|length }}</span></span>
             </a>
         </li>
     </ul>
@@ -152,7 +152,7 @@
                             <summary class="gateway-group-header mb-2">
                                 <h6 class="text-uppercase text-muted small fw-bold mb-1 d-inline-flex align-items-center gap-1">
                                     {{ 'payment.gateway.section.more.title'|trans }}
-                                    <span class="badge bg-secondary-lt badge-sm">{{ gatewayGroups.more|length }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ gatewayGroups.more|length }}</span>
                                 </h6>
                                 <p class="text-muted small mb-0">{{ 'payment.gateway.section.more.subtitle'|trans }}</p>
                             </summary>
@@ -183,7 +183,7 @@
                             {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
                             {{ 'payment.marketplace.active.title'|trans }}
                         </h5>
-                        <span class="badge bg-secondary-lt">{{ activeMethods|length }}</span>
+                        <span class="status-chip status-chip--neutral">{{ activeMethods|length }}</span>
                     </div>
 
                     {% if activeMethods|length > 0 %}
@@ -199,17 +199,17 @@
                                                 <div class="flex-grow-1 min-w-0">
                                                     <h6 class="mb-2">{{ method.name }}</h6>
                                                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                        <span class="badge {{ method.enabled ? 'bg-success-lt' : 'bg-secondary-lt' }}">
+                                                        <span class="status-chip {{ method.enabled ? 'status-chip--success' : 'status-chip--neutral' }}">
                                                             {{ method.enabled ? 'payment.marketplace.badge.enabled'|trans : 'payment.marketplace.badge.disabled'|trans }}
                                                         </span>
                                                         {% if method.config.sandbox|default(false) %}
-                                                            <span class="badge bg-warning-lt">
+                                                            <span class="status-chip status-chip--warning">
                                                                 {{ ux_icon('tabler:flask', {width: 12, height: 12}) }}
                                                                 {{ 'payment.marketplace.badge.test_mode'|trans }}
                                                             </span>
                                                         {% endif %}
                                                         {% if method.isInternal %}
-                                                            <span class="badge bg-info-lt">
+                                                            <span class="status-chip status-chip--info">
                                                                 {{ 'payment.method.offline'|trans }}
                                                             </span>
                                                         {% endif %}

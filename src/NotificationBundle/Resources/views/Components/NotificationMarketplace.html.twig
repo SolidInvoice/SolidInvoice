@@ -29,7 +29,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'notification.marketplace.configured'|trans }} <span class="badge bg-secondary-lt ms-1">{{ configuredIntegrations|length }}</span></span>
+                <span>{{ 'notification.marketplace.configured'|trans }} <span class="status-chip status-chip--neutral ms-1">{{ configuredIntegrations|length }}</span></span>
             </a>
         </li>
     </ul>
@@ -115,7 +115,7 @@
                                         <div class="integration-card-content">
                                             <h6 class="integration-card-title">{{ integration.displayName }}</h6>
                                             {% if integration.isConfigured %}
-                                                <span class="badge bg-success-lt">
+                                                <span class="status-chip status-chip--success">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
                                                     <span class="visually-hidden">{{ 'notification.marketplace.configured'|trans }}</span>
                                                 </span>
@@ -153,7 +153,7 @@
                                         <div class="integration-card-content">
                                             <h6 class="integration-card-title">{{ integration.displayName }}</h6>
                                             {% if integration.isConfigured %}
-                                                <span class="badge bg-success-lt">
+                                                <span class="status-chip status-chip--success">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
                                                     <span class="visually-hidden">{{ 'notification.marketplace.configured'|trans }}</span>
                                                 </span>
@@ -193,7 +193,7 @@
                         {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
                         {{ 'notification.marketplace.configured_title'|trans }}
                     </h5>
-                    <span class="badge bg-secondary-lt">{{ configuredIntegrations|length }}</span>
+                    <span class="status-chip status-chip--neutral">{{ configuredIntegrations|length }}</span>
                 </div>
 
                 {% if configuredIntegrations|length > 0 %}
@@ -209,10 +209,10 @@
                                             <div class="flex-grow-1 min-w-0">
                                                 <h6 class="mb-2">{{ setting.name }}</h6>
                                                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                    <span class="badge bg-secondary-lt">
+                                                    <span class="status-chip status-chip--neutral">
                                                         {{ this.getIntegrationTypeLabel(setting.transport) }}
                                                     </span>
-                                                    <span class="badge bg-primary-lt">
+                                                    <span class="status-chip status-chip--neutral">
                                                         {{ setting.transport }}
                                                     </span>
                                                 </div>

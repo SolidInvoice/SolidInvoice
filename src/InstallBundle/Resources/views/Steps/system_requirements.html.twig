@@ -25,9 +25,9 @@
         </div>
         <div class="flex-shrink-0">
             {% if requirement.fulfilled %}
-                <span class="badge bg-success-lt">{{ 'installation.requirements_page.status.passed'|trans }}</span>
+                <span class="status-chip status-chip--success">{{ 'installation.requirements_page.status.passed'|trans }}</span>
             {% else %}
-                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }}-lt">{{ requirement.optional ? 'installation.requirements_page.status.warning'|trans : 'installation.requirements_page.status.failed'|trans }}</span>
+                <span class="status-chip {{ requirement.optional ? 'status-chip--warning' : 'status-chip--danger' }}">{{ requirement.optional ? 'installation.requirements_page.status.warning'|trans : 'installation.requirements_page.status.failed'|trans }}</span>
             {% endif %}
         </div>
     </div>

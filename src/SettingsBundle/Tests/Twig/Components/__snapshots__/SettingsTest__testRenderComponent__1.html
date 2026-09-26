@@ -64,8 +64,8 @@
                                                     <div class="mb-3">                
             <label class="control-label form-label" for="settings_company_logo">Logo</label>        <div class="logo-upload-card d-flex align-items-start gap-4 p-3 bg-light rounded-3 border">
                 <div class="flex-grow-1">
-            <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone" data-symfony--ux-dropzone--dropzone-remove-label-value="Remove">
-        <input type="file" id="settings_company_logo" name="settings[company][logo]" data-controller="" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
+            <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone" data-symfony--ux-dropzone--dropzone-remove-label-value="Remove" data-symfony--ux-dropzone--dropzone-accept-message-value="File type not accepted: %files%" data-symfony--ux-dropzone--dropzone-max-files-message-value="Too many files, not added: %files%">
+        <input type="file" id="settings_company_logo" name="settings[company][logo]" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
 
         <div class="dropzone-placeholder" data-symfony--ux-dropzone--dropzone-target="placeholder">Drag and drop or browse</div>
 
@@ -77,6 +77,7 @@
             <div data-symfony--ux-dropzone--dropzone-target="previewFilename" class="dropzone-preview-filename"></div>
         </div>
 
+        <div class="dropzone-feedback" role="status" data-symfony--ux-dropzone--dropzone-target="feedback"></div>
     </div>
             <p class="text-muted small mt-2 mb-0">
                 Recommended: Square image, at least 200x200px. PNG or JPG format.
