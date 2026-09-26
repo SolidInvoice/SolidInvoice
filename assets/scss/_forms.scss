@@ -24,7 +24,7 @@
     }
 
     &::placeholder {
-        color: var(--swp-text-light);
+        color: var(--swp-text-muted);
     }
 }
 
@@ -334,7 +334,7 @@
     }
 
     .upload-hint {
-        color: var(--swp-text-light);
+        color: var(--swp-text-muted);
         font-size: var(--swp-text-xs);
         margin-top: var(--swp-space-1);
     }
