@@ -207,7 +207,7 @@
                                         <strong>{{ 'invoice.discount'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
-                                        <span class="text-danger invoice-discount">
+                                        <span class="invoice-discount">
                                             -{{ discount(invoice)|formatCurrency(invoice.client.currency) }}
                                         </span>
                                     </td>
@@ -224,7 +224,7 @@
                                             {{ payment.method.name }}
                                         </td>
                                         <td class="no-line text-right">
-                                            <div class="text-danger invoice-total">
+                                            <div class="invoice-total">
                                                 -{{ payment.amount.amount|formatCurrency(invoice.client.currency) }}
                                             </div>
                                         </td>
