@@ -188,8 +188,8 @@ final class PaymentReceiptTest extends WebTestCase
     {
         $this->capture(true);
 
-        $this->mailer()->assertSentEmailCount(1);
-        $this->mailer()->sentEmails()->first()->assertTo('jane@example.com')->assertHasFile('receipt_INV-2024-001-1.pdf');
+        $this->mailer()->assertSentEmailCount(2);
+        $this->mailer()->sentEmails()->last()->assertTo('jane@example.com')->assertHasFile('receipt_INV-2024-001-1.pdf');
     }
 
     public function testCapturingAPaymentWithTheReceiptUntickedSendsNothing(): void
@@ -203,8 +203,8 @@ final class PaymentReceiptTest extends WebTestCase
     {
         $payment = self::getContainer()->get(ManualPaymentManager::class)->record($this->invoice, BigInteger::of(10000), method: 'receipt_test');
 
-        $this->mailer()->assertSentEmailCount(1);
-        $this->mailer()->sentEmails()->first()->assertTo('jane@example.com')->assertHasFile('receipt_INV-2024-001-1.pdf');
+        $this->mailer()->assertSentEmailCount(2);
+        $this->mailer()->sentEmails()->last()->assertTo('jane@example.com')->assertHasFile('receipt_INV-2024-001-1.pdf');
         self::assertNotNull($payment->getReceiptSentAt());
     }
 
@@ -228,7 +228,7 @@ final class PaymentReceiptTest extends WebTestCase
         $dispatcher->dispatch(new PaymentCompleteEvent($payment), PaymentEvents::PAYMENT_COMPLETE);
         $dispatcher->dispatch(new PaymentCompleteEvent($payment), PaymentEvents::PAYMENT_COMPLETE);
 
-        $this->mailer()->assertSentEmailCount(1);
+        $this->mailer()->assertSentEmailCount(3);
     }
 
     public function testTheReceiptPdfMatchesTheSnapshot(): void

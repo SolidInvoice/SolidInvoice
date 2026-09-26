@@ -34,16 +34,10 @@ enum InvoiceStatus: string implements HasStatusLabel
     public function getVariant(): StatusVariant
     {
         return match ($this) {
-            self::New => StatusVariant::Neutral,
-            self::Draft => StatusVariant::Neutral,
+            self::New, self::Draft, self::Archived, self::Cancelled => StatusVariant::Neutral,
             self::Pending => StatusVariant::Warning,
             self::Paid => StatusVariant::Success,
-            // Active is an issued, awaiting-payment place that only legacy rows reach.
-            // It means the same as Pending, so it carries the same variant.
-            self::Active => StatusVariant::Warning,
             self::Overdue => StatusVariant::Danger,
-            self::Cancelled => StatusVariant::Neutral,
-            self::Archived => StatusVariant::Neutral,
         };
     }
 }

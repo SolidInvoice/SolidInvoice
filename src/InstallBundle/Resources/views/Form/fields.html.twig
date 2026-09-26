@@ -90,7 +90,7 @@
                         <div class="datagrid-item">
                             <div>{{ 'installation.database.driver'|trans }}</div>
                             <div class="datagrid-content">
-                                <span class="badge bg-info-lt">{{ form.vars.data.databaseConfig.driver|upper }}</span>
+                                <span class="status-chip status-chip--neutral">{{ form.vars.data.databaseConfig.driver|upper }}</span>
                             </div>
                         </div>
                         {% if form.vars.data.databaseConfig.driver != 'sqlite' %}
@@ -209,9 +209,9 @@
                             <div>{{ 'installation.review.telemetry'|trans }}</div>
                             <div class="datagrid-content">
                                 {% if form.vars.data.telemetryEnabled %}
-                                    <span class="badge bg-success-lt">{{ 'installation.review.enabled'|trans }}</span>
+                                    <span class="status-chip status-chip--success">{{ 'installation.review.enabled'|trans }}</span>
                                 {% else %}
-                                    <span class="badge bg-secondary-lt">{{ 'installation.review.disabled'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'installation.review.disabled'|trans }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -284,7 +284,7 @@
                             {% endif %}
                         </span>
                         {% if isSqlite %}
-                            <span class="badge bg-primary-lt position-absolute bottom-0 end-0">{{ 'installation.database.recommended'|trans }}</span>
+                            <span class="status-chip status-chip--info position-absolute bottom-0 end-0">{{ 'installation.database.recommended'|trans }}</span>
                         {% endif %}
                     </span>
                 </label>
