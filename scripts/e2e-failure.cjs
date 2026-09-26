@@ -51,9 +51,6 @@ const uploadScreenshots = async (rootDir, context, core) => {
     try {
         const cloudinary = require('cloudinary').v2;
 
-        // Return "https" URLs by setting secure: true
-        cloudinary.config({ secure: true });
-
         const images = fs.readdirSync(screenshotsDir);
 
         const uploads = images.map((image) => cloudinary.uploader.upload(
@@ -68,12 +65,21 @@ const uploadScreenshots = async (rootDir, context, core) => {
             }
         ));
 
-        const uploaded = await Promise.all(uploads);
+        // allSettled: one bad file (wrong type, transient network error) must not
+        // drop every other screenshot from the report.
+        const settled = await Promise.allSettled(uploads);
 
-        return uploaded.map((image) => ({
-            url: image.url,
-            name: image.original_filename,
-        }));
+        settled
+            .filter((result) => result.status === 'rejected')
+            .forEach((result) => core.warning(`Failed to upload a screenshot to Cloudinary: ${result.reason}`));
+
+        return settled
+            .filter((result) => result.status === 'fulfilled')
+            .map((result) => ({
+                // .secure_url is the https field on the upload response; .url is always http.
+                url: result.value.secure_url,
+                name: result.value.original_filename,
+            }));
     } catch (error) {
         core.warning(`Failed to upload screenshots to Cloudinary: ${error}`);
         return [];
@@ -85,12 +91,15 @@ const capBody = (body) => {
         return body;
     }
 
-    return `${body.slice(0, MAX_BODY_LENGTH)}\n\n_Report truncated at ${MAX_BODY_LENGTH} characters._`;
+    const truncated = body.slice(0, MAX_BODY_LENGTH);
+    const openFences = (truncated.match(/^```/gm) || []).length % 2 !== 0;
+
+    return `${truncated}${openFences ? '\n```' : ''}\n\n_Report truncated at ${MAX_BODY_LENGTH} characters._`;
 };
 
 module.exports = async ({ github, context, core }) => {
     try {
-        const rootDir = path.resolve(path.join(__dirname, '..'));
+        const rootDir = path.resolve(__dirname, '..');
         const { JOB_NAME } = process.env;
 
         let body = buildHeader({ jobName: JOB_NAME, sha: context.sha, ref: context.ref });
@@ -110,9 +119,9 @@ module.exports = async ({ github, context, core }) => {
 
             if (screenshots.length > 0) {
                 body += '\n### Screenshots\n';
-                screenshots.forEach((screenshot) => {
-                    body += `**${screenshot.name}**\n![screenshot-${screenshot.name}](${screenshot.url})\n`;
-                });
+                body += screenshots
+                    .map((screenshot) => `**${screenshot.name}**\n![screenshot-${screenshot.name}](${screenshot.url})\n`)
+                    .join('');
             }
         } else {
             core.info('No issue/PR number on this event (likely a push build); skipping screenshot upload and the comment, writing the summary only.');
