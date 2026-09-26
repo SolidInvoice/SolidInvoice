@@ -74,7 +74,7 @@
 
     // Focus Halo. `--swp-ring-primary` is a 15%-alpha green (~1.1:1 on white)
     // and cannot carry a focus indicator on its own, so the border shifts to
-    // full `--swp-primary` alongside it to meet WCAG 2.1 SC 2.4.11.
+    // full `--swp-primary` alongside it to meet WCAG 2.2 SC 2.4.11.
 
     &:not(.completed):focus-visible {
         outline: none;

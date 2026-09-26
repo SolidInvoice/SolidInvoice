@@ -57,7 +57,7 @@
         }
 
         &::placeholder {
-            color: #9aa0ac;
+            color: var(--swp-text-muted);
         }
     }
 
