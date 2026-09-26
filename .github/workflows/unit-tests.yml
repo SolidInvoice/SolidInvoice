@@ -163,5 +163,5 @@ jobs:
             JOB_NAME: Unit ( PHP ${{ matrix.php }} )
         with:
           script: |
-            const script = require('./scripts/e2e-failure.js')
-            await script({github, context, core})
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/e2e-failure.cjs`)
+            await script({ github, context, core })
