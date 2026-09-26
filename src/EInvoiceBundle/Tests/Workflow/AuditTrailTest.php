@@ -75,7 +75,7 @@ final class AuditTrailTest extends TestCase
         self::assertNotSame([], $logger->messages);
 
         foreach ($logger->messages as $message) {
-            self::assertStringContainsString('einvoice_document', $message);
+            self::assertStringContainsString('einvoice_document', (string) $message);
         }
     }
 
