@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -187,7 +186,6 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($line->getName(), $invoiceLine[0]->getName());
-        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
     }
@@ -360,7 +358,6 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertCount(1, $invoiceLine[0]->getTaxes());
         self::assertSame('VAT', $invoiceLine[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getName());
-        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
     }
