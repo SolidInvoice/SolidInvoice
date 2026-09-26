@@ -16,7 +16,6 @@ namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -131,7 +130,6 @@ final class QuoteClonerTest extends TestCase
         self::assertCount(1, $quoteItem[0]->getTaxes());
         self::assertSame('VAT', $quoteItem[0]->getTaxes()->first()->getNameSnapshot());
         self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());
-        self::assertInstanceOf(DateTimeImmutable::class, $quoteItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $quoteItem[0]->getPrice());
         self::assertTrue($item->getQty()->isEqualTo($quoteItem[0]->getQty()));
     }

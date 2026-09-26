@@ -546,9 +546,9 @@ class Quote
 
     #[Groups(['searchable'])]
     #[SerializedName('created')]
-    public function getCreatedTimestamp(): ?int
+    public function getCreatedTimestamp(): int
     {
-        return $this->created instanceof DateTimeInterface ? $this->created->getTimestamp() : null;
+        return $this->created->getTimestamp();
     }
 
     /**

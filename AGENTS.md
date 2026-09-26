@@ -462,6 +462,22 @@ non-obvious parts".
 Remember `db-tests.yml`: your migration runs on MySQL 5.7 through 9, MariaDB 10.4 through
 11.4, and PostgreSQL 16/17.
 
+**`preUp()`, `postUp()`, `preDown()` and `postDown()` run for real under `--dry-run`.**
+Doctrine's dry-run guard only holds back the SQL queued by `addSql()` and the schema diff —
+a hook that talks to `$this->connection` directly (an `UPDATE`, a `CHECK` constraint swap,
+anything outside the `Schema` object it was handed) mutates a live database during
+`doctrine:migrations:migrate --dry-run`. Guard any such hook one of two ways:
+
+- Prefer checking that the state `up()`/`down()` was supposed to produce actually landed,
+  the way `Version30100_7::postUp()` guards on `columnExists()`. This stays correct even if
+  the dry-run flag failed to propagate for some other reason.
+- Where the hook runs *before* that state exists — most commonly `preDown()` — use the
+  `SolidInvoice\CoreBundle\Doctrine\Migrations\DryRunAwareMigration` trait's `isDryRun()`,
+  as `Version30100_7::preDown()` and `Version30100_6::preDown()` do.
+
+Do not retrofit an already-released migration to add this guard — the goal is that a
+`--dry-run` is inert going forward, not rewriting what a shipped migration already applied.
+
 ### Doctrine filters — `src/CoreBundle/Doctrine/Filter/`
 
 Two global filters:
@@ -744,6 +760,8 @@ The full map of what lives where:
 | `.claude/skills/solidinvoice-feature-docs/SKILL.md` | **Tool-specific, keeps its content** — a Claude Skill for writing end-user docs. |
 | `.claude/skills/code-quality.md` | Pointer. Restated §3/§4 and had gone stale. |
 | `.claude/skills/testing.md` | Pointer. Restated §13 and had gone stale. |
+
+Accepted architecture decisions are a different thing and live in `adr/` — see `adr/README.md`.
 
 The rule for you: **read `AGENTS.md`, and when you change a convention, change it here.**
 If another instruction file contradicts this one, this one wins — and that contradiction

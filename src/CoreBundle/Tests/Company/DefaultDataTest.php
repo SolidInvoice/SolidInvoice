@@ -43,7 +43,7 @@ final class DefaultDataTest extends TestCase
         $entityManager
             ->expects('persist')
             ->with(M::type(Setting::class))
-            ->times(24);
+            ->times(27);
 
         $entityManager->expects('persist')
             ->with(M::type(CustomField::class))

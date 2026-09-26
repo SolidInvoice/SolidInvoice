@@ -17,10 +17,10 @@ use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
@@ -44,7 +44,8 @@ class PaymentCompleteListener implements EventSubscriberInterface
     public function __construct(
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly ManagerRegistry $registry,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
@@ -70,10 +71,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
             if (PaymentStatus::Captured->value === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
-                $paymentRepository = $this->registry->getRepository(Payment::class);
-                $invoiceTotal = $invoice->getTotal();
-                $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
-                $invoice->setBalance($invoiceTotal->toBigDecimal()->minus($totalPaid));
+                // Routed through TotalCalculator rather than inlining the balance formula here:
+                // duplicating it would silently restore any amount already credited by a credit
+                // note against this invoice. See `design` §5 on SOL-69.
+                $invoice->setBalance($this->totalCalculator->calculateBalance($invoice));
 
                 $em = $this->registry->getManager();
                 $em->persist($invoice);

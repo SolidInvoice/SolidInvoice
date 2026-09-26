@@ -66,6 +66,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertSame('105000', $result['total']);
         self::assertSame('Net 30', $result['terms']);
         self::assertSame('Thanks for your business', $result['notes']);
+        self::assertSame('380', $result['invoice_type_code']);
 
         $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Invoice::class, $invoice);

@@ -51,25 +51,36 @@ final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
         $filters->disable('archivable');
 
         try {
-            $field = 'e.' . $options['field'];
+            $rawField = 'e.' . $options['field'];
+            $field = $rawField;
             $prefix = $options['prefix'] ?? '';
             $suffix = $options['suffix'] ?? '';
             $prefixLength = strlen((string) $prefix);
             $suffixLength = strlen($suffix);
 
+            $qb = $this->registry
+                ->getRepository($entity::class)
+                ->createQueryBuilder('e');
+
             if ($prefixLength > 0 || $suffixLength > 0) {
                 $field = sprintf(
                     'SUBSTRING(%s, %d, LENGTH(%s) - %d)',
-                    $field,
+                    $rawField,
                     $prefixLength + 1,
-                    $field,
+                    $rawField,
                     $prefixLength + $suffixLength
                 );
+
+                // A value shorter than prefix+suffix (an id not assigned yet, still
+                // its default '') makes the SUBSTRING length negative. MySQL/MariaDB/
+                // SQLite tolerate that, but PostgreSQL raises "negative substring
+                // length not allowed". Exclude those rows instead of relying on
+                // platform-specific clamping; they are not numbered entries anyway.
+                $qb->andWhere(sprintf('LENGTH(%s) >= :minLength', $rawField))
+                    ->setParameter('minLength', $prefixLength + $suffixLength);
             }
 
-            $lastId = $this->registry
-                ->getRepository($entity::class)
-                ->createQueryBuilder('e')
+            $lastId = $qb
                 ->select(sprintf('MAX(ABS(TO_NUMBER(%s)))', $field))
                 ->getQuery()
                 ->getSingleScalarResult();
