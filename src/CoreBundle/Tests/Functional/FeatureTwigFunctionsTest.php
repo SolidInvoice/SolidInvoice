@@ -34,7 +34,7 @@ final class FeatureTwigFunctionsTest extends KernelTestCase
         $container = self::getContainer();
 
         $gateId = 'test.' . FeatureGate::class;
-        self::assertFalse($container->has($gateId), 'SOL-239: deliberate CI failure to verify the e2e-failure reporter; revert before review.');
+        self::assertTrue($container->has($gateId));
         self::assertInstanceOf(NoopFeatureGate::class, $container->get($gateId));
     }
 
