@@ -1,81 +1,141 @@
-const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const path = require('path');
 
-module.exports = async ({ github, context }) => {
-    const { JOB_NAME } = process.env;
-    const rootDir = path.resolve(path.join(__dirname, '..'));
-    let hasFailureInfo = false;
-    let commentBody = '### Functional Test Failure 🙀!';
+const MAX_BODY_LENGTH = 60000;
+const LOG_TAIL_LINES = 400;
 
-    commentBody += `
+const isCloudinaryConfigured = (url) => {
+    if (!url) {
+        return false;
+    }
+
+    // Secrets that interpolate empty on a fork PR leave this exact shape.
+    return !/^cloudinary:\/\/:@?$/.test(url);
+};
+
+const buildHeader = ({ jobName, sha, ref }) => `### Functional Test Failure 🙀!
 | Job Name | SHA | REF |
 |----------|-----|-----|
-| ${JOB_NAME} | ${context.sha} | ${context.ref} |
+| ${jobName} | ${sha} | ${ref} |
 
 `;
 
-    // Return "https" URLs by setting secure: true
-    cloudinary.config({
-        secure: true,
-    });
+const readLogTail = (rootDir) => {
+    const logPath = path.join(rootDir, 'var/log/test.log');
 
-    const uploadImages = async () => {
-        let promiseArray = [];
+    if (!fs.existsSync(logPath)) {
+        return null;
+    }
 
-        if (!fs.existsSync(`${rootDir}/var/browser/screenshots/`)) {
-            return [];
+    const lines = fs.readFileSync(logPath, 'utf8').split('\n');
+    const tail = lines.slice(-LOG_TAIL_LINES);
+
+    return {
+        content: tail.join('\n'),
+        trimmed: lines.length > tail.length,
+    };
+};
+
+const uploadScreenshots = async (rootDir, context, core) => {
+    const screenshotsDir = path.join(rootDir, 'var/browser/screenshots');
+
+    if (!fs.existsSync(screenshotsDir)) {
+        return [];
+    }
+
+    if (!isCloudinaryConfigured(process.env.CLOUDINARY_URL)) {
+        core.info('CLOUDINARY_URL is not configured (expected on a fork PR); skipping screenshot upload.');
+        return [];
+    }
+
+    try {
+        const cloudinary = require('cloudinary').v2;
+
+        // Return "https" URLs by setting secure: true
+        cloudinary.config({ secure: true });
+
+        const images = fs.readdirSync(screenshotsDir);
+
+        const uploads = images.map((image) => cloudinary.uploader.upload(
+            path.join(screenshotsDir, image),
+            {
+                tags: `ci,github-actions,e2e,screenshot,${context.ref}`,
+                folder: `solidinvoice/ci/errors/${context.issue.number}/${context.sha}`,
+                sign_url: true,
+                use_filename: true,
+                unique_filename: false,
+                overwrite: true,
+            }
+        ));
+
+        const uploaded = await Promise.all(uploads);
+
+        return uploaded.map((image) => ({
+            url: image.url,
+            name: image.original_filename,
+        }));
+    } catch (error) {
+        core.warning(`Failed to upload screenshots to Cloudinary: ${error}`);
+        return [];
+    }
+};
+
+const capBody = (body) => {
+    if (body.length <= MAX_BODY_LENGTH) {
+        return body;
+    }
+
+    return `${body.slice(0, MAX_BODY_LENGTH)}\n\n_Report truncated at ${MAX_BODY_LENGTH} characters._`;
+};
+
+module.exports = async ({ github, context, core }) => {
+    try {
+        const rootDir = path.resolve(path.join(__dirname, '..'));
+        const { JOB_NAME } = process.env;
+
+        let body = buildHeader({ jobName: JOB_NAME, sha: context.sha, ref: context.ref });
+
+        const logTail = readLogTail(rootDir);
+
+        if (logTail) {
+            body += `\n### Log File${logTail.trimmed ? ` (last ${LOG_TAIL_LINES} lines)` : ''}\n\`\`\`\n${logTail.content}\n\`\`\`\n`;
+        } else {
+            body += '\n_No `var/log/test.log` was produced._\n';
         }
 
-        let images = fs.readdirSync(`${rootDir}/var/browser/screenshots/`);
+        const hasIssueNumber = Boolean(context.issue && context.issue.number);
 
-        images.forEach((element) => {
-            console.log(`Uploading ${element} to cloudinary..`);
+        if (hasIssueNumber) {
+            const screenshots = await uploadScreenshots(rootDir, context, core);
 
-            let uplaodedImagePromise = cloudinary.uploader.upload(
-                `${rootDir}/var/browser/screenshots/${element}`,
-                {
-                    tags: `ci,github-actions,e2e,screenshot,${context.ref}`,
-                    folder: `solidinvoice/ci/errors/${context.issue.number}/${context.sha}`,
-                    sign_url: true,
-                    use_filename: true,
-                    unique_filename: false,
-                    overwrite: true,
-                }
-            );
-            promiseArray.push(uplaodedImagePromise);
-        });
+            if (screenshots.length > 0) {
+                body += '\n### Screenshots\n';
+                screenshots.forEach((screenshot) => {
+                    body += `**${screenshot.name}**\n![screenshot-${screenshot.name}](${screenshot.url})\n`;
+                });
+            }
+        } else {
+            core.info('No issue/PR number on this event (likely a push build); skipping screenshot upload and the comment, writing the summary only.');
+        }
 
-        const urlList = await Promise.all(promiseArray);
+        body = capBody(body);
 
-        return urlList.map((element) => ({
-            url: element.url,
-            name: element.original_filename,
-        }));
-    };
+        if (hasIssueNumber) {
+            try {
+                await github.rest.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body,
+                });
+            } catch (error) {
+                core.warning(`Failed to post the failure comment: ${error}`);
+            }
+        }
 
-    const urlList = await uploadImages();
-
-    if (0 !== urlList.length) {
-        hasFailureInfo = true;
-        urlList.forEach((element) => {
-            commentBody += `**${element.name}**\n![screenshot-${element.name}](${element.url}) \n`;
-        });
-    }
-
-    if (fs.existsSync(`${rootDir}/var/log/test.log`)) {
-        hasFailureInfo = true;
-        const logFileContent = fs.readFileSync(`${rootDir}/var/log/test.log`);
-
-        commentBody += `\n ### Log File\n \`\`\`${logFileContent}\`\`\``;
-    }
-
-    if (hasFailureInfo) {
-        github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: commentBody,
-        });
+        core.summary.addRaw(body);
+        await core.summary.write();
+    } catch (error) {
+        core.warning(`e2e-failure reporter failed: ${error}`);
     }
 };
