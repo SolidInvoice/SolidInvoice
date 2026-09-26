@@ -75,16 +75,16 @@
                         {% for job in jobs %}
                             <tr>
                                 <td>{{ job.createdAt|date('Y-m-d H:i') }}</td>
-                                <td><span class="badge bg-secondary-lt text-uppercase">{{ job.format.value }}</span></td>
+                                <td><span class="status-chip status-chip--neutral text-uppercase">{{ job.format.value }}</span></td>
                                 <td>
                                     {% set status = job.status.value %}
-                                    {% set badgeClass = {
-                                        'pending': 'bg-info-lt',
-                                        'processing': 'bg-warning-lt',
-                                        'completed': 'bg-success-lt',
-                                        'failed': 'bg-danger-lt',
+                                    {% set chipVariant = {
+                                        'pending':    'status-chip--info',
+                                        'processing': 'status-chip--info',
+                                        'completed':  'status-chip--success',
+                                        'failed':     'status-chip--danger',
                                     }[status] %}
-                                    <span class="badge {{ badgeClass }}">{{ status|title|trans }}</span>
+                                    <span class="status-chip {{ chipVariant }}">{{ status|title|trans }}</span>
                                     {% if job.status.value == 'failed' and job.failureReason %}
                                         <div class="small text-muted">{{ job.failureReason }}</div>
                                     {% endif %}

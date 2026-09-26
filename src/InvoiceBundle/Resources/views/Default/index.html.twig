@@ -135,21 +135,21 @@
                             <a href="{{ path('_invoices_index_recurring') }}" class="nav-link{{ not isArchived and not isCompleted ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived and not isCompleted ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.recurring_active'|trans }}
-                                <span class="badge bg-primary-lt ms-2">{{ totalActiveRecurring }}</span>
+                                <span class="status-chip status-chip--neutral ms-2">{{ totalActiveRecurring }}</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="{{ path('_invoices_index_recurring', {completed: 1}) }}" class="nav-link{{ isCompleted ? ' active' : '' }}" role="tab" aria-selected="{{ isCompleted ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.recurring_completed'|trans }}
-                                <span class="badge bg-success-lt ms-2">{{ completeCount }}</span>
+                                <span class="status-chip status-chip--neutral ms-2">{{ completeCount }}</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="{{ path('_invoices_index_recurring', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.recurring_archived'|trans }}
-                                <span class="badge bg-secondary-lt ms-2">{{ totalArchivedRecurring }}</span>
+                                <span class="status-chip status-chip--neutral ms-2">{{ totalArchivedRecurring }}</span>
                             </a>
                         </li>
                     </ul>
@@ -276,14 +276,14 @@
                             <a href="{{ path('_invoices_index') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.active'|trans }}
-                                <span class="badge bg-primary-lt ms-2">{{ totalActiveInvoices }}</span>
+                                <span class="status-chip status-chip--neutral ms-2">{{ totalActiveInvoices }}</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="{{ path('_invoices_index', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.archived'|trans }}
-                                <span class="badge bg-secondary-lt ms-2">{{ totalArchivedInvoices }}</span>
+                                <span class="status-chip status-chip--neutral ms-2">{{ totalArchivedInvoices }}</span>
                             </a>
                         </li>
                     </ul>

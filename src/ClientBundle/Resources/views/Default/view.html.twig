@@ -110,10 +110,10 @@
                 <div class="client-stat-label">{{ 'client.stats.invoices'|trans }}</div>
                 <div class="client-stat-value">{{ client.invoices|length }}</div>
                 <div class="client-stat-badges">
-                    <span class="badge bg-success-lt" title="{{ 'client.stats.tooltip.total_paid'|trans }}">
+                    <span class="status-chip status-chip--success" title="{{ 'client.stats.tooltip.total_paid'|trans }}">
                         {{ total_invoices_paid }} {{ 'paid'|trans }}
                     </span>
-                    <span class="badge bg-warning-lt" title="{{ 'client.stats.tooltip.total_outstanding'|trans }}">
+                    <span class="status-chip status-chip--warning" title="{{ 'client.stats.tooltip.total_outstanding'|trans }}">
                         {{ total_invoices_pending }} {{ 'pending'|trans }}
                     </span>
                 </div>
@@ -164,14 +164,14 @@
                     <button class="nav-link" id="quotes-tab" data-bs-toggle="tab" data-bs-target="#quotes" type="button" role="tab" aria-controls="quotes" aria-selected="false">
                         {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
                         <span>{{ 'client.view.tabs.quotes'|trans }}</span>
-                        <span class="badge bg-secondary-lt">{{ client.quotes|length }}</span>
+                        <span class="status-chip status-chip--neutral">{{ client.quotes|length }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices" type="button" role="tab" aria-controls="invoices" aria-selected="false">
                         {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
                         <span>{{ 'client.view.tabs.invoices'|trans }}</span>
-                        <span class="badge bg-secondary-lt">{{ client.invoices|length }}</span>
+                        <span class="status-chip status-chip--neutral">{{ client.invoices|length }}</span>
                     </button>
                 </li>
                 {% if payments|length > 0 %}
@@ -179,7 +179,7 @@
                         <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments" type="button" role="tab" aria-controls="payments" aria-selected="false">
                             {{ ux_icon('tabler:credit-card', {width: 16, height: 16}) }}
                             <span>{{ 'client.view.tabs.payments'|trans }}</span>
-                            <span class="badge bg-secondary-lt">{{ payments|length }}</span>
+                            <span class="status-chip status-chip--neutral">{{ payments|length }}</span>
                         </button>
                     </li>
                 {% endif %}

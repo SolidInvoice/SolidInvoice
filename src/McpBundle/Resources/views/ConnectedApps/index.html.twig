@@ -38,7 +38,7 @@
                                     <div class="mb-2 text-muted small">
                                         {{ 'mcp.connected_apps.scopes'|trans({}) }}:
                                         {% for scope in app.scopes %}
-                                            <span class="badge bg-blue-lt">{{ scope }}</span>
+                                            <span class="status-chip status-chip--neutral">{{ scope }}</span>
                                         {% endfor %}
                                     </div>
 
