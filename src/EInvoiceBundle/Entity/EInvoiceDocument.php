@@ -67,41 +67,8 @@ class EInvoiceDocument
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private ?Ulid $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class)]
-    #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?Invoice $invoice = null;
-
-    #[ORM\ManyToOne(targetEntity: CreditNote::class)]
-    #[ORM\JoinColumn(name: 'credit_note_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?CreditNote $creditNote = null;
-
-    /**
-     * Denormalised from the source document's own number, so the audit record survives a hard
-     * delete of its invoice or credit note (both FKs are `SET NULL`) — `design` §3.3.
-     */
-    #[ORM\Column(name: 'source_number', type: Types::STRING, length: 255)]
-    private string $sourceNumber;
-
-    #[ORM\Column(name: 'channel', type: Types::STRING, length: 50)]
-    private string $channel;
-
-    /**
-     * A {@see \SolidInvoice\EInvoiceBundle\Profile\ProfileInterface::getIdentifier()} value, e.g.
-     * `xrechnung-3.0.2`.
-     */
-    #[ORM\Column(name: 'profile', type: Types::STRING, length: 100)]
-    private string $profile;
-
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: EInvoiceStatus::class)]
     private EInvoiceStatus $status = EInvoiceStatus::Pending;
-
-    /**
-     * The syntax payload (UBL or CII XML), verbatim. This is never a Factur-X PDF: Factur-X
-     * packaging (#2670) wraps this XML into a PDF/A-3 at send time and does not need a second
-     * payload column — `design` §3.1.
-     */
-    #[ORM\Column(name: 'payload', type: Types::TEXT)]
-    private string $payload;
 
     /**
      * Lowercase SHA-256 hex of {@see self::$payload}, computed in the constructor. Never accepted
@@ -110,15 +77,6 @@ class EInvoiceDocument
      */
     #[ORM\Column(name: 'payload_hash', type: Types::STRING, length: 64)]
     private string $payloadHash;
-
-    #[ORM\Column(name: 'payload_format', type: Types::STRING, length: 10, enumType: SyntaxFormat::class)]
-    private SyntaxFormat $payloadFormat;
-
-    #[ORM\Column(name: 'payload_media_type', type: Types::STRING, length: 100)]
-    private string $payloadMediaType;
-
-    #[ORM\Column(name: 'payload_filename', type: Types::STRING, length: 255)]
-    private string $payloadFilename;
 
     /**
      * The identifier assigned by the remote platform.
@@ -161,27 +119,42 @@ class EInvoiceDocument
      */
     public function __construct(
         Company $company,
-        ?Invoice $invoice,
-        ?CreditNote $creditNote,
-        string $sourceNumber,
-        string $channel,
-        string $profile,
-        string $payload,
-        SyntaxFormat $payloadFormat,
-        string $payloadMediaType,
-        string $payloadFilename,
+        #[ORM\ManyToOne(targetEntity: Invoice::class)]
+        #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+        private ?Invoice $invoice,
+        #[ORM\ManyToOne(targetEntity: CreditNote::class)]
+        #[ORM\JoinColumn(name: 'credit_note_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+        private ?CreditNote $creditNote,
+        /**
+         * Denormalised from the source document's own number, so the audit record survives a hard
+         * delete of its invoice or credit note (both FKs are `SET NULL`) — `design` §3.3.
+         */
+        #[ORM\Column(name: 'source_number', type: Types::STRING, length: 255)]
+        private string $sourceNumber,
+        #[ORM\Column(name: 'channel', type: Types::STRING, length: 50)]
+        private string $channel,
+        /**
+         * A {@see \SolidInvoice\EInvoiceBundle\Profile\ProfileInterface::getIdentifier()} value, e.g.
+         * `xrechnung-3.0.2`.
+         */
+        #[ORM\Column(name: 'profile', type: Types::STRING, length: 100)]
+        private string $profile,
+        /**
+         * The syntax payload (UBL or CII XML), verbatim. This is never a Factur-X PDF: Factur-X
+         * packaging (#2670) wraps this XML into a PDF/A-3 at send time and does not need a second
+         * payload column — `design` §3.1.
+         */
+        #[ORM\Column(name: 'payload', type: Types::TEXT)]
+        private string $payload,
+        #[ORM\Column(name: 'payload_format', type: Types::STRING, length: 10, enumType: SyntaxFormat::class)]
+        private SyntaxFormat $payloadFormat,
+        #[ORM\Column(name: 'payload_media_type', type: Types::STRING, length: 100)]
+        private string $payloadMediaType,
+        #[ORM\Column(name: 'payload_filename', type: Types::STRING, length: 255)]
+        private string $payloadFilename,
     ) {
         $this->company = $company;
-        $this->invoice = $invoice;
-        $this->creditNote = $creditNote;
-        $this->sourceNumber = $sourceNumber;
-        $this->channel = $channel;
-        $this->profile = $profile;
-        $this->payload = $payload;
-        $this->payloadHash = hash('sha256', $payload);
-        $this->payloadFormat = $payloadFormat;
-        $this->payloadMediaType = $payloadMediaType;
-        $this->payloadFilename = $payloadFilename;
+        $this->payloadHash = hash('sha256', $this->payload);
     }
 
     public function getId(): ?Ulid
