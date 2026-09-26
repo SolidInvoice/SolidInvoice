@@ -45,7 +45,7 @@
         <div class="col-md-6 col-lg-4 d-flex">
             <div class="card flex-fill plan-card {{ isRecommended and not isCurrent ? 'plan-card-recommended border-primary' : '' }} {{ isCurrent ? 'plan-card-current border-success' : '' }}">
                 {% if isCurrent %}
-                    <div class="plan-card-banner bg-success">
+                    <div class="plan-card-banner">
                         {{ ux_icon('tabler:check', {width: 14, height: 14, class: 'me-1'}) }}
                         {{ 'saas.plan.current'|trans }}
                     </div>

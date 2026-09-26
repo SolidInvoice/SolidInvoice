@@ -184,10 +184,11 @@
             padding: var(--swp-space-2);
         }
 
-        // Avatar with initials - force solid primary background
+        // Avatar with initials. The dark step, not --swp-primary: these are text at
+        // 20px/600, and white on --swp-primary is 3.79:1. --swp-primary-dark is 6.49:1.
 
         .avatar.bg-primary {
-            background-color: var(--swp-primary) !important;
+            background-color: var(--swp-primary-dark) !important;
             background-image: none !important;
         }
 
