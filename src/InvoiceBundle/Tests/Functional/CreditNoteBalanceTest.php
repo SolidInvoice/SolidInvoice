@@ -63,9 +63,11 @@ final class CreditNoteBalanceTest extends KernelTestCase
         $invoice = new Invoice();
         $invoice->setClient($client);
         $invoice->setStatus(InvoiceStatus::Pending);
+
         $line = new Line();
         $line->setQty(1);
         $line->setPrice(10000);
+
         $invoice->addLine($line);
         $this->em->persist($invoice);
         $this->em->flush();
@@ -73,9 +75,11 @@ final class CreditNoteBalanceTest extends KernelTestCase
         $creditNote = new CreditNote();
         $creditNote->setClient($client);
         $creditNote->setInvoice($invoice);
+
         $creditNoteLine = new CreditNoteLine();
         $creditNoteLine->setQty(1);
         $creditNoteLine->setPrice(3000);
+
         $creditNote->addLine($creditNoteLine);
         $this->em->persist($creditNote);
         $this->em->flush();
@@ -89,6 +93,7 @@ final class CreditNoteBalanceTest extends KernelTestCase
         $payment = new Payment();
         $payment->setTotalAmount(4000);
         $payment->setStatus(PaymentStatus::Captured);
+
         $invoice->addPayment($payment);
         $this->em->persist($invoice);
         $this->em->flush();

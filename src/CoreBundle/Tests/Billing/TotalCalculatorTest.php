@@ -69,6 +69,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $line = new Line();
         $line->setQty(1);
         $line->setPrice($total);
+
         $invoice->addLine($line);
 
         $this->em->persist($invoice);
@@ -93,6 +94,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $line = new CreditNoteLine();
         $line->setQty(1);
         $line->setPrice($total);
+
         $creditNote->addLine($line);
 
         $this->em->persist($creditNote);
@@ -493,6 +495,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $payment = new Payment();
         $payment->setTotalAmount(10000);
         $payment->setStatus(PaymentStatus::Captured);
+
         $invoice->addPayment($payment);
         $this->em->persist($payment);
         $this->em->flush();
@@ -516,6 +519,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $payment = new Payment();
         $payment->setTotalAmount(10000);
         $payment->setStatus(PaymentStatus::Captured);
+
         $invoice->addPayment($payment);
         $this->em->persist($payment);
         $this->em->flush();
