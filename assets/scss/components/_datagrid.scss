@@ -753,22 +753,6 @@
         white-space: nowrap;
         text-align: right;
     }
-
-    // Tabler badges live inside status cells. The design system mandates pill chips.
-
-    tbody .badge {
-        border-radius: var(--swp-radius-full);
-        padding: 2px 10px;
-        font-weight: var(--swp-font-medium);
-        letter-spacing: 0;
-
-        // `text-gray-fg` is amber-bound; neutralise the Cancelled chip explicitly.
-
-        &.bg-gray.text-gray-fg {
-            background-color: var(--swp-gray-100);
-            color: var(--swp-text-secondary);
-        }
-    }
 }
 
 // Sortable column headers
@@ -1478,11 +1462,5 @@ tbody tr:hover .datagrid-more-btn,
                 border-bottom: none;
             }
         }
-    }
-
-    .badge {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        font-weight: var(--swp-font-weight-medium);
     }
 }
