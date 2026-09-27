@@ -102,14 +102,14 @@
                         <button type="button" class="nav-link active" id="users-tab-btn" data-bs-toggle="tab" data-bs-target="#users-tab" role="tab" aria-controls="users-tab" aria-selected="true">
                             {{ ux_icon('tabler:users', {width: 16, height: 16}) }}
                             {{ 'users.tabs.active_users'|trans }}
-                            <span class="badge bg-primary-lt ms-2">{{ totalActiveUsers }}</span>
+                            <span class="status-chip status-chip--neutral ms-2">{{ totalActiveUsers }}</span>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button type="button" class="nav-link" id="invitations-tab-btn" data-bs-toggle="tab" data-bs-target="#invitations-tab" role="tab" aria-controls="invitations-tab" aria-selected="false">
                             {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
                             {{ 'users.tabs.pending_invitations'|trans }}
-                            <span class="badge bg-warning-lt ms-2">{{ totalPendingInvitations }}</span>
+                            <span class="status-chip status-chip--warning ms-2">{{ totalPendingInvitations }}</span>
                         </button>
                     </li>
                 </ul>
