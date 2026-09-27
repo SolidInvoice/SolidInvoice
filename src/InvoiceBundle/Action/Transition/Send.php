@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -32,7 +33,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Action\Transition\SendTest
  */
-final class Send
+final class Send extends AbstractController
 {
     use SaveableTrait;
 
@@ -48,6 +49,15 @@ final class Send
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+        if (! $this->isCsrfTokenValid('send_invoice', $request->request->get('_token'))) {
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'invoice.send.invalid_csrf';
+                }
+            };
+        }
 
         if ($this->emailVerificationGate->isGated()) {
             return new class($route) extends RedirectResponse implements FlashResponse {
