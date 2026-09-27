@@ -576,11 +576,11 @@
 }
 
 .doc-sidebar-card-success {
-    border-left: 4px solid var(--tblr-success);
+    background: var(--tblr-success-lighter);
 }
 
 .doc-sidebar-card-highlight {
-    border-left: 4px solid var(--tblr-primary);
+    background: var(--tblr-primary-lighter);
 }
 
 .doc-sidebar-card-header {
@@ -603,7 +603,7 @@
 }
 
 .doc-sidebar-card-success .doc-sidebar-card-icon {
-    background: var(--tblr-success-lighter);
+    background: var(--tblr-success-light);
     color: var(--tblr-success);
 }
 
@@ -660,7 +660,7 @@
 
     .summary-value-balance {
         font-weight: var(--tblr-font-bold, 700);
-        color: var(--tblr-warning);
+        color: var(--tblr-warning-dark);
     }
 }
 
@@ -746,12 +746,11 @@
     padding: var(--tblr-space-3);
     background: var(--tblr-gray-50);
     border-radius: var(--tblr-radius-md);
-    border-left: 3px solid var(--tblr-gray-300);
+    border: 1px solid var(--tblr-gray-300);
     transition: all var(--tblr-transition-fast);
 }
 
 .payment-card-captured {
-    border-left-color: var(--tblr-success);
     background: var(--tblr-success-lighter);
 }
 
