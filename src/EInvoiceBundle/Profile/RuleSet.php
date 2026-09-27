@@ -21,6 +21,12 @@ final readonly class RuleSet
         public string $identifier,
         public string $version,
         public ValidationStage $stage,
+        /**
+         * For a rule set fetched through corpus.lock.json, this is the locked commit.
+         * A ValidationStage::Business rule set with a null commit is not a pin,
+         * and the Schematron validator must reject it.
+         */
+        public ?string $commit = null,
     ) {
     }
 }

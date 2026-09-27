@@ -15,6 +15,7 @@ namespace SolidInvoice\EInvoiceBundle\Validation;
 
 use SolidInvoice\EInvoiceBundle\Enum\ValidationOutcome;
 use SolidInvoice\EInvoiceBundle\Enum\ViolationSeverity;
+use SolidInvoice\EInvoiceBundle\Profile\RuleSet;
 
 /**
  * @see \SolidInvoice\EInvoiceBundle\Tests\Validation\ValidationReportTest
@@ -23,10 +24,12 @@ final readonly class ValidationReport
 {
     /**
      * @param list<ValidationViolation> $violations
+     * @param list<RuleSet>             $ruleSets   the artefacts this verdict was reached against
      */
     public function __construct(
         public ValidationOutcome $outcome,
         public array $violations = [],
+        public array $ruleSets = [],
     ) {
     }
 
@@ -65,9 +68,14 @@ final readonly class ValidationReport
 
         $outcome = ValidationOutcome::Valid;
         $violations = [];
+        $ruleSets = [];
 
         foreach ($reports as $report) {
             $violations = [...$violations, ...$report->violations];
+
+            foreach ($report->ruleSets as $ruleSet) {
+                $ruleSets[sprintf('%s|%s|%s|%s', $ruleSet->identifier, $ruleSet->version, $ruleSet->commit ?? '', $ruleSet->stage->value)] = $ruleSet;
+            }
 
             if ($report->outcome === ValidationOutcome::Invalid) {
                 $outcome = ValidationOutcome::Invalid;
@@ -76,6 +84,6 @@ final readonly class ValidationReport
             }
         }
 
-        return new self($outcome, $violations);
+        return new self($outcome, $violations, array_values($ruleSets));
     }
 }
