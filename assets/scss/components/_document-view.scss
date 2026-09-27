@@ -598,11 +598,11 @@
 }
 
 .doc-sidebar-card-success {
-    border-left: 4px solid var(--swp-success);
+    background: var(--swp-success-lighter);
 }
 
 .doc-sidebar-card-highlight {
-    border-left: 4px solid var(--swp-primary);
+    background: var(--swp-primary-lighter);
 }
 
 .doc-sidebar-card-header {
@@ -625,7 +625,7 @@
 }
 
 .doc-sidebar-card-success .doc-sidebar-card-icon {
-    background: var(--swp-success-lighter);
+    background: var(--swp-success-light);
     color: var(--swp-success);
 }
 
@@ -682,7 +682,7 @@
 
     .summary-value-balance {
         font-weight: var(--swp-font-bold, 700);
-        color: var(--swp-warning);
+        color: var(--swp-warning-dark);
     }
 }
 
@@ -768,12 +768,11 @@
     padding: var(--swp-space-3);
     background: var(--swp-gray-50);
     border-radius: var(--swp-radius-md);
-    border-left: 3px solid var(--swp-gray-300);
+    border: 1px solid var(--swp-gray-300);
     transition: all var(--swp-transition-fast);
 }
 
 .payment-card-captured {
-    border-left-color: var(--swp-success);
     background: var(--swp-success-lighter);
 }
 
