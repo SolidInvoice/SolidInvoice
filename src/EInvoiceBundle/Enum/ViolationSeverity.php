@@ -29,7 +29,7 @@ enum ViolationSeverity: string
         return match ($flag) {
             'fatal' => self::Error,
             'warning' => self::Warning,
-            default => throw new UnhandledMatchError($flag),
+            default => throw new UnhandledMatchError(sprintf('Unhandled Schematron severity flag "%s".', $flag)),
         };
     }
 }
