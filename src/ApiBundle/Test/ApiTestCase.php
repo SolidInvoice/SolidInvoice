@@ -18,6 +18,7 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use Faker\Factory;
 use Faker\Generator;
+use PHPUnit\Framework\ExpectationFailedException;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -25,6 +26,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\ExceptionDataCollector;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -72,6 +74,45 @@ abstract class ApiTestCase extends ApiPlatformTestCase
     }
 
     /**
+     * assertResponseStatusCodeSame() dumps the raw HTTP response on failure, but with
+     * SOLIDINVOICE_DEBUG=0 that response body is a generic "Internal Server Error" - the
+     * detail that would explain an unexpected 500 never reaches the test output. Fall back to
+     * the profiler's exception collector, which still has the real exception regardless of
+     * debug mode. enableProfiler() only takes effect for the next request, so callers must
+     * enable it again before every self::$client->request() call.
+     */
+    private function assertHttpStatusCodeSame(int $expectedStatusCode): void
+    {
+        try {
+            static::assertResponseStatusCodeSame($expectedStatusCode);
+        } catch (ExpectationFailedException $exception) {
+            throw new ExpectationFailedException(
+                $exception->getMessage() . $this->describeServerException(),
+                $exception->getComparisonFailure(),
+                $exception,
+            );
+        }
+    }
+
+    private function describeServerException(): string
+    {
+        $profile = self::$client->getProfile();
+
+        if (false === $profile || ! $profile->hasCollector('exception')) {
+            return '';
+        }
+
+        /** @var ExceptionDataCollector $collector */
+        $collector = $profile->getCollector('exception');
+
+        if (! $collector->hasException()) {
+            return '';
+        }
+
+        return "\n\nUnexpected server exception:\n" . $collector->getException()->getAsString();
+    }
+
+    /**
      * @param array<string, mixed> $data
      * @param array<string, string> $headers
      *
@@ -90,6 +131,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_POST,
             url: $uri,
@@ -99,7 +141,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $this->assertHttpStatusCodeSame(Response::HTTP_CREATED);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
@@ -127,6 +169,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_PATCH,
             url: $uri,
@@ -136,7 +179,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertHttpStatusCodeSame(Response::HTTP_OK);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
@@ -164,6 +207,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_PUT,
             url: $uri,
@@ -173,7 +217,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertHttpStatusCodeSame(Response::HTTP_OK);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
@@ -198,6 +242,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_GET,
             url: $uri,
@@ -206,7 +251,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertHttpStatusCodeSame(Response::HTTP_OK);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
@@ -231,6 +276,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_GET,
             url: $uri,
@@ -239,7 +285,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertHttpStatusCodeSame(Response::HTTP_OK);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceCollectionJsonSchema($this->getResourceClass());
 
@@ -266,6 +312,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_POST,
             url: $uri,
@@ -275,7 +322,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $this->assertHttpStatusCodeSame(Response::HTTP_CREATED);
         static::assertResponseFormatSame('jsonld');
         static::assertMatchesResourceItemJsonSchema($outputResourceClass);
 
@@ -297,6 +344,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ...$headers
         ];
 
+        self::$client->enableProfiler();
         $response = self::$client->request(
             method: Request::METHOD_DELETE,
             url: $uri,
@@ -305,7 +353,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             ]
         );
 
-        static::assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+        $this->assertHttpStatusCodeSame(Response::HTTP_NO_CONTENT);
         self::assertEmpty($response->getContent(false));
     }
 
