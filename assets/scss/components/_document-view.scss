@@ -206,28 +206,6 @@
     overflow: hidden;
 }
 
-// Pill-shaped status chips wherever they appear inside the document view or its
-// sidebar, matching the design system spec (radius-full, weight 500, 2px x 10px).
-
-.doc-card .badge,
-.doc-page-header .badge,
-.doc-view-header .badge,
-.doc-view-sidebar .badge {
-    border-radius: var(--swp-radius-full);
-    padding: 2px 10px;
-    font-weight: var(--swp-font-medium, 500);
-    letter-spacing: 0;
-
-    // Tabler binds `text-gray-fg` to amber via --bs-secondary; this makes a
-    // `Cancelled` chip read as a warning. Pin the neutral chip to slate so the
-    // colour matches what the class name implies.
-
-    &.bg-gray.text-gray-fg {
-        background-color: var(--swp-gray-100);
-        color: var(--swp-text-secondary);
-    }
-}
-
 // Document Header (From/To)
 
 .doc-header-from-to {
