@@ -35,6 +35,11 @@
     letter-spacing: 0;
     white-space: nowrap;
 
+    // Declared, not just left unset: text-transform inherits, and that is
+    // how ancestor rules reached into chips before. The component owns
+    // casing; sentence case is the only casing a chip renders.
+    text-transform: none;
+
     // The base is the neutral treatment, so a chip with no modifier is still
     // legible and still looks like a chip.
     background-color: var(--swp-gray-100);
