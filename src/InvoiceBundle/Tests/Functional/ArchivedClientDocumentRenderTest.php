@@ -177,6 +177,7 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
 
         $invoiceId = $invoice->getId();
         $this->em->clear();
+        self::assertInstanceOf(Ulid::class, $invoiceId);
 
         $invoice = $this->reloadInvoice($invoiceId);
         $request = Request::create('/invoice/' . $invoiceId);

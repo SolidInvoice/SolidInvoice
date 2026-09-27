@@ -124,6 +124,7 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
 
         $quoteId = $quote->getId();
         $this->em->clear();
+        self::assertInstanceOf(Ulid::class, $quoteId);
 
         $quote = $this->reloadQuote($quoteId);
         $request = Request::create('/quote/' . $quoteId);
