@@ -30,9 +30,9 @@ final class ViolationSeverityTest extends TestCase
     }
 
     /**
-     * This test exists to stop a `default` arm being added to `fromSchematronFlag()`.
-     * An unrecognised flag means the rule set grew a vocabulary we have not read, and
-     * that must throw rather than silently fall back to a guessed severity.
+     * `fromSchematronFlag()` has a `default` arm only because PHPStan cannot prove the
+     * match is exhaustive over the open string domain. That arm may only throw. It must
+     * never return a severity for an unrecognised flag.
      */
     public function testFromSchematronFlagThrowsOnAnUnrecognisedFlag(): void
     {
