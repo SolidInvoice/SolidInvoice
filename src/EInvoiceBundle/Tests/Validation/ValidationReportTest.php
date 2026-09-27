@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\EInvoiceBundle\Enum\ValidationOutcome;
 use SolidInvoice\EInvoiceBundle\Enum\ValidationStage;
 use SolidInvoice\EInvoiceBundle\Enum\ViolationSeverity;
+use SolidInvoice\EInvoiceBundle\Profile\RuleSet;
 use SolidInvoice\EInvoiceBundle\Validation\ValidationReport;
 use SolidInvoice\EInvoiceBundle\Validation\ValidationViolation;
 
@@ -28,6 +29,7 @@ final class ValidationReportTest extends TestCase
 
         self::assertSame(ValidationOutcome::NotValidated, $report->outcome);
         self::assertSame([], $report->violations);
+        self::assertSame([], $report->ruleSets);
         self::assertFalse($report->isValid());
     }
 
@@ -94,13 +96,66 @@ final class ValidationReportTest extends TestCase
         self::assertSame([$warning], $report->warnings());
     }
 
+    public function testViolationCarriesADisjunctionOfBusinessTerms(): void
+    {
+        $violation = new ValidationViolation(
+            ruleId: 'BR-CO-09',
+            severity: ViolationSeverity::Error,
+            stage: ValidationStage::Business,
+            businessTerms: ['BT-31', 'BT-63', 'BT-48'],
+            xpath: null,
+            message: 'The Seller VAT identifier, the Seller tax registration identifier and the Seller tax representative VAT identifier must not all be blank.',
+        );
+
+        self::assertSame(['BT-31', 'BT-63', 'BT-48'], $violation->businessTerms);
+    }
+
+    public function testMergeUnionsDifferentRuleSetsInFirstSeenOrder(): void
+    {
+        $schematron = new RuleSet('peppol-bis-3', 'v3.0.20', ValidationStage::Business, '261c458474e27d58a25be629cccac28883171c92');
+        $xsd = new RuleSet('cen-ubl', '1.3.12', ValidationStage::Schema);
+
+        $report = ValidationReport::merge(
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$schematron]),
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$xsd]),
+        );
+
+        self::assertSame([$schematron, $xsd], $report->ruleSets);
+    }
+
+    public function testMergeDeduplicatesEqualRuleSetsByValue(): void
+    {
+        $first = new RuleSet('peppol-bis-3', 'v3.0.20', ValidationStage::Business, '261c458474e27d58a25be629cccac28883171c92');
+        $second = new RuleSet('peppol-bis-3', 'v3.0.20', ValidationStage::Business, '261c458474e27d58a25be629cccac28883171c92');
+
+        $report = ValidationReport::merge(
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$first]),
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$second]),
+        );
+
+        self::assertCount(1, $report->ruleSets);
+    }
+
+    public function testMergeTreatsCommitAsPartOfRuleSetIdentity(): void
+    {
+        $pinned = new RuleSet('peppol-bis-3', 'v3.0.20', ValidationStage::Business, '261c458474e27d58a25be629cccac28883171c92');
+        $unpinned = new RuleSet('peppol-bis-3', 'v3.0.20', ValidationStage::Business);
+
+        $report = ValidationReport::merge(
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$pinned]),
+            new ValidationReport(ValidationOutcome::Valid, ruleSets: [$unpinned]),
+        );
+
+        self::assertCount(2, $report->ruleSets);
+    }
+
     private function violation(ViolationSeverity $severity): ValidationViolation
     {
         return new ValidationViolation(
             ruleId: 'BR-06',
             severity: $severity,
             stage: ValidationStage::Business,
-            businessTerm: 'BT-27',
+            businessTerms: ['BT-27'],
             xpath: null,
             message: 'Seller name is required.',
         );

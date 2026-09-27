@@ -22,7 +22,8 @@ final readonly class ValidationViolation
         public string $ruleId,
         public ViolationSeverity $severity,
         public ValidationStage $stage,
-        public ?string $businessTerm,
+        /** @var list<string> */
+        public array $businessTerms,
         public ?string $xpath,
         public string $message,
     ) {
