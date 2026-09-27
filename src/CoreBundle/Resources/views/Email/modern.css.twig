@@ -197,6 +197,52 @@ hr.modern-divider.primary {
     color: #626976;
 }
 
+/* Status Chip
+ * Matches assets/scss/components/_status-chip.scss. Literal hex only, no
+ * var(--swp-*): base.html.twig inlines this file into style="" attributes,
+ * and no :root block travels with the inlined declarations. The token name
+ * each value comes from is in the trailing comment.
+ * display:inline-block replaces the component's inline-flex because Outlook
+ * 2007-2013 has no flexbox support and the chip here is text-only.
+ */
+.status-chip {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0;
+    white-space: nowrap;
+    background-color: #f1f5f9; /* gray-100 */
+    color: #475569; /* text-secondary */
+}
+
+.status-chip--neutral {
+    background-color: #f1f5f9; /* gray-100 */
+    color: #475569; /* text-secondary */
+}
+
+.status-chip--success {
+    background-color: #d1fae5; /* success-light */
+    color: #047857; /* success-dark */
+}
+
+.status-chip--danger {
+    background-color: #fee2e2; /* danger-light */
+    color: #b91c1c; /* danger-dark */
+}
+
+.status-chip--warning {
+    background-color: #fef3c7; /* warning-light */
+    color: #92400e; /* warning-dark */
+}
+
+.status-chip--info {
+    background-color: #dbeafe; /* info-light */
+    color: #1d4ed8; /* info-dark */
+}
+
 /* Info Rows for Lists */
 .info-row {
     padding: 12px 0;
