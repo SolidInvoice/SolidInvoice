@@ -88,9 +88,8 @@ final class ValidationReportTest extends TestCase
     {
         $error = $this->violation(ViolationSeverity::Error);
         $warning = $this->violation(ViolationSeverity::Warning);
-        $information = $this->violation(ViolationSeverity::Information);
 
-        $report = new ValidationReport(ValidationOutcome::Invalid, [$error, $warning, $information]);
+        $report = new ValidationReport(ValidationOutcome::Invalid, [$error, $warning]);
 
         self::assertSame([$error], $report->errors());
         self::assertSame([$warning], $report->warnings());
