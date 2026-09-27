@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Listener\PaymentCompleteListenerTest
+ */
 class PaymentCompleteListener implements EventSubscriberInterface
 {
     /**
