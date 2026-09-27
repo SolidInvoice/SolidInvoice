@@ -26,7 +26,7 @@
                                 {% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}
                             </p>
                             <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0; Margin: 0;">
-                                {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(invoice.client.currency) }}
+                                {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(invoice.currency) }}
                             </p>
                         </td>
                     </tr>

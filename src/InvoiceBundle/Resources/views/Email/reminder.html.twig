@@ -82,7 +82,7 @@
 
     {% if invoice.balance %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Amount Due', invoice.balance|formatCurrency(invoice.client.currency), true) }}
+        {{ email.info_row('Amount Due', invoice.balance|formatCurrency(invoice.currency), true) }}
     {% endif %}
 
     {{ email.divider('md') }}
