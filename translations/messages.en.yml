@@ -1382,6 +1382,7 @@ payment:
         status:
             authorized: 'Payment has been authorized'
             cancelled: 'Payment has been cancelled'
+            credit: 'This payment has been converted to account credit.'
             expired: 'Payment has expired'
             failed: 'Payment failed'
             new: 'New payment created'
@@ -1389,6 +1390,7 @@ payment:
             refunded: 'Payment has been refunded'
             success: 'Payment has been completed'
             suspended: 'Payment has been suspended'
+            unconfirmed: 'We could not confirm this payment yet. Check back shortly, or contact your payment provider.'
             unknown: 'An unknown error occurred'
     form:
         help:
