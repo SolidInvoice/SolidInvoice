@@ -15,7 +15,7 @@
                                 {{ invoice.invoiceId }}
                             </p>
                             <p style="color: #d4a94a; font-family: Georgia, serif; font-size: 22px; margin: 12px 0 0 0; Margin: 12px 0 0 0;">
-                                {{ (invoice_has_outstanding_balance(invoice) ? invoice.balance : invoice.total)|formatCurrency(invoice.client.currency) }}
+                                {{ (invoice_has_outstanding_balance(invoice) ? invoice.balance : invoice.total)|formatCurrency(invoice.currency) }}
                             </p>
                         </td>
                     </tr>

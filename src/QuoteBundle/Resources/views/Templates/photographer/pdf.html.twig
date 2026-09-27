@@ -4,7 +4,7 @@
 {% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 
 {% block extra_styles %}
     body { background-color: #faf3e6; color: #2a2418; }

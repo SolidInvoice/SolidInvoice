@@ -4,7 +4,7 @@
 {% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 {% set primary = quote.users|first %}
 {% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
 

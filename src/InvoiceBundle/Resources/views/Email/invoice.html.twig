@@ -28,7 +28,7 @@
                 "accountId": "{{ invoice.invoiceId }}",
                 "minimumPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.total|formatCurrency(invoice.client.currency) }}"
+                    "price": "{{ invoice.total|formatCurrency(invoice.currency) }}"
                 },
                 "paymentDue": "{{ invoice.due|date }}",
                 "paymentStatus": "PaymentDue",
@@ -38,7 +38,7 @@
                 },
                 "totalPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.balance|formatCurrency(invoice.client.currency) }}"
+                    "price": "{{ invoice.balance|formatCurrency(invoice.currency) }}"
                 }
             },
             {
@@ -83,31 +83,31 @@
     {{ email.divider('md') }}
 
     {# Financial breakdown #}
-    {{ email.info_row('invoice.subtotal'|trans({}, 'email'), invoice.baseTotal|formatCurrency(invoice.client.currency)) }}
+    {{ email.info_row('invoice.subtotal'|trans({}, 'email'), invoice.baseTotal|formatCurrency(invoice.currency)) }}
 
     {% set _tb = tax_breakdown(invoice) %}
     {% if invoice.tax.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.line_tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('invoice.line_tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.currency)) }}
         {% for row in _tb.lineTaxRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.currency)) }}
         {% endfor %}
         {% for row in _tb.additiveRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.currency)) }}
         {% endfor %}
     {% endif %}
 
     {% if invoice.discount.type is not empty %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.discount'|trans({}, 'email'), '-' ~ discount(invoice)|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('invoice.discount'|trans({}, 'email'), '-' ~ discount(invoice)|formatCurrency(invoice.currency)) }}
     {% endif %}
 
     {% if invoice.payments|length > 0 and not invoice.balance.zero %}
         {% for payment in invoice.payments|filter((v) => v.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured) %}
             {{ email.spacer('xs') }}
-            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.total * -1)|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.total * -1)|formatCurrency(invoice.currency)) }}
         {% endfor %}
     {% endif %}
 
@@ -116,15 +116,15 @@
     {# Total/Balance - highlighted #}
     {{ email.info_row(
         invoice.payments|length > 0 and not invoice.balance.zero ? 'invoice.balance'|trans({}, 'email') : 'invoice.total'|trans({}, 'email'),
-        invoice.payments|length > 0 and not invoice.balance.zero ? invoice.balance|formatCurrency(invoice.client.currency) : invoice.total|formatCurrency(invoice.client.currency),
+        invoice.payments|length > 0 and not invoice.balance.zero ? invoice.balance|formatCurrency(invoice.currency) : invoice.total|formatCurrency(invoice.currency),
         true
     ) }}
 
     {% if invoice.withholdingAmount.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.withholding'|trans({}, 'email'), '-' ~ invoice.withholdingAmount|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('invoice.withholding'|trans({}, 'email'), '-' ~ invoice.withholdingAmount|formatCurrency(invoice.currency)) }}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.amount_payable'|trans({}, 'email'), payable_amount(invoice)|formatCurrency(invoice.client.currency), true) }}
+        {{ email.info_row('invoice.amount_payable'|trans({}, 'email'), payable_amount(invoice)|formatCurrency(invoice.currency), true) }}
     {% endif %}
 
     {# Terms section if present #}

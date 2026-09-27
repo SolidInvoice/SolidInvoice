@@ -60,7 +60,7 @@
                                     <div class="client-credit-badge">
                                         {{ ux_icon('tabler:wallet', {width: 14, height: 14}) }}
                                         {{ 'payment.create.credit'|trans }}
-                                        <strong>{{ invoice.client.credit.value|formatCurrency(invoice.client.currency) }}</strong>
+                                        <strong>{{ invoice.client.credit.value|formatCurrency(invoice.currency) }}</strong>
                                     </div>
                                 {% endif %}
                             </div>
@@ -114,7 +114,7 @@
                                     {% for item in invoice.lines %}
                                         <div class="line-item-row">
                                             <span class="line-item-desc">{{ item.name|u.truncate(40, '...') }}</span>
-                                            <span class="line-item-amount">{{ item.total|formatCurrency(invoice.client.currency) }}</span>
+                                            <span class="line-item-amount">{{ item.total|formatCurrency(invoice.currency) }}</span>
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -124,18 +124,18 @@
                             <div class="summary-totals">
                                 <div class="totals-row">
                                     <span class="totals-label">{{ 'invoice.subtotal'|trans }}</span>
-                                    <span class="totals-value">{{ invoice.baseTotal|formatCurrency(invoice.client.currency) }}</span>
+                                    <span class="totals-value">{{ invoice.baseTotal|formatCurrency(invoice.currency) }}</span>
                                 </div>
                                 {% if invoice.tax.positive %}
                                     <div class="totals-row">
                                         <span class="totals-label">{{ 'invoice.tax'|trans }}</span>
-                                        <span class="totals-value">{{ invoice.tax|formatCurrency(invoice.client.currency) }}</span>
+                                        <span class="totals-value">{{ invoice.tax|formatCurrency(invoice.currency) }}</span>
                                     </div>
                                 {% endif %}
                                 {% if invoice.hasDiscount %}
                                     <div class="totals-row totals-row-discount">
                                         <span class="totals-label">{{ 'invoice.discount'|trans }}</span>
-                                        <span class="totals-value">-{{ discount(invoice)|formatCurrency(invoice.client.currency) }}</span>
+                                        <span class="totals-value">-{{ discount(invoice)|formatCurrency(invoice.currency) }}</span>
                                     </div>
                                 {% endif %}
                                 {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
@@ -144,7 +144,7 @@
                                             <span class="totals-label">
                                                 {{ 'payment.create.payment_label'|trans }}: {{ payment.method.name }}
                                             </span>
-                                            <span class="totals-value">-{{ payment.amount.amount|formatCurrency(invoice.client.currency) }}</span>
+                                            <span class="totals-value">-{{ payment.amount.amount|formatCurrency(invoice.currency) }}</span>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
@@ -158,9 +158,9 @@
                                     </span>
                                     <span class="totals-value">
                                         {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
-                                            {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+                                            {{ invoice.balance|formatCurrency(invoice.currency) }}
                                         {% else %}
-                                            {{ invoice.total|formatCurrency(invoice.client.currency) }}
+                                            {{ invoice.total|formatCurrency(invoice.currency) }}
                                         {% endif %}
                                     </span>
                                 </div>
@@ -183,7 +183,7 @@
                                     {% for payment in invoice.payments %}
                                         <div class="payment-card {{ payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured ? 'payment-card-captured' : (payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Failed ? 'payment-card-failed' : '') }}">
                                             <div class="payment-card-header">
-                                                <div class="payment-amount">{{ payment.totalAmount|formatCurrency(invoice.client.currency) }}</div>
+                                                <div class="payment-amount">{{ payment.totalAmount|formatCurrency(invoice.currency) }}</div>
                                                 <div class="payment-status">{{ payment_label(payment.status) }}</div>
                                             </div>
                                             <div class="payment-card-body">
@@ -289,7 +289,7 @@
                                     {{ form_label(form.amount, 'payment.amount.label'|trans, {label_attr: {class: 'form-label required'}}) }}
                                     <div class="amount-balance-hint">
                                         {{ 'payment.balance_remaining'|trans }}:
-                                        <strong>{{ invoice.balance|formatCurrency(invoice.client.currency) }}</strong>
+                                        <strong>{{ invoice.balance|formatCurrency(invoice.currency) }}</strong>
                                     </div>
                                 </div>
                                 {{ form_widget(form.amount) }}

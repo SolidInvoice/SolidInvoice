@@ -8,7 +8,7 @@
  #}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.zero %}
 
 <html>
