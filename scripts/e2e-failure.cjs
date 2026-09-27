@@ -20,6 +20,15 @@ const buildHeader = ({ jobName, sha, ref }) => `### Functional Test Failure 🙀
 
 `;
 
+// A fence must be at least as long as the longest run of backticks already in the
+// content, or a log line like "```js" or "`````" closes it early and the rest of the
+// log renders as Markdown instead of log text.
+const fenceFor = (content) => {
+    const runs = content.match(/`+/g) || [];
+    const longest = runs.reduce((max, run) => Math.max(max, run.length), 0);
+    return '`'.repeat(Math.max(3, longest + 1));
+};
+
 const readLogTail = (rootDir) => {
     const logPath = path.join(rootDir, 'var/log/test.log');
 
@@ -86,15 +95,27 @@ const uploadScreenshots = async (rootDir, context, core) => {
     }
 };
 
-const capBody = (body) => {
-    if (body.length <= MAX_BODY_LENGTH) {
-        return body;
+// Screenshot links have no second home - the log tail is also in the job summary, the
+// shell fallback step and the raw step log, but the Cloudinary URLs exist only here. So
+// the screenshot section is reserved first and the log is what gets truncated to fit.
+const buildLogSection = (logTail, budget) => {
+    if (!logTail) {
+        return '\n_No `var/log/test.log` was produced._\n';
     }
 
-    const truncated = body.slice(0, MAX_BODY_LENGTH);
-    const openFences = (truncated.match(/^```/gm) || []).length % 2 !== 0;
+    const heading = `\n### Log File${logTail.trimmed ? ` (last ${LOG_TAIL_LINES} lines)` : ''}\n`;
+    const truncationNote = '\n\n_Log truncated to fit the report size limit._';
+    const fence = fenceFor(logTail.content);
+    const render = (content, isTruncated) => `${heading}${fence}\n${content}\n${fence}${isTruncated ? truncationNote : ''}\n`;
 
-    return `${truncated}${openFences ? '\n```' : ''}\n\n_Report truncated at ${MAX_BODY_LENGTH} characters._`;
+    if (render(logTail.content, false).length <= budget) {
+        return render(logTail.content, false);
+    }
+
+    const overhead = render('', true).length;
+    const content = logTail.content.slice(0, Math.max(0, budget - overhead));
+
+    return render(content, true);
 };
 
 module.exports = async ({ github, context, core }) => {
@@ -102,24 +123,17 @@ module.exports = async ({ github, context, core }) => {
         const rootDir = path.resolve(__dirname, '..');
         const { JOB_NAME } = process.env;
 
-        let body = buildHeader({ jobName: JOB_NAME, sha: context.sha, ref: context.ref });
-
-        const logTail = readLogTail(rootDir);
-
-        if (logTail) {
-            body += `\n### Log File${logTail.trimmed ? ` (last ${LOG_TAIL_LINES} lines)` : ''}\n\`\`\`\n${logTail.content}\n\`\`\`\n`;
-        } else {
-            body += '\n_No `var/log/test.log` was produced._\n';
-        }
-
+        const header = buildHeader({ jobName: JOB_NAME, sha: context.sha, ref: context.ref });
         const hasIssueNumber = Boolean(context.issue && context.issue.number);
+
+        let screenshotSection = '';
 
         if (hasIssueNumber) {
             const screenshots = await uploadScreenshots(rootDir, context, core);
 
             if (screenshots.length > 0) {
-                body += '\n### Screenshots\n';
-                body += screenshots
+                screenshotSection = '\n### Screenshots\n';
+                screenshotSection += screenshots
                     .map((screenshot) => `**${screenshot.name}**\n![screenshot-${screenshot.name}](${screenshot.url})\n`)
                     .join('');
             }
@@ -127,7 +141,11 @@ module.exports = async ({ github, context, core }) => {
             core.info('No issue/PR number on this event (likely a push build); skipping screenshot upload and the comment, writing the summary only.');
         }
 
-        body = capBody(body);
+        const logTail = readLogTail(rootDir);
+        const logBudget = MAX_BODY_LENGTH - header.length - screenshotSection.length;
+        const logSection = buildLogSection(logTail, logBudget);
+
+        const body = header + logSection + screenshotSection;
 
         if (hasIssueNumber) {
             try {

@@ -633,8 +633,10 @@ gated. The bar below is the real one.
 - `unit-tests.yml` pins `opcache.jit=disable` on PHP 8.4 with a comment: PHP 8.4's JIT
   segfaults on its stack-limit check when the Panther web server renders deeply nested
   pages like `/install`. PHP 8.5 is unaffected. Do not remove that ini setting.
-- On failure, `unit-tests.yml` posts E2E failure screenshots to the PR via
-  `scripts/e2e-failure.js`.
+- On failure, `unit-tests.yml` writes the tail of `var/log/test.log` to the job summary and, on
+  a PR, posts a failure comment with the log tail and any E2E screenshots via
+  `scripts/e2e-failure.cjs` (CommonJS by extension — `package.json` sets `"type": "module"`).
+  The reporter never fails the job: it degrades to a warning.
 
 ---
 
