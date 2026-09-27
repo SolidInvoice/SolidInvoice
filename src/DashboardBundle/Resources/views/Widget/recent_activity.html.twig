@@ -65,7 +65,7 @@
                             {# Top row: What happened #}
                             <div class="activity-description">
                                 {% if activity.type == 'payment' %}
-                                    <span class="badge bg-success-lt">{{ 'dashboard.activity.label.payment'|trans }}</span>
+                                    <span class="status-chip status-chip--success">{{ 'dashboard.activity.label.payment'|trans }}</span>
                                     <span class="activity-text">
                                         {{ 'dashboard.activity.payment_for_invoice'|trans }}
                                         <a href="{{ path('_invoices_view', {id: activity.invoiceUlid}) }}" class="activity-doc-link">
@@ -73,7 +73,7 @@
                                         </a>
                                     </span>
                                 {% elseif activity.type == 'invoice_sent' %}
-                                    <span class="badge bg-primary-lt">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'dashboard.activity.label.invoice'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}
@@ -81,7 +81,7 @@
                                         {{ 'dashboard.activity.sent_to_client'|trans }}
                                     </span>
                                 {% elseif activity.type == 'quote_accepted' %}
-                                    <span class="badge bg-success-lt">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'dashboard.activity.label.quote'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.quoteId }}
@@ -89,7 +89,7 @@
                                         {{ 'dashboard.activity.was_accepted'|trans }}
                                     </span>
                                 {% elseif activity.type == 'quote_declined' %}
-                                    <span class="badge bg-danger-lt">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'dashboard.activity.label.quote'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.quoteId }}
@@ -97,7 +97,7 @@
                                         {{ 'dashboard.activity.was_declined'|trans }}
                                     </span>
                                 {% elseif activity.type == 'recurring_generated' %}
-                                    <span class="badge bg-info-lt">{{ 'dashboard.activity.label.recurring'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'dashboard.activity.label.recurring'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}
@@ -105,7 +105,7 @@
                                         {{ 'dashboard.activity.generated_from_recurring'|trans }}
                                     </span>
                                 {% else %}
-                                    <span class="badge bg-secondary-lt">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="status-chip status-chip--neutral">{{ 'dashboard.activity.label.invoice'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}

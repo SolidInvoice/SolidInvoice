@@ -121,14 +121,14 @@
                         <a href="{{ path('_quotes_index') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
                             {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
                             {{ 'quote.tabs.active'|trans }}
-                            <span class="badge bg-primary-lt ms-2">{{ totalActiveQuotes }}</span>
+                            <span class="status-chip status-chip--neutral ms-2">{{ totalActiveQuotes }}</span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a href="{{ path('_quotes_index', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
                             {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
                             {{ 'quote.tabs.archived'|trans }}
-                            <span class="badge bg-secondary-lt ms-2">{{ totalArchivedQuotes }}</span>
+                            <span class="status-chip status-chip--neutral ms-2">{{ totalArchivedQuotes }}</span>
                         </a>
                     </li>
                 </ul>
