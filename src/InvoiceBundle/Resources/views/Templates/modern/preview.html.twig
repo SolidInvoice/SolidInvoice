@@ -1,7 +1,7 @@
 {# Modern Minimal preview #}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
 <div class="invoice-template invoice-template-modern" style="background: #ffffff;">

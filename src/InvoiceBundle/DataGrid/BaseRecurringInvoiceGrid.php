@@ -16,10 +16,8 @@ namespace SolidInvoice\InvoiceBundle\DataGrid;
 use Brick\Math\BigNumber;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use InvalidArgumentException;
 use Money\Money;
 use Override;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
@@ -80,36 +78,17 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (RecurringInvoiceStatus $s) => [$s->value, $s->name], RecurringInvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
-                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
-                    $client = $invoice->getClient();
-                    if (! $client instanceof Client) {
-                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
-                    }
-
-                    return new Money((string) $value, $client->getCurrency());
-                }),
+                ->formatValue(fn (float | BigNumber $value, RecurringInvoice $invoice): Money => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('tax')
-                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
-                    $client = $invoice->getClient();
-                    if (! $client instanceof Client) {
-                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
-                    }
-
-                    return new Money((string) $value, $client->getCurrency());
-                }),
+                ->formatValue(fn (float | BigNumber $value, RecurringInvoice $invoice): Money => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('payableAmount')
                 ->label('Payable')
                 ->searchable(false)
                 ->formatValue(function (BigNumber $value, RecurringInvoice $invoice): Money {
-                    $client = $invoice->getClient();
-                    if (! $client instanceof Client) {
-                        throw new InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
-                    }
-
                     $withholding = $invoice->getWithholdingAmount();
                     $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
 
-                    return new Money((string) $amount, $client->getCurrency());
+                    return new Money((string) $amount, $invoice->getCurrency());
                 }),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
@@ -117,7 +96,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
 
-                    return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
+                    return new Money((string) $discountAmount, $invoice->getCurrency());
                 }),
         ];
     }

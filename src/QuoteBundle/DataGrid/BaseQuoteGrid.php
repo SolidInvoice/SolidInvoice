@@ -62,19 +62,19 @@ abstract class BaseQuoteGrid extends Grid
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('total')
-                ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
+                ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getCurrency())),
             StringColumn::new('status')
                 ->twigFunction('quote_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (QuoteStatus $s) => [$s->value, $s->name], QuoteStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('tax')
-                ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
+                ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getCurrency())),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
                 ->formatValue(function (float | BigNumber $value, Quote $quote): Money {
                     $discountAmount = $this->calculator->calculateDiscount($quote);
 
-                    return new Money((string) $discountAmount, $quote->getClient()?->getCurrency());
+                    return new Money((string) $discountAmount, $quote->getCurrency());
                 }),
             DateTimeColumn::new('created')
                 ->format('d F Y')

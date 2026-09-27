@@ -14,7 +14,7 @@
 
 {% block content %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 <div class="doc-view-page">
     {# ═══════════════════════════════════════════════════════════════════════
        HEADER - Title, Status, Actions

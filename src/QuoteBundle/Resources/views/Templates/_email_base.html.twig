@@ -69,33 +69,33 @@
 
     {{ email.divider('md') }}
 
-    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.client.currency)) }}
+    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.currency)) }}
     {% set _tb = tax_breakdown(quote) %}
     {% if quote.tax.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.client.currency)) }}
+        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.currency)) }}
         {% for row in _tb.lineTaxRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.client.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.currency)) }}
         {% endfor %}
         {% for row in _tb.additiveRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.client.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.currency)) }}
         {% endfor %}
     {% endif %}
     {% if quote.discount.type is not empty %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.client.currency)) }}
+        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.currency)) }}
     {% endif %}
 
     {{ email.spacer('sm') }}
 
-    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.client.currency), true) }}
+    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.currency), true) }}
     {% if quote.withholdingAmount.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.withholding'|trans({}, 'email'), '-' ~ quote.withholdingAmount|formatCurrency(quote.client.currency)) }}
+        {{ email.info_row('quote.withholding'|trans({}, 'email'), '-' ~ quote.withholdingAmount|formatCurrency(quote.currency)) }}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.amount_payable'|trans({}, 'email'), payable_amount(quote)|formatCurrency(quote.client.currency), true) }}
+        {{ email.info_row('quote.amount_payable'|trans({}, 'email'), payable_amount(quote)|formatCurrency(quote.currency), true) }}
     {% endif %}
 
     {% if quote.terms is not empty %}

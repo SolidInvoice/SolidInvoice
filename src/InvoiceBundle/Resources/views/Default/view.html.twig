@@ -14,7 +14,7 @@
 
 {% block content %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 <div class="doc-view-page">
     <div class="doc-view-header no-print">
         <div class="doc-view-header-left">

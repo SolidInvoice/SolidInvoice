@@ -81,7 +81,7 @@ final class EntityNormalizer
     private function invoice(Invoice $invoice): array
     {
         $discount = $invoice->getDiscount();
-        $currency = $invoice->getClient()?->getCurrencyCode();
+        $currency = $invoice->getCurrency()->getCode();
 
         return [
             'id' => $invoice->getId()?->toRfc4122(),
@@ -122,7 +122,7 @@ final class EntityNormalizer
             'id' => $invoice->getId()?->toRfc4122(),
             'status' => $invoice->getStatus()?->value,
             'client' => $this->clientSummary($invoice->getClient()),
-            'currency' => $invoice->getClient()?->getCurrencyCode(),
+            'currency' => $invoice->getCurrency()->getCode(),
             'total' => $this->bigNumber($invoice->getTotal()),
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
             'tax' => $this->bigNumber($invoice->getTax()),
@@ -156,7 +156,7 @@ final class EntityNormalizer
             'quote_number' => $quote->getQuoteId(),
             'status' => $quote->getStatus()?->value,
             'client' => $this->clientSummary($quote->getClient()),
-            'currency' => $quote->getClient()?->getCurrencyCode(),
+            'currency' => $quote->getCurrency()->getCode(),
             'total' => $this->bigNumber($quote->getTotal()),
             'base_total' => $this->bigNumber($quote->getBaseTotal()),
             'tax' => $this->bigNumber($quote->getTax()),

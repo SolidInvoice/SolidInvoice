@@ -8,7 +8,7 @@
                     {{ 'quote.pdf.title'|trans }}
                 </p>
                 <p style="color: #0f172a; font-size: 28px; font-weight: 700; line-height: 1.1; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    {{ quote.total|formatCurrency(quote.client.currency) }}
+                    {{ quote.total|formatCurrency(quote.currency) }}
                 </p>
                 <p style="color: #475569; font-size: 15px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
                     {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}

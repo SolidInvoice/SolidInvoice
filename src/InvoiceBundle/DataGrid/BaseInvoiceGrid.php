@@ -65,7 +65,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('balance')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             RelativeDateColumn::new('due')
                 ->label('Due Date')
                 ->format('d F Y')
@@ -77,21 +77,20 @@ abstract class BaseInvoiceGrid extends Grid
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (InvoiceStatus $s) => [$s->value, $s->getLabel()], InvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('tax')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('payableAmount')
                 ->label('Payable')
                 ->searchable(false)
                 ->formatValue(function (BigNumber $value, Invoice $invoice): Money {
-                    $client = $invoice->getClient();
                     // Render the explicit payable figure only when withholding is in
                     // play; otherwise mirror the grand total so the column stays
                     // meaningful for invoices without TDS-style deductions.
                     $withholding = $invoice->getWithholdingAmount();
                     $amount = $withholding->isPositive() ? $value : $invoice->getTotal();
 
-                    return new Money((string) $amount, $client?->getCurrency());
+                    return new Money((string) $amount, $invoice->getCurrency());
                 }),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
@@ -99,7 +98,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
 
-                    return new Money((string) $discountAmount->toScale(0, RoundingMode::HalfUp), $invoice->getClient()?->getCurrency());
+                    return new Money((string) $discountAmount->toScale(0, RoundingMode::HalfUp), $invoice->getCurrency());
                 }),
         ];
     }
