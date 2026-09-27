@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
+use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
@@ -56,7 +57,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
                 ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 
-        return $query;
+        return ArchivableFilter::suspendForAssociatedClient($entityManager, $query);
     }
 
     public function getCreateRoute(): ?string

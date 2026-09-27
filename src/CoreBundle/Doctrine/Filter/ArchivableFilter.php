@@ -39,6 +39,30 @@ class ArchivableFilter extends SQLFilter
     }
 
     /**
+     * Suspends the filter for the whole query, then re-applies its normal
+     * (not-archived) constraint to only the grid's own root entity.
+     *
+     * Use this where a grid joins an Archivable association (a document's
+     * client, for example) only to display or sort by it: the association
+     * is a historical fact about the row, not something that should hide
+     * the row when it gets archived later.
+     */
+    public static function suspendForAssociatedClient(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        $query
+            ->beforeQuery(static fn () => $entityManager->getFilters()->suspend('archivable'))
+            ->afterQuery(static fn () => $entityManager->getFilters()->restore('archivable'));
+
+        $value = $entityManager->getConnection()->getDatabasePlatform()->convertBooleans(false);
+
+        $query
+            ->getQueryBuilder()
+            ->andWhere(sprintf('(%1$s.archived IS NULL OR %1$s.archived = %2$s)', $query->getRootAlias(), $value));
+
+        return $query;
+    }
+
+    /**
      * @param ClassMetadata<object> $targetEntity
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
