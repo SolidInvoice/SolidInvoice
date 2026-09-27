@@ -52,12 +52,30 @@ final class ViewTest extends KernelTestCase
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
+    /**
+     * The Send controls render a real CSRF token. Mock the token manager so the
+     * snapshot fixtures stay deterministic instead of embedding a fresh, random
+     * token value on every run.
+     */
+    private function mockCsrfTokenManager(): void
+    {
+        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager->method('getToken')
+            ->willReturnCallback(static fn (string $tokenId): CsrfToken => new CsrfToken($tokenId, $tokenId));
+
+        self::getContainer()->set('security.csrf.token_manager', $csrfTokenManager);
+    }
+
     #[DataProvider('invoiceStatusProvider')]
     public function testView(InvoiceStatus $status): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
@@ -205,8 +223,12 @@ final class ViewTest extends KernelTestCase
     public function testViewWithDiscount(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
@@ -272,8 +294,12 @@ final class ViewTest extends KernelTestCase
     public function testViewWithTax(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
@@ -335,8 +361,12 @@ final class ViewTest extends KernelTestCase
     public function testViewWithRelatedQuote(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
@@ -406,22 +436,13 @@ final class ViewTest extends KernelTestCase
 
     public function testViewWithClientContacts(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
-
-        self::getContainer()
-            ->set('security.csrf.token_manager', $csrfTokenManager);
-
-        $csrfTokenManager
-            ->expects(self::atLeastOnce())
-            ->method('getToken')
-            ->with('send_manual_reminder')
-            ->willReturn(new CsrfToken('send_manual_reminder', 'send_manual_reminder'));
-
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
@@ -489,8 +510,12 @@ final class ViewTest extends KernelTestCase
     public function testViewWithPartialPayment(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
