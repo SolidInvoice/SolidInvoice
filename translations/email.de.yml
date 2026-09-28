@@ -1,9 +1,9 @@
 client:
     create:
-        subject: 'A new client has been created'
-        heading: 'A new client has been created.'
+        subject: 'Ein neuer Kunde wurde erstellt'
+        heading: 'Ein neuer Kunde wurde erstellt.'
         contacts:
-            heading: Contacts
+            heading: Kontakte
             name: Name
         details:
             id: ID
@@ -14,19 +14,19 @@ client:
         message: 'A new client has been added.'
         view_client: 'View Client'
 invoice:
-    pay_now: 'Pay Now'
+    pay_now: 'Jetzt Bezahlen'
     status:
-        subject: 'Invoice Status Change'
+        subject: 'Rechnungsstatus Änderung'
     status_change:
-        heading: 'An Invoice status has changed'
+        heading: 'Rechnungsstatus hat sich geändert'
         id: Invoice
-        old_status: 'Original Status'
-        new_status: 'New Status'
+        old_status: 'Ursprünglicher Status'
+        new_status: 'Neuer Status'
         status: Status
-        view_invoice: 'View Invoice'
+        view_invoice: 'Rechnung anzeigen'
         client: Client
         message: 'An invoice status has been updated.'
-    info: 'You have received an invoice from %company% generated on %created%'
+    info: 'Sie haben eine Rechnung von %company% erhalten, erstellt am %created%'
     amount_payable: 'Amount payable'
     balance: 'Balance Due'
     created: Created
@@ -65,33 +65,33 @@ invoice:
         online: 'View this online at %url%'
     withholding: Withholding
 payment:
-    description: 'A new payment has been made'
+    description: 'Eine neue Zahlung wurde durchgeführt'
     capture:
-        subject: 'A Payment has been made'
+        subject: 'Eine Zahlung wurde durchgeführt'
     details:
-        amount: Amount
-        currency: Currency
-        invoice: Invoice
-        client: Client
+        amount: Anzahl
+        currency: Währung
+        invoice: Rechnung
+        client: Kunde
         status: Status
-        method: 'Payment Method'
+        method: Zahlungsmethode
         date: Date
     notification:
         message: 'A payment has been received.'
     view_invoice: 'View Invoice'
 quote:
     status:
-        subject: 'Quote Status Change'
+        subject: 'Angebotsstatus Änderung'
     status_change:
-        heading: 'A Quote status has changed'
+        heading: 'Ein Angebotsstatus hat sich geändert'
         id: Quote
-        old_status: 'Original Status'
-        new_status: 'New Status'
+        old_status: 'Ursprünglicher Status'
+        new_status: 'Neuer Status'
         status: Status
-        view_quote: 'View Quote'
+        view_quote: 'Angebot anzeigen'
         client: Client
         message: 'A quote status has been updated.'
-    info: 'You have received a quote from %company% generated on %created%'
+    info: 'Sie haben ein Angebot von %company% erhalten, erstellt am %created%'
     amount_payable: 'Amount payable'
     created: Created
     discount: Discount
@@ -106,14 +106,14 @@ quote:
     withholding: Withholding
 reset_password:
     subject: 'Reset your password for %username%'
-    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
-    message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
-    button_text: 'Reset Password'
+    message_text: "Für Benutzer %username% wurde ein Passwort-Zurücksetzung angefordert.\n\nWenn Sie Ihr Passwort nicht zum Zurücksetzen angefordert haben, können Sie diese Nachricht einfach ignorieren.\n\nUm Ihr Passwort zurückzusetzen, kopieren Sie bitte den unten stehenden Link in Ihren Browser\n\n%confirmationUrl%\n"
+    message_html: "Für Benutzer <strong>%username%</strong> wurde eine Passwort-Zurücksetzung angefordert.\n\nWenn Sie Ihr Passwort nicht zum Zurücksetzen angefordert haben, können Sie diese Nachricht einfach ignorieren.\n\nUm Ihr Passwort zurückzusetzen, klicken Sie bitte den folgenden Link\n"
+    button_text: 'Passwort zurücksetzen'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"
     expires: 'This link will expire in %resetTimestamp%.'
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
 invitation:
-    accept: 'Accept Invitation'
+    accept: 'Einladung annehmen'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"
     company: Company
     email: 'Your Email'
@@ -127,7 +127,7 @@ invitation:
         message: 'Your invitation to join %company% on SolidInvoice will expire in 2 days.'
         title: 'Your invitation to join %company% is about to expire'
     title: 'Invitation to join %company%'
-Confirm: __Confirm
+Confirm: Bestätigen
 email:
     confirmation:
         alternative: "If the button above doesn't work, copy and paste this link into your browser:"
