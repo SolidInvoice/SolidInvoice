@@ -110,9 +110,7 @@
                     </td>
                 </tr>
                 {% if invoice.due %}
-                    {% set now = "now"|date("U") %}
-                    {% set dueTimestamp = invoice.due|date("U") %}
-                    {% set daysDiff = ((dueTimestamp - now) / 86400)|round(0, 'floor') %}
+                    {% set daysDiff = days_until_due(invoice.due) %}
                     {% set isOverdue = daysDiff < 0 %}
                     {% set daysOverdue = (daysDiff * -1) %}
 
