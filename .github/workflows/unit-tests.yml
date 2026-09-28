@@ -145,6 +145,27 @@ jobs:
       - name: Run installation tests
         run: bin/phpunit --group=installation
 
+      # The e-invoicing conformance corpus is version-pinned data (corpus.lock.json), so fetching
+      # and running it on every leg would measure the same thing sixteen times over. It runs once,
+      # on the 8.4 leg only. SOLIDINVOICE_CONFORMANCE_CORPUS marks that this leg's own fetch step
+      # ran, so CorpusIntegrityTest can fail loudly on a missing corpus here instead of skipping.
+      - name: Cache e-invoicing conformance corpus
+        if: matrix.php == '8.4'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: src/EInvoiceBundle/Tests/Fixtures/corpus
+          key: einvoice-corpus-${{ hashFiles('src/EInvoiceBundle/Tests/Fixtures/corpus.lock.json') }}
+
+      - name: Fetch conformance corpus
+        if: matrix.php == '8.4'
+        run: |
+          composer conformance:fetch
+          echo "SOLIDINVOICE_CONFORMANCE_CORPUS=1" >> "$GITHUB_ENV"
+
+      - name: Run e-invoicing conformance suite
+        if: matrix.php == '8.4'
+        run: bin/phpunit --group=conformance --testdox
+
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         if: matrix.coverage
