@@ -33,9 +33,11 @@ use function sprintf;
  * Guards the corpus pin itself, so an absent or moved corpus fails loudly instead of leaving the
  * conformance suite green and measuring nothing.
  *
- * This test needs no validation engine and no fetched corpus outside CI.
+ * This test needs no validation engine. The manifest-schema and licence checks below need no
+ * corpus either, so they carry no "conformance" group tag and run on every CI leg by default.
+ * Only the presence and minCases checks need a fetched corpus, so only they carry the tag: the
+ * "Fetch conformance corpus" step in unit-tests.yml (SOL-141) is the only place that fetches one.
  */
-#[Group('conformance')]
 #[CoversClass(CorpusEntry::class)]
 #[CoversClass(CorpusKind::class)]
 #[CoversClass(CorpusManifest::class)]
@@ -88,20 +90,26 @@ final class CorpusIntegrityTest extends TestCase
     }
 
     /**
-     * On CI the corpus must be there and must match the pin. Locally it may be absent, because
-     * fetching it is a deliberate step.
+     * Skips when the corpus was never fetched and this run's own fetch step did not run either —
+     * locally, or on a CI leg that has no interest in e-invoicing. Once that fetch step exports
+     * SOLIDINVOICE_CONFORMANCE_CORPUS, a still-missing corpus means the fetch step failed, so this
+     * errors instead of skipping. A corpus that was fetched but does not match its pin always
+     * fails, marker or not: that is a real defect, never a reason to skip.
      */
+    #[Group('conformance')]
     #[DataProvider('corpusProvider')]
-    public function testEveryCorpusIsFetchedOnCi(CorpusEntry $entry): void
+    public function testEveryFetchedCorpusMatchesItsPin(CorpusEntry $entry): void
     {
-        if (! $entry->isFetched() && false === (bool) getenv('CI')) {
+        if (null === $entry->fetchedPin()) {
+            if ((bool) getenv('SOLIDINVOICE_CONFORMANCE_CORPUS')) {
+                $entry->assertFetched();
+            }
+
             self::markTestSkipped(sprintf(
                 'The "%s" conformance corpus is not fetched. Run "composer conformance:fetch".',
                 $entry->id,
             ));
         }
-
-        $entry->assertFetched();
 
         self::assertSame($entry->pin, $entry->fetchedPin());
     }
@@ -127,13 +135,15 @@ final class CorpusIntegrityTest extends TestCase
      * unit-UBL-PEPPOL) before anything reaches the engine. minCases is a corpus-integrity floor,
      * not an engine-input count, so it is measured the same way here.
      *
-     * Only enforced on CI, where every corpus is guaranteed to be fetched; locally the corpus is
-     * not committed, so fetching it is a deliberate, opt-in step.
+     * Only enforced once this run's own fetch step has set SOLIDINVOICE_CONFORMANCE_CORPUS: locally,
+     * and on every other CI leg, the corpus is not committed, so fetching it is a deliberate,
+     * opt-in step.
      */
+    #[Group('conformance')]
     public function testEveryCorpusMeetsItsMinCasesFloorOnCi(): void
     {
-        if (false === (bool) getenv('CI')) {
-            self::markTestSkipped('minCases floors are enforced on CI, where every corpus is guaranteed to be fetched.');
+        if (false === (bool) getenv('SOLIDINVOICE_CONFORMANCE_CORPUS')) {
+            self::markTestSkipped('minCases floors are enforced once the CI fetch step (SOL-141) has run.');
         }
 
         $manifest = CorpusManifest::default();
