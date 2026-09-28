@@ -34,9 +34,17 @@
     to "installation" (without paratest). An explicit group option on the command line
     overrides this exclusion. See the "Run installation tests" step in unit-tests.yml.
   -->
+  <!--
+    The "conformance" group holds the EN 16931 / Peppol / XRechnung conformance suite (SOL-81).
+    It runs against corpora that are not committed to this repository (composer conformance:fetch)
+    and, until SOL-108 wires a validation engine, every case in it reports incomplete rather than
+    passing. Run it explicitly with `composer conformance`, or `bin/phpunit` with the "group"
+    option set to "conformance".
+  -->
   <groups>
     <exclude>
       <group>installation</group>
+      <group>conformance</group>
     </exclude>
   </groups>
   <testsuites>
