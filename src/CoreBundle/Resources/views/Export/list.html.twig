@@ -75,7 +75,7 @@
                         {% for job in jobs %}
                             <tr>
                                 <td>{{ job.createdAt|date('Y-m-d H:i') }}</td>
-                                <td><span class="status-chip status-chip--neutral text-uppercase">{{ job.format.value }}</span></td>
+                                <td><span class="status-chip status-chip--neutral">{{ job.format.value|upper }}</span></td>
                                 <td>
                                     {% set status = job.status.value %}
                                     {% set chipVariant = {
