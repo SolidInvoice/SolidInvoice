@@ -28,8 +28,8 @@ final class ItemInformationTest extends TestCase
         $item = new ItemInformation(
             name: 'Consulting services',
             description: 'One day of consulting',
-            sellerIdentifier: new Identifier('SKU-1'),
-            buyerIdentifier: new Identifier('PO-ITEM-1'),
+            sellerIdentifier: 'SKU-1',
+            buyerIdentifier: 'PO-ITEM-1',
             standardIdentifier: new Identifier('05012345678900', '0160'),
             classificationIdentifier: new Identifier('12345', '9', '1.0'),
             originCountryCode: 'ZA',
@@ -38,8 +38,8 @@ final class ItemInformationTest extends TestCase
 
         self::assertSame('Consulting services', $item->name);
         self::assertSame('One day of consulting', $item->description);
-        self::assertSame('SKU-1', $item->sellerIdentifier?->value);
-        self::assertSame('PO-ITEM-1', $item->buyerIdentifier?->value);
+        self::assertSame('SKU-1', $item->sellerIdentifier);
+        self::assertSame('PO-ITEM-1', $item->buyerIdentifier);
         self::assertSame('05012345678900', $item->standardIdentifier?->value);
         self::assertSame('12345', $item->classificationIdentifier?->value);
         self::assertSame('1.0', $item->classificationIdentifier->schemeVersion);
