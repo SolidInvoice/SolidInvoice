@@ -18,6 +18,7 @@ use Brick\Math\RoundingMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Money\Money;
 use Override;
+use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
@@ -126,11 +127,22 @@ abstract class BaseInvoiceGrid extends Grid
             });
     }
 
+    /**
+     * Joins the client eagerly so the money columns above and the client
+     * column never touch a lazy reference: without this, an archived
+     * client throws EntityNotFoundException the moment a row renders,
+     * whether or not the invoice itself is also archived. A left join is
+     * safe here because Invoice::$client is `nullable: false` — it never
+     * actually surfaces a null row.
+     */
     #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
-        $query->getQueryBuilder()->orderBy(ORMSource::ALIAS . '.invoiceDate', 'DESC');
+        $query->getQueryBuilder()
+            ->select(ORMSource::ALIAS, 'client')
+            ->leftJoin(ORMSource::ALIAS . '.client', 'client')
+            ->orderBy(ORMSource::ALIAS . '.invoiceDate', 'DESC');
 
-        return $query;
+        return ArchivableFilter::suspendForJoinedAssociations($entityManager, $query);
     }
 }

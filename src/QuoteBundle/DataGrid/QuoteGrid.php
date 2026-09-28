@@ -43,16 +43,19 @@ final class QuoteGrid extends BaseQuoteGrid
     #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
+        // The client join, select and archivable-filter suspension live in
+        // BaseQuoteGrid::query() so ArchivedQuoteGrid inherits them too.
         $query = parent::query($entityManager, $query);
 
-        $query->getQueryBuilder()
-            ->select(ORMSource::ALIAS, 'client')
-            ->innerJoin(ORMSource::ALIAS . '.client', 'client');
+        // BaseQuoteGrid's join is a left join (Quote::$client is nullable);
+        // this keeps the active grid's previous inner-join behaviour of
+        // excluding a client-less quote.
+        $query->getQueryBuilder()->andWhere('client.id IS NOT NULL');
 
         if (array_key_exists('client_id', $this->context)) {
             $query
                 ->getQueryBuilder()
-                ->where(ORMSource::ALIAS . '.client = :client_id')
+                ->andWhere(ORMSource::ALIAS . '.client = :client_id')
                 ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 

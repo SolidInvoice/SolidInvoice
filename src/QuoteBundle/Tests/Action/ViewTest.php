@@ -56,6 +56,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -124,6 +125,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -184,6 +186,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -240,6 +243,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -307,6 +311,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),

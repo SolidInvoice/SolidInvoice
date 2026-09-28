@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Action;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Mpdf\MpdfException;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -44,6 +45,7 @@ class ViewBilling
 {
     public function __construct(
         private readonly ManagerRegistry $registry,
+        private readonly ClientRepository $clientRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly RouterInterface $router,
         private readonly CompanySelector $companySelector,
@@ -110,6 +112,8 @@ class ViewBilling
         if (! $entity instanceof Invoice && ! $entity instanceof Quote) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
+
+        $this->clientRepository->initializeArchived($entity->getClient());
 
         if ($this->emailVerificationGate->isCompanyGated($entity->getCompany())) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));

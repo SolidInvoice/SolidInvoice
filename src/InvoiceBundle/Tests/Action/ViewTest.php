@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action;
 use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -62,6 +63,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -126,6 +128,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -209,6 +212,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -275,6 +279,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -337,6 +342,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -421,6 +427,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -489,6 +496,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
