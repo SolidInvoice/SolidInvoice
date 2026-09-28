@@ -384,4 +384,24 @@ final class TemplatesRenderingTest extends KernelTestCase
 
         self::assertStringNotContainsString('OVERDUE BY', $output);
     }
+
+    /**
+     * `due` hydrates at midnight (`date_immutable`), so this fixes it to midnight
+     * too instead of `addHours(6)` like {@see urgencyProvider()}. An invoice due
+     * today, rendered any time after midnight, must read "DUE TODAY" and never
+     * "OVERDUE BY" — the regression this issue fixes prints the latter for every
+     * hour of the due date itself.
+     */
+    public function testAnInvoiceDueTodayIsNotMarkedOverdue(): void
+    {
+        $invoice = $this->createFixtureInvoice(due: CarbonImmutable::now()->setTime(0, 0));
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringContainsString('DUE TODAY', $output);
+        self::assertStringNotContainsString('OVERDUE BY', $output);
+    }
 }
