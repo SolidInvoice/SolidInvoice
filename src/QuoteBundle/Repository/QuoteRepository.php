@@ -122,7 +122,7 @@ class QuoteRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function archiveQuotes(array $ids): void
     {

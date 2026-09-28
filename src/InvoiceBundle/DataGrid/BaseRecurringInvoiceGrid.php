@@ -164,6 +164,6 @@ abstract class BaseRecurringInvoiceGrid extends Grid
             ->select(ORMSource::ALIAS, 'client')
             ->leftJoin(ORMSource::ALIAS . '.client', 'client');
 
-        return ArchivableFilter::suspendForAssociatedClient($entityManager, $query);
+        return ArchivableFilter::suspendForJoinedAssociations($entityManager, $query);
     }
 }

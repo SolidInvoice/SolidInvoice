@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
+use Pagerfanta\Pagerfanta;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -23,19 +24,24 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\DataGridBundle\Export\GridQueryService;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
+use SolidInvoice\DataGridBundle\Paginator\Adapter\QueryAdapter;
 use SolidInvoice\DataGridBundle\Render\GridFieldRenderer;
-use SolidInvoice\DataGridBundle\Source\ORMSource;
+use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use SolidInvoice\InvoiceBundle\Action\View;
+use SolidInvoice\InvoiceBundle\DataGrid\ArchivedInvoiceGrid;
+use SolidInvoice\InvoiceBundle\DataGrid\ArchivedRecurringInvoiceGrid;
 use SolidInvoice\InvoiceBundle\DataGrid\InvoiceGrid;
 use SolidInvoice\InvoiceBundle\DataGrid\RecurringInvoiceGrid;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoicePdfListener;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -115,8 +121,10 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
     {
         $invoiceId = $this->createInvoiceWithArchivedClient();
 
-        $results = $this->runGridQuery(self::getContainer()->get(InvoiceGrid::class), Invoice::class);
+        $page = $this->fetchGridPage(self::getContainer()->get(InvoiceGrid::class));
+        $results = iterator_to_array($page);
 
+        self::assertSame(1, $page->getNbResults());
         self::assertCount(1, $results);
         self::assertSame($invoiceId->toString(), $results[0]->getId()->toString());
     }
@@ -134,23 +142,80 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
         $this->archiveClient($client->getId());
 
         $grid = self::getContainer()->get(RecurringInvoiceGrid::class);
-        $results = $this->runGridQuery($grid, RecurringInvoice::class);
+        $page = $this->fetchGridPage($grid);
+        $results = iterator_to_array($page);
 
+        self::assertSame(1, $page->getNbResults());
         self::assertCount(1, $results);
 
-        $columns = [];
+        $this->assertColumnsRenderWithoutThrowing($grid, $results[0]);
+    }
 
-        foreach ($grid->columns() as $column) {
-            $columns[$column->getField()] = $column;
-        }
+    public function testArchivedInvoiceGridDoesNotThrowWithArchivedClient(): void
+    {
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
 
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => InvoiceStatus::Pending,
+        ]);
+
+        self::getContainer()->get(InvoiceRepository::class)->archiveInvoices([$invoice->getId()->toBase32()]);
+        $this->archiveClient($client->getId());
+
+        $grid = self::getContainer()->get(ArchivedInvoiceGrid::class);
+        $page = $this->fetchGridPage($grid);
+        $results = iterator_to_array($page);
+
+        // Reachable in two clicks: archive an invoice, later archive its client,
+        // open Invoices -> Archived. The query succeeding is not the bug -- only
+        // rendering the row was throwing, which is why this asserts the renderer.
+        self::assertSame(1, $page->getNbResults());
+        self::assertCount(1, $results);
+
+        $this->assertColumnsRenderWithoutThrowing($grid, $results[0]);
+    }
+
+    public function testArchivedRecurringInvoiceGridDoesNotThrowWithArchivedClient(): void
+    {
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+
+        $recurringInvoice = RecurringInvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => RecurringInvoiceStatus::Active,
+        ]);
+
+        self::getContainer()->get(RecurringInvoiceRepository::class)->archiveInvoices([$recurringInvoice->getId()->toBase32()]);
+        $this->archiveClient($client->getId());
+
+        $grid = self::getContainer()->get(ArchivedRecurringInvoiceGrid::class);
+        $page = $this->fetchGridPage($grid);
+        $results = iterator_to_array($page);
+
+        self::assertSame(1, $page->getNbResults());
+        self::assertCount(1, $results);
+
+        $this->assertColumnsRenderWithoutThrowing($grid, $results[0]);
+    }
+
+    /**
+     * Rendering every column is the actual regression check: the query succeeding
+     * was never the bug here, only rendering was. Rendering the client column
+     * used to throw EntityNotFoundException, and rendering a money column used to
+     * throw InvalidArgumentException once the client resolved to null (see
+     * BaseRecurringInvoiceGrid's currency guard). No throw is the assertion.
+     */
+    private function assertColumnsRenderWithoutThrowing(GridInterface $grid, object $row): void
+    {
         $renderer = self::getContainer()->get(GridFieldRenderer::class);
 
-        // Rendering the client column used to throw EntityNotFoundException, and
-        // rendering a money column used to throw InvalidArgumentException once the
-        // client resolved to null (see BaseRecurringInvoiceGrid's currency guard).
-        self::assertNotSame('', $renderer->render($columns['client'], $results[0]));
-        self::assertNotSame('', $renderer->render($columns['total'], $results[0]));
+        foreach ($grid->columns() as $column) {
+            $rendered = $renderer->render($column, $row);
+
+            self::assertIsString($rendered);
+        }
     }
 
     public function testDirectClientLoadStillHonoursArchivableFilter(): void
@@ -193,9 +258,10 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
 
         self::assertStringContainsString($invoice->getInvoiceId(), (string) $html);
 
-        $results = $this->runGridQuery(self::getContainer()->get(InvoiceGrid::class), Invoice::class);
+        $page = $this->fetchGridPage(self::getContainer()->get(InvoiceGrid::class));
 
-        self::assertCount(1, $results);
+        self::assertSame(1, $page->getNbResults());
+        self::assertCount(1, iterator_to_array($page));
     }
 
     private function createInvoiceWithArchivedClient(): Ulid
@@ -230,25 +296,33 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
     }
 
     /**
-     * @param class-string $entityFQCN
-     * @return list<object>
+     * Drives a grid through the real pipeline a live page uses: ORMSource::fetch()
+     * builds the query and calls the grid's own query(), GridQueryService applies
+     * sort/search/filter state, then QueryAdapter (used by the DataGrid Twig
+     * component) wraps execution in the grid's before/after-query callbacks. A
+     * hand-rolled query bypasses GridQueryService and Pagerfanta's count path,
+     * which is exactly where a join-condition bug like this one bites.
+     *
+     * @return Pagerfanta<object>
      */
-    private function runGridQuery(GridInterface $grid, string $entityFQCN): array
+    private function fetchGridPage(GridInterface $grid): Pagerfanta
     {
         $grid->initialize([]);
 
-        $query = $grid->query(
-            $this->em,
-            new Query($this->em->getRepository($entityFQCN)->createQueryBuilder(ORMSource::ALIAS), ORMSource::ALIAS),
+        $query = self::getContainer()->get(SourceInterface::class)->fetch($grid);
+        $builder = $query->getQueryBuilder();
+
+        self::getContainer()->get(GridQueryService::class)->applyFilters($grid, $builder, '', '', []);
+
+        return Pagerfanta::createForCurrentPageWithMaxPerPage(
+            new QueryAdapter(
+                $builder,
+                beforeQuery: $query->getCallback(Query::BEFORE_QUERY),
+                afterQuery: $query->getCallback(Query::AFTER_QUERY),
+            ),
+            1,
+            10,
         );
-
-        ($query->getCallback(Query::BEFORE_QUERY) ?? static fn () => null)();
-
-        try {
-            return $query->getQueryBuilder()->getQuery()->getResult();
-        } finally {
-            ($query->getCallback(Query::AFTER_QUERY) ?? static fn () => null)();
-        }
     }
 
     private function buildViewBilling(): ViewBilling

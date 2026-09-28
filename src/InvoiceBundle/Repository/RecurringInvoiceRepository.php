@@ -100,6 +100,28 @@ class RecurringInvoiceRepository extends EntityRepository
     }
 
     /**
+     * @param list<string> $ids
+     */
+    public function archiveInvoices(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        foreach ($ids as $id) {
+            $invoice = $this->find($id);
+
+            if (! $invoice instanceof RecurringInvoice) {
+                continue;
+            }
+
+            $invoice->setArchived(true);
+
+            $em->persist($invoice);
+        }
+
+        $em->flush();
+    }
+
+    /**
      * Restore archived recurring invoices.
      *
      * @param list<int> $ids
