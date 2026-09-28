@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Tests\Conformance;
 
+use DOMDocument;
+use DOMElement;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -21,6 +23,8 @@ use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusEntry;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusKind;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusManifest;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusNotFetchedException;
+use SolidInvoice\EInvoiceBundle\Tests\Conformance\Provider\CorpusFiles;
+use function count;
 use function file_get_contents;
 use function getenv;
 use function sprintf;
@@ -110,5 +114,100 @@ final class CorpusIntegrityTest extends TestCase
         foreach (CorpusManifest::default()->entries() as $entry) {
             yield $entry->id => [$entry];
         }
+    }
+
+    /**
+     * minCases in corpus.lock.json is a floor on the raw content the corpus shipped: it stops
+     * trap 1 (the peppol-bis-3 ".xm" typo'd extension silently dropping a rule) from recurring
+     * unnoticed, and stops a fetched-but-empty corpus from leaving the conformance suite green
+     * while it measures nothing.
+     *
+     * This counts raw <test> elements, not the RuleCase objects the providers yield: those are
+     * smaller, because trap 3 filters the 4 Order-rooted fragments (all of them inside
+     * unit-UBL-PEPPOL) before anything reaches the engine. minCases is a corpus-integrity floor,
+     * not an engine-input count, so it is measured the same way here.
+     *
+     * Only enforced on CI, where every corpus is guaranteed to be fetched; locally the corpus is
+     * not committed, so fetching it is a deliberate, opt-in step.
+     */
+    public function testEveryCorpusMeetsItsMinCasesFloorOnCi(): void
+    {
+        if (false === (bool) getenv('CI')) {
+            self::markTestSkipped('minCases floors are enforced on CI, where every corpus is guaranteed to be fetched.');
+        }
+
+        $manifest = CorpusManifest::default();
+
+        $en16931 = $manifest->get('en16931');
+        $en16931Count = $this->countRawTests($en16931->directory(), ['test/Invoice-unit-UBL', 'test/CreditNote-unit-UBL', 'test/cii']);
+        self::assertGreaterThanOrEqual($en16931->minCases, $en16931Count);
+
+        $peppol = $manifest->get('peppol-bis-3');
+        $peppolCore = $this->countRawPeppolTests($peppol, static fn (string $suffix): bool => 'PEPPOL' === $suffix);
+        $peppolNational = $this->countRawPeppolTests($peppol, static fn (string $suffix): bool => 'PEPPOL' !== $suffix);
+        self::assertGreaterThanOrEqual(354, $peppolCore, 'The peppol-bis-3 core raw test count dropped below the measured floor.');
+        self::assertGreaterThanOrEqual(526, $peppolNational, 'The peppol-bis-3 national raw test count dropped below the measured floor.');
+        self::assertGreaterThanOrEqual($peppol->minCases, $peppolCore + $peppolNational);
+
+        $xrechnung = $manifest->get('xrechnung');
+        self::assertGreaterThanOrEqual($xrechnung->minCases, count(CorpusFiles::xml($xrechnung->directory() . '/instances')));
+    }
+
+    /**
+     * @param list<string> $relativeDirectories
+     */
+    private function countRawTests(string $corpusDirectory, array $relativeDirectories): int
+    {
+        $count = 0;
+
+        foreach ($relativeDirectories as $relativeDirectory) {
+            foreach (CorpusFiles::xml($corpusDirectory . '/' . $relativeDirectory) as $file) {
+                $count += $this->countTestElements($file);
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param callable(string): bool $suffixMatches
+     */
+    private function countRawPeppolTests(CorpusEntry $entry, callable $suffixMatches): int
+    {
+        $count = 0;
+
+        foreach (CorpusFiles::directories($entry->directory() . '/rules', '/^unit-(UBL|CII)-(?<suffix>.+)$/') as $directory => $suffix) {
+            if (! $suffixMatches($suffix)) {
+                continue;
+            }
+
+            foreach (CorpusFiles::xml($directory) as $file) {
+                $count += $this->countTestElements($file);
+            }
+        }
+
+        return $count;
+    }
+
+    private function countTestElements(string $file): int
+    {
+        $contents = file_get_contents($file);
+        self::assertIsString($contents, sprintf('"%s" cannot be read.', $file));
+
+        $document = new DOMDocument();
+        self::assertTrue($document->loadXML($contents, LIBXML_NONET), sprintf('"%s" is not well-formed XML.', $file));
+
+        $testSet = $document->documentElement;
+        self::assertInstanceOf(DOMElement::class, $testSet);
+
+        $count = 0;
+
+        foreach ($testSet->childNodes as $child) {
+            if ($child instanceof DOMElement && TestSetParser::NAMESPACE === $child->namespaceURI && 'test' === $child->localName) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 }

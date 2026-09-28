@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://difi.no/xsd/vefa/validator/1.0" configuration="peppolbis-en16931-base-3.0-ubl">
+	<assert>
+		<scope>PEPPOL-EN16931-R001</scope>
+	</assert>
+	<test>
+		<assert>
+			<success>PEPPOL-EN16931-R001</success>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+	</test>
+</testSet>
