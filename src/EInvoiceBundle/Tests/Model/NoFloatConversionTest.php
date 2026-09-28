@@ -37,6 +37,7 @@ final class NoFloatConversionTest extends TestCase
     public function testNoFloatConversionOutsideSyntax(): void
     {
         $violations = [];
+        $visitedFiles = 0;
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(self::BUNDLE_ROOT, FilesystemIterator::SKIP_DOTS)
@@ -60,6 +61,8 @@ final class NoFloatConversionTest extends TestCase
                 continue;
             }
 
+            ++$visitedFiles;
+
             $contents = file_get_contents($realPath);
             \assert($contents !== false);
 
@@ -70,6 +73,7 @@ final class NoFloatConversionTest extends TestCase
             }
         }
 
+        self::assertGreaterThan(0, $visitedFiles, sprintf('Expected to scan at least one file under "%s"; the scan root is misconfigured.', self::BUNDLE_ROOT));
         self::assertSame([], $violations, "Float conversion found outside Syntax/:\n" . implode("\n", $violations));
     }
 }
