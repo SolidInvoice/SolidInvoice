@@ -73,8 +73,8 @@ final class EInvoiceSerialisationTest extends TestCase
             item: new ItemInformation(
                 'Consulting services',
                 'One day of consulting',
-                new Identifier('SKU-1'),
-                new Identifier('PO-ITEM-1'),
+                'SKU-1',
+                'PO-ITEM-1',
                 new Identifier('05012345678900', '0160'),
                 new Identifier('12345', '9', '1.0'),
                 'ZA',

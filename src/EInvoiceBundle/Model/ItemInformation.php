@@ -31,11 +31,11 @@ final readonly class ItemInformation
         /**
          * BT-155. An identifier the seller assigned to the item.
          */
-        public ?Identifier $sellerIdentifier = null,
+        public ?string $sellerIdentifier = null,
         /**
          * BT-156. An identifier the buyer assigned to the item.
          */
-        public ?Identifier $buyerIdentifier = null,
+        public ?string $buyerIdentifier = null,
         /**
          * BT-157/157-1. A standardised identifier for the item, e.g. a GTIN.
          */

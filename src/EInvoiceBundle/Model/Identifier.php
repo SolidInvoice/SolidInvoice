@@ -24,7 +24,8 @@ final readonly class Identifier
     public function __construct(
         /**
          * The identifier itself, e.g. BT-18, BT-29, BT-30, BT-34, BT-46, BT-47, BT-49, BT-60,
-         * BT-61, BT-71, BT-128, BT-155, BT-156, BT-157, BT-158.
+         * BT-61, BT-71, BT-128, BT-157, BT-158. Not BT-155/BT-156 — those carry no scheme
+         * sub-term and are a plain `?string` on `ItemInformation`.
          */
         public string $value,
         /**
