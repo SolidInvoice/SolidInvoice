@@ -508,10 +508,10 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->where('i.status = :status')
-            ->andWhere('i.due < :now')
+            ->andWhere('i.due < :overdueFrom')
             ->andWhere('i.due IS NOT NULL')
             ->setParameter('status', InvoiceStatus::Pending)
-            ->setParameter('now', $this->clock->now());
+            ->setParameter('overdueFrom', $this->clock->now(), Types::DATE_IMMUTABLE);
 
         return $qb->getQuery()->toIterable();
     }
