@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Enum;
 
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
+
 /**
  * UNTDID 5305 duty/tax/fee category codes, restricted to the subset EN 16931 uses for BT-95,
  * BT-102, BT-118 and BT-151. This is a closed, published list, so it is complete from day one.
@@ -31,6 +33,23 @@ enum VatCategoryCode: string
     case OutsideScope = 'O';
     case CanaryIslandsTax = 'L';
     case CeutaMelillaTax = 'M';
+
+    /**
+     * The only place `TaxBundle\Enum\TaxCategory` (the tax engine's five cases) becomes the
+     * EN 16931 code list, so BT-118 and BT-151 cannot drift apart between
+     * {@see \SolidInvoice\EInvoiceBundle\Mapper\VatBreakdownMapper} and
+     * {@see \SolidInvoice\EInvoiceBundle\Mapper\InvoiceLineMapper}, which both need it.
+     */
+    public static function fromTaxCategory(TaxCategory $category): self
+    {
+        return match ($category) {
+            TaxCategory::Standard => self::StandardRate,
+            TaxCategory::ZeroRated => self::ZeroRated,
+            TaxCategory::Exempt => self::Exempt,
+            TaxCategory::OutOfScope => self::OutsideScope,
+            TaxCategory::ReverseCharge => self::ReverseCharge,
+        };
+    }
 
     public function getLabel(): string
     {
