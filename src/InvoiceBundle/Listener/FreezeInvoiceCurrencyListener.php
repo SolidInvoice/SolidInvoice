@@ -20,11 +20,13 @@ use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
 /**
- * Freezes {@see Invoice::getCurrencyCode()} the moment an invoice leaves Draft/New, so a
- * later change to the client's currency — a client edit, or a default-currency change
- * while `Feature::MultiCurrency` is off — cannot restate an already-issued invoice.
+ * Freezes {@see Invoice::getCurrencyCode()} the moment an invoice is issued (Draft/New
+ * into Pending, Active, Overdue or Paid), so a later change to the client's currency — a
+ * client edit, or a default-currency change while `Feature::MultiCurrency` is off — cannot
+ * restate an already-issued invoice. Cancelling or archiving a draft does not issue it, so
+ * those transitions leave the currency mutable.
  *
- * Mirrors the draft boundary {@see \SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener}
+ * Mirrors the issue boundary {@see \SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener}
  * already uses for tax snapshots. Once frozen here,
  * {@see \SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceCurrencyGuardListener} rejects
  * any further write to the column.
@@ -36,6 +38,13 @@ final class FreezeInvoiceCurrencyListener implements EventSubscriberInterface
     private const array DRAFT_PLACES = [
         InvoiceStatus::New->value,
         InvoiceStatus::Draft->value,
+    ];
+
+    private const array ISSUED_PLACES = [
+        InvoiceStatus::Pending->value,
+        InvoiceStatus::Active->value,
+        InvoiceStatus::Paid->value,
+        InvoiceStatus::Overdue->value,
     ];
 
     /**
@@ -80,6 +89,6 @@ final class FreezeInvoiceCurrencyListener implements EventSubscriberInterface
             return false;
         }
 
-        return ! array_any($transition->getTos(), fn ($to) => in_array($to, self::DRAFT_PLACES, true));
+        return array_any($transition->getTos(), fn ($to) => in_array($to, self::ISSUED_PLACES, true));
     }
 }

@@ -2304,7 +2304,7 @@ settings:
             contact_email_placeholder: contact@yourcompany.com
             contact_help: 'This information will appear on your invoices and quotes.'
             currency: 'Default Currency'
-            currency_help: 'The default currency used for new invoices and quotes.'
+            currency_help: 'The default currency used for new invoices and quotes. Invoices and quotes you have already issued keep the currency they were issued in.'
             logo: 'Company Logo'
             name: 'Company Name'
             name_placeholder: 'Your company name'
