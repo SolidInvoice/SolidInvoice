@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -251,6 +252,10 @@ final class InvoiceTest extends ApiTestCase
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
+            // A draft, not the factory's random default status: this test edits the
+            // invoice and expects its totals to recompute, which an issued invoice's
+            // pinned arithmetic (SOL-337) no longer does.
+            'status' => InvoiceStatus::Draft,
             'due' => CarbonImmutable::parse('2005-01-20'),
             'paidDate' => null,
             'users' => $contacts,

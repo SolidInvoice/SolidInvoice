@@ -18,6 +18,7 @@ use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Exception\NotSupported;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatmentFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -45,7 +46,7 @@ final class TotalCalculatorTest extends KernelTestCase
      */
     public function testUpdateWithSingleItem(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -64,7 +65,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -83,7 +84,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
@@ -107,7 +108,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne());
@@ -131,7 +132,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxIncl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -160,7 +161,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxFlat(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_FLAT_RATE)
@@ -189,7 +190,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExcl(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -218,7 +219,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_INCLUSIVE)
@@ -251,7 +252,7 @@ final class TotalCalculatorTest extends KernelTestCase
 
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
@@ -305,7 +306,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $this->em->persist($invoice);
         $this->em->flush();
 
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $updater->calculateTotals($invoice);
 
@@ -322,7 +323,7 @@ final class TotalCalculatorTest extends KernelTestCase
      */
     public function testUpdateWithTaxExclRoundingIssue(): void
     {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()));
 
         $tax = new Tax();
         $tax->setType(Tax::TYPE_EXCLUSIVE)
