@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\CoreBundle\Enum;
+
+/**
+ * Records which tax/discount arithmetic an issued document was calculated under, so it
+ * is never recalculated under a later one.
+ *
+ * @see \SolidInvoice\CoreBundle\Traits\Entity\TaxArithmeticVersioned
+ */
+enum TaxArithmeticVersion: int
+{
+    case Legacy = 1;
+
+    public static function current(): self
+    {
+        return self::Legacy;
+    }
+}

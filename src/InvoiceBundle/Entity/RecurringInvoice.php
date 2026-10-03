@@ -225,6 +225,13 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
+    public function isIssued(): bool
+    {
+        // A recurring invoice is a template; it is never in a client's hands. The invoices
+        // it spawns are pinned normally.
+        return false;
+    }
+
     public function getClient(): ?Client
     {
         return $this->client;

@@ -61,6 +61,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use function in_array;
 
 #[ORM\Table(name: Invoice::TABLE_NAME)]
 #[ORM\Index(columns: ['quote_id'])]
@@ -267,6 +268,11 @@ class Invoice extends BaseInvoice implements Stringable
         $this->status = InvoiceStatus::from($status);
 
         return $this;
+    }
+
+    public function isIssued(): bool
+    {
+        return ! in_array($this->status, [InvoiceStatus::New, InvoiceStatus::Draft], true);
     }
 
     public function getUuid(): Uuid
