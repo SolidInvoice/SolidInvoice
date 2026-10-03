@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SolidInvoice\EInvoiceBundle\Entity\EInvoiceDocument;
+use SolidInvoice\EInvoiceBundle\Enum\EInvoiceStatus;
+use SolidInvoice\EInvoiceBundle\Enum\EInvoiceTransition;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
@@ -217,6 +222,90 @@ return App::config([
                             'name' => QuoteGraph::TRANSITION_ARCHIVE,
                             'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value],
                             'to' => [QuoteStatus::Archived->value],
+                        ],
+                    ],
+                ],
+                'credit_note' => [
+                    'type' => 'state_machine',
+                    'marking_store' => [
+                        'type' => 'method',
+                        'property' => 'statusValue',
+                    ],
+                    'audit_trail' => [
+                        'enabled' => true,
+                    ],
+                    'supports' => [
+                        CreditNote::class,
+                    ],
+                    'places' => [
+                        CreditNoteStatus::Draft->value,
+                        CreditNoteStatus::Issued->value,
+                        CreditNoteStatus::Cancelled->value,
+                    ],
+                    'transitions' => [
+                        [
+                            'name' => InvoiceGraph::TRANSITION_ISSUE,
+                            'from' => [CreditNoteStatus::Draft->value],
+                            'to' => [CreditNoteStatus::Issued->value],
+                        ],
+                        [
+                            'name' => InvoiceGraph::TRANSITION_CANCEL,
+                            'from' => [CreditNoteStatus::Draft->value, CreditNoteStatus::Issued->value],
+                            'to' => [CreditNoteStatus::Cancelled->value],
+                        ],
+                    ],
+                ],
+                'einvoice_document' => [
+                    'type' => 'state_machine',
+                    'marking_store' => [
+                        'type' => 'method',
+                        'property' => 'statusValue',
+                    ],
+                    'audit_trail' => [
+                        'enabled' => true,
+                    ],
+                    'supports' => [
+                        EInvoiceDocument::class,
+                    ],
+                    'places' => [
+                        EInvoiceStatus::Pending->value,
+                        EInvoiceStatus::Queued->value,
+                        EInvoiceStatus::Transmitted->value,
+                        EInvoiceStatus::Accepted->value,
+                        EInvoiceStatus::Rejected->value,
+                        EInvoiceStatus::Cancelled->value,
+                        EInvoiceStatus::Failed->value,
+                    ],
+                    'transitions' => [
+                        [
+                            'name' => EInvoiceTransition::Queue->value,
+                            'from' => [EInvoiceStatus::Pending->value],
+                            'to' => [EInvoiceStatus::Queued->value],
+                        ],
+                        [
+                            'name' => EInvoiceTransition::Transmit->value,
+                            'from' => [EInvoiceStatus::Queued->value],
+                            'to' => [EInvoiceStatus::Transmitted->value],
+                        ],
+                        [
+                            'name' => EInvoiceTransition::Accept->value,
+                            'from' => [EInvoiceStatus::Transmitted->value],
+                            'to' => [EInvoiceStatus::Accepted->value],
+                        ],
+                        [
+                            'name' => EInvoiceTransition::Reject->value,
+                            'from' => [EInvoiceStatus::Transmitted->value],
+                            'to' => [EInvoiceStatus::Rejected->value],
+                        ],
+                        [
+                            'name' => EInvoiceTransition::Cancel->value,
+                            'from' => [EInvoiceStatus::Pending->value, EInvoiceStatus::Queued->value, EInvoiceStatus::Transmitted->value],
+                            'to' => [EInvoiceStatus::Cancelled->value],
+                        ],
+                        [
+                            'name' => EInvoiceTransition::Fail->value,
+                            'from' => [EInvoiceStatus::Pending->value, EInvoiceStatus::Queued->value],
+                            'to' => [EInvoiceStatus::Failed->value],
                         ],
                     ],
                 ],

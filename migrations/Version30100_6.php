@@ -20,6 +20,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use SolidInvoice\CoreBundle\Doctrine\Migrations\DryRunAwareMigration;
 use function explode;
 use function mb_strlen;
 use function mb_substr;
@@ -29,6 +30,8 @@ use function trim;
 
 final class Version30100_6 extends AbstractMigration
 {
+    use DryRunAwareMigration;
+
     private const array LINE_TABLES = ['invoice_lines', 'quote_lines'];
 
     private const int NAME_MAX_LENGTH = 255;
@@ -79,10 +82,20 @@ final class Version30100_6 extends AbstractMigration
     }
 
     /**
+     * Guarded on {@see DryRunAwareMigration::isDryRun()}: this hook runs before `down()` would
+     * drop the `name` column it reads from, so the column exists whether this is a real revert
+     * or a `--dry-run` one — there is no post-`down()` state to check instead. Without the
+     * guard, a dry-run down would move every line's `name` back into `description` for real,
+     * on a live database, while `down()` itself makes no real change under a dry run.
+     *
      * @throws Exception
      */
     public function preDown(Schema $schema): void
     {
+        if ($this->isDryRun()) {
+            return;
+        }
+
         // A description the backfill moved wholesale into the name has to come back before
         // the column is `NOT NULL` again, or down() fails on the first line it moved.
         foreach (self::LINE_TABLES as $table) {

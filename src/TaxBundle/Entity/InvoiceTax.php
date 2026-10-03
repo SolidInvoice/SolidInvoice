@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -77,6 +78,10 @@ class InvoiceTax
     #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoiceTaxes')]
     #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?RecurringInvoice $recurringInvoice = null;
+
+    #[ORM\ManyToOne(targetEntity: CreditNote::class, inversedBy: 'invoiceTaxes')]
+    #[ORM\JoinColumn(name: 'credit_note_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?CreditNote $creditNote = null;
 
     #[ORM\Column(name: 'direction', type: Types::STRING, length: 32, enumType: TaxDirection::class, options: ['default' => TaxDirection::Additive->value])]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
@@ -169,6 +174,18 @@ class InvoiceTax
     public function setRecurringInvoice(?RecurringInvoice $recurringInvoice): self
     {
         $this->recurringInvoice = $recurringInvoice;
+
+        return $this;
+    }
+
+    public function getCreditNote(): ?CreditNote
+    {
+        return $this->creditNote;
+    }
+
+    public function setCreditNote(?CreditNote $creditNote): self
+    {
+        $this->creditNote = $creditNote;
 
         return $this;
     }

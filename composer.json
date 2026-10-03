@@ -301,6 +301,15 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "requirements-checker": "script"
-        }
+        },
+        "conformance": [
+            "@conformance:fetch",
+            "@php bin/phpunit --group=conformance --testdox"
+        ],
+        "conformance:fetch": "@php scripts/fetch-einvoicing-corpus.php"
+    },
+    "scripts-descriptions": {
+        "conformance": "Fetches the e-invoicing conformance corpora, then runs the conformance test group.",
+        "conformance:fetch": "Downloads the e-invoicing conformance corpora pinned in src/EInvoiceBundle/Tests/Fixtures/corpus.lock.json."
     }
 }

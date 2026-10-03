@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -75,12 +75,14 @@ final class Version20200 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        // MySQL and MariaDB commit implicitly on DDL. AbstractMySQLPlatform, because
+        // MariaDBPlatform is a sibling of MySQLPlatform rather than a subclass.
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
 
@@ -278,14 +280,14 @@ final class Version20200 extends AbstractMigration
             $this->connection->executeQuery($sql);
         }
 
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
         }
     }
 
     public function preDown(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
     }
@@ -324,7 +326,7 @@ final class Version20200 extends AbstractMigration
 
     public function postDown(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
         }
     }

@@ -30,6 +30,9 @@ install:
         password:
             not_blank: 'You must enter a secure password'
 invoice:
+    constraint:
+        credit_note_exceeds_invoice_total: 'The total credited against this invoice cannot exceed the invoice total.'
+        credit_note_invoice_same_company: 'The invoice must belong to the same company as the credit note.'
     lines:
         min: 'You need to add at least 1 line to the Invoice'
     users:

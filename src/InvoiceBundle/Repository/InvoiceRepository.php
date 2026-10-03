@@ -52,7 +52,8 @@ class InvoiceRepository extends EntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly ClockInterface $clock
+        private readonly ClockInterface $clock,
+        private readonly CreditNoteRepository $creditNoteRepository,
     ) {
         parent::__construct($registry, Invoice::class);
     }
@@ -267,13 +268,15 @@ class InvoiceRepository extends EntityRepository
      */
     public function isFullyPaid(Invoice $invoice): bool
     {
-        $invoiceTotal = $invoice->getTotal();
+        // Credit notes reduce what is left to pay, so an invoice fully settled by a credit note
+        // (with no payment at all) must still transition to paid. See `design` §5 on SOL-69.
+        $netTotal = $invoice->getTotal()->toBigDecimal()->minus($this->creditNoteRepository->getTotalCreditedForInvoice($invoice));
 
         $totalPaid = $this->getEntityManager()
             ->getRepository(Payment::class)
             ->getTotalPaidForInvoice($invoice);
 
-        return $totalPaid->isEqualTo($invoiceTotal) || $totalPaid->isGreaterThan($invoiceTotal);
+        return $totalPaid->isEqualTo($netTotal) || $totalPaid->isGreaterThan($netTotal);
     }
 
     public function getTotalOutstandingForClient(Client $client): BigInteger

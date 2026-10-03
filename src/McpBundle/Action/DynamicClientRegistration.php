@@ -144,7 +144,7 @@ final readonly class DynamicClientRegistration
 
         $response = [
             'client_id' => $client->getIdentifier(),
-            'client_id_issued_at' => $client->getCreated()?->getTimestamp() ?? Carbon::now()->getTimestamp(),
+            'client_id_issued_at' => $client->getCreated()->getTimestamp(),
             'client_name' => $client->getName(),
             'redirect_uris' => $client->getRedirectUris(),
             'grant_types' => $client->getGrantTypes(),
