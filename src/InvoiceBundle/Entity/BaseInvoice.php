@@ -23,12 +23,21 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\TaxArithmeticVersioned;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\MappedSuperclass]
 abstract class BaseInvoice
 {
     use CompanyAware;
+    use TaxArithmeticVersioned;
+
+    /**
+     * Whether this document has left draft and is a historical record a client may already
+     * hold, so {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator} must stop recalculating
+     * its totals.
+     */
+    abstract public function isIssued(): bool;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'searchable'])]

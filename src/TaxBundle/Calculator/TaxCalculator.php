@@ -15,6 +15,7 @@ namespace SolidInvoice\TaxBundle\Calculator;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
+use SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatmentFactory;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Calculator\Result\CalculationResult;
@@ -30,6 +31,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
     public function __construct(
         private LineTaxCalculator $lineTaxCalculator,
         private InvoiceTaxCalculator $invoiceTaxCalculator,
+        private DiscountTreatmentFactory $discountTreatments,
     ) {
     }
 
@@ -73,6 +75,8 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
 
         $total = $total->plus($invoiceLevel->totalInvoiceLevelTax);
 
+        $discountAmount = $this->discountTreatments->for($document)->amount($document, $subTotal, $totalLineTax);
+
         return new CalculationResult(
             subTotal: $subTotal,
             totalLineTax: $totalLineTax,
@@ -80,6 +84,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
             lineBreakdowns: $lineBreakdowns,
             invoiceLevelBreakdown: $invoiceLevel,
             summaryRows: $summaryRows,
+            discountAmount: $discountAmount,
         );
     }
 

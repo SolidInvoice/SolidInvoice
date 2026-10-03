@@ -47,6 +47,7 @@ use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
+use SolidInvoice\CoreBundle\Traits\Entity\TaxArithmeticVersioned;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -61,6 +62,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use function in_array;
 
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
@@ -131,6 +133,7 @@ class Quote
     use LinePositions;
     use TimeStampable;
     use CompanyAware;
+    use TaxArithmeticVersioned;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -397,6 +400,11 @@ class Quote
     {
         $this->status = QuoteStatus::from($status);
         return $this;
+    }
+
+    public function isIssued(): bool
+    {
+        return ! in_array($this->status, [QuoteStatus::New, QuoteStatus::Draft], true);
     }
 
     public function getClient(): ?Client
