@@ -109,7 +109,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function archiveClients(array $ids): void
     {
@@ -133,7 +133,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function restoreClients(array $ids): void
     {
