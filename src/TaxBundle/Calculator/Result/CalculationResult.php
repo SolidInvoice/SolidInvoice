@@ -29,6 +29,9 @@ use Brick\Math\BigDecimal;
  *   (`$total - $totalWithholding`, before discount).
  * - {@see $summaryRows} aggregates {@see TaxSummaryRow} entries across all
  *   lines plus any invoice-level rows.
+ * - {@see $discountAmount} is the document-level discount, as resolved by the
+ *   {@see \SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatment} the document's
+ *   {@see \SolidInvoice\CoreBundle\Enum\TaxArithmeticVersion} selects.
  *
  * @phpstan-type LineBreakdowns array<int, LineBreakdown>
  */
@@ -49,6 +52,7 @@ final readonly class CalculationResult
         public array $lineBreakdowns,
         public InvoiceLevelBreakdown $invoiceLevelBreakdown,
         public array $summaryRows,
+        public BigDecimal $discountAmount,
     ) {
         $this->totalWithholding = $invoiceLevelBreakdown->totalWithholding;
         $this->amountPayable = $this->total->minus($this->totalWithholding);
