@@ -20,11 +20,13 @@ use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
 /**
- * Freezes {@see Quote::getCurrencyCode()} the moment a quote leaves Draft/New, so a later
- * change to the client's currency — a client edit, or a default-currency change while
- * `Feature::MultiCurrency` is off — cannot restate an already-issued quote.
+ * Freezes {@see Quote::getCurrencyCode()} the moment a quote is issued (Draft/New into
+ * Pending, Accepted or Declined), so a later change to the client's currency — a client
+ * edit, or a default-currency change while `Feature::MultiCurrency` is off — cannot restate
+ * an already-issued quote. Cancelling or archiving a draft does not issue it, so those
+ * transitions leave the currency mutable.
  *
- * Mirrors the draft boundary {@see \SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener}
+ * Mirrors the issue boundary {@see \SolidInvoice\TaxBundle\Listener\SnapshotTaxesOnIssueListener}
  * already uses for tax snapshots. Once frozen here,
  * {@see \SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteCurrencyGuardListener} rejects any
  * further write to the column.
@@ -36,6 +38,12 @@ final class FreezeQuoteCurrencyListener implements EventSubscriberInterface
     private const array DRAFT_PLACES = [
         QuoteStatus::New->value,
         QuoteStatus::Draft->value,
+    ];
+
+    private const array ISSUED_PLACES = [
+        QuoteStatus::Pending->value,
+        QuoteStatus::Accepted->value,
+        QuoteStatus::Declined->value,
     ];
 
     /**
@@ -80,6 +88,6 @@ final class FreezeQuoteCurrencyListener implements EventSubscriberInterface
             return false;
         }
 
-        return ! array_any($transition->getTos(), fn ($to) => in_array($to, self::DRAFT_PLACES, true));
+        return array_any($transition->getTos(), fn ($to) => in_array($to, self::ISSUED_PLACES, true));
     }
 }

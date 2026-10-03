@@ -37,6 +37,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\EditTest
+ */
 final readonly class Edit
 {
     public function __construct(
@@ -78,7 +81,7 @@ final readonly class Edit
         $dto = $this->formManager->createDTOFromInvoice($invoice);
 
         $form = $this->formFactory->create(InvoiceType::class, $dto, [
-            'currency' => $client->getCurrency(),
+            'currency' => $invoice->getCurrency(),
         ]);
         $form->handleRequest($request);
 

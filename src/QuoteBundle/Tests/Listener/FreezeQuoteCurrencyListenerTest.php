@@ -81,6 +81,44 @@ final class FreezeQuoteCurrencyListenerTest extends TestCase
         self::assertNull($quote->getCurrencyCode());
     }
 
+    /**
+     * `cancel` leaves Draft but does not issue the quote. A cancelled draft can be
+     * reopened and re-pointed at another client, so it must stay mutable.
+     */
+    public function testCancelFromDraftDoesNotFreeze(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $quote = new Quote();
+        $quote->setClient($client);
+
+        $listener = new FreezeQuoteCurrencyListener();
+        $listener->onTransition($this->makeEvent(
+            $quote,
+            new Transition('cancel', QuoteStatus::Draft->value, QuoteStatus::Cancelled->value),
+        ));
+
+        self::assertNull($quote->getCurrencyCode());
+    }
+
+    public function testArchiveFromDraftDoesNotFreeze(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $quote = new Quote();
+        $quote->setClient($client);
+
+        $listener = new FreezeQuoteCurrencyListener();
+        $listener->onTransition($this->makeEvent(
+            $quote,
+            new Transition('archive', QuoteStatus::Draft->value, QuoteStatus::Archived->value),
+        ));
+
+        self::assertNull($quote->getCurrencyCode());
+    }
+
     #[DoesNotPerformAssertions]
     public function testNonQuoteSubjectIsIgnored(): void
     {
