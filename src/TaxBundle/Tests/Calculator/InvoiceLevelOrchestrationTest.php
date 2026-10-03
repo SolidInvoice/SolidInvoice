@@ -15,6 +15,7 @@ namespace SolidInvoice\TaxBundle\Tests\Calculator;
 
 use Brick\Math\BigDecimal;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatmentFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
@@ -38,7 +39,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->calculator = new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator());
+        $this->calculator = new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory());
     }
 
     public function testTdsScenarioFromAcceptanceCriteria(): void
