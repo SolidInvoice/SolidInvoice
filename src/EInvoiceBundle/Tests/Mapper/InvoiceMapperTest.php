@@ -15,16 +15,21 @@ namespace SolidInvoice\EInvoiceBundle\Tests\Mapper;
 
 use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\EInvoiceBundle\Mapper\BuyerMapper;
+use SolidInvoice\EInvoiceBundle\Mapper\InvoiceLineMapper;
 use SolidInvoice\EInvoiceBundle\Mapper\InvoiceMapper;
 use SolidInvoice\EInvoiceBundle\Mapper\MinorUnitConverter;
 use SolidInvoice\EInvoiceBundle\Mapper\SellerMapper;
+use SolidInvoice\EInvoiceBundle\Mapper\VatBreakdownMapper;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class InvoiceMapperTest extends KernelTestCase
@@ -34,11 +39,16 @@ final class InvoiceMapperTest extends KernelTestCase
     private function mapper(): InvoiceMapper
     {
         $systemConfig = self::getContainer()->get(SystemConfig::class);
+        $converter = new MinorUnitConverter(new CurrencyScale());
 
         return new InvoiceMapper(
             new SellerMapper($systemConfig),
             new BuyerMapper(),
-            new MinorUnitConverter(new CurrencyScale()),
+            new InvoiceLineMapper($converter),
+            new VatBreakdownMapper($converter),
+            $converter,
+            self::getContainer()->get(TaxCalculatorInterface::class),
+            self::getContainer()->get(Calculator::class),
             $systemConfig,
         );
     }
@@ -65,6 +75,8 @@ final class InvoiceMapperTest extends KernelTestCase
                 'baseTotal' => 10000,
                 'tax' => 2345,
                 'balance' => 345,
+                // No discount: this test is about the header/seller/buyer, not BG-20.
+                'discount' => new Discount(),
             ]);
         $invoice->setInvoiceId('INV-2026-0001');
 
