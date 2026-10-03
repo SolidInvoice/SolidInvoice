@@ -81,6 +81,44 @@ final class FreezeInvoiceCurrencyListenerTest extends TestCase
         self::assertNull($invoice->getCurrencyCode());
     }
 
+    /**
+     * `cancel` leaves Draft but does not issue the invoice. A cancelled draft can be
+     * reopened and re-pointed at another client, so it must stay mutable.
+     */
+    public function testCancelFromDraftDoesNotFreeze(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+
+        $listener = new FreezeInvoiceCurrencyListener();
+        $listener->onTransition($this->makeEvent(
+            $invoice,
+            new Transition('cancel', InvoiceStatus::Draft->value, InvoiceStatus::Cancelled->value),
+        ));
+
+        self::assertNull($invoice->getCurrencyCode());
+    }
+
+    public function testArchiveFromDraftDoesNotFreeze(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+
+        $listener = new FreezeInvoiceCurrencyListener();
+        $listener->onTransition($this->makeEvent(
+            $invoice,
+            new Transition('archive', InvoiceStatus::Draft->value, InvoiceStatus::Archived->value),
+        ));
+
+        self::assertNull($invoice->getCurrencyCode());
+    }
+
     #[DoesNotPerformAssertions]
     public function testNonInvoiceSubjectIsIgnored(): void
     {

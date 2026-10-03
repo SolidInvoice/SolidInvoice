@@ -15,6 +15,8 @@ namespace SolidInvoice\QuoteBundle\Tests\Functional;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -110,6 +112,92 @@ final class QuoteCurrencyFreezeTest extends KernelTestCase
 
         $repository = $container->get(QuoteRepository::class);
         $reloaded = $repository->find($quote->getId());
+        self::assertInstanceOf(Quote::class, $reloaded);
+
+        self::assertSame('USD', $reloaded->getCurrency()->getCode());
+    }
+
+    /**
+     * `cancel` and `reopen` both keep the quote in the mutable window: a draft that was
+     * cancelled and reopened is still a draft, so it must follow its client until it is
+     * actually issued. Before the fix, cancelling from Draft froze the currency.
+     */
+    public function testCancelledThenReopenedDraftStillFollowsItsClient(): void
+    {
+        $usdClient = ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company]);
+        $eurClient = ClientFactory::createOne(['currencyCode' => 'EUR', 'company' => $this->company]);
+        $quoteId = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'client' => $usdClient,
+            'company' => $this->company,
+        ])->getId();
+
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+        self::assertInstanceOf(EntityManagerInterface::class, $entityManager);
+        $entityManager->clear();
+
+        $repository = $container->get(QuoteRepository::class);
+        $quote = $repository->find($quoteId);
+        self::assertInstanceOf(Quote::class, $quote);
+
+        $workflow = $container->get('state_machine.quote');
+        self::assertInstanceOf(WorkflowInterface::class, $workflow);
+
+        $workflow->apply($quote, Graph::TRANSITION_CANCEL);
+        $entityManager->flush();
+        self::assertNull($quote->getCurrencyCode());
+
+        $workflow->apply($quote, Graph::TRANSITION_REOPEN);
+        $entityManager->flush();
+        self::assertNull($quote->getCurrencyCode());
+
+        $reloadedEurClient = $entityManager->find(Client::class, $eurClient->getId());
+        self::assertInstanceOf(Client::class, $reloadedEurClient);
+        $quote->setClient($reloadedEurClient);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $quote->getCurrency()->getCode());
+
+        $workflow->apply($quote, Graph::TRANSITION_PUBLISH);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $quote->getCurrencyCode());
+    }
+
+    /**
+     * Once frozen, the document no longer reaches through to its client. Archiving the
+     * client afterwards must not change what the issued document states.
+     */
+    public function testFrozenQuoteKeepsItsCurrencyAfterItsClientIsArchived(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company]);
+        $quoteId = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'client' => $client,
+            'company' => $this->company,
+        ])->getId();
+
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+        self::assertInstanceOf(EntityManagerInterface::class, $entityManager);
+        $entityManager->clear();
+
+        $repository = $container->get(QuoteRepository::class);
+        $quote = $repository->find($quoteId);
+        self::assertInstanceOf(Quote::class, $quote);
+
+        $workflow = $container->get('state_machine.quote');
+        self::assertInstanceOf(WorkflowInterface::class, $workflow);
+        $workflow->apply($quote, Graph::TRANSITION_PUBLISH);
+        $entityManager->flush();
+
+        self::assertSame('USD', $quote->getCurrencyCode());
+
+        $container->get(ClientRepository::class)->archiveClients([$client->getId()->toBase32()]);
+        $entityManager->clear();
+
+        $reloaded = $repository->find($quoteId);
         self::assertInstanceOf(Quote::class, $reloaded);
 
         self::assertSame('USD', $reloaded->getCurrency()->getCode());

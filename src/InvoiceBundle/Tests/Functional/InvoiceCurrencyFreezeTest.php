@@ -16,6 +16,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -151,6 +153,92 @@ final class InvoiceCurrencyFreezeTest extends KernelTestCase
 
         self::assertNull($reloaded->getCurrencyCode());
         self::assertSame('GBP', $reloaded->getCurrency()->getCode());
+    }
+
+    /**
+     * `cancel` and `reopen` both keep the invoice in the mutable window: a draft that was
+     * cancelled and reopened is still a draft, so it must follow its client until it is
+     * actually issued. Before the fix, cancelling from Draft froze the currency.
+     */
+    public function testCancelledThenReopenedDraftStillFollowsItsClient(): void
+    {
+        $usdClient = ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company]);
+        $eurClient = ClientFactory::createOne(['currencyCode' => 'EUR', 'company' => $this->company]);
+        $invoiceId = InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Draft,
+            'client' => $usdClient,
+            'company' => $this->company,
+        ])->getId();
+
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+        self::assertInstanceOf(EntityManagerInterface::class, $entityManager);
+        $entityManager->clear();
+
+        $repository = $container->get(InvoiceRepository::class);
+        $invoice = $repository->find($invoiceId);
+        self::assertInstanceOf(Invoice::class, $invoice);
+
+        $workflow = $container->get('state_machine.invoice');
+        self::assertInstanceOf(WorkflowInterface::class, $workflow);
+
+        $workflow->apply($invoice, Graph::TRANSITION_CANCEL);
+        $entityManager->flush();
+        self::assertNull($invoice->getCurrencyCode());
+
+        $workflow->apply($invoice, Graph::TRANSITION_REOPEN);
+        $entityManager->flush();
+        self::assertNull($invoice->getCurrencyCode());
+
+        $reloadedEurClient = $entityManager->find(Client::class, $eurClient->getId());
+        self::assertInstanceOf(Client::class, $reloadedEurClient);
+        $invoice->setClient($reloadedEurClient);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $invoice->getCurrency()->getCode());
+
+        $workflow->apply($invoice, Graph::TRANSITION_ACCEPT);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $invoice->getCurrencyCode());
+    }
+
+    /**
+     * Once frozen, the document no longer reaches through to its client. Archiving the
+     * client afterwards must not change what the issued document states.
+     */
+    public function testFrozenInvoiceKeepsItsCurrencyAfterItsClientIsArchived(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company]);
+        $invoiceId = InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Draft,
+            'client' => $client,
+            'company' => $this->company,
+        ])->getId();
+
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+        self::assertInstanceOf(EntityManagerInterface::class, $entityManager);
+        $entityManager->clear();
+
+        $repository = $container->get(InvoiceRepository::class);
+        $invoice = $repository->find($invoiceId);
+        self::assertInstanceOf(Invoice::class, $invoice);
+
+        $workflow = $container->get('state_machine.invoice');
+        self::assertInstanceOf(WorkflowInterface::class, $workflow);
+        $workflow->apply($invoice, Graph::TRANSITION_ACCEPT);
+        $entityManager->flush();
+
+        self::assertSame('USD', $invoice->getCurrencyCode());
+
+        $container->get(ClientRepository::class)->archiveClients([$client->getId()->toBase32()]);
+        $entityManager->clear();
+
+        $reloaded = $repository->find($invoiceId);
+        self::assertInstanceOf(Invoice::class, $reloaded);
+
+        self::assertSame('USD', $reloaded->getCurrency()->getCode());
     }
 
     public function testGuardRejectsAWriteToCurrencyCodeOnAnAcceptedInvoice(): void
