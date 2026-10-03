@@ -138,6 +138,37 @@
                     </div>
                 {% endtoggle %}
 
+                {% toggle 'oidc_oauth_login' %}
+                    {# OpenID Connect Account Linking #}
+                    <div class="security-item">
+                        <div class="security-item-info">
+                            <div class="security-item-icon {{ app.user.oidcId is not empty ? 'security-item-icon-success' : 'security-item-icon-warning' }}">
+                                {{ ux_icon(app.user.oidcId is not empty ? 'tabler:key' : 'tabler:unlink', {width: 20, height: 20}) }}
+                            </div>
+                            <div class="security-item-content">
+                                <h4 class="security-item-title">{{ 'profile.show.security.oidc.title'|trans }}</h4>
+                                <p class="security-item-description">
+                                    {% if app.user.oidcId is not empty %}
+                                        {{ 'profile.show.security.oidc.linked'|trans }}
+                                    {% else %}
+                                        {{ 'profile.show.security.oidc.link'|trans }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="security-item-action">
+                            {% if app.user.oidcId is empty %}
+                                <a href="{{ path('_oauth_connect', {'service': 'oidc'}) }}" class="btn btn-sm btn-outline-primary">
+                                    {{ ux_icon('tabler:key', {width: 16, height: 16}) }}
+                                    {{ 'profile.show.security.oidc.sign_in'|trans }}
+                                </a>
+                            {% else %}
+                                <span class="badge bg-success-lt">{{ 'profile.show.security.oidc.badge'|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endtoggle %}
+
                 {# Password #}
                 <div class="security-item">
                     <div class="security-item-info">

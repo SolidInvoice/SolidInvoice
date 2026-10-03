@@ -112,16 +112,35 @@ Nothing is emitted when oauth.google.enabled=false.
 {{- define "solidinvoice.oauthEnv" -}}
 {{- if .Values.oauth.google.enabled }}
 {{- if .Values.oauth.google.existingSecret }}
-- name: SOLIDINVOICE_OAUTH_GOOGLE_CLIENT_ID
+- name: SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID
   valueFrom:
     secretKeyRef:
       name: {{ .Values.oauth.google.existingSecret }}
       key: GOOGLE_CLIENT_ID
-- name: SOLIDINVOICE_OAUTH_GOOGLE_CLIENT_SECRET
+- name: SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET
   valueFrom:
     secretKeyRef:
       name: {{ .Values.oauth.google.existingSecret }}
       key: GOOGLE_CLIENT_SECRET
+{{- end }}
+{{- end }}
+{{- if .Values.oauth.oidc.enabled }}
+{{- if .Values.oauth.oidc.existingSecret }}
+- name: SOLIDINVOICE_OAUTH_OIDC_CLIENT_ID
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.oauth.oidc.existingSecret }}
+      key: OIDC_CLIENT_ID
+- name: SOLIDINVOICE_OAUTH_OIDC_CLIENT_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.oauth.oidc.existingSecret }}
+      key: OIDC_CLIENT_SECRET
+- name: SOLIDINVOICE_OAUTH_OIDC_ISSUER
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.oauth.oidc.existingSecret }}
+      key: OIDC_ISSUER
 {{- end }}
 {{- end }}
 {{- end }}

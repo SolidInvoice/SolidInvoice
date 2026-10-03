@@ -374,6 +374,26 @@
               "type": "string"
             }
           }
+        },
+        "oidc": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "issuer": {
+              "type": "string"
+            },
+            "clientId": {
+              "type": "string"
+            },
+            "clientSecret": {
+              "type": "string"
+            },
+            "existingSecret": {
+              "type": "string"
+            }
+          }
         }
       }
     },

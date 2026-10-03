@@ -58,13 +58,14 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
 
     public function authenticate(Request $request): Passport
     {
-        $client = $this->clientRegistry->getClient($request->attributes->get('service'));
+        $service = (string) $request->attributes->get('service');
+        $client = $this->clientRegistry->getClient($service);
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
-            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
+            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client, $service) {
 
-                $oauthUser = new OAuthUser($client->fetchUserFromToken($accessToken));
+                $oauthUser = new OAuthUser($client->fetchUserFromToken($accessToken), $service);
 
                 $userRepository = $this->entityManager->getRepository(User::class);
                 $existingUser = $userRepository->findOneBy([$oauthUser->getPropertyMap() => $oauthUser->getId()]);

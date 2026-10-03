@@ -208,6 +208,15 @@ oauth:
     clientId: ""
     clientSecret: ""
     existingSecret: ""
+  oidc:
+    ## @param oauth.oidc.enabled Enable generic OpenID Connect login
+    enabled: false
+    ## @param oauth.oidc.issuer OIDC issuer URL used for discovery ({issuer}/.well-known/openid-configuration)
+    issuer: ""
+    clientId: ""
+    clientSecret: ""
+    ## @param oauth.oidc.existingSecret Name of an existing Secret containing OIDC_CLIENT_ID, OIDC_CLIENT_SECRET and OIDC_ISSUER
+    existingSecret: ""
 
 ## @section Resource configuration
 resources:

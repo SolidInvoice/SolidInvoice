@@ -33,6 +33,21 @@
             </div>
         </div>
     {% endtoggle %}
+
+    {% toggle 'oidc_oauth_login' %}
+        <div class="hr-text">{{ 'security.login.or'|trans }}</div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <a href="{{ path('_oauth_connect', {'service': 'oidc' }) }}" class="btn btn-outline-secondary w-100">
+                        {{ ux_icon('tabler:key', {width: 24, height: 24}) }}
+                        {{ 'security.login.login_with_oidc'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endtoggle %}
 {% endblock social_login %}
 
 {% block brand %}
