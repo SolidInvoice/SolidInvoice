@@ -30,6 +30,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Date\DueDateCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
@@ -511,7 +512,7 @@ class InvoiceRepository extends EntityRepository
             ->andWhere('i.due < :overdueFrom')
             ->andWhere('i.due IS NOT NULL')
             ->setParameter('status', InvoiceStatus::Pending)
-            ->setParameter('overdueFrom', $this->clock->now(), Types::DATE_IMMUTABLE);
+            ->setParameter('overdueFrom', $this->dueDateCalculator()->overdueFrom(), Types::DATE_IMMUTABLE);
 
         return $qb->getQuery()->toIterable();
     }
@@ -531,7 +532,7 @@ class InvoiceRepository extends EntityRepository
      */
     public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
     {
-        $targetDate = $this->clock->now()->modify(sprintf('+%d days', $daysBeforeDue));
+        $targetDate = $this->dueDateCalculator()->today()->modify(sprintf('+%d days', $daysBeforeDue));
 
         $qb = $this->createReminderCandidateQueryBuilder(ReminderType::PreDue, $targetDate);
 
@@ -556,7 +557,7 @@ class InvoiceRepository extends EntityRepository
      */
     public function getInvoicesNeedingOverdueReminders(int $daysOverdue, ReminderType $reminderType): iterable
     {
-        $targetDate = $this->clock->now()->modify(sprintf('-%d days', $daysOverdue));
+        $targetDate = $this->dueDateCalculator()->today()->modify(sprintf('-%d days', $daysOverdue));
 
         $qb = $this->createReminderCandidateQueryBuilder($reminderType, $targetDate);
 
@@ -589,6 +590,16 @@ class InvoiceRepository extends EntityRepository
                 'due' => $dateType->convertToPHPValue($row['due'], $platform),
             ];
         }
+    }
+
+    /**
+     * The repository constructor keeps its `ClockInterface $clock` argument rather than taking a
+     * DueDateCalculator directly, so this builds one from it on demand instead of adding a second
+     * constructor dependency for the same clock.
+     */
+    private function dueDateCalculator(): DueDateCalculator
+    {
+        return new DueDateCalculator($this->clock);
     }
 
     /**
