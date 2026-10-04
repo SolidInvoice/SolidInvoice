@@ -109,7 +109,7 @@ final class Version30100_13 extends AbstractMigration
             $this->connection->executeStatement(
                 sprintf(
                     'INSERT INTO %s (id, company_id, document_type, captured_percentage, captured_at) '
-                    . "SELECT id, company_id, :kind, discount_value_percentage, :capturedAt FROM %s "
+                    . 'SELECT id, company_id, :kind, discount_value_percentage, :capturedAt FROM %s '
                     . "WHERE discount_type = 'percentage' AND discount_value_percentage > 0 AND discount_value_percentage <= 100",
                     AmbiguousDiscountUnit::TABLE_NAME,
                     $table,
