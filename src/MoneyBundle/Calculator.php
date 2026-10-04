@@ -44,14 +44,12 @@ final class Calculator
     }
 
     /**
+     * $percentage is a plain percentage (15 means 15%), never a fraction or a hundredths value.
+     *
      * @throws MathException
      */
     public function calculatePercentage(BigNumber | int | string $amount, float $percentage = 0.0): float
     {
-        if ($percentage > 100) {
-            $percentage /= 100;
-        }
-
         return MoneyFormatter::toFloat(BigNumber::of($amount)->toBigDecimal()->multipliedBy(BigDecimal::of((string) $percentage)->dividedBy(100, 10, RoundingMode::HalfEven)));
     }
 }

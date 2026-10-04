@@ -22,9 +22,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Range;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Form\Type\DiscountTypeTest
@@ -73,17 +76,54 @@ class DiscountType extends AbstractType
             ]
         );
 
-        $builder->add(
-            'value',
-            TextType::class,
-            [
-                'attr' => [
-                    'class' => 'discount-value',
-                ],
-            ]
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event): void {
+                $this->addValueField($event->getForm(), $event->getData()?->getType());
+            }
         );
 
-        $builder->get('value')->addViewTransformer(new DiscountTransformer());
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event): void {
+                $data = $event->getData();
+
+                $this->addValueField($event->getForm(), is_array($data) ? ($data['type'] ?? null) : null);
+            }
+        );
+    }
+
+    /**
+     * The 'value' field means different things per discount type: a plain percentage
+     * (15 means 15%) for {@see Discount::TYPE_PERCENTAGE}, or an amount in the
+     * client's major currency unit (needs converting to minor units) for
+     * {@see Discount::TYPE_MONEY}. Only the money case needs the transformer.
+     *
+     * @param FormInterface<mixed> $form
+     */
+    private function addValueField(FormInterface $form, ?string $type): void
+    {
+        $options = [
+            'attr' => [
+                'class' => 'discount-value',
+            ],
+        ];
+
+        if (Discount::TYPE_MONEY !== $type) {
+            $form->add('value', TextType::class, $options + [
+                'empty_data' => '0',
+                'constraints' => [
+                    new Range(min: 0, max: 100, notInRangeMessage: 'core.constraint.discount_value_percentage_range'),
+                ],
+            ]);
+
+            return;
+        }
+
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder('value', TextType::class, null, $options + ['auto_initialize' => false]);
+        $builder->addViewTransformer(new DiscountTransformer());
+
+        $form->add($builder->getForm());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
