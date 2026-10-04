@@ -8,6 +8,7 @@ client:
 core:
     constraint:
         application_url_host: 'This domain is reserved for the default application URL.'
+        discount_value_percentage_range: 'A percentage discount must be between {{ min }} and {{ max }}.'
     custom_field:
         field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
         similar_label: 'A custom field with a similar label already exists for the selected target.'

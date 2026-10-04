@@ -22,6 +22,16 @@ use Brick\Math\RoundingMode;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
+ * Converts a {@see Discount} with {@see Discount::TYPE_MONEY} between the major unit a
+ * user types (`359.20`) and the minor unit the entity stores (`35920`). {@see DiscountType}
+ * attaches this only for a money discount; a percentage passes through unscaled (SOL-342).
+ *
+ * The `100` is hard-coded rather than read from {@see \SolidInvoice\MoneyBundle\Currency\CurrencyScale},
+ * so it is wrong for a currency with a different minor-unit scale, such as JPY (0) or BHD
+ * (3) — the same defect class as SOL-331. That is deliberate for this fix: correcting it
+ * would move stored values for those currencies with no migration to match, turning a
+ * tight fix into a data-divergence problem. Left for a dedicated change.
+ *
  * @implements DataTransformerInterface<BigNumber, float>
  */
 class DiscountTransformer implements DataTransformerInterface
