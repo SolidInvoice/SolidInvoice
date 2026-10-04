@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
-use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,7 +81,7 @@ final class RecurringInvoiceTypeTest extends FormTestCase
 
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+        $discount->setValue($discountValue);
 
         $object->setDiscount($discount);
 

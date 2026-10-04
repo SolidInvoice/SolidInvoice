@@ -105,6 +105,33 @@ final class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
     }
 
+    /**
+     * A discount at or below 1.00% used to be read as a whole percent (SOL-342).
+     */
+    public function testUpdateWithSmallPercentageDiscount(): void
+    {
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+
+        $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
+
+        $item = new Line();
+        $item->setQty(2)
+            ->setPrice(15000);
+        $invoice->addLine($item);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(1);
+
+        $invoice->setDiscount($discount);
+
+        $updater->calculateTotals($invoice);
+
+        self::assertEquals(BigDecimal::of(29700), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of(29700), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
+    }
+
     public function testUpdateWithMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
@@ -237,7 +264,7 @@ final class TotalCalculatorTest extends KernelTestCase
         $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue(1500);
+        $discount->setValue(15);
 
         $invoice->setDiscount($discount);
 
@@ -247,6 +274,50 @@ final class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(26250), $invoice->getBalance());
         self::assertEquals(BigDecimal::of('25000.00'), $invoice->getBaseTotal());
         self::assertEquals(BigDecimal::of('5000.00'), $invoice->getTax());
+    }
+
+    /**
+     * A 1% discount on a 300.00 net invoice with 20% exclusive VAT used to be read as a
+     * whole percent (SOL-342), discounting the client's whole bill instead of 1% of the
+     * discountable base.
+     *
+     * The base here is 30000 (baseTotal), not 36000 (baseTotal + tax): {@see
+     * TotalCalculator::updateTotal()} calls {@see Calculator::calculateDiscount()} before
+     * it calls `$entity->setTax()`, so `$entity->getTax()` is still its pre-update value
+     * at discount time. That ordering is a separate, pre-existing defect — SOL-342 fixes
+     * only which unit the stored percentage is in, not which amount it is a percentage of.
+     */
+    public function testUpdateWithTaxExclAndSmallPercentageDiscount(): void
+    {
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator(), new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator()));
+
+        $tax = new Tax();
+        $tax->setType(Tax::TYPE_EXCLUSIVE)
+            ->setRate(20);
+
+        $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD']));
+
+        $item = new Line();
+        $item->setQty(2)
+            ->setPrice(15000);
+        $lineTax = new LineTax();
+        $lineTax->snapshotFrom($tax);
+
+        $item->addTax($lineTax);
+        $invoice->addLine($item);
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(1);
+
+        $invoice->setDiscount($discount);
+
+        $updater->calculateTotals($invoice);
+
+        self::assertEquals(BigDecimal::of(35700), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of(35700), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
+        self::assertEquals(BigDecimal::of('6000'), $invoice->getTax());
     }
 
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
