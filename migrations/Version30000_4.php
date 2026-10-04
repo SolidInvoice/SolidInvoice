@@ -109,14 +109,18 @@ final class Version30000_4 extends AbstractMigration
 
                 // Only insert if it doesn't exist
                 if ($exists === false) {
-                    $this->connection->insert('app_config', [
-                        'id' => (new Ulid())->toBinary(),
-                        'company_id' => $companyId,
-                        'setting_key' => $setting['key'],
-                        'setting_value' => $setting['value'],
-                        'description' => $setting['description'],
-                        'field_type' => $setting['type'],
-                    ]);
+                    $this->connection->insert(
+                        'app_config',
+                        [
+                            'id' => new Ulid(),
+                            'company_id' => $companyId,
+                            'setting_key' => $setting['key'],
+                            'setting_value' => $setting['value'],
+                            'description' => $setting['description'],
+                            'field_type' => $setting['type'],
+                        ],
+                        ['id' => UlidType::NAME],
+                    );
                 }
             }
         }

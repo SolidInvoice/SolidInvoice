@@ -243,29 +243,37 @@ final class Version30000_9 extends AbstractMigration
         $now = (new DateTimeImmutable())->format('Y-m-d H:i:s');
 
         foreach ($this->capturedClientVatNumbers as $row) {
-            $this->connection->insert(TaxIdentifier::TABLE_NAME, [
-                'id' => (new Ulid())->toBinary(),
-                'company_id' => $row['company_id'],
-                'client_id' => $row['id'],
-                'label' => 'VAT',
-                'value' => $row['vat_number'],
-                'is_primary' => true,
-                'created' => $now,
-                'updated' => $now,
-            ]);
+            $this->connection->insert(
+                TaxIdentifier::TABLE_NAME,
+                [
+                    'id' => new Ulid(),
+                    'company_id' => $row['company_id'],
+                    'client_id' => $row['id'],
+                    'label' => 'VAT',
+                    'value' => $row['vat_number'],
+                    'is_primary' => true,
+                    'created' => $now,
+                    'updated' => $now,
+                ],
+                ['id' => UlidType::NAME],
+            );
         }
 
         foreach ($this->capturedCompanyVatNumbers as $row) {
-            $this->connection->insert(TaxIdentifier::TABLE_NAME, [
-                'id' => (new Ulid())->toBinary(),
-                'company_id' => $row['company_id'],
-                'client_id' => null,
-                'label' => 'VAT',
-                'value' => $row['setting_value'],
-                'is_primary' => true,
-                'created' => $now,
-                'updated' => $now,
-            ]);
+            $this->connection->insert(
+                TaxIdentifier::TABLE_NAME,
+                [
+                    'id' => new Ulid(),
+                    'company_id' => $row['company_id'],
+                    'client_id' => null,
+                    'label' => 'VAT',
+                    'value' => $row['setting_value'],
+                    'is_primary' => true,
+                    'created' => $now,
+                    'updated' => $now,
+                ],
+                ['id' => UlidType::NAME],
+            );
         }
 
         $this->connection->delete('app_config', [
@@ -574,23 +582,27 @@ final class Version30000_9 extends AbstractMigration
             $type = TaxType::tryFrom((string) $row['tax_type_value']) ?? TaxType::Exclusive;
             $category = TaxCategory::tryFrom((string) ($row['tax_category'] ?? '')) ?? TaxCategory::Standard;
 
-            $this->connection->insert(LineTax::TABLE_NAME, [
-                'id' => (new Ulid())->toBinary(),
-                'company_id' => $row['parent_company_id'],
-                'tax_id' => $row['tax_id'],
-                'invoice_line_id' => $lineColumn === 'invoice_line_id' ? $row['line_id'] : null,
-                'quote_line_id' => $lineColumn === 'quote_line_id' ? $row['line_id'] : null,
-                'name_snapshot' => (string) $row['tax_name'],
-                'rate_snapshot' => $this->normaliseRate($row['tax_rate']),
-                'category_snapshot' => $category->value,
-                'type_snapshot' => $type->value,
-                'compound' => $row['tax_compound'] ? 1 : 0,
-                'sequence' => 0,
-                'amount' => 0,
-                'snapshotted_at' => $row['snapshotted_at'],
-                'created' => $now,
-                'updated' => $now,
-            ]);
+            $this->connection->insert(
+                LineTax::TABLE_NAME,
+                [
+                    'id' => new Ulid(),
+                    'company_id' => $row['parent_company_id'],
+                    'tax_id' => $row['tax_id'],
+                    'invoice_line_id' => $lineColumn === 'invoice_line_id' ? $row['line_id'] : null,
+                    'quote_line_id' => $lineColumn === 'quote_line_id' ? $row['line_id'] : null,
+                    'name_snapshot' => (string) $row['tax_name'],
+                    'rate_snapshot' => $this->normaliseRate($row['tax_rate']),
+                    'category_snapshot' => $category->value,
+                    'type_snapshot' => $type->value,
+                    'compound' => $row['tax_compound'] ? 1 : 0,
+                    'sequence' => 0,
+                    'amount' => 0,
+                    'snapshotted_at' => $row['snapshotted_at'],
+                    'created' => $now,
+                    'updated' => $now,
+                ],
+                ['id' => UlidType::NAME],
+            );
         }
     }
 
