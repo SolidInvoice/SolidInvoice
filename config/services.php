@@ -39,6 +39,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_OAUTH_OIDC_CLIENT_ID)', null);
     $parameters->set('env(SOLIDINVOICE_OAUTH_OIDC_CLIENT_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_OAUTH_OIDC_ISSUER)', null);
+    $parameters->set('env(SOLIDINVOICE_OAUTH_OIDC_ALLOW_REGISTRATION)', '0');
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SITE_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SECRET_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_SENTRY_DSN)', null);

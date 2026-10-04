@@ -381,6 +381,9 @@
             "enabled": {
               "type": "boolean"
             },
+            "allowRegistration": {
+              "type": "boolean"
+            },
             "issuer": {
               "type": "string"
             },

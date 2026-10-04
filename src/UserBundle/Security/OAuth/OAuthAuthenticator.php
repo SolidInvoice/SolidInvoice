@@ -82,7 +82,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                     if ($currentUser instanceof User) {
                         $user = $currentUser;
                     } else {
-                        if (! $this->toggle->isActive('allow_registration')) {
+                        if (! $this->isRegistrationAllowed($service)) {
                             return null;
                         }
 
@@ -102,6 +102,22 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                 return $user;
             })
         );
+    }
+
+    /**
+     * Determines whether a new account may be created for the given OAuth
+     * provider. Enabling local registration (`allow_registration`) always
+     * allows it; OIDC additionally honours a dedicated enrollment toggle so
+     * operators can disable the local /register form while still letting users
+     * enroll through the configured identity provider.
+     */
+    private function isRegistrationAllowed(string $service): bool
+    {
+        if ($this->toggle->isActive('allow_registration')) {
+            return true;
+        }
+
+        return $service === 'oidc' && $this->toggle->isActive('oidc_oauth_registration');
     }
 
     public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token, string $firewallName): ?Response

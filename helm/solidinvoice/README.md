@@ -157,6 +157,7 @@ The following table lists the major configurable parameters. For the full list s
 | `sentry.dsn` | Sentry DSN | `""` |
 | `oauth.google.enabled` | Enable Google OAuth | `false` |
 | `oauth.oidc.enabled` | Enable generic OpenID Connect login | `false` |
+| `oauth.oidc.allowRegistration` | Auto-create accounts on first OIDC login even when `app.allowRegistration` is false | `false` |
 | `oauth.oidc.issuer` | OIDC issuer URL used for discovery | `""` |
 | `oauth.oidc.clientId` | OIDC client ID | `""` |
 | `oauth.oidc.clientSecret` | OIDC client secret | `""` |

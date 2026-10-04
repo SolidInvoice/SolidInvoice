@@ -20,6 +20,7 @@ return App::config([
                 'allow_registration' => env('SOLIDINVOICE_ALLOW_REGISTRATION'),
                 'google_oauth_login' => '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null',
                 'oidc_oauth_login' => '@=env("SOLIDINVOICE_OAUTH_OIDC_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_OIDC_CLIENT_SECRET") !== null && env("SOLIDINVOICE_OAUTH_OIDC_ISSUER") !== null',
+                'oidc_oauth_registration' => env('SOLIDINVOICE_OAUTH_OIDC_ALLOW_REGISTRATION'),
                 'turnstile_captcha' => '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null',
                 'saas_enabled' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'',
                 'meilisearch_search' => '@=env("SOLIDINVOICE_MEILISEARCH_URL") !== "" && env("SOLIDINVOICE_MEILISEARCH_API_KEY") !== ""',

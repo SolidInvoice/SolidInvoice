@@ -211,6 +211,8 @@ oauth:
   oidc:
     ## @param oauth.oidc.enabled Enable generic OpenID Connect login
     enabled: false
+    ## @param oauth.oidc.allowRegistration Auto-create accounts on first OIDC login even when app.allowRegistration is false
+    allowRegistration: false
     ## @param oauth.oidc.issuer OIDC issuer URL used for discovery ({issuer}/.well-known/openid-configuration)
     issuer: ""
     clientId: ""
