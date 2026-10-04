@@ -49,7 +49,7 @@ final class RecurringInvoiceStatusMigrationTest extends TestCase
 
         self::assertIsArray($row);
         self::assertSame('archived', $row['status']);
-        self::assertNotEmpty($row['archived']);
+        self::assertSame(1, (int) $row['archived']);
     }
 
     /**
@@ -86,7 +86,7 @@ final class RecurringInvoiceStatusMigrationTest extends TestCase
 
         self::assertIsArray($row);
         self::assertSame('archived', $row['status']);
-        self::assertNotEmpty($row['archived']);
+        self::assertSame(1, (int) $row['archived']);
     }
 
     public function testTheArchivedRowIsExcludedByTheArchivableFilterPredicate(): void
@@ -122,13 +122,7 @@ final class RecurringInvoiceStatusMigrationTest extends TestCase
             }
         };
 
-        $migration = $this->migration($logger);
-        $migration->preUp(new Schema());
-        $migration->up(new Schema());
-
-        foreach ($migration->getSql() as $query) {
-            $this->connection->executeStatement($query->getStatement(), $query->getParameters(), $query->getTypes());
-        }
+        $this->runMigration($logger);
 
         self::assertSame(
             'paid',
@@ -138,9 +132,9 @@ final class RecurringInvoiceStatusMigrationTest extends TestCase
         self::assertStringContainsString('No invoices', (string) $logger->lastMessage);
     }
 
-    private function runMigration(): void
+    private function runMigration(?AbstractLogger $logger = null): void
     {
-        $migration = $this->migration();
+        $migration = $this->migration($logger);
         $migration->preUp(new Schema());
         $migration->up(new Schema());
 
