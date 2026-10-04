@@ -63,6 +63,33 @@ final class DiscountNormalizerTest extends TestCase
     }
 
     /**
+     * A percentage discount is a whole percent on the wire — never hundredths — same as
+     * the form, since SOL-342.
+     *
+     * @throws MathException
+     */
+    public function testNormalizationWithPercentage(): void
+    {
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(15);
+
+        self::assertEquals(['type' => 'percentage', 'value' => 15.0], $this->normalizer->normalize($discount));
+    }
+
+    /**
+     * @throws MathException
+     */
+    public function testDenormalizationWithPercentage(): void
+    {
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(15);
+
+        self::assertEquals($discount, $this->normalizer->denormalize(['type' => 'percentage', 'value' => 15], Discount::class));
+    }
+
+    /**
      * @throws MathException
      */
     public function testDenormalizationWithNullValue(): void

@@ -48,14 +48,16 @@ final class DiscountTypeTest extends FormTestCase
     public function testSubmit(): void
     {
         foreach ($this->discountProvider() as $discountItem) {
+            [$type, $value] = $discountItem;
+
             $formData = [
-                'type' => $discountItem[0],
-                'value' => $discountItem[1],
+                'type' => $type,
+                'value' => $value,
             ];
 
             $object = new Discount();
-            $object->setType($discountItem[0]);
-            $object->setValue(BigDecimal::of($discountItem[1])->multipliedBy(100));
+            $object->setType($type);
+            $object->setValue(Discount::TYPE_MONEY === $type ? BigDecimal::of($value)->multipliedBy(100) : $value);
 
             $this->assertFormData(DiscountType::class, $formData, $object);
         }
@@ -65,5 +67,12 @@ final class DiscountTypeTest extends FormTestCase
     {
         yield [Discount::TYPE_PERCENTAGE, $this->faker->numberBetween(0, 100)];
         yield [Discount::TYPE_MONEY, $this->faker->numberBetween(0, 100)];
+
+        // A discount at or below 1.00% used to be misread as a whole percent (SOL-342),
+        // because the single 'value' transformer scaled percentage values the same way
+        // as money values. These boundary cases must stay unscaled.
+        yield [Discount::TYPE_PERCENTAGE, 1];
+        yield [Discount::TYPE_PERCENTAGE, 0.5];
+        yield [Discount::TYPE_PERCENTAGE, 0.25];
     }
 }
