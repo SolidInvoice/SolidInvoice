@@ -113,7 +113,7 @@ class DiscountType extends AbstractType
             $form->add('value', TextType::class, $options + [
                 'empty_data' => '0',
                 'constraints' => [
-                    new Range(min: 0, max: 100, notInRangeMessage: 'core.constraint.discount_value_percentage_range'),
+                    new Range(notInRangeMessage: 'core.constraint.discount_value_percentage_range', min: 0, max: 100),
                 ],
             ]);
 
