@@ -156,6 +156,12 @@ jobs:
           push: true
           set: |
             package.platform=linux/amd64
-            package.tags=${{ env.IMAGE }}:oidc-${{ github.sha }},${{ env.IMAGE }}:oidc
+            package.tags=${{ env.IMAGE }}:oidc-${{ github.sha }}
         env:
           SOLIDINVOICE_VERSION: ${{ env.VERSION }}
+
+      - name: Add moving :oidc tag
+        run: |
+          docker buildx imagetools create \
+            -t ${{ env.IMAGE }}:oidc \
+            ${{ env.IMAGE }}:oidc-${{ github.sha }}
