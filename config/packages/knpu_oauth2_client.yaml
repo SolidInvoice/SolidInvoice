@@ -19,3 +19,5 @@ knpu_oauth2_client:
                 service: oidc
             provider_options:
                 issuer: '%env(SOLIDINVOICE_OAUTH_OIDC_ISSUER)%'
+                # OIDC scopes are space-delimited (Authentik rejects comma-separated scopes).
+                scopeSeparator: ' '
