@@ -129,14 +129,6 @@ final class Version20201 extends AbstractMigration
             ->getTable('quotes')
             ->modifyColumn('quote_id', ['notnull' => true, 'length' => 255]);
 
-        $clientCreditTable = $this->schema->getTable('client_credit');
-
-        foreach ($clientCreditTable->getIndexes() as $index) {
-            if ($index->isUnique() && ! $index->isPrimary()) {
-                $clientCreditTable->dropIndex($index->getName());
-            }
-        }
-
         foreach ($this->connection->createSchemaManager()->listTables() as $table) {
             if (
                 $table->hasColumn('company_id') &&
@@ -213,6 +205,14 @@ final class Version20201 extends AbstractMigration
         $uuids = $this->generateUuidsToReplaceIds($tableName, $uuidColumnName, $linkCompany);
 
         $this->addUuidsToTablesWithFK($foreignKeys, $uuids, $linkCompany);
+
+        // every __uuid__ and tmp FK column is backfilled now; only after that can NOT NULL be
+        // enforced, otherwise PostgreSQL rejects the DDL for any row still pending a value
+        // (the same ordering constraint SOL-166 fixed for company_id in Version20200)
+        $this->enforceUuidFieldsNotNull($tableName, $uuidColumnName, $foreignKeys);
+
+        $this->persistChanges();
+
         $this->deletePreviousFKs($foreignKeys);
 
         $this->persistChanges();
@@ -295,12 +295,31 @@ final class Version20201 extends AbstractMigration
     {
         $table = $this->schema->getTable($tableName);
 
-        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => true]);
+        // added nullable here, regardless of the final nullability: the table already has
+        // rows, and enforceUuidFieldsNotNull() only tightens this once every row has a value
+        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => false]);
 
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
 
-            $fkTable->addColumn($fk['tmpKey'], UlidType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
+            $fkTable->addColumn($fk['tmpKey'], UlidType::NAME, ['notnull' => false]);
+        }
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @throws SchemaException
+     */
+    private function enforceUuidFieldsNotNull(string $tableName, string $uuidColumnName, array $foreignKeys): void
+    {
+        $this->schema->getTable($tableName)->modifyColumn($uuidColumnName, ['notnull' => true]);
+
+        foreach ($foreignKeys as $fk) {
+            if ($this->foreignColumnShouldBeNullable($fk)) {
+                continue;
+            }
+
+            $this->schema->getTable($fk['table'])->modifyColumn($fk['tmpKey'], ['notnull' => true]);
         }
     }
 
@@ -358,10 +377,12 @@ final class Version20201 extends AbstractMigration
     {
         $this->write('-> Adding UUIDs to tables with foreign keys...');
         foreach ($foreignKeys as $fk) {
-            $selectPk = implode(',', $fk['primaryKey']);
-
             try {
-                $fieldsSelect = [$selectPk . ', ' . $fk['key'], $fk['key']];
+                // a plain array, not a concatenated string: $fk['primaryKey'] is empty for a
+                // table whose primary key was already dropped by the caller before this method
+                // runs (e.g. user_company, ahead of migrate('users')), and concatenating an
+                // empty string still produced a leading comma, a SQL syntax error
+                $fieldsSelect = [...$fk['primaryKey'], $fk['key']];
 
                 if ($linkCompany) {
                     $fieldsSelect[] = 'company_id';
@@ -391,6 +412,13 @@ final class Version20201 extends AbstractMigration
                 $queryPk = array_flip($fk['primaryKey']);
                 foreach ($queryPk as $key => $value) {
                     $queryPk[$key] = $record[$key];
+                }
+
+                if ($queryPk === []) {
+                    // no primary key to match on (see the comment above); the foreign key
+                    // column itself always maps to exactly one target id, so it is enough on
+                    // its own to select every row that needs this UUID
+                    $queryPk[$fk['key']] = $record[$fk['key']];
                 }
 
                 if ($linkCompany) {
@@ -438,8 +466,13 @@ final class Version20201 extends AbstractMigration
 
             $table->dropColumn($fk['key']);
 
+            // a composite index (e.g. client_credit's own (client_id, company_id) unique
+            // index) still references this column even though it isn't a single-column
+            // match; every index containing the column has to go here, in the same diff
+            // as the FK removal above, or the DB rejects the index drop as still needed by
+            // a live constraint
             foreach ($table->getIndexes() as $index) {
-                if ($index->getColumns() === [$fk['key']]) {
+                if (in_array($fk['key'], $index->getColumns(), true)) {
                     $table->dropIndex($index->getName());
                 }
             }
