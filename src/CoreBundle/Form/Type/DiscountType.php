@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
+use Brick\Math\BigNumber;
 use Money\Currency;
 use Override;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Transformer\DiscountTransformer;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -97,7 +99,7 @@ class DiscountType extends AbstractType
      * The 'value' field means different things per discount type: a plain percentage
      * (15 means 15%) for {@see Discount::TYPE_PERCENTAGE}, or an amount in the
      * client's major currency unit (needs converting to minor units) for
-     * {@see Discount::TYPE_MONEY}. Only the money case needs the transformer.
+     * {@see Discount::TYPE_MONEY}. Only the money case scales.
      *
      * @param FormInterface<mixed> $form
      */
@@ -109,19 +111,34 @@ class DiscountType extends AbstractType
             ],
         ];
 
-        if (Discount::TYPE_MONEY !== $type) {
-            $form->add('value', TextType::class, $options + [
-                'empty_data' => '0',
-                'constraints' => [
-                    new Range(notInRangeMessage: 'core.constraint.discount_value_percentage_range', min: 0, max: 100),
-                ],
-            ]);
+        $factory = $form->getConfig()->getFormFactory();
+
+        if (Discount::TYPE_MONEY === $type) {
+            $builder = $factory->createNamedBuilder('value', TextType::class, null, $options + ['auto_initialize' => false]);
+            $builder->addViewTransformer(new DiscountTransformer());
+
+            $form->add($builder->getForm());
 
             return;
         }
 
-        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder('value', TextType::class, null, $options + ['auto_initialize' => false]);
-        $builder->addViewTransformer(new DiscountTransformer());
+        $builder = $factory->createNamedBuilder('value', TextType::class, null, $options + [
+            'auto_initialize' => false,
+            'empty_data' => '0',
+            'constraints' => [
+                new Range(notInRangeMessage: 'core.constraint.discount_value_percentage_range', min: 0, max: 100),
+            ],
+        ]);
+
+        // Discount::getValue() is a plain float for TYPE_PERCENTAGE, but falls back to
+        // BigInteger::zero() for any other (or momentarily blank, mid-render) type. No
+        // scaling here - only DiscountTransformer scales, and only for TYPE_MONEY -
+        // just enough normalisation that the field always renders, and dehydrates for
+        // a Live Component, as a plain number rather than a BigNumber object.
+        $builder->addViewTransformer(new CallbackTransformer(
+            static fn (mixed $value): float => $value instanceof BigNumber ? $value->toBigDecimal()->toFloat() : (float) $value,
+            static fn (mixed $value): mixed => $value,
+        ));
 
         $form->add($builder->getForm());
     }
