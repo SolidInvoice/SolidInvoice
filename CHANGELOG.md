@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Invoices left at the pre-2.1.0 `recurring` status are archived automatically on upgrade, fixing a crash on the invoice list for installs that used the old recurring-invoice feature
 
 3.0.0 / 2026-06-17
 -------------------
