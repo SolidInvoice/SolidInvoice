@@ -78,6 +78,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y autoconf automake bison cmake flex libtool pkg-config re2c upx
 
+      - name: Diagnose Go toolchain
+        run: |
+          echo "which go: $(which go || echo none)"
+          go version || true
+          go env GOROOT GOTOOLCHAIN GOPATH GOFLAGS GOMODCACHE || true
+
       - name: Restore static-php cache
         id: static-php-cache
         uses: actions/cache/restore@v4
@@ -103,8 +109,27 @@ jobs:
           CI: ""
           SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
 
+      - name: Show build logs on failure
+        if: failure()
+        run: |
+          set +e
+          shopt -s nullglob
+          for f in frankenphp/dist/static-php-cli/log/*.log; do
+            echo "::group::=== ${f} ==="
+            tail -n 300 "${f}"
+            echo "::endgroup::"
+          done
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: frankenphp/dist/static-php-cli/log/
+          if-no-files-found: warn
+
       - name: Save static-php cache
-        if: steps.static-php-cache.outputs.cache-hit != 'true'
+        if: always() && steps.static-php-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: frankenphp/dist/static-php-cli
