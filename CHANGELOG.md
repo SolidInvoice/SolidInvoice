@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* The editorial and friendly invoice/quote PDF templates no longer print money in a brown that failed accessibility contrast on some backgrounds; labels and headings keep a warmer accent, but totals and balances now use the same neutral ink as every other template
 
 ### Fixes
 
