@@ -53,13 +53,15 @@ install:
   skipUser: false
   ## @param install.backoffLimit Number of retries before the install Job is marked as failed
   backoffLimit: 1
+  # The binary decompresses its embedded app (~320MiB) into RAM at startup, so a
+  # 256Mi limit OOMKills the Job.
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 2Gi
 
 ## @section External database configuration
 ## Provide DATABASE_URL directly or via a Secret.
@@ -280,13 +282,14 @@ containerSecurityContext:
 migrations:
   backoffLimit: 3
   activeDeadlineSeconds: 300
+  # Same startup extraction spike as the install Job; give it headroom.
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 2Gi
 
 ## @section Service account configuration
 serviceAccount:
