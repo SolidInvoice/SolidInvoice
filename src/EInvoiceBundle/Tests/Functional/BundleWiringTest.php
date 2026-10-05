@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Tests\Functional;
 
+use SolidInvoice\EInvoiceBundle\Channel\ChannelRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
 use SolidInvoice\EInvoiceBundle\SolidInvoiceEInvoiceBundle;
+use SolidInvoice\EInvoiceBundle\Test\Channel\InMemoryChannel;
 use SolidInvoice\EInvoiceBundle\Validation\ValidatorRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Smoke test: verifies the bundle boots and its two self-contained registries
- * resolve to empty, RewindableGenerator-backed lists.
+ * Smoke test: verifies the bundle boots and its registries resolve as
+ * RewindableGenerator-backed lists. ProfileRegistry and ValidatorRegistry resolve
+ * empty in every environment; ChannelRegistry resolves to [InMemoryChannel::class]
+ * here, because that channel is registered in the test environment only.
  *
  * The test container only exposes private services reachable from public ones.
  * config/services_test.php provides public aliases (prefixed with "test.") so
@@ -68,5 +72,25 @@ final class BundleWiringTest extends KernelTestCase
         self::assertInstanceOf(ValidatorRegistry::class, $registry);
         self::assertSame([], $registry->all());
         self::assertSame([], $registry->all());
+    }
+
+    /**
+     * Unlike the two registries above, this one is not empty: InMemoryChannel is
+     * registered in the test environment only (config/services_test.php), so it is
+     * the one real tag ChannelRegistry resolves here.
+     */
+    public function testChannelRegistryAliasResolvesAndIsRepeatable(): void
+    {
+        self::bootKernel();
+
+        $container = self::getContainer();
+
+        self::assertTrue($container->has('test.' . ChannelRegistry::class));
+
+        $registry = $container->get('test.' . ChannelRegistry::class);
+
+        self::assertInstanceOf(ChannelRegistry::class, $registry);
+        self::assertSame([InMemoryChannel::class], array_map(static fn ($channel): string => $channel::class, $registry->all()));
+        self::assertSame([InMemoryChannel::class], array_map(static fn ($channel): string => $channel::class, $registry->all()));
     }
 }
