@@ -8,6 +8,12 @@ Unreleased
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
 
+### Fixes
+
+* Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
+* Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
+* Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
+
 3.0.0 / 2026-06-17
 -------------------
 
