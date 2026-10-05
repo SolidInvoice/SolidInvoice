@@ -58,7 +58,7 @@ final class ViewTest extends KernelTestCase
      */
     private function mockCsrfTokenManager(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
         $csrfTokenManager->method('getToken')
             ->willReturnCallback(static fn (string $tokenId): CsrfToken => new CsrfToken($tokenId, $tokenId));
 
