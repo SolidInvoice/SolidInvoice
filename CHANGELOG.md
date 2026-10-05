@@ -8,6 +8,10 @@ Unreleased
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
 
+### Fixes
+
+* A percentage discount of 1% or less was applied as a whole percent instead (1% became 100%, 0.5% became 50%). The stored value is now the plain percentage the user typed, with no boundary guess. A migration normalises existing rows and leaves every issued document's total unchanged.
+
 3.0.0 / 2026-06-17
 -------------------
 
