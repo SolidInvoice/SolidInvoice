@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method DoctrineMigrations\\Version20201\:\:getTableForeignKeys\(\) should return array\<array\<array\<string\>\|string\>\> but returns list\<array\<string, bool\|list\<string\>\|string\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: migrations/Version20201.php
-
-		-
 			message: '#^Access to constant NAME on an unknown class Ramsey\\Uuid\\Doctrine\\UuidBinaryOrderedTimeType\.$#'
 			identifier: class.notFound
 			count: 1
