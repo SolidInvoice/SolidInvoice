@@ -24,6 +24,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * @implements DataTransformerInterface<BigNumber, float>
+ * @see \SolidInvoice\CoreBundle\Tests\Form\Transformer\DiscountTransformerTest
  */
 class DiscountTransformer implements DataTransformerInterface
 {
