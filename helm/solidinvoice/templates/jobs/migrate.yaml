@@ -55,3 +55,17 @@ spec:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
       volumes:
         {{- include "solidinvoice.configVolume" . | nindent 8 }}
+      {{/* /etc/solidinvoice is ReadWriteOnce: the Job must land on the same node as
+           the app/worker pods holding it, else the attach fails (Multi-Attach). */}}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

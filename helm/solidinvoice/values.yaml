@@ -49,6 +49,8 @@ install:
   existingSecretEmailKey: "ADMIN_EMAIL"
   ## @param install.existingSecretPasswordKey Key in existingSecret for admin password
   existingSecretPasswordKey: "ADMIN_PASSWORD"
+  ## @param install.skipUser Skip creating the local admin user (for OIDC-managed installs)
+  skipUser: false
   ## @param install.backoffLimit Number of retries before the install Job is marked as failed
   backoffLimit: 1
   resources:
@@ -69,6 +71,18 @@ externalDatabase:
   existingSecret: ""
   ## @param externalDatabase.existingSecretKey Key in existingSecret for the DATABASE_URL
   existingSecretKey: "DATABASE_URL"
+  ## @param externalDatabase.driver PDO driver used by the install Job (pdo_pgsql or pdo_mysql)
+  driver: "pdo_pgsql"
+  ## @param externalDatabase.host Database host (required when install.enabled and no bundled DB subchart)
+  host: ""
+  ## @param externalDatabase.port Database port
+  port: "5432"
+  ## @param externalDatabase.name Database name
+  name: ""
+  ## @param externalDatabase.existingSecretUserKey Key in existingSecret holding the DB user
+  existingSecretUserKey: "username"
+  ## @param externalDatabase.existingSecretPasswordKey Key in existingSecret holding the DB password
+  existingSecretPasswordKey: "password"
 
 ## @section Mailer configuration
 mailer:
