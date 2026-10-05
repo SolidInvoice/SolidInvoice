@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Invoice and quote PDFs on the classic, modern, studio, photographer, monochrome and compact templates now print the document status as a labelled line, not only as the watermark
 
 3.0.0 / 2026-06-17
 -------------------

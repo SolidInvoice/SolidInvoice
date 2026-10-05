@@ -605,12 +605,21 @@ final class TemplatesRenderingTest extends KernelTestCase
      * white page body instead, as a third cell beside `from_block` and
      * `bill_to_block`, and must not disturb the band's own light-on-dark
      * literal that `testCompactPdfKeepsTextLightInsideTheDarkBand` guards.
+     *
+     * Splitting on the dark band's own closing `</table>` (the first one in
+     * the document) proves the status renders after the band, not merely
+     * somewhere in the page — both strings exist in the band too, so a
+     * plain "contains" assertion on the full output would not catch a
+     * regression that moved the status back inside it.
      */
     public function testCompactStatusLineRendersOutsideTheDarkBand(): void
     {
         $output = $this->renderPdf('compact');
 
-        self::assertStringContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $output);
-        self::assertStringContainsString('#94a3b8', $output);
+        [$darkBand, $pageBody] = explode('</table>', $output, 2);
+
+        self::assertStringContainsString('#94a3b8', $darkBand);
+        self::assertStringNotContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $darkBand);
+        self::assertStringContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $pageBody);
     }
 }
