@@ -17,6 +17,7 @@ Unreleased
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
+* Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 
 3.0.0 / 2026-06-17
 -------------------

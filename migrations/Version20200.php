@@ -275,7 +275,7 @@ final class Version20200 extends AbstractMigration
 
         $this->executeSchemaDiff($fromSchema, $schema);
 
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
         }
     }

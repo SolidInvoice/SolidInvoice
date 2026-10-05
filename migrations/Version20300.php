@@ -414,8 +414,6 @@ final class Version20300 extends AbstractMigration
     {
         if ($this->platform instanceof PostgreSQLPlatform) {
             $this->addSql(sprintf('ALTER TABLE %s ALTER %s TYPE UUID USING %s::text::uuid', $tableName, $columnName, $columnName));
-
-            return;
         }
 
         $this->setColumnType($schema, $tableName, $columnName, UlidType::NAME);

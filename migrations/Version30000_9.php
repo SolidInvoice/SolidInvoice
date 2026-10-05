@@ -721,10 +721,9 @@ final class Version30000_9 extends AbstractMigration
             return null;
         }
 
-        // AbstractMySQLPlatform covers both MySQL and MariaDB (MariaDBPlatform is a sibling
-        // of MySQLPlatform, not a subclass); PostgreSQLPlatform covers PostgreSQL. Oracle and
-        // SQL Server also support `ALTER TABLE ADD CONSTRAINT CHECK`, so include them so the
-        // invariant is enforced at the DB level on every server-class platform.
+        // Doctrine's AbstractMySQLPlatform covers MariaDB; PostgreSQLPlatform covers PostgreSQL.
+        // Oracle and SQL Server also support `ALTER TABLE ADD CONSTRAINT CHECK`, so include
+        // them so the invariant is enforced at the DB level on every server-class platform.
         $supported = $this->platform instanceof AbstractMySQLPlatform
             || $this->platform instanceof PostgreSQLPlatform
             || $this->platform instanceof OraclePlatform
