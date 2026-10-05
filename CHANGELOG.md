@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
 
 3.0.0 / 2026-06-17
 -------------------

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -37,14 +38,24 @@ final class SendInvoiceRoutingTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
 
-    public function testGetOnSendInvoiceRouteIsMethodNotAllowed(): void
+    #[DataProvider('sendActionProvider')]
+    public function testGetOnSendInvoiceRouteIsMethodNotAllowed(string $action): void
     {
         self::ensureKernelShutdown();
         $client = self::createClient();
 
-        $client->request(Request::METHOD_GET, '/invoices/action/send/' . new Ulid());
+        $client->request(Request::METHOD_GET, '/invoices/action/' . $action . '/' . new Ulid());
 
         self::assertResponseStatusCodeSame(405);
+    }
+
+    /**
+     * @return iterable<array{0: string}>
+     */
+    public static function sendActionProvider(): iterable
+    {
+        yield 'send' => ['send'];
+        yield 'send-reminder' => ['send-reminder'];
     }
 
     public function testPendingInvoiceViewRendersHeroSendAsPostForm(): void
