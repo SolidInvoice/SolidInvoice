@@ -1,6 +1,7 @@
 {{- if .Values.install.enabled }}
-{{- if and (not .Values.mysql.enabled) (not .Values.postgresql.enabled) }}
-{{- fail "install.enabled=true requires either mysql.enabled=true or postgresql.enabled=true. For external databases, use the web wizard (install.enabled=false) for initial setup." }}
+{{- $external := and (not .Values.mysql.enabled) (not .Values.postgresql.enabled) }}
+{{- if and $external (not .Values.externalDatabase.host) }}
+{{- fail "install.enabled=true with an external database requires externalDatabase.host (plus port/name and existingSecret user/password keys)." }}
 {{- end }}
 apiVersion: batch/v1
 kind: Job
@@ -10,7 +11,7 @@ metadata:
     {{- include "solidinvoice.labels" . | nindent 4 }}
   annotations:
     helm.sh/hook: pre-install
-    helm.sh/hook-weight: "0"
+    helm.sh/hook-weight: "-5"
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
   backoffLimit: {{ .Values.install.backoffLimit }}
@@ -53,7 +54,6 @@ spec:
                 exit 0
               fi
 
-              # Run the CLI installer
               /usr/local/bin/solidinvoice console solidinvoice:install \
                 {{- if .Values.mysql.enabled }}
                 --database-driver=pdo_mysql \
@@ -69,10 +69,24 @@ spec:
                 --database-name={{ .Values.postgresql.auth.database }} \
                 --database-user={{ .Values.postgresql.auth.username }} \
                 --database-password="${POSTGRESQL_PASSWORD}" \
+                {{- else }}
+                --database-driver={{ .Values.externalDatabase.driver }} \
+                --database-host={{ .Values.externalDatabase.host }} \
+                --database-port={{ .Values.externalDatabase.port }} \
+                --database-name={{ .Values.externalDatabase.name }} \
+                --database-user="${EXTERNAL_DATABASE_USER}" \
+                --database-password="${EXTERNAL_DATABASE_PASSWORD}" \
                 {{- end }}
                 --locale={{ .Values.app.locale }} \
+                {{- if .Values.app.url }}
+                --application-url="{{ .Values.app.url }}" \
+                {{- end }}
+                {{- if .Values.install.skipUser }}
+                --skip-user \
+                {{- else }}
                 --admin-email="${ADMIN_EMAIL}" \
                 --admin-password="${ADMIN_PASSWORD}" \
+                {{- end }}
                 --no-interaction \
                 --no-ansi
           env:
@@ -90,6 +104,19 @@ spec:
                   name: {{ include "solidinvoice.postgresql.secretName" . }}
                   key: password
             {{- end }}
+            {{- if $external }}
+            - name: EXTERNAL_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "externalDatabase.existingSecret is required for install with an external database" .Values.externalDatabase.existingSecret }}
+                  key: {{ .Values.externalDatabase.existingSecretUserKey }}
+            - name: EXTERNAL_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.externalDatabase.existingSecret }}
+                  key: {{ .Values.externalDatabase.existingSecretPasswordKey }}
+            {{- end }}
+            {{- if not .Values.install.skipUser }}
             {{- if .Values.install.existingSecret }}
             - name: ADMIN_EMAIL
               valueFrom:
@@ -113,6 +140,10 @@ spec:
                   name: {{ include "solidinvoice.fullname" . }}-install
                   key: ADMIN_PASSWORD
             {{- end }}
+            {{- end }}
+            {{- with .Values.app.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "solidinvoice.fullname" . }}
@@ -129,4 +160,16 @@ spec:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
       volumes:
         {{- include "solidinvoice.configVolume" . | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}

@@ -20,6 +20,7 @@ spec:
     metadata:
       labels:
         {{- include "solidinvoice.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: web
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

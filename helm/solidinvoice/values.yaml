@@ -49,15 +49,19 @@ install:
   existingSecretEmailKey: "ADMIN_EMAIL"
   ## @param install.existingSecretPasswordKey Key in existingSecret for admin password
   existingSecretPasswordKey: "ADMIN_PASSWORD"
+  ## @param install.skipUser Skip creating the local admin user (for OIDC-managed installs)
+  skipUser: false
   ## @param install.backoffLimit Number of retries before the install Job is marked as failed
   backoffLimit: 1
+  # The binary decompresses its embedded app (~320MiB) into RAM at startup, so a
+  # 256Mi limit OOMKills the Job.
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 2Gi
 
 ## @section External database configuration
 ## Provide DATABASE_URL directly or via a Secret.
@@ -69,6 +73,18 @@ externalDatabase:
   existingSecret: ""
   ## @param externalDatabase.existingSecretKey Key in existingSecret for the DATABASE_URL
   existingSecretKey: "DATABASE_URL"
+  ## @param externalDatabase.driver PDO driver used by the install Job (pdo_pgsql or pdo_mysql)
+  driver: "pdo_pgsql"
+  ## @param externalDatabase.host Database host (required when install.enabled and no bundled DB subchart)
+  host: ""
+  ## @param externalDatabase.port Database port
+  port: "5432"
+  ## @param externalDatabase.name Database name
+  name: ""
+  ## @param externalDatabase.existingSecretUserKey Key in existingSecret holding the DB user
+  existingSecretUserKey: "username"
+  ## @param externalDatabase.existingSecretPasswordKey Key in existingSecret holding the DB password
+  existingSecretPasswordKey: "password"
 
 ## @section Mailer configuration
 mailer:
@@ -208,6 +224,17 @@ oauth:
     clientId: ""
     clientSecret: ""
     existingSecret: ""
+  oidc:
+    ## @param oauth.oidc.enabled Enable generic OpenID Connect login
+    enabled: false
+    ## @param oauth.oidc.allowRegistration Auto-create accounts on first OIDC login even when app.allowRegistration is false
+    allowRegistration: false
+    ## @param oauth.oidc.issuer OIDC issuer URL used for discovery ({issuer}/.well-known/openid-configuration)
+    issuer: ""
+    clientId: ""
+    clientSecret: ""
+    ## @param oauth.oidc.existingSecret Name of an existing Secret containing OIDC_CLIENT_ID, OIDC_CLIENT_SECRET and OIDC_ISSUER
+    existingSecret: ""
 
 ## @section Resource configuration
 resources:
@@ -255,13 +282,14 @@ containerSecurityContext:
 migrations:
   backoffLimit: 3
   activeDeadlineSeconds: 300
+  # Same startup extraction spike as the install Job; give it headroom.
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 2Gi
 
 ## @section Service account configuration
 serviceAccount:

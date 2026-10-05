@@ -97,6 +97,9 @@
         "existingSecretPasswordKey": {
           "type": "string"
         },
+        "skipUser": {
+          "type": "boolean"
+        },
         "backoffLimit": {
           "type": "integer",
           "minimum": 0
@@ -118,6 +121,24 @@
           "type": "string"
         },
         "existingSecretKey": {
+          "type": "string"
+        },
+        "driver": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "existingSecretUserKey": {
+          "type": "string"
+        },
+        "existingSecretPasswordKey": {
           "type": "string"
         }
       },
@@ -374,6 +395,29 @@
               "type": "string"
             }
           }
+        },
+        "oidc": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "allowRegistration": {
+              "type": "boolean"
+            },
+            "issuer": {
+              "type": "string"
+            },
+            "clientId": {
+              "type": "string"
+            },
+            "clientSecret": {
+              "type": "string"
+            },
+            "existingSecret": {
+              "type": "string"
+            }
+          }
         }
       }
     },
@@ -504,7 +548,13 @@
       "then": {
         "properties": {
           "install": {
-            "oneOf": [
+            "anyOf": [
+              {
+                "properties": {
+                  "skipUser": { "const": true }
+                },
+                "required": ["skipUser"]
+              },
               {
                 "properties": {
                   "existingSecret": { "type": "string", "minLength": 1 }

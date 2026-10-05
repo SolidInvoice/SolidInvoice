@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\Security\OAuth;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
+use League\OAuth2\Client\Provider\GenericResourceOwner;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -554,6 +555,160 @@ final class OAuthAuthenticatorTest extends TestCase
         $result = $userBadge->getUser();
 
         self::assertSame($currentUser, $result);
+    }
+
+    public function testAuthenticateWithNewOidcUserAndOidcRegistrationAllowed(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'oidc');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+
+        $oidcUser = new GenericResourceOwner([
+            'sub' => 'oidc-123',
+            'email' => 'oidc@example.com',
+            'email_verified' => true,
+            'given_name' => 'Oidc',
+            'family_name' => 'User',
+        ], 'sub');
+
+        $this->router->expects($this->never())->method($this->anything());
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('oidc')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($oidcUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(User::class)
+            ->willReturn($this->userRepository);
+
+        $this->userRepository
+            ->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->willReturnCallback(static fn (array $criteria): ?User => null);
+
+        $this->security
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
+
+        // Local registration is disabled, but OIDC enrollment is enabled.
+        $this->toggle
+            ->expects($this->exactly(2))
+            ->method('isActive')
+            ->willReturnCallback(static fn (string $feature): bool => match ($feature) {
+                'allow_registration' => false,
+                'oidc_oauth_registration' => true,
+                default => false,
+            });
+
+        $this->propertyAccessor
+            ->expects($this->once())
+            ->method('setValue')
+            ->with(
+                $this->callback(static function ($user): bool {
+                    self::assertInstanceOf(User::class, $user);
+                    self::assertSame('oidc@example.com', $user->getEmail());
+                    return true;
+                }),
+                'oidcId',
+                'oidc-123'
+            );
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist');
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $passport = $this->authenticator->authenticate($request);
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+        $result = $userBadge->getUser();
+
+        self::assertInstanceOf(User::class, $result);
+        self::assertSame('oidc@example.com', $result->getEmail());
+        self::assertTrue($result->isEnabled());
+        self::assertTrue($result->isVerified());
+    }
+
+    public function testAuthenticateWithNewOidcUserAndRegistrationDisabled(): void
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'oidc');
+
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+
+        $oidcUser = new GenericResourceOwner([
+            'sub' => 'oidc-123',
+            'email' => 'oidc@example.com',
+            'email_verified' => true,
+        ], 'sub');
+
+        $this->router->expects($this->never())->method($this->anything());
+        $this->propertyAccessor->expects($this->never())->method($this->anything());
+
+        $this->clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('oidc')
+            ->willReturn($this->client);
+
+        $this->client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($oidcUser);
+
+        $this->client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(User::class)
+            ->willReturn($this->userRepository);
+
+        $this->userRepository
+            ->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->willReturnCallback(static fn (array $criteria): ?User => null);
+
+        $this->security
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
+
+        // Both local registration and OIDC enrollment are disabled.
+        $this->toggle
+            ->expects($this->exactly(2))
+            ->method('isActive')
+            ->willReturn(false);
+
+        $passport = $this->authenticator->authenticate($request);
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+
+        $this->expectException(UserNotFoundException::class);
+        $userBadge->getUser();
     }
 
     public function testOnAuthenticationSuccess(): void

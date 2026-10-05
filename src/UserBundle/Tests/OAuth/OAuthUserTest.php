@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\OAuth;
 
+use League\OAuth2\Client\Provider\GenericResourceOwner;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -148,6 +149,50 @@ final class OAuthUserTest extends TestCase
         $resourceOwner = $this->createStub(ResourceOwnerInterface::class);
 
         $oauthUser = new OAuthUser($resourceOwner);
+
+        self::assertFalse($oauthUser->getEmailVerified());
+    }
+
+    public function testGetEmailWithOidcUser(): void
+    {
+        $resourceOwner = new GenericResourceOwner(['sub' => '1', 'email' => 'user@example.com'], 'sub');
+
+        $oauthUser = new OAuthUser($resourceOwner, 'oidc');
+
+        self::assertSame('user@example.com', $oauthUser->getEmail());
+    }
+
+    public function testGetPropertyMapWithOidcUser(): void
+    {
+        $resourceOwner = new GenericResourceOwner(['sub' => '1'], 'sub');
+
+        $oauthUser = new OAuthUser($resourceOwner, 'oidc');
+
+        self::assertSame('oidcId', $oauthUser->getPropertyMap());
+    }
+
+    public function testGetProfileDataWithOidcUser(): void
+    {
+        $resourceOwner = new GenericResourceOwner([
+            'sub' => '1',
+            'given_name' => 'Jane',
+            'family_name' => 'Doe',
+            'email_verified' => true,
+        ], 'sub');
+
+        $oauthUser = new OAuthUser($resourceOwner, 'oidc');
+
+        self::assertSame('1', $oauthUser->getId());
+        self::assertSame('Jane', $oauthUser->getFirstName());
+        self::assertSame('Doe', $oauthUser->getLastName());
+        self::assertTrue($oauthUser->getEmailVerified());
+    }
+
+    public function testOidcUserWithoutEmailVerificationClaimIsNotVerified(): void
+    {
+        $resourceOwner = new GenericResourceOwner(['sub' => '1', 'email' => 'user@example.com'], 'sub');
+
+        $oauthUser = new OAuthUser($resourceOwner, 'oidc');
 
         self::assertFalse($oauthUser->getEmailVerified());
     }

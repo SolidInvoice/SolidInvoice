@@ -32,6 +32,12 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
     use TimeStampable;
 
     /**
+     * OpenID Connect subject (`sub`) for accounts linked through an OIDC provider.
+     */
+    #[ORM\Column(name: 'oidc_id', type: 'string', length: 255, nullable: true)]
+    private ?string $oidcId = null;
+
+    /**
      * @var Collection<int, ApiToken>
      */
     #[ORM\OneToMany(targetEntity: ApiToken::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -66,6 +72,18 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
         unset($data['plainPassword']);
 
         return $data;
+    }
+
+    public function getOidcId(): ?string
+    {
+        return $this->oidcId;
+    }
+
+    public function setOidcId(?string $oidcId): static
+    {
+        $this->oidcId = $oidcId;
+
+        return $this;
     }
 
     /**

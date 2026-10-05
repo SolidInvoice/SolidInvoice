@@ -58,13 +58,14 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
 
     public function authenticate(Request $request): Passport
     {
-        $client = $this->clientRegistry->getClient($request->attributes->get('service'));
+        $service = (string) $request->attributes->get('service');
+        $client = $this->clientRegistry->getClient($service);
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
-            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
+            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client, $service) {
 
-                $oauthUser = new OAuthUser($client->fetchUserFromToken($accessToken));
+                $oauthUser = new OAuthUser($client->fetchUserFromToken($accessToken), $service);
 
                 $userRepository = $this->entityManager->getRepository(User::class);
                 $existingUser = $userRepository->findOneBy([$oauthUser->getPropertyMap() => $oauthUser->getId()]);
@@ -81,7 +82,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                     if ($currentUser instanceof User) {
                         $user = $currentUser;
                     } else {
-                        if (! $this->toggle->isActive('allow_registration')) {
+                        if (! $this->isRegistrationAllowed($service)) {
                             return null;
                         }
 
@@ -101,6 +102,22 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                 return $user;
             })
         );
+    }
+
+    /**
+     * Determines whether a new account may be created for the given OAuth
+     * provider. Enabling local registration (`allow_registration`) always
+     * allows it; OIDC additionally honours a dedicated enrollment toggle so
+     * operators can disable the local /register form while still letting users
+     * enroll through the configured identity provider.
+     */
+    private function isRegistrationAllowed(string $service): bool
+    {
+        if ($this->toggle->isActive('allow_registration')) {
+            return true;
+        }
+
+        return $service === 'oidc' && $this->toggle->isActive('oidc_oauth_registration');
     }
 
     public function onAuthenticationSuccess(Request $request, #[SensitiveParameter] TokenInterface $token, string $firewallName): ?Response

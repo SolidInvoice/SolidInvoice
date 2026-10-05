@@ -11,6 +11,9 @@ data:
   SOLIDINVOICE_CONFIG_DIR: "/etc/solidinvoice"
   SOLIDINVOICE_LOCALE: {{ .Values.app.locale | quote }}
   SOLIDINVOICE_ALLOW_REGISTRATION: {{ .Values.app.allowRegistration | toString | quote }}
+  {{- if .Values.oauth.oidc.enabled }}
+  SOLIDINVOICE_OAUTH_OIDC_ALLOW_REGISTRATION: {{ .Values.oauth.oidc.allowRegistration | toString | quote }}
+  {{- end }}
   {{- if .Values.app.url }}
   SOLIDINVOICE_APPLICATION_URL: {{ .Values.app.url | quote }}
   {{- end }}

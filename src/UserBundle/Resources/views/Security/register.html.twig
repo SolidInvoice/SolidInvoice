@@ -117,6 +117,18 @@
                                     </div>
                                 </div>
                             {% endtoggle %}
+
+                            {% toggle 'oidc_oauth_login' %}
+                                <div class="hr-text">{{ 'or'|trans }}</div>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="{{ path('_oauth_connect', {'service': 'oidc' }) }}" class="btn btn-outline-secondary w-100">
+                                            {{ ux_icon('tabler:key', {width: 24, height: 24}) }}
+                                            {{ 'security.register.links.oidc'|trans }}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endtoggle %}
                         </div>
                     </div>
                     

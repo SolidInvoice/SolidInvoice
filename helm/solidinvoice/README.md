@@ -156,6 +156,12 @@ The following table lists the major configurable parameters. For the full list s
 | `sentry.enabled` | Enable Sentry error tracking | `false` |
 | `sentry.dsn` | Sentry DSN | `""` |
 | `oauth.google.enabled` | Enable Google OAuth | `false` |
+| `oauth.oidc.enabled` | Enable generic OpenID Connect login | `false` |
+| `oauth.oidc.allowRegistration` | Auto-create accounts on first OIDC login even when `app.allowRegistration` is false | `false` |
+| `oauth.oidc.issuer` | OIDC issuer URL used for discovery | `""` |
+| `oauth.oidc.clientId` | OIDC client ID | `""` |
+| `oauth.oidc.clientSecret` | OIDC client secret | `""` |
+| `oauth.oidc.existingSecret` | Existing Secret with `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, `OIDC_ISSUER` | `""` |
 | `autoscaling.enabled` | Enable HPA for the main app | `false` |
 | `autoscaling.minReplicas` | HPA minimum replicas | `1` |
 | `autoscaling.maxReplicas` | HPA maximum replicas | `10` |

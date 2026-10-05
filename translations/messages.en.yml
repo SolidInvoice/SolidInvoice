@@ -1713,6 +1713,12 @@ profile:
                 linked: 'Your account is linked with Google'
                 sign_in: 'Sign in with Google'
                 title: 'Google Account'
+            oidc:
+                badge: Linked
+                link: 'Link your account with OpenID Connect for easier sign-in'
+                linked: 'Your account is linked with OpenID Connect'
+                sign_in: 'Sign in with OpenID Connect'
+                title: 'OpenID Connect Account'
             manage: Manage
             password:
                 description: 'Change your password to keep your account secure'
@@ -2135,6 +2141,7 @@ security:
         forgot_password: 'Forgot Password'
         login: Login
         login_with_google: 'Login with Google'
+        login_with_oidc: 'Login with OpenID Connect'
         no_account: "Don't have an account yet?"
         or: or
         password: Password
@@ -2162,6 +2169,7 @@ security:
         heading: 'Create your free account'
         links:
             google: 'Sign up with Google'
+            oidc: 'Sign up with OpenID Connect'
             login: 'Already have an account?'
             signin: 'Sign in'
         password: Password

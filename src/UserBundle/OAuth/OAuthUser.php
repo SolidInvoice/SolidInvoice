@@ -16,13 +16,16 @@ namespace SolidInvoice\UserBundle\OAuth;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
+use function is_scalar;
+
 /**
  * @see \SolidInvoice\UserBundle\Tests\OAuth\OAuthUserTest
  */
 final readonly class OAuthUser
 {
     public function __construct(
-        private ResourceOwnerInterface $resourceOwner
+        private ResourceOwnerInterface $resourceOwner,
+        private string $service = 'google',
     ) {
     }
 
@@ -30,7 +33,7 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getEmail(),
-            default => null,
+            default => $this->getClaim('email'),
         };
     }
 
@@ -38,27 +41,31 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getFirstName(),
-            default => '',
+            default => $this->getClaim('given_name') ?? '',
         };
     }
 
     public function getId(): string
     {
-        return $this->resourceOwner->getId();
+        return (string) $this->resourceOwner->getId();
     }
 
     public function getLastName(): string
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getLastName(),
-            default => '',
+            default => $this->getClaim('family_name') ?? '',
         };
     }
 
+    /**
+     * Name of the property on the User entity that stores the provider identifier.
+     */
     public function getPropertyMap(): string
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => 'googleId',
+            $this->service === 'oidc' => 'oidcId',
             default => '',
         };
     }
@@ -67,7 +74,18 @@ final readonly class OAuthUser
     {
         return match (true) {
             $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->toArray()['email_verified'] ?? false,
-            default => false,
+            default => (bool) ($this->getClaim('email_verified') ?? false),
         };
+    }
+
+    /**
+     * Reads a claim from a non-Google (OIDC) resource owner, which exposes the
+     * raw userinfo response as an array.
+     */
+    private function getClaim(string $claim): ?string
+    {
+        $value = $this->resourceOwner->toArray()[$claim] ?? null;
+
+        return is_scalar($value) ? (string) $value : null;
     }
 }
