@@ -424,6 +424,11 @@ final class TemplatesRenderingTest extends KernelTestCase
 
         $output = $this->renderInvoicePdf('editorial', $invoice);
 
+        // Proves the balance branch itself rendered, not the total branch:
+        // without a captured payment on Invoice's own $payments collection,
+        // invoice_has_outstanding_balance() is false and both colour
+        // assertions below would pass against the unrelated total cell.
+        self::assertStringContainsString('Outstanding Balance', $output);
         self::assertStringContainsString('font-family: Georgia, serif; color: #1e293b;', $output);
         self::assertStringNotContainsString('font-family: Georgia, serif; color: #7c4a1e;', $output);
     }
@@ -439,6 +444,7 @@ final class TemplatesRenderingTest extends KernelTestCase
 
         $output = $this->renderInvoicePdf('friendly', $invoice);
 
+        self::assertStringContainsString('Outstanding Balance', $output);
         self::assertStringContainsString('font-family: Courier New, monospace; color: #1e293b;', $output);
         self::assertStringNotContainsString('font-family: Courier New, monospace; color: #7c4a1e;', $output);
     }
@@ -471,14 +477,23 @@ final class TemplatesRenderingTest extends KernelTestCase
             'internal' => false,
         ]);
 
-        PaymentFactory::createOne([
+        $payment = PaymentFactory::createOne([
             'company' => $this->company,
-            'invoice' => $invoice,
             'method' => $method,
             'status' => PaymentStatus::Captured,
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
         ]);
+
+        // PaymentFactory only sets Payment's own `invoice` property. Invoice's
+        // $payments collection is the inverse side, so it needs addPayment()
+        // too, or invoice_has_outstanding_balance() never finds this payment
+        // and the balance row never renders.
+        $invoice->addPayment($payment);
+
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        self::assertInstanceOf(EntityManagerInterface::class, $em);
+        $em->flush();
     }
 
     private function renderInvoicePdf(string $slug, Invoice $invoice): string
