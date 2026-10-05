@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
@@ -40,7 +40,7 @@ final class Version20300 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void
@@ -66,7 +66,7 @@ final class Version20300 extends AbstractMigration
         $this->connection
             ->delete('recurringinvoice_contact', ['company_id' => null]);
 
-        if ($this->platform instanceof MySQLPlatform) {
+        if ($this->platform instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0;');
         } elseif ($this->platform instanceof PostgreSQLPlatform) {
             $this->connection->executeQuery('SET CONSTRAINTS ALL DEFERRED;');
@@ -373,7 +373,7 @@ final class Version20300 extends AbstractMigration
                 }
             }
 
-            if ($this->platform instanceof MySQLPlatform) {
+            if ($this->platform instanceof AbstractMySQLPlatform) {
                 $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
             } elseif ($this->platform instanceof SQLitePlatform) {
                 $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
@@ -412,8 +412,6 @@ final class Version20300 extends AbstractMigration
     {
         if ($this->platform instanceof PostgreSQLPlatform) {
             $this->addSql(sprintf('ALTER TABLE %s ALTER %s TYPE UUID USING %s::text::uuid', $tableName, $columnName, $columnName));
-
-            return;
         }
 
         $this->setColumnType($schema, $tableName, $columnName, UlidType::NAME);

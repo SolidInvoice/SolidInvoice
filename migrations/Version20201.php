@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
@@ -32,6 +32,10 @@ use function array_flip;
 use function count;
 use function in_array;
 
+/**
+ * @phpstan-type ForeignKeyIndex array{name: string, columns: list<string>, unique: bool}
+ * @phpstan-type ForeignKeyDefinition array{table: string, key: string, tmpKey: string, nullable: bool, name: string, primaryKey: list<string>, indexes: list<ForeignKeyIndex>, onDelete?: string}
+ */
 final class Version20201 extends AbstractMigration
 {
     private Schema $schema;
@@ -49,7 +53,7 @@ final class Version20201 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void
@@ -244,7 +248,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @return array<array<string|array<string>>>
+     * @return list<ForeignKeyDefinition>
      * @throws Exception|RuntimeException
      */
     private function getTableForeignKeys(string $tableName): array
@@ -265,6 +269,23 @@ final class Version20201 extends AbstractMigration
                         'nullable' => $this->isForeignKeyNullable($table, $key),
                         'name' => $foreignKey->getName(),
                         'primaryKey' => $table->getPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [],
+                        // composite indexes referencing $key (e.g. client_credit's own
+                        // (client_id, company_id) unique index) get dropped by
+                        // deletePreviousFKs() along with the FK column itself. A
+                        // single-column index on just $key does not need this: it is
+                        // recreated for free by the FK constraint restoreConstraintsAndIndexes()
+                        // re-adds below.
+                        'indexes' => array_values(array_filter(
+                            array_map(
+                                static fn (Index $index): array => [
+                                    'name' => $index->getName(),
+                                    'columns' => $index->getColumns(),
+                                    'unique' => $index->isUnique(),
+                                ],
+                                $table->getIndexes(),
+                            ),
+                            static fn (array $index): bool => count($index['columns']) > 1 && in_array($key, $index['columns'], true),
+                        )),
                     ];
 
                     if ($foreignKey->onDelete()) {
@@ -288,7 +309,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws SchemaException
      */
     private function addUuidFields(string $tableName, string $uuidColumnName, array $foreignKeys = []): void
@@ -307,7 +328,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws SchemaException
      */
     private function enforceUuidFieldsNotNull(string $tableName, string $uuidColumnName, array $foreignKeys): void
@@ -369,7 +390,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @param array<string, array<Ulid>> $idToUuidMap
      * @throws Exception
      */
@@ -444,7 +465,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function deletePreviousFKs(array $foreignKeys): void
@@ -480,7 +501,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function renameNewFKsToPreviousNames(array $foreignKeys): void
@@ -513,7 +534,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function restoreConstraintsAndIndexes(string $tableName, array $foreignKeys): void
@@ -533,6 +554,14 @@ final class Version20201 extends AbstractMigration
                 [$foreignKey['key']],
                 ['id'],
             );
+
+            foreach ($foreignKey['indexes'] ?? [] as $index) {
+                if ($index['unique']) {
+                    $table->addUniqueIndex($index['columns'], $index['name']);
+                } else {
+                    $table->addIndex($index['columns'], $index['name']);
+                }
+            }
         }
     }
 
