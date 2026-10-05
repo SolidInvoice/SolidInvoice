@@ -93,7 +93,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         // Exclude 'send' and 'send-reminder'. Those actions have their own POST-only
         // route above. Without this, a GET request falls through to this route instead
         // of getting a 405 from the route above.
-        ->requirements(['action' => '(?!send/|send-reminder/).+']);
+        ->requirements(['action' => '(?!send/|send-reminder/)[^/]+']);
 
     $routingConfigurator
         ->add('_action_recurring_invoice', '/recurring-action/{action}/{id}')

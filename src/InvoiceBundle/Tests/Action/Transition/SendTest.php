@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 final class SendTest extends KernelTestCase
@@ -50,10 +51,10 @@ final class SendTest extends KernelTestCase
 
     private function createAction(WorkflowInterface $workflow, MailerInterface $mailer, RouterInterface $router, EmailVerificationGateInterface $gate, LoggerInterface $logger): Send
     {
-        $action = new Send($workflow, $mailer, $router, $gate, $logger);
-        $action->setContainer(self::getContainer());
+        $csrfTokenManager = self::getContainer()->get('security.csrf.token_manager');
+        self::assertInstanceOf(CsrfTokenManagerInterface::class, $csrfTokenManager);
 
-        return $action;
+        return new Send($workflow, $mailer, $router, $gate, $logger, $csrfTokenManager);
     }
 
     private function createRequestWithCsrfToken(): Request
