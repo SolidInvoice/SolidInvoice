@@ -223,3 +223,103 @@ jobs:
         # so let's skip it to prevent unneeded errors
         # @TODO: Fix installation to work with other DBs
         run: bin/paratest --exclude-group=installation
+
+  migration-replay:
+    name: Migration replay (${{ matrix.db.name }} ${{ matrix.db.version }})
+
+    runs-on: ubuntu-latest
+
+    # One image per engine family, not full version coverage: this job proves the
+    # migration chain replays cleanly on each platform-detection branch, the same
+    # thing the full matrix above already covers per engine version.
+    strategy:
+      matrix:
+        include:
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: 8.4
+                image: mysql
+                server_version: '8.4.0'
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11
+                image: mariadb
+                server_version: '11.4.0-MariaDB'
+                port: 3306
+                user: root
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                scheme: postgres
+                version: 17
+                image: postgres
+                server_version: '17.0'
+                port: 5432
+                user: postgres
+      fail-fast: false
+
+    services:
+      db:
+        image: ${{ matrix.db.image }}:${{ matrix.db.version }}
+        env:
+          MYSQL_ROOT_PASSWORD: solidinvoice
+          MYSQL_DATABASE: solidinvoice
+          POSTGRES_PASSWORD: solidinvoice
+        ports:
+          - "${{ matrix.db.port }}:${{ matrix.db.port }}"
+
+    env:
+      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice?serverVersion=${{ matrix.db.server_version }}"
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+          allowed-endpoints: >
+            packagist.org:443
+            download.oracle.com:443
+            azure.archive.ubuntu.com:443
+            archive.ubuntu.com:443
+            security.ubuntu.com:443
+            esm.ubuntu.com:443
+            pecl.php.net:443
+            pear.php.net:443
+            api.launchpad.net:443
+            keyserver.ubuntu.com:443
+            pgp.mit.edu:443
+            keys.openpgp.org:443
+            ppa.launchpad.net:443
+            objects.githubusercontent.com:443
+            setup-php.com:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, ${{ matrix.db.driver }}, zip, :xdebug
+        env:
+          fail-fast: true
+
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+
+      - name: Create the database
+        run: bin/console doctrine:database:create --if-not-exists
+
+      - name: Replay the migration chain from empty
+        run: bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Validate the replayed schema against the ORM mapping
+        run: bin/console doctrine:schema:validate
