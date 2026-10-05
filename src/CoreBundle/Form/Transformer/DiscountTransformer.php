@@ -20,6 +20,7 @@ use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * @implements DataTransformerInterface<BigNumber, float>
@@ -44,10 +45,7 @@ class DiscountTransformer implements DataTransformerInterface
     }
 
     /**
-     * @throws DivisionByZeroException
-     * @throws RoundingNecessaryException
-     * @throws MathException
-     * @throws NumberFormatException
+     * @throws TransformationFailedException
      */
     public function reverseTransform(mixed $value): BigNumber
     {
@@ -57,9 +55,13 @@ class DiscountTransformer implements DataTransformerInterface
 
         $value = is_float($value) ? (string) $value : $value;
 
-        return BigNumber::of($value)
-            ->toBigDecimal()
-            ->multipliedBy(100)
-        ;
+        try {
+            return BigNumber::of($value)
+                ->toBigDecimal()
+                ->multipliedBy(100)
+            ;
+        } catch (MathException $e) {
+            throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
