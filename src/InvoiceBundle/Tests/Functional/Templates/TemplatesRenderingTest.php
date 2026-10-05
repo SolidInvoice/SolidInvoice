@@ -177,6 +177,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         ?CarbonImmutable $due = null,
         InvoiceStatus $status = InvoiceStatus::Pending,
         int $lineCount = 1,
+        bool $withDue = true,
     ): Invoice {
         $this->seedCompanyLogo();
 
@@ -212,7 +213,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             'client' => $client,
             'status' => $status,
             'invoiceId' => 'INV-FIXTURE-001',
-            'due' => $due ?? CarbonImmutable::now()->addDays(14),
+            'due' => $withDue ? ($due ?? CarbonImmutable::now()->addDays(14)) : null,
             'paidDate' => null,
             'archived' => null,
             'terms' => 'Payment due within 30 days.',
@@ -255,9 +256,9 @@ final class TemplatesRenderingTest extends KernelTestCase
     /**
      * Two line items, so every column of the line-item table renders.
      */
-    private function renderPdf(string $slug): string
+    private function renderPdf(string $slug, InvoiceStatus $status = InvoiceStatus::Pending, bool $withDue = true): string
     {
-        $invoice = $this->createFixtureInvoice(lineCount: 2);
+        $invoice = $this->createFixtureInvoice(status: $status, lineCount: 2, withDue: $withDue);
 
         $twig = self::getContainer()->get('twig');
         self::assertInstanceOf(Environment::class, $twig);
@@ -383,5 +384,144 @@ final class TemplatesRenderingTest extends KernelTestCase
         $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
 
         self::assertStringNotContainsString('OVERDUE BY', $output);
+    }
+
+    /**
+     * The six templates `status_pair` was added to directly. `editorial` and
+     * `friendly` are sequenced behind SOL-57 and carry no status line yet;
+     * the two `Pdf/*.html.twig` default documents are SOL-48's.
+     */
+    private const array FREE_TEMPLATE_SLUGS = ['classic', 'modern', 'studio', 'photographer', 'compact', 'monochrome'];
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function freeTemplateSlugProvider(): iterable
+    {
+        foreach (self::FREE_TEMPLATE_SLUGS as $slug) {
+            yield $slug => [$slug];
+        }
+    }
+
+    /**
+     * The status line is a labelled fact in the meta block, not the watermark.
+     * Every one of the six templates must print the translated "Status" label
+     * and the translated status word, and never the raw catalog key.
+     */
+    #[DataProvider('freeTemplateSlugProvider')]
+    public function testStatusLineRendersTheTranslatedLabelAndWord(string $slug): void
+    {
+        $output = $this->renderPdf($slug);
+
+        $matched = preg_match(
+            '#font-size: 8pt; color: [^;]+; text-transform: uppercase; letter-spacing: 0.5px;">Status<#',
+            $output
+        );
+        self::assertSame(1, $matched, sprintf('%s does not render the translated "Status" label', $slug));
+
+        $this->assertStatusWordRenders($output, 'Pending', $slug);
+    }
+
+    /**
+     * Rule 2 of the design spec: the status is never inside the
+     * `{% if invoice.due %}` guard. An invoice with no due date must still
+     * render its status — the regression SOL-360 §0 C1 is about, and the
+     * reason `createFixtureInvoice()` gained `withDue`.
+     */
+    #[DataProvider('freeTemplateSlugProvider')]
+    public function testStatusLineRendersWithNoDueDate(string $slug): void
+    {
+        $output = $this->renderPdf($slug, withDue: false);
+
+        $this->assertStatusWordRenders($output, 'Pending', $slug);
+    }
+
+    /**
+     * `monochrome` always overrides the ink to `#1a1a1a`, so the word itself —
+     * not a fixed colour — is what the other slugs' assertions can rely on.
+     */
+    private function assertStatusWordRenders(string $output, string $word, string $slug): void
+    {
+        $matched = preg_match(
+            sprintf('#font-size: 10pt; font-weight: 600; color: [^;]+;">%s<#', preg_quote($word, '#')),
+            $output
+        );
+        self::assertSame(1, $matched, sprintf('%s does not render the status word "%s"', $slug, $word));
+    }
+
+    /**
+     * The literal string `pdf.status` prints only when the catalog is missing
+     * the key. Asserting its absence on every free template is what would
+     * have caught a key left out of `translations/messages.en.yml`.
+     */
+    #[DataProvider('freeTemplateSlugProvider')]
+    public function testStatusLineLabelKeyIsTranslated(string $slug): void
+    {
+        self::assertStringNotContainsString('pdf.status', $this->renderPdf($slug));
+    }
+
+    /**
+     * One case per ink rather than one per status: `paid` and `overdue` share
+     * no ink with `pending` or `draft`, so the four together exercise every
+     * branch of the macro's ink map that `monochrome` does not override.
+     *
+     * @return iterable<string, array{string, InvoiceStatus, string}>
+     */
+    public static function statusInkProvider(): iterable
+    {
+        $cases = [
+            'paid' => [InvoiceStatus::Paid, '#047857'],
+            'overdue' => [InvoiceStatus::Overdue, '#b91c1c'],
+            'pending' => [InvoiceStatus::Pending, '#92400e'],
+            'draft' => [InvoiceStatus::Draft, '#475569'],
+        ];
+
+        foreach (self::FREE_TEMPLATE_SLUGS as $slug) {
+            if ('monochrome' === $slug) {
+                // monochrome flattens every status to its ink override; see
+                // testMonochromeStatusLineIgnoresTheVariantInk.
+                continue;
+            }
+
+            foreach ($cases as $name => [$status, $ink]) {
+                yield sprintf('%s/%s', $slug, $name) => [$slug, $status, $ink];
+            }
+        }
+    }
+
+    #[DataProvider('statusInkProvider')]
+    public function testStatusLineUsesTheVariantInk(string $slug, InvoiceStatus $status, string $ink): void
+    {
+        $output = $this->renderPdf($slug, $status);
+
+        self::assertStringContainsString(sprintf('font-size: 10pt; font-weight: 600; color: %s;', $ink), $output);
+    }
+
+    /**
+     * monochrome's identity is ink on cream: the status line always renders
+     * `#1a1a1a`, even for `Paid`, whose variant ink would otherwise be the
+     * success green.
+     */
+    public function testMonochromeStatusLineIgnoresTheVariantInk(): void
+    {
+        $output = $this->renderPdf('monochrome', InvoiceStatus::Paid);
+
+        self::assertStringContainsString('font-size: 10pt; font-weight: 600; color: #1a1a1a;">Paid', $output);
+        self::assertStringNotContainsString('font-size: 10pt; font-weight: 600; color: #047857;', $output);
+    }
+
+    /**
+     * Revision 1 of the design put compact's status inside the `#0f172a`
+     * header band, where the variant inks fail contrast. It now renders on the
+     * white page body instead, as a third cell beside `from_block` and
+     * `bill_to_block`, and must not disturb the band's own light-on-dark
+     * literal that `testCompactPdfKeepsTextLightInsideTheDarkBand` guards.
+     */
+    public function testCompactStatusLineRendersOutsideTheDarkBand(): void
+    {
+        $output = $this->renderPdf('compact');
+
+        self::assertStringContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $output);
+        self::assertStringContainsString('#94a3b8', $output);
     }
 }
