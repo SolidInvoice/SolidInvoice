@@ -12,7 +12,9 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\EInvoiceBundle\Channel\ChannelRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
+use SolidInvoice\EInvoiceBundle\Test\Channel\InMemoryChannel;
 use SolidInvoice\EInvoiceBundle\Validation\ValidatorRegistry;
 use SolidInvoice\InstallBundle\Listener\UpgradeListener;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
@@ -34,8 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $services->defaults()
         ->autowire()
         ->autoconfigure()
-        ->public()
-        ->bind('$projectDir', '%kernel.project_dir%');
+        ->public();
 
     // The test schema is built by tests/bootstrap.php and Foundry, so the migrations
     // metadata table is empty and this listener considers every request's database out
@@ -54,11 +55,17 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         }
     }, priority: -256);
 
+    // Excluded from the bundle's own load() (see services.php) because it would otherwise be
+    // tagged in production too — registered here, test-environment only, where it picks up
+    // ->autowire()->autoconfigure()->public() from this file's defaults().
+    $services->set(InMemoryChannel::class);
+
     // Expose wiring-contract aliases publicly so functional smoke tests can
     // assert the correct concrete implementation is resolved.
     $services->alias('test.' . FeatureGate::class, FeatureGate::class);
     $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class);
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
+    $services->alias('test.' . ChannelRegistry::class, ChannelRegistry::class);
     $services->alias('test.' . ProfileRegistry::class, ProfileRegistry::class);
     $services->alias('test.' . ValidatorRegistry::class, ValidatorRegistry::class);
 
