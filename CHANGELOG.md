@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 
 3.0.0 / 2026-06-17
 -------------------
