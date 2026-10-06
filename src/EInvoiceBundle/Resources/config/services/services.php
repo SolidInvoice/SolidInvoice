@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\EInvoiceBundle\Channel\ChannelInterface;
+use SolidInvoice\EInvoiceBundle\Channel\ChannelRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileInterface;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
 use SolidInvoice\EInvoiceBundle\SolidInvoiceEInvoiceBundle;
@@ -31,7 +33,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceEInvoiceBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
-        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Enum,Model,Resources,Tests}');
+        // Test/Channel is excluded separately from Tests: Test (singular) also holds
+        // Test/Factory, which must stay loaded for the Foundry factories under it.
+        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Enum,Model,Resources,Tests,Test/Channel}');
+
+    $services->set(ChannelRegistry::class)
+        ->arg('$channels', tagged_iterator(ChannelInterface::DI_TAG));
 
     $services->set(ProfileRegistry::class)
         ->arg('$profiles', tagged_iterator(ProfileInterface::DI_TAG));
