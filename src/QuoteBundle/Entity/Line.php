@@ -49,6 +49,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Entity\LineTest
+ */
 #[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -398,15 +401,29 @@ class Line implements LineInterface, Stringable
     }
 
     /**
+     * Doctrine's change tracking compares the old and new value with `===`, so handing it a
+     * freshly constructed value object on every call marks the line dirty even when the number
+     * is unchanged, and Gedmo then bumps `updated` on a plain read. Comparing numerically and
+     * keeping the existing instance when nothing moved avoids that.
+     *
+     * This guard is partial: a line whose price × qty is not a whole number of minor units
+     * (for example qty 0.0833 × price 12000) can never equal the hydrated total, because
+     * {@see BigIntegerType} rounds the column to scale 0. That residual is a lossy-column
+     * problem on the money path, not a dirty-tracking one, and is out of scope here.
+     *
      * @throws MathException
      * @throws RoundingNecessaryException
      */
     #[ORM\PrePersist]
     public function updateTotal(): static
     {
-        $this->total = $this->getPrice()
+        $total = $this->getPrice()
             ->toBigDecimal()
             ->multipliedBy($this->qty->toBigDecimal());
+
+        if (! $this->total->isEqualTo($total)) {
+            $this->total = $total;
+        }
 
         return $this;
     }
