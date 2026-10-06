@@ -155,13 +155,32 @@ jobs:
           fail_ci_if_error: false
           verbose: true
 
+      - name: Summarise test failure
+        if: ${{ failure() }}
+        run: |
+          {
+            echo '## Test failure'
+            if [ -f var/log/test.log ]; then
+              echo '<details><summary>var/log/test.log (last 200 lines)</summary>'
+              echo; echo '```'; tail -n 200 var/log/test.log; echo '```'
+              echo '</details>'
+            else
+              echo '_No `var/log/test.log` was produced._'
+            fi
+            if [ -d var/browser/screenshots ]; then
+              echo; echo '### Screenshots captured'
+              ls -1 var/browser/screenshots
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Add comment to PR with failure screenshots
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
         if: ${{ failure() }}
+        continue-on-error: true
         env:
             CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
             JOB_NAME: Unit ( PHP ${{ matrix.php }} )
         with:
           script: |
-            const script = require('./scripts/e2e-failure.js')
-            await script({github, context, core})
+            const script = require(`${process.env.GITHUB_WORKSPACE}/scripts/e2e-failure.cjs`)
+            await script({ github, context, core })
