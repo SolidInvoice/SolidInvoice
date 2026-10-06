@@ -79,7 +79,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
             self::markTestSkipped('SOLIDINVOICE_DATABASE_URL is not configured.');
         }
 
-        $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($url);
+        $params = new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP)->parse($url);
 
         if (($params['driver'] ?? null) === 'pdo_sqlite') {
             self::markTestSkipped('This harness needs a real MySQL, MariaDB or PostgreSQL server; the configured connection is SQLite.');
