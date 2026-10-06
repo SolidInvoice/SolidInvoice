@@ -39,6 +39,7 @@ Changelog
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
+* Added the `messenger_messages` table to the migration chain. It was previously missing, so an instance upgraded from the tarball or a Helm `pre-upgrade` job would have the failed-message transport create it with a runtime `CREATE TABLE`, which fails on a database user without DDL privileges
 
 3.0.0 / 2026-06-17
 -------------------
