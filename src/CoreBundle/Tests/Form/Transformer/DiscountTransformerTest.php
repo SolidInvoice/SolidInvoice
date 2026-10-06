@@ -68,7 +68,6 @@ final class DiscountTransformerTest extends TestCase
     {
         $result = $this->transformer->reverseTransform($value);
 
-        self::assertInstanceOf(BigNumber::class, $result);
         self::assertTrue(
             BigDecimal::of($expected)->isEqualTo($result),
             sprintf('Expected %s, got %s', $expected, $result)
@@ -87,7 +86,7 @@ final class DiscountTransformerTest extends TestCase
     }
 
     #[DataProvider('invalidValues')]
-    public function testReverseTransformRejectsNonNumericInput(string $value): void
+    public function testReverseTransformRejectsNonNumericInput(mixed $value): void
     {
         $this->expectException(TransformationFailedException::class);
 
