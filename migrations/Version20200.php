@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -29,6 +29,7 @@ use Psr\Log\LogLevel;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Uid\Ulid;
+use function in_array;
 
 final class Version20200 extends AbstractMigration
 {
@@ -54,17 +55,15 @@ final class Version20200 extends AbstractMigration
 
     private LoggerInterface $logger;
 
-    private Schema $toSchema;
-
     /**
-     * @var array<string, array{0: string, 1: string[]}>
+     * @var list<array{0: string, 1: string, 2: string[]}>
      */
     private array $tablesForForeignKeys = [];
 
     /**
      * @var list<string>
      */
-    private array $tablesWithCompanyId = [];
+    private array $tablesWithCompanyId = self::ALL_TABLES;
 
     public function __construct(Connection $connection, LoggerInterface $logger)
     {
@@ -75,12 +74,12 @@ final class Version20200 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
 
@@ -91,9 +90,6 @@ final class Version20200 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $originalSchema = clone $schema;
-        $this->toSchema = clone $originalSchema;
-
         $schema
             ->getTable('payments')
             ->modifyColumn(
@@ -182,19 +178,6 @@ final class Version20200 extends AbstractMigration
         $this->addCompanyToTable($schema, 'api_tokens');
         $this->addCompanyToTable($schema, 'api_token_history');
 
-        foreach (
-            $this->platform
-                ->getAlterSchemaSQL(
-                    $this
-                        ->connection
-                        ->createSchemaManager()
-                        ->createComparator()
-                        ->compareSchemas($originalSchema, $this->toSchema)
-                ) as $sql
-        ) {
-            $this->addSql($sql);
-        }
-
         $userInvitationsTable = $schema->createTable('user_invitations');
         $userInvitationsTable->addColumn('id', UlidType::NAME);
         $userInvitationsTable->addColumn('invited_by_id', 'integer', ['notnull' => true]);
@@ -237,22 +220,46 @@ final class Version20200 extends AbstractMigration
         $companyId = new Ulid();
 
         $this->connection
-            ->insert('companies', ['name' => $companyName, 'id' => $companyId->toBinary()]);
+            ->insert(
+                'companies',
+                ['name' => $companyName, 'id' => $companyId],
+                ['id' => UlidType::NAME],
+            );
 
         foreach (self::ALL_TABLES as $table) {
             // @phpstan-ignore-next-line
-            $this->connection->update($table, ['company_id' => $companyId->toBinary()], ['1' => '1']);
+            $this->connection->update($table, ['company_id' => $companyId], ['1' => '1'], ['company_id' => UlidType::NAME]);
         }
 
         foreach ($users as $user) {
             $this->connection
-                ->insert('user_company', [
-                    'user_id' => $user['id'],
-                    'company_id' => $companyId->toBinary(),
-                ]);
+                ->insert(
+                    'user_company',
+                    [
+                        'user_id' => $user['id'],
+                        'company_id' => $companyId,
+                    ],
+                    ['company_id' => UlidType::NAME],
+                );
         }
 
-        foreach ($this->tablesForForeignKeys as $tableB => [$foreignTableName, $foreignKeyName]) {
+        // company_id can only become part of the primary key (and so NOT NULL) once every
+        // row has been backfilled above; doing this any earlier makes the DDL itself reject
+        // the rows that still have a null company_id
+        foreach (self::ALL_TABLES as $tableName) {
+            $table = $schema->getTable($tableName);
+            $table->dropPrimaryKey();
+            $table->setPrimaryKey(['id', 'company_id']);
+        }
+
+        $this->executeSchemaDiff($fromSchema, $schema);
+
+        // the composite foreign keys below reference the primary keys added just above, on
+        // other tables, so they need their own diff against the now-updated schema: a single
+        // diff does not guarantee the primary key of the referenced table lands first
+        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
+
+        foreach ($this->tablesForForeignKeys as [$tableB, $foreignTableName, $foreignKeyName]) {
             $schema->getTable($tableB)->addForeignKeyConstraint(
                 $foreignTableName,
                 [...$foreignKeyName, 'company_id'],
@@ -264,6 +271,15 @@ final class Version20200 extends AbstractMigration
             $schema->getTable($tableName)->addForeignKeyConstraint('companies', ['company_id'], ['id']);
         }
 
+        $this->executeSchemaDiff($fromSchema, $schema);
+
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+        }
+    }
+
+    private function executeSchemaDiff(Schema $fromSchema, Schema $toSchema): void
+    {
         foreach (
             $this->platform
                 ->getAlterSchemaSQL(
@@ -271,21 +287,17 @@ final class Version20200 extends AbstractMigration
                         ->connection
                         ->createSchemaManager()
                         ->createComparator()
-                        ->compareSchemas($fromSchema, $schema)
+                        ->compareSchemas($fromSchema, $toSchema)
                 ) as $sql
         ) {
             $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
             $this->connection->executeQuery($sql);
         }
-
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
-            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
-        }
     }
 
     public function preDown(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
     }
@@ -324,7 +336,7 @@ final class Version20200 extends AbstractMigration
 
     public function postDown(Schema $schema): void
     {
-        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
         }
     }
@@ -334,8 +346,6 @@ final class Version20200 extends AbstractMigration
      */
     private function addCompanyToTable(Schema $schema, string $tableName): Table
     {
-        $this->tablesWithCompanyId[] = $tableName;
-
         $table = $schema->getTable($tableName);
 
         $table->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
@@ -350,21 +360,20 @@ final class Version20200 extends AbstractMigration
             ]
         );
 
-        // remove all foreign keys on all tables that are part of this tables primary key
-        foreach ($this->toSchema->getTables() as $tableA) {
+        // remove all foreign keys on all tables that are part of this tables primary key;
+        // a table that doesn't get a company_id column in this migration (e.g. the
+        // *_contact tables, which get theirs in Version20201) still has its old FK
+        // dropped here, but is never queued for the composite FK it isn't ready for yet
+        foreach ($schema->getTables() as $tableA) {
             foreach ($tableA->getForeignKeys() as $foreignKey) {
                 if ($foreignKey->getForeignTableName() === $tableName && $foreignKey->getForeignColumns() === ['id']) {
-                    $this->tablesForForeignKeys[$tableA->getName()] = [$foreignKey->getForeignTableName(), $foreignKey->getLocalColumns()];
+                    if (in_array($tableA->getName(), $this->tablesWithCompanyId, true)) {
+                        $this->tablesForForeignKeys[] = [$tableA->getName(), $foreignKey->getForeignTableName(), $foreignKey->getLocalColumns()];
+                    }
+
                     $tableA->removeForeignKey($foreignKey->getName());
                 }
             }
-        }
-
-        $table->dropPrimaryKey();
-        $table->setPrimaryKey(['id', 'company_id']);
-
-        if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform) {
-            $table->getColumn('company_id')->setNotnull(false);
         }
 
         return $table;

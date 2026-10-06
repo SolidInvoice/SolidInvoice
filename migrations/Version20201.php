@@ -15,7 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
@@ -32,6 +32,10 @@ use function array_flip;
 use function count;
 use function in_array;
 
+/**
+ * @phpstan-type ForeignKeyIndex array{name: string, columns: list<string>, unique: bool}
+ * @phpstan-type ForeignKeyDefinition array{table: string, key: string, tmpKey: string, nullable: bool, name: string, primaryKey: list<string>, indexes: list<ForeignKeyIndex>, onDelete?: string}
+ */
 final class Version20201 extends AbstractMigration
 {
     private Schema $schema;
@@ -49,7 +53,7 @@ final class Version20201 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void
@@ -129,14 +133,6 @@ final class Version20201 extends AbstractMigration
             ->getTable('quotes')
             ->modifyColumn('quote_id', ['notnull' => true, 'length' => 255]);
 
-        $clientCreditTable = $this->schema->getTable('client_credit');
-
-        foreach ($clientCreditTable->getIndexes() as $index) {
-            if ($index->isUnique() && ! $index->isPrimary()) {
-                $clientCreditTable->dropIndex($index->getName());
-            }
-        }
-
         foreach ($this->connection->createSchemaManager()->listTables() as $table) {
             if (
                 $table->hasColumn('company_id') &&
@@ -213,6 +209,14 @@ final class Version20201 extends AbstractMigration
         $uuids = $this->generateUuidsToReplaceIds($tableName, $uuidColumnName, $linkCompany);
 
         $this->addUuidsToTablesWithFK($foreignKeys, $uuids, $linkCompany);
+
+        // every __uuid__ and tmp FK column is backfilled now; only after that can NOT NULL be
+        // enforced, otherwise PostgreSQL rejects the DDL for any row still pending a value
+        // (the same ordering constraint SOL-166 fixed for company_id in Version20200)
+        $this->enforceUuidFieldsNotNull($tableName, $uuidColumnName, $foreignKeys);
+
+        $this->persistChanges();
+
         $this->deletePreviousFKs($foreignKeys);
 
         $this->persistChanges();
@@ -244,7 +248,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @return array<array<string|array<string>>>
+     * @return list<ForeignKeyDefinition>
      * @throws Exception|RuntimeException
      */
     private function getTableForeignKeys(string $tableName): array
@@ -265,6 +269,23 @@ final class Version20201 extends AbstractMigration
                         'nullable' => $this->isForeignKeyNullable($table, $key),
                         'name' => $foreignKey->getName(),
                         'primaryKey' => $table->getPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [],
+                        // composite indexes referencing $key (e.g. client_credit's own
+                        // (client_id, company_id) unique index) get dropped by
+                        // deletePreviousFKs() along with the FK column itself. A
+                        // single-column index on just $key does not need this: it is
+                        // recreated for free by the FK constraint restoreConstraintsAndIndexes()
+                        // re-adds below.
+                        'indexes' => array_values(array_filter(
+                            array_map(
+                                static fn (Index $index): array => [
+                                    'name' => $index->getName(),
+                                    'columns' => $index->getColumns(),
+                                    'unique' => $index->isUnique(),
+                                ],
+                                $table->getIndexes(),
+                            ),
+                            static fn (array $index): bool => count($index['columns']) > 1 && in_array($key, $index['columns'], true),
+                        )),
                     ];
 
                     if ($foreignKey->onDelete()) {
@@ -288,19 +309,38 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws SchemaException
      */
     private function addUuidFields(string $tableName, string $uuidColumnName, array $foreignKeys = []): void
     {
         $table = $this->schema->getTable($tableName);
 
-        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => true]);
+        // added nullable here, regardless of the final nullability: the table already has
+        // rows, and enforceUuidFieldsNotNull() only tightens this once every row has a value
+        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => false]);
 
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
 
-            $fkTable->addColumn($fk['tmpKey'], UlidType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
+            $fkTable->addColumn($fk['tmpKey'], UlidType::NAME, ['notnull' => false]);
+        }
+    }
+
+    /**
+     * @param list<ForeignKeyDefinition> $foreignKeys
+     * @throws SchemaException
+     */
+    private function enforceUuidFieldsNotNull(string $tableName, string $uuidColumnName, array $foreignKeys): void
+    {
+        $this->schema->getTable($tableName)->modifyColumn($uuidColumnName, ['notnull' => true]);
+
+        foreach ($foreignKeys as $fk) {
+            if ($this->foreignColumnShouldBeNullable($fk)) {
+                continue;
+            }
+
+            $this->schema->getTable($fk['table'])->modifyColumn($fk['tmpKey'], ['notnull' => true]);
         }
     }
 
@@ -350,7 +390,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @param array<string, array<Ulid>> $idToUuidMap
      * @throws Exception
      */
@@ -358,10 +398,12 @@ final class Version20201 extends AbstractMigration
     {
         $this->write('-> Adding UUIDs to tables with foreign keys...');
         foreach ($foreignKeys as $fk) {
-            $selectPk = implode(',', $fk['primaryKey']);
-
             try {
-                $fieldsSelect = [$selectPk . ', ' . $fk['key'], $fk['key']];
+                // a plain array, not a concatenated string: $fk['primaryKey'] is empty for a
+                // table whose primary key was already dropped by the caller before this method
+                // runs (e.g. user_company, ahead of migrate('users')), and concatenating an
+                // empty string still produced a leading comma, a SQL syntax error
+                $fieldsSelect = [...$fk['primaryKey'], $fk['key']];
 
                 if ($linkCompany) {
                     $fieldsSelect[] = 'company_id';
@@ -393,6 +435,13 @@ final class Version20201 extends AbstractMigration
                     $queryPk[$key] = $record[$key];
                 }
 
+                if ($queryPk === []) {
+                    // no primary key to match on (see the comment above); the foreign key
+                    // column itself always maps to exactly one target id, so it is enough on
+                    // its own to select every row that needs this UUID
+                    $queryPk[$fk['key']] = $record[$fk['key']];
+                }
+
                 if ($linkCompany) {
                     $uuid = $idToUuidMap[$record['company_id']][$record[$fk['key']]];
                     $queryPk['company_id'] = $record['company_id'];
@@ -416,7 +465,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function deletePreviousFKs(array $foreignKeys): void
@@ -438,8 +487,13 @@ final class Version20201 extends AbstractMigration
 
             $table->dropColumn($fk['key']);
 
+            // a composite index (e.g. client_credit's own (client_id, company_id) unique
+            // index) still references this column even though it isn't a single-column
+            // match; every index containing the column has to go here, in the same diff
+            // as the FK removal above, or the DB rejects the index drop as still needed by
+            // a live constraint
             foreach ($table->getIndexes() as $index) {
-                if ($index->getColumns() === [$fk['key']]) {
+                if (in_array($fk['key'], $index->getColumns(), true)) {
                     $table->dropIndex($index->getName());
                 }
             }
@@ -447,7 +501,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function renameNewFKsToPreviousNames(array $foreignKeys): void
@@ -480,7 +534,7 @@ final class Version20201 extends AbstractMigration
     }
 
     /**
-     * @param array<array<string|array<string>>> $foreignKeys
+     * @param list<ForeignKeyDefinition> $foreignKeys
      * @throws Exception
      */
     private function restoreConstraintsAndIndexes(string $tableName, array $foreignKeys): void
@@ -500,6 +554,14 @@ final class Version20201 extends AbstractMigration
                 [$foreignKey['key']],
                 ['id'],
             );
+
+            foreach ($foreignKey['indexes'] ?? [] as $index) {
+                if ($index['unique']) {
+                    $table->addUniqueIndex($index['columns'], $index['name']);
+                } else {
+                    $table->addIndex($index['columns'], $index['name']);
+                }
+            }
         }
     }
 

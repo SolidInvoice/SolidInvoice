@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\SaasBundle\Form\Type\CustomDomainType;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function getenv;
 
@@ -33,7 +34,7 @@ final class Version30000_7 extends AbstractMigration
 
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void
@@ -75,14 +76,18 @@ final class Version30000_7 extends AbstractMigration
                 continue;
             }
 
-            $this->connection->insert('app_config', [
-                'id' => (new Ulid())->toBinary(),
-                'company_id' => $companyId,
-                'setting_key' => self::SETTING_KEY,
-                'setting_value' => null,
-                'description' => 'Custom domain for this company (leave empty to use the default URL).',
-                'field_type' => CustomDomainType::class,
-            ]);
+            $this->connection->insert(
+                'app_config',
+                [
+                    'id' => new Ulid(),
+                    'company_id' => $companyId,
+                    'setting_key' => self::SETTING_KEY,
+                    'setting_value' => null,
+                    'description' => 'Custom domain for this company (leave empty to use the default URL).',
+                    'field_type' => CustomDomainType::class,
+                ],
+                ['id' => UlidType::NAME],
+            );
         }
     }
 
