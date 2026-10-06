@@ -104,7 +104,10 @@ final class WatermarkTranslationTest extends KernelTestCase
     private function createFixtureInvoice(InvoiceStatus $status): Invoice
     {
         $company = CompanyFactory::createOne();
-        $client = ClientFactory::createOne(['company' => $company]);
+        // Pinned: ClientFactory's default currencyCode is a random ISO code from Faker, which
+        // can land on one money/money no longer recognises (e.g. the discontinued CUC). The
+        // watermark label this test checks does not depend on currency at all.
+        $client = ClientFactory::createOne(['company' => $company, 'currencyCode' => 'USD']);
 
         return InvoiceFactory::createOne([
             'company' => $company,
