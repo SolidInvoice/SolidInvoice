@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
 /**
- * Connection details for one of the real database servers
- * {@see MigrationIsIdempotentAcrossLineagesTestCase} verifies against.
+ * Connection details for the real database server
+ * {@see MigrationIsIdempotentAcrossLineagesTestCase} verifies against, resolved from the
+ * ambient SOLIDINVOICE_DATABASE_URL rather than a hardcoded list.
  */
 final readonly class Engine
 {
     public function __construct(
-        public string $scheme,
+        public string $driver,
         public string $host,
         public int $port,
         public string $user,
