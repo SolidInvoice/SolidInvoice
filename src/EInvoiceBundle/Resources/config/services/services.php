@@ -33,6 +33,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->load(SolidInvoiceEInvoiceBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Enum,Model,Resources,Tests}');
 
+    $services
+        ->load(SolidInvoiceEInvoiceBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
+        ->tag('controller.service_arguments');
+
     $services->set(ProfileRegistry::class)
         ->arg('$profiles', tagged_iterator(ProfileInterface::DI_TAG));
 
