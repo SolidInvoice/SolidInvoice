@@ -13,16 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
-use PHPUnit\Framework\Attributes\DataProvider;
+use Doctrine\DBAL\Tools\DsnParser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use function array_merge;
 use function dirname;
+use function explode;
 use function getenv;
+use function http_build_query;
 use function preg_replace;
+use function rawurlencode;
 use function sprintf;
 use function strtolower;
 
@@ -30,18 +34,29 @@ use function strtolower;
  * There are two schema lineages in the field: a fresh install, built straight from the ORM
  * mapping by the web installer, and an upgraded install, built by replaying every migration
  * in order. A migration that only works against one of them breaks the other, so every
- * migration this test case covers is proved against both, on real MariaDB and PostgreSQL
- * servers rather than SQLite, because platform-specific DDL (identity columns, timestamptz,
- * the MariaDB/MySQL platform split) does not show up against SQLite at all.
+ * migration this test case covers is proved against both, on whatever real engine the current
+ * test run is configured for (MariaDB, MySQL or PostgreSQL - the same SOLIDINVOICE_DATABASE_URL
+ * every other functional test already uses), because platform-specific DDL (identity columns,
+ * timestamptz, the MariaDB/MySQL platform split) does not show up against SQLite at all.
+ *
+ * This deliberately does not open its own connections to a hardcoded set of engines: CI's
+ * `DB (...)` job runs the whole suite once per engine/version leg (.github/workflows/
+ * db-tests.yml), each leg's `db` service bound to the same host/port regardless of which
+ * image is actually running. A fixed "MariaDB is always on :3306" assumption would collide
+ * with the MySQL legs using that same port, forcing DBAL to speak the wrong SQL dialect
+ * against the real server underneath. Reading the ambient connection, and detecting its real
+ * version live, gets every engine in the matrix covered for free instead.
  *
  * A concrete test extends this class for one migration and says what "the drift that
  * migration fixes" and "its version identifier" are. Everything else — building both
  * lineages, running the migration through the real `bin/console`, and skipping cleanly when
- * an engine is not reachable — lives here so the next migration in this group only has to
- * add a few lines.
+ * there is no real engine configured — lives here so the next migration in this group only
+ * has to add a few lines.
  */
 abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
 {
+    private Engine $engine;
+
     /**
      * @return class-string the migration under test, e.g. \DoctrineMigrations\Version30100_20::class.
      *                       This string doubles as the migrations version identifier.
@@ -56,41 +71,52 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      */
     abstract protected static function resolvedDriftFragments(): array;
 
-    /**
-     * @return iterable<string, array{string, string, int, string, string, string}>
-     */
-    public static function engines(): iterable
+    protected function setUp(): void
     {
-        // Credentials match .github/workflows/db-tests.yml. The server version is pinned in
-        // the DSN, also matching db-tests.yml: Doctrine\Bundle\DoctrineBundle\ConnectionFactory
-        // probes the platform with an empty StaticServerVersionProvider before the real
-        // connection is made, purely to pick a charset default, whenever `dbname_suffix` is
-        // configured (true in every test-environment connection here). AbstractPostgreSQLDriver
-        // throws outright on that empty string; AbstractMySQLDriver silently falls back to a
-        // base MySQLPlatform instead, which is the MariaDB/MySQL sibling-class trap. Pinning
-        // the version avoids both.
-        yield 'MariaDB' => ['mysql', '127.0.0.1', 3306, 'root', 'solidinvoice', '11.8.6-MariaDB'];
-        yield 'PostgreSQL' => ['postgresql', '127.0.0.1', 5432, 'postgres', 'solidinvoice', '17.11'];
-    }
+        $url = $_SERVER['SOLIDINVOICE_DATABASE_URL'] ?? $_ENV['SOLIDINVOICE_DATABASE_URL'] ?? getenv('SOLIDINVOICE_DATABASE_URL');
 
-    #[DataProvider('engines')]
-    final public function testMigrationResolvesDriftAgainstTheUpgradedLineage(
-        string $scheme,
-        string $host,
-        int $port,
-        string $user,
-        string $password,
-        string $serverVersion,
-    ): void {
-        $engine = new Engine($scheme, $host, $port, $user, $password, $serverVersion);
-        $databaseName = $this->databaseName('upgraded');
+        if (! $url) {
+            self::markTestSkipped('SOLIDINVOICE_DATABASE_URL is not configured.');
+        }
 
-        $this->skipUnlessReachable($engine);
-        $this->recreateDatabase($engine, $databaseName);
+        $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($url);
+
+        if (($params['driver'] ?? null) === 'pdo_sqlite') {
+            self::markTestSkipped('This harness needs a real MySQL, MariaDB or PostgreSQL server; the configured connection is SQLite.');
+        }
+
+        // The ambient dbname is whatever database the rest of the suite happens to be using
+        // (and, under paratest, may not even exist yet) - connecting to probe reachability
+        // and the real server version must not depend on it.
+        $this->engine = new Engine($params['driver'], $params['host'], (int) $params['port'], $params['user'], $params['password'], '');
 
         try {
-            $this->console($engine, $databaseName, ['doctrine:migrations:migrate', '--no-interaction']);
-            $dumpSql = $this->console($engine, $databaseName, ['doctrine:schema:update', '--dump-sql']);
+            $probe = $this->administrativeConnection();
+            // getServerVersion() includes human-readable, platform-specific trailing text
+            // ("17.11 (Debian 17.11-1.pgdg13+2)", "11.8.6-MariaDB-0+deb13u1 from Debian").
+            // The parentheses in the Postgres form are fatal once this DSN reaches
+            // config/packages/doctrine.php's env('...')->resolve(): resolve: also expands
+            // %parameter% placeholders, and the URL-encoded parens round-trip into exactly
+            // that shape. DBAL's own version parsing (AbstractPostgreSQLDriver,
+            // AbstractMySQLDriver) only ever reads the leading dotted-number/-MariaDB prefix
+            // anyway, so cutting at the first space loses nothing it uses.
+            $serverVersion = explode(' ', $probe->getServerVersion(), 2)[0];
+            $probe->close();
+        } catch (DBALException $e) {
+            self::markTestSkipped(sprintf('The configured database is not reachable: %s', $e->getMessage()));
+        }
+
+        $this->engine = new Engine($params['driver'], $params['host'], (int) $params['port'], $params['user'], $params['password'], $serverVersion);
+    }
+
+    final public function testMigrationResolvesDriftAgainstTheUpgradedLineage(): void
+    {
+        $databaseName = $this->databaseName('upgraded');
+        $this->recreateDatabase($databaseName);
+
+        try {
+            $this->console($databaseName, ['doctrine:migrations:migrate', '--no-interaction']);
+            $dumpSql = $this->console($databaseName, ['doctrine:schema:update', '--dump-sql']);
 
             foreach (static::resolvedDriftFragments() as $fragment) {
                 self::assertStringNotContainsString(
@@ -104,24 +130,14 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
                 );
             }
         } finally {
-            $this->dropDatabase($engine, $databaseName);
+            $this->dropDatabase($databaseName);
         }
     }
 
-    #[DataProvider('engines')]
-    final public function testMigrationIsANoOpAgainstTheFreshInstallLineage(
-        string $scheme,
-        string $host,
-        int $port,
-        string $user,
-        string $password,
-        string $serverVersion,
-    ): void {
-        $engine = new Engine($scheme, $host, $port, $user, $password, $serverVersion);
+    final public function testMigrationIsANoOpAgainstTheFreshInstallLineage(): void
+    {
         $databaseName = $this->databaseName('fresh');
-
-        $this->skipUnlessReachable($engine);
-        $this->recreateDatabase($engine, $databaseName);
+        $this->recreateDatabase($databaseName);
 
         try {
             // A fresh install never runs a single migration: SchemaTool builds the schema
@@ -129,12 +145,12 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
             // Migration.php:90) and every migration is marked executed without running.
             // Reproduce that here, except for the migration under test, so it is the one
             // thing that actually runs against this lineage.
-            $this->console($engine, $databaseName, ['doctrine:schema:create']);
-            $this->console($engine, $databaseName, ['doctrine:migrations:sync-metadata-storage']);
-            $this->console($engine, $databaseName, ['doctrine:migrations:version', '--add', '--all', '--no-interaction']);
-            $this->console($engine, $databaseName, ['doctrine:migrations:version', static::migrationClass(), '--delete', '--no-interaction']);
+            $this->console($databaseName, ['doctrine:schema:create']);
+            $this->console($databaseName, ['doctrine:migrations:sync-metadata-storage']);
+            $this->console($databaseName, ['doctrine:migrations:version', '--add', '--all', '--no-interaction']);
+            $this->console($databaseName, ['doctrine:migrations:version', static::migrationClass(), '--delete', '--no-interaction']);
 
-            $output = $this->console($engine, $databaseName, ['doctrine:migrations:migrate', '--dry-run', '--no-interaction']);
+            $output = $this->console($databaseName, ['doctrine:migrations:migrate', '--dry-run', '--no-interaction']);
 
             // Doctrine\Migrations\Version\DbalExecutor logs this exact warning when a
             // migration's up() produced no SQL diff against the live schema. --dry-run still
@@ -147,7 +163,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
                 sprintf('%s was not a no-op against a fresh-install schema.', static::migrationClass()),
             );
         } finally {
-            $this->dropDatabase($engine, $databaseName);
+            $this->dropDatabase($databaseName);
         }
     }
 
@@ -173,44 +189,35 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
         return $databaseName . '_test' . (getenv('TEST_TOKEN') ?: '');
     }
 
-    private function skipUnlessReachable(Engine $engine): void
+    private function recreateDatabase(string $databaseName): void
     {
-        try {
-            $this->administrativeConnection($engine)->executeQuery('SELECT 1');
-        } catch (DBALException $e) {
-            self::markTestSkipped(sprintf('%s is not reachable: %s', $engine->scheme, $e->getMessage()));
-        }
-    }
-
-    private function recreateDatabase(Engine $engine, string $databaseName): void
-    {
-        $connection = $this->administrativeConnection($engine);
+        $connection = $this->administrativeConnection();
         $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
 
         $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
         $connection->executeStatement('CREATE DATABASE ' . $quotedName);
     }
 
-    private function dropDatabase(Engine $engine, string $databaseName): void
+    private function dropDatabase(string $databaseName): void
     {
-        $connection = $this->administrativeConnection($engine);
+        $connection = $this->administrativeConnection();
         $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
 
         $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
     }
 
-    private function administrativeConnection(Engine $engine): Connection
+    private function administrativeConnection(): Connection
     {
         $params = [
-            'driver' => $engine->scheme === 'postgresql' ? 'pdo_pgsql' : 'pdo_mysql',
-            'host' => $engine->host,
-            'port' => $engine->port,
-            'user' => $engine->user,
-            'password' => $engine->password,
+            'driver' => $this->engine->driver,
+            'host' => $this->engine->host,
+            'port' => $this->engine->port,
+            'user' => $this->engine->user,
+            'password' => $this->engine->password,
         ];
 
         // pdo_pgsql needs a database to connect to; pdo_mysql does not.
-        if ($engine->scheme === 'postgresql') {
+        if ($this->engine->driver === 'pdo_pgsql') {
             $params['dbname'] = 'postgres';
         }
 
@@ -220,21 +227,24 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     /**
      * @param list<string> $arguments
      */
-    private function console(Engine $engine, string $databaseName, array $arguments): string
+    private function console(string $databaseName, array $arguments): string
     {
+        $engine = $this->engine;
+        $scheme = $engine->driver === 'pdo_pgsql' ? 'postgresql' : 'mysql';
+
         $process = new Process(
             array_merge([PHP_BINARY, 'bin/console'], $arguments),
             dirname(__DIR__, 4),
             [
                 'SOLIDINVOICE_DATABASE_URL' => sprintf(
-                    '%s://%s:%s@%s:%d/%s?serverVersion=%s',
-                    $engine->scheme,
-                    $engine->user,
-                    $engine->password,
+                    '%s://%s:%s@%s:%d/%s?%s',
+                    $scheme,
+                    rawurlencode($engine->user),
+                    rawurlencode($engine->password),
                     $engine->host,
                     $engine->port,
                     $databaseName,
-                    $engine->serverVersion,
+                    http_build_query(['serverVersion' => $engine->serverVersion]),
                 ),
                 'SOLIDINVOICE_ENV' => 'test',
                 'SOLIDINVOICE_DEBUG' => '0',
