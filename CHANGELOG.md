@@ -8,6 +8,7 @@ Unreleased
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
+* Added the `messenger_messages` table to the migration chain. It was previously missing, so an instance upgraded from the tarball or a Helm `pre-upgrade` job would have the failed-message transport create it with a runtime `CREATE TABLE`, which fails on a database user without DDL privileges
 
 3.0.0 / 2026-06-17
 -------------------
