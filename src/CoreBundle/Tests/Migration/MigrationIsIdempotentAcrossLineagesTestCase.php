@@ -22,7 +22,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use function array_merge;
 use function dirname;
-use function explode;
 use function getenv;
 use function http_build_query;
 use function preg_replace;
@@ -92,15 +91,19 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
 
         try {
             $probe = $this->administrativeConnection();
-            // getServerVersion() includes human-readable, platform-specific trailing text
-            // ("17.11 (Debian 17.11-1.pgdg13+2)", "11.8.6-MariaDB-0+deb13u1 from Debian").
-            // The parentheses in the Postgres form are fatal once this DSN reaches
-            // config/packages/doctrine.php's env('...')->resolve(): resolve: also expands
-            // %parameter% placeholders, and the URL-encoded parens round-trip into exactly
-            // that shape. DBAL's own version parsing (AbstractPostgreSQLDriver,
-            // AbstractMySQLDriver) only ever reads the leading dotted-number/-MariaDB prefix
-            // anyway, so cutting at the first space loses nothing it uses.
-            $serverVersion = explode(' ', $probe->getServerVersion(), 2)[0];
+            // getServerVersion() includes human-readable, platform-specific trailing text, and
+            // where that trailing text falls varies by distro packaging:
+            // - "17.11 (Debian 17.11-1.pgdg13+2)" (Postgres)
+            // - "11.8.6-MariaDB-0+deb13u1 from Debian" (Debian-packaged MariaDB)
+            // - "10.4.34-MariaDB-1:10.4.34+maria~ubu2204" (Ubuntu-packaged MariaDB, dpkg epoch
+            //   before any space)
+            // Cutting at the first space missed that last case, and the surviving ":"/"+" then
+            // got URL-encoded into the DSN and misread as a "%parameter%" reference once this
+            // reached config/packages/doctrine.php's env('...')->resolve(). DBAL's own version
+            // parsing (AbstractPostgreSQLDriver, AbstractMySQLDriver) only ever reads the leading
+            // dotted-number/-MariaDB prefix anyway, so extract exactly that instead of cutting on
+            // a delimiter that moves around.
+            $serverVersion = (string) preg_replace('/^([\d.]+(?:-MariaDB)?).*/s', '$1', $probe->getServerVersion());
             $probe->close();
         } catch (DBALException $e) {
             self::markTestSkipped(sprintf('The configured database is not reachable: %s', $e->getMessage()));
