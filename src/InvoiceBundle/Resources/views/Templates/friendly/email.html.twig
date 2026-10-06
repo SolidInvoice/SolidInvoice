@@ -1,5 +1,4 @@
 {% extends '@SolidInvoiceInvoice/Templates/_email_base.html.twig' %}
-{% set accent = '#2e963a' %}
 
 {% set primary = invoice_primary_contact(invoice) %}
 {% set greeting = primary is not null and primary.firstName is not empty ? primary.firstName : invoice.client.name %}

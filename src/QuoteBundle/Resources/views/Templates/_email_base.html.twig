@@ -14,7 +14,6 @@
 {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
-{% set accent = accent|default('#2e963a') %}
 {% set headingFont = headingFont|default('helvetica, Arial, sans-serif') %}
 {# JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT — keep dynamic
  # values inside the JSON-LD script tag from breaking out via `</script>`. #}

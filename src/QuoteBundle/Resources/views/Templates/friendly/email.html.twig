@@ -1,5 +1,4 @@
 {% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
-{% set accent = '#2e963a' %}
 
 {% set primary = quote.users|first %}
 {% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
