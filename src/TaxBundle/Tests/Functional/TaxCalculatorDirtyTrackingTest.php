@@ -21,6 +21,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -108,9 +109,15 @@ final class TaxCalculatorDirtyTrackingTest extends KernelTestCase
         // Force the updated timestamp Gedmo set on insert into the past, portably across
         // the test suite's database backends, so a false bump on the read path under test
         // is not hidden by both timestamps landing in the same second.
-        $this->em->createQuery('UPDATE ' . Line::class . ' l SET l.updated = :updated WHERE l.invoice = :invoice')
+        //
+        // Binding the invoice as an entity leaves Doctrine to guess the parameter type. On
+        // PostgreSQL that guess serialises the Ulid wrong and the native uuid column
+        // rejects it ("invalid input syntax for type uuid") — MySQL/MariaDB's ulid column
+        // is less strict and let it through. Binding the id with the explicit UlidType
+        // avoids the guess on every platform.
+        $this->em->createQuery('UPDATE ' . Line::class . ' l SET l.updated = :updated WHERE l.invoice = :invoiceId')
             ->setParameter('updated', CarbonImmutable::now()->subDays(1))
-            ->setParameter('invoice', $invoice)
+            ->setParameter('invoiceId', $invoice->getId(), UlidType::NAME)
             ->execute();
         $this->em->clear();
 
