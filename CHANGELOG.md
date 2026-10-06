@@ -8,6 +8,10 @@ Unreleased
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
 
+### Fixes
+
+* The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
+
 3.0.0 / 2026-06-17
 -------------------
 

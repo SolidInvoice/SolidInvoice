@@ -31,7 +31,7 @@
 <body{% block body_attrs %}{% endblock %}>
 
 {% if setting('quote/watermark') %}
-    <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ ('status.' ~ quote.status.value)|trans|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# Suppression of "Powered by" only takes effect when the `custom_branding` feature is on
