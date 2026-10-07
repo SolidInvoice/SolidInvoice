@@ -140,9 +140,6 @@ final class StatusExtensionTest extends TestCase
 
     public function testInvoiceLabelWithNoStatusMergesTheRecurringStatuses(): void
     {
-        // 'active' no longer comes from InvoiceStatus (SOL-194 removed the unreachable
-        // case), so array_merge() now appends it from RecurringInvoiceStatus instead,
-        // moving it later in the key order. The status set is unchanged.
         self::assertSame(
             'new,draft,pending,paid,overdue,cancelled,archived,active,complete,paused',
             $this->render('{{ invoice_label()|keys|join(",") }}')

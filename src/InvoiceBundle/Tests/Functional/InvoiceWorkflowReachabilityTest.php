@@ -18,8 +18,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * Guards against a place being declared in the invoice workflow config without
- * ever being reachable, the defect fixed on SOL-194: `InvoiceStatus::Active`
- * was listed as a place but was never the `to` of any transition.
+ * ever being reachable.
  */
 final class InvoiceWorkflowReachabilityTest extends KernelTestCase
 {
