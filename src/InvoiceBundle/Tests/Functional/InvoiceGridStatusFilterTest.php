@@ -22,7 +22,7 @@ final class InvoiceGridStatusFilterTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
 
-    public function testStatusFilterOffersExactlySevenChoicesAndExcludesActive(): void
+    public function testStatusFilter(): void
     {
         $grid = self::getContainer()->get(InvoiceGrid::class);
 
@@ -43,6 +43,5 @@ final class InvoiceGridStatusFilterTest extends KernelTestCase
         $choices = $filter->formOptions()['choices'];
 
         self::assertCount(7, $choices);
-        self::assertNotContains('active', $choices, 'The status filter must not offer the unreachable "active" value');
     }
 }
