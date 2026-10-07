@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action\Transition;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
@@ -25,13 +24,17 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-final class SendTest extends TestCase
+final class SendTest extends KernelTestCase
 {
     private function createGate(bool $gated): EmailVerificationGateInterface
     {
@@ -44,6 +47,122 @@ final class SendTest extends TestCase
     private function createLogger(): LoggerInterface
     {
         return $this->createStub(LoggerInterface::class);
+    }
+
+    private function createAction(WorkflowInterface $workflow, MailerInterface $mailer, RouterInterface $router, EmailVerificationGateInterface $gate, LoggerInterface $logger): Send
+    {
+        $csrfTokenManager = self::getContainer()->get('security.csrf.token_manager');
+        self::assertInstanceOf(CsrfTokenManagerInterface::class, $csrfTokenManager);
+
+        return new Send($workflow, $mailer, $router, $gate, $logger, $csrfTokenManager);
+    }
+
+    private function createRequestWithCsrfToken(): Request
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create('/invoices/action/send/123', Request::METHOD_POST);
+        $request->setSession($session);
+
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $csrfTokenManager = self::getContainer()->get('security.csrf.token_manager');
+        $token = $csrfTokenManager->getToken('send_invoice');
+        $request->request->set('_token', $token->getValue());
+
+        return $request;
+    }
+
+    private function createRequestWithInvalidCsrfToken(): Request
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create('/invoices/action/send/123', Request::METHOD_POST);
+        $request->setSession($session);
+
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $request->request->set('_token', 'invalid_token');
+
+        return $request;
+    }
+
+    private function createRequestWithNoCsrfToken(): Request
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create('/invoices/action/send/123', Request::METHOD_POST);
+        $request->setSession($session);
+
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        return $request;
+    }
+
+    public function testSendWithNoCsrfTokenReturnsErrorFlashAndDoesNotSendEmail(): void
+    {
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->never())->method('can');
+        $workflow->expects($this->never())->method('apply');
+
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->never())->method('send');
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects($this->once())
+            ->method('generate')
+            ->with('_invoices_view', self::anything())
+            ->willReturn('/invoices/view/123');
+
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+
+        $invoice = new Invoice();
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
+
+        $response = $action($this->createRequestWithNoCsrfToken(), $invoice);
+
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/invoices/view/123', $response->getTargetUrl());
+
+        $flashes = iterator_to_array($response->getFlash());
+        self::assertArrayHasKey(FlashResponse::FLASH_ERROR, $flashes);
+        self::assertSame('invoice.send.invalid_csrf', $flashes[FlashResponse::FLASH_ERROR]);
+    }
+
+    public function testSendWithInvalidCsrfTokenReturnsErrorFlashAndDoesNotSendEmail(): void
+    {
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->never())->method('can');
+        $workflow->expects($this->never())->method('apply');
+
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->never())->method('send');
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects($this->once())
+            ->method('generate')
+            ->with('_invoices_view', self::anything())
+            ->willReturn('/invoices/view/123');
+
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+
+        $invoice = new Invoice();
+        $invoice->addUser(new Contact()->setEmail('test@example.com'));
+
+        $response = $action($this->createRequestWithInvalidCsrfToken(), $invoice);
+
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/invoices/view/123', $response->getTargetUrl());
+
+        $flashes = iterator_to_array($response->getFlash());
+        self::assertArrayHasKey(FlashResponse::FLASH_ERROR, $flashes);
+        self::assertSame('invoice.send.invalid_csrf', $flashes[FlashResponse::FLASH_ERROR]);
     }
 
     public function testSendWithNoContactsReturnsErrorFlash(): void
@@ -61,12 +180,12 @@ final class SendTest extends TestCase
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
 
         $invoice = new Invoice();
         // No users added — getUsers()->isEmpty() === true
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
@@ -91,12 +210,12 @@ final class SendTest extends TestCase
             ->with('_invoices_view', self::anything())
             ->willReturn('/invoices/view/123');
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(true), $this->createLogger());
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(true), $this->createLogger());
 
         $invoice = new Invoice();
         $invoice->addUser(new Contact()->setEmail('test@example.com'));
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
 
@@ -132,10 +251,10 @@ final class SendTest extends TestCase
         $doctrine = $this->createMock(ManagerRegistry::class);
         $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
@@ -176,10 +295,10 @@ final class SendTest extends TestCase
         $doctrine = $this->createMock(ManagerRegistry::class);
         $doctrine->expects($this->once())->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());
@@ -221,10 +340,10 @@ final class SendTest extends TestCase
         $doctrine = $this->createStub(ManagerRegistry::class);
         $doctrine->method('getManager')->willReturn($em);
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $this->createLogger());
         $action->setDoctrine($doctrine);
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
 
@@ -263,10 +382,10 @@ final class SendTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
 
-        $action = new Send($workflow, $mailer, $router, $this->createGate(false), $logger);
+        $action = $this->createAction($workflow, $mailer, $router, $this->createGate(false), $logger);
         $action->setDoctrine($doctrine);
 
-        $response = $action(new Request(), $invoice);
+        $response = $action($this->createRequestWithCsrfToken(), $invoice);
 
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/invoices/view/123', $response->getTargetUrl());

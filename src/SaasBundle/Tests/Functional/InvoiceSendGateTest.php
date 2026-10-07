@@ -27,8 +27,11 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
@@ -50,7 +53,7 @@ final class InvoiceSendGateTest extends KernelTestCase
 
         $invoice = $this->createPendingInvoice();
 
-        $response = $action(Request::create('/invoices/action/send/' . $invoice->getId()), $invoice);
+        $response = $action($this->createRequestWithCsrfToken('/invoices/action/send/' . $invoice->getId()), $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -70,7 +73,7 @@ final class InvoiceSendGateTest extends KernelTestCase
 
         $invoice = $this->createPendingInvoice();
 
-        $response = $action(Request::create('/invoices/action/send/' . $invoice->getId()), $invoice);
+        $response = $action($this->createRequestWithCsrfToken('/invoices/action/send/' . $invoice->getId()), $invoice);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -97,10 +100,33 @@ final class InvoiceSendGateTest extends KernelTestCase
         $workflow = $container->get('state_machine.invoice');
         self::assertInstanceOf(WorkflowInterface::class, $workflow);
 
-        $action = new Send($workflow, $mailer, $router, $gate, new NullLogger());
+        $csrfTokenManager = $container->get('security.csrf.token_manager');
+        self::assertInstanceOf(CsrfTokenManagerInterface::class, $csrfTokenManager);
+
+        $action = new Send($workflow, $mailer, $router, $gate, new NullLogger(), $csrfTokenManager);
         $action->setDoctrine($container->get('doctrine'));
 
         return $action;
+    }
+
+    private function createRequestWithCsrfToken(string $path): Request
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create($path, Request::METHOD_POST);
+        $request->setSession($session);
+
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $csrfTokenManager = self::getContainer()->get('security.csrf.token_manager');
+        self::assertInstanceOf(CsrfTokenManagerInterface::class, $csrfTokenManager);
+
+        $token = $csrfTokenManager->getToken('send_invoice');
+        $request->request->set('_token', $token->getValue());
+
+        return $request;
     }
 
     private function createPendingInvoice(): Invoice

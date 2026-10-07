@@ -1002,6 +1002,7 @@ invoice:
         send: 'Save and Send'
         update: Update
     send:
+        invalid_csrf: 'Invalid CSRF token'
         no_recipients: 'Cannot send invoice: no contacts with email addresses found'
     send_to: 'Send invoice to:'
     stats:
