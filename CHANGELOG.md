@@ -7,6 +7,16 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Invoice and quote PDFs on the classic, modern, studio, photographer, monochrome and compact templates now print the document status as a labelled line, not only as the watermark
+* The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
+
+### Fixes
+
+* Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
+* Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
+* Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
+* The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
+* Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 
 3.0.0 / 2026-06-17
 -------------------
