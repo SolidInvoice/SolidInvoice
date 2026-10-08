@@ -31,7 +31,7 @@
 <body{% block body_attrs %}{% endblock %}>
 
 {% if setting('invoice/watermark') %}
-    <watermarktext content="{{ invoice.status.value|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ ('status.' ~ invoice.status.value)|trans|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# Suppression of "Powered by" only takes effect when the `custom_branding` feature is on

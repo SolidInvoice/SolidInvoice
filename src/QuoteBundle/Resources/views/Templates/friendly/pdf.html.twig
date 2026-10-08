@@ -23,7 +23,7 @@
                 <div style="font-size: 14pt; font-weight: bold; color: #1e293b; margin-top: 8px;">{{ company_name() }}</div>
             </td>
             <td style="vertical-align: middle; text-align: right;">
-                <div style="font-size: 9pt; color: #94704a; letter-spacing: 2px; text-transform: uppercase;">{{ 'quote.pdf.title'|trans }}</div>
+                <div style="font-size: 9pt; color: #7c4a1e; letter-spacing: 2px; text-transform: uppercase;">{{ 'quote.pdf.title'|trans }}</div>
                 <div style="font-size: 18pt; font-weight: bold; color: #1e293b;">#{{ quote.quoteId }}</div>
             </td>
         </tr>
@@ -39,12 +39,12 @@
     <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
         <tr>
             <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
-                <div style="font-size: 8pt; color: #94704a; text-transform: uppercase; letter-spacing: 1px;">{{ 'quote.pdf.date'|trans }}</div>
+                <div style="font-size: 8pt; color: #7c4a1e; text-transform: uppercase; letter-spacing: 1px;">{{ 'quote.pdf.date'|trans }}</div>
                 <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{{ quote.created|date('F j, Y') }}</div>
             </td>
             <td style="width: 4px;"></td>
             <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
-                <div style="font-size: 8pt; color: #94704a; text-transform: uppercase; letter-spacing: 1px;">{{ 'quote.pdf.valid_until'|trans }}</div>
+                <div style="font-size: 8pt; color: #7c4a1e; text-transform: uppercase; letter-spacing: 1px;">{{ 'quote.pdf.valid_until'|trans }}</div>
                 <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{% if quote.due %}{{ quote.due|date('F j, Y') }}{% else %}—{% endif %}</div>
                 {% if quote.due %}
                     <div style="margin-top: 2px;">{{ q.validity_indicator(quote) }}</div>
@@ -68,9 +68,9 @@
     <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
         <thead>
             <tr>
-                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: left; border-bottom: 1px solid #e8d7b8;">{{ 'quote.item.heading.description'|trans }}</th>
-                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: right; border-bottom: 1px solid #e8d7b8; width: 60px;">{{ 'quote.item.heading.qty'|trans }}</th>
-                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: right; border-bottom: 1px solid #e8d7b8; width: 100px;">{{ 'quote.item.heading.total'|trans }}</th>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #7c4a1e; text-align: left; border-bottom: 1px solid #e8d7b8;">{{ 'quote.item.heading.description'|trans }}</th>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #7c4a1e; text-align: right; border-bottom: 1px solid #e8d7b8; width: 60px;">{{ 'quote.item.heading.qty'|trans }}</th>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #7c4a1e; text-align: right; border-bottom: 1px solid #e8d7b8; width: 100px;">{{ 'quote.item.heading.total'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -85,7 +85,7 @@
     </table>
 
     {{ q.totals_block(quote, currency, {totalBg: '#ecf7ee', totalColor: '#166534'}) }}
-    {{ q.terms_block(quote, {labelColor: '#94704a', borderColor: '#e8d7b8'}) }}
+    {{ q.terms_block(quote, {labelColor: '#7c4a1e', borderColor: '#e8d7b8'}) }}
 
     <div style="margin-top: 24px; font-family: Georgia, serif; font-size: 11pt; color: #475569; font-style: italic;">
         {{ 'quote.template.friendly.signoff'|trans }}

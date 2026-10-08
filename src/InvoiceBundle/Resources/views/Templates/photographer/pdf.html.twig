@@ -35,6 +35,7 @@
                         {% if invoice.due %}
                             {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y')) }}
                         {% endif %}
+                        {{ inv.status_pair(invoice.status) }}
                     </td>
                 </tr>
             </table>

@@ -66,6 +66,7 @@ uncommitted transaction, their writes are never rolled back, and their `setUp()`
 directory every paratest worker shares. `unit-tests.yml` runs them last, with `bin/phpunit`
 and one browser, deliberately.
 
+
 ### Test database
 
 You do not need to provision one. `phpunit.xml.dist` sets
@@ -596,7 +597,7 @@ gated. The bar below is the real one.
   to have unit tests available, and the unit tests should not fail."*
 - Unit tests sit at the top level of `src/*Bundle/Tests/`; functional tests in
   `Tests/Functional/`; API tests under `Tests/Functional/Api/`.
-- Mocking is **Mockery** (`mockery/mockery`), plus `phpstan/phpstan-mockery`.
+- Mocking should use **PHPUnit Mocks**. There are some old tests using Mockery (`mockery/mockery`), plus `phpstan/phpstan-mockery`, but we actively want to move away from this and strictly only use PHPUnit mocks everywhere going forward.
 - Fixtures are **Foundry** (`zenstruck/foundry ^2.10`) with `FoundryExtension` and
   auto-reset enabled in `phpunit.xml.dist`. Also available:
   `doctrine/doctrine-fixtures-bundle`, `liip/test-fixtures-bundle`. Factories live next to
@@ -625,6 +626,11 @@ gated. The bar below is the real one.
 - `phpunit.xml.dist` is strict: `failOnWarning`, `failOnRisky`, `failOnPhpunitDeprecation`,
   `beStrictAboutOutputDuringTests`, `beStrictAboutChangesToGlobalState`,
   `executionOrder="random"`. A test that leaks state or echoes will fail.
+- When writing tests, **do not** write tests for removed functionality.For example, when removing a status value from invoices,
+  do not write a test that checks for the removed value. Instead, write tests that ensure the system behaves correctly without that value.
+  Or anything other that is removed, should never have a test to verify that the removed value is not re-introduced or to test that it is actually removed.
+  Instead, tests should test and verify the current existing functionality, we should test that the application behaves at it should in it's current state,
+  not based on something that existed before.
 
 ### Slow and awkward
 
@@ -645,8 +651,7 @@ gated. The bar below is the real one.
 Short, descriptive, usually prefixed. Real examples from merged PRs:
 `fix/api-line-post-overwrites`, `fix/codeql-action-pin-mismatch`,
 `docs/proxmox-community-scripts`, `migrate-legacy-array-columns-to-json`,
-`platform-layout`. Agent/AI branches on this repo have used an `ai/issue-<number>-<slug>`
-prefix (e.g. `ai/issue-2360-invoice-email-no-recipients`). Target `3.1.x`.
+`platform-layout`.
 
 ### Commit messages
 
@@ -705,10 +710,7 @@ If you believe a merge is urgent — a broken build, a security fix, a release b
 - Do not enable auto-merge. It is a merge, just a deferred one.
 
 > **Repository note, not an exception to the above.** This repository has no auto-merge
-> automation. It had a `.mergify.yml` with one rule, which merged any non-draft PR that
-> collected one approving review. That rule disagreed with this section, because an
-> approving review on your PR could start a merge that the founder did not do. The file is
-> deleted. Mergify also showed no sign that it was still installed.
+> automation.
 >
 > Only the founder merges your PR. An approving review does not merge it. Keep opening
 > every PR as a draft and keep labelling it `agent`, but do not treat either one as the

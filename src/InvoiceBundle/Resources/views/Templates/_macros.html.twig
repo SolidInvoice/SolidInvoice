@@ -69,8 +69,33 @@
 
 {% macro meta_pair(label, value, mono=false) %}
     <div style="margin-bottom: 6px;">
-        <div style="font-size: 8pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">{{ label }}</div>
+        <div style="font-size: 8pt; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">{{ label }}</div>
         <div style="font-size: 10pt; color: #1e293b; font-weight: 500;{% if mono %} font-family: 'Courier New', monospace;{% endif %}">{{ value }}</div>
+    </div>
+{% endmacro %}
+
+{#
+ # status_pair
+ #
+ # palette keys: labelColor, ink (overrides the status ink for the ink-only templates)
+ #}
+{% macro status_pair(status, palette={}) %}
+    {% set p = { labelColor: '#475569', ink: null }|merge(palette) %}
+    {% set inks = {
+        'new':       '#475569',
+        'draft':     '#475569',
+        'pending':   '#92400e',
+        'paid':      '#047857',
+        'accepted':  '#047857',
+        'active':    '#92400e',
+        'overdue':   '#b91c1c',
+        'declined':  '#b91c1c',
+        'cancelled': '#475569',
+        'archived':  '#475569'
+    } %}
+    <div style="margin-bottom: 6px;">
+        <div style="font-size: 8pt; color: {{ p.labelColor }}; text-transform: uppercase; letter-spacing: 0.5px;">{{ 'pdf.status'|trans }}</div>
+        <div style="font-size: 10pt; font-weight: 600; color: {{ p.ink ?? (inks[status.value]|default('#475569')) }};">{{ ('status.' ~ status.value)|trans }}</div>
     </div>
 {% endmacro %}
 

@@ -19,11 +19,15 @@ use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\TransitionTest
+ */
 final class Transition
 {
     use SaveableTrait;
@@ -60,7 +64,11 @@ final class Transition
 
             public function getFlash(): Generator
             {
-                yield self::FLASH_SUCCESS => 'invoice.transition.action.' . $this->action;
+                // Cancelling ends the expectation of payment, so it does not get the
+                // product's good-news bar. archive and every other transition keep it.
+                $severity = Graph::TRANSITION_CANCEL === $this->action ? self::FLASH_INFO : self::FLASH_SUCCESS;
+
+                yield $severity => 'invoice.transition.action.' . $this->action;
             }
         };
     }

@@ -39,6 +39,7 @@
                 {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
                 <div style="margin-bottom: 6px;">{{ q.validity_indicator(quote) }}</div>
             {% endif %}
+            {{ q.status_pair(quote.status) }}
         </td>
     </tr>
 </table>

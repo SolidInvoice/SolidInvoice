@@ -9,7 +9,7 @@
 
 {% block extra_styles %}
     body { font-family: Georgia, 'Times New Roman', serif; color: #2a2a2a; }
-    .editorial-marker { font-style: italic; font-size: 11pt; color: #94704a; letter-spacing: 1px; }
+    .editorial-marker { font-style: italic; font-size: 11pt; color: #7c4a1e; letter-spacing: 1px; }
 {% endblock %}
 
 {% block body %}
@@ -18,7 +18,7 @@
         <tr>
             <td style="vertical-align: bottom;">
                 {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
-                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #94704a;">{{ 'quote.pdf.title'|trans }}</div>
+                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #7c4a1e;">{{ 'quote.pdf.title'|trans }}</div>
                 <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}</div>
             </td>
             <td style="vertical-align: bottom; text-align: right;">
@@ -60,6 +60,6 @@
 </table>
 
 <div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'quote.total'|trans }}</div>
-{{ q.totals_block(quote, currency, {totalBg: '#f5ebd9', totalColor: '#94704a', totalLabelColor: '#1a1a1a', mono: 'Georgia, serif'}) }}
-{{ q.terms_block(quote, {labelColor: '#94704a', borderColor: '#e8dcc4'}) }}
+{{ q.totals_block(quote, currency, {totalBg: '#f5ebd9', totalColor: '#1e293b', totalLabelColor: '#1a1a1a', mono: 'Georgia, serif'}) }}
+{{ q.terms_block(quote, {labelColor: '#7c4a1e', borderColor: '#e8dcc4'}) }}
 {% endblock %}

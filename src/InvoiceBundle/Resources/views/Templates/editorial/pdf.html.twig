@@ -9,7 +9,7 @@
 
 {% block extra_styles %}
     body { font-family: Georgia, 'Times New Roman', serif; color: #2a2a2a; }
-    .editorial-marker { font-style: italic; font-size: 11pt; color: #94704a; letter-spacing: 1px; }
+    .editorial-marker { font-style: italic; font-size: 11pt; color: #7c4a1e; letter-spacing: 1px; }
 {% endblock %}
 
 {% block body %}
@@ -18,7 +18,7 @@
         <tr>
             <td style="vertical-align: bottom;">
                 {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
-                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #94704a;">{{ 'invoice.template.editorial.heading'|trans }}</div>
+                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #7c4a1e;">{{ 'invoice.template.editorial.heading'|trans }}</div>
                 <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
             </td>
             <td style="vertical-align: bottom; text-align: right;">
@@ -54,7 +54,7 @@
 </table>
 
 <div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'invoice.total'|trans }}</div>
-{{ inv.totals_block(invoice, currency, {totalBg: '#f5ebd9', totalColor: '#1a1a1a', balanceBg: '#f5ebd9', balanceColor: '#94704a', mono: 'Georgia, serif'}) }}
-{{ inv.terms_block(invoice, {labelColor: '#94704a', borderColor: '#e8dcc4'}) }}
-{{ inv.payment_cta(invoice, '#94704a') }}
+{{ inv.totals_block(invoice, currency, {totalBg: '#f5ebd9', totalColor: '#1e293b', balanceBg: '#f5ebd9', balanceColor: '#1e293b', mono: 'Georgia, serif'}) }}
+{{ inv.terms_block(invoice, {labelColor: '#7c4a1e', borderColor: '#e8dcc4'}) }}
+{{ inv.payment_cta(invoice, '#7c4a1e') }}
 {% endblock %}

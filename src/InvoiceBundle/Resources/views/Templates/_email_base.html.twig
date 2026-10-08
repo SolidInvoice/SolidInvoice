@@ -15,7 +15,6 @@
 
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
-{% set accent = accent|default('#2e963a') %}
 {% set headingFont = headingFont|default('helvetica, Arial, sans-serif') %}
 {% set isPaid = invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid %}
 {# JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT — keep dynamic

@@ -75,7 +75,7 @@ final readonly class InvoiceReadTools
     /**
      * List invoices filtered by status, optionally scoped to a client.
      *
-     * @param string      $status    One of: new, draft, pending, paid, active, overdue, cancelled, archived
+     * @param string      $status    One of: new, draft, pending, paid, overdue, cancelled, archived
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
