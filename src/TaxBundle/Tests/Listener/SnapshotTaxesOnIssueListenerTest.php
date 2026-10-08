@@ -52,6 +52,40 @@ final class SnapshotTaxesOnIssueListenerTest extends TestCase
         self::assertInstanceOf(DateTimeImmutable::class, $lineTax->getSnapshottedAt());
     }
 
+    public function testInvoiceDraftToPaidTransitionStampsAllUnsetSnapshots(): void
+    {
+        $invoice = $this->buildInvoiceWithTaxedLine();
+        $listener = new SnapshotTaxesOnIssueListener();
+
+        $event = $this->makeEvent(
+            $invoice,
+            'invoice',
+            new Transition('pay', InvoiceStatus::Draft->value, InvoiceStatus::Paid->value),
+        );
+
+        $listener->onTransition($event);
+
+        $lineTax = $invoice->getLines()->first()->getTaxes()->first();
+        self::assertInstanceOf(DateTimeImmutable::class, $lineTax->getSnapshottedAt());
+    }
+
+    public function testInvoiceDraftToOverdueTransitionStampsAllUnsetSnapshots(): void
+    {
+        $invoice = $this->buildInvoiceWithTaxedLine();
+        $listener = new SnapshotTaxesOnIssueListener();
+
+        $event = $this->makeEvent(
+            $invoice,
+            'invoice',
+            new Transition('overdue', InvoiceStatus::Draft->value, InvoiceStatus::Overdue->value),
+        );
+
+        $listener->onTransition($event);
+
+        $lineTax = $invoice->getLines()->first()->getTaxes()->first();
+        self::assertInstanceOf(DateTimeImmutable::class, $lineTax->getSnapshottedAt());
+    }
+
     public function testQuoteDraftToPendingTransitionStampsAllUnsetSnapshots(): void
     {
         $quote = $this->buildQuoteWithTaxedLine();

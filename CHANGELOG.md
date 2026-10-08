@@ -13,6 +13,8 @@ Unreleased
 * Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
 * Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
+* The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
+* Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 
 3.0.0 / 2026-06-17
 -------------------

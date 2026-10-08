@@ -141,7 +141,7 @@ final class StatusExtensionTest extends TestCase
     public function testInvoiceLabelWithNoStatusMergesTheRecurringStatuses(): void
     {
         self::assertSame(
-            'new,draft,pending,paid,active,overdue,cancelled,archived,complete,paused',
+            'new,draft,pending,paid,overdue,cancelled,archived,active,complete,paused',
             $this->render('{{ invoice_label()|keys|join(",") }}')
         );
     }
