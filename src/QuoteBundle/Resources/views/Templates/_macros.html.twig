@@ -113,7 +113,7 @@
 {% macro validity_indicator(quote, palette={}) %}
     {% set p = {danger: '#b91c1c', urgent: '#92400e', quiet: '#475569'}|merge(palette) %}
     {% if quote.due %}
-        {% set daysDiff = ((quote.due|date("U") - "now"|date("U")) / 86400)|round(0, 'floor') %}
+        {% set daysDiff = days_until_due(quote.due) %}
         {% if quote.status not in [
             enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Accepted,
             enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Declined,
