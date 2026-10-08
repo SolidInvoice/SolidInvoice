@@ -10,6 +10,7 @@ Unreleased
 
 ### Fixes
 
+* The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 
 3.0.0 / 2026-06-17
