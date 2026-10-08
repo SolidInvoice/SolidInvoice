@@ -18,6 +18,10 @@ Unreleased
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 
+### Fixes
+
+* A percentage discount of 1% or less was applied as a whole percent instead (1% became 100%, 0.5% became 50%). The stored value is now the plain percentage the user typed, with no boundary guess. A migration normalises existing rows and leaves every issued document's total unchanged.
+
 3.0.0 / 2026-06-17
 -------------------
 
