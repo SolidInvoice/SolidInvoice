@@ -1069,13 +1069,13 @@ invoice:
     transition:
         action:
             accept: 'Invoice has been accepted'
-            activate: 'Invoice has been activated'
             archive: 'Invoice has been archived'
             cancel: 'Invoice has been cancelled'
-            pause: 'Recurring invoice has been paused'
+            edit: 'Invoice has been returned to draft'
+            new: 'Invoice is now a draft'
+            overdue: 'Invoice is now overdue'
             pay: 'Invoice has been paid'
             reopen: 'Invoice has been re-opened'
-            resume: 'Recurring invoice has been resumed'
             sent: 'Invoice has been sent'
         exception:
             accept: 'Invoice cannot be accepted'
@@ -1084,6 +1084,16 @@ invoice:
             pay: 'Invoice cannot be paid'
             reopen: 'Invoice cannot be re-opened'
             sent: 'Invoice cannot be sent'
+        recurring:
+            action:
+                activate: 'Recurring invoice is now active'
+                archive: 'Recurring invoice has been archived'
+                cancel: 'Recurring invoice has been cancelled'
+                complete: 'Recurring invoice has finished its schedule'
+                edit: 'Recurring invoice has been returned to draft'
+                new: 'Recurring invoice is now a draft'
+                pause: 'Recurring invoice has been paused'
+                resume: 'Recurring invoice has been resumed'
     view:
         online: 'View this invoice online at: %url%'
         payments: Payments
@@ -1882,14 +1892,15 @@ quote:
         title: Summary
     transition:
         action:
-            accept: 'Quote Accepted and invoice created'
-            archive: 'Quote has been Archived'
-            cancel: 'Quote Cancelled'
-            decline: 'Quote Declined'
-            publish: 'Quote Published'
-            reopen: 'Quote Re-Opened'
-            send: 'Quote Sent'
-            sent: 'Quote Sent'
+            accept: 'Quote accepted, and an invoice has been created'
+            archive: 'Quote has been archived'
+            cancel: 'Quote has been cancelled'
+            decline: 'Quote has been declined'
+            new: 'Quote is now a draft'
+            publish: 'Quote has been published'
+            reopen: 'Quote has been re-opened'
+            send: 'Quote has been sent'
+            sent: 'Quote has been sent'
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'

@@ -622,4 +622,40 @@ final class TemplatesRenderingTest extends KernelTestCase
         self::assertStringNotContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $darkBand);
         self::assertStringContainsString('font-size: 10pt; font-weight: 600; color: #92400e;">Pending', $pageBody);
     }
+
+    /**
+     * `#94704a` carried both the warm label colour and, on the total cell,
+     * brown where the Money-Color Rule wants neutral. The sweep repoints the
+     * labels to `#7c4a1e` and the money line to `#1e293b`; the raw literal
+     * must not survive anywhere in either slug.
+     *
+     * @return iterable<string, array{string}>
+     */
+    public static function warmLabelSlugProvider(): iterable
+    {
+        yield 'editorial' => ['editorial'];
+        yield 'friendly' => ['friendly'];
+    }
+
+    #[DataProvider('warmLabelSlugProvider')]
+    public function testEditorialAndFriendlyDropTheOldWarmLabelLiteral(string $slug): void
+    {
+        $output = $this->renderPdf($slug);
+
+        self::assertStringNotContainsString('#94704a', $output);
+        self::assertStringContainsString('#7c4a1e', $output);
+    }
+
+    /**
+     * Quotes have no outstanding-balance branch, so the total cell always
+     * renders — unlike invoice editorial's balance cell, no special fixture
+     * is needed to exercise the Money-Color fix here.
+     */
+    public function testEditorialTotalIsNeutralNotWarmBrown(): void
+    {
+        $output = $this->renderPdf('editorial');
+
+        self::assertStringContainsString('font-family: Georgia, serif; color: #1e293b;', $output);
+        self::assertStringNotContainsString('font-family: Georgia, serif; color: #7c4a1e;', $output);
+    }
 }
