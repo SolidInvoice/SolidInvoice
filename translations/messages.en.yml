@@ -1622,6 +1622,7 @@ pdf:
     'no': 'No'
     of: of
     page: Page
+    status: Status
     'yes': 'Yes'
 powered_by: 'Powered By'
 profile:

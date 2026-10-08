@@ -7,6 +7,7 @@ Unreleased
 ### Changes
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Invoice and quote PDFs on the classic, modern, studio, photographer, monochrome and compact templates now print the document status as a labelled line, not only as the watermark
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 
 ### Fixes

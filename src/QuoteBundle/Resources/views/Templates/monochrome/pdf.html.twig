@@ -65,6 +65,7 @@
                                         <div style="font-size: 11pt; color: #1a1a1a;">{{ quote.due|date('F j, Y') }}</div>
                                         <div style="margin-top: 4px;">{{ q.validity_indicator(quote) }}</div>
                                     {% endif %}
+                                    {{ q.status_pair(quote.status, {labelColor: '#6b6b6b', ink: '#1a1a1a'}) }}
                                 </td>
                                 <td style="width: 34%; padding: 16px 0 0 0; vertical-align: top; text-align: right;">
                                     <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin-bottom: 4px;">
