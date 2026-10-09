@@ -17,6 +17,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use SolidInvoice\CoreBundle\Enum\TaxArithmeticVersion;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -45,7 +46,12 @@ class TotalCalculator
      */
     public function calculateTotals(BaseInvoice | Quote $entity): void
     {
-        $this->updateTotal($entity);
+        $issued = $entity->isIssued();
+
+        if (! $issued || ! $entity->hasPinnedTaxArithmetic()) {
+            $this->updateTotal($entity);
+            $entity->setTaxArithmeticVersion($issued ? TaxArithmeticVersion::current() : null);
+        }
 
         if ($entity instanceof Invoice) {
             $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
