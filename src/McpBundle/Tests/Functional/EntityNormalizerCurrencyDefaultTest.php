@@ -27,6 +27,7 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * Reproduces SOL-394: a client row with `currency_code IS NULL` resolves the system
@@ -52,6 +53,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         ])->getId();
 
         $this->clearEntityManager();
+        self::assertInstanceOf(Ulid::class, $invoiceId);
 
         $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toRfc4122());
 
@@ -70,6 +72,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         ])->getId();
 
         $this->clearEntityManager();
+        self::assertInstanceOf(Ulid::class, $quoteId);
 
         $result = $this->getResourceTool()->getResource('quote', $quoteId->toRfc4122());
 
@@ -87,6 +90,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         ])->getId();
 
         $this->clearEntityManager();
+        self::assertInstanceOf(Ulid::class, $recurringInvoiceId);
 
         $result = $this->getResourceTool()->getResource('recurring_invoice', $recurringInvoiceId->toRfc4122());
 
@@ -100,6 +104,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $clientId = ClientFactory::createOne(['currencyCode' => null, 'company' => $this->company])->getId();
 
         $this->clearEntityManager();
+        self::assertInstanceOf(Ulid::class, $clientId);
 
         $result = $this->getResourceTool()->getResource('client', $clientId->toRfc4122());
 
@@ -122,6 +127,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         ])->getId();
 
         $this->clearEntityManager();
+        self::assertInstanceOf(Ulid::class, $invoiceId);
 
         $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toRfc4122());
 
