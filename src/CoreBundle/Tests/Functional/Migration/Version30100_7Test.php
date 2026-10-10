@@ -144,6 +144,49 @@ final class Version30100_7Test extends KernelTestCase
     }
 
     /**
+     * `up()` on a database where `invoice_tax_exactly_one_document` does not exist. A 3.0.x
+     * database is in this state whenever {@see \DoctrineMigrations\Version30000_9} could not add
+     * the constraint: it adds it best-effort, so a non-conforming `invoice_tax` row at that time
+     * leaves the constraint absent while the migration still records as applied.
+     *
+     * Every other case here starts from {@see self::buildPreCreditNoteSchema()}, which always
+     * puts the three-column constraint in place, so `postUp()` only ever reaches its `ADD` path
+     * after a successful `DROP`. This case is the one that reaches `ADD` with nothing to drop,
+     * which is also the only path where `constraintExists()` returning false has to stop the
+     * migration from issuing a `DROP` that would fail. On MySQL that `DROP` is `DROP CHECK`
+     * rather than `DROP CONSTRAINT` (see {@see self::dropCheckClause()}), so the two engines
+     * exercise different statements here.
+     *
+     * Covers criterion 3 of the SOL-157 migration check, previously verified only by hand.
+     *
+     * @throws Exception
+     */
+    public function testUpEstablishesTheCheckConstraintWhenItIsAbsent(): void
+    {
+        $this->connection->executeStatement(sprintf(
+            'ALTER TABLE invoice_tax %s %s',
+            $this->dropCheckClause(),
+            self::CHECK_CONSTRAINT,
+        ));
+
+        self::assertNull(
+            $this->fetchCheckClause(),
+            'Precondition: invoice_tax_exactly_one_document has to be absent before up() runs.',
+        );
+
+        $this->applyUp();
+
+        $checkClause = $this->fetchCheckClause();
+        self::assertNotNull(
+            $checkClause,
+            'up()/postUp() did not establish invoice_tax_exactly_one_document on a database that '
+            . 'never had it — a 3.0.x database where Version30000_9 could not add it keeps no '
+            . 'invariant at all.',
+        );
+        self::assertStringContainsString('credit_note_id', $checkClause);
+    }
+
+    /**
      * @throws Exception
      */
     public function testCreditNoteOwnedInvoiceTaxRowInsertsSuccessfully(): void
@@ -433,6 +476,25 @@ final class Version30100_7Test extends KernelTestCase
         $clause = $this->connection->fetchOne($sql, $params);
 
         return $clause === false ? null : (string) $clause;
+    }
+
+    /**
+     * Mirrors {@see Version30100_7::dropClause()}: MySQL takes `DROP CHECK`, every other platform
+     * this test runs on takes `DROP CONSTRAINT`. `MariaDBPlatform` is a sibling of
+     * `MySQLPlatform` rather than a subclass, so the `AbstractMySQLPlatform` check alone would
+     * send MariaDB a statement it rejects with a syntax error.
+     *
+     * Duplicated rather than read off the migration: `dropClause()` is private, and each
+     * migration stays frozen — the same reason {@see self::buildPreCreditNoteSchema()} inlines
+     * `Version30000_9`'s constraint SQL.
+     */
+    private function dropCheckClause(): string
+    {
+        $platform = $this->connection->getDatabasePlatform();
+
+        return $platform instanceof AbstractMySQLPlatform && ! $platform instanceof MariaDBPlatform
+            ? 'DROP CHECK'
+            : 'DROP CONSTRAINT';
     }
 
     private function migration(): Version30100_7
