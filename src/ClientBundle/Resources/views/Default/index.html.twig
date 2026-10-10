@@ -127,14 +127,14 @@
                         <a href="{{ path('_clients_index') }}" class="nav-link{{ not isArchived ? ' active' : '' }}">
                             {{ ux_icon('tabler:users', {width: 16, height: 16}) }}
                             {{ 'client.tabs.active'|trans }}
-                            <span class="badge bg-primary-lt ms-2">{{ totalActiveClients }}</span>
+                            <span class="status-chip status-chip--neutral ms-2">{{ totalActiveClients }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('_clients_index', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}">
                             {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
                             {{ 'client.tabs.archived'|trans }}
-                            <span class="badge bg-secondary-lt ms-2">{{ totalArchivedClients }}</span>
+                            <span class="status-chip status-chip--neutral ms-2">{{ totalArchivedClients }}</span>
                         </a>
                     </li>
                 </ul>
