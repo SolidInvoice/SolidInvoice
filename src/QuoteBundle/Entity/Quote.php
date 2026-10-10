@@ -36,18 +36,18 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
-use LogicException;
-use Money\Currency;
 use SolidInvoice\ApiBundle\State\Processor\QuoteToInvoiceProcessor;
 use SolidInvoice\ApiBundle\State\Processor\QuoteTransitionProcessor;
 use SolidInvoice\ApiBundle\State\Provider\QuoteItemProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\HasFrozenCurrency;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -63,7 +63,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use function sprintf;
 
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
@@ -123,7 +122,7 @@ use function sprintf;
     ],
 )]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'quotes')])]
-class Quote
+class Quote implements HasFrozenCurrencyInterface
 {
     final public const string TABLE_NAME = 'quotes';
 
@@ -134,6 +133,7 @@ class Quote
     use LinePositions;
     use TimeStampable;
     use CompanyAware;
+    use HasFrozenCurrency;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -269,15 +269,6 @@ class Quote
         ]
     )]
     private Discount $discount;
-
-    /**
-     * The currency the quote was issued in, frozen the moment it leaves Draft/New.
-     * Null on a draft, or on a row written before this column existed — both fall back
-     * to {@see self::getClient()}'s current currency in {@see self::getCurrency()}.
-     */
-    #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3, nullable: true)]
-    #[Assert\Currency]
-    private ?string $currencyCode = null;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -421,36 +412,6 @@ class Quote
         $this->client = $client;
 
         return $this;
-    }
-
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    public function setCurrencyCode(?string $currencyCode): self
-    {
-        $this->currencyCode = $currencyCode;
-
-        return $this;
-    }
-
-    /**
-     * The frozen currency once the quote has left Draft/New, otherwise the client's
-     * current currency. Templates must read this instead of `client.currency` directly,
-     * so an issued quote keeps stating the amount it stated when it was issued.
-     */
-    public function getCurrency(): Currency
-    {
-        if ($this->currencyCode !== null) {
-            return new Currency($this->currencyCode);
-        }
-
-        if (! $this->client instanceof Client) {
-            throw new LogicException(sprintf('%s has no client to resolve a currency from.', static::class));
-        }
-
-        return $this->client->getCurrency();
     }
 
     public function getTotal(): BigNumber
