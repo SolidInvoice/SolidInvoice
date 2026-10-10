@@ -117,6 +117,10 @@ client:
         name:
             label: Name
             placeholder: 'Acme Corporation'
+        payment_terms:
+            help: 'Sets the due date on new invoices for this client.'
+            label: 'Payment terms'
+            placeholder: 'Company default (%terms%)'
         subtitle: 'Add a new client to start creating invoices and quotes'
         tax_identifiers_description: "The client's tax registration numbers (VAT, GSTIN, TIN, ABN, etc.). These appear on invoices and quotes issued to this client."
         website:
@@ -914,6 +918,10 @@ invoice:
     payment:
         capture: 'Do you want to capture a payment for this invoice?'
         label: Payment
+    payment_terms:
+        due_help: 'Calculated from the payment terms. Choose Custom to pick your own date.'
+        label: 'Payment terms'
+        recurring_help: 'Each invoice this creates is due according to these terms, counted from the day it is issued.'
     pdf:
         due_in_days: 'Due in %days% days'
         due_today: 'DUE TODAY'
@@ -1056,7 +1064,7 @@ invoice:
             engagement: engagement
             project_label: Project
             studio: Studio
-    terms: Terms
+    terms: 'Terms & Conditions'
     terms_notes:
         title: 'Terms & Notes'
         toggle: 'Toggle terms and notes section'
@@ -1617,6 +1625,18 @@ payment:
         this_month: 'This Month'
         total_received: 'Total Received'
 payment_made: 'Payment has been received'
+payment_terms:
+    custom: 'Custom'
+    due_on_receipt: 'Due on receipt'
+    end_of_month: 'End of month'
+    end_of_next_month: 'End of next month'
+    net_14: 'Net 14'
+    net_15: 'Net 15'
+    net_30: 'Net 30'
+    net_45: 'Net 45'
+    net_60: 'Net 60'
+    net_7: 'Net 7'
+    net_90: 'Net 90'
 pdf:
     additional_information: 'Additional information'
     'no': 'No'

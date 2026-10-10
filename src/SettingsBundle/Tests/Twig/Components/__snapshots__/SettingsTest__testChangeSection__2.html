@@ -1,5 +1,5 @@
 <html><body>
-<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"watermark":"1","bcc_address":"","email_subject":"New Invoice - #{id}","id_generation":{"strategy":"auto_increment","id_prefix":"","id_suffix":""},"reminder":{"enabled":"1","pre_due_enabled":"1","pre_due_days":"3"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"watermark":"1","bcc_address":"","email_subject":"New Invoice - #{id}","payment_terms":"net_30","id_generation":{"strategy":"auto_increment","id_prefix":"","id_suffix":""},"reminder":{"enabled":"1","pre_due_enabled":"1","pre_due_days":"3"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
         <ul class="nav nav-underline mb-4" role="tablist">
                                 <li class="nav-item">
                 <a href="/settings?section=system" class="nav-link">
@@ -228,6 +228,20 @@
         </div>
     </div>
 
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="settings_payment_terms">Payment terms</label><select id="settings_payment_terms" name="settings[payment_terms]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-describedby="settings_payment_terms_help" class="form-select"><option value=""></option>
+<option value="due_on_receipt">Due on receipt</option>
+<option value="net_7">Net 7</option>
+<option value="net_14">Net 14</option>
+<option value="net_15">Net 15</option>
+<option value="net_30" selected>Net 30</option>
+<option value="net_45">Net 45</option>
+<option value="net_60">Net 60</option>
+<option value="net_90">Net 90</option>
+<option value="end_of_month">End of month</option>
+<option value="end_of_next_month">End of next month</option>
+<option value="custom">Custom</option></select><div class="form-text text-muted mb-0" id="settings_payment_terms_help">Default payment terms for new invoices. A client can override this.</div>
+</div>
     <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit">
 </form>
 

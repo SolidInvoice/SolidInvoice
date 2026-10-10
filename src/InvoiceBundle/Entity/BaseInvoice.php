@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\MappedSuperclass]
@@ -112,6 +113,10 @@ abstract class BaseInvoice
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $terms = null;
+
+    #[ORM\Column(name: 'payment_terms', type: Types::STRING, length: 25, enumType: PaymentTerms::class, options: ['default' => PaymentTerms::Custom->value])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected PaymentTerms $paymentTerms = PaymentTerms::Custom;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -213,6 +218,18 @@ abstract class BaseInvoice
     public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
+
+        return $this;
+    }
+
+    public function getPaymentTerms(): PaymentTerms
+    {
+        return $this->paymentTerms;
+    }
+
+    public function setPaymentTerms(PaymentTerms $paymentTerms): static
+    {
+        $this->paymentTerms = $paymentTerms;
 
         return $this;
     }

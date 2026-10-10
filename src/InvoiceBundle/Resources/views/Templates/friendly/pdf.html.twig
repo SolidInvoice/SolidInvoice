@@ -46,7 +46,7 @@
             <td style="width: 4px;"></td>
             <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
                 <div style="font-size: 8pt; color: #7c4a1e; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.due_date'|trans }}</div>
-                <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{% if invoice.due %}{{ invoice.due|date('F j, Y') }}{% else %}—{% endif %}</div>
+                <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{% if invoice.due %}{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}{% else %}—{% endif %}</div>
             </td>
             <td style="width: 4px;"></td>
             <td style="background-color: #ecf7ee; padding: 16px 18px; vertical-align: top; width: 34%;">

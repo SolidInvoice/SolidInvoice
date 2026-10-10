@@ -101,6 +101,7 @@ final class ClientTypeTest extends FormTestCase
 
         $systemConfig = M::mock(SystemConfig::class);
         $systemConfig->shouldReceive('getCurrency')->andReturn(new Currency('USD'));
+        $systemConfig->shouldReceive('get')->andReturn(null);
 
         $fieldRepo = M::mock(CustomFieldRepository::class);
         $fieldRepo->shouldReceive('findByTargetOrdered')

@@ -52,6 +52,7 @@ final readonly class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
@@ -95,6 +96,7 @@ final readonly class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
@@ -156,6 +158,7 @@ final readonly class InvoiceFormManager
         $dto->invoiceId = $invoice->getInvoiceId();
         $dto->invoiceDate = $invoice->getInvoiceDate();
         $dto->due = $invoice->getDue();
+        $dto->paymentTerms = $invoice->getPaymentTerms();
         $dto->discount = $invoice->getDiscount();
         $dto->terms = $invoice->getTerms();
         $dto->notes = $invoice->getNotes();

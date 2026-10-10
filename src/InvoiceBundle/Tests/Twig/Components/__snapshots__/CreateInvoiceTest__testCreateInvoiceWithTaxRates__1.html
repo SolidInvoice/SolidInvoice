@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1","taxes":[]}],"invoiceTaxes":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","paymentTerms":"custom","due":"","customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="invoice" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
@@ -77,6 +77,19 @@
                                 <label class="control-label required form-label required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2021-01-01">
 </div>
                         <div class="mb-3">    
+                                <label class="control-label required form-label required" for="invoice_paymentTerms">Payment terms</label><select id="invoice_paymentTerms" name="invoice[paymentTerms]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="due_on_receipt">Due on receipt</option>
+<option value="net_7">Net 7</option>
+<option value="net_14">Net 14</option>
+<option value="net_15">Net 15</option>
+<option value="net_30">Net 30</option>
+<option value="net_45">Net 45</option>
+<option value="net_60">Net 60</option>
+<option value="net_90">Net 90</option>
+<option value="end_of_month">End of month</option>
+<option value="end_of_next_month">End of next month</option>
+<option value="custom" selected>Custom</option></select>
+</div>
+                                                <div class="mb-3">    
             <label class="control-label form-label" for="invoice_due">Due Date</label><input type="date" id="invoice_due" name="invoice[due]" class="form-control">
 </div>
                     </div>
@@ -223,8 +236,8 @@
             </summary>
             <div class="terms-content">
                 <div class="terms-grid">
-                    <div class="mb-3">                
-            <label class="control-label form-label" for="invoice_terms">Terms</label><input type="text" id="invoice_terms" name="invoice[terms]" class="form-control">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="invoice_terms">Terms &amp; Conditions</label><input type="text" id="invoice_terms" name="invoice[terms]" class="form-control">
 </div>
                     <div class="mb-3">                
             <label class="control-label form-label" for="invoice_notes">Notes</label><input type="text" id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"><div class="form-text text-muted mb-0" id="invoice_notes_help">Notes will not be visible to the client</div>

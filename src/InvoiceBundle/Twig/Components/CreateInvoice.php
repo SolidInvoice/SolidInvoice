@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Twig\Components;
 
 use Brick\Math\Exception\MathException;
+use Carbon\CarbonImmutable;
+use Carbon\Exceptions\InvalidFormatException;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -28,11 +30,13 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,6 +89,7 @@ final class CreateInvoice extends AbstractController
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly CustomFieldFormWriter $customFieldFormWriter,
         private readonly FeatureGate $featureGate,
+        private readonly SystemConfig $systemConfig,
     ) {
         $this->dto = new InvoiceFormDTO();
     }
@@ -119,6 +124,7 @@ final class CreateInvoice extends AbstractController
     public function autoSelectContactsOnClientChange(): void
     {
         $this->maybeAutoSelectContacts();
+        $this->applyPaymentTerms();
     }
 
     /**
@@ -386,6 +392,30 @@ final class CreateInvoice extends AbstractController
         // Update tracking and auto-select contacts
         $this->previousClientId = $currentClientId;
         $this->autoSelectContacts($currentClientId);
+
+        if (! $this->isEdit) {
+            $this->formValues['paymentTerms'] = PaymentTerms::forClient($this->clientRepository->find($currentClientId), $this->systemConfig)->value;
+        }
+    }
+
+    /**
+     * Fill in the due date from the payment terms, so the user sees it before saving.
+     * The entity applies the same rule again when the invoice is saved.
+     */
+    private function applyPaymentTerms(): void
+    {
+        $terms = PaymentTerms::tryFrom((string) ($this->formValues['paymentTerms'] ?? ''));
+        $invoiceDate = (string) ($this->formValues['invoiceDate'] ?? '');
+
+        if (! $terms instanceof PaymentTerms || $terms === PaymentTerms::Custom || $invoiceDate === '') {
+            return;
+        }
+
+        try {
+            $this->formValues['due'] = $terms->dueDate(CarbonImmutable::parse($invoiceDate))?->format('Y-m-d');
+        } catch (InvalidFormatException) {
+            // A half-typed date; the next render tries again.
+        }
     }
 
     /**

@@ -37,6 +37,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
@@ -140,6 +141,13 @@ class Client implements Stringable
     private ?string $currencyCode = null;
 
     private Currency $currency;
+
+    /**
+     * Null falls back to the company default.
+     */
+    #[ORM\Column(name: 'payment_terms', type: Types::STRING, length: 25, nullable: true, enumType: PaymentTerms::class)]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    private ?PaymentTerms $paymentTerms = null;
 
     /**
      * @var Collection<int, TaxIdentifier>
@@ -445,6 +453,18 @@ class Client implements Stringable
     public function setCurrencyCode(?string $currencyCode): self
     {
         $this->currencyCode = $currencyCode;
+
+        return $this;
+    }
+
+    public function getPaymentTerms(): ?PaymentTerms
+    {
+        return $this->paymentTerms;
+    }
+
+    public function setPaymentTerms(?PaymentTerms $paymentTerms): self
+    {
+        $this->paymentTerms = $paymentTerms;
 
         return $this;
     }

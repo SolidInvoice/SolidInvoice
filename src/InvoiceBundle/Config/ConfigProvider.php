@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Config;
 
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
+use SolidInvoice\InvoiceBundle\Form\Type\PaymentTermsSettingType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
@@ -33,6 +35,7 @@ final class ConfigProvider implements ProviderInterface
             new Config('invoice/watermark', '1', 'Display a watermark on the invoice with the status', CheckboxType::class),
             new Config('invoice/bcc_address', null, 'Send BCC copy of invoice to this address', EmailType::class),
             new Config('invoice/email_subject', 'New Invoice - #{id}', 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', TextType::class),
+            new Config(PaymentTerms::CONFIG_PATH, PaymentTerms::Net30->value, 'Default payment terms for new invoices. A client can override this.', PaymentTermsSettingType::class),
             new Config('invoice/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
             new Config('invoice/id_generation/id_prefix', '', 'Example: INV-', TextType::class),
             new Config('invoice/id_generation/id_suffix', '', 'Example: -INV', TextType::class),

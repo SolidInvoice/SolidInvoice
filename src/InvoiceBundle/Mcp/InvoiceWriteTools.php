@@ -29,6 +29,7 @@ use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
@@ -39,6 +40,7 @@ use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -65,6 +67,7 @@ final readonly class InvoiceWriteTools
         private MailerInterface $mailer,
         private LoggerInterface $logger,
         private McpScopeGuard $scopeGuard,
+        private SystemConfig $systemConfig,
     ) {
     }
 
@@ -90,6 +93,9 @@ final readonly class InvoiceWriteTools
      * @param list<array<string, mixed>>      $invoice_taxes  Invoice-level taxes (withholding/surcharge/informational):
      *                                                        [{tax_id, direction: Additive|Deductive|Informational, sequence?, note?}].
      *                                                        Deductive (TDS) reduces payable; Additive grows total; Informational records amount=0.
+     * @param string|null                     $payment_terms  due_on_receipt, net_7, net_14, net_15, net_30, net_45, net_60, net_90, end_of_month,
+     *                                                        end_of_next_month or custom. Any value but custom sets the due date from the invoice date.
+     *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
      *
      * @return array<string, mixed>
      */
@@ -107,6 +113,7 @@ final readonly class InvoiceWriteTools
         array $contact_ids = [],
         ?string $invoice_id = null,
         array $invoice_taxes = [],
+        ?string $payment_terms = null,
     ): array {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -123,6 +130,12 @@ final readonly class InvoiceWriteTools
         if ($due !== null) {
             $invoice->setDue($this->parseDate($due, CarbonImmutable::now()));
         }
+
+        $invoice->setPaymentTerms(match (true) {
+            $payment_terms !== null => PaymentTerms::tryFrom($payment_terms) ?? throw new ToolCallException(sprintf('Unknown payment_terms "%s". Use one of: %s.', $payment_terms, implode(', ', array_column(PaymentTerms::cases(), 'value')))),
+            $due !== null => PaymentTerms::Custom,
+            default => PaymentTerms::forClient($client, $this->systemConfig),
+        });
 
         foreach ($this->lineItemBuilder->buildInvoiceLines($lines) as $line) {
             $invoice->addLine($line);
