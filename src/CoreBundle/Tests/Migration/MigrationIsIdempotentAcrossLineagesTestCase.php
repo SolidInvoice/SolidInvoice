@@ -84,10 +84,20 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
             self::markTestSkipped('This harness needs a real MySQL, MariaDB or PostgreSQL server; the configured connection is SQLite.');
         }
 
+        // DsnParser::parse() only includes keys actually present in the DSN (e.g. a
+        // socket-based DSN has no host/port). Every DSN this harness is run against in
+        // practice is a TCP one with all of these set, but default rather than index
+        // straight into the array so a malformed local override fails inside Engine's
+        // typed constructor instead of with a bare PHP warning.
+        $host = $params['host'] ?? '';
+        $port = (int) ($params['port'] ?? 0);
+        $user = $params['user'] ?? '';
+        $password = $params['password'] ?? '';
+
         // The ambient dbname is whatever database the rest of the suite happens to be using
         // (and, under paratest, may not even exist yet) - connecting to probe reachability
         // and the real server version must not depend on it.
-        $this->engine = new Engine($params['driver'], $params['host'], (int) $params['port'], $params['user'], $params['password'], '');
+        $this->engine = new Engine($params['driver'], $host, $port, $user, $password, '');
 
         try {
             $probe = $this->administrativeConnection();
@@ -109,7 +119,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
             self::markTestSkipped(sprintf('The configured database is not reachable: %s', $e->getMessage()));
         }
 
-        $this->engine = new Engine($params['driver'], $params['host'], (int) $params['port'], $params['user'], $params['password'], $serverVersion);
+        $this->engine = new Engine($params['driver'], $host, $port, $user, $password, $serverVersion);
     }
 
     final public function testMigrationResolvesDriftAgainstTheUpgradedLineage(): void
@@ -195,18 +205,28 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     private function recreateDatabase(string $databaseName): void
     {
         $connection = $this->administrativeConnection();
-        $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
 
-        $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
-        $connection->executeStatement('CREATE DATABASE ' . $quotedName);
+        try {
+            $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
+
+            $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
+            $connection->executeStatement('CREATE DATABASE ' . $quotedName);
+        } finally {
+            $connection->close();
+        }
     }
 
     private function dropDatabase(string $databaseName): void
     {
         $connection = $this->administrativeConnection();
-        $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
 
-        $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
+        try {
+            $quotedName = $connection->getDatabasePlatform()->quoteSingleIdentifier($this->physicalDatabaseName($databaseName));
+
+            $connection->executeStatement('DROP DATABASE IF EXISTS ' . $quotedName);
+        } finally {
+            $connection->close();
+        }
     }
 
     private function administrativeConnection(): Connection
