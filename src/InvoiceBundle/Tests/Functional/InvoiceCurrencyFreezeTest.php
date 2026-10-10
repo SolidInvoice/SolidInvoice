@@ -19,11 +19,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Listener\Doctrine\FrozenCurrencyGuardListener;
+use SolidInvoice\CoreBundle\Listener\FreezeCurrencyListener;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
-use SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceCurrencyGuardListener;
-use SolidInvoice\InvoiceBundle\Listener\FreezeInvoiceCurrencyListener;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
@@ -35,8 +35,8 @@ use Symfony\Component\Workflow\WorkflowInterface;
  * Reproduces SOL-298: an issued invoice must keep the currency it was issued in, even
  * after the client's currency (default or explicit) changes underneath it.
  */
-#[CoversClass(FreezeInvoiceCurrencyListener::class)]
-#[CoversClass(InvoiceCurrencyGuardListener::class)]
+#[CoversClass(FreezeCurrencyListener::class)]
+#[CoversClass(FrozenCurrencyGuardListener::class)]
 final class InvoiceCurrencyFreezeTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
