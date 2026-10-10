@@ -136,7 +136,7 @@ class Client implements Stringable
         // property: 'currency'
     )
     ]
-    #[Assert\Length(min: 3, max: 3, exactMessage: 'client.constraint.currency_code.exact_length')]
+    #[Assert\Currency]
     private ?string $currencyCode = null;
 
     private Currency $currency;
