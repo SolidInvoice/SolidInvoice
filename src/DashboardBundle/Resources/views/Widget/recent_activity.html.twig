@@ -24,7 +24,7 @@
          # twig:Ui:Card compiles as its own template, so a top-level import is out
          # of scope by the time the rows below render.
          #}
-        {% import '@SolidInvoiceDashboard/money.html.twig' as money %}
+        {% import '@SolidInvoiceMoney/money.html.twig' as money %}
 
         {% if not hasActivities %}
             <div class="empty">
