@@ -430,7 +430,7 @@
                                         <span class="generated-invoice-id">{{ generatedInvoice.invoiceId }}</span>
                                     </a>
                                     <div class="generated-invoice-meta">
-                                        <span class="generated-invoice-amount">{{ generatedInvoice.total|formatCurrency(currency) }}</span>
+                                        <span class="generated-invoice-amount">{{ generatedInvoice.total|formatCurrency(generatedInvoice.currency) }}</span>
                                         {{ invoice_label(generatedInvoice.status) }}
                                     </div>
                                 </div>
