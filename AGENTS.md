@@ -640,7 +640,7 @@ gated. The bar below is the real one.
   segfaults on its stack-limit check when the Panther web server renders deeply nested
   pages like `/install`. PHP 8.5 is unaffected. Do not remove that ini setting.
 - On failure, `unit-tests.yml` posts E2E failure screenshots to the PR via
-  `scripts/e2e-failure.js`.
+  `scripts/e2e-failure.cjs`.
 
 ---
 
