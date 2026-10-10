@@ -33,7 +33,7 @@
                     <td style="vertical-align: top; text-align: right;">
                         {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
                         {% if invoice.due %}
-                            {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y')) }}
+                            {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
                         {% endif %}
                         {{ inv.status_pair(invoice.status) }}
                     </td>

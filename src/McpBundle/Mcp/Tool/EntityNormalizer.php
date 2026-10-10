@@ -103,6 +103,7 @@ final class EntityNormalizer
             ],
             'invoice_date' => $this->date($invoice->getInvoiceDate()),
             'due' => $this->date($invoice->getDue()),
+            'payment_terms' => $invoice->getPaymentTerms()->value,
             'paid_date' => $this->date($invoice->getPaidDate()),
             'created' => $this->date($invoice->getCreated()),
             'terms' => $invoice->getTerms(),

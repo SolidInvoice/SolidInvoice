@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","contacts":[{"firstName":"","lastName":"","email":"","customFields":{"additional_email":"","phone":"","mobile":""}}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"taxIdentifiers":[],"customFields":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","paymentTerms":"","contacts":[{"firstName":"","lastName":"","email":"","customFields":{"additional_email":"","phone":"","mobile":""}}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"taxIdentifiers":[],"customFields":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save" class="client-form">
 
     
@@ -218,6 +218,23 @@
 <option value="ZWG">Zimbabwean Gold</option></select>
     </div>
 </div>                        </div>
+
+                        <div class="form-field">
+                            <div class="mb-3">    
+            <label class="control-label form-label" for="client_paymentTerms">Payment terms</label><select id="client_paymentTerms" name="client[paymentTerms]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-describedby="client_paymentTerms_help" class="form-select"><option value="">Company default (Net 30)</option>
+<option value="due_on_receipt">Due on receipt</option>
+<option value="net_7">Net 7</option>
+<option value="net_14">Net 14</option>
+<option value="net_15">Net 15</option>
+<option value="net_30">Net 30</option>
+<option value="net_45">Net 45</option>
+<option value="net_60">Net 60</option>
+<option value="net_90">Net 90</option>
+<option value="end_of_month">End of month</option>
+<option value="end_of_next_month">End of next month</option>
+<option value="custom">Custom</option></select><div class="form-text text-muted mb-0" id="client_paymentTerms_help">Sets the due date on new invoices for this client.</div>
+</div>
+                        </div>
 
                     </div>
                 </div>

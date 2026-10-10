@@ -99,7 +99,7 @@
                                     <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
                                     {% if invoice.due is not empty %}
                                         <dt>{{ "invoice.due_date"|trans }}</dt>
-                                        <dd>{{ invoice.due | date('d F Y') }}</dd>
+                                        <dd>{{ invoice.due | date('d F Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</dd>
                                     {% endif %}
                                 </dl>
                             </div>

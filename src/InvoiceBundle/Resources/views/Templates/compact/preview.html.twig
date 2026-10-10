@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="text-end">
-                            <div class="text-secondary small">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
+                            <div class="text-secondary small">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}{% endif %}</div>
                             <div class="fs-5 fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
                         </div>
                     </div>

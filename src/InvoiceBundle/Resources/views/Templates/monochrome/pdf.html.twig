@@ -63,7 +63,7 @@
                                         <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
                                             {{ 'invoice.due_date'|trans }}
                                         </div>
-                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|date('F j, Y') }}</div>
+                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
                                     {% endif %}
                                     {{ inv.status_pair(invoice.status, {labelColor: '#6b6b6b', ink: '#1a1a1a'}) }}
                                 </td>
