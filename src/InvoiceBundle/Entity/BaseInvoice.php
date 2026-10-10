@@ -20,20 +20,18 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use LogicException;
-use Money\Currency;
-use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\HasFrozenCurrency;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use function sprintf;
 
 #[ORM\MappedSuperclass]
-abstract class BaseInvoice
+abstract class BaseInvoice implements HasFrozenCurrencyInterface
 {
     use CompanyAware;
+    use HasFrozenCurrency;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'searchable'])]
@@ -147,15 +145,6 @@ abstract class BaseInvoice
         ]
     )]
     protected BigNumber $payableAmount;
-
-    /**
-     * The currency the document was issued in, frozen the moment it leaves Draft/New.
-     * Null on a draft, or on a row written before this column existed — both fall back
-     * to {@see self::getClient()}'s current currency in {@see self::getCurrency()}.
-     */
-    #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3, nullable: true)]
-    #[Assert\Currency]
-    protected ?string $currencyCode = null;
 
     public function __construct()
     {
@@ -286,39 +275,5 @@ abstract class BaseInvoice
         $this->payableAmount = BigNumber::of($payableAmount);
 
         return $this;
-    }
-
-    abstract public function getClient(): ?Client;
-
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    public function setCurrencyCode(?string $currencyCode): self
-    {
-        $this->currencyCode = $currencyCode;
-
-        return $this;
-    }
-
-    /**
-     * The frozen currency once the document has left Draft/New, otherwise the client's
-     * current currency. Templates must read this instead of `client.currency` directly,
-     * so an issued document keeps stating the amount it stated when it was issued.
-     */
-    public function getCurrency(): Currency
-    {
-        if ($this->currencyCode !== null) {
-            return new Currency($this->currencyCode);
-        }
-
-        $client = $this->getClient();
-
-        if (! $client instanceof Client) {
-            throw new LogicException(sprintf('%s has no client to resolve a currency from.', static::class));
-        }
-
-        return $client->getCurrency();
     }
 }
