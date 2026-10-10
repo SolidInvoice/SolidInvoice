@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
@@ -80,6 +81,7 @@ final class PublicViewLinkGateTest extends KernelTestCase
 
         return new ViewBilling(
             $container->get('doctrine'),
+            $container->get('doctrine')->getRepository(Client::class),
             $authChecker,
             $this->createStub(RouterInterface::class),
             $container->get(CompanySelector::class),

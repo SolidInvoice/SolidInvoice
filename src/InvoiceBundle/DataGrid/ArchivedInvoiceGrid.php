@@ -43,6 +43,14 @@ final class ArchivedInvoiceGrid extends BaseInvoiceGrid
             });
     }
 
+    /**
+     * parent::query() adds an `andWhere` restricting the *client* to
+     * not-archived; disableForGrid()'s `where()` deliberately resets the
+     * whole WHERE clause to its own archived-only predicate rather than
+     * appending to it, or this grid would show nothing. Do not change that
+     * `where()` to `andWhere()` without re-checking this grid still lists
+     * archived invoices.
+     */
     #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {

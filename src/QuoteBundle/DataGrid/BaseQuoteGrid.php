@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\DataGrid;
 
 use Brick\Math\BigNumber;
+use Doctrine\ORM\EntityManagerInterface;
 use Money\Money;
 use Override;
+use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
@@ -27,6 +29,8 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -99,5 +103,27 @@ abstract class BaseQuoteGrid extends Grid
             ->action(static function (QuoteRepository $repository, array $selectedItems): void {
                 $repository->deleteQuotes($selectedItems);
             });
+    }
+
+    /**
+     * Joins the client eagerly so the money columns above and the client
+     * column never touch a lazy reference: without this, an archived
+     * client throws EntityNotFoundException the moment a row renders,
+     * whether or not the quote itself is also archived.
+     *
+     * Left join, not inner: unlike Invoice, Quote::$client has no explicit
+     * `nullable: false` and defaults to nullable. QuoteGrid (the active
+     * grid) adds its own `client IS NOT NULL` constraint to keep excluding
+     * a client-less quote from the active list, exactly as its previous
+     * inner join did; ArchivedQuoteGrid does not, so it keeps listing one.
+     */
+    #[Override]
+    public function query(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        $query->getQueryBuilder()
+            ->select(ORMSource::ALIAS, 'client')
+            ->leftJoin(ORMSource::ALIAS . '.client', 'client');
+
+        return ArchivableFilter::suspendForJoinedAssociations($entityManager, $query);
     }
 }

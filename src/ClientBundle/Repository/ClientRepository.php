@@ -109,7 +109,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function archiveClients(array $ids): void
     {
@@ -133,7 +133,7 @@ class ClientRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function restoreClients(array $ids): void
     {
@@ -182,6 +182,34 @@ class ClientRepository extends EntityRepository
         $em->flush();
 
         $em->getFilters()->enable('archivable');
+    }
+
+    /**
+     * Forces an already-referenced client to load, even when it has since
+     * been archived.
+     *
+     * A document's client is a historical fact about that document, not a
+     * browsable client record, so the archivable filter must not block it
+     * from loading. Without this, rendering a document whose client was
+     * archived throws EntityNotFoundException the moment the lazy client
+     * reference is touched.
+     */
+    public function initializeArchived(?Client $client): void
+    {
+        $em = $this->getEntityManager();
+
+        if (! $client instanceof Client || ! $em->isUninitializedObject($client)) {
+            return;
+        }
+
+        $filters = $em->getFilters();
+        $filters->suspend('archivable');
+
+        try {
+            $em->initializeObject($client);
+        } finally {
+            $filters->restore('archivable');
+        }
     }
 
     public function findOneByNameIncludingArchived(string $name): ?Client
