@@ -122,7 +122,8 @@ final class EntityNormalizer
             'id' => $invoice->getId()?->toRfc4122(),
             'status' => $invoice->getStatus()?->value,
             'client' => $this->clientSummary($invoice->getClient()),
-            'currency' => $invoice->getCurrency()->getCode(),
+            // A recurring template can have no client; keep returning null rather than throwing.
+            'currency' => $invoice->getCurrencyCode() ?? $invoice->getClient()?->getCurrencyCode(),
             'total' => $this->bigNumber($invoice->getTotal()),
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
             'tax' => $this->bigNumber($invoice->getTax()),
@@ -156,7 +157,8 @@ final class EntityNormalizer
             'quote_number' => $quote->getQuoteId(),
             'status' => $quote->getStatus()?->value,
             'client' => $this->clientSummary($quote->getClient()),
-            'currency' => $quote->getCurrency()->getCode(),
+            // A quote can have no client; keep returning null rather than throwing.
+            'currency' => $quote->getCurrencyCode() ?? $quote->getClient()?->getCurrencyCode(),
             'total' => $this->bigNumber($quote->getTotal()),
             'base_total' => $this->bigNumber($quote->getBaseTotal()),
             'tax' => $this->bigNumber($quote->getTax()),

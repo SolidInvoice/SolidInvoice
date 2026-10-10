@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -41,20 +43,35 @@ final class Version30100_9 extends AbstractMigration
         return 'Add the frozen currency_code column to invoices, recurring_invoices and quotes';
     }
 
+    public function isTransactional(): bool
+    {
+        // MySQL and MariaDB commit implicitly on DDL. AbstractMySQLPlatform, because
+        // MariaDBPlatform is a sibling of MySQLPlatform rather than a subclass.
+        return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
+    }
+
     public function up(Schema $schema): void
     {
         foreach (self::TABLES as $tableName) {
-            $schema->getTable($tableName)->addColumn('currency_code', 'string', [
-                'notnull' => false,
-                'length' => 3,
-            ]);
+            $table = $schema->getTable($tableName);
+
+            if (! $table->hasColumn('currency_code')) {
+                $table->addColumn('currency_code', 'string', [
+                    'notnull' => false,
+                    'length' => 3,
+                ]);
+            }
         }
     }
 
     public function down(Schema $schema): void
     {
         foreach (self::TABLES as $tableName) {
-            $schema->getTable($tableName)->dropColumn('currency_code');
+            $table = $schema->getTable($tableName);
+
+            if ($table->hasColumn('currency_code')) {
+                $table->dropColumn('currency_code');
+            }
         }
     }
 }
