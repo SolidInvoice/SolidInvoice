@@ -276,7 +276,7 @@ class Quote
      * to {@see self::getClient()}'s current currency in {@see self::getCurrency()}.
      */
     #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3, nullable: true)]
-    #[Assert\Length(min: 3, max: 3)]
+    #[Assert\Currency]
     private ?string $currencyCode = null;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]

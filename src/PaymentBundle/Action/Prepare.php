@@ -199,7 +199,7 @@ final class Prepare
             $payment->setMethod($data['payment_method']);
             /** @var BigNumber $value */
             $value = $data['amount'];
-            $payment->setTotalAmount($value->toBigDecimal()->toScale(2, RoundingMode::HalfEven)->toInt());
+            $payment->setTotalAmount($value->toBigDecimal()->toScale(0, RoundingMode::HalfEven)->toInt());
             $payment->setCurrencyCode($invoice->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
