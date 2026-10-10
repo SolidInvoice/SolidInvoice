@@ -403,7 +403,7 @@ final class Version20201 extends AbstractMigration
                 // table whose primary key was already dropped by the caller before this method
                 // runs (e.g. user_company, ahead of migrate('users')), and concatenating an
                 // empty string still produced a leading comma, a SQL syntax error
-                $fieldsSelect = [...$fk['primaryKey'], $fk['key']];
+                $fieldsSelect = array_values(array_unique([...$fk['primaryKey'], $fk['key']]));
 
                 if ($linkCompany) {
                     $fieldsSelect[] = 'company_id';

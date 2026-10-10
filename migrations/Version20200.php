@@ -201,80 +201,88 @@ final class Version20200 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
+        try {
+            $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
 
-        $users = $this->connection
-            ->createQueryBuilder()
-            ->select('u.id')
-            ->from('users', 'u')
-            ->fetchAllAssociative();
+            $users = $this->connection
+                ->createQueryBuilder()
+                ->select('u.id')
+                ->from('users', 'u')
+                ->fetchAllAssociative();
 
-        $companyName = $this->connection
-            ->createQueryBuilder()
-            ->select('s.setting_value')
-            ->from('app_config', 's')
-            ->where('s.setting_key = :settingKey')
-            ->setParameter('settingKey', 'system/company/company_name')
-            ->fetchOne();
+            $companyName = $this->connection
+                ->createQueryBuilder()
+                ->select('s.setting_value')
+                ->from('app_config', 's')
+                ->where('s.setting_key = :settingKey')
+                ->setParameter('settingKey', 'system/company/company_name')
+                ->fetchOne();
 
-        $companyId = new Ulid();
+            $companyId = new Ulid();
 
-        $this->connection
-            ->insert(
-                'companies',
-                ['name' => $companyName, 'id' => $companyId],
-                ['id' => UlidType::NAME],
-            );
-
-        foreach (self::ALL_TABLES as $table) {
-            // @phpstan-ignore-next-line
-            $this->connection->update($table, ['company_id' => $companyId], ['1' => '1'], ['company_id' => UlidType::NAME]);
-        }
-
-        foreach ($users as $user) {
             $this->connection
                 ->insert(
-                    'user_company',
-                    [
-                        'user_id' => $user['id'],
-                        'company_id' => $companyId,
-                    ],
-                    ['company_id' => UlidType::NAME],
+                    'companies',
+                    ['name' => $companyName, 'id' => $companyId],
+                    ['id' => UlidType::NAME],
                 );
-        }
 
-        // company_id can only become part of the primary key (and so NOT NULL) once every
-        // row has been backfilled above; doing this any earlier makes the DDL itself reject
-        // the rows that still have a null company_id
-        foreach (self::ALL_TABLES as $tableName) {
-            $table = $schema->getTable($tableName);
-            $table->dropPrimaryKey();
-            $table->setPrimaryKey(['id', 'company_id']);
-        }
+            foreach (self::ALL_TABLES as $table) {
+                // @phpstan-ignore-next-line
+                $this->connection->update($table, ['company_id' => $companyId], ['1' => '1'], ['company_id' => UlidType::NAME]);
+            }
 
-        $this->executeSchemaDiff($fromSchema, $schema);
+            foreach ($users as $user) {
+                $this->connection
+                    ->insert(
+                        'user_company',
+                        [
+                            'user_id' => $user['id'],
+                            'company_id' => $companyId,
+                        ],
+                        ['company_id' => UlidType::NAME],
+                    );
+            }
 
-        // the composite foreign keys below reference the primary keys added just above, on
-        // other tables, so they need their own diff against the now-updated schema: a single
-        // diff does not guarantee the primary key of the referenced table lands first
-        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
+            // company_id can only become part of the primary key (and so NOT NULL) once every
+            // row has been backfilled above; doing this any earlier makes the DDL itself reject
+            // the rows that still have a null company_id
+            foreach (self::ALL_TABLES as $tableName) {
+                $table = $schema->getTable($tableName);
+                $table->dropPrimaryKey();
+                $table->setPrimaryKey(['id', 'company_id']);
+            }
 
-        foreach ($this->tablesForForeignKeys as [$tableB, $foreignTableName, $foreignKeyName]) {
-            $schema->getTable($tableB)->addForeignKeyConstraint(
-                $foreignTableName,
-                [...$foreignKeyName, 'company_id'],
-                ['id', 'company_id']
-            );
-        }
+            $this->executeSchemaDiff($fromSchema, $schema);
 
-        foreach ($this->tablesWithCompanyId as $tableName) {
-            $schema->getTable($tableName)->addForeignKeyConstraint('companies', ['company_id'], ['id']);
-        }
+            // the composite foreign keys below reference the primary keys added just above, on
+            // other tables, so they need their own diff against the now-updated schema: a single
+            // diff does not guarantee the primary key of the referenced table lands first
+            $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
 
-        $this->executeSchemaDiff($fromSchema, $schema);
+            foreach ($this->tablesForForeignKeys as [$tableB, $foreignTableName, $foreignKeyName]) {
+                $schema->getTable($tableB)->addForeignKeyConstraint(
+                    $foreignTableName,
+                    [...$foreignKeyName, 'company_id'],
+                    ['id', 'company_id']
+                );
+            }
 
-        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
-            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+            foreach ($this->tablesWithCompanyId as $tableName) {
+                $schema->getTable($tableName)->addForeignKeyConstraint('companies', ['company_id'], ['id']);
+            }
+
+            $this->executeSchemaDiff($fromSchema, $schema);
+        } finally {
+            // Guaranteed even if the backfill or either schema diff above throws, so a failed
+            // migration never leaves FK enforcement disabled on the connection.
+            if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+                $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+            }
+
+            if ($this->connection->getDatabasePlatform() instanceof SQLitePlatform) {
+                $this->connection->executeQuery('PRAGMA foreign_keys = ON');
+            }
         }
     }
 
