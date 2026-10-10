@@ -81,13 +81,14 @@ final class EntityNormalizer
     private function invoice(Invoice $invoice): array
     {
         $discount = $invoice->getDiscount();
-        $currency = $invoice->getCurrencyCode() ?? $invoice->getClient()?->getCurrencyCode();
+        $client = $invoice->getClient();
+        $currency = $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode();
 
         return [
             'id' => $invoice->getId()?->toRfc4122(),
             'invoice_number' => $invoice->getInvoiceId(),
             'status' => $invoice->getStatus()?->value,
-            'client' => $this->clientSummary($invoice->getClient()),
+            'client' => $this->clientSummary($client),
             'currency' => $currency,
             'total' => $this->bigNumber($invoice->getTotal()),
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
@@ -117,12 +118,13 @@ final class EntityNormalizer
     private function recurringInvoice(RecurringInvoice $invoice): array
     {
         $options = $invoice->getRecurringOptions();
+        $client = $invoice->getClient();
 
         return [
             'id' => $invoice->getId()?->toRfc4122(),
             'status' => $invoice->getStatus()?->value,
-            'client' => $this->clientSummary($invoice->getClient()),
-            'currency' => $invoice->getCurrencyCode() ?? $invoice->getClient()?->getCurrencyCode(),
+            'client' => $this->clientSummary($client),
+            'currency' => $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode(),
             'total' => $this->bigNumber($invoice->getTotal()),
             'base_total' => $this->bigNumber($invoice->getBaseTotal()),
             'tax' => $this->bigNumber($invoice->getTax()),
@@ -151,12 +153,14 @@ final class EntityNormalizer
      */
     private function quote(Quote $quote): array
     {
+        $client = $quote->getClient();
+
         return [
             'id' => $quote->getId()?->toRfc4122(),
             'quote_number' => $quote->getQuoteId(),
             'status' => $quote->getStatus()?->value,
-            'client' => $this->clientSummary($quote->getClient()),
-            'currency' => $quote->getCurrencyCode() ?? $quote->getClient()?->getCurrencyCode(),
+            'client' => $this->clientSummary($client),
+            'currency' => $quote->getCurrencyCode() ?? $client?->getCurrency()->getCode(),
             'total' => $this->bigNumber($quote->getTotal()),
             'base_total' => $this->bigNumber($quote->getBaseTotal()),
             'tax' => $this->bigNumber($quote->getTax()),
@@ -254,7 +258,7 @@ final class EntityNormalizer
             'name' => $client->getName(),
             'status' => $status instanceof BackedEnum ? $status->value : $status,
             'website' => $client->getWebsite(),
-            'currency' => $client->getCurrencyCode(),
+            'currency' => $client->getCurrency()->getCode(),
             'tax_identifiers' => array_values(array_map(
                 $this->taxIdentifier(...),
                 $client->getTaxIdentifiers()->toArray(),
@@ -288,7 +292,7 @@ final class EntityNormalizer
         return [
             'id' => $client->getId()?->toRfc4122(),
             'name' => $client->getName(),
-            'currency' => $client->getCurrencyCode(),
+            'currency' => $client->getCurrency()->getCode(),
         ];
     }
 
