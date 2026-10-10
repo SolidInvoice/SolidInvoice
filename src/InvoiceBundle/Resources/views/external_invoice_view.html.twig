@@ -97,7 +97,7 @@
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.due_date'|trans }}</div>
                                         <div class="ext-doc-metadata-value fw-medium {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'text-danger' : '' }}">
-                                            {{ invoice.due|date('M d, Y') }}
+                                            {{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
                                             {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue %}
                                                 <span class="badge bg-danger-lt ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}

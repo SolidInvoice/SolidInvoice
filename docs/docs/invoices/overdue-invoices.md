@@ -18,7 +18,7 @@ An invoice must have a due date set for the automation to act on it. Invoices wi
 
 ## Set a due date on an invoice
 
-When creating or editing an invoice, fill in the `Due Date` field. The date appears on the PDF and on the client-facing invoice page, and is used by both the overdue check and the reminder schedule.
+When creating or editing an invoice, choose [payment terms](./payment-terms.md) such as `Net 30`, or pick `Custom` and fill in the `Due Date` field yourself. The date appears on the PDF and on the client-facing invoice page, and is used by both the overdue check and the reminder schedule.
 
 See [Creating an invoice](./creating-an-invoice.md) for the full invoice form reference.
 

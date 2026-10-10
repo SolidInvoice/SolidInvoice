@@ -121,7 +121,7 @@
                             {{ 'invoice.due_date'|trans }}
                         </td>
                         <td class="date-value" style="font-size: 9pt; font-weight: 500; text-align: right; padding: 4px 0; {% if isOverdue %}color: #dc2626;{% else %}color: #1e293b;{% endif %}">
-                            {{ invoice.due|date('F j, Y') }}
+                            {{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
                         </td>
                     </tr>
                     {# Due date urgency indicator #}

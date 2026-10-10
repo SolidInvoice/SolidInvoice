@@ -26,7 +26,8 @@ With the client set, fill in the invoice header fields:
 | Field | Required | Description |
 | --- | --- | --- |
 | **Invoice date** | Yes | The date the invoice is issued. Defaults to today. |
-| **Due Date** | No | The date payment is due. Leave blank if there is no fixed deadline. |
+| **Payment terms** | Yes | When payment is due, such as `Net 30` or `Due on receipt`. Starts on the client's terms, or your company default. See [Payment terms](./payment-terms.md). |
+| **Due Date** | No | Filled in from the payment terms. Choose the `Custom` term to set your own date or leave it blank. |
 | **Invoice #** | Auto | Auto-generated from your ID settings. Click the pencil icon to change it for this invoice. |
 | **Discount** | No | An invoice-wide discount — enter a value and choose `%` for a percentage or your currency symbol for a fixed amount. |
 
@@ -57,7 +58,7 @@ Click **Terms & Notes** at the bottom of the form to expand this optional sectio
 
 ![The Terms & Notes section expanded, showing Terms and Notes text areas](/img/invoices/create-invoice-terms-notes.png)
 
-- **Terms** — payment terms or conditions. This text appears on the invoice and is visible to the client.
+- **Terms & Conditions** — any conditions you want on the invoice, such as late fees or bank details. This text appears on the invoice and is visible to the client. To set *when* the invoice is due, use [Payment terms](./payment-terms.md).
 - **Notes** — internal notes for your own records. Notes are **not** visible to the client and do not appear on the invoice or PDF.
 
 ## Saving the invoice

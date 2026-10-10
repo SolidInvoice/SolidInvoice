@@ -28,7 +28,7 @@
                     {% if invoice.due is not empty %}
                         <span class="doc-view-meta-item">
                             {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
-                            {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('M d, Y') }}
+                            {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
                         </span>
                     {% endif %}
                 </div>
@@ -471,7 +471,7 @@
                         {% if invoice.due is not empty %}
                             <div class="summary-item {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'summary-item-overdue' : '' }}">
                                 <span class="summary-label">{{ 'invoice.due_date'|trans }}</span>
-                                <span class="summary-value">{{ invoice.due|date('M d, Y') }}</span>
+                                <span class="summary-value">{{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</span>
                             </div>
                         {% endif %}
                         {% if invoice.paidDate is not empty %}

@@ -1,5 +1,5 @@
 <html><body>
-<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"watermark":"1","bcc_address":"","email_subject":"invoice subject","id_generation":{"strategy":"random_number","id_prefix":"","id_suffix":""},"reminder":{"enabled":"1","pre_due_enabled":"1","pre_due_days":"3"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"watermark":"1","bcc_address":"","email_subject":"invoice subject","payment_terms":"net_30","id_generation":{"strategy":"random_number","id_prefix":"","id_suffix":""},"reminder":{"enabled":"1","pre_due_enabled":"1","pre_due_days":"3"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
         <ul class="nav nav-underline mb-4" role="tablist">
                                 <li class="nav-item">
                 <a href="/settings?section=system" class="nav-link">
@@ -56,6 +56,28 @@
     
                                     </div>
 
+                                                    <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            <svg viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16"></path><path d="M8 15h2v2H8z"></path></g></svg>
+                            Payment Terms
+                        </h3>
+                                        <div class="mb-3">    
+            <label class="control-label form-label" for="settings_payment_terms">Default payment terms</label><select id="settings_payment_terms" name="settings[payment_terms]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-describedby="settings_payment_terms_help" class="form-select"><option value=""></option>
+<option value="due_on_receipt">Due on receipt</option>
+<option value="net_7">Net 7</option>
+<option value="net_14">Net 14</option>
+<option value="net_15">Net 15</option>
+<option value="net_30" selected>Net 30</option>
+<option value="net_45">Net 45</option>
+<option value="net_60">Net 60</option>
+<option value="net_90">Net 90</option>
+<option value="end_of_month">End of month</option>
+<option value="end_of_next_month">End of next month</option>
+<option value="custom">Custom</option></select><div class="form-text text-muted mb-0" id="settings_payment_terms_help">New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.</div>
+</div>
+    
+                    </div>
+                
                                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">
                         <svg viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>

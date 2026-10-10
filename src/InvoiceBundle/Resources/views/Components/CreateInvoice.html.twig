@@ -122,7 +122,12 @@
                 <div class="billing-details-right">
                     <div class="invoice-dates-row">
                         {{ form_row(form.invoiceDate) }}
-                        {{ form_row(form.due) }}
+                        {{ form_row(form.paymentTerms) }}
+                        {# A preset term owns the due date; only Custom lets the user pick it. #}
+                        {{ form_row(form.due, form.paymentTerms.vars.value == 'custom' ? {} : {
+                            attr: {readonly: true},
+                            help: 'invoice.payment_terms.due_help',
+                        }) }}
                     </div>
                     {{ form_row(form.discount) }}
                 </div>
