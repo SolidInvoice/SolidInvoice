@@ -96,6 +96,7 @@ final readonly class InvoiceWriteTools
      * @param string|null                     $payment_terms  due_on_receipt, net_7, net_14, net_15, net_30, net_45, net_60, net_90, end_of_month,
      *                                                        end_of_next_month or custom. Any value but custom sets the due date from the invoice date.
      *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
+     *                                                        `due` can only be combined with custom.
      *
      * @return array<string, mixed>
      */
@@ -129,6 +130,10 @@ final readonly class InvoiceWriteTools
 
         if ($due !== null) {
             $invoice->setDue($this->parseDate($due, CarbonImmutable::now()));
+        }
+
+        if ($due !== null && $payment_terms !== null && $payment_terms !== PaymentTerms::Custom->value) {
+            throw new ToolCallException(sprintf('payment_terms "%s" sets the due date itself. Omit due, or pass payment_terms "custom" to set it yourself.', $payment_terms));
         }
 
         $invoice->setPaymentTerms(match (true) {

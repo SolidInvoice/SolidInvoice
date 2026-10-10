@@ -216,6 +216,20 @@
                     {% endif %}
                 </div>
 
+                {# Payment Terms #}
+                {% if form.payment_terms is defined %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:calendar-event', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+                            {{ 'settings.page.payment_terms.title'|trans }}
+                        </h3>
+                        {{ form_row(form.payment_terms, {
+                            label: 'settings.page.payment_terms.label'|trans,
+                            help: 'settings.page.payment_terms.help'|trans
+                        }) }}
+                    </div>
+                {% endif %}
+
                 {# Email Settings #}
                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">

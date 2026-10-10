@@ -2386,6 +2386,10 @@ settings:
             suffix: 'ID Suffix'
             suffix_help: 'Added after the number. E.g., "-2024" results in 001-2024'
             title: 'Numbering Scheme'
+        payment_terms:
+            help: 'New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.'
+            label: 'Default payment terms'
+            title: 'Payment Terms'
         reminder:
             enable: 'Enable Automatic Reminders'
             enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'

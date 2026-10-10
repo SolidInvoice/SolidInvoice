@@ -139,6 +139,7 @@ final class EntityNormalizer
                 'end_occurrence' => $options->getEndOccurrence(),
             ],
             'generated_invoice_count' => $invoice->getInvoices()->count(),
+            'payment_terms' => $invoice->getPaymentTerms()->value,
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
             'created' => $this->date($invoice->getCreated()),
