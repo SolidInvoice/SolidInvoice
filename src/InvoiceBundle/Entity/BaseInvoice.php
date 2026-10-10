@@ -154,7 +154,7 @@ abstract class BaseInvoice
      * to {@see self::getClient()}'s current currency in {@see self::getCurrency()}.
      */
     #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3, nullable: true)]
-    #[Assert\Length(min: 3, max: 3)]
+    #[Assert\Currency]
     protected ?string $currencyCode = null;
 
     public function __construct()
