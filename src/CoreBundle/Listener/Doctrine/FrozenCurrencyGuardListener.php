@@ -11,31 +11,32 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\QuoteBundle\Listener\Doctrine;
+namespace SolidInvoice\CoreBundle\Listener\Doctrine;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use LogicException;
-use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use function sprintf;
 
 /**
- * Rejects a write to {@see Quote::getCurrencyCode()} once it already holds a value.
- * {@see \SolidInvoice\QuoteBundle\Listener\FreezeQuoteCurrencyListener} is the only writer
- * that runs while the column is still null; once it has stamped a currency, this guard
- * makes the column immutable regardless of which code path attempts the change.
+ * Rejects a write to {@see HasFrozenCurrencyInterface::getCurrencyCode()} once it
+ * already holds a value. {@see \SolidInvoice\CoreBundle\Listener\FreezeCurrencyListener}
+ * is the only writer that runs while the column is still null; once it has stamped a
+ * currency, this guard makes the column immutable regardless of which code path
+ * attempts the change.
  *
- * @see \SolidInvoice\QuoteBundle\Tests\Listener\Doctrine\QuoteCurrencyGuardListenerTest
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\Doctrine\FrozenCurrencyGuardListenerTest
  */
 #[AsDoctrineListener(Events::preUpdate)]
-final readonly class QuoteCurrencyGuardListener
+final readonly class FrozenCurrencyGuardListener
 {
     public function preUpdate(PreUpdateEventArgs $event): void
     {
         $entity = $event->getObject();
 
-        if (! $entity instanceof Quote) {
+        if (! $entity instanceof HasFrozenCurrencyInterface) {
             return;
         }
 

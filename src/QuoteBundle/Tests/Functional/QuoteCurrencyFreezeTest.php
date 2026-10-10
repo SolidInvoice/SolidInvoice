@@ -18,10 +18,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Listener\FreezeCurrencyListener;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
-use SolidInvoice\QuoteBundle\Listener\FreezeQuoteCurrencyListener;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
@@ -32,7 +32,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * Quote equivalents of {@see \SolidInvoice\InvoiceBundle\Tests\Functional\InvoiceCurrencyFreezeTest}.
  */
-#[CoversClass(FreezeQuoteCurrencyListener::class)]
+#[CoversClass(FreezeCurrencyListener::class)]
 final class QuoteCurrencyFreezeTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
