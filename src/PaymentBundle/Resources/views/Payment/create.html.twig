@@ -60,7 +60,7 @@
                                     <div class="client-credit-badge">
                                         {{ ux_icon('tabler:wallet', {width: 14, height: 14}) }}
                                         {{ 'payment.create.credit'|trans }}
-                                        <strong>{{ invoice.client.credit.value|formatCurrency(invoice.currency) }}</strong>
+                                        <strong>{{ invoice.client.credit.value|formatCurrency(invoice.client.currency) }}</strong>
                                     </div>
                                 {% endif %}
                             </div>
