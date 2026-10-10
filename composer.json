@@ -200,6 +200,7 @@
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "ergebnis/composer-normalize": "^2.52",
         "ergebnis/rector-rules": "^1.18",
+        "helgesverre/toon": "^3.2",
         "laravel/pao": "^1.1",
         "liip/test-fixtures-bundle": "^3.9",
         "matthiasnoback/symfony-dependency-injection-test": "^6.3",
@@ -216,9 +217,9 @@
         "rector/rector": "^2.5",
         "roave/security-advisories": "dev-latest",
         "spatie/phpunit-snapshot-assertions": "^5.4",
-        "symfony/ai-mate": "^0.12",
-        "symfony/ai-monolog-mate-extension": "^0.12",
-        "symfony/ai-symfony-mate-extension": "^0.12",
+        "symfony/ai-mate": "^0.14",
+        "symfony/ai-monolog-mate-extension": "^0.14",
+        "symfony/ai-symfony-mate-extension": "^0.14",
         "symfony/debug-bundle": "^8.1",
         "symfony/maker-bundle": "^1.67",
         "symfony/panther": "^2.4",
@@ -251,7 +252,8 @@
     "autoload-dev": {
         "psr-4": {
             "App\\Mate\\": "mate/src/",
-            "SolidInvoice\\Test\\": "tests/Test"
+            "SolidInvoice\\Test\\": "tests/Test",
+            "Mate\\": "mate/src/"
         },
         "classmap": [
             "migrations/"
