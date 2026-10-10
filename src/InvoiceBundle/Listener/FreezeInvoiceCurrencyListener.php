@@ -42,7 +42,6 @@ final class FreezeInvoiceCurrencyListener implements EventSubscriberInterface
 
     private const array ISSUED_PLACES = [
         InvoiceStatus::Pending->value,
-        InvoiceStatus::Active->value,
         InvoiceStatus::Paid->value,
         InvoiceStatus::Overdue->value,
     ];
