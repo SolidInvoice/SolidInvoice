@@ -20,6 +20,10 @@
             "text-editor": {
                 "enabled": true,
                 "fetch": "lazy"
+            },
+            "two-factor": {
+                "enabled": true,
+                "fetch": "lazy"
             }
         },
         "@symfony/ux-autocomplete": {
