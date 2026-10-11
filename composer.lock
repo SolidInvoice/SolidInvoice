@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdbc2bb894657eed7e5dc48090b2400a",
+    "content-hash": "ff1abde107e0404ddb24d49e95029e1d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -70,16 +70,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.4.4",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "3da7496b6b991b6a713e81e43280c4d9bc0d9218"
+                "reference": "6cede2895fd607411e42ab1d3cf43a8c66b34968"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/3da7496b6b991b6a713e81e43280c4d9bc0d9218",
-                "reference": "3da7496b6b991b6a713e81e43280c4d9bc0d9218",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/6cede2895fd607411e42ab1d3cf43a8c66b34968",
+                "reference": "6cede2895fd607411e42ab1d3cf43a8c66b34968",
                 "shasum": ""
             },
             "require": {
@@ -135,6 +135,7 @@
                 "api-platform/serializer": "self.version",
                 "api-platform/state": "self.version",
                 "api-platform/symfony": "self.version",
+                "api-platform/test": "self.version",
                 "api-platform/validator": "self.version"
             },
             "require-dev": {
@@ -164,7 +165,7 @@
                 "phpstan/phpstan-doctrine": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^11.5 || ^12.2",
+                "phpunit/phpunit": "^11.5 || ^12.2 || ^13.0",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7",
                 "ramsey/uuid-doctrine": "^2.0",
@@ -243,7 +244,7 @@
                     "dev-3.4": "3.4.x-dev",
                     "dev-4.1": "4.1.x-dev",
                     "dev-4.2": "4.2.x-dev",
-                    "dev-main": "4.4.x-dev"
+                    "dev-main": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -282,9 +283,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.4.4"
+                "source": "https://github.com/api-platform/core/tree/v5.0.2"
             },
-            "time": "2026-10-09T14:33:04+00:00"
+            "time": "2026-10-02T09:04:23+00:00"
         },
         {
             "name": "async-aws/core",
