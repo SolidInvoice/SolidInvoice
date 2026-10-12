@@ -22,7 +22,7 @@ use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\InvoiceBundle\Form\Type\PaymentTermsSettingType;
 use Symfony\Component\Uid\Ulid;
 
-final class Version30100_7 extends AbstractMigration
+final class Version30100_4g extends AbstractMigration
 {
     private const array INVOICE_TABLES = ['invoices', 'recurring_invoices'];
 
