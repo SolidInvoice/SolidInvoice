@@ -151,9 +151,15 @@
     color: var(--swp-text-primary);
 }
 
+// `text-secondary`, not `text-muted`: the row's background moves to
+// `--swp-primary-lighter` on hover/focus and `--swp-success-lighter` when
+// completed, and `text-muted` drops to 4.44:1 on the hover/focus tint -
+// below AA. `text-secondary` holds >= 7:1 on every background this row can
+// take, at rest and hovered/focused.
+
 .checklist-item-description {
     font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
+    color: var(--swp-text-secondary);
     margin: 0;
     line-height: var(--swp-leading-normal);
 }
