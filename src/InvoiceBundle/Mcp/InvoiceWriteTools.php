@@ -118,6 +118,10 @@ final readonly class InvoiceWriteTools
     ): array {
         $this->scopeGuard->require(McpScope::Write);
 
+        if ($due !== null && $payment_terms !== null && $payment_terms !== PaymentTerms::Custom->value) {
+            throw new ToolCallException(sprintf('payment_terms "%s" sets the due date itself. Omit due, or pass payment_terms "custom" to set it yourself.', $payment_terms));
+        }
+
         $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
 
         if (! $client instanceof Client) {
@@ -130,10 +134,6 @@ final readonly class InvoiceWriteTools
 
         if ($due !== null) {
             $invoice->setDue($this->parseDate($due, CarbonImmutable::now()));
-        }
-
-        if ($due !== null && $payment_terms !== null && $payment_terms !== PaymentTerms::Custom->value) {
-            throw new ToolCallException(sprintf('payment_terms "%s" sets the due date itself. Omit due, or pass payment_terms "custom" to set it yourself.', $payment_terms));
         }
 
         $invoice->setPaymentTerms(match (true) {
