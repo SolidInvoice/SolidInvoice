@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use function bin2hex;
+use function random_bytes;
+
 return App::config([
     'framework' => [
-        'secret' => env('SOLIDINVOICE_APP_SECRET'),
+        'secret' => env('SOLIDINVOICE_APP_SECRET')->default(bin2hex(random_bytes(16))),
         'php_errors' => [
             'log' => true,
         ],

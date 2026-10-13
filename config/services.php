@@ -28,7 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
-    $parameters->set('env(SOLIDINVOICE_APP_SECRET)', bin2hex(random_bytes(16)));
+    $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_APPLICATION_URL)', '');
     $parameters->set('env(SOLIDINVOICE_CUSTOM_DOMAIN_DNS_RECORD)', '');
