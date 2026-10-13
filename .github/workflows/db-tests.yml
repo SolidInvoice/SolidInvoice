@@ -266,7 +266,7 @@ jobs:
         image: ${{ matrix.db.image }}:${{ matrix.db.version }}
         env:
           MYSQL_ROOT_PASSWORD: solidinvoice
-          MYSQL_DATABASE: solidinvoice
+          MYSQL_DATABASE: solidinvoice_test
           POSTGRES_PASSWORD: solidinvoice
         ports:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
