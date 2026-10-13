@@ -73,6 +73,44 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertCount(2, $invoice->getLines());
     }
 
+    public function testPaymentTermsSetTheDueDate(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $result = $tool->createInvoice(
+            $client->getId()->toRfc4122(),
+            [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
+            invoice_date: '2026-04-01',
+            payment_terms: 'net_14',
+        );
+
+        self::assertSame('net_14', $result['payment_terms']);
+        self::assertStringStartsWith('2026-04-15', (string) $result['due']);
+    }
+
+    public function testADueDateCannotBeCombinedWithAPresetTerm(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('payment_terms "net_30" sets the due date itself');
+
+        $tool->createInvoice(
+            $client->getId()->toRfc4122(),
+            [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
+            due: '2030-12-31',
+            payment_terms: 'net_30',
+        );
+    }
+
     /**
      * A tool call goes to the database without passing a validator, so a name longer than
      * the line's VARCHAR(255) would fail on flush. It is kept, as the description, and the

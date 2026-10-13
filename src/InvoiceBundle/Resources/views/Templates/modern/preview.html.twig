@@ -32,7 +32,7 @@
                     <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
                     {% if invoice.due %}
                         <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'invoice.due_date'|trans }}</div>
-                        <div>{{ invoice.due|date('F j, Y') }}</div>
+                        <div>{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
                     {% endif %}
                 </div>
             </div>

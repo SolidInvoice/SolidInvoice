@@ -26,6 +26,7 @@ use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
@@ -34,6 +35,7 @@ use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\WorkflowInterface;
 
@@ -48,6 +50,7 @@ final readonly class RecurringInvoiceWriteTools
         #[Autowire(service: 'state_machine.recurring_invoice')]
         private WorkflowInterface $recurringWorkflow,
         private McpScopeGuard $scopeGuard,
+        private SystemConfig $systemConfig,
     ) {
     }
 
@@ -72,6 +75,9 @@ final readonly class RecurringInvoiceWriteTools
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach (optional)
      * @param bool                            $activate       If true, also transition from "new" -> "active" after create
+     * @param string|null                     $payment_terms  When each generated invoice is due: due_on_receipt, net_7, net_14, net_15, net_30, net_45,
+     *                                                        net_60, net_90, end_of_month, end_of_next_month or custom (no due date).
+     *                                                        Defaults to the client's terms, else the company's.
      *
      * @return array<string, mixed>
      */
@@ -89,6 +95,7 @@ final readonly class RecurringInvoiceWriteTools
         ?string $notes = null,
         array $contact_ids = [],
         bool $activate = false,
+        ?string $payment_terms = null,
     ): array {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -124,6 +131,10 @@ final readonly class RecurringInvoiceWriteTools
         if ($terms !== null) {
             $invoice->setTerms($terms);
         }
+
+        $invoice->setPaymentTerms($payment_terms === null
+            ? PaymentTerms::forClient($client, $this->systemConfig)
+            : PaymentTerms::tryFrom($payment_terms) ?? throw new ToolCallException(sprintf('Unknown payment_terms "%s". Use one of: %s.', $payment_terms, implode(', ', array_column(PaymentTerms::cases(), 'value')))));
 
         if ($notes !== null) {
             $invoice->setNotes($notes);

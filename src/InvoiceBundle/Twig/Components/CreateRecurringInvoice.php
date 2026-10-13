@@ -18,7 +18,9 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Twig\Components\ReordersLines;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -29,7 +31,11 @@ use Symfony\UX\LiveComponent\Attribute\PreReRender;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use Symfony\UX\TwigComponent\Attribute\PostMount;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Twig\Components\CreateRecurringInvoiceTest
+ */
 #[AsLiveComponent]
 final class CreateRecurringInvoice extends AbstractController
 {
@@ -43,11 +49,38 @@ final class CreateRecurringInvoice extends AbstractController
     #[LiveProp(writable: true)]
     public bool $isEdit = false;
 
+    #[LiveProp(writable: true)]
+    public ?string $previousClientId = null;
+
     public function __construct(
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
         private readonly TaxRepository $taxRepository,
+        private readonly SystemConfig $systemConfig,
     ) {
+    }
+
+    #[PostMount]
+    public function trackClient(): void
+    {
+        $this->previousClientId = $this->invoice->getClient()?->getId()?->toString();
+    }
+
+    /**
+     * Choosing a different client on a new schedule switches to that client's payment terms.
+     * Priority 10 runs this before the form is submitted, so the new value is part of it.
+     */
+    #[PreReRender(priority: 10)]
+    public function applyClientPaymentTerms(): void
+    {
+        $clientId = $this->formValues['client'] ?? null;
+
+        if ($this->isEdit || $clientId === null || $clientId === '' || $clientId === $this->previousClientId) {
+            return;
+        }
+
+        $this->previousClientId = $clientId;
+        $this->formValues['paymentTerms'] = PaymentTerms::forClient($this->clientRepository->find($clientId), $this->systemConfig)->value;
     }
 
     /**

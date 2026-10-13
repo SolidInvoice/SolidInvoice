@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
@@ -42,6 +43,51 @@ final class CreateInvoiceTest extends LiveComponentTest
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
+    }
+
+    public function testPresetPaymentTermsFillInAndLockTheDueDate(): void
+    {
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-31');
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.paymentTerms', PaymentTerms::Net30->value);
+
+        self::assertSame('2021-03-02', $component->component()->formValues['due']);
+        self::assertMatchesRegularExpression('/name="invoice\[due\]"\s+readonly/', $component->render()->toString());
+
+        $component->set('invoice.invoiceDate', '2021-02-01');
+
+        self::assertSame('2021-03-03', $component->component()->formValues['due']);
+
+        // Custom hands the date back to the user, starting from the last computed one.
+        $component->set('invoice.paymentTerms', PaymentTerms::Custom->value);
+        $component->set('invoice.due', '2021-06-30');
+
+        self::assertSame('2021-06-30', $component->component()->formValues['due']);
+        self::assertDoesNotMatchRegularExpression('/name="invoice\[due\]"\s+readonly/', $component->render()->toString());
+    }
+
+    public function testChoosingAClientAppliesItsPaymentTerms(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'paymentTerms' => PaymentTerms::Net7]);
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.client', (string) $client->getId());
+
+        self::assertSame(PaymentTerms::Net7->value, $component->component()->formValues['paymentTerms']);
+        self::assertSame('2021-01-08', $component->component()->formValues['due']);
     }
 
     /**

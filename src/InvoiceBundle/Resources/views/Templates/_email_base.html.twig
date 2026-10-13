@@ -91,7 +91,7 @@
     {{ email.info_row('invoice.created'|trans({}, 'email'), invoice.created|date) }}
     {% if invoice.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.due'|trans({}, 'email'), invoice.due|date) }}
+        {{ email.info_row('invoice.due'|trans({}, 'email'), invoice.due|date ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans({}, 'messages') : '')) }}
     {% endif %}
 
     {{ email.divider('md') }}

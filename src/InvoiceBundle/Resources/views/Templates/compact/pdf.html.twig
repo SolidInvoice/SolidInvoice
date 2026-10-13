@@ -28,7 +28,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: middle; text-align: right; color: #ffffff;">
-                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
+                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}{% endif %}</div>
                         <div style="font-size: 16pt; font-weight: bold;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
                     </td>
                 </tr>
