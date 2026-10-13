@@ -303,10 +303,6 @@ final class Version20200 extends AbstractMigration
             $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
             $this->connection->executeQuery($sql);
         }
-
-        if ($this->connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
-            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
-        }
     }
 
     public function preDown(Schema $schema): void

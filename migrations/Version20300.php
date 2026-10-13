@@ -374,15 +374,17 @@ final class Version20300 extends AbstractMigration
                     }
                 }
             }
+        }
 
-            if ($this->platform instanceof AbstractMySQLPlatform) {
-                $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
-            } elseif ($this->platform instanceof SQLitePlatform) {
-                $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
-            } elseif ($this->platform instanceof SQLServerPlatform) {
-                foreach ($schema->getTables() as $table) {
-                    $this->connection->executeQuery("ALTER TABLE {$table->getName()} CHECK CONSTRAINT ALL;");
-                }
+        // Unconditional: preUp() always disables the checks, and on a fresh install
+        // $columnsToUpdate is empty, which left them off for every later migration
+        if ($this->platform instanceof AbstractMySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
+        } elseif ($this->platform instanceof SQLitePlatform) {
+            $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
+        } elseif ($this->platform instanceof SQLServerPlatform) {
+            foreach ($schema->getTables() as $table) {
+                $this->connection->executeQuery("ALTER TABLE {$table->getName()} CHECK CONSTRAINT ALL;");
             }
         }
     }
