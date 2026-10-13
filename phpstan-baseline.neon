@@ -319,12 +319,6 @@ parameters:
 			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
 
 		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldStagingStore\:\:\$entries \(WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\) does not accept WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\.$#'
-			identifier: assign.propertyType
-			count: 3
-			path: src/CoreBundle/Service/CustomField/CustomFieldStagingStore.php
-
-		-
 			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Test\\LiveComponentTest\:\:\$company because it might have hooks in a subclass\.$#'
 			identifier: unset.possiblyHookedProperty
 			count: 1
