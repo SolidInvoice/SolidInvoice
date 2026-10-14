@@ -7,9 +7,8 @@ platform:
         two_factor:
             enabled: true
             base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"
-        # Only enforced on hosted installs: config/services.php switches it off for self-hosted.
         email_verification:
-            enabled: '%env(bool:SOLIDINVOICE_EMAIL_VERIFICATION_ENABLED)%'
+            enabled: true
             banner_template: "@SolidInvoiceUser/EmailVerification/banner.html.twig"
             email:
                 template: "@SolidInvoiceUser/Email/confirm_email.html.twig"
