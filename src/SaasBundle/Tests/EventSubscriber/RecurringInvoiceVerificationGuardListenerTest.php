@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\SaasBundle\EventSubscriber\RecurringInvoiceVerificationGuardListener;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;

@@ -17,6 +17,8 @@ use Sentry\SentryBundle\Monolog\LogsHandler;
 use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\UserBundle\Security\UserChecker;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\VerifiedUserChecker;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
@@ -34,6 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_CUSTOM_DOMAIN_DNS_RECORD)', '');
     $parameters->set('env(SOLIDINVOICE_RUNTIME)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
+    $parameters->set('env(SOLIDINVOICE_EMAIL_VERIFICATION_ENABLED)', '0');
     $parameters->set('env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID)', null);
     $parameters->set('env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_TURNSTILE_SITE_KEY)', null);
@@ -76,6 +79,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('monolog.processor', ['handler' => 'sentry_logs']);
 
     $services->alias(StimulusHelper::class, 'stimulus.helper');
+
+    // The token-based firewalls refuse disabled accounts and, on hosted installs, unverified
+    // ones. The web firewall only refuses disabled accounts: an unverified user can sign in and
+    // is nudged by the verification banner instead.
+    $services->set(UserChecker::class)
+        ->tag('security.user_checker.api')
+        ->tag('security.user_checker.mcp');
+
+    $services->set(VerifiedUserChecker::class)
+        ->autowire()
+        ->tag('security.user_checker.api')
+        ->tag('security.user_checker.mcp');
     $services->set(AppRequirements::class)
         ->autowire(true);
 

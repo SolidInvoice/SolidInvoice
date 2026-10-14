@@ -545,8 +545,6 @@ email_verification:
         send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
         send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
         send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
-    gate:
-        reason: 'Please verify your email address before %action%.'
 exception:
     403:
         text: "You don't have permission to view this page."
@@ -2284,10 +2282,6 @@ security:
         try_another_method: 'Try another verification method'
         verification_code: 'Verification Code'
         verify_continue: 'Verify & Continue'
-    verify_email:
-        flash:
-            invalid: 'The email verification link is invalid.'
-            success: 'Your email address has been verified.'
 settings:
     address:
         city: City

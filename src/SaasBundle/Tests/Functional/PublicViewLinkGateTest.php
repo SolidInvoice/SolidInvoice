@@ -19,13 +19,14 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\UserBundle\Test\Factory\UserFactory;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,9 +35,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
 
 /**
- * Verifies the public invoice/quote view link returns 404 when the owning
- * company is gated by the SaaS email-verification gate, and serves the page
- * when the gate is open.
+ * Verifies the public invoice/quote view link returns 404 when none of the
+ * owning company's users has passed the email-verification gate, and serves
+ * the page when one has.
  */
 #[Group('functional')]
 final class PublicViewLinkGateTest extends KernelTestCase
@@ -47,6 +48,8 @@ final class PublicViewLinkGateTest extends KernelTestCase
     {
         $action = $this->buildAction(gated: true);
 
+        // The owning side is User::$companies; keep the in-memory company in step with it.
+        $this->company->addUser(UserFactory::createOne(['companies' => [$this->company]]));
         $invoice = $this->createInvoice();
 
         $this->expectException(NotFoundHttpException::class);
@@ -72,7 +75,7 @@ final class PublicViewLinkGateTest extends KernelTestCase
         $container = self::getContainer();
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isCompanyGated')
+        $gate->method('isGated')
             ->willReturn($gated);
 
         $authChecker = $this->createStub(AuthorizationCheckerInterface::class);

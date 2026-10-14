@@ -19,7 +19,6 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
@@ -44,6 +43,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Envelope;
@@ -333,7 +333,7 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
         $authChecker->method('isGranted')->willReturn(false);
 
         $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isCompanyGated')->willReturn(false);
+        $gate->method('isGated')->willReturn(false);
 
         return new ViewBilling(
             $container->get('doctrine'),

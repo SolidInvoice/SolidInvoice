@@ -18,13 +18,14 @@ use InvalidArgumentException;
 use Mpdf\MpdfException;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,7 +116,7 @@ class ViewBilling
 
         $this->clientRepository->initializeArchived($entity->getClient());
 
-        if ($this->emailVerificationGate->isCompanyGated($entity->getCompany())) {
+        if ($this->isCompanyUnverified($entity->getCompany())) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
 
@@ -144,5 +145,22 @@ class ViewBilling
             'template' => $options['template'],
             'documentTemplate' => $this->templateResolver->customTemplate($entity, BillingTemplateChannel::View),
         ];
+    }
+
+    /**
+     * A company none of whose users has verified their email cannot share documents publicly:
+     * the link would otherwise let an unverified account reach clients outside the send gate.
+     */
+    private function isCompanyUnverified(Company $company): bool
+    {
+        $users = $company->getUsers();
+
+        foreach ($users as $user) {
+            if (! $this->emailVerificationGate->isGated($user)) {
+                return false;
+            }
+        }
+
+        return ! $users->isEmpty();
     }
 }
