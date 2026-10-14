@@ -99,6 +99,9 @@ final class ResendVerificationEmailTest extends WebTestCase
         ]);
         self::assertInstanceOf(User::class, $user);
 
+        // Creating an unverified user emails it a link; only the ones the tests send count.
+        $this->mailer()->reset();
+
         $client->loginUser($user);
 
         return $client;

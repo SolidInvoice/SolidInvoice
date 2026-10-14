@@ -46,6 +46,8 @@ use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Routing\RouterInterface;
@@ -67,6 +69,7 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
     {
         $invoice = $this->reloadInvoice($this->createInvoiceWithArchivedClient());
         $request = Request::create('/invoice/' . $invoice->getId());
+        $request->setSession(new Session(new MockArraySessionStorage()));
         self::getContainer()->get('request_stack')->push($request);
 
         $result = self::getContainer()->get(View::class)($request, $invoice);
@@ -246,6 +249,7 @@ final class ArchivedClientDocumentRenderTest extends KernelTestCase
 
         $invoice = $this->reloadInvoice($invoiceId);
         $request = Request::create('/invoice/' . $invoiceId);
+        $request->setSession(new Session(new MockArraySessionStorage()));
         self::getContainer()->get('request_stack')->push($request);
 
         $result = self::getContainer()->get(View::class)($request, $invoice);
