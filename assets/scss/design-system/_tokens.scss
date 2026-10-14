@@ -29,13 +29,14 @@
     --tblr-primary-light: #e8f5e9;
     --tblr-primary-lighter: #f1f9f2;
 
-    // Secondary: Orange - Used sparingly for accents
-    --tblr-secondary: #f0a015;
-    --tblr-secondary-rgb: 240, 160, 21;
-    --tblr-secondary-hover: #d89012;
-    --tblr-secondary-dark: #c8820e;
-    --tblr-secondary-light: #fff8e1;
-    --tblr-secondary-lighter: #fffcf0;
+    // Accent: Orange - Used sparingly. Not `--tblr-secondary`: Tabler 1.5 uses that as the
+    // muted grey behind `.text-secondary`, card subtitles, form hints and neutral badges.
+    --tblr-accent: #f0a015;
+    --tblr-accent-rgb: 240, 160, 21;
+    --tblr-accent-hover: #d89012;
+    --tblr-accent-dark: #c8820e;
+    --tblr-accent-light: #fff8e1;
+    --tblr-accent-lighter: #fffcf0;
 
     // -------------------------------------------------------------------------
     // Neutral Colors (Slate-based gray scale for modern feel)

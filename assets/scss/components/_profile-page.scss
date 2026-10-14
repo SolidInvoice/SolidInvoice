@@ -404,3 +404,13 @@
         display: none !important;
     }
 }
+
+// ============================================================================
+// PLATFORM PROFILE SECTION
+// ============================================================================
+
+// The platform's profile pages render plain Tabler cards; tint their headers to match the
+// section headers the app's own pages had.
+.swp-profile .card-header {
+    background: var(--tblr-gray-50);
+}

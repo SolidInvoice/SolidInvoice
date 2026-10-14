@@ -519,11 +519,11 @@
     }
 
     &--secondary {
-        background: var(--tblr-secondary-lighter);
-        color: var(--tblr-secondary-dark);
+        background: var(--tblr-accent-lighter);
+        color: var(--tblr-accent-dark);
 
         &:hover {
-            background: var(--tblr-secondary-light);
+            background: var(--tblr-accent-light);
         }
     }
 

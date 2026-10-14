@@ -96,3 +96,5 @@ ui:
     icon_pack: tabler
     templates:
         login: '@SolidInvoiceUser/Security/login.html.twig'
+        layouts:
+            app: '@SolidInvoiceCore/Layout/default.html.twig'

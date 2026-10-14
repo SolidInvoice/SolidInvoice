@@ -5,39 +5,8 @@
  * Uses design tokens from _tokens.scss for consistency.
  */
 
-// ============================================================================
-// DATAGRID BASE
-// ============================================================================
-
-.datagrid {
-    // Container for the entire datagrid component
-    // Note: overflow is NOT set to hidden to allow dropdowns to extend beyond bounds
-    position: relative;
-    display: block;
-
-    // Flash messages inside the datagrid
-
-    > .alert {
-        margin-bottom: var(--tblr-space-4);
-    }
-}
-
-.datagrid-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--tblr-space-4);
-    padding: var(--tblr-space-4) var(--tblr-space-6);
-    border-bottom: 1px solid var(--tblr-border-light);
-    background: var(--tblr-surface);
-}
-
-.datagrid-title {
-    font-size: var(--tblr-text-lg);
-    font-weight: var(--tblr-font-semibold);
-    color: var(--tblr-text-primary);
-    margin: 0;
-}
+// No `.datagrid`, `.datagrid-title` or `.datagrid-item` rules here: those are Tabler's key/value
+// grid (the profile details, the installer summary), and the grid component never uses them.
 
 // ============================================================================
 // SEARCH & FILTER BAR

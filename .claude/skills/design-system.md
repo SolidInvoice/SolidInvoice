@@ -31,7 +31,7 @@ and no mapping layer. Tokens with no Tabler counterpart (`--tblr-space-4`) live 
 | `--tblr-primary` (#2e963a)            | Main CTAs, links, active states |
 | `--tblr-primary-dark` (#1f6c29)       | Hover/active states             |
 | `--tblr-primary-light` (#e8f5e9)      | Backgrounds, badges             |
-| `--tblr-secondary` (#f0a015)          | Accent (use sparingly)          |
+| `--tblr-accent` (#f0a015)             | Accent (use sparingly)          |
 | `--tblr-success/danger/warning/info`  | Status colors                   |
 | `--tblr-gray-50` to `--tblr-gray-900`  | Text and backgrounds            |
 | `--tblr-text-primary/secondary/muted` | Text hierarchy                  |

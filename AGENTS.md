@@ -581,7 +581,7 @@ All design values are defined as CSS custom properties with the `--tblr-` prefix
 | `--tblr-primary` | `#2e963a` | Main CTAs, links, active states |
 | `--tblr-primary-dark` | `#1f6c29` | Hover/active states |
 | `--tblr-primary-light` | `#e8f5e9` | Backgrounds, badges |
-| `--tblr-secondary` | `#f0a015` | Accent color (use sparingly) |
+| `--tblr-accent` | `#f0a015` | Accent color (use sparingly) |
 | `--tblr-success` | `#10b981` | Success states, confirmations |
 | `--tblr-danger` | `#ef4444` | Errors, destructive actions |
 | `--tblr-warning` | `#f59e0b` | Warnings, cautions |
