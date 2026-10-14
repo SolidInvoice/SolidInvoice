@@ -2266,16 +2266,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "4.2.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "49ab73e0d3e2ac8d1f5ecda3dd8acd5503781e8b"
+                "reference": "d8293831c5b99449b2f63eb1e1bbdc202118daa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/49ab73e0d3e2ac8d1f5ecda3dd8acd5503781e8b",
-                "reference": "49ab73e0d3e2ac8d1f5ecda3dd8acd5503781e8b",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/d8293831c5b99449b2f63eb1e1bbdc202118daa6",
+                "reference": "d8293831c5b99449b2f63eb1e1bbdc202118daa6",
                 "shasum": ""
             },
             "require": {
@@ -2340,7 +2340,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/4.2.0"
+                "source": "https://github.com/doctrine/persistence/tree/4.2.1"
             },
             "funding": [
                 {
@@ -2356,7 +2356,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-26T12:12:52+00:00"
+            "time": "2026-10-03T14:15:35+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
