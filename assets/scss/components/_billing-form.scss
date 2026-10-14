@@ -1606,9 +1606,9 @@
 .recurring-variables-help {
     margin-block-start: var(--swp-space-3);
     padding: var(--swp-space-3);
-    border: 1px solid var(--swp-info-border-subtle);
+    border: 1px solid var(--swp-info-light);
     border-radius: var(--swp-radius-md);
-    background: var(--swp-info-bg-subtle);
+    background: var(--swp-info-lighter);
 
     .variables-summary {
         display: flex;
@@ -1630,14 +1630,14 @@
         }
 
         &:hover {
-            color: var(--swp-info-emphasis);
+            color: var(--swp-info-dark);
         }
     }
 
     .variables-content {
         margin-block-start: var(--swp-space-3);
         padding-block-start: var(--swp-space-3);
-        border-block-start: 1px solid var(--swp-info-border-subtle);
+        border-block-start: 1px solid var(--swp-info-light);
 
         .variables-description {
             font-size: var(--swp-text-sm);
