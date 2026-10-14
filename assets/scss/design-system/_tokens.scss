@@ -23,6 +23,23 @@
     --swp-primary-light: #e8f5e9;
     --swp-primary-lighter: #f1f9f2;
 
+    // The label on a Trust Green fill. Tabler derives this from its own build-time
+    // $primary (#066fd1) against $min-contrast-ratio: 1.5, which has nothing to do
+    // with our green - so we own it. #f9fafb rather than #ffffff because The
+    // Tinted Neutrals Rule prohibits pure white as text.
+    --swp-on-primary: #f9fafb;
+
+    // Bottom of the green ramp. The primary button's pressed state.
+    --swp-primary-darker: #17591f;   // 8.09:1 under --swp-on-primary
+
+    // The primary button's fill ramp. It starts one step below --swp-primary
+    // because Trust Green itself does not carry a legible label: #f9fafb on
+    // #2e963a measures 3.63:1. Trust Green stays exactly as it is everywhere
+    // else - rings, borders, accents, icon fills.
+    --swp-primary-fill:        var(--swp-primary-hover);   // #268032 - 4.77:1
+    --swp-primary-fill-hover:  var(--swp-primary-dark);    // #1f6c29 - 6.21:1
+    --swp-primary-fill-active: var(--swp-primary-darker);  // #17591f - 8.09:1
+
     // Secondary: Orange - Used sparingly for accents
     --swp-secondary: #f0a015;
     --swp-secondary-rgb: 240, 160, 21;

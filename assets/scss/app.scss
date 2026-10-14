@@ -5,8 +5,6 @@
  * It imports Bootstrap, the design system, components, and layouts.
  */
 
-@use 'sass:color';
-
 // ============================================================================
 // 1. BOOTSTRAP CORE IMPORTS
 // ============================================================================
@@ -15,50 +13,6 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
-
-// ============================================================================
-// 2. SOLIDINVOICE BRAND VARIABLES (Override Bootstrap defaults)
-// ============================================================================
-
-// Primary colors
-$green-base: #2e963a;
-$green-dark: #1f6c29;
-$green-light: #e8f5e9;
-$orange-base: #f0a015;
-$orange-dark: #c8820e;
-$orange-light: #fff8e1;
-
-// Override Bootstrap variables
-$primary: $green-base;
-$secondary: $orange-base;
-
-// Body and Link Colors
-$body-color: #333333;
-$body-bg: #f4f6f8;
-$link-color: $primary;
-$link-hover-color: $green-dark;
-
-// Button states
-$btn-primary-bg: $primary;
-$btn-primary-border-color: $primary;
-$btn-primary-hover-bg: $green-dark;
-$btn-primary-hover-border-color: $green-dark;
-$btn-primary-active-bg: $green-dark;
-$btn-primary-active-border-color: $green-dark;
-$btn-secondary-bg: $secondary;
-$btn-secondary-border-color: $secondary;
-$btn-secondary-hover-bg: $orange-dark;
-$btn-secondary-hover-border-color: $orange-dark;
-$btn-secondary-active-bg: $orange-dark;
-$btn-secondary-active-border-color: $orange-dark;
-
-// Alert Colors
-$alert-primary-bg: $green-light;
-$alert-primary-border-color: color.adjust($green-light, $lightness: -5%);
-$alert-primary-text: $green-dark;
-$alert-secondary-bg: $orange-light;
-$alert-secondary-border-color: color.adjust($orange-light, $lightness: -5%);
-$alert-secondary-text: $orange-dark;
 
 // ============================================================================
 // 3. DESIGN SYSTEM FOUNDATION
