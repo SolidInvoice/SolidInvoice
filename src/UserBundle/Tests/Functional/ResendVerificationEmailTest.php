@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use Override;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\Test\EmailVerificationKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Controller\Security\ResendVerificationEmail;
-use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGate;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 
 /**
@@ -35,6 +34,12 @@ final class ResendVerificationEmailTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
     use InteractsWithMailer;
+
+    #[Override]
+    protected static function getKernelClass(): string
+    {
+        return EmailVerificationKernel::class;
+    }
 
     public function testTheBannerCarriesTheSolidInvoiceMessageAndAResendButton(): void
     {
@@ -83,14 +88,6 @@ final class ResendVerificationEmailTest extends WebTestCase
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
-
-        // Self-hosted installs switch verification off, so turn it on the way a hosted one has it.
-        $container = self::getContainer();
-        $container->set(EmailVerificationGate::class, new EmailVerificationGate(
-            $container->get(Security::class),
-            $container->get(TranslatorInterface::class),
-            true,
-        ));
 
         $user = UserFactory::createOne([
             'companies' => [$this->company],
