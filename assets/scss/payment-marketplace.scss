@@ -308,18 +308,6 @@
         border-radius: var(--swp-radius-full);
         letter-spacing: 0.02em;
         text-transform: uppercase;
-
-        &.bg-success {
-            background: linear-gradient(135deg, var(--swp-success) 0%, var(--swp-success-hover) 100%) !important;
-            color: #ffffff;
-            box-shadow: 0 2px 4px rgba(var(--swp-success-rgb), 0.2);
-        }
-
-        &.bg-secondary {
-            background: linear-gradient(135deg, var(--swp-gray-400) 0%, var(--swp-gray-500) 100%) !important;
-            color: #ffffff;
-            box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
-        }
     }
 
     .btn {
