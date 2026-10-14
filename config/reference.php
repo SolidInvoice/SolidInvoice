@@ -2087,9 +2087,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         invalid_cursor?: "to_http_bad_request"|"custom"|Param, // Default: "to_http_bad_request"
  *     },
  * }
- * @psalm-type SymfonycastsVerifyEmailConfig = array{
- *     lifetime?: int|Param, // The length of time in seconds that a signed URI is valid for after it is created. // Default: 3600
- * }
  * @psalm-type KnpuOauth2ClientConfig = array{
  *     http_client?: scalar|Param|null, // Service id of HTTP client to use (must implement GuzzleHttp\ClientInterface) // Default: null
  *     http_client_options?: array{
@@ -2241,6 +2238,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     enable_static_query_cache?: bool|Param, // Default: true
  *     connection_keys?: list<mixed>,
  * }
+ * @psalm-type SymfonycastsVerifyEmailConfig = array{
+ *     lifetime?: int|Param, // The length of time in seconds that a signed URI is valid for after it is created. // Default: 3600
+ * }
  * @psalm-type SchebTwoFactorConfig = array{
  *     persister?: scalar|Param|null, // Default: "scheb_two_factor.persister.doctrine"
  *     model_manager_name?: scalar|Param|null, // Default: null
@@ -2320,7 +2320,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_component?: TwigComponentConfig,
  *     live_component?: LiveComponentConfig,
  *     babdev_pagerfanta?: BabdevPagerfantaConfig,
- *     symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *     knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     twig_extra?: TwigExtraConfig,
@@ -2328,6 +2327,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ux_icons?: UxIconsConfig,
  *     meilisearch?: MeilisearchConfig,
  *     mcp?: McpConfig,
+ *     symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
  *     payment?: PaymentConfig,
  *     "when@dev"?: array{
@@ -2356,7 +2356,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         live_component?: LiveComponentConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
- *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         twig_extra?: TwigExtraConfig,
@@ -2389,7 +2388,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         live_component?: LiveComponentConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
- *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         twig_extra?: TwigExtraConfig,

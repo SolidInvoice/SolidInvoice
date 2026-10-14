@@ -9330,12 +9330,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "07776b25ff8c3670e9f6118a161871fd8f87e064"
+                "reference": "5dbc48c35eb91a4307d59ea3c8520774ddd7fcf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/07776b25ff8c3670e9f6118a161871fd8f87e064",
-                "reference": "07776b25ff8c3670e9f6118a161871fd8f87e064",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/5dbc48c35eb91a4307d59ea3c8520774ddd7fcf9",
+                "reference": "5dbc48c35eb91a4307d59ea3c8520774ddd7fcf9",
                 "shasum": ""
             },
             "require": {
@@ -9360,6 +9360,7 @@
                 "symfony/html-sanitizer": "^8.1",
                 "symfony/http-client": "^8.1",
                 "symfony/http-kernel": "^8.1",
+                "symfony/mailer": "^8.1",
                 "symfony/property-access": "^8.1",
                 "symfony/routing": "^8.1",
                 "symfony/security-bundle": "^8.1",
@@ -9367,12 +9368,14 @@
                 "symfony/security-csrf": "^8.1",
                 "symfony/security-http": "^8.1",
                 "symfony/serializer": "^8.1",
+                "symfony/twig-bridge": "^8.1",
                 "symfony/uid": "^8.1",
                 "symfony/ux-icons": "^3.0",
                 "symfony/ux-live-component": "^3.0",
                 "symfony/validator": "^8.1",
                 "symfony/webhook": "^8.1",
                 "symfony/webpack-encore-bundle": "^2.3",
+                "symfonycasts/verify-email-bundle": "^1.18",
                 "twig/extra-bundle": "^3.21",
                 "twig/html-extra": "^3.24",
                 "twig/twig": "^3.13",
@@ -9380,20 +9383,22 @@
             },
             "require-dev": {
                 "captainhook/captainhook-phar": "^5.29",
-                "ergebnis/composer-normalize": "^2.53",
-                "ergebnis/phpunit-slow-test-detector": "^2.25",
+                "ergebnis/composer-normalize": "^2.54",
+                "ergebnis/phpunit-slow-test-detector": "^2.26",
                 "monolog/monolog": "^3.12",
                 "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.2",
+                "phpstan/phpstan": "^2.3",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
                 "phpstan/phpstan-doctrine": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0.",
-                "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^13.3",
-                "rector/rector": "^2.6",
+                "phpstan/phpstan-phpunit": "^2.1",
+                "phpstan/phpstan-strict-rules": "^2.1.",
+                "phpstan/phpstan-symfony": "^2.1",
+                "phpunit/phpunit": "^13.4",
+                "rector/rector": "^2.7",
                 "roave/security-advisories": "dev-latest",
                 "spatie/phpunit-snapshot-assertions": "^5.4",
+                "symfony/browser-kit": "^8.1",
+                "symfony/css-selector": "^8.1",
                 "symfony/messenger": "^8.1",
                 "symfony/rate-limiter": "^8.1",
                 "symplify/easy-coding-standard": "^13.3"
@@ -9421,7 +9426,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-10-13T10:17:13+00:00"
+            "time": "2026-10-14T08:53:35+00:00"
         },
         {
             "name": "solidworx/toggler",

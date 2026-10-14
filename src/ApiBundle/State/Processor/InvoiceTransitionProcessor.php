@@ -16,8 +16,8 @@ namespace SolidInvoice\ApiBundle\State\Processor;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -36,7 +36,7 @@ final readonly class InvoiceTransitionProcessor implements ProcessorInterface
     {
         assert($data instanceof Invoice);
 
-        // Defence-in-depth behind the API authentication block (VerifiedUserChecker):
+        // Defence-in-depth behind the API authentication block (the platform's VerifiedUserChecker):
         // an unverified hosted user must not be able to drive an invoice through its
         // workflow — including any transition that ultimately reaches a client — via the API.
         if ($this->emailVerificationGate->isGated()) {
