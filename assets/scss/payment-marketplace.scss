@@ -37,12 +37,12 @@
         transition: var(--swp-transition-colors);
 
         &:hover {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             border-bottom-color: var(--swp-primary);
             background: transparent;
         }
@@ -135,7 +135,7 @@
 
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             border: 2px solid rgba(var(--swp-primary-rgb), 0.2);
         }
 
@@ -257,12 +257,12 @@
         .payment-method-icon {
             background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
             box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.15);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
 
         .btn-outline-secondary {
             border-color: var(--swp-primary);
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             background: rgba(var(--swp-primary-rgb), 0.04);
         }
     }
@@ -625,7 +625,7 @@ body:has(.payment-modal) {
         }
 
         &:hover h6 {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
     }
 }

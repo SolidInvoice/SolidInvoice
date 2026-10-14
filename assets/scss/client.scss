@@ -40,7 +40,7 @@
         transition: color var(--swp-transition-fast);
 
         &:hover {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
         }
     }
 }
@@ -163,12 +163,12 @@
         gap: var(--swp-space-2);
 
         &:hover {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             border-bottom-color: rgb(46 150 58 / 30%);
         }
 
         &.active {
-            color: var(--swp-primary);
+            color: var(--swp-primary-text);
             border-bottom-color: var(--swp-primary);
         }
 
@@ -242,7 +242,7 @@
     height: 32px;
     border-radius: var(--swp-radius-md);
     background: var(--swp-primary-lighter);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     font-size: 0.875rem;
 }
 
@@ -279,7 +279,7 @@
     color: var(--swp-text-primary);
 
     a {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         text-decoration: none;
 
         &:hover {
@@ -438,7 +438,7 @@
     word-break: break-all;
 
     a {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         text-decoration: none;
 
         &:hover {

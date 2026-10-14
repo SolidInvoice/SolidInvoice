@@ -23,6 +23,12 @@
     --swp-primary-light: #e8f5e9;
     --swp-primary-lighter: #f1f9f2;
 
+    // Trust Green is a fill colour, not a text colour. 3.79:1 on surface and
+    // 3.50:1 on body-bg, so it fails AA as text on every surface in the product.
+    // It passes 3:1 as a border, focus ring or accent, which is what it is for.
+    // Green *text* uses this step.
+    --swp-primary-text: var(--swp-primary-dark);   // #1f6c29 - 6.49:1 on surface, 5.99:1 on body-bg
+
     // Secondary: Orange - Used sparingly for accents
     --swp-secondary: #f0a015;
     --swp-secondary-rgb: 240, 160, 21;
@@ -129,8 +135,8 @@
     // Link Colors
     // -------------------------------------------------------------------------
 
-    --swp-link-color: var(--swp-primary);
-    --swp-link-hover-color: var(--swp-primary-dark);
+    --swp-link-color: var(--swp-primary-text);
+    --swp-link-hover-color: var(--swp-primary-hover);
 }
 
 // ============================================================================

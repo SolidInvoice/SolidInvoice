@@ -43,7 +43,7 @@
     height: 56px;
     background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
 }
 
 .payment-header-title {
@@ -555,7 +555,7 @@
     border-radius: var(--swp-radius-sm);
 
     strong {
-        color: var(--swp-primary);
+        color: var(--swp-primary-text);
         font-weight: var(--swp-font-semibold);
     }
 }
@@ -614,7 +614,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--swp-space-1);
-    color: var(--swp-primary);
+    color: var(--swp-primary-text);
     text-decoration: none;
     font-weight: var(--swp-font-semibold);
     transition: color var(--swp-transition-fast);
