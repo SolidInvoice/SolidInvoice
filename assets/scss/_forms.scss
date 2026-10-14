@@ -36,6 +36,14 @@
     background-color: var(--tblr-surface);
 }
 
+// These cards clip with `overflow: hidden` to keep their header inside the rounded corners, and
+// Tom Select positions its dropdown inside the card, so a select near the bottom edge opened into
+// a sliver. Stop clipping only while a dropdown is open.
+
+:is(.form-page-section, .address-card, .billing-items-section, .billing-terms-section):has(.ts-wrapper.dropdown-active) {
+    overflow: visible;
+}
+
 // ============================================================================
 // FORM LABELS
 // ============================================================================

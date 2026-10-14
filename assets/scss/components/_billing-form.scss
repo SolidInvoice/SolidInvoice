@@ -540,7 +540,7 @@
         justify-content: center;
 
         // Aligns the grip with the first line of the description, not the top of its box.
-        padding-top: var(--swp-space-2);
+        padding-top: var(--tblr-space-2);
     }
 
     // Quiet until the row is hovered or the handle is tabbed to, so a column of grips does
@@ -554,19 +554,19 @@
         height: 24px;
         padding: 0;
         border: 0;
-        border-radius: var(--swp-radius-sm);
+        border-radius: var(--tblr-radius-sm);
         background: none;
-        color: var(--swp-text-muted);
+        color: var(--tblr-text-muted);
         cursor: grab;
         opacity: 0;
         transition:
-            opacity var(--swp-transition-fast),
-            background var(--swp-transition-fast),
-            color var(--swp-transition-fast);
+            opacity var(--tblr-transition-fast),
+            background var(--tblr-transition-fast),
+            color var(--tblr-transition-fast);
 
         &:hover {
-            background: var(--swp-gray-100);
-            color: var(--swp-text-primary);
+            background: var(--tblr-gray-100);
+            color: var(--tblr-text-primary);
         }
 
         &:active {
@@ -575,7 +575,7 @@
 
         &:focus-visible {
             opacity: 1;
-            outline: 2px solid var(--swp-primary);
+            outline: 2px solid var(--tblr-primary);
             outline-offset: 1px;
         }
     }
@@ -670,8 +670,8 @@
 
         .column-drag {
             position: absolute;
-            top: var(--swp-space-2);
-            right: var(--swp-space-2);
+            top: var(--tblr-space-2);
+            right: var(--tblr-space-2);
             padding-top: 0;
         }
 
