@@ -1,6 +1,6 @@
 <html><body>
 <div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"name":"","description":"","price":"100.00","qty":"1"},{"name":"","description":"","price":"100.00","qty":"1"}],"invoiceTaxes":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","paymentTerms":"custom","due":"","customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-
+    
     <form name="invoice" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
     <div class="billing-form-container">
@@ -21,7 +21,7 @@
                                 <div class="billing-details-left">
                                         <div class="client-selection">
                                                 <div class="client-mode-toggle mb-3 d-none">
-                            <fieldset class="mb-3">
+                            <fieldset class="mb-3">                
                                         <label class="control-label required form-label required" for="invoice_clientMode">Client mode</label><div id="invoice_clientMode" class="d-flex gap-2">
 <div class="form-check">
 <input type="radio" id="invoice_clientMode_0" name="invoice[clientMode]" data-required="required" data-action="live#$render" class="form-check-input" value="existing" checked>
@@ -35,9 +35,9 @@
 </fieldset>
                         </div>
 
-
+                        
                                                                                 <div>
-                                                                    <div class="mb-3">
+                                                                    <div class="mb-3">                        
                                 <label class="control-label required form-label required" for="invoice_client">Client</label>
             <select id="invoice_client" name="invoice[client]" data-required="required" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render" class="form-select"><option value="" hidden="hidden" selected>Choose a client</option></select>
     </div>
@@ -56,7 +56,7 @@
                         </span>
 
                         <div class="d-none billing-id-form" data-billing-id-target="form">
-
+                                            
                                 <label class="control-label required form-label required" for="invoice_invoiceId">Invoice id</label>
                             <div class="input-group">
                                 <input type="text" id="invoice_invoiceId" name="invoice[invoiceId]" data-required="required" maxlength="255" class="form-control form-control" value="1">
@@ -73,10 +73,10 @@
 
                                 <div class="billing-details-right">
                     <div class="invoice-dates-row">
-                        <div class="mb-3">
+                        <div class="mb-3">                
                                 <label class="control-label required form-label required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2021-01-01">
 </div>
-                        <div class="mb-3">
+                        <div class="mb-3">    
                                 <label class="control-label required form-label required" for="invoice_paymentTerms">Payment terms</label><select id="invoice_paymentTerms" name="invoice[paymentTerms]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="due_on_receipt">Due on receipt</option>
 <option value="net_7">Net 7</option>
 <option value="net_14">Net 14</option>
@@ -89,7 +89,7 @@
 <option value="end_of_next_month">End of next month</option>
 <option value="custom" selected>Custom</option></select>
 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3">    
             <label class="control-label form-label" for="invoice_due">Due Date</label><input type="date" id="invoice_due" name="invoice[due]" class="form-control">
 </div>
                     </div>
@@ -133,11 +133,11 @@
                                     <div class="column-description">
                                         <span class="mobile-label">Item</span>
                                         <input type="text" id="invoice_lines_0_name" name="invoice[lines][0][name]" class="input-medium invoice-item-name form-control" placeholder="e.g. Website design" aria-label="Item name">
-
+                                        
                                         <details class="line-description">
                                             <summary class="line-description-toggle">Add description</summary>
                                             <textarea id="invoice_lines_0_description" name="invoice[lines][0][description]" class="input-medium invoice-item-description form-control" placeholder="Describe the service or product..." rows="2" aria-label="Item description"></textarea>
-
+                                            
                                         </details>
                                     </div>
                                     <div class="column-price">
@@ -145,12 +145,12 @@
                                         <div class="input-group flex-nowrap">
 <span class="input-group-text">$ </span><input type="text" id="invoice_lines_0_price" name="invoice[lines][0][price]" class="input-small invoice-item-price form-control" inputmode="decimal" value="100.00">
 </div>
-
+                                        
                                     </div>
                                     <div class="column-qty">
                                         <span class="mobile-label">Qty</span>
                                         <input type="text" id="invoice_lines_0_qty" name="invoice[lines][0][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
-
+                                        
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
@@ -169,11 +169,11 @@
                                     <div class="column-description">
                                         <span class="mobile-label">Item</span>
                                         <input type="text" id="invoice_lines_1_name" name="invoice[lines][1][name]" class="input-medium invoice-item-name form-control" placeholder="e.g. Website design" aria-label="Item name">
-
+                                        
                                         <details class="line-description">
                                             <summary class="line-description-toggle">Add description</summary>
                                             <textarea id="invoice_lines_1_description" name="invoice[lines][1][description]" class="input-medium invoice-item-description form-control" placeholder="Describe the service or product..." rows="2" aria-label="Item description"></textarea>
-
+                                            
                                         </details>
                                     </div>
                                     <div class="column-price">
@@ -181,12 +181,12 @@
                                         <div class="input-group flex-nowrap">
 <span class="input-group-text">$ </span><input type="text" id="invoice_lines_1_price" name="invoice[lines][1][price]" class="input-small invoice-item-price form-control" inputmode="decimal" value="100.00">
 </div>
-
+                                        
                                     </div>
                                     <div class="column-qty">
                                         <span class="mobile-label">Qty</span>
                                         <input type="text" id="invoice_lines_1_qty" name="invoice[lines][1][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
-
+                                        
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
@@ -197,13 +197,13 @@
                                                                             </div>
                                 </div>
                                                     </div>
-
+                    
                                         <div class="add-item-action">
                         <button type="button" id="invoice_lines_add" name="invoice[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[lines]" class="add-item-btn btn-sm btn">Add Item</button>
                     </div>
                 </div>
 
-
+                
                 </div>
 
                         <div class="billing-totals-sidebar">
@@ -221,7 +221,7 @@
                             <span class="totals-value">$0.00</span>
                         </div>
 
-
+                        
                         <div class="totals-row totals-row-discount">
                             <span class="totals-label">Discount</span>
                             <span class="totals-value">$0.00</span>
@@ -236,7 +236,7 @@
             </div>
         </div>
 
-
+                
                 <details class="billing-terms-section">
             <summary class="terms-summary" aria-label="Toggle terms and notes section">
                 <span class="terms-summary-icon">
@@ -249,10 +249,10 @@
             </summary>
             <div class="terms-content">
                 <div class="terms-grid">
-                    <div class="mb-3">
+                    <div class="mb-3">    
             <label class="control-label form-label" for="invoice_terms">Terms &amp; Conditions</label><input type="text" id="invoice_terms" name="invoice[terms]" class="form-control">
 </div>
-                    <div class="mb-3">
+                    <div class="mb-3">                
             <label class="control-label form-label" for="invoice_notes">Notes</label><input type="text" id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"><div class="form-text text-muted mb-0" id="invoice_notes_help">Notes will not be visible to the client</div>
 </div>
                 </div>
