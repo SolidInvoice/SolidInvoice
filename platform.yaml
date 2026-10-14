@@ -8,7 +8,7 @@ platform:
             enabled: true
             base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"
         email_verification:
-            enabled: true
+            enabled: '%env(bool:SOLIDINVOICE_EMAIL_VERIFICATION_ENABLED)%'
             banner_template: "@SolidInvoiceUser/EmailVerification/banner.html.twig"
             email:
                 template: "@SolidInvoiceUser/Email/confirm_email.html.twig"
