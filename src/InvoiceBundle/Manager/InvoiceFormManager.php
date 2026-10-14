@@ -89,10 +89,13 @@ final readonly class InvoiceFormManager
 
     /**
      * Updates an existing Invoice from DTO
-     * Does NOT change client (edit mode keeps existing client)
+     * If clientMode=New, the client is unpersisted and cascades when the invoice is flushed
      */
     public function updateInvoiceFromDTO(Invoice $invoice, InvoiceFormDTO $dto): void
     {
+        $client = $this->resolveClient($dto);
+        $invoice->setClient($client);
+
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
@@ -126,7 +129,8 @@ final readonly class InvoiceFormManager
 
         // Sync users collection
         $invoice->getUsers()->clear();
-        foreach ($dto->users as $user) {
+        $users = $dto->clientMode === InvoiceClientMode::NewClient ? $client->getContacts() : $dto->users;
+        foreach ($users as $user) {
             $invoice->addUser($user);
         }
     }

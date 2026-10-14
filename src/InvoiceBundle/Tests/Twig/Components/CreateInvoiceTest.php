@@ -265,6 +265,53 @@ final class CreateInvoiceTest extends LiveComponentTest
     }
 
     /**
+     * @see https://github.com/SolidInvoice/SolidInvoice/issues/2959
+     */
+    public function testChangingTheClientOnEditSavesTheNewClient(): void
+    {
+        $em = self::getContainer()->get('doctrine')->getManager();
+
+        $oldClient = ClientFactory::createOne(['name' => 'Old Corp', 'currencyCode' => 'USD']);
+        $oldContact = ContactFactory::createOne(['email' => 'old@example.com', 'client' => $oldClient]);
+        $newClient = ClientFactory::createOne(['name' => 'New Corp', 'currencyCode' => 'USD']);
+        ContactFactory::createOne(['email' => 'new@example.com', 'client' => $newClient]);
+
+        $invoice = new Invoice();
+        $invoice->setStatus(InvoiceStatus::Draft);
+        $invoice->setClient($oldClient);
+        $invoice->setInvoiceId('INV-CLIENT-001');
+        $invoice->setInvoiceDate(CarbonImmutable::parse('2024-01-15'));
+        $invoice->addUser($oldContact);
+        $invoice->addLine(new Line()->setName('Consulting')->setPrice(10000)->setQty(1));
+
+        $em->persist($invoice);
+        $em->flush();
+
+        /** @var InvoiceFormManager $formManager */
+        $formManager = self::getContainer()->get(InvoiceFormManager::class);
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: [
+                'dto' => $formManager->createDTOFromInvoice($invoice),
+                'isEdit' => true,
+                'invoice' => $invoice,
+            ],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.client', (string) $newClient->getId());
+        $component->call('saveUpdate');
+
+        $em->clear();
+        $refreshed = $em->find(Invoice::class, $invoice->getId());
+
+        self::assertNotNull($refreshed);
+        self::assertSame('New Corp', $refreshed->getClient()?->getName());
+        self::assertSame(['new@example.com'], $refreshed->getUsers()->map(static fn ($c) => $c->getEmail())->getValues());
+    }
+
+    /**
      * Tests that the component correctly tracks previous client ID.
      * The PostMount hook should set previousClientId when auto-selecting contacts.
      */
