@@ -27,44 +27,44 @@
 .status-chip {
     display: inline-flex;
     align-items: center;
-    padding: var(--swp-space-0-5) var(--swp-space-2-5);   // 2px 10px
-    border-radius: var(--swp-radius-full);
-    font-size: var(--swp-text-xs);                        // 12px
-    font-weight: var(--swp-font-medium);                  // 500
+    padding: var(--tblr-space-0-5) var(--tblr-space-2-5);   // 2px 10px
+    border-radius: var(--tblr-radius-full);
+    font-size: var(--tblr-text-xs);                        // 12px
+    font-weight: var(--tblr-font-medium);                  // 500
     line-height: 1.25;
     letter-spacing: 0;
     white-space: nowrap;
 
     // The base is the neutral treatment, so a chip with no modifier is still
     // legible and still looks like a chip.
-    background-color: var(--swp-gray-100);
-    color: var(--swp-text-secondary);
+    background-color: var(--tblr-gray-100);
+    color: var(--tblr-text-secondary);
 
     &--neutral {
         // The modifier exists so call sites can say `neutral` rather than say
         // nothing. It repeats the base values instead of being empty, because
         // an empty rule is dropped by the build and by stylelint.
-        background-color: var(--swp-gray-100);
-        color: var(--swp-text-secondary);
+        background-color: var(--tblr-gray-100);
+        color: var(--tblr-text-secondary);
     }
 
     &--info {
-        background-color: var(--swp-info-light);
-        color: var(--swp-info-dark);
+        background-color: var(--tblr-info-light);
+        color: var(--tblr-info-dark);
     }
 
     &--success {
-        background-color: var(--swp-success-light);
-        color: var(--swp-success-dark);
+        background-color: var(--tblr-success-light);
+        color: var(--tblr-success-dark);
     }
 
     &--warning {
-        background-color: var(--swp-warning-light);
-        color: var(--swp-warning-dark);
+        background-color: var(--tblr-warning-light);
+        color: var(--tblr-warning-dark);
     }
 
     &--danger {
-        background-color: var(--swp-danger-light);
-        color: var(--swp-danger-dark);
+        background-color: var(--tblr-danger-light);
+        color: var(--tblr-danger-dark);
     }
 }
