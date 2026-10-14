@@ -1,6 +1,6 @@
 <html><body>
 <div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[],"invoiceTaxes":[],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-
+    
     <form name="quote" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
     <div class="billing-form-container">
@@ -21,7 +21,7 @@
                                 <div class="billing-details-left">
                                         <div class="client-selection">
                                                 <div class="client-mode-toggle mb-3 d-none">
-                            <fieldset class="mb-3">
+                            <fieldset class="mb-3">                
                                         <label class="control-label required form-label required" for="quote_clientMode">Client mode</label><div id="quote_clientMode" class="d-flex gap-2">
 <div class="form-check">
 <input type="radio" id="quote_clientMode_0" name="quote[clientMode]" data-required="required" data-action="live#$render" class="form-check-input" value="existing" checked>
@@ -35,9 +35,9 @@
 </fieldset>
                         </div>
 
-
+                        
                                                                                 <div>
-                                                                    <div class="mb-3">
+                                                                    <div class="mb-3">                        
                                 <label class="control-label required form-label required" for="quote_client">Client</label>
             <select id="quote_client" name="quote[client]" data-required="required" class="client-select form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render"><option value="" hidden="hidden" selected>Choose a client</option></select>
     </div>
@@ -56,7 +56,7 @@
                         </span>
 
                         <div class="d-none billing-id-form" data-billing-id-target="form">
-
+                                            
                                 <label class="control-label required form-label required" for="quote_quoteId">Quote id</label>
                             <div class="input-group">
                                 <input type="text" id="quote_quoteId" name="quote[quoteId]" data-required="required" class="form-control form-control" value="1">
@@ -100,13 +100,13 @@
                             <p class="empty-title">No items yet</p>
                             <p class="empty-subtitle text-secondary">Add your first item to get started</p>
                         </div>
-
+                    
                                         <div class="add-item-action">
                         <button type="button" id="quote_lines_add" name="quote[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[lines]" class="add-item-btn btn-sm btn">Add Item</button>
                     </div>
                 </div>
 
-
+                
                 </div>
 
                         <div class="billing-totals-sidebar">
@@ -124,7 +124,7 @@
                             <span class="totals-value">$0.00</span>
                         </div>
 
-
+                        
                         <div class="totals-row totals-row-discount">
                             <span class="totals-label">Discount</span>
                             <span class="totals-value">$0.00</span>
@@ -139,7 +139,7 @@
             </div>
         </div>
 
-
+                
                 <details class="billing-terms-section">
             <summary class="terms-summary" aria-label="Toggle terms and notes section">
                 <span class="terms-summary-icon">
@@ -152,10 +152,10 @@
             </summary>
             <div class="terms-content">
                 <div class="terms-grid">
-                    <div class="mb-3">
+                    <div class="mb-3">                
             <label class="control-label form-label" for="quote_terms">Terms</label><input type="text" id="quote_terms" name="quote[terms]" class="form-control">
 </div>
-                    <div class="mb-3">
+                    <div class="mb-3">                
             <label class="control-label form-label" for="quote_notes">Notes</label><input type="text" id="quote_notes" name="quote[notes]" aria-describedby="quote_notes_help" class="form-control"><div class="form-text text-muted mb-0" id="quote_notes_help">Notes will not be visible to the client</div>
 </div>
                 </div>
@@ -200,7 +200,7 @@
         </div>
     </div>
 
-    <fieldset class="mb-3">
+    <fieldset class="mb-3">                
     <div id="quote_lines"></div>
 </fieldset>
 <input type="hidden" id="quote___dynamic_error" name="quote[__dynamic_error]"><input type="hidden" id="quote__token" name="quote[_token]" data-controller="csrf-protection">
