@@ -2238,9 +2238,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     enable_static_query_cache?: bool|Param, // Default: true
  *     connection_keys?: list<mixed>,
  * }
- * @psalm-type SymfonycastsVerifyEmailConfig = array{
- *     lifetime?: int|Param, // The length of time in seconds that a signed URI is valid for after it is created. // Default: 3600
- * }
  * @psalm-type SchebTwoFactorConfig = array{
  *     persister?: scalar|Param|null, // Default: "scheb_two_factor.persister.doctrine"
  *     model_manager_name?: scalar|Param|null, // Default: null
@@ -2327,7 +2324,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ux_icons?: UxIconsConfig,
  *     meilisearch?: MeilisearchConfig,
  *     mcp?: McpConfig,
- *     symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
  *     payment?: PaymentConfig,
  *     "when@dev"?: array{
