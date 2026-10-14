@@ -26,63 +26,85 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
-use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\IdentityTranslator;
 use Twig\Environment;
 
 /**
  * Verifies the public invoice/quote view link returns 404 when none of the
- * owning company's users has passed the email-verification gate, and serves
- * the page when one has.
+ * owning company's users has verified their email, and serves the page as
+ * soon as one has.
+ *
+ * Uses the real platform gate with nobody signed in, as on the public page:
+ * the gate has to judge each company user it is handed, not the (absent)
+ * session user.
  */
 #[Group('functional')]
 final class PublicViewLinkGateTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
 
-    public function testReturnsNotFoundWhenCompanyGated(): void
+    public function testReturnsNotFoundWhenNoUserIsVerified(): void
     {
-        $action = $this->buildAction(gated: true);
-
-        // The owning side is User::$companies; keep the in-memory company in step with it.
-        $this->company->addUser(UserFactory::createOne(['companies' => [$this->company]]));
+        $this->addUser(verified: false);
         $invoice = $this->createInvoice();
 
         $this->expectException(NotFoundHttpException::class);
 
-        $action->invoiceAction(Request::create('/view/invoice/' . $invoice->getUuid()->toString()), $invoice->getUuid()->toString());
+        $this->view($invoice);
     }
 
-    public function testReturnsArrayWhenCompanyNotGated(): void
+    public function testServesThePageOnceAUserIsVerified(): void
     {
-        $action = $this->buildAction(gated: false);
-
+        $this->addUser(verified: false);
+        $this->addUser(verified: true);
         $invoice = $this->createInvoice();
 
-        $response = $action->invoiceAction(Request::create('/view/invoice/' . $invoice->getUuid()->toString()), $invoice->getUuid()->toString());
+        $response = $this->view($invoice);
 
         self::assertIsArray($response);
         self::assertArrayHasKey('invoice', $response);
         self::assertSame($invoice->getId()->toString(), $response['invoice']->getId()->toString());
     }
 
-    private function buildAction(bool $gated): ViewBilling
+    public function testServesThePageWhenVerificationIsDisabled(): void
+    {
+        $this->addUser(verified: false);
+        $invoice = $this->createInvoice();
+
+        self::assertIsArray($this->view($invoice, verificationEnabled: false));
+    }
+
+    private function addUser(bool $verified): void
+    {
+        // The owning side is User::$companies; keep the in-memory company in step with it.
+        $this->company->addUser(UserFactory::createOne(['companies' => [$this->company], 'verified' => $verified]));
+    }
+
+    /**
+     * @return array<string, mixed>|Response
+     */
+    private function view(Invoice $invoice, bool $verificationEnabled = true): array | Response
     {
         $container = self::getContainer();
 
-        $gate = $this->createStub(EmailVerificationGateInterface::class);
-        $gate->method('isGated')
-            ->willReturn($gated);
+        // Anonymous, like a client opening the link from an email.
+        $security = $this->createStub(Security::class);
+        $security->method('getUser')
+            ->willReturn(null);
 
         $authChecker = $this->createStub(AuthorizationCheckerInterface::class);
         $authChecker->method('isGranted')
             ->willReturn(false);
 
-        return new ViewBilling(
+        $action = new ViewBilling(
             $container->get('doctrine'),
             $container->get('doctrine')->getRepository(Client::class),
             $authChecker,
@@ -90,9 +112,13 @@ final class PublicViewLinkGateTest extends KernelTestCase
             $container->get(CompanySelector::class),
             $container->get(Generator::class),
             $container->get(Environment::class),
-            $gate,
+            new EmailVerificationGate($security, new IdentityTranslator(), $verificationEnabled),
             $container->get(BillingTemplateResolver::class),
         );
+
+        $uuid = $invoice->getUuid()->toString();
+
+        return $action->invoiceAction(Request::create('/view/invoice/' . $uuid), $uuid);
     }
 
     private function createInvoice(): Invoice
