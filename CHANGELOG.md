@@ -20,6 +20,7 @@ Unreleased
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
+* The built-in web server now caches only content-hashed static files for a year. Other static files are revalidated after an hour, so a release can no longer be hidden behind a long-cached copy of a file whose name did not change
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 * Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
 
