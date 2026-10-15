@@ -14,8 +14,48 @@ entries:
         - name: Pierre du Plessis
           email: open-source@solidworx.co
     apiVersion: v2
+    appVersion: 3.1.0
+    created: "2026-10-15T15:24:09.229233948Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.x.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.x.x
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.x.x
+    description: Simple and elegant open-source invoicing application
+    digest: 4c2e03f1ac39cf0229b6cd6339495054173e8e8f28fe0eaa125bde004cc802aa
+    icon: https://solidinvoice.co/logo.png
+    name: solidinvoice
+    type: application
+    urls:
+    - https://charts.solidinvoice.co/solidinvoice-3.1.0.tgz
+    version: 3.1.0
+  - annotations:
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Website
+          url: https://solidinvoice.co
+        - name: Documentation
+          url: https://solidinvoice.co/docs
+        - name: Source Code
+          url: https://github.com/SolidInvoice/SolidInvoice
+      artifacthub.io/maintainers: |
+        - name: Pierre du Plessis
+          email: open-source@solidworx.co
+    apiVersion: v2
     appVersion: 3.0.1
-    created: "2026-06-23T20:22:44.706631847Z"
+    created: "2026-10-15T15:24:09.213732859Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -43,7 +83,7 @@ entries:
     version: 3.0.1
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2026-06-23T20:22:44.691521076Z"
+    created: "2026-10-15T15:24:09.196952892Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -71,7 +111,7 @@ entries:
     version: 3.0.0
   - apiVersion: v2
     appVersion: 3.0.0-alpha2
-    created: "2026-06-23T20:22:44.676914855Z"
+    created: "2026-10-15T15:24:09.180318824Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -97,4 +137,4 @@ entries:
     urls:
     - https://charts.solidinvoice.co/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
-generated: "2026-06-23T20:22:44.658318921Z"
+generated: "2026-10-15T15:24:09.164465969Z"
