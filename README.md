@@ -204,6 +204,14 @@ Using SolidInvoice, hosted or self-hosted? Tell us what works, what gets in your
 
 ---
 
+## 🎁 Refer & Earn
+
+Earn up to $93 a year for every customer you refer to [SolidInvoice Cloud](https://solidinvoice.co). Join the affiliate program, share your link, and earn 20% of every payment your referrals make, month after month. Self-hosted users can take part too.
+
+<a href="https://billing.solidinvoice.co/affiliates"><img src="https://img.shields.io/badge/Join%20the-Affiliate%20Program-8B5CF6?style=for-the-badge" alt="Join the Affiliate Program" /></a>
+
+---
+
 ## 🤝 Contributing
 
 We love contributions of every shape — code, docs, translations, bug reports, ideas. Look for the [`good first issue`](https://github.com/SolidInvoice/SolidInvoice/labels/good%20first%20issue) label to get started, then read the [contributing guide](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md).
