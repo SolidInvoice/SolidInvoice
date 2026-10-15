@@ -12,6 +12,7 @@ Unreleased
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 * Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
 * Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
+* Application logs now show up in the server output. Production logs everything from `info` up (set `SOLIDINVOICE_LOG_LEVEL`, e.g. to `warning`, to change that), web requests log through the web server's own logger, and log lines from background workers and console commands keep their level instead of all showing as `info`
 
 ### Fixes
 
