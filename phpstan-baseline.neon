@@ -637,12 +637,6 @@ parameters:
 			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
 
 		-
-			message: '#^Method SolidInvoice\\MailerBundle\\Factory\\MailerConfigFactory\:\:fromStrings\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
 			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
