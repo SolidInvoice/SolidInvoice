@@ -19,6 +19,7 @@ Unreleased
 * Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
+* `SOLIDINVOICE_APP_SECRET` is used again. 3.1.0 ignored it and used a value that changed every time the cache was rebuilt, so API tokens, "remember me" logins and signed links stopped working after each deploy or restart. API tokens created while running 3.1.0 need to be regenerated
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 
