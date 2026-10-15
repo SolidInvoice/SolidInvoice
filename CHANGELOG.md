@@ -1,8 +1,26 @@
 Changelog
 =========
 
-Unreleased
-----------
+3.1.1 / 2026-10-15
+-------------------
+
+### Changes
+
+* Application logs now show up in the server output. Production logs everything from `info` up (set `SOLIDINVOICE_LOG_LEVEL`, e.g. to `warning`, to change that), web requests log through the web server's own logger, and log lines from background workers and console commands keep their level instead of all showing as `info`
+
+### Fixes
+
+* A company's own mail delivery settings now apply only to that company's emails. Emails sent before a company was selected (such as the two-factor login code) could go out through another company's mail provider, and long-running workers kept using the first company's provider for every company
+* "Resend code" on the two-factor login page works again. Users with more than one company were redirected to company selection and back without a new code being sent
+* The two-factor login code email is now sent from `SOLIDINVOICE_MAILER_SENDER`. It used to pick up another company's sender address, or the user's own address, so mail providers often rejected it and the code never arrived
+* `SOLIDINVOICE_APP_SECRET` is used again. 3.1.0 ignored it and used a value that changed every time the cache was rebuilt, so API tokens, "remember me" logins and signed links stopped working after each deploy or restart. API tokens created while running 3.1.0 need to be regenerated
+* The built-in web server now caches only content-hashed static files for a year. Other static files are revalidated after an hour, so a release can no longer be hidden behind a long-cached copy of a file whose name did not change
+* Setting up an authenticator app no longer fails when the code it shows starts with 0
+* Authenticator app codes now use the standard 30-second period instead of 20 seconds, so Google Authenticator and Microsoft Authenticator codes are accepted reliably. If you set up 2FA with an app that honours the period from the QR code (such as 1Password, Authy or Bitwarden), remove the entry and scan the QR code again under **Profile → Two-Factor Authentication**
+* Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
+
+3.1.0 / 2026-10-15
+-------------------
 
 ### Changes
 
@@ -12,22 +30,15 @@ Unreleased
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 * Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
 * Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
-* Application logs now show up in the server output. Production logs everything from `info` up (set `SOLIDINVOICE_LOG_LEVEL`, e.g. to `warning`, to change that), web requests log through the web server's own logger, and log lines from background workers and console commands keep their level instead of all showing as `info`
 
 ### Fixes
 
 * Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
-* A company's own mail delivery settings now apply only to that company's emails. Emails sent before a company was selected (such as the two-factor login code) could go out through another company's mail provider, and long-running workers kept using the first company's provider for every company
 * Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
-* "Resend code" on the two-factor login page works again. Users with more than one company were redirected to company selection and back without a new code being sent
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
-* The two-factor login code email is now sent from `SOLIDINVOICE_MAILER_SENDER`. It used to pick up another company's sender address, or the user's own address, so mail providers often rejected it and the code never arrived
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
-* `SOLIDINVOICE_APP_SECRET` is used again. 3.1.0 ignored it and used a value that changed every time the cache was rebuilt, so API tokens, "remember me" logins and signed links stopped working after each deploy or restart. API tokens created while running 3.1.0 need to be regenerated
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
-* The built-in web server now caches only content-hashed static files for a year. Other static files are revalidated after an hour, so a release can no longer be hidden behind a long-cached copy of a file whose name did not change
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
-* Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
 
 3.0.0 / 2026-06-17
 -------------------
