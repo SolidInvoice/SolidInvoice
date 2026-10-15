@@ -74,7 +74,7 @@
         "php-http/message": "^1.16",
         "psr/http-factory": "^1.1",
         "sentry/sentry-symfony": "^5.10",
-        "solidworx/platform": "dev-main",
+        "solidworx/platform": "^0.4.0",
         "solidworx/toggler": "2.0.0-beta2",
         "stof/doctrine-extensions-bundle": "^1.15",
         "symfony/all-my-sms-notifier": "^8.1",

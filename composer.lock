@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a6d4c07c4d6caefac864f17f221964d",
+    "content-hash": "28be3061f3ec1848d15270081cf6291d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9325,16 +9325,16 @@
         },
         {
             "name": "solidworx/platform",
-            "version": "dev-main",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "cd22cf1eab969eb9d8aa2d71ba95a5102a867e53"
+                "reference": "5fdf1fa32c8d78d224f3f1c07ec2d8aef79d79bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/cd22cf1eab969eb9d8aa2d71ba95a5102a867e53",
-                "reference": "cd22cf1eab969eb9d8aa2d71ba95a5102a867e53",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/5fdf1fa32c8d78d224f3f1c07ec2d8aef79d79bd",
+                "reference": "5fdf1fa32c8d78d224f3f1c07ec2d8aef79d79bd",
                 "shasum": ""
             },
             "require": {
@@ -9402,7 +9402,6 @@
                 "symfony/rate-limiter": "^8.1",
                 "symplify/easy-coding-standard": "^13.3"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -9423,9 +9422,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/platform/issues",
-                "source": "https://github.com/SolidWorx/platform/tree/main"
+                "source": "https://github.com/SolidWorx/platform/tree/0.4.0"
             },
-            "time": "2026-10-15T08:28:25+00:00"
+            "time": "2026-10-15T17:16:56+00:00"
         },
         {
             "name": "solidworx/toggler",
@@ -28484,7 +28483,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "solidworx/platform": 20,
         "solidworx/toggler": 10
     },
     "prefer-stable": false,
