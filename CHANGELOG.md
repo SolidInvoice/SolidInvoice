@@ -11,6 +11,7 @@ Unreleased
 * Invoice and quote PDFs on the classic, modern, studio, photographer, monochrome and compact templates now print the document status as a labelled line, not only as the watermark
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 * Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
+* Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
 
 ### Fixes
 
