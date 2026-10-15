@@ -12,10 +12,10 @@
  # assets/scss/components/_money.scss; this is the single place that emits the
  # structure they bind to.
  #
- # NOTE: money is an application-wide concern, not a dashboard one. This macro
- # lives here only because the dashboard is the first consumer. It should be
- # promoted to a real UI component (`<twig:Ui:Money>`) alongside `Ui:Card` so
- # that invoices, quotes and the data grid can render the same contract.
+ # NOTE: the target is still a real UI component (`<twig:Ui:Money>`) alongside
+ # `Ui:Card`. This move to MoneyBundle is not that promotion. It only puts the
+ # macro in the bundle that owns money, so that invoices, quotes and the data
+ # grid can import the same contract.
  #
  #   amount     Minor units (cents). Same contract as the `formatCurrency` filter.
  #   currency   ISO code string, a Money\Currency, or empty to fall back to the
