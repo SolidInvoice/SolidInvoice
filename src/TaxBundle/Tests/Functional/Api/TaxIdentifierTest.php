@@ -65,7 +65,7 @@ final class TaxIdentifierTest extends ApiTestCase
         self::assertSame('VAT', $result['label']);
         self::assertSame('LV40001234567', $result['value']);
         self::assertTrue($result['primary']);
-        self::assertStringContainsString((string) $client->getId(), $result['client']);
+        self::assertStringContainsString((string) $client->getId(), (string) $result['client']);
     }
 
     public function testGetCollectionIsScopedByCompany(): void
