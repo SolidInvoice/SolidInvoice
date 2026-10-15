@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Listener;
 
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\EmailFromListenerTest
@@ -29,7 +32,10 @@ final readonly class EmailFromListener implements EventSubscriberInterface
 {
     public function __construct(
         private SystemConfig $config,
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
+        private CompanySelectorInterface $companySelector,
+        #[Autowire(env: 'SOLIDINVOICE_MAILER_SENDER')]
+        private string $defaultSender,
     ) {
     }
 
@@ -38,6 +44,17 @@ final readonly class EmailFromListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if (! $message instanceof Email) {
+            return;
+        }
+
+        // Without a company (e.g. the 2FA code mail sent mid-login) the company
+        // settings can't be resolved, so send from the system sender instead.
+        if (! $this->companySelector->getCompany() instanceof Ulid) {
+            $from = Address::create($this->defaultSender);
+            $message->from($from);
+            $event->getEnvelope()->setSender($from);
+            $message->getHeaders()->remove('Sender');
+
             return;
         }
 
