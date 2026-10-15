@@ -146,7 +146,7 @@
 .ext-doc-metadata-total {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--swp-money-neutral, #1e293b);
+    color: var(--tblr-money-neutral, #1e293b);
     line-height: 1.2;
 }
 
@@ -290,7 +290,7 @@
     .ext-doc-totals-value {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--swp-money-neutral, #1e293b);
+        color: var(--tblr-money-neutral, #1e293b);
         line-height: 1;
     }
 }
@@ -591,7 +591,7 @@ hr {
 
     .ext-doc-metadata-total,
     .ext-doc-totals-final .ext-doc-totals-value {
-        color: #1e293b !important;   /* money is neutral in print too - SOL-65 */
+        color: #1e293b !important;   /* money is neutral in print too */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
