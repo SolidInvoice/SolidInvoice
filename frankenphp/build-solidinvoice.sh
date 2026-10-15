@@ -107,6 +107,13 @@ fi
 
 if [ -z "${PHP_EXTENSION_LIBS:-}" ]; then
 	export PHP_EXTENSION_LIBS="libavif,nghttp2,nghttp3,ngtcp2"
+	# On the macos-26 runners, libngtcp2_crypto_ossl.a comes out of static-php-cli without its
+	# symbols, so linking libcurl fails with undefined _ngtcp2_crypto_* symbols. Leave out
+	# HTTP/3 for libcurl (PHP's outbound curl) on macOS. Caddy's HTTP/3 is pure Go and is unaffected.
+	# ponytail: re-add nghttp3,ngtcp2 on macOS once static-php-cli's ngtcp2 archive links on Xcode 26.
+	if [ "$(uname -s)" = "Darwin" ]; then
+		export PHP_EXTENSION_LIBS="libavif,nghttp2"
+	fi
 fi
 
 echo "PHP Configuration:"

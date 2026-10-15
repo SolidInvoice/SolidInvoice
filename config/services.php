@@ -11,10 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Monolog\Handler\HandlerInterface;
 use Monolog\Level;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Sentry\SentryBundle\Monolog\LogsHandler;
 use SolidInvoice\AppRequirements;
+use SolidInvoice\CoreBundle\Logger\ServerLogHandlerFactory;
 use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\UserBundle\Security\UserChecker;
@@ -31,6 +33,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
     $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);
+    // Fallback until the installer writes SOLIDINVOICE_APP_SECRET; framework.secret only uses it while that env var is unset or empty
+    $parameters->set('solidinvoice.fallback_secret', bin2hex(random_bytes(16)));
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_APPLICATION_URL)', '');
     $parameters->set('env(SOLIDINVOICE_CUSTOM_DOMAIN_DNS_RECORD)', '');
@@ -48,6 +52,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_SENTRY_HTTP_TIMEOUT)', '2');
     $parameters->set('env(SOLIDINVOICE_SENTRY_HTTP_CONNECT_TIMEOUT)', '2');
     $parameters->set('env(SOLIDINVOICE_MAILER_DSN)', 'null://null');
+    $parameters->set('env(SOLIDINVOICE_LOG_LEVEL)', 'info');
     $parameters->set('env(SOLIDINVOICE_MAILER_SENDER)', 'SolidInvoice <no-reply@solidinvoice.co>');
     $parameters->set('env(SOLIDINVOICE_TRANSLATION_DSN)', '');
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
@@ -106,4 +111,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('doctrine.event_listener', ['event' => 'preRemove']);
 
     $services->set(LogsHandler::class)->arg('$level', Level::Info);
+
+    $services->set('solidinvoice.log.server_handler', HandlerInterface::class)
+        ->factory(ServerLogHandlerFactory::class . '::create')
+        ->arg('$level', '%env(SOLIDINVOICE_LOG_LEVEL)%');
 };
