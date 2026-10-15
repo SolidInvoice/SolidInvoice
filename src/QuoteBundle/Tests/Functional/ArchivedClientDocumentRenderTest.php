@@ -49,7 +49,7 @@ use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 
 /**
- * Quote twin of InvoiceBundle's ArchivedClientDocumentRenderTest: see SOL-299.
+ * Quote twin of InvoiceBundle's ArchivedClientDocumentRenderTest.
  */
 final class ArchivedClientDocumentRenderTest extends KernelTestCase
 {

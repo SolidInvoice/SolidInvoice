@@ -21,7 +21,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Adds the frozen `currency_code` column used by
  * {@see \SolidInvoice\InvoiceBundle\Entity\BaseInvoice::getCurrency()} and
- * {@see \SolidInvoice\QuoteBundle\Entity\Quote::getCurrency()} (SOL-298).
+ * {@see \SolidInvoice\QuoteBundle\Entity\Quote::getCurrency()}.
  *
  * The column is nullable with no default and is never backfilled: a null value falls
  * back to the client's current currency, which is exactly today's behaviour, so an
@@ -34,7 +34,7 @@ use Doctrine\Migrations\AbstractMigration;
  * exists to protect: those documents will start restating themselves again, which is
  * the defect this migration fixes in the first place.
  */
-final class Version30100_9 extends AbstractMigration
+final class Version30100_7 extends AbstractMigration
 {
     private const array TABLES = ['invoices', 'recurring_invoices', 'quotes'];
 

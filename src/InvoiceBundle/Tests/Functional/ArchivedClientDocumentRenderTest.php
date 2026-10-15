@@ -56,7 +56,7 @@ use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 
 /**
- * Archiving a client must not hard-break the invoices it already issued: see SOL-299.
+ * Archiving a client must not hard-break the invoices it already issued.
  * Every case reloads through a fresh entity manager, because the bug this guards against
  * only reproduces once the client is a lazy, filtered proxy rather than the in-memory
  * object the archive call already had a reference to.

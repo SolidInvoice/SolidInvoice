@@ -32,7 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
- * Reproduces SOL-298: an issued invoice must keep the currency it was issued in, even
+ * an issued invoice must keep the currency it was issued in, even
  * after the client's currency (default or explicit) changes underneath it.
  */
 #[CoversClass(FreezeCurrencyListener::class)]

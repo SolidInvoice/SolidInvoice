@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * Reproduces SOL-394: a client row with `currency_code IS NULL` resolves the system
+ * a client row with `currency_code IS NULL` resolves the system
  * default currency on every rendered surface, via {@see \SolidInvoice\ClientBundle\Listener\ClientListener::postLoad()}
  * hydrating `Client::$currency`. The MCP read surface must report that same default
  * rather than `null`, so these fixtures are never persisted-and-reused directly: each
@@ -112,7 +112,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
     }
 
     /**
-     * Guards against the fix reintroducing the SOL-298 defect on this surface: a frozen
+     * Guards against the defect on this surface: a frozen
      * document must keep reporting the currency it was issued in, not its client's.
      */
     public function testInvoiceWithFrozenCurrencyIgnoresItsClientCurrency(): void

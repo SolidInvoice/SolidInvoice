@@ -214,7 +214,6 @@ final class Version20201 extends AbstractMigration
 
         // every __uuid__ and tmp FK column is backfilled now; only after that can NOT NULL be
         // enforced, otherwise PostgreSQL rejects the DDL for any row still pending a value
-        // (the same ordering constraint SOL-166 fixed for company_id in Version20200)
         $this->enforceUuidFieldsNotNull($tableName, $uuidColumnName, $foreignKeys);
 
         $this->persistChanges();

@@ -26,7 +26,7 @@ use Twig\Environment;
 use function mb_strtoupper;
 
 /**
- * SOL-48: the PDF status watermark must print the translated label, not the
+ * the PDF status watermark must print the translated label, not the
  * raw enum backing value, so it stays readable in every locale.
  *
  * The apostrophe-escaping / mPDF-decode round trip is proven once, on the

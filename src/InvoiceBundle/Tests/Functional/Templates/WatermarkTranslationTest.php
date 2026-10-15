@@ -31,7 +31,7 @@ use function htmlspecialchars_decode;
 use function mb_strtoupper;
 
 /**
- * SOL-48: the PDF status watermark must print the translated label, not the
+ * the PDF status watermark must print the translated label, not the
  * raw enum backing value, so it stays readable in every locale.
  */
 final class WatermarkTranslationTest extends KernelTestCase

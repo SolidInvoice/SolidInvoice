@@ -391,8 +391,7 @@ final class TemplatesRenderingTest extends KernelTestCase
 
     /**
      * The six templates `status_pair` was added to directly. `editorial` and
-     * `friendly` are sequenced behind SOL-57 and carry no status line yet;
-     * the two `Pdf/*.html.twig` default documents are SOL-48's.
+     * `friendly` carry no status line yet
      */
     private const array FREE_TEMPLATE_SLUGS = ['classic', 'modern', 'studio', 'photographer', 'compact', 'monochrome'];
 
@@ -428,7 +427,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     /**
      * Rule 2 of the design spec: the status is never inside the
      * `{% if invoice.due %}` guard. An invoice with no due date must still
-     * render its status — the regression SOL-360 §0 C1 is about, and the
+     * render its status, and the
      * reason `createFixtureInvoice()` gained `withDue`.
      */
     #[DataProvider('freeTemplateSlugProvider')]
