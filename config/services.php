@@ -31,6 +31,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
     $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);
+    // Fallback until the installer writes SOLIDINVOICE_APP_SECRET; framework.secret only uses it while that env var is unset or empty
+    $parameters->set('solidinvoice.fallback_secret', bin2hex(random_bytes(16)));
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_APPLICATION_URL)', '');
     $parameters->set('env(SOLIDINVOICE_CUSTOM_DOMAIN_DNS_RECORD)', '');
