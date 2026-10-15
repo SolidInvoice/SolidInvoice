@@ -21,10 +21,12 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,6 +52,7 @@ final class CreateRecurring extends AbstractController
         private readonly FeatureGate $featureGate,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly ClockInterface $clock,
+        private readonly SystemConfig $systemConfig,
     ) {
     }
 
@@ -81,6 +84,7 @@ final class CreateRecurring extends AbstractController
         $invoice = new RecurringInvoice();
         $invoice->addLine(new RecurringInvoiceLine());
         $invoice->setClient($client);
+        $invoice->setPaymentTerms(PaymentTerms::forClient($client, $this->systemConfig));
 
         // Auto-select all client contacts
         if ($client instanceof Client) {

@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
+import { Modal } from '@tabler/core';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller<HTMLDivElement> {
@@ -8,25 +8,30 @@ export default class extends Controller<HTMLDivElement> {
     }
 
     declare showValue: string;
-    private modal: JQuery|null = null;
+    private modal: Modal|null = null;
 
     connect() {
-        this.modal = $(this.element);
-        document.addEventListener('modal:close', () => this.modal?.modal('hide'));
+        // Tabler's bundled Bootstrap types return BaseComponent from the static lookups,
+        // so the instance has to be narrowed back to Modal at the call site.
+        this.modal = Modal.getOrCreateInstance(this.element) as Modal;
+        document.addEventListener('modal:close', this.close);
 
         // Automatically show modal if show value is true
         if (this.showValue === 'true') {
-            this.modal.modal('show');
+            this.modal.show();
         }
     }
 
     disconnect() {
-        // Ensure modal and backdrop are properly removed when component is disconnected
-        if (this.modal) {
-            this.modal.modal('hide');
-            // Remove backdrop if it still exists
-            $('.modal-backdrop').remove();
-            $('body').removeClass('modal-open');
-        }
+        document.removeEventListener('modal:close', this.close);
+
+        // `dispose()` takes the backdrop and the `modal-open` class on <body> with it.
+        this.modal?.hide();
+        this.modal?.dispose();
+        this.modal = null;
     }
+
+    private close = (): void => {
+        this.modal?.hide();
+    };
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistManager;
 use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
+use SolidInvoice\DashboardBundle\Widgets\AffiliateProgramWidget;
 use SolidInvoice\DashboardBundle\Widgets\AttentionRequiredWidget;
 use SolidInvoice\DashboardBundle\Widgets\HeroStatsWidget;
 use SolidInvoice\DashboardBundle\Widgets\InvoiceDistributionWidget;
@@ -109,6 +110,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(InvoiceDistributionWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 10,
+            'location' => 'right_column',
+        ]);
+
+    // Below everything actionable, so it never competes with the dashboard itself.
+    $services
+        ->set(AffiliateProgramWidget::class)
+        ->tag('dashboard.widget', [
+            'priority' => 0,
             'location' => 'right_column',
         ]);
 };

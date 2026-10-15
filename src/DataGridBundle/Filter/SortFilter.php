@@ -15,6 +15,7 @@ namespace SolidInvoice\DataGridBundle\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
+use SortDirection;
 use function str_contains;
 
 /**
@@ -30,14 +31,20 @@ final readonly class SortFilter implements FilterInterface
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
+        $sortDirection = match ($this->direction) {
+            'ASC' => SortDirection::Ascending,
+            'DESC' => SortDirection::Descending,
+            default => $this->direction,
+        };
+
         if ($this->field !== '' && $this->field !== '0') {
             if (str_contains($this->field, '.')) {
                 $relation = explode('.', $this->field);
 
                 $queryBuilder->join(ORMSource::ALIAS . '.' . $relation[0], $relation[0]);
-                $queryBuilder->orderBy($relation[0] . '.' . $relation[1], $this->direction);
+                $queryBuilder->orderBy($relation[0] . '.' . $relation[1], $sortDirection);
             } else {
-                $queryBuilder->orderBy(ORMSource::ALIAS . '.' . $this->field, $this->direction);
+                $queryBuilder->orderBy(ORMSource::ALIAS . '.' . $this->field, $sortDirection);
             }
         }
     }

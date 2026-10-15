@@ -43,9 +43,10 @@ final class RecurringInvoiceTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
-        RecurringInvoiceFactory::createMany(3, [
+        RecurringInvoiceFactory::createMany(3, static fn (): array => [
             'client' => $client,
             'users' => $contacts,
+            'lines' => [new RecurringInvoiceLine()->setName('Test Item')->setQty(1)->setPrice(10000)],
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
@@ -155,6 +156,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             ],
             'terms' => null,
             'notes' => null,
+            'paymentTerms' => 'custom',
             'withholdingAmount' => 0,
             'payableAmount' => 90.09,
             'customFields' => [],
@@ -247,6 +249,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             ],
             'terms' => $recurringInvoice->getTerms(),
             'notes' => $recurringInvoice->getNotes(),
+            'paymentTerms' => 'custom',
             'withholdingAmount' => 0,
             'payableAmount' => 1,
             'customFields' => [],
@@ -342,6 +345,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'tax' => 0,
             'terms' => $recurringInvoice->getTerms(),
             'notes' => $recurringInvoice->getNotes(),
+            'paymentTerms' => 'custom',
             'withholdingAmount' => 0,
             'payableAmount' => 90,
             'customFields' => [],

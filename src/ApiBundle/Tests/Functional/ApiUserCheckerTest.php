@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Verifies the global disabled-account block is enforced at API authentication
- * via the firewall's {@see \SolidInvoice\UserBundle\Security\VerifiedUserChecker}.
+ * via the firewall's {@see \SolidInvoice\UserBundle\Security\UserChecker} in the `api` firewall's checker chain.
  */
 #[Group('functional')]
 final class ApiUserCheckerTest extends ApiTestCase

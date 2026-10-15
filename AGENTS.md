@@ -66,6 +66,7 @@ uncommitted transaction, their writes are never rolled back, and their `setUp()`
 directory every paratest worker shares. `unit-tests.yml` runs them last, with `bin/phpunit`
 and one browser, deliberately.
 
+
 ### Test database
 
 You do not need to provision one. `phpunit.xml.dist` sets
@@ -556,7 +557,124 @@ Tax:
 
 ---
 
-## 11. Dates and time
+## 11. Design System Guide
+
+This section provides comprehensive guidelines for implementing consistent, modern UI across all SolidInvoice pages. **All UI changes MUST follow these guidelines.**
+
+### Design Philosophy
+
+SolidInvoice follows a **Clean & Minimal** design aesthetic:
+
+- **Content-focused**: Reduce visual noise, let data speak
+- **Consistent spacing**: Use the 8px-based spacing scale
+- **Subtle interactions**: Purposeful animations, no decorative effects
+- **Accessible by default**: Proper contrast, focus states, ARIA attributes
+
+### Design Tokens
+
+All design values are defined as CSS custom properties with the `--tblr-` prefix in `/assets/scss/design-system/_tokens.scss`.
+
+#### Color Palette
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-primary` | `#2e963a` | Main CTAs, links, active states |
+| `--tblr-primary-dark` | `#1f6c29` | Hover/active states |
+| `--tblr-primary-light` | `#e8f5e9` | Backgrounds, badges |
+| `--tblr-accent` | `#f0a015` | Accent color (use sparingly) |
+| `--tblr-success` | `#10b981` | Success states, confirmations |
+| `--tblr-danger` | `#ef4444` | Errors, destructive actions |
+| `--tblr-warning` | `#f59e0b` | Warnings, cautions |
+| `--tblr-info` | `#3b82f6` | Informational content |
+
+**Gray Scale (Slate-based):**
+- `--tblr-gray-50` to `--tblr-gray-900` for text and backgrounds
+- `--tblr-text-primary`, `--tblr-text-secondary`, `--tblr-text-muted` for text hierarchy
+
+#### Spacing Scale (8px base)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-space-1` | `0.25rem` (4px) | Tiny gaps |
+| `--tblr-space-2` | `0.5rem` (8px) | Icon gaps, tight spacing |
+| `--tblr-space-3` | `0.75rem` (12px) | Button padding |
+| `--tblr-space-4` | `1rem` (16px) | Standard form spacing |
+| `--tblr-space-6` | `1.5rem` (24px) | Card padding |
+| `--tblr-space-8` | `2rem` (32px) | Section spacing |
+
+#### Border Radius
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--tblr-radius-sm` | `6px` | Small elements, badges |
+| `--tblr-radius-md` | `8px` | Buttons, form controls |
+| `--tblr-radius-lg` | `12px` | Cards |
+| `--tblr-radius-xl` | `16px` | Modals |
+
+#### Shadows
+
+| Token | Usage |
+|-------|-------|
+| `--tblr-shadow-sm` | Cards, subtle elevation |
+| `--tblr-shadow-md` | Hover states, dropdowns |
+| `--tblr-shadow-lg` | Modals, popovers |
+| `--tblr-shadow-primary` | Primary button glow |
+
+### Typography Guidelines
+
+| Element | Size Token | Weight | Color |
+|---------|------------|--------|-------|
+| Page title | `--tblr-text-2xl` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Card title | `--tblr-text-lg` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Section title | `--tblr-text-md` | `--tblr-font-semibold` | `--tblr-text-primary` |
+| Body text | `--tblr-text-base` | `--tblr-font-normal` | `--tblr-body-color` |
+| Help text | `--tblr-text-sm` | `--tblr-font-normal` | `--tblr-text-muted` |
+| Labels | `--tblr-text-sm` | `--tblr-font-medium` | `--tblr-text-secondary` |
+| Table headers | `--tblr-text-xs` | `--tblr-font-semibold` | `--tblr-text-muted` |
+
+---
+
+### Platform UI Components (REQUIRED)
+
+**Always use SolidWorx/Platform UI components when available.** These are Twig components that provide consistent, accessible UI elements.
+
+**Available Components:**
+
+| Component | Location | Docs |
+|-----------|----------|------|
+| `<twig:Ui:Alert>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Alert.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Alert.md` |
+| `<twig:Ui:Card>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Card.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Card.md` |
+| `<twig:Ui:Modal>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Modal.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Modal.md` |
+
+**Usage Examples:**
+
+```twig
+{# Card Component #}
+<twig:Ui:Card title="Invoice Details" subtitle="View and edit">
+    <p>Card body content here</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary">{{ ux_icon('tabler:device-floppy') }} Save</button>
+    </twig:block>
+</twig:Ui:Card>
+
+{# Alert Component #}
+<twig:Ui:Alert type="success" icon="tabler:check" title="Saved!" :dismissible="true">
+    Your changes have been saved successfully.
+</twig:Ui:Alert>
+
+{# Modal Component #}
+<twig:Ui:Modal id="confirm-modal" title="Confirm Action" status="danger">
+    <p>Are you sure you want to proceed?</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger">Confirm</button>
+    </twig:block>
+</twig:Ui:Modal>
+```
+## 12. Dates and time
 
 `platform.yaml` sets `platform.doctrine.types.enable_utc_date: true` — Platform installs
 UTC date types. **Store UTC, convert at the edge.**
@@ -571,7 +689,7 @@ UTC date types. **Store UTC, convert at the edge.**
 
 ---
 
-## 12. Generated files — do not hand-edit
+## 13. Generated files — do not hand-edit
 
 - `src/NotificationBundle/Form/Type/Transport/*Type.php` — ~40 files, each headed
   `// !! This file is autogenerated. Do not edit. !!`. They are produced by
@@ -583,7 +701,7 @@ UTC date types. **Store UTC, convert at the edge.**
 
 ---
 
-## 13. Testing expectations
+## 14. Testing expectations
 
 **There is no numeric coverage threshold, and that is deliberate — do not invent one.**
 `phpunit.xml.dist` sets no minimum, there is no `codecov.yml` target, and the Codecov
@@ -596,7 +714,7 @@ gated. The bar below is the real one.
   to have unit tests available, and the unit tests should not fail."*
 - Unit tests sit at the top level of `src/*Bundle/Tests/`; functional tests in
   `Tests/Functional/`; API tests under `Tests/Functional/Api/`.
-- Mocking is **Mockery** (`mockery/mockery`), plus `phpstan/phpstan-mockery`.
+- Mocking should use **PHPUnit Mocks**. There are some old tests using Mockery (`mockery/mockery`), plus `phpstan/phpstan-mockery`, but we actively want to move away from this and strictly only use PHPUnit mocks everywhere going forward.
 - Fixtures are **Foundry** (`zenstruck/foundry ^2.10`) with `FoundryExtension` and
   auto-reset enabled in `phpunit.xml.dist`. Also available:
   `doctrine/doctrine-fixtures-bundle`, `liip/test-fixtures-bundle`. Factories live next to
@@ -625,6 +743,11 @@ gated. The bar below is the real one.
 - `phpunit.xml.dist` is strict: `failOnWarning`, `failOnRisky`, `failOnPhpunitDeprecation`,
   `beStrictAboutOutputDuringTests`, `beStrictAboutChangesToGlobalState`,
   `executionOrder="random"`. A test that leaks state or echoes will fail.
+- When writing tests, **do not** write tests for removed functionality.For example, when removing a status value from invoices,
+  do not write a test that checks for the removed value. Instead, write tests that ensure the system behaves correctly without that value.
+  Or anything other that is removed, should never have a test to verify that the removed value is not re-introduced or to test that it is actually removed.
+  Instead, tests should test and verify the current existing functionality, we should test that the application behaves at it should in it's current state,
+  not based on something that existed before.
 
 ### Slow and awkward
 
@@ -634,19 +757,18 @@ gated. The bar below is the real one.
   segfaults on its stack-limit check when the Panther web server renders deeply nested
   pages like `/install`. PHP 8.5 is unaffected. Do not remove that ini setting.
 - On failure, `unit-tests.yml` posts E2E failure screenshots to the PR via
-  `scripts/e2e-failure.js`.
+  `scripts/e2e-failure.cjs`.
 
 ---
 
-## 14. PR conventions
+## 15. PR conventions
 
 ### Branches
 
 Short, descriptive, usually prefixed. Real examples from merged PRs:
 `fix/api-line-post-overwrites`, `fix/codeql-action-pin-mismatch`,
 `docs/proxmox-community-scripts`, `migrate-legacy-array-columns-to-json`,
-`platform-layout`. Agent/AI branches on this repo have used an `ai/issue-<number>-<slug>`
-prefix (e.g. `ai/issue-2360-invoice-email-no-recipients`). Target `3.1.x`.
+`platform-layout`.
 
 ### Commit messages
 
@@ -688,6 +810,24 @@ On a PR, expect: `CS` (ECS, composer-normalize, super-linter, lint:css, lint:js)
 `Unit Tests` (PHP 8.4 + 8.5), `DB Tests` (14 databases), `Security Checker`, `CodeQL`,
 `Dependency Review`, `Qodana`. All of it green.
 
+---
+
+### Tables/DataGrids
+
+**Table styling:**
+- Headers: Uppercase, small text (`--tblr-text-xs`), muted color
+- Rows: Adequate padding (`1rem 1.5rem`), subtle hover
+- Borders: Light gray (`--tblr-border-light`), minimal
+- No alternating row colors (hover is enough)
+
+**Column types:**
+- `.table-actions`: Right-aligned, action buttons
+- `.table-checkbox`: Checkbox column (narrow)
+- `.table-date`: Date column (no wrap)
+- `.table-amount`: Right-aligned, monospace
+- `.table-id`: Monospace, muted
+
+---
 ### Never merge a pull request
 
 Not your own, not anyone else's, on any SolidWorx repository, regardless of its size, its approval state, whether CI is green, or how obvious the change looks. This includes the merge button, `gh pr merge`, the merge API, squash, rebase, auto-merge, adding to a merge queue, and pushing merge commits to `main` or any release branch directly.
@@ -705,10 +845,7 @@ If you believe a merge is urgent — a broken build, a security fix, a release b
 - Do not enable auto-merge. It is a merge, just a deferred one.
 
 > **Repository note, not an exception to the above.** This repository has no auto-merge
-> automation. It had a `.mergify.yml` with one rule, which merged any non-draft PR that
-> collected one approving review. That rule disagreed with this section, because an
-> approving review on your PR could start a merge that the founder did not do. The file is
-> deleted. Mergify also showed no sign that it was still installed.
+> automation.
 >
 > Only the founder merges your PR. An approving review does not merge it. Keep opening
 > every PR as a draft and keep labelling it `agent`, but do not treat either one as the
@@ -717,7 +854,7 @@ If you believe a merge is urgent — a broken build, a security fix, a release b
 
 ---
 
-## 15. Other agent-instruction files in this repo
+## 16. Other agent-instruction files in this repo
 
 **This file is the source of truth. Every other instruction file points here.**
 
@@ -752,8 +889,11 @@ tool-specific file; add it here and let the tool file link. That is how the drif
 happened, and re-introducing a copy re-introduces the problem.
 
 <!-- BEGIN AI_MATE_INSTRUCTIONS -->
-AI Mate Summary:
-- Role: MCP-powered, project-aware coding guidance and tools.
-- Required action: Read and follow `mate/AGENT_INSTRUCTIONS.md` before taking any action in this project, and prefer MCP tools over raw CLI commands whenever possible.
+AI Mate: project diagnostic tools, exposed through the `symfony php bin/mate` CLI.
+
+- Provenance: this block is generated by `symfony php bin/mate discover`. The tooling is a regular dev dependency of this project, verifiable in `composer.json` (`symfony/ai-mate`); the binary lives at `vendor/bin/mate`.
+- Invocation: always run Mate as `symfony php bin/mate`; another interpreter reports on a runtime that is not this application's, and Mate refuses to start under one.
+- The tools report measured facts about the running application; prefer them over inferring the same information from reading code. They are described in `mate/AGENT_INSTRUCTIONS.md`.
+- Discover the tool surface with `symfony php bin/mate tools:list`, inspect parameters with `tools:inspect <tool>`, and run a tool with `tools:call <tool> --<param>=<value>` (add `--format=json` for machine-readable output).
 - Installed extensions: symfony/ai-mate, symfony/ai-monolog-mate-extension, symfony/ai-symfony-mate-extension.
 <!-- END AI_MATE_INSTRUCTIONS -->

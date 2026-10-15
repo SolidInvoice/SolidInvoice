@@ -86,10 +86,13 @@ final readonly class QuoteFormManager
 
     /**
      * Updates an existing Quote from DTO
-     * Does NOT change client (edit mode keeps existing client)
+     * If clientMode=New, the client is unpersisted and cascades when the quote is flushed
      */
     public function updateQuoteFromDTO(Quote $quote, QuoteFormDTO $dto): void
     {
+        $client = $this->resolveClient($dto);
+        $quote->setClient($client);
+
         $quote->setQuoteId($dto->quoteId);
         $quote->setDue($dto->due);
         $quote->setDiscount($dto->discount);
@@ -121,7 +124,8 @@ final readonly class QuoteFormManager
 
         // Sync users collection
         $quote->getUsers()->clear();
-        foreach ($dto->users as $user) {
+        $users = $dto->clientMode === QuoteClientMode::NewClient ? $client->getContacts() : $dto->users;
+        foreach ($users as $user) {
             $quote->addUser($user);
         }
     }

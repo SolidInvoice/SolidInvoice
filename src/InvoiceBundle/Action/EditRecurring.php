@@ -56,7 +56,7 @@ final class EditRecurring extends AbstractController
         }
 
         $form = $this->formFactory->create(RecurringInvoiceType::class, $invoice, [
-            'currency' => $invoice->getClient()->getCurrency(),
+            'currency' => $invoice->getCurrency(),
         ]);
         $form->handleRequest($request);
 

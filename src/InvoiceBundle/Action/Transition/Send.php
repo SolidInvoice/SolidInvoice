@@ -15,18 +15,20 @@ namespace SolidInvoice\InvoiceBundle\Action\Transition;
 
 use Generator;
 use Psr\Log\LoggerInterface;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
@@ -42,12 +44,22 @@ final class Send
         private readonly RouterInterface $router,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly LoggerInterface $logger,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+        if (! $this->csrfTokenManager->isTokenValid(new CsrfToken('send_invoice', (string) $request->request->get('_token')))) {
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'invoice.send.invalid_csrf';
+                }
+            };
+        }
 
         if ($this->emailVerificationGate->isGated()) {
             return new class($route) extends RedirectResponse implements FlashResponse {

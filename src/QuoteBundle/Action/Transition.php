@@ -18,11 +18,15 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Action\TransitionTest
+ */
 final readonly class Transition
 {
     public function __construct(
@@ -60,7 +64,13 @@ final readonly class Transition
 
             public function getFlash(): Generator
             {
-                yield self::FLASH_SUCCESS => 'quote.transition.action.' . $this->action;
+                // Cancelling and declining both end the expectation of payment, so
+                // neither gets the product's good-news bar. archive keeps it.
+                $severity = in_array($this->action, [Graph::TRANSITION_CANCEL, Graph::TRANSITION_DECLINE], true)
+                    ? self::FLASH_INFO
+                    : self::FLASH_SUCCESS;
+
+                yield $severity => 'quote.transition.action.' . $this->action;
             }
         };
     }

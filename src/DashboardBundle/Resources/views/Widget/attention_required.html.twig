@@ -50,7 +50,7 @@
                                     <div class="attention-item-meta">
                                         {# `--overdue` is earned: the section header says "Overdue Invoices" in words. #}
                                         <span class="attention-item-amount">
-                                            {{ money.money(invoice.total, invoice.client.currency, ['overdue']) }}
+                                            {{ money.money(invoice.total, invoice.currency, ['overdue']) }}
                                         </span>
                                         {% if invoice.due %}
                                             <span class="attention-item-date text-danger">
@@ -95,7 +95,7 @@
                                     <div class="attention-item-meta">
                                         {# Neutral: a draft is not money owed, received, or overdue. #}
                                         <span class="attention-item-amount">
-                                            {{ money.money(invoice.total, invoice.client.currency) }}
+                                            {{ money.money(invoice.total, invoice.currency) }}
                                         </span>
                                     </div>
                                 </a>
@@ -122,7 +122,7 @@
                                     <div class="attention-item-meta">
                                         {# Neutral: pending. #}
                                         <span class="attention-item-amount">
-                                            {{ money.money(quote.total, quote.client.currency) }}
+                                            {{ money.money(quote.total, quote.currency) }}
                                         </span>
                                         <span class="attention-item-date">{{ quote.created|date('M j') }}</span>
                                     </div>
@@ -150,7 +150,7 @@
                                     <div class="attention-item-meta">
                                         {# Neutral: not yet issued. #}
                                         <span class="attention-item-amount">
-                                            {{ money.money(recurring.total, recurring.client.currency) }}
+                                            {{ money.money(recurring.total, recurring.currency) }}
                                         </span>
                                         <span class="attention-item-date">{{ recurring.dateStart|date('M j') }}</span>
                                     </div>

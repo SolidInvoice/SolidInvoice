@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
@@ -42,6 +43,51 @@ final class CreateInvoiceTest extends LiveComponentTest
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
+    }
+
+    public function testPresetPaymentTermsFillInAndLockTheDueDate(): void
+    {
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-31');
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.paymentTerms', PaymentTerms::Net30->value);
+
+        self::assertSame('2021-03-02', $component->component()->formValues['due']);
+        self::assertMatchesRegularExpression('/name="invoice\[due\]"\s+readonly/', $component->render()->toString());
+
+        $component->set('invoice.invoiceDate', '2021-02-01');
+
+        self::assertSame('2021-03-03', $component->component()->formValues['due']);
+
+        // Custom hands the date back to the user, starting from the last computed one.
+        $component->set('invoice.paymentTerms', PaymentTerms::Custom->value);
+        $component->set('invoice.due', '2021-06-30');
+
+        self::assertSame('2021-06-30', $component->component()->formValues['due']);
+        self::assertDoesNotMatchRegularExpression('/name="invoice\[due\]"\s+readonly/', $component->render()->toString());
+    }
+
+    public function testChoosingAClientAppliesItsPaymentTerms(): void
+    {
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'paymentTerms' => PaymentTerms::Net7]);
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.client', (string) $client->getId());
+
+        self::assertSame(PaymentTerms::Net7->value, $component->component()->formValues['paymentTerms']);
+        self::assertSame('2021-01-08', $component->component()->formValues['due']);
     }
 
     /**
@@ -216,6 +262,53 @@ final class CreateInvoiceTest extends LiveComponentTest
         // The action must have produced a redirect (not a 422 / exception page).
         $response = $this->client->getResponse();
         self::assertInstanceOf(RedirectResponse::class, $response);
+    }
+
+    /**
+     * @see https://github.com/SolidInvoice/SolidInvoice/issues/2959
+     */
+    public function testChangingTheClientOnEditSavesTheNewClient(): void
+    {
+        $em = self::getContainer()->get('doctrine')->getManager();
+
+        $oldClient = ClientFactory::createOne(['name' => 'Old Corp', 'currencyCode' => 'USD']);
+        $oldContact = ContactFactory::createOne(['email' => 'old@example.com', 'client' => $oldClient]);
+        $newClient = ClientFactory::createOne(['name' => 'New Corp', 'currencyCode' => 'USD']);
+        ContactFactory::createOne(['email' => 'new@example.com', 'client' => $newClient]);
+
+        $invoice = new Invoice();
+        $invoice->setStatus(InvoiceStatus::Draft);
+        $invoice->setClient($oldClient);
+        $invoice->setInvoiceId('INV-CLIENT-001');
+        $invoice->setInvoiceDate(CarbonImmutable::parse('2024-01-15'));
+        $invoice->addUser($oldContact);
+        $invoice->addLine(new Line()->setName('Consulting')->setPrice(10000)->setQty(1));
+
+        $em->persist($invoice);
+        $em->flush();
+
+        /** @var InvoiceFormManager $formManager */
+        $formManager = self::getContainer()->get(InvoiceFormManager::class);
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: [
+                'dto' => $formManager->createDTOFromInvoice($invoice),
+                'isEdit' => true,
+                'invoice' => $invoice,
+            ],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        $component->set('invoice.client', (string) $newClient->getId());
+        $component->call('saveUpdate');
+
+        $em->clear();
+        $refreshed = $em->find(Invoice::class, $invoice->getId());
+
+        self::assertNotNull($refreshed);
+        self::assertSame('New Corp', $refreshed->getClient()?->getName());
+        self::assertSame(['new@example.com'], $refreshed->getUsers()->map(static fn ($c) => $c->getEmail())->getValues());
     }
 
     /**

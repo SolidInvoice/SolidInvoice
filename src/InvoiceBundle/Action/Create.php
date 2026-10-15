@@ -25,11 +25,13 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -55,6 +57,7 @@ final class Create extends AbstractController
         private readonly InvoiceRepository $invoiceRepository,
         private readonly FeatureGate $featureGate,
         private readonly ClockInterface $clock,
+        private readonly SystemConfig $systemConfig,
     ) {
     }
 
@@ -86,6 +89,8 @@ final class Create extends AbstractController
 
         // Set default invoice date to today
         $dto->invoiceDate = CarbonImmutable::now();
+        $dto->paymentTerms = PaymentTerms::forClient($client, $this->systemConfig);
+        $dto->due = $dto->paymentTerms->dueDate($dto->invoiceDate);
 
         // Add one empty line item by default
         $dto->lines->add(new Line());

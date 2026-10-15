@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Action;
 
 use Mpdf\MpdfException;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Response\PdfResponse;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
@@ -32,6 +33,7 @@ use Twig\Error\SyntaxError;
 final readonly class View
 {
     public function __construct(
+        private ClientRepository $clientRepository,
         private Generator $pdfGenerator,
         private Environment $engine,
         private BillingTemplateResolver $templateResolver,
@@ -45,6 +47,8 @@ final readonly class View
     #[Template('@SolidInvoiceQuote/Default/view.html.twig')]
     public function __invoke(Request $request, Quote $quote): array | PdfResponse
     {
+        $this->clientRepository->initializeArchived($quote->getClient());
+
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
             return new PdfResponse($this->pdfGenerator->generate($this->engine->render($this->templateResolver->resolve($quote, BillingTemplateChannel::Pdf), ['quote' => $quote])), sprintf('quote_%s.pdf', $quote->getQuoteId()));
         }
