@@ -106,7 +106,7 @@
                                 {% endif %}
                                 <div class="col-sm-4">
                                     <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.total'|trans }}</div>
-                                    <div class="ext-doc-metadata-total text-primary fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
+                                    <div class="ext-doc-metadata-total fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +237,7 @@
                                     {% if invoice.hasDiscount %}
                                         <div class="ext-doc-totals-row">
                                             <div class="ext-doc-totals-label">{{ 'invoice.discount'|trans }}</div>
-                                            <div class="ext-doc-totals-value text-success">-{{ discount(invoice)|formatCurrency(currency) }}</div>
+                                            <div class="ext-doc-totals-value">-{{ discount(invoice)|formatCurrency(currency) }}</div>
                                         </div>
                                     {% endif %}
                                     {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
@@ -249,7 +249,7 @@
                                                         <span class="small opacity-75">({{ payment.method.name }})</span>
                                                     {% endif %}
                                                 </div>
-                                                <div class="ext-doc-totals-value text-success">-{{ payment.amount.amount|formatCurrency(currency) }}</div>
+                                                <div class="ext-doc-totals-value">-{{ payment.amount.amount|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endfor %}
                                     {% endif %}
@@ -259,7 +259,7 @@
                                                 {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.isZero %}
                                                 {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}
                                             </div>
-                                            <div class="ext-doc-totals-value text-primary">
+                                            <div class="ext-doc-totals-value">
                                                 {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
                                             </div>
                                         </div>
@@ -272,7 +272,7 @@
                                         <div class="ext-doc-totals-final">
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">{{ 'invoice.amount_payable'|trans }}</div>
-                                                <div class="ext-doc-totals-value text-primary">{{ payable_amount(invoice)|formatCurrency(currency) }}</div>
+                                                <div class="ext-doc-totals-value">{{ payable_amount(invoice)|formatCurrency(currency) }}</div>
                                             </div>
                                         </div>
                                     {% endif %}
