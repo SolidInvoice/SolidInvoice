@@ -22,6 +22,10 @@ Unreleased
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 
+### Fixes
+
+* A percentage discount of 1% or less was applied as a whole percent instead (1% became 100%, 0.5% became 50%). The stored value is now the plain percentage the user typed, with no boundary guess. A migration normalises existing rows and leaves every issued document's total unchanged.
+
 3.0.0 / 2026-06-17
 -------------------
 

@@ -67,4 +67,18 @@ final class CalculatorTest extends TestCase
         self::assertSame(24.0, $calculator->calculatePercentage(200, 12));
         self::assertSame(40.0, $calculator->calculatePercentage(200, 20));
     }
+
+    /**
+     * A discount at or below 1.00% used to be read as a whole percent (SOL-342).
+     *
+     * @throws MathException
+     */
+    public function testCalculatePercentageAtOrBelowOnePercent(): void
+    {
+        $calculator = new Calculator();
+        self::assertSame(1.0, $calculator->calculatePercentage(100, 1));
+        self::assertSame(0.5, $calculator->calculatePercentage(100, 0.5));
+        self::assertSame(0.25, $calculator->calculatePercentage(100, 0.25));
+        self::assertSame(0.01, $calculator->calculatePercentage(100, 0.01));
+    }
 }

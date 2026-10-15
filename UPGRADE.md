@@ -11,6 +11,12 @@ Unreleased
   need to log in again.
 * Client website URLs are now validated to require a proper domain (URLs such as
   `http://localhost` are rejected).
+* A percentage discount is now stored as the plain percentage a user typed (`15` for
+  15%), not as hundredths. The `Version30100_13` migration updates existing rows so
+  every issued document's total stays the same as before the upgrade. A row that
+  already held a plain percentage from 1 to 100 cannot be told apart from an old
+  hundredths value in that same range, so the migration leaves it alone and records
+  it in a new `ambiguous_discount_units` table for manual review.
 
 2.3.17
 ======
