@@ -69,6 +69,7 @@ set -euxo pipefail
 export SOLIDINVOICE_ENV=prod
 export SOLIDINVOICE_DEBUG=0
 export NODE_ENVIRONMENT=production
+export SOLIDINVOICE_APP_SECRET=$(openssl rand -hex 32)
 
 REPO=https://github.com/solidinvoice/solidinvoice.git
 USE_LOCAL=0

@@ -43,16 +43,14 @@ final class InvoiceGrid extends BaseInvoiceGrid
     #[Override]
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
+        // The client join, select and archivable-filter suspension live in
+        // BaseInvoiceGrid::query() so ArchivedInvoiceGrid inherits them too.
         $query = parent::query($entityManager, $query);
-
-        $query->getQueryBuilder()
-            ->select(ORMSource::ALIAS, 'client')
-            ->innerJoin(ORMSource::ALIAS . '.client', 'client');
 
         if (array_key_exists('client_id', $this->context)) {
             $query
                 ->getQueryBuilder()
-                ->where(ORMSource::ALIAS . '.client = :client_id')
+                ->andWhere(ORMSource::ALIAS . '.client = :client_id')
                 ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 

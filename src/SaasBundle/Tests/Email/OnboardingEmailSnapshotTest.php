@@ -23,6 +23,7 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\Step\AddFirstClientStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\CustomizeLogoStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\RecurringBillingStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
@@ -128,6 +129,16 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testRecurringBillingTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(RecurringBillingStep::class)));
+    }
+
+    public function testFeedbackHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(FeedbackStep::class)));
+    }
+
+    public function testFeedbackTextSnapshot(): void
+    {
+        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(FeedbackStep::class)));
     }
 
     public function testUpgradeOfferHtmlSnapshot(): void

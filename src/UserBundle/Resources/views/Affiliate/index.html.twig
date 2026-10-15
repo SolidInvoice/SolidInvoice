@@ -1,0 +1,49 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
+
+{% set program = affiliate_program() %}
+
+{% block title %}{{ ux_icon('tabler:gift', {width: 24, height: 24, class: 'me-2'}) }}{{ 'profile.nav.refer_and_earn'|trans }}{% endblock title %}
+
+{% block profile_content %}
+    {# Spacing comes from the wrapper: Ui:Card prints a passed `class` ahead of its own, which drops the card styling. #}
+    <div class="d-flex flex-column gap-4">
+        <twig:Ui:Card title="{{ 'affiliate.pitch.title'|trans({'%earnings%': program.yearlyEarnings}) }}">
+            <twig:AffiliatePitch source="page" />
+        </twig:Ui:Card>
+
+        <twig:Ui:Card title="{{ 'affiliate.page.details.title'|trans }}">
+            <div class="row g-4">
+                {% for detail in [
+                    {icon: 'users', title: 'affiliate.page.details.who.title'|trans, text: 'affiliate.page.details.who.text'|trans},
+                    {icon: 'coins', title: 'affiliate.page.details.commission.title'|trans, text: 'affiliate.page.details.commission.text'|trans({'%commission%': program.commission, '%earnings%': program.yearlyEarnings})},
+                    {icon: 'cash', title: 'affiliate.page.details.payout.title'|trans, text: 'affiliate.page.details.payout.text'|trans},
+                ] %}
+                    <div class="col-12 col-md-4">
+                        <span class="avatar bg-primary-lt mb-3">{{ ux_icon('tabler:' ~ detail.icon, {width: 20, height: 20}) }}</span>
+                        <h4 class="mb-1">{{ detail.title }}</h4>
+                        <p class="text-secondary mb-0">{{ detail.text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if program.termsUrl is not empty %}
+                <div class="border-top mt-4 pt-3">
+                    <a href="{{ program.termsUrl }}" target="_blank" rel="noopener" class="text-secondary">
+                        {{ ux_icon('tabler:file-text', {width: 16, height: 16, class: 'me-1'}) }}
+                        {{ 'affiliate.page.details.terms.link'|trans }}
+                        {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                    </a>
+                </div>
+            {% endif %}
+        </twig:Ui:Card>
+    </div>
+{% endblock profile_content %}

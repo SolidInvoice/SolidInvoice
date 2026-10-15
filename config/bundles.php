@@ -60,7 +60,6 @@ use Symfony\UX\TogglePassword\TogglePasswordBundle;
 use Symfony\UX\TwigComponent\TwigComponentBundle;
 use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
-use SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle;
 use Zenstruck\Foundry\ZenstruckFoundryBundle;
 use Zenstruck\Mailer\Test\ZenstruckMailerTestBundle;
 
@@ -107,7 +106,6 @@ return [
     LiveComponentBundle::class => ['all' => true],
     AutocompleteBundle::class => ['all' => true],
     BabDevPagerfantaBundle::class => ['all' => true],
-    SymfonyCastsVerifyEmailBundle::class => ['all' => true],
     KnpUOAuth2ClientBundle::class => ['all' => true],
     TogglePasswordBundle::class => ['all' => true],
     SymfonyCastsResetPasswordBundle::class => ['all' => true],

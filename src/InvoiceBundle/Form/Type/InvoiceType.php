@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -189,12 +190,18 @@ class InvoiceType extends AbstractType
 
         $builder->add('invoiceId', null, ['data' => $data, 'empty_data' => '', 'attr' => ['maxlength' => 255]]);
 
-        $builder->add('terms');
+        $builder->add('terms', null, ['label' => 'invoice.terms']);
         $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('invoiceDate', DateType::class, ['widget' => 'single_text', 'input' => 'datetime_immutable']);
+        $builder->add('paymentTerms', EnumType::class, [
+            'class' => PaymentTerms::class,
+            'choice_label' => static fn (PaymentTerms $terms): string => $terms->getLabel(),
+            'label' => 'invoice.payment_terms.label',
+            'empty_data' => PaymentTerms::Custom->value,
+        ]);
         $builder->add('due', DateType::class, ['widget' => 'single_text', 'label' => 'billing.due_date', 'required' => false, 'input' => 'datetime_immutable']);
 
         $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {

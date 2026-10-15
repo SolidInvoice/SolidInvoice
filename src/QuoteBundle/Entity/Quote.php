@@ -41,11 +41,13 @@ use SolidInvoice\ApiBundle\State\Processor\QuoteTransitionProcessor;
 use SolidInvoice\ApiBundle\State\Provider\QuoteItemProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\CoreBundle\Traits\Entity\HasFrozenCurrency;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -120,7 +122,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
 )]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'quotes')])]
-class Quote
+class Quote implements HasFrozenCurrencyInterface
 {
     final public const string TABLE_NAME = 'quotes';
 
@@ -131,6 +133,7 @@ class Quote
     use LinePositions;
     use TimeStampable;
     use CompanyAware;
+    use HasFrozenCurrency;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]

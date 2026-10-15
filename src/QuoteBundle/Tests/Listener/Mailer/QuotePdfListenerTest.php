@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
@@ -57,7 +58,12 @@ final class QuotePdfListenerTest extends TestCase
             ->with('<p>Quote #1</p>')
             ->andReturn('PDF: Quote #1');
 
-        $listener = new QuotePdfListener($pdf, $twig, $this->createTemplateResolver());
+        $clientRepository = M::mock(ClientRepository::class);
+        $clientRepository->shouldReceive('initializeArchived')
+            ->once()
+            ->with($quote->getClient());
+
+        $listener = new QuotePdfListener($pdf, $clientRepository, $twig, $this->createTemplateResolver());
 
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));

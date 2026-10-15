@@ -11,17 +11,17 @@
 
 :root {
     // System font stack - Modern, performant, native feel
-    --swp-font-sans: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
+    --tblr-font-sans: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
                      'Helvetica Neue', arial, 'Noto Sans', sans-serif,
                      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
                      'Noto Color Emoji';
 
     // Monospace for code, numbers in tables
-    --swp-font-mono: ui-monospace, sfmono-regular, 'SF Mono', menlo, monaco,
+    --tblr-font-mono: ui-monospace, sfmono-regular, 'SF Mono', menlo, monaco,
                      consolas, 'Liberation Mono', 'Courier New', monospace;
 
     // Default font family
-    --swp-font-family: var(--swp-font-sans);
+    --tblr-font-family: var(--tblr-font-sans);
 }
 
 // ============================================================================
@@ -29,16 +29,16 @@
 // ============================================================================
 
 :root {
-    --swp-text-xs: 0.75rem;       // 12px - Fine print, badges
-    --swp-text-sm: 0.8125rem;     // 13px - Help text, captions
-    --swp-text-base: 0.9375rem;   // 15px - Body text (slightly larger than 14px for readability)
-    --swp-text-md: 1rem;          // 16px - Emphasized body
-    --swp-text-lg: 1.125rem;      // 18px - Card titles, section headers
-    --swp-text-xl: 1.25rem;       // 20px - Page subtitles
-    --swp-text-2xl: 1.5rem;       // 24px - Page titles
-    --swp-text-3xl: 1.875rem;     // 30px - Hero titles
-    --swp-text-4xl: 2.25rem;      // 36px - Large display
-    --swp-text-5xl: 3rem;         // 48px - Extra large display
+    --tblr-text-xs: 0.75rem;       // 12px - Fine print, badges
+    --tblr-text-sm: 0.8125rem;     // 13px - Help text, captions
+    --tblr-text-base: 0.9375rem;   // 15px - Body text (slightly larger than 14px for readability)
+    --tblr-text-md: 1rem;          // 16px - Emphasized body
+    --tblr-text-lg: 1.125rem;      // 18px - Card titles, section headers
+    --tblr-text-xl: 1.25rem;       // 20px - Page subtitles
+    --tblr-text-2xl: 1.5rem;       // 24px - Page titles
+    --tblr-text-3xl: 1.875rem;     // 30px - Hero titles
+    --tblr-text-4xl: 2.25rem;      // 36px - Large display
+    --tblr-text-5xl: 3rem;         // 48px - Extra large display
 }
 
 // ============================================================================
@@ -46,12 +46,12 @@
 // ============================================================================
 
 :root {
-    --swp-leading-none: 1;
-    --swp-leading-tight: 1.25;
-    --swp-leading-snug: 1.375;
-    --swp-leading-normal: 1.5;
-    --swp-leading-relaxed: 1.625;
-    --swp-leading-loose: 2;
+    --tblr-leading-none: 1;
+    --tblr-leading-tight: 1.25;
+    --tblr-leading-snug: 1.375;
+    --tblr-leading-normal: 1.5;
+    --tblr-leading-relaxed: 1.625;
+    --tblr-leading-loose: 2;
 }
 
 // ============================================================================
@@ -59,15 +59,15 @@
 // ============================================================================
 
 :root {
-    --swp-font-thin: 100;
-    --swp-font-extralight: 200;
-    --swp-font-light: 300;
-    --swp-font-normal: 400;
-    --swp-font-medium: 500;
-    --swp-font-semibold: 600;
-    --swp-font-bold: 700;
-    --swp-font-extrabold: 800;
-    --swp-font-black: 900;
+    --tblr-font-thin: 100;
+    --tblr-font-extralight: 200;
+    --tblr-font-light: 300;
+    --tblr-font-normal: 400;
+    --tblr-font-medium: 500;
+    --tblr-font-semibold: 600;
+    --tblr-font-bold: 700;
+    --tblr-font-extrabold: 800;
+    --tblr-font-black: 900;
 }
 
 // ============================================================================
@@ -75,12 +75,12 @@
 // ============================================================================
 
 :root {
-    --swp-tracking-tighter: -0.05em;
-    --swp-tracking-tight: -0.025em;
-    --swp-tracking-normal: 0;
-    --swp-tracking-wide: 0.025em;
-    --swp-tracking-wider: 0.05em;
-    --swp-tracking-widest: 0.1em;
+    --tblr-tracking-tighter: -0.05em;
+    --tblr-tracking-tight: -0.025em;
+    --tblr-tracking-normal: 0;
+    --tblr-tracking-wide: 0.025em;
+    --tblr-tracking-wider: 0.05em;
+    --tblr-tracking-widest: 0.1em;
 }
 
 // ============================================================================
@@ -90,54 +90,54 @@
 // Page title - Large, prominent heading
 
 .text-page-title {
-    font-size: var(--swp-text-2xl);
-    font-weight: var(--swp-font-semibold);
-    line-height: var(--swp-leading-tight);
-    color: var(--swp-text-primary);
-    letter-spacing: var(--swp-tracking-tight);
+    font-size: var(--tblr-text-2xl);
+    font-weight: var(--tblr-font-semibold);
+    line-height: var(--tblr-leading-tight);
+    color: var(--tblr-text-primary);
+    letter-spacing: var(--tblr-tracking-tight);
 }
 
 // Page subtitle
 
 .text-page-subtitle {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-normal);
-    line-height: var(--swp-leading-normal);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-normal);
+    line-height: var(--tblr-leading-normal);
+    color: var(--tblr-text-muted);
 }
 
 // Card title
 
 .text-card-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    line-height: var(--swp-leading-snug);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-lg);
+    font-weight: var(--tblr-font-semibold);
+    line-height: var(--tblr-leading-snug);
+    color: var(--tblr-text-primary);
 }
 
 // Card subtitle
 
 .text-card-subtitle {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-normal);
-    line-height: var(--swp-leading-normal);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-normal);
+    line-height: var(--tblr-leading-normal);
+    color: var(--tblr-text-muted);
 }
 
 // Section title (with icon pattern)
 
 .text-section-title {
-    font-size: var(--swp-text-md);
-    font-weight: var(--swp-font-semibold);
-    line-height: var(--swp-leading-snug);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-md);
+    font-weight: var(--tblr-font-semibold);
+    line-height: var(--tblr-leading-snug);
+    color: var(--tblr-text-primary);
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 
     svg,
     i {
-        color: var(--swp-primary);
+        color: var(--tblr-primary);
         opacity: 0.9;
         width: 20px;
         height: 20px;
@@ -148,70 +148,70 @@
 // Label text (form labels, table headers)
 
 .text-label {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-medium);
-    line-height: var(--swp-leading-normal);
-    color: var(--swp-text-secondary);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-medium);
+    line-height: var(--tblr-leading-normal);
+    color: var(--tblr-text-secondary);
 }
 
 // Body text
 
 .text-body {
-    font-size: var(--swp-text-base);
-    font-weight: var(--swp-font-normal);
-    line-height: var(--swp-leading-relaxed);
-    color: var(--swp-body-color);
+    font-size: var(--tblr-text-base);
+    font-weight: var(--tblr-font-normal);
+    line-height: var(--tblr-leading-relaxed);
+    color: var(--tblr-body-color);
 }
 
 // Small/Help text
 
 .text-help {
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-normal);
-    line-height: var(--swp-leading-normal);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm);
+    font-weight: var(--tblr-font-normal);
+    line-height: var(--tblr-leading-normal);
+    color: var(--tblr-text-muted);
 }
 
 // Monospace text (for IDs, codes)
 
 .text-mono {
-    font-family: var(--swp-font-mono);
-    font-size: var(--swp-text-sm);
+    font-family: var(--tblr-font-mono);
+    font-size: var(--tblr-text-sm);
 }
 
 // Table header text
 
 .text-table-header {
-    font-size: var(--swp-text-xs);
-    font-weight: var(--swp-font-semibold);
-    line-height: var(--swp-leading-normal);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-xs);
+    font-weight: var(--tblr-font-semibold);
+    line-height: var(--tblr-leading-normal);
+    color: var(--tblr-text-muted);
     text-transform: uppercase;
-    letter-spacing: var(--swp-tracking-wider);
+    letter-spacing: var(--tblr-tracking-wider);
 }
 
 // Emphasized/Highlight text
 
 .text-emphasis {
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
+    font-weight: var(--tblr-font-semibold);
+    color: var(--tblr-text-primary);
 }
 
 // Muted text
 
 .text-subtle {
-    color: var(--swp-text-muted);
+    color: var(--tblr-text-muted);
 }
 
 // Link styling
 
 .text-link {
-    color: var(--swp-link-color);
+    color: var(--tblr-link-color);
     text-decoration: none;
-    transition: color var(--swp-transition-fast);
+    transition: color var(--tblr-transition-fast);
 
     &:hover {
-        color: var(--swp-link-hover-color);
+        color: var(--tblr-link-hover-color);
         text-decoration: underline;
     }
 }

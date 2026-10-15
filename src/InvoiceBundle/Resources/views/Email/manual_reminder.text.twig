@@ -21,7 +21,7 @@ Invoice Date: {{ invoice.invoiceDate|date('Y-m-d') }}
 Due Date: {{ invoice.due|date('Y-m-d') }}
 {% endif %}
 {% if invoice.balance %}
-Amount Due: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+Amount Due: {{ invoice.balance|formatCurrency(invoice.currency) }}
 {% endif %}
 
 Thank you for your business. We appreciate your prompt attention to this invoice.

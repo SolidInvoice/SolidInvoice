@@ -21,7 +21,6 @@ enum InvoiceStatus: string implements HasStatusLabel
     case Draft = 'draft';
     case Pending = 'pending';
     case Paid = 'paid';
-    case Active = 'active';
     case Overdue = 'overdue';
     case Cancelled = 'cancelled';
     case Archived = 'archived';
@@ -33,7 +32,6 @@ enum InvoiceStatus: string implements HasStatusLabel
             self::Draft => 'Draft',
             self::Pending => 'Pending',
             self::Paid => 'Paid',
-            self::Active => 'Active',
             self::Overdue => 'Overdue',
             self::Cancelled => 'Cancelled',
             self::Archived => 'Archived',
@@ -47,7 +45,6 @@ enum InvoiceStatus: string implements HasStatusLabel
             self::Draft => 'secondary',
             self::Pending => 'yellow',
             self::Paid => 'green',
-            self::Active => 'green',
             self::Overdue => 'red',
             self::Cancelled => 'gray',
             self::Archived => 'purple',

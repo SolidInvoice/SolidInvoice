@@ -1,0 +1,27 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
+
+{% block title %}{{ 'onboarding.feedback.subject'|trans({}, 'email') }}{% endblock %}
+
+{% block content %}
+    <span class="onb-eyebrow">{{ 'onboarding.feedback.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.feedback.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.feedback.lede'|trans({}, 'email') }}</p>
+
+    <p class="onb-p">{{ 'onboarding.feedback.note'|trans({}, 'email') }}</p>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ feedback_form_url }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.feedback.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
+{% endblock %}
+
+{% block ps %}{{ 'onboarding.feedback.ps'|trans({}, 'email') }}{% endblock %}

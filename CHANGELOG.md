@@ -6,7 +6,21 @@ Unreleased
 
 ### Changes
 
+* A "Share feedback" link now sits in the user menu and the app footer, opening an anonymous product feedback form. SolidInvoice Cloud trials also get one feedback email partway through the trial
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
+* Invoice and quote PDFs on the classic, modern, studio, photographer, monochrome and compact templates now print the document status as a labelled line, not only as the watermark
+* The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
+* Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
+* Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
+
+### Fixes
+
+* Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
+* Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
+* Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
+* The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
+* Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
+* Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 
 3.0.0 / 2026-06-17
 -------------------

@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Action\CreateRecurring;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -75,6 +76,7 @@ final class CreateRecurringTest extends TestCase
             $featureGate,
             $invoiceRepository,
             $clock,
+            $this->createStub(SystemConfig::class),
         );
         $action->setContainer($container);
 

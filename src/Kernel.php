@@ -128,6 +128,13 @@ class Kernel extends BaseKernel
         return $this->getProjectDir() . '/config';
     }
 
+    public static function resolveEnvValues(mixed $value, ContainerBuilder $container = new ContainerBuilder()): mixed
+    {
+        $container->setParameter('email_verification_enabled', false);
+
+        return parent::resolveEnvValues($value, $container);
+    }
+
     #[Override]
     public function __serialize(): array
     {

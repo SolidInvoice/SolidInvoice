@@ -83,7 +83,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
                 'client' => $invoice->getClient()?->getName(),
                 'clientId' => $invoice->getClient()?->getId(),
                 'amount' => $invoice->getTotal(),
-                'currency' => $invoice->getClient()?->getCurrency(),
+                'currency' => $invoice->getCurrency(),
                 'status' => $invoice->getStatus(),
             ];
         }
@@ -98,7 +98,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
                 'client' => $quote->getClient()?->getName(),
                 'clientId' => $quote->getClient()?->getId(),
                 'amount' => $quote->getTotal(),
-                'currency' => $quote->getClient()?->getCurrency(),
+                'currency' => $quote->getCurrency(),
                 'status' => $quote->getStatus(),
             ];
         }
@@ -113,7 +113,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
                 'client' => $invoice->getClient()?->getName(),
                 'clientId' => $invoice->getClient()?->getId(),
                 'amount' => $invoice->getTotal(),
-                'currency' => $invoice->getClient()?->getCurrency(),
+                'currency' => $invoice->getCurrency(),
                 'status' => $invoice->getStatus(),
             ];
         }

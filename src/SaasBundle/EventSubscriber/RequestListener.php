@@ -20,6 +20,8 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
+use SolidWorx\Platform\PlatformBundle\Controller\Security\ResendVerificationEmail;
+use SolidWorx\Platform\PlatformBundle\Controller\Security\VerifyEmail;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
@@ -48,6 +50,11 @@ final readonly class RequestListener implements EventSubscriberInterface
         // paid-trial mode, where every new signup sits at PENDING until they
         // complete checkout — without this they could not even sign out.
         '_logout',
+
+        // The verification banner is shown on the blocking pages too, so its button and the
+        // link in the email have to work from behind them.
+        VerifyEmail::ROUTE_NAME,
+        ResendVerificationEmail::ROUTE_NAME,
 
         '_switch_company',
         '_view_quote_external',

@@ -10,26 +10,26 @@
 .recurring-schedule-grid {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-3);
+    gap: var(--tblr-space-3);
 }
 
 .schedule-item {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .recurring-schedule-label {
-    font-size: var(--swp-text-sm, 0.875rem);
-    color: var(--swp-text-muted);
+    font-size: var(--tblr-text-sm, 0.875rem);
+    color: var(--tblr-text-muted);
     flex-shrink: 0;
 }
 
 .schedule-value {
-    font-size: var(--swp-text-sm, 0.875rem);
-    font-weight: var(--swp-font-medium, 500);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm, 0.875rem);
+    font-weight: var(--tblr-font-medium, 500);
+    color: var(--tblr-text-primary);
     text-align: right;
 
     // Dates and counts line up cleanly down the schedule sidebar
@@ -39,15 +39,15 @@
 .occurrences-list {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .occurrence-item {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
-    font-size: var(--swp-text-sm, 0.875rem);
-    color: var(--swp-text-secondary);
+    gap: var(--tblr-space-2);
+    font-size: var(--tblr-text-sm, 0.875rem);
+    color: var(--tblr-text-secondary);
 
     svg {
         opacity: 0.6;
@@ -56,53 +56,53 @@
 }
 
 .occurrence-date {
-    color: var(--swp-text-primary);
+    color: var(--tblr-text-primary);
 }
 
 .generated-invoices-list {
     display: flex;
     flex-direction: column;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .generated-invoice-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: var(--swp-space-2);
-    padding: var(--swp-space-2) var(--swp-space-3);
-    background: var(--swp-gray-50);
-    border-radius: var(--swp-radius-sm);
+    gap: var(--tblr-space-2);
+    padding: var(--tblr-space-2) var(--tblr-space-3);
+    background: var(--tblr-gray-50);
+    border-radius: var(--tblr-radius-sm);
 }
 
 .generated-invoice-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--swp-space-1);
-    font-size: var(--swp-text-sm, 0.875rem);
-    font-weight: var(--swp-font-medium, 500);
-    color: var(--swp-primary);
+    gap: var(--tblr-space-1);
+    font-size: var(--tblr-text-sm, 0.875rem);
+    font-weight: var(--tblr-font-medium, 500);
+    color: var(--tblr-primary);
     text-decoration: none;
 
     &:hover {
-        color: var(--swp-primary-dark);
+        color: var(--tblr-primary-dark);
         text-decoration: underline;
     }
 }
 
 .generated-invoice-id {
-    font-weight: var(--swp-font-semibold, 600);
+    font-weight: var(--tblr-font-semibold, 600);
 }
 
 .generated-invoice-meta {
     display: flex;
     align-items: center;
-    gap: var(--swp-space-2);
+    gap: var(--tblr-space-2);
 }
 
 .generated-invoice-amount {
-    font-size: var(--swp-text-sm, 0.875rem);
-    font-weight: var(--swp-font-medium, 500);
-    color: var(--swp-text-primary);
+    font-size: var(--tblr-text-sm, 0.875rem);
+    font-weight: var(--tblr-font-medium, 500);
+    color: var(--tblr-text-primary);
     font-variant-numeric: tabular-nums;
 }
