@@ -1142,6 +1142,7 @@ layout:
         open_user_menu: 'Open user menu'
         toggle_navigation: 'Toggle navigation'
     data_export: 'Data Export'
+    feedback: 'Share feedback'
     profile: Profile
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
     user_image: 'User Image'
