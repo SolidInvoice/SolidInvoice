@@ -25,7 +25,11 @@ Send beautiful quotes and invoices, accept online payments, automate recurring b
   <a href="https://solidinvoice.co"><img src="https://img.shields.io/badge/Try%20Hosted-%249%2Fmo-2ea44f?style=for-the-badge" alt="Try Hosted" /></a>
   <a href="https://hub.docker.com/r/solidinvoice/solidinvoice"><img src="https://img.shields.io/badge/Self--Host-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Self-Host with Docker" /></a>
   <a href="https://github.com/SolidInvoice/SolidInvoice"><img src="https://img.shields.io/badge/Star-on%20GitHub-181717?style=for-the-badge&logo=github" alt="Star on GitHub" /></a>
+</p>
+
+<p>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJ5pJjGzLXaN_a2TjT4_rMYnl71hi7xYuLCopkhphg-VTfgg/viewform"><img src="https://img.shields.io/badge/Share-Feedback-F59E0B?style=for-the-badge" alt="Share Feedback" /></a>
+  <a href="https://billing.solidinvoice.co/affiliates"><img src="https://img.shields.io/badge/Join%20the-Affiliate%20Program-8B5CF6?style=for-the-badge" alt="Join the Affiliate Program" /></a>
 </p>
 
 <img src="docs/static/img/dashboard.png" alt="SolidInvoice Dashboard" width="100%" />
