@@ -61,6 +61,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_TELEMETRY_URL)', 'https://insights.solidworx.co');
     $parameters->set('env(SOLIDINVOICE_ENABLE_TELEMETRY)', '0'); // default OFF; '1' enables
     $parameters->set('env(SOLIDINVOICE_INSTALL_TYPE)', '');       // '' → auto-detect (docker vs manual)
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED)', '1');
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_SIGNUP_URL)', 'https://billing.solidinvoice.co/affiliates');
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_TERMS_URL)', '');
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_COMMISSION)', '20%');
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_YEARLY_EARNINGS)', '$93'); // 20% of Business at $39/month
+    $parameters->set('env(SOLIDINVOICE_AFFILIATE_PROMPT_DELAY_DAYS)', '3');
 
     if ($containerConfigurator->env() === 'test') {
         $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/var/cache/test/config');

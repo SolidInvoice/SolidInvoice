@@ -41,7 +41,7 @@
 {% endblock user_menu_items %}
 
 {% block footer %}
-    <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %} &middot; <a href="{{ feedback_form_url }}" target="_blank" rel="noopener">{{ 'layout.feedback'|trans }}</a></small>
+    <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %} &middot; <a href="{{ feedback_form_url }}" target="_blank" rel="noopener">{{ 'layout.feedback'|trans }}</a>{% if affiliate_program().enabled %} &middot; <a href="{{ path('_profile_affiliate', {source: 'footer'}) }}" class="text-secondary">{{ 'affiliate.footer_link'|trans }}</a>{% endif %}</small>
 {% endblock footer %}
 
 {% block sidebar_brand %}

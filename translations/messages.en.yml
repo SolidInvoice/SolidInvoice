@@ -14,6 +14,35 @@ active_clients: 'Active Clients'
 add_client: 'Add Client'
 add_info: 'Add Info'
 address: Address
+affiliate:
+    card:
+        text: 'Earn up to %earnings% a year for every customer you refer.'
+        title: 'Refer & earn'
+    footer_link: 'Refer & earn'
+    page:
+        details:
+            commission:
+                text: "You earn %commission% of every payment a customer you refer makes to SolidInvoice Cloud, not just the first one. That is up to %earnings% a year per customer on the Business plan. Sign-ups that never pay don't count."
+                title: 'What you earn'
+            payout:
+                text: 'Lemon Squeezy runs the program for us. They track your referrals, show your earnings in their affiliate dashboard and pay you out.'
+                title: 'How you get paid'
+            terms:
+                link: 'Read the affiliate terms'
+            title: 'How the program works'
+            who:
+                text: 'Anyone, whether you use SolidInvoice Cloud or host SolidInvoice yourself.'
+                title: 'Who can join'
+    pitch:
+        cta: 'Join the affiliate program'
+        lead: 'Refer new customers to SolidInvoice Cloud and earn %commission% of every payment they make, month after month. Self-hosted users can take part too.'
+        steps:
+            earn: 'Earn %commission% of every payment they make'
+            join: 'Join the affiliate program'
+            share: 'Share your referral link'
+        title: 'Earn up to %earnings% a year for every customer you refer'
+    prompt:
+        not_now: 'Not now'
 all_clients: 'All Clients'
 billing:
     discount: Discount
@@ -1716,6 +1745,7 @@ profile:
         notifications: Notifications
         preferences: Preferences
         profile: Profile
+        refer_and_earn: 'Refer & earn'
         two_factor: 'Two-Factor Authentication'
     password_change:
         success: 'Your password has been updated'
