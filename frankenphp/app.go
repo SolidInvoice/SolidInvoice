@@ -6,6 +6,7 @@ import (
 	"compress/gzip"
 	"context"
 	_ "embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -28,6 +29,7 @@ import (
 	"github.com/luno/jettison/log"
 	"github.com/luno/lu"
 	"github.com/luno/lu/process"
+	"go.uber.org/zap"
 
 	"github.com/spf13/cobra"
 
@@ -90,7 +92,7 @@ func main() {
 		os.Exit(1)
 	}
 
-    setupCommands()
+	setupCommands()
 
 	// Run CLI
 	if err := rootCmd.Execute(); err != nil {
@@ -139,13 +141,13 @@ func initializeApp() error {
 	}
 
 	// Only set if not already set
-    for key, value := range envVars {
-        if os.Getenv(key) == "" {
-            if err := os.Setenv(key, value); err != nil {
-                return fmt.Errorf("cannot set environment: %w", err)
-            }
-        }
-    }
+	for key, value := range envVars {
+		if os.Getenv(key) == "" {
+			if err := os.Setenv(key, value); err != nil {
+				return fmt.Errorf("cannot set environment: %w", err)
+			}
+		}
+	}
 
 	return nil
 }
@@ -846,10 +848,42 @@ func (p *runningProcess) runInternalCommand(args ...string) error {
 	return p.cmd.Wait()
 }
 
+// monologRecord is a line written by Monolog's JSON formatter.
+type monologRecord struct {
+	Message   string         `json:"message"`
+	LevelName string         `json:"level_name"`
+	Channel   string         `json:"channel"`
+	Context   map[string]any `json:"context"`
+}
+
+// tee forwards a child process's output to the Caddy log, keeping the level of Monolog JSON lines.
 func tee(r io.ReadCloser) {
 	sc := bufio.NewScanner(r)
+	sc.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 	for sc.Scan() {
-		caddy.Log().Info(sc.Text())
+		line := sc.Text()
+
+		var rec monologRecord
+		if json.Unmarshal([]byte(line), &rec) != nil || rec.LevelName == "" {
+			caddy.Log().Info(line)
+			continue
+		}
+
+		fields := []zap.Field{zap.String("channel", rec.Channel)}
+		if len(rec.Context) > 0 {
+			fields = append(fields, zap.Any("context", rec.Context))
+		}
+
+		switch rec.LevelName {
+		case "DEBUG":
+			caddy.Log().Debug(rec.Message, fields...)
+		case "INFO", "NOTICE":
+			caddy.Log().Info(rec.Message, fields...)
+		case "WARNING":
+			caddy.Log().Warn(rec.Message, fields...)
+		default:
+			caddy.Log().Error(rec.Message, fields...)
+		}
 	}
 }
 
