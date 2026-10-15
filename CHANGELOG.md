@@ -21,6 +21,7 @@ Unreleased
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
+* Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
 
 3.0.0 / 2026-06-17
 -------------------
