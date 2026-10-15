@@ -460,6 +460,26 @@ final class TemplatesRenderingTest extends KernelTestCase
     }
 
     /**
+     * `due` hydrates at midnight (`date_immutable`), so this fixes it to midnight
+     * too instead of `addHours(6)` like {@see URGENCY_STATES}. A quote due today,
+     * rendered any time after midnight, must read "EXPIRES TODAY" and never
+     * "EXPIRED" — the regression this issue fixes prints the latter for every
+     * hour of the due date itself.
+     */
+    public function testAQuoteDueTodayIsNotMarkedExpired(): void
+    {
+        $quote = $this->createFixtureQuote(due: CarbonImmutable::now()->setTime(0, 0));
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote]);
+
+        self::assertStringContainsString('EXPIRES TODAY', $output);
+        self::assertStringNotContainsString('EXPIRED', $output);
+    }
+
+    /**
      * Returns the `style` attribute of the span that carries the urgency label.
      */
     private function urgencyStyle(string $output, string $label): string
