@@ -17,6 +17,7 @@ Unreleased
 ### Fixes
 
 * Cancelling an invoice, cancelling a quote and declining a quote now show an info message instead of a success message, since none of them is good news. Archiving is unchanged.
+* A company's own mail delivery settings now apply only to that company's emails. Emails sent before a company was selected (such as the two-factor login code) could go out through another company's mail provider, and long-running workers kept using the first company's provider for every company
 * Cancelling, archiving or activating a recurring invoice now says "Recurring invoice" instead of "Invoice".
 * "Resend code" on the two-factor login page works again. Users with more than one company were redirected to company selection and back without a new code being sent
 * Quote transition messages now use sentence case, matching the invoice side ("Quote has been archived" instead of "Quote has been Archived").
