@@ -1,22 +1,35 @@
 Your trial ends in 3 days.
 ============================================================
 
-When your trial ends, your account moves to the Free plan. Your clients, invoices and payment history stay where they are, and you can keep invoicing.
+On April 22, 2026 your account moves to the Free plan. Nothing is deleted, and you can keep invoicing.
 
 Days remaining: 3
 Trial ends April 22, 2026 at 12:00am
 
-Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden.
-
-What happens when your trial ends
+Your workspace so far
 ------------------------------------------------------------
 
-* Your account moves to the Free plan. You can still log in and send invoices.
-* Free covers up to 3 active clients. Recurring invoices, automatic reminders and team members need a paid plan.
-* Clients can still pay your invoices online.
-* Upgrade any time and the paid features switch straight back on.
+* Clients added: 0
+* Invoices sent: 0
+* Invoices paid: 0
 
-Subscribe and keep going: http://localhost/billing/subscription/activate
+What you keep on Free
+------------------------------------------------------------
+
+* Your clients, invoices and payment history, exactly as they are
+* Unlimited invoices for up to 3 active clients
+* Online payments, so your clients can still pay by card
+
+What SolidInvoice Pro adds
+------------------------------------------------------------
+
+* More than 3 active clients
+* Recurring invoices on any schedule
+* Automatic reminders for overdue invoices
+* Team members on one account
+* Your own branding, without the SolidInvoice footer
+
+Stay on SolidInvoice Pro: http://localhost/billing/subscription/activate
 
 Questions about billing or what to expect? Reply to this email — we read every one.
 

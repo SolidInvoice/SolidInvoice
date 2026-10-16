@@ -14,6 +14,13 @@ Unreleased
 * A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
 * Saving an invoice or quote with no contact selected now says to choose a contact or add one with an email address
 * Before you confirm your email address, an invoice's page offers "Email me a test copy". It sends the invoice, with its PDF, to your own inbox only, along with a link that confirms your address and brings you back to the invoice, ready to send. Limited to 3 per account
+* SolidInvoice Cloud trial emails now follow what you do instead of arriving every day and a half. The welcome is sent at signup; a "your first invoice takes 2 minutes" nudge goes out after a day with nothing sent; sending your first invoice brings the "now let them pay by card" email; and four days before the trial ends you get a recap of your usage with what you keep on Free. The logo, recurring billing, feedback, add-a-client and last-chance offer emails have been dropped
+* Trial users who have not confirmed their email get a reminder after one day and again after three, and those reminders carry the confirmation link. Other trial emails are not sent to an unconfirmed address, so they cannot bounce
+* With a card on file, the trial-ending email now goes out too, and says on which date the card will be charged
+
+### Fixes
+
+* A draft invoice, such as the one the onboarding wizard creates, no longer stops the "send your first invoice" email
 
 3.1.1 / 2026-10-15
 -------------------

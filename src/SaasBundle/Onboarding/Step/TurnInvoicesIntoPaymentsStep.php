@@ -14,16 +14,22 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Override;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Sent once the first invoice is out: the win, and the next step towards
+ * getting it paid.
+ */
 #[AsTaggedItem(priority: 70)]
 final class TurnInvoicesIntoPaymentsStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
         TranslatorInterface $translator,
+        private readonly InvoiceRepository $invoiceRepository,
         private readonly PaymentRepository $paymentRepository,
     ) {
         parent::__construct($translator);
@@ -42,6 +48,7 @@ final class TurnInvoicesIntoPaymentsStep extends AbstractOnboardingEmailStep
     #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
-        return $this->paymentRepository->count(['company' => $context->company]) === 0;
+        return $this->invoiceRepository->countIssued($context->company) > 0
+            && $this->paymentRepository->count(['company' => $context->company]) === 0;
     }
 }

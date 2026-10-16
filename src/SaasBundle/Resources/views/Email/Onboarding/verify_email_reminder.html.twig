@@ -1,0 +1,32 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
+
+{% block title %}{{ (copy ~ '.subject')|trans({}, 'email') }}{% endblock %}
+
+{# This email is the verify prompt, so the layout's verify callout would only repeat it. #}
+{% block verify %}{% endblock %}
+
+{% block content %}
+    <span class="onb-eyebrow accent">{{ 'onboarding.verify.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ (copy ~ '.heading')|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ (copy ~ '.lede')|trans({'%email%': user.email}, 'email') }}</p>
+
+    <p class="onb-p">{{ 'onboarding.verify.why'|trans({}, 'email') }}</p>
+
+    {% if verify_url is defined %}
+        <div class="onb-cta-wrapper">
+            <a href="{{ verify_url }}" class="onb-cta" rel="external" target="_blank">
+                {{ 'onboarding.verify.cta'|trans({}, 'email') }} &rarr;
+            </a>
+        </div>
+    {% endif %}
+
+    <p class="onb-fine-print" style="margin-top: 20px;">{{ 'onboarding.verify.wrong_address'|trans({}, 'email') }}</p>
+{% endblock %}

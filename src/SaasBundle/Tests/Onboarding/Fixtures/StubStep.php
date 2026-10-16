@@ -23,9 +23,14 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
  */
 abstract class StubStep implements OnboardingEmailStepInterface
 {
+    public function __construct(
+        private readonly bool $due = true,
+    ) {
+    }
+
     public function shouldSend(OnboardingContext $context): bool
     {
-        return true;
+        return $this->due;
     }
 
     public function createEmail(OnboardingContext $context): TemplatedEmail

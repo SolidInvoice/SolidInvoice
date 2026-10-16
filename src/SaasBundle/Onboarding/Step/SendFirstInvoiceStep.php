@@ -16,15 +16,22 @@ namespace SolidInvoice\SaasBundle\Onboarding\Step;
 use Override;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * A day in with nothing sent. The onboarding wizard leaves a draft behind, so
+ * only issued invoices count. Unverified users cannot send at all; they get the
+ * verify reminders instead, and this one once they have confirmed.
+ */
 #[AsTaggedItem(priority: 80)]
 final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
         TranslatorInterface $translator,
         private readonly InvoiceRepository $invoiceRepository,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
         parent::__construct($translator);
     }
@@ -42,6 +49,8 @@ final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
     #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
-        return $this->invoiceRepository->count(['company' => $context->company]) === 0;
+        return $context->hoursSinceTrialStart() >= 24
+            && ! $this->emailVerificationGate->isGated($context->user)
+            && $this->invoiceRepository->countIssued($context->company) === 0;
     }
 }
