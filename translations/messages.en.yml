@@ -1105,7 +1105,7 @@ invoice:
     test_copy:
         button: 'Email me a test copy'
         sent: 'Test copy sent. Open it in your inbox and confirm your email to start sending invoices.'
-        too_many: "You've sent a few test copies already. Try again in an hour."
+        too_many: "You've used all your test copies. Confirm your email from the link we sent to start sending invoices."
     title: 'Invoice #%id%'
     to: To
     total: Total
