@@ -1,0 +1,27 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{#
+ # Why Send is disabled for an unverified user, and how to fix it. The resend button submits
+ # resend_form() by id, because the invoice editor's actions sit inside its own <form> and forms
+ # cannot nest — render resend_form() once on the page, outside any other form.
+ #}
+{% macro hint() %}
+    <span class="small text-secondary" id="send-gated-hint">
+        {{ ux_icon('tabler:mail-exclamation', {width: 16, height: 16}) }}
+        {{ 'invoice.send.verify_hint'|trans }}
+        <button type="submit" form="resend-verification-email" class="btn btn-link btn-sm p-0 align-baseline">{{ 'invoice.send.resend_link'|trans }}</button>
+    </span>
+{% endmacro %}
+
+{% macro resend_form() %}
+    <form method="post" action="{{ path('_solidworx_platform_verify_email_resend') }}" id="resend-verification-email" class="d-none">
+        <input type="hidden" name="_token" value="{{ csrf_token('resend_verification_email') }}">
+    </form>
+{% endmacro %}

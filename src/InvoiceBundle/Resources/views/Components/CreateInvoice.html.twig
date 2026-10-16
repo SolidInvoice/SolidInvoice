@@ -8,6 +8,8 @@
  #}
 
 <div {{ attributes.defaults({class: 'billing-form-page'}) }}>
+    {% import '@SolidInvoiceInvoice/Default/_send_gate.html.twig' as send_gate %}
+    {% set gated = is_email_verification_gated() %}
     {% set currency = dto.client ? dto.client.currency : null %}
 
     {{ form_start(form) }}
@@ -415,60 +417,41 @@
                     {{ 'invoice.save.cancel'|trans }}
                 </a>
 
-                <div class="btn-group save-button-group">
-                    {% if isEdit %}
-                        <button type="button" class="btn btn-primary btn-save-primary" {{ live_action('saveUpdate:prevent') }}>
-                            {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
-                            {{ 'invoice.save.update'|trans }}
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <button type="button" class="dropdown-item" {{ live_action('savePublish:prevent') }}>
-                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
-                                    {{ 'invoice.save.publish'|trans }}
-                                </button>
-                            </li>
-                            {% if not is_email_verification_gated() %}
-                            <li>
-                                <button type="button" class="dropdown-item" {{ live_action('saveSend:prevent') }}>
-                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                    {{ 'invoice.save.send'|trans }}
-                                </button>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    {% else %}
-                        <button type="button" class="btn btn-primary btn-save-primary" {{ live_action('saveDraft:prevent') }}>
-                            {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
-                            {{ 'invoice.save.draft'|trans }}
-                        </button>
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <button type="button" class="dropdown-item" {{ live_action('savePublish:prevent') }}>
-                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
-                                    {{ 'invoice.save.publish'|trans }}
-                                </button>
-                            </li>
-                            {% if not is_email_verification_gated() %}
-                            <li>
-                                <button type="button" class="dropdown-item" {{ live_action('saveSend:prevent') }}>
-                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                    {{ 'invoice.save.send'|trans }}
-                                </button>
-                            </li>
-                            {% endif %}
-                        </ul>
+                <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                    {% if gated %}
+                        {{ send_gate.hint() }}
                     {% endif %}
+
+                    <button type="button" class="btn btn-outline-secondary" {{ live_action(isEdit ? 'saveUpdate:prevent' : 'saveDraft:prevent') }}>
+                        {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                        {{ (isEdit ? 'invoice.save.update' : 'invoice.save.draft')|trans }}
+                    </button>
+
+                    <div class="btn-group save-button-group">
+                        <button type="button" class="btn btn-primary btn-save-primary" {{ live_action('saveSend:prevent') }}{% if gated %} disabled aria-describedby="send-gated-hint"{% endif %}>
+                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                            {{ 'invoice.save.send'|trans }}
+                        </button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="button" class="dropdown-item" {{ live_action('savePublish:prevent') }}>
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                    {{ 'invoice.save.publish_only'|trans }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     {{ form_end(form) }}
+
+    {% if gated %}
+        {{ send_gate.resend_form() }}
+    {% endif %}
 </div>

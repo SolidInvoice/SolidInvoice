@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -22,7 +23,6 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Uid\Ulid;
 
 /**
@@ -66,18 +66,29 @@ final readonly class EmailFromListener implements EventSubscriberInterface
             $message->from($from);
             $event->getEnvelope()->setSender($from);
             $message->getHeaders()->remove('Sender');
-        } else {
-            $token = $this->tokenStorage->getToken();
+        } elseif (null !== ($userEmail = $this->currentUserEmail())) {
+            $from = Address::create($userEmail);
+            $message->from($from);
+            $event->getEnvelope()->setSender($from);
+            $message->getHeaders()->remove('Sender');
+        }
 
-            if ($token instanceof TokenInterface) {
-                /** @var User $user */
-                $user = $token->getUser();
-                $from = Address::create($user->getEmail());
-                $message->from($from);
-                $event->getEnvelope()->setSender($from);
-                $message->getHeaders()->remove('Sender');
+        // A client replying to an invoice or quote should reach the business, not the no-reply sender.
+        if ($message instanceof ClientEmailInterface && [] === $message->getReplyTo()) {
+            $replyTo = (string) $this->config->get('system/company/contact_details/email');
+            $replyTo = '' !== $replyTo ? $replyTo : $this->currentUserEmail();
+
+            if (null !== $replyTo) {
+                $message->replyTo($replyTo);
             }
         }
+    }
+
+    private function currentUserEmail(): ?string
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        return $user instanceof User ? $user->getEmail() : null;
     }
 
     public static function getSubscribedEvents(): array

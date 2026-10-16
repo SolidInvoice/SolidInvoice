@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Email;
 
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-final class QuoteEmail extends TemplatedEmail
+final class QuoteEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
         private readonly Quote $quote
