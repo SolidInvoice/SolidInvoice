@@ -70,7 +70,7 @@ final readonly class UpgradePromptRenderer implements RequiredPlanLabelProvider,
             }
 
             // Free is the floor — it isn't a meaningful upgrade target.
-            if ($plan->isFree()) {
+            if ($plan->isFree() || ! $plan->isActive()) {
                 continue;
             }
 
