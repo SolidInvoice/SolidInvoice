@@ -22,11 +22,18 @@ return App::config([
                     'limit' => 300,
                     'interval' => '1 minute',
                 ],
-                // "Email me a test copy" mails the user's own inbox; this keeps it from being a mail cannon.
+                // "Email me a test copy" mails an address nobody has verified yet, with content the
+                // account controls. Cap it per account for its unverified life, and per IP so new
+                // accounts don't multiply that.
                 'invoice_test_copy' => [
                     'policy' => 'fixed_window',
-                    'limit' => 5,
-                    'interval' => '1 hour',
+                    'limit' => 3,
+                    'interval' => '30 days',
+                ],
+                'invoice_test_copy_ip' => [
+                    'policy' => 'fixed_window',
+                    'limit' => 10,
+                    'interval' => '1 day',
                 ],
                 'mcp_oauth_register' => [
                     'policy' => 'fixed_window',

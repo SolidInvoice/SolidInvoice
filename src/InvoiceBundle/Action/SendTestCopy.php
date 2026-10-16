@@ -44,6 +44,7 @@ final class SendTestCopy extends AbstractController
         private readonly EmailVerificationGateInterface $emailVerificationGate,
         private readonly TranslatorInterface $translator,
         private readonly RateLimiterFactoryInterface $invoiceTestCopyLimiter,
+        private readonly RateLimiterFactoryInterface $invoiceTestCopyIpLimiter,
         // Only registered while email verification is on, which is the only time this action does anything.
         private readonly ?VerifyEmailHelperInterface $verifyEmailHelper = null,
     ) {
@@ -64,7 +65,10 @@ final class SendTestCopy extends AbstractController
             return $this->redirect($invoiceUrl);
         }
 
-        if (! $this->invoiceTestCopyLimiter->create($user->getId()->toString())->consume()->isAccepted()) {
+        if (
+            ! $this->invoiceTestCopyLimiter->create($user->getId()->toString())->consume()->isAccepted()
+            || ! $this->invoiceTestCopyIpLimiter->create($request->getClientIp() ?? 'unknown')->consume()->isAccepted()
+        ) {
             $this->addFlash('warning', 'invoice.test_copy.too_many');
 
             return $this->redirect($invoiceUrl);

@@ -67,6 +67,20 @@ final class SendTestCopyTest extends WebTestCase
         self::assertSame(InvoiceStatus::Draft, $invoice?->getStatus(), 'A test copy must not publish the invoice.');
     }
 
+    public function testTheFourthTestCopyIsRefused(): void
+    {
+        $this->sendTestCopy();
+        $this->submitTestCopy();
+        $this->submitTestCopy();
+        $this->mailer()->assertSentEmailCount(3);
+
+        $this->submitTestCopy();
+
+        $this->mailer()->assertSentEmailCount(3);
+        $this->browser->followRedirect();
+        self::assertSelectorTextContains('body', (string) self::getContainer()->get('translator')->trans('invoice.test_copy.too_many'));
+    }
+
     public function testTheLinkInTheTestCopyVerifiesTheUserAndReturnsToTheInvoice(): void
     {
         $this->sendTestCopy();
@@ -88,6 +102,8 @@ final class SendTestCopyTest extends WebTestCase
         self::ensureKernelShutdown();
         $this->browser = self::createClient();
         $this->browser->disableReboot();
+        // The limiters keep state in the cache pool, which outlives a test; a fresh IP keeps runs independent.
+        $this->browser->setServerParameter('REMOTE_ADDR', '10.' . random_int(0, 255) . '.' . random_int(0, 255) . '.' . random_int(1, 254));
 
         $this->user = UserFactory::createOne(['companies' => [$this->company], 'email' => 'owner@example.com', 'verified' => false]);
         $this->browser->loginUser($this->user);
@@ -104,6 +120,11 @@ final class SendTestCopyTest extends WebTestCase
         // Creating an unverified user emails it a link; only the test copy counts.
         $this->mailer()->reset();
 
+        $this->submitTestCopy();
+    }
+
+    private function submitTestCopy(): void
+    {
         $crawler = $this->browser->request(Request::METHOD_GET, '/invoices/view/' . $this->invoice->getId());
         $this->browser->submit($crawler->filter('form[action="/invoices/action/send-test-copy/' . $this->invoice->getId() . '"]')->form());
 
