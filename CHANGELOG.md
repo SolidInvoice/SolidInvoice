@@ -13,6 +13,7 @@ Unreleased
 * Invoice, quote and reminder emails now carry a Reply-To of your company's email address (or your own, if the company has none), so a client's reply reaches you instead of the no-reply sender
 * A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
 * Saving an invoice or quote with no contact selected now says to choose a contact or add one with an email address
+* Before you confirm your email address, an invoice's page offers "Email me a test copy". It sends the invoice, with its PDF, to your own inbox only, along with a link that confirms your address and brings you back to the invoice, ready to send. Limited to 5 an hour
 
 3.1.1 / 2026-10-15
 -------------------

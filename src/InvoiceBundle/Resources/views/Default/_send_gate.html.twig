@@ -25,3 +25,14 @@
         <input type="hidden" name="_token" value="{{ csrf_token('resend_verification_email') }}">
     </form>
 {% endmacro %}
+
+{# Sends the saved invoice to the user's own inbox, and the email confirms their address. #}
+{% macro test_copy(invoice) %}
+    <form method="post" action="{{ path('_invoices_send_test_copy', {'id': invoice.id}) }}" class="d-inline">
+        <input type="hidden" name="_token" value="{{ csrf_token('send_test_copy') }}">
+        <button type="submit" class="btn btn-outline-primary">
+            {{ ux_icon('tabler:mail-forward', {width: 18, height: 18}) }}
+            {{ 'invoice.test_copy.button'|trans }}
+        </button>
+    </form>
+{% endmacro %}

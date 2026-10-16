@@ -1102,6 +1102,10 @@ invoice:
     terms_notes:
         title: 'Terms & Notes'
         toggle: 'Toggle terms and notes section'
+    test_copy:
+        button: 'Email me a test copy'
+        sent: 'Test copy sent. Open it in your inbox and confirm your email to start sending invoices.'
+        too_many: "You've sent a few test copies already. Try again in an hour."
     title: 'Invoice #%id%'
     to: To
     total: Total

@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
+use SolidInvoice\InvoiceBundle\Email\InvoiceTestCopyEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Twig\Environment;
@@ -44,10 +45,9 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
      */
     public function __invoke(MessageEvent $event): void
     {
-        /** @var InvoiceEmail $message */
         $message = $event->getMessage();
 
-        if ($message instanceof InvoiceEmail && $this->generator->canPrintPdf()) {
+        if (($message instanceof InvoiceEmail || $message instanceof InvoiceTestCopyEmail) && $this->generator->canPrintPdf()) {
             $this->clientRepository->initializeArchived($message->getInvoice()->getClient());
 
             $content = $this->generator->generate(
