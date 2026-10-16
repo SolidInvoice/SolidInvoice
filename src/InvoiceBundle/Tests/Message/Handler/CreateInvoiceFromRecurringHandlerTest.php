@@ -31,6 +31,8 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler;
@@ -39,6 +41,7 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\StateMachine;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[CoversClass(CreateInvoiceFromRecurringHandler::class)]
 final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
@@ -97,6 +100,16 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             ->method('apply')
             ->with($invoice, Graph::TRANSITION_ACCEPT);
 
+        // The generated invoice is mailed to its recipients like any other sent invoice.
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with(
+                self::callback(static fn (InvoiceEvent $event): bool => $event->getInvoice() === $invoice),
+                InvoiceEvents::INVOICE_POST_ACCEPT,
+            )
+            ->willReturnArgument(0);
+
         $registry->expects(self::atLeastOnce())
             ->method('getManager')
             ->willReturn($entityManager);
@@ -119,7 +132,8 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $companySelector,
             new NullLogger(),
             $clock,
-            $recurringInvoiceRepository
+            $recurringInvoiceRepository,
+            $eventDispatcher,
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
@@ -171,6 +185,9 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
         $invoiceStateMachine->expects(self::never())
             ->method('apply');
 
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::never())->method('dispatch');
+
         $registry->expects(self::atLeastOnce())
             ->method('getManager')
             ->willReturn($entityManager);
@@ -193,7 +210,8 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $companySelector,
             new NullLogger(),
             $clock,
-            $recurringInvoiceRepository
+            $recurringInvoiceRepository,
+            $eventDispatcher,
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
@@ -236,7 +254,8 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $companySelector,
             $logger,
             $clock,
-            $recurringInvoiceRepository
+            $recurringInvoiceRepository,
+            $this->createStub(EventDispatcherInterface::class),
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
