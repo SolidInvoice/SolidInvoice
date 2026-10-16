@@ -4,9 +4,9 @@ Guidance for AI agents working in this repository. Everything here is derived fr
 repository itself; each rule cites the file that establishes it. Where this file and the
 code disagree, the code wins — fix this file in the same PR.
 
-**Default branch is `3.1.x`, not `main`.** Branch from and target `3.1.x`. Release
+**Default branch is `3.2.x`, not `main`.** Branch from and target `3.2.x`. Release
 branches are one per minor (`2.3.x`, `2.4.x`, `3.0.x`, `3.1.x`); `main` does not exist.
-`unit-tests.yml` only runs on pushes to `3.0.x` and `3.1.x`.
+`unit-tests.yml` only runs on pushes to `3.1.x` and `3.2.x`.
 
 ---
 

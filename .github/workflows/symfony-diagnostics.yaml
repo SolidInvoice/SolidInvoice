@@ -1,0 +1,15 @@
+name: Symfony diagnostics
+
+on: [push, pull_request]
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version-file: .php-version
+                  tools: symfony-cli
+            - run: composer install --no-progress
+            - run: symfony lsp:check --format=github
