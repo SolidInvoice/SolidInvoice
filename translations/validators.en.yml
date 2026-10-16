@@ -31,7 +31,7 @@ invoice:
     lines:
         min: 'You need to add at least 1 line to the Invoice'
     users:
-        min: 'You need to select at least 1 user to attach to the Invoice'
+        min: 'Choose who gets this invoice. If the client has no contacts yet, add one with an email address.'
 notification:
     constraint:
         transport_setting:

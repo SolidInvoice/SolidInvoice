@@ -8,7 +8,11 @@ Unreleased
 
 * Getting started is now a single step. New users enter their company name and currency, then go straight to the invoice editor to add their first client and send their first invoice. The separate client, invoice and "you're all set" screens are gone; the first invoice used to be saved without a recipient, so it could not be sent
 * The dashboard setup checklist now starts with "Create Your Company" already ticked off
-
+* "Send to client" is now the main button when creating or editing an invoice, and on a draft invoice's page. "Save as Draft" and "Publish without sending" are still one click away
+* Until you confirm your email address, the Send button stays visible but disabled, with the reason next to it and a link to get a new confirmation email
+* Invoice, quote and reminder emails now carry a Reply-To of your company's email address (or your own, if the company has none), so a client's reply reaches you instead of the no-reply sender
+* A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
+* Saving an invoice with no contact selected now says to choose a contact or add one with an email address
 
 3.1.1 / 2026-10-15
 -------------------

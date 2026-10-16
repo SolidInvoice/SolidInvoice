@@ -1037,11 +1037,14 @@ invoice:
         draft: 'Save as Draft'
         enable: 'Save and Enable'
         publish: Publish
-        send: 'Save and Send'
-        update: Update
+        publish_only: 'Publish without sending'
+        send: 'Send to client'
+        update: 'Save changes'
     send:
         invalid_csrf: 'Invalid CSRF token'
-        no_recipients: 'Cannot send invoice: no contacts with email addresses found'
+        no_recipients: 'There is no one to send this invoice to. Edit it and choose a contact with an email address.'
+        resend_link: 'send a new link'
+        verify_hint: "Confirm your email address to send invoices. Can't find the email? Check spam, or"
     send_to: 'Send invoice to:'
     stats:
         active_recurring: 'Active Recurring'
@@ -1141,7 +1144,9 @@ invoice:
             archive: Archive
             cancel: Cancel
             clone: Clone
+            copy_link: 'Copy client link'
             edit: Edit
+            link_copied: 'Link copied'
             mark_paid: 'Mark Paid'
             more_actions: 'More Actions'
             pay_now: 'Pay Now'
