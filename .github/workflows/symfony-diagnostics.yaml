@@ -2,12 +2,20 @@ name: Symfony diagnostics
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
     check:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v7
-            - uses: shivammathur/setup-php@v2
+            - name: Harden the runner (Audit all outbound calls)
+              uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+              with:
+                egress-policy: audit
+
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+            - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
               with:
                   php-version-file: .php-version
                   tools: symfony-cli
