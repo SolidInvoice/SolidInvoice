@@ -1968,6 +1968,7 @@ saas:
         plan_update_failed: 'Could not update your plan: %error%'
         plan_updated: 'Your plan has been updated.'
         subscription_activated: 'Your subscription has been activated.'
+        trial_ended_on_free: "Your trial has ended, so your account is now on the Free plan. Everything you created is still here."
     menu:
         billing: Subscription
     overview:

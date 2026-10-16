@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Telemetry\Message\SendTelemetryMessage;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 
 return App::config([
     'framework' => [
@@ -46,6 +47,7 @@ return App::config([
                 // scheduler returns quickly and Messenger's retry strategy handles
                 // transient mailer failures.
                 SendOnboardingEmailMessage::class => ['async'],
+                SendTrialDowngradedEmailMessage::class => ['async'],
                 // Route invoice reminder dispatch through the async transport for the same
                 // reason: the hourly cron command must return quickly (seconds), not block
                 // while sending one SMTP email per qualifying invoice.  Without this routing

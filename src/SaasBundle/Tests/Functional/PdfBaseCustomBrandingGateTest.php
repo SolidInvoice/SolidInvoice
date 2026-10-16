@@ -34,8 +34,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Twig\Environment;
 
 /**
- * Verifies that the PDF base template (`_pdf_base.html.twig`) gates the
- * `system/general/hide_powered_by` setting on the `custom_branding` feature:
+ * Verifies that the PDF base template (`_pdf_base.html.twig`) and the client
+ * portal gate the `system/general/hide_powered_by` setting on the
+ * `custom_branding` feature:
  *
  * - When the feature is disabled (Free/Solo plans), the "Powered By" line is
  *   always rendered regardless of the stored DB value.
@@ -73,6 +74,27 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         // The "Powered By" attribute is populated despite the setting being '1'.
         self::assertStringContainsString('Powered By', $output);
+    }
+
+    public function testGatedPlanAlwaysShowsPoweredByOnTheClientPortal(): void
+    {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
+        $featureGate = $this->createStub(FeatureGate::class);
+        $featureGate->method('isEnabled')
+            ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
+        self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('1');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $this->createFixtureInvoice()]);
+
+        self::assertStringContainsString('ext-doc-footer', $output);
     }
 
     public function testUngatedPlanRespectsHidePoweredBySetting(): void
