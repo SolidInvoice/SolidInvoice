@@ -81,6 +81,12 @@ invoice:
     subtotal: Subtotal
     tax: Tax
     terms: 'Terms & Conditions'
+    test_copy:
+        button: 'Confirm my email'
+        message: "Here's invoice %id% as %client% will get it, with the PDF attached. Confirm your email address and you can send it to them."
+        only_you: 'Only you received this test copy. %client% has not been sent anything.'
+        subject: 'Test copy: invoice %id%'
+        title: 'Test copy of invoice %id%'
     title: 'Invoice %id%'
     total: Total
     view:

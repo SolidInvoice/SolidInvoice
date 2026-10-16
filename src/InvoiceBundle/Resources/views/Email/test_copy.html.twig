@@ -1,0 +1,55 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'invoice.test_copy.title'|trans({'%id%': invoice.invoiceId}, 'email') }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'invoice.test_copy.message'|trans({'%id%': invoice.invoiceId, '%client%': invoice.client.name}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.info_row('invoice.number'|trans({}, 'email'), invoice.invoiceId) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('invoice.balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.currency), true) }}
+
+    {{ email.spacer('md') }}
+
+    {{ email.button('invoice.test_copy.button'|trans({}, 'email'), verifyUrl, 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #626976; font-size: 14px; line-height: 1.5; margin: 0; Margin: 0; text-align: center;">
+                    {{ 'email.confirmation.alternative'|trans({}, 'email') }}
+                </p>
+                <p style="color: #206bc4; font-size: 14px; margin: 8px 0 0 0; Margin: 8px 0 0 0; text-align: center; word-break: break-all;">
+                    <a href="{{ verifyUrl }}" rel="external" target="_blank" style="color: #206bc4; text-decoration: none;">{{ verifyUrl }}</a>
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {{ email.alert_box('invoice.test_copy.only_you'|trans({'%client%': invoice.client.name}, 'email'), 'info') }}
+
+    {{ email.spacer('sm') }}
+{%- endblock -%}
