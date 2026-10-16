@@ -9,49 +9,43 @@
 
 {% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
 
-{% block page_title %}Get Started - {{ app_name }}{% endblock %}
+{% block page_title %}{{ 'onboarding.page_title'|trans({'%app_name%': app_name}) }}{% endblock %}
 
 {% block body %}
     <div class="onboarding-container min-vh-100">
-        {# Progress Bar with Step Names #}
-        <div class="onboarding-progress bg-white border-bottom">
-            <div class="container py-3">
-                <div class="row align-items-center mb-2">
-                    <div class="col">
-                        <div class="d-flex justify-content-between align-items-center">
-                            {% set steps = [
-                                {name: 'company', label: 'onboarding.progress.company'|trans({}), icon: 'building'},
-                                {name: 'client', label: 'onboarding.progress.client'|trans({}), icon: 'users'},
-                                {name: 'invoice', label: 'onboarding.progress.invoice'|trans({}), icon: 'file-invoice'},
-                                {name: 'complete', label: 'onboarding.progress.complete'|trans({}), icon: 'circle-check'}
-                            ] %}
-                            {% for step in steps %}
-                                <div class="d-flex align-items-center {% if loop.last %}{% else %}flex-fill{% endif %}">
-                                    <div class="step-indicator {% if form.vars.cursor.stepIndex >= loop.index0 %}active{% endif %} {% if currentStep == step.name %}current{% endif %}">
-                                        <div class="step-number">
-                                            {{ ux_icon('tabler:' ~ step.icon, {width: 16, height: 16}) }}
-                                        </div>
-                                        <span class="step-label d-none d-md-inline">{{ step.label }}</span>
-                                    </div>
-                                    {% if not loop.last %}
-                                        <div class="step-connector {% if form.vars.cursor.stepIndex > loop.index0 %}completed{% endif %}"></div>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="progress" style="height: 3px;">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ progress }}%" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-
-        {# Main Content #}
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8 col-xl-6">
-                    {% include '@SolidInvoiceUser/Onboarding/steps/step_' ~ currentStep ~ '.html.twig' %}
+                    <div class="onboarding-step-card">
+                        <div class="welcome-section">
+                            <div class="welcome-badge">
+                                {{ ux_icon('tabler:sparkles', {width: 16, height: 16}) }}
+                                {{ 'onboarding.company.welcome'|trans({'%app_name%': app_name}) }}
+                            </div>
+                            <div class="step-icon">
+                                {{ ux_icon('tabler:building', {width: 32, height: 32}) }}
+                            </div>
+                            <h2 class="h2 mb-2">{{ 'onboarding.company.title'|trans }}</h2>
+                            <p class="text-muted lead mb-0">{{ 'onboarding.company.description'|trans }}</p>
+                        </div>
+
+                        {{ form_start(form) }}
+                            <div class="mb-4">
+                                {{ form_row(form.companyName, {'attr': {'class': 'form-control form-control-lg'}}) }}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form_row(form.companyCurrency, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    {{ 'onboarding.company.submit'|trans }}
+                                    {{ ux_icon('tabler:arrow-right', {width: 18, height: 18}) }}
+                                </button>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
                 </div>
             </div>
         </div>
