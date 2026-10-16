@@ -20,6 +20,7 @@ Unreleased
 
 ### Fixes
 
+* Invoices generated from a recurring invoice are now emailed to their recipients. They were created and published, but no email went out
 * A draft invoice, such as the one the onboarding wizard creates, no longer stops the "send your first invoice" email
 
 3.1.1 / 2026-10-15
