@@ -1,7 +1,7 @@
 Your trial ends in 3 days.
 ============================================================
 
-When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe.
+When your trial ends, your account moves to the Free plan. Your clients, invoices and payment history stay where they are, and you can keep invoicing.
 
 Days remaining: 3
 Trial ends April 22, 2026 at 12:00am
@@ -11,10 +11,10 @@ Subscribing takes about 30 seconds. Your workspace picks up exactly where it lef
 What happens when your trial ends
 ------------------------------------------------------------
 
-* Your account locks — you won't be able to log in or access any data.
-* Pending invoices won't be delivered. Recurring billing pauses.
-* Clients can still pay existing invoices via their direct payment links.
-* Reactivate any time — everything restores immediately on subscription.
+* Your account moves to the Free plan. You can still log in and send invoices.
+* Free covers up to 3 active clients. Recurring invoices, automatic reminders and team members need a paid plan.
+* Clients can still pay your invoices online.
+* Upgrade any time and the paid features switch straight back on.
 
 Subscribe and keep going: http://localhost/billing/subscription/activate
 
