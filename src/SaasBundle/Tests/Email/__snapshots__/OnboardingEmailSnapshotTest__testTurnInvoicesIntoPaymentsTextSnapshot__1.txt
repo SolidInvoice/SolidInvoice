@@ -1,4 +1,4 @@
-Invoices don't pay themselves.
+Your first invoice is out. Now let them pay by card.
 ============================================================
 
 Connect Stripe or PayPal once and every invoice you send gets a 'Pay now' button. Your client pays from any device in seconds — you're notified the moment it goes through.

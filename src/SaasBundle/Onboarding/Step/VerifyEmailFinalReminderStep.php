@@ -13,18 +13,27 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
-#[AsTaggedItem(priority: 65)]
-final class RecurringBillingStep extends AbstractOnboardingEmailStep
+#[AsTaggedItem(priority: 75)]
+final class VerifyEmailFinalReminderStep extends VerifyEmailReminderStep
 {
+    #[Override]
     public static function key(): string
     {
-        return 'recurring_billing';
+        return 'verify_email_final_reminder';
     }
 
+    #[Override]
     public static function priority(): int
     {
-        return 65;
+        return 75;
+    }
+
+    #[Override]
+    protected static function afterHours(): int
+    {
+        return 72;
     }
 }

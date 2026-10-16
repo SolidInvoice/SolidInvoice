@@ -49,6 +49,20 @@
                         {# ─── Body ─── #}
                         <tr>
                             <td class="onb-content">
+                                {# Unverified users cannot send invoices; every email they get says how to fix that. #}
+                                {% block verify %}
+                                    {% if verify_url is defined %}
+                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-callout" style="margin: 0 0 28px 0; Margin: 0 0 28px 0;">
+                                            <tr>
+                                                <td style="vertical-align: middle; line-height: 1.5;">
+                                                    <div class="onb-callout-title">{{ 'onboarding.verify.title'|trans({}, 'email') }}</div>
+                                                    <div class="onb-callout-sub">{{ 'onboarding.verify.body'|trans({'%email%': user.email}, 'email') }} <a href="{{ verify_url }}" rel="external" target="_blank">{{ 'onboarding.verify.cta'|trans({}, 'email') }} &rarr;</a></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    {% endif %}
+                                {% endblock %}
+
                                 {{- block('content') -}}
 
                                 {# Signature #}
@@ -62,7 +76,7 @@
                                 {% endif %}
 
                                 {# Optional P.S. #}
-                                {% if block('ps') is defined %}
+                                {% if block('ps') is defined and block('ps')|trim is not empty %}
                                     <div class="onb-ps">
                                         <b>P.S.</b>{{ block('ps') -}}
                                     </div>

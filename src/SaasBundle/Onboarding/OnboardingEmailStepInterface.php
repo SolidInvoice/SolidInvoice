@@ -33,9 +33,9 @@ interface OnboardingEmailStepInterface
     public static function priority(): int;
 
     /**
-     * Return false to skip this email (e.g. the user already completed the action
-     * this email would prompt them to do). The scheduler still advances past the
-     * step — it will not be retried.
+     * Whether this email is due now. It is asked on every tick until it answers
+     * true; the email is then sent once and the step is never asked again. So the
+     * condition is the trigger: elapsed time, what the user has done, or both.
      */
     public function shouldSend(OnboardingContext $context): bool;
 
