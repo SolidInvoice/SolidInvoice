@@ -18,6 +18,8 @@ enum UserSettingType: string
     case Timezone = 'timezone';
     case Location = 'location';
     case OnboardComplete = 'onboard_complete';
+    // No longer written. Kept so rows saved by the old multi-step wizard still
+    // hydrate: `setting_key` is mapped with this enum as its enumType.
     case OnboardingStep = 'onboarding_step';
     case OnboardingSkipped = 'onboarding_skipped';
     case OnboardingStartedAt = 'onboarding_started_at';

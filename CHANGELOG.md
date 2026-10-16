@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+### Changes
+
+* Getting started is now a single step. New users enter their company name and currency, then go straight to the invoice editor to add their first client and send their first invoice. The separate client, invoice and "you're all set" screens are gone; the first invoice used to be saved without a recipient, so it could not be sent
+* The dashboard setup checklist now starts with "Create Your Company" already ticked off
+
 3.1.1 / 2026-10-15
 -------------------
 
