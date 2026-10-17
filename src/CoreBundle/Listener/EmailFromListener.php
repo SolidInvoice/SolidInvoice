@@ -61,17 +61,17 @@ final readonly class EmailFromListener implements EventSubscriberInterface
         $fromAddress = (string) $this->config->get('email/from_address');
 
         if ('' !== $fromAddress) {
-            $fromName = (string) $this->config->get('email/from_name');
-            $from = new Address($fromAddress, $fromName);
-            $message->from($from);
-            $event->getEnvelope()->setSender($from);
-            $message->getHeaders()->remove('Sender');
+            $from = new Address($fromAddress, (string) $this->config->get('email/from_name'));
         } elseif (null !== ($userEmail = $this->currentUserEmail())) {
             $from = Address::create($userEmail);
-            $message->from($from);
-            $event->getEnvelope()->setSender($from);
-            $message->getHeaders()->remove('Sender');
+        } else {
+            // A worker (e.g. scheduled reminders) has no signed-in user; without a From the send throws.
+            $from = Address::create($this->defaultSender);
         }
+
+        $message->from($from);
+        $event->getEnvelope()->setSender($from);
+        $message->getHeaders()->remove('Sender');
 
         // A client replying to an invoice or quote should reach the business, not the no-reply sender.
         if ($message instanceof ClientEmailInterface && [] === $message->getReplyTo()) {
