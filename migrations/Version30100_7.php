@@ -53,12 +53,12 @@ final class Version30100_7 extends AbstractMigration
     // DatabaseObjectNotFoundException.
     //
     // MariaDB and PostgreSQL are confirmed against real servers (11.8.6 / 17.11, see SOL-187).
-    // MySQL (Oracle) is not: no MySQL server was available to probe, so
-    // ER_CHECK_CONSTRAINT_NOT_FOUND is taken from MySQL's own error reference and must be
-    // confirmed on a real MySQL 8 instance before it is trusted.
+    // MySQL is confirmed against Oracle MySQL 8.0.46 (see SOL-395): dropClause() sends MySQL
+    // DROP CHECK, which raises ER_CHECK_CONSTRAINT_NOT_FOUND (3821), not ER_CONSTRAINT_NOT_FOUND
+    // (3940) — that second code is DROP CONSTRAINT's and is never reached from here.
     private const int MARIADB_CONSTRAINT_NOT_FOUND = 1091;
 
-    private const int MYSQL_CONSTRAINT_NOT_FOUND = 3940;
+    private const int MYSQL_CONSTRAINT_NOT_FOUND = 3821;
 
     // PostgreSQL's DriverException::getCode() is not the SQLSTATE — it is whatever pdo_pgsql
     // happens to report, observed as 7 against 17.11 — so PostgreSQL is matched on
