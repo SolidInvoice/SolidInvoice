@@ -21,6 +21,8 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
+use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\Test\EmailVerificationKernel;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use SolidWorx\Platform\PlatformBundle\Controller\Security\ResendVerificationEmail;
@@ -70,6 +72,26 @@ final class UnverifiedSendButtonTest extends WebTestCase
         self::assertCount(1, $crawler->filter('form#resend-verification-email'));
         // The public page 404s while nobody in the company is verified, so there is no link to copy.
         self::assertCount(0, $crawler->filter('[data-controller="clipboard"]'));
+    }
+
+    #[TestWith([QuoteStatus::Draft])]
+    #[TestWith([QuoteStatus::Pending])]
+    public function testTheQuotePageShowsSendDisabledWithAResendLink(QuoteStatus $status): void
+    {
+        $client = $this->unverifiedClient();
+        $quote = QuoteFactory::createOne([
+            'company' => $this->company,
+            'client' => ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']),
+            'status' => $status,
+        ]);
+
+        $crawler = $client->request(Request::METHOD_GET, '/quotes/view/' . $quote->getId());
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(1, $crawler->filter('button[disabled][aria-describedby="send-gated-hint"]'));
+        self::assertStringContainsString('to send quotes', $crawler->filter('#send-gated-hint')->text());
+        self::assertCount(1, $crawler->filter('#send-gated-hint button[form="resend-verification-email"]'));
+        self::assertCount(1, $crawler->filter('form#resend-verification-email'));
     }
 
     private function unverifiedClient(): KernelBrowser
