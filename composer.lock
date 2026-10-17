@@ -14908,16 +14908,16 @@
         },
         {
             "name": "symfony/object-mapper",
-            "version": "v8.1.8",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/object-mapper.git",
-                "reference": "e60047c9832573f8f59ceeeb2a129179dec315ae"
+                "reference": "81e5c97bd58c3b0ede2fa0aeedfd23cd4e1a15a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/object-mapper/zipball/e60047c9832573f8f59ceeeb2a129179dec315ae",
-                "reference": "e60047c9832573f8f59ceeeb2a129179dec315ae",
+                "url": "https://api.github.com/repos/symfony/object-mapper/zipball/81e5c97bd58c3b0ede2fa0aeedfd23cd4e1a15a3",
+                "reference": "81e5c97bd58c3b0ede2fa0aeedfd23cd4e1a15a3",
                 "shasum": ""
             },
             "require": {
@@ -14957,7 +14957,7 @@
             "description": "Provides a way to map an object to another object",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/object-mapper/tree/v8.1.8"
+                "source": "https://github.com/symfony/object-mapper/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -14977,7 +14977,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-28T09:40:25+00:00"
+            "time": "2026-10-09T21:06:18+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
