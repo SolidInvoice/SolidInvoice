@@ -44,6 +44,12 @@ Unreleased
 3.1.0 / 2026-10-15
 -------------------
 
+### Highlights
+
+* Invoice, recurring invoice and quote lines can now be named separately from their description, and keep an explicit order
+* Invoices, recurring invoices and clients can have payment terms (Net 15, Net 30, Net 60, due on receipt, or a custom date), with a configurable company-wide default
+* Issued invoices and quotes now freeze their currency going forward, so changing a client's or company's default currency no longer retroactively restates documents issued *after* upgrading. Documents issued before the upgrade are not covered yet — see "Known issues" below
+
 ### Changes
 
 * A "Share feedback" link now sits in the user menu and the app footer, opening an anonymous product feedback form. SolidInvoice Cloud trials also get one feedback email partway through the trial
@@ -52,6 +58,9 @@ Unreleased
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 * Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
 * Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
+* Invoice and quote line quantities are now stored with six decimal places instead of as a floating-point number
+* A line description is now optional
+* Invoice reminder and overdue scans are now backed by an index on due date and status
 
 ### Fixes
 
@@ -61,6 +70,12 @@ Unreleased
 * The PDF status watermark now shows the translated status label instead of the raw status value, so it is no longer always in English.
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
+
+### Known issues
+
+* Documents issued **before** upgrading to 3.1.0 are not covered by the currency freeze above. If a client's or your company's default currency changes, pre-upgrade invoices and quotes still restate retroactively. A backfill is planned (tracked as SOL-396/SOL-398) but did not ship in 3.1.0.
+* On MySQL, MariaDB and PostgreSQL, upgrading with the in-app upgrade instead of the command line can fail partway through and leave every page showing a server error. See `UPGRADE.md` for the command to run instead, and what to do if you already hit this.
+* Overdue status uses the server's UTC clock, not your company's local time zone. If your business is west of UTC (for example, in the Americas), an invoice can show as overdue up to a day before it is actually due. If your business is east of UTC, the overdue reminder can arrive up to a day late. Per-company time zones are planned; this will be fixed then.
 
 3.0.0 / 2026-06-17
 -------------------
