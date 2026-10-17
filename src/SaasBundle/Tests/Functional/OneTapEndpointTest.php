@@ -35,7 +35,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
-use Zenstruck\Foundry\Test\Factories;
 use function filter_var;
 use function is_bool;
 use function json_decode;
@@ -46,7 +45,6 @@ use function parse_url;
 final class OneTapEndpointTest extends WebTestCase
 {
     use EnsureApplicationInstalled;
-    use Factories;
 
     /**
      * @var list<string>
@@ -82,12 +80,12 @@ final class OneTapEndpointTest extends WebTestCase
         $client = $this->bootClient();
 
         $client->request(Request::METHOD_OPTIONS, '/onetap/verify', server: [
-            'HTTP_ORIGIN' => 'https://marketing.example.test',
+            'HTTP_ORIGIN' => SaasTestKernel::MARKETING_ORIGIN,
             'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
         ]);
 
         self::assertSame(
-            'https://marketing.example.test',
+            SaasTestKernel::MARKETING_ORIGIN,
             $client->getResponse()->headers->get('Access-Control-Allow-Origin'),
         );
     }
@@ -213,6 +211,9 @@ final class OneTapEndpointTest extends WebTestCase
 
     private function bootClient(): KernelBrowser
     {
+        // The google_one_tap toggle is off without a client id.
+        $this->setEnv('SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID', 'test-client-id.apps.googleusercontent.com');
+
         self::ensureKernelShutdown();
         $client = self::createClient();
         $client->disableReboot();
