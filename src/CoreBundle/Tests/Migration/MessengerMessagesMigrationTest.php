@@ -42,7 +42,7 @@ final class MessengerMessagesMigrationTest extends MigrationIsIdempotentAcrossLi
         foreach (['id', 'body', 'headers', 'queue_name', 'created_at', 'available_at', 'delivered_at'] as $column) {
             self::assertTrue(
                 $table->hasColumn($column),
-                sprintf('messenger_messages is missing its "%s" column after %s ran.', $column, static::migrationClass()),
+                sprintf('messenger_messages is missing its "%s" column after %s ran.', $column, self::migrationClass()),
             );
         }
     }
