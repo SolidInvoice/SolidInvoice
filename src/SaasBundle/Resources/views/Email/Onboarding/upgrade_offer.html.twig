@@ -1,0 +1,48 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
+
+{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|date('F j')} %}
+
+{% block title %}{{ 'onboarding.upgrade_offer.subject'|trans(params, 'email') }}{% endblock %}
+
+{% block content %}
+    <span class="onb-eyebrow">{{ 'onboarding.upgrade_offer.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.upgrade_offer.heading'|trans(params, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.upgrade_offer.lede'|trans(params, 'email') }}</p>
+
+    {% include '@SolidInvoiceSaas/Email/Onboarding/_coupon.html.twig' %}
+
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-pricing" style="margin: 24px 0 8px 0; Margin: 24px 0 8px 0;">
+        <tr>
+            <td style="padding: 0;">
+                <div class="onb-plan-name">{{ plan.name }}</div>
+                <div>
+                    <span class="onb-price">${{ (plan.price / 100)|number_format(2) }}</span>
+                    <span class="onb-price-per">{{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }}</span>
+                </div>
+                <ul class="onb-pricing-list">
+                    {% for i in 1..5 %}
+                        <li><span class="onb-check-dot">&#10003;</span>{{ ('onboarding.trial_about_to_end.paid.' ~ i)|trans({}, 'email') }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('saas_subscription_checkout') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.upgrade_offer.cta'|trans(params, 'email') }} &rarr;
+        </a>
+    </div>
+
+    <p class="onb-fine-print">{{ 'onboarding.upgrade_offer.fine_print'|trans({}, 'email') }}</p>
+{% endblock %}
+
+{% block ps %}{{ 'onboarding.upgrade_offer.ps'|trans({}, 'email') }}{% endblock %}

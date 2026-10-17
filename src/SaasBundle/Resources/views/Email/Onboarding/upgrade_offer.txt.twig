@@ -1,0 +1,23 @@
+{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|date('F j')} %}
+{{ 'onboarding.upgrade_offer.heading'|trans(params, 'email') }}
+{{ '='|repeat(60) }}
+
+{{ 'onboarding.upgrade_offer.lede'|trans(params, 'email') }}
+
+{{ 'onboarding.coupon.heading'|trans({}, 'email') }}: {{ coupon_code }}
+{{ 'onboarding.coupon.desc'|trans({'%percent%': coupon_percent, '%date%': trial_end|date('F j')}, 'email') }}
+
+{{ plan.name }} — ${{ (plan.price / 100)|number_format(2) }} {{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }}
+
+{% for i in 1..5 %}
+* {{ ('onboarding.trial_about_to_end.paid.' ~ i)|trans({}, 'email') }}
+{% endfor %}
+
+{{ 'onboarding.upgrade_offer.cta'|trans(params, 'email') }}: {{ url('saas_subscription_checkout') }}
+
+{{ 'onboarding.upgrade_offer.fine_print'|trans({}, 'email') }}
+
+P.S. {{ 'onboarding.upgrade_offer.ps'|trans({}, 'email') }}
+
+{{ 'onboarding.signature.greeting'|trans({}, 'email') }}
+{{ 'onboarding.signature.team'|trans({}, 'email') }}

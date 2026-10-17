@@ -27,6 +27,7 @@ use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\UpgradeOfferStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailFinalReminderStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
@@ -49,6 +50,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[CoversClass(VerifyEmailReminderStep::class)]
 #[CoversClass(VerifyEmailFinalReminderStep::class)]
 #[CoversClass(TrialAboutToEndStep::class)]
+#[CoversClass(UpgradeOfferStep::class)]
 final class OnboardingStepTriggerTest extends TestCase
 {
     public function testFirstInvoiceNudgeWaitsADay(): void
@@ -123,6 +125,17 @@ final class OnboardingStepTriggerTest extends TestCase
             self::assertFalse($step->shouldSend($this->context('2026-01-10 23:00')));
             self::assertTrue($step->shouldSend($this->context('2026-01-11 00:00')));
         }
+    }
+
+    public function testTheGiftEmailGoesOutTwoDaysBeforeTheEndWhenTheCodeCanBeUsed(): void
+    {
+        $step = new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::freeTrial('SAVE30'));
+
+        self::assertFalse($step->shouldSend($this->context('2026-01-12 23:00')));
+        self::assertTrue($step->shouldSend($this->context('2026-01-13 00:00')));
+        self::assertFalse($step->shouldSend($this->context('2026-01-13', subscriptionId: 'ls_123')), 'a card was added');
+        self::assertFalse(new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::paidTrial('SAVE30'))->shouldSend($this->context('2026-01-13')), 'card mode');
+        self::assertFalse(new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::freeTrial(''))->shouldSend($this->context('2026-01-13')), 'no code configured');
     }
 
     public function testTrialEndingEmailWarnsOfTheChargeWhenACardIsOnFile(): void

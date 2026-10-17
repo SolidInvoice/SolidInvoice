@@ -25,6 +25,7 @@ use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\UpgradeOfferStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailFinalReminderStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\WelcomeStep;
@@ -109,6 +110,16 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testFeedbackTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(FeedbackStep::class)));
+    }
+
+    public function testUpgradeOfferHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml($this->upgradeOfferStep()));
+    }
+
+    public function testUpgradeOfferTextSnapshot(): void
+    {
+        $this->assertMatchesTextSnapshot($this->renderText($this->upgradeOfferStep()));
     }
 
     public function testTrialAboutToEndHtmlSnapshot(): void
@@ -202,5 +213,10 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
             self::getContainer()->get(InvoiceRepository::class),
             $paidTrial ? BillingModeFactory::paidTrial('SOLID30') : BillingModeFactory::freeTrial('SOLID30'),
         );
+    }
+
+    private function upgradeOfferStep(): UpgradeOfferStep
+    {
+        return new UpgradeOfferStep($this->translator, BillingModeFactory::freeTrial('SOLID30'));
     }
 }

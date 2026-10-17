@@ -98,6 +98,9 @@ notification:
         info: 'You can update your notification settings'
         link: here
 onboarding:
+    coupon:
+        desc: '%percent%% off your first three months. Enter this code at checkout before %date%, when your trial ends.'
+        heading: 'Your discount code'
     feedback:
         cta: 'Share your feedback'
         eyebrow: 'Quick question'
@@ -164,7 +167,6 @@ onboarding:
             4: 'Team members on one account'
             5: 'Your own branding, without the SolidInvoice footer'
         paid_heading: 'What %plan% adds'
-        ps: 'use code <b>%coupon_code%</b> at checkout for %percent%% off your first three months. Offer expires when your trial does.'
         subject: "Your trial ends tomorrow. Here's what you keep|Your trial ends in %days% days. Here's what you keep"
         trial_ends: 'Trial ends <b style="color: #475569;">%date%</b>'
         usage:
@@ -192,6 +194,15 @@ onboarding:
             wallet: Wallet
         ps: 'SolidInvoice adds zero fees on top of your payment provider. You pay only what Stripe or PayPal charge.'
         subject: 'Invoice sent. Now let them pay by card'
+    upgrade_offer:
+        cta: 'Claim my %percent%% off'
+        eyebrow: 'A gift for you'
+        fine_print: 'Cancel anytime. No surprise fees.'
+        heading: "Here's %percent%% off %plan%, before your trial ends."
+        lede: "Your trial ends on %date%, and your account then moves to the Free plan. If you'd like to keep everything, here's a code that makes it cheaper."
+        per: '/ month'
+        ps: "if Free is enough for you, there's nothing to do. Your clients and invoices stay where they are."
+        subject: 'A gift before your trial ends: %percent%% off %plan%'
     verify:
         body: 'We sent a confirmation link to %email%. Until you click it, invoices can be drafted but not sent.'
         cta: 'Confirm my email'
