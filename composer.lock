@@ -16573,16 +16573,16 @@
         },
         {
             "name": "symfony/redis-messenger",
-            "version": "v8.1.7",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/redis-messenger.git",
-                "reference": "271953ae444c8659b038d294f081119483f9512c"
+                "reference": "ddaba45639e5efeee46a07b15f155631181a534f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/271953ae444c8659b038d294f081119483f9512c",
-                "reference": "271953ae444c8659b038d294f081119483f9512c",
+                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/ddaba45639e5efeee46a07b15f155631181a534f",
+                "reference": "ddaba45639e5efeee46a07b15f155631181a534f",
                 "shasum": ""
             },
             "require": {
@@ -16625,7 +16625,7 @@
             "description": "Symfony Redis extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/redis-messenger/tree/v8.1.7"
+                "source": "https://github.com/symfony/redis-messenger/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -16645,7 +16645,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-31T17:18:15+00:00"
+            "time": "2026-09-30T08:42:31+00:00"
         },
         {
             "name": "symfony/remote-event",
