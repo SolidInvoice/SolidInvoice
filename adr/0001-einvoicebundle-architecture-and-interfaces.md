@@ -742,11 +742,16 @@ companies.
 'DE' => [
     'syntax'            => SyntaxFormat::Cii,
     'defaultProfile'    => 'xrechnung-3.0.2',
+    'permittedProfiles' => ['xrechnung-3.0.2'],
     'mandatoryTerms'    => ['BT-10'],     // Leitweg-ID, B2G
     'identifierSchemes' => ['eas' => '9958'],
     'defaultChannel'    => 'peppol',
 ],
 ```
+
+`permittedProfiles` defaults to `[defaultProfile]` when omitted, so this is additive to every row
+written against the shape above. `defaultProfile` must be a member of `permittedProfiles`, checked
+by `JurisdictionRegistry` at build time — see amendment 7.
 
 **Adding a country's rules must not require adding a class.** Only a genuinely new transmission
 topology — a clearance platform with its own protocol — justifies a new `Channel` adapter. A country
@@ -909,6 +914,7 @@ it names disagree, **the amendment wins**.
 | 4 | §12 | "`company_id` must not lead any index", read literally, is already violated by `credit_notes` (`migrations/Version30100_7.php`, `addIndex(['company_id','status'])`). The rule's actual target is composite *query-serving* indexes led by `company_id`, which `CompanyFilter`'s SQLite `HEX()` fallback disqualifies from using an index. A **single-column FK-backing index on `company_id` is required, not prohibited** — PostgreSQL does not auto-index foreign-key columns, so without it every cascade and every tenant-scoped scan is a sequential scan. `einvoice_document` gets `['company_id']` alone, no composite led by it. | `design` on SOL-89 §8.2 |
 | 5 | §8.5 | `poll_after` is not deferred to #2679. It lands on `einvoice_document` now, nullable and unused by this issue, because adding it later would cost a second migration on a table this issue is creating, and the polling index `['status','poll_after']` would have to be rebuilt with it. | `design` on SOL-89 §8.3 |
 | 6 | §8.2 | The `CreditNote`-existence conditional resolves: both `invoice_id` and `credit_note_id` are mapped on `einvoice_document`, not `invoice_id` alone. `CreditNote` exists as of `c4179caef` (SOL-69/#2657), so the "until it does, only `invoice_id` is mapped" clause no longer applies. | `design` on SOL-89 §3.3, §8.4 |
+| 7 | §10.3 | A jurisdiction row gains `permittedProfiles: list<string>`, defaulting to `[defaultProfile]` when omitted. Finland needs both Finvoice 3.0 and TEAPPSXML live at once — the choice is the recipient operator's, not the seller's country — and Denmark/Norway hit the same problem mid-migration to Peppol BIS (SOL-120/#2694). `JurisdictionRegistry` throws at build time if `defaultProfile` is not a member of `permittedProfiles`. | `design` on SOL-93 §7; SOL-431 |
 
 ### Amendment 1 is a defect, not a preference
 

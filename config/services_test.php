@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\EInvoiceBundle\Jurisdiction\JurisdictionRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
 use SolidInvoice\EInvoiceBundle\Validation\ValidatorRegistry;
 use SolidInvoice\InstallBundle\Listener\UpgradeListener;
@@ -61,6 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
     $services->alias('test.' . ProfileRegistry::class, ProfileRegistry::class);
     $services->alias('test.' . ValidatorRegistry::class, ValidatorRegistry::class);
+    $services->alias('test.' . JurisdictionRegistry::class, JurisdictionRegistry::class);
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when the app mode is 'saas'. Mirror the same gate from bundles.php so

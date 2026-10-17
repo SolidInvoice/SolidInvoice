@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Tests\Functional;
 
+use SolidInvoice\EInvoiceBundle\Jurisdiction\JurisdictionRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
 use SolidInvoice\EInvoiceBundle\SolidInvoiceEInvoiceBundle;
 use SolidInvoice\EInvoiceBundle\Validation\ValidatorRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * Smoke test: verifies the bundle boots and its two self-contained registries
+ * Smoke test: verifies the bundle boots and its self-contained registries
  * resolve to empty, RewindableGenerator-backed lists.
  *
  * The test container only exposes private services reachable from public ones.
@@ -66,6 +67,21 @@ final class BundleWiringTest extends KernelTestCase
         $registry = $container->get('test.' . ValidatorRegistry::class);
 
         self::assertInstanceOf(ValidatorRegistry::class, $registry);
+        self::assertSame([], $registry->all());
+        self::assertSame([], $registry->all());
+    }
+
+    public function testJurisdictionRegistryAliasResolvesAndIsRepeatable(): void
+    {
+        self::bootKernel();
+
+        $container = self::getContainer();
+
+        self::assertTrue($container->has('test.' . JurisdictionRegistry::class));
+
+        $registry = $container->get('test.' . JurisdictionRegistry::class);
+
+        self::assertInstanceOf(JurisdictionRegistry::class, $registry);
         self::assertSame([], $registry->all());
         self::assertSame([], $registry->all());
     }

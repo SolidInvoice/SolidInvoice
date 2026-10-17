@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\EInvoiceBundle\Jurisdiction\JurisdictionRegistry;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileInterface;
 use SolidInvoice\EInvoiceBundle\Profile\ProfileRegistry;
 use SolidInvoice\EInvoiceBundle\SolidInvoiceEInvoiceBundle;
@@ -35,6 +36,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ProfileRegistry::class)
         ->arg('$profiles', tagged_iterator(ProfileInterface::DI_TAG));
+
+    $services->set(JurisdictionRegistry::class)
+        ->arg('$rows', require dirname(__DIR__) . '/jurisdictions.php');
 
     $services->set(ValidatorRegistry::class)
         ->arg('$validators', tagged_iterator(ValidatorInterface::DI_TAG));
