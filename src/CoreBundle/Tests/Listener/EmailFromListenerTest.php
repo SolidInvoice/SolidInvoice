@@ -117,6 +117,21 @@ final class EmailFromListenerTest extends TestCase
         $listener(new MessageEvent($message, $envelope, 'smtp'));
     }
 
+    public function testUsesSystemSenderWithoutFromAddressOrSignedInUser(): void
+    {
+        $systemConfig = $this->createStub(SystemConfig::class);
+        $systemConfig->method('get')->willReturn(null);
+
+        $listener = new EmailFromListener($systemConfig, $this->createStub(TokenStorageInterface::class), $this->companySelector(new Ulid()), 'SolidInvoice <no-reply@example.com>');
+
+        $message = new TemplatedEmail();
+        $envelope = Envelope::create($message->from('user@example.com')->to('client@example.com'));
+        $listener(new MessageEvent($message, $envelope, 'smtp'));
+
+        self::assertEquals([new Address('no-reply@example.com', 'SolidInvoice')], $message->getFrom());
+        self::assertSame('no-reply@example.com', $envelope->getSender()->getAddress());
+    }
+
     public function testUsesSystemSenderWithoutCompany(): void
     {
         $systemConfig = M::mock(SystemConfig::class);
