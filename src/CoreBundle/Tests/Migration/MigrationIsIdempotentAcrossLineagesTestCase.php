@@ -72,6 +72,13 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      */
     abstract protected static function resolvedDriftFragments(): array;
 
+    /**
+     * The migration the chain must be replayed up to *before* {@see seedUpgradedLineage()} runs.
+     *
+     * @return class-string
+     */
+    abstract protected static function predecessorVersion(): string;
+
     protected function setUp(): void
     {
         $url = $_SERVER['SOLIDINVOICE_DATABASE_URL'] ?? $_ENV['SOLIDINVOICE_DATABASE_URL'] ?? getenv('SOLIDINVOICE_DATABASE_URL');
@@ -130,23 +137,61 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
         $this->recreateDatabase($databaseName);
 
         try {
-            $this->console($databaseName, ['doctrine:migrations:migrate', '--no-interaction']);
-            $dumpSql = $this->console($databaseName, ['doctrine:schema:update', '--dump-sql']);
+            $this->console($databaseName, ['doctrine:migrations:migrate', static::predecessorVersion(), '--no-interaction']);
 
-            foreach (static::resolvedDriftFragments() as $fragment) {
-                self::assertStringNotContainsString(
-                    $fragment,
-                    $dumpSql,
-                    sprintf(
-                        '"%s" is still part of the schema drift reported by doctrine:schema:update after %s ran.',
+            $connection = $this->lineageConnection($databaseName);
+
+            try {
+                $this->seedUpgradedLineage($connection);
+
+                $this->console($databaseName, ['doctrine:migrations:migrate', static::migrationClass(), '--no-interaction']);
+                $dumpSql = $this->console($databaseName, ['doctrine:schema:update', '--dump-sql']);
+
+                foreach (static::resolvedDriftFragments() as $fragment) {
+                    self::assertStringNotContainsString(
                         $fragment,
-                        static::migrationClass(),
-                    ),
-                );
+                        $dumpSql,
+                        sprintf(
+                            '"%s" is still part of the schema drift reported by doctrine:schema:update after %s ran.',
+                            $fragment,
+                            static::migrationClass(),
+                        ),
+                    );
+                }
+
+                $this->assertUpgradedLineageSurvived($connection);
+
+                if (static::assertsDownDirection()) {
+                    $this->console($databaseName, ['doctrine:migrations:migrate', static::predecessorVersion(), '--no-interaction']);
+                    $this->assertDownLineageSurvived($connection);
+                }
+            } finally {
+                $connection->close();
             }
         } finally {
             $this->dropDatabase($databaseName);
         }
+    }
+
+    /** Override to insert rows for {@see assertUpgradedLineageSurvived()} to check. Default: no-op. */
+    protected function seedUpgradedLineage(Connection $connection): void
+    {
+    }
+
+    /** Override to assert rows from {@see seedUpgradedLineage()} survived the migration. Default: no-op. */
+    protected function assertUpgradedLineageSurvived(Connection $connection): void
+    {
+    }
+
+    /** Override to also assert the rollback is data-preserving. Default: no-op. */
+    protected function assertDownLineageSurvived(Connection $connection): void
+    {
+    }
+
+    /** Set by a subclass to true to also run {@see assertDownLineageSurvived()}. Default: false. */
+    protected static function assertsDownDirection(): bool
+    {
+        return false;
     }
 
     final public function testMigrationIsANoOpAgainstTheFreshInstallLineage(): void
@@ -268,6 +313,23 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     {
         return DriverManager::getConnection([
             ...$this->connectionParams(),
+            'dbname' => $this->physicalDatabaseName($databaseName),
+        ]);
+    }
+
+    /**
+     * A connection bound to a lineage's own database, for a subclass to seed rows into or
+     * assert their survival from. {@see administrativeConnection()} deliberately carries no
+     * `dbname` - it exists only to create and drop the lineage's database.
+     */
+    protected function lineageConnection(string $databaseName): Connection
+    {
+        return DriverManager::getConnection([
+            'driver' => $this->engine->driver,
+            'host' => $this->engine->host,
+            'port' => $this->engine->port,
+            'user' => $this->engine->user,
+            'password' => $this->engine->password,
             'dbname' => $this->physicalDatabaseName($databaseName),
         ]);
     }
