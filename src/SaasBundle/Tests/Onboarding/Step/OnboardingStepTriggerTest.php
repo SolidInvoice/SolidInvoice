@@ -23,6 +23,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
@@ -34,6 +35,7 @@ use SolidWorx\Platform\PlatformBundle\Model\UserInterface;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -41,6 +43,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * condition is the trigger. Trial: 2026-01-01 to 2026-01-15.
  */
 #[CoversClass(FeedbackStep::class)]
+#[CoversClass(FreeFeedbackStep::class)]
 #[CoversClass(SendFirstInvoiceStep::class)]
 #[CoversClass(TurnInvoicesIntoPaymentsStep::class)]
 #[CoversClass(VerifyEmailReminderStep::class)]
@@ -82,6 +85,16 @@ final class OnboardingStepTriggerTest extends TestCase
         self::assertFalse($sent->shouldSend($this->context('2026-01-07 23:00')));
         self::assertTrue($sent->shouldSend($this->context('2026-01-08 00:00')));
         self::assertFalse($none->shouldSend($this->context('2026-01-10')));
+    }
+
+    public function testFreeFeedbackIsAskedForAMonthAfterMovingToFree(): void
+    {
+        $step = new FreeFeedbackStep($this->createStub(TranslatorInterface::class));
+
+        // context() starts the subscription on 2026-01-01, here the day it moved to Free.
+        self::assertFalse($step->shouldSend($this->context('2026-01-30 23:00', free: true)));
+        self::assertTrue($step->shouldSend($this->context('2026-01-31 00:00', free: true)));
+        self::assertFalse($step->shouldSend($this->context('2026-02-15')), 'still on the trial');
     }
 
     public function testVerifyRemindersGoToUnverifiedUsersAt24And72Hours(): void
@@ -181,13 +194,16 @@ final class OnboardingStepTriggerTest extends TestCase
         };
     }
 
-    private function context(string $now, ?string $subscriptionId = null): OnboardingContext
+    private function context(string $now, ?string $subscriptionId = null, bool $free = false): OnboardingContext
     {
         $plan = new Plan();
-        $plan->setName('Pro');
+        $plan->setName($free ? 'Free' : 'Pro');
+        $plan->setPrice($free ? 0 : 1900);
+        $plan->setPlanId($free ? '0' : 'pro');
 
         $subscription = new Subscription();
         $subscription->setSubscriptionId($subscriptionId);
+        $subscription->setStatus($free ? SubscriptionStatus::ACTIVE : SubscriptionStatus::TRIAL);
 
         return new OnboardingContext(
             new User(),

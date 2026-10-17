@@ -23,6 +23,7 @@ use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepSecond;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StubStep;
@@ -32,10 +33,12 @@ use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(OnboardingDispatcher::class)]
 final class OnboardingDispatcherTest extends TestCase
@@ -49,6 +52,10 @@ final class OnboardingDispatcherTest extends TestCase
      * @var list<string>
      */
     private array $log = [];
+
+    private ?Subscription $subscription = null;
+
+    private string $now = '2025-01-02';
 
     public function testSendsTheFirstDueStepAndRecordsItBeforeDispatching(): void
     {
@@ -102,22 +109,46 @@ final class OnboardingDispatcherTest extends TestCase
         self::assertSame(['save:welcome,add_first_client,first', 'dispatch:first'], $this->log);
     }
 
+    public function testAnAccountOnFreeIsOnlyOfferedTheFreeFeedbackStep(): void
+    {
+        $plan = new Plan();
+        $plan->setPrice(0);
+        $plan->setPlanId('0');
+
+        $this->subscription = new Subscription();
+        $this->subscription->setSubscriber(new Company());
+        $this->subscription->setPlan($plan);
+        $this->subscription->setStatus(SubscriptionStatus::ACTIVE);
+        $this->subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
+        $this->subscription->setEndDate(CarbonImmutable::parse('2125-01-01'));
+
+        $this->now = '2025-02-01';
+
+        $this->tick(new StepFirst(), new FreeFeedbackStep($this->createStub(TranslatorInterface::class)));
+
+        self::assertSame(['save:free_feedback', 'dispatch:free_feedback'], $this->log);
+    }
+
     private function tick(OnboardingEmailStepInterface ...$steps): void
     {
         $user = new User();
         new ReflectionProperty($user, 'id')->setValue($user, new Ulid());
 
-        $subscription = new Subscription();
-        $subscription->setSubscriber(new Company());
-        $subscription->setPlan(new Plan());
-        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
-        $subscription->setEndDate(CarbonImmutable::parse('2025-01-15'));
+        $subscription = $this->subscription;
+
+        if (! $subscription instanceof Subscription) {
+            $subscription = new Subscription();
+            $subscription->setSubscriber(new Company());
+            $subscription->setPlan(new Plan());
+            $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
+            $subscription->setEndDate(CarbonImmutable::parse('2025-01-15'));
+        }
 
         new OnboardingDispatcher(
             new OnboardingStepRegistry($steps),
             $this->settingRepository(),
             $this->messageBus(),
-            new MockClock('2025-01-02'),
+            new MockClock($this->now),
             new NullLogger(),
         )->tick($user, $subscription);
     }

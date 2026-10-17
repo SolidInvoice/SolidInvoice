@@ -22,6 +22,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\MessageHandler\SendOnboardingEmailHandler;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\WelcomeStep;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -88,23 +89,37 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
         self::assertSame(self::SIGNED_URL, $this->sentEmail()->getContext()['verify_url'] ?? null);
     }
 
-    private function handle(bool $verified, string $stepKey): void
+    public function testAnAccountAMonthOnFreeGetsTheFeedbackEmail(): void
+    {
+        $this->handle(verified: true, stepKey: FreeFeedbackStep::key(), free: true);
+
+        self::assertSame('@SolidInvoiceSaas/Email/Onboarding/feedback.html.twig', $this->sentEmail()->getHtmlTemplate());
+    }
+
+    public function testAnAccountOnFreeGetsNoTrialEmail(): void
+    {
+        $this->handle(verified: true, stepKey: 'welcome', free: true);
+
+        self::assertCount(0, $this->sent);
+    }
+
+    private function handle(bool $verified, string $stepKey, bool $free = false): void
     {
         $user = UserFactory::createOne(['companies' => [$this->company], 'verified' => $verified]);
 
-        $this->createTrial($user);
+        $this->createTrial($user, $free);
 
         $translator = self::getContainer()->get(TranslatorInterface::class);
 
         $handler = new SendOnboardingEmailHandler(
             self::getContainer()->get('doctrine'),
-            new OnboardingStepRegistry([new WelcomeStep($translator), new VerifyEmailReminderStep($translator, $this->gate())]),
+            new OnboardingStepRegistry([new WelcomeStep($translator), new VerifyEmailReminderStep($translator, $this->gate()), new FreeFeedbackStep($translator)]),
             self::getContainer()->get(CompanySelector::class),
             $this->mailer(),
             self::getContainer()->get(SystemConfig::class),
             new NullLogger(),
-            // Two days in: past both the welcome and the first verify reminder.
-            new MockClock('2026-01-03 01:00'),
+            // Two days in: past both the welcome and the first verify reminder. On Free: a month after moving there.
+            new MockClock($free ? '2026-02-01' : '2026-01-03 01:00'),
             $this->gate(),
             $this->verifyEmailHelper(),
         );
@@ -112,22 +127,23 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
         $handler(new SendOnboardingEmailMessage($user->getId(), $stepKey));
     }
 
-    private function createTrial(User $user): void
+    private function createTrial(User $user, bool $free): void
     {
         $entityManager = self::getContainer()->get('doctrine')->getManager();
 
         $plan = new Plan();
-        $plan->setName('Pro');
-        $plan->setDescription('Pro');
-        $plan->setPlanId('pro-handler-test');
-        $plan->setPrice(1900);
+        $plan->setName($free ? 'Free' : 'Pro');
+        $plan->setDescription($free ? 'Free' : 'Pro');
+        $plan->setPlanId($free ? '0' : 'pro-handler-test');
+        $plan->setPrice($free ? 0 : 1900);
 
+        // Moving to Free activates the subscription and restarts it on that day.
         $subscription = new Subscription();
         $subscription->setSubscriber($this->company);
         $subscription->setPlan($plan);
-        $subscription->setStatus(SubscriptionStatus::TRIAL);
+        $subscription->setStatus($free ? SubscriptionStatus::ACTIVE : SubscriptionStatus::TRIAL);
         $subscription->setStartDate(CarbonImmutable::parse('2026-01-01'));
-        $subscription->setEndDate(CarbonImmutable::parse('2026-01-15'));
+        $subscription->setEndDate(CarbonImmutable::parse($free ? '2126-01-01' : '2026-01-15'));
 
         $trial = new Trial();
         $trial->setUser($user);

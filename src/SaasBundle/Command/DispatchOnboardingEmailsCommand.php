@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Command;
 
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
@@ -32,7 +34,7 @@ use function sprintf;
 
 #[AsCommand(
     name: 'solidinvoice:saas:dispatch-onboarding-emails',
-    description: 'Dispatch the next due onboarding email for each user currently on a trial',
+    description: 'Dispatch the next due onboarding email for each user on a trial, or a month into Free',
 )]
 #[AsCronTask(expression: '#hourly', schedule: 'onboarding_emails')]
 final class DispatchOnboardingEmailsCommand extends Command
@@ -68,39 +70,61 @@ final class DispatchOnboardingEmailsCommand extends Command
             // Subscription.status is not flipped when a trial lapses — the app
             // only compares endDate against now — so filter expired trials out
             // here to keep this scan bounded as historical trial volume grows.
-            $qb = $entityManager->createQueryBuilder()
+            $now = CarbonImmutable::instance($this->clock->now());
+
+            $trials = $entityManager->createQueryBuilder()
                 ->select('t')
                 ->from(Trial::class, 't')
                 ->innerJoin('t.subscription', 's')
                 ->where('s.status = :status')
                 ->andWhere('s.endDate > :now')
                 ->setParameter('status', SubscriptionStatus::TRIAL)
-                ->setParameter('now', $this->clock->now());
+                ->setParameter('now', $now)
+                ->getQuery();
 
-            foreach ($qb->getQuery()->toIterable() as $trial) {
-                assert($trial instanceof Trial);
+            // Accounts that moved to Free a month ago, for the Free feedback check-in.
+            // Moving to Free restarts the subscription. The second month bounds the scan.
+            $onFree = $entityManager->createQueryBuilder()
+                ->select('t')
+                ->from(Trial::class, 't')
+                ->innerJoin('t.subscription', 's')
+                ->innerJoin('s.plan', 'p')
+                ->where('s.status = :status')
+                ->andWhere('p.price = 0')
+                ->andWhere("p.planId = '0'")
+                ->andWhere('s.startDate <= :from')
+                ->andWhere('s.startDate > :until')
+                ->setParameter('status', SubscriptionStatus::ACTIVE)
+                ->setParameter('from', $now->subDays(FreeFeedbackStep::AFTER_DAYS))
+                ->setParameter('until', $now->subDays(2 * FreeFeedbackStep::AFTER_DAYS))
+                ->getQuery();
 
-                $user = $trial->getUser();
-                $subscription = $trial->getSubscription();
+            foreach ([$trials, $onFree] as $query) {
+                foreach ($query->toIterable() as $trial) {
+                    assert($trial instanceof Trial);
 
-                if (! $user instanceof User) {
-                    continue;
-                }
+                    $user = $trial->getUser();
+                    $subscription = $trial->getSubscription();
 
-                ++$processed;
-
-                try {
-                    $this->dispatcher->tick($user, $subscription);
-                } catch (Throwable $e) {
-                    if (function_exists('Sentry\\captureException')) {
-                        captureException($e);
+                    if (! $user instanceof User) {
+                        continue;
                     }
 
-                    $this->logger->error('Onboarding dispatcher failed for user', [
-                        'user_id' => $user->getId()->toString(),
-                        'subscription_id' => $subscription->getId()->toBase58(),
-                        'exception' => $e->getMessage(),
-                    ]);
+                    ++$processed;
+
+                    try {
+                        $this->dispatcher->tick($user, $subscription);
+                    } catch (Throwable $e) {
+                        if (function_exists('Sentry\\captureException')) {
+                            captureException($e);
+                        }
+
+                        $this->logger->error('Onboarding dispatcher failed for user', [
+                            'user_id' => $user->getId()->toString(),
+                            'subscription_id' => $subscription->getId()->toBase58(),
+                            'exception' => $e->getMessage(),
+                        ]);
+                    }
                 }
             }
         } finally {
@@ -109,7 +133,7 @@ final class DispatchOnboardingEmailsCommand extends Command
             }
         }
 
-        $this->io->success(sprintf('Processed %d active trials', $processed));
+        $this->io->success(sprintf('Processed %d active trials and Free accounts', $processed));
 
         return self::SUCCESS;
     }
