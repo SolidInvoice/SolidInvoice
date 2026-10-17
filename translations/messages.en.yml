@@ -1851,6 +1851,8 @@ quote:
         publish: Publish
         send: 'Save and Send'
         update: Update
+    send:
+        verify_hint: "Confirm your email address to send quotes. Can't find the email? Check spam, or"
     send_to: 'Send quote to:'
     sent: 'Quote Sent'
     stats:

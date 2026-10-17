@@ -12,10 +12,10 @@
  # resend_form() by id, because the invoice editor's actions sit inside its own <form> and forms
  # cannot nest — render resend_form() once on the page, outside any other form.
  #}
-{% macro hint() %}
+{% macro hint(message = 'invoice.send.verify_hint') %}
     <span class="small text-secondary" id="send-gated-hint">
         {{ ux_icon('tabler:mail-exclamation', {width: 16, height: 16}) }}
-        {{ 'invoice.send.verify_hint'|trans }}
+        {{ message|trans }}
         <button type="submit" form="resend-verification-email" class="btn btn-link btn-sm p-0 align-baseline">{{ 'invoice.send.resend_link'|trans }}</button>
     </span>
 {% endmacro %}

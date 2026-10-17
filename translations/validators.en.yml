@@ -40,7 +40,7 @@ quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'
     users:
-        min: 'You need to select at least 1 user to attach to the Quote'
+        min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
 recurring_invoice:
     end_date:
         future: 'End date must be in the future'
