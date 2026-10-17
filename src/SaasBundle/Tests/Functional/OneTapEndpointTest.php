@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\Functional;
 
-use const FILTER_NULL_ON_FAILURE;
-use const FILTER_VALIDATE_BOOLEAN;
 use const JSON_THROW_ON_ERROR;
 use const PHP_URL_PATH;
 use const PHP_URL_QUERY;
@@ -28,15 +26,13 @@ use SolidInvoice\SaasBundle\Security\OneTap\GoogleIdTokenVerifier;
 use SolidInvoice\SaasBundle\Security\OneTap\IdTokenVerifierInterface;
 use SolidInvoice\SaasBundle\Security\OneTap\InvalidIdTokenException;
 use SolidInvoice\SaasBundle\Security\OneTap\OneTapToken;
-use SolidInvoice\SaasBundle\Tests\SaasTestKernel;
+use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\OAuth\GoogleIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
-use function filter_var;
-use function is_bool;
 use function json_decode;
 use function json_encode;
 use function parse_url;
@@ -80,12 +76,12 @@ final class OneTapEndpointTest extends WebTestCase
         $client = $this->bootClient();
 
         $client->request(Request::METHOD_OPTIONS, '/onetap/verify', server: [
-            'HTTP_ORIGIN' => SaasTestKernel::MARKETING_ORIGIN,
+            'HTTP_ORIGIN' => 'https://marketing.example.test',
             'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
         ]);
 
         self::assertSame(
-            SaasTestKernel::MARKETING_ORIGIN,
+            'https://marketing.example.test',
             $client->getResponse()->headers->get('Access-Control-Allow-Origin'),
         );
     }
@@ -298,18 +294,9 @@ final class OneTapEndpointTest extends WebTestCase
         $this->envOverrides[] = $name;
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
     #[Override]
-    protected static function createKernel(array $options = []): SaasTestKernel
+    protected static function getKernelClass(): string
     {
-        $env = $options['environment'] ?? $_ENV['SOLIDINVOICE_ENV'] ?? $_SERVER['SOLIDINVOICE_ENV'] ?? 'test';
-        $debugRaw = $options['debug'] ?? $_ENV['SOLIDINVOICE_DEBUG'] ?? $_SERVER['SOLIDINVOICE_DEBUG'] ?? true;
-        $debug = is_bool($debugRaw)
-            ? $debugRaw
-            : filter_var((string) $debugRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? true;
-
-        return new SaasTestKernel($env, $debug);
+        return SaasKernel::class;
     }
 }
