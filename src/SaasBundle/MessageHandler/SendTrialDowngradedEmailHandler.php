@@ -21,6 +21,7 @@ use SolidInvoice\SaasBundle\Email\TrialDowngradedEmail;
 use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -39,6 +40,7 @@ final readonly class SendTrialDowngradedEmailHandler
         private SystemConfig $systemConfig,
         private TranslatorInterface $translator,
         private LoggerInterface $logger,
+        private EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
@@ -73,6 +75,15 @@ final readonly class SendTrialDowngradedEmailHandler
             if (! $user instanceof User) {
                 $this->logger->warning('Trial-downgraded email skipped: trial owner is not a User', [
                     'subscription_id' => $message->subscriptionId->toBase58(),
+                ]);
+                return;
+            }
+
+            // Mail to an address nobody has confirmed bounces, and bounces hurt the sending reputation.
+            if ($this->emailVerificationGate->isGated($user)) {
+                $this->logger->info('Trial-downgraded email skipped: email address not verified', [
+                    'subscription_id' => $message->subscriptionId->toBase58(),
+                    'user_id' => $user->getId()->toString(),
                 ]);
                 return;
             }
