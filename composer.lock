@@ -16180,16 +16180,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v8.1.7",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "10823b09358e690df4ff943e24e8492bb1019fc3"
+                "reference": "59a682fd049b2d4d37c444f5ac21b7d01b8c7189"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/10823b09358e690df4ff943e24e8492bb1019fc3",
-                "reference": "10823b09358e690df4ff943e24e8492bb1019fc3",
+                "url": "https://api.github.com/repos/symfony/process/zipball/59a682fd049b2d4d37c444f5ac21b7d01b8c7189",
+                "reference": "59a682fd049b2d4d37c444f5ac21b7d01b8c7189",
                 "shasum": ""
             },
             "require": {
@@ -16221,7 +16221,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v8.1.7"
+                "source": "https://github.com/symfony/process/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -16241,7 +16241,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-02T12:40:29+00:00"
+            "time": "2026-10-08T16:57:43+00:00"
         },
         {
             "name": "symfony/property-access",
