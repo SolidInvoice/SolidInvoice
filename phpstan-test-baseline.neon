@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\FeedbackStep" is not registered in the container\.$#'
+			identifier: symfonyContainer.serviceNotFound
+			count: 2
+			path: src/SaasBundle/Tests/Email/OnboardingEmailSnapshotTest.php
+
+		-
 			message: '#^Service "SolidInvoice\\SaasBundle\\Onboarding\\Step\\SendFirstInvoiceStep" is not registered in the container\.$#'
 			identifier: symfonyContainer.serviceNotFound
 			count: 2

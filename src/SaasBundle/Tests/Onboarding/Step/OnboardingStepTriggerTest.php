@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
@@ -39,6 +40,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Each onboarding email is sent when its condition first holds, so the
  * condition is the trigger. Trial: 2026-01-01 to 2026-01-15.
  */
+#[CoversClass(FeedbackStep::class)]
 #[CoversClass(SendFirstInvoiceStep::class)]
 #[CoversClass(TurnInvoicesIntoPaymentsStep::class)]
 #[CoversClass(VerifyEmailReminderStep::class)]
@@ -70,6 +72,16 @@ final class OnboardingStepTriggerTest extends TestCase
         self::assertFalse($this->turnInvoicesIntoPayments(issued: 0, payments: 0)->shouldSend($this->context('2026-01-02')));
         self::assertTrue($this->turnInvoicesIntoPayments(issued: 1, payments: 0)->shouldSend($this->context('2026-01-02')));
         self::assertFalse($this->turnInvoicesIntoPayments(issued: 1, payments: 1)->shouldSend($this->context('2026-01-02')));
+    }
+
+    public function testFeedbackIsAskedForAWeekInOnceAnInvoiceHasBeenSent(): void
+    {
+        $sent = new FeedbackStep($this->createStub(TranslatorInterface::class), $this->invoices(1));
+        $none = new FeedbackStep($this->createStub(TranslatorInterface::class), $this->invoices(0));
+
+        self::assertFalse($sent->shouldSend($this->context('2026-01-07 23:00')));
+        self::assertTrue($sent->shouldSend($this->context('2026-01-08 00:00')));
+        self::assertFalse($none->shouldSend($this->context('2026-01-10')));
     }
 
     public function testVerifyRemindersGoToUnverifiedUsersAt24And72Hours(): void
