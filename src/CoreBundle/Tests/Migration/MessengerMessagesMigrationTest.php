@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
-use DoctrineMigrations\Version30102_1;
-
 final class MessengerMessagesMigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
 {
     protected static function migrationClass(): string
