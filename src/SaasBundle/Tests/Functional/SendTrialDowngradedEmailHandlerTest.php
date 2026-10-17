@@ -28,6 +28,8 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
+use SolidWorx\Platform\PlatformBundle\Model\UserInterface;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
@@ -60,47 +62,7 @@ final class SendTrialDowngradedEmailHandlerTest extends WebTestCase
 
     public function testSendsEmailToTheTrialOwner(): void
     {
-        self::ensureKernelShutdown();
-        $client = self::createClient();
-        $client->disableReboot();
-
-        $em = self::getContainer()->get(EntityManagerInterface::class);
-
-        // The kernel reboot above leaves $this->company (persisted by the
-        // EnsureApplicationInstalled `#[Before]` hook against the previous
-        // kernel's EntityManager) unknown to the new EntityManager's unit of
-        // work. Re-fetch it so Doctrine treats it as managed rather than a
-        // new, uncascaded entity when it's attached to the Subscription.
-        $company = $em->getRepository(Company::class)->find($this->company->getId());
-        self::assertInstanceOf(Company::class, $company);
-
-        $free = new Plan()->setName('Free')->setPlanId('0')->setPrice(0)->setActive(true)->setDefault(true);
-        $em->persist($free);
-
-        $user = UserFactory::createOne(['companies' => [$company]]);
-        self::assertInstanceOf(User::class, $user);
-
-        $subscription = new Subscription()
-            ->setSubscriber($company)
-            ->setPlan($free)
-            ->setStatus(SubscriptionStatus::ACTIVE)
-            ->setStartDate(CarbonImmutable::now())
-            ->setEndDate(CarbonImmutable::now()->addYears(100));
-        $em->persist($subscription);
-
-        $em->persist(Trial::create($user, $subscription));
-        $em->flush();
-
-        $container = self::getContainer();
-        $handler = new SendTrialDowngradedEmailHandler(
-            $container->get(ManagerRegistry::class),
-            $container->get(CompanySelector::class),
-            $container->get(MailerInterface::class),
-            $container->get(SystemConfig::class),
-            $container->get(TranslatorInterface::class),
-            new NullLogger(),
-        );
-        ($handler)(new SendTrialDowngradedEmailMessage($subscription->getId()));
+        $user = $this->handle(verified: true);
 
         // The app's mailer is wired to the default Messenger bus (see
         // config/packages/mailer.php — no `message_bus: false` override), so
@@ -122,5 +84,81 @@ final class SendTrialDowngradedEmailHandlerTest extends WebTestCase
         self::assertEmailAddressContains($message, 'To', (string) $user->getEmail());
         self::assertStringContainsString('Up to 3 active clients', (string) $message->getHtmlBody());
         self::assertStringContainsString('Unlimited invoices', (string) $message->getTextBody());
+    }
+
+    /**
+     * Mail to an unconfirmed address is what bounces.
+     */
+    public function testSendsNothingToAnUnverifiedTrialOwner(): void
+    {
+        $this->handle(verified: false);
+
+        self::assertEmailCount(0);
+    }
+
+    private function handle(bool $verified): User
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->disableReboot();
+
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+
+        // The kernel reboot above leaves $this->company (persisted by the
+        // EnsureApplicationInstalled `#[Before]` hook against the previous
+        // kernel's EntityManager) unknown to the new EntityManager's unit of
+        // work. Re-fetch it so Doctrine treats it as managed rather than a
+        // new, uncascaded entity when it's attached to the Subscription.
+        $company = $em->getRepository(Company::class)->find($this->company->getId());
+        self::assertInstanceOf(Company::class, $company);
+
+        $free = new Plan()->setName('Free')->setPlanId('0')->setPrice(0)->setActive(true)->setDefault(true);
+        $em->persist($free);
+
+        $user = UserFactory::createOne(['companies' => [$company], 'verified' => $verified]);
+        self::assertInstanceOf(User::class, $user);
+
+        $subscription = new Subscription()
+            ->setSubscriber($company)
+            ->setPlan($free)
+            ->setStatus(SubscriptionStatus::ACTIVE)
+            ->setStartDate(CarbonImmutable::now())
+            ->setEndDate(CarbonImmutable::now()->addYears(100));
+        $em->persist($subscription);
+
+        $em->persist(Trial::create($user, $subscription));
+        $em->flush();
+
+        $container = self::getContainer();
+        $handler = new SendTrialDowngradedEmailHandler(
+            $container->get(ManagerRegistry::class),
+            $container->get(CompanySelector::class),
+            $container->get(MailerInterface::class),
+            $container->get(SystemConfig::class),
+            $container->get(TranslatorInterface::class),
+            new NullLogger(),
+            $this->gate(),
+        );
+        ($handler)(new SendTrialDowngradedEmailMessage($subscription->getId()));
+
+        return $user;
+    }
+
+    /**
+     * The real gate also reads the enabled flag; the stand-in only needs the user.
+     */
+    private function gate(): EmailVerificationGateInterface
+    {
+        return new class() implements EmailVerificationGateInterface {
+            public function isGated(?UserInterface $user = null): bool
+            {
+                return $user instanceof UserInterface && ! $user->isVerified();
+            }
+
+            public function reason(string $action): string
+            {
+                return '';
+            }
+        };
     }
 }
