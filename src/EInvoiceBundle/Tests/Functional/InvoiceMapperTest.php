@@ -132,6 +132,49 @@ final class InvoiceMapperTest extends WebTestCase
         self::assertSame('COMPANY-A-VAT', $eInvoice->buyer->vatIdentifier);
     }
 
+    /**
+     * The default install: no tax rates configured, so {@see \SolidInvoice\InvoiceBundle\Form\Type\ItemType}
+     * never offers a `taxes` field and every line is untaxed. Mapping must complete and map
+     * BT-151/152 to null rather than throw (design §15).
+     */
+    public function testMappingAnInvoiceWithNoTaxAtAllMapsBT151ToNull(): void
+    {
+        $company = CompanyFactory::createOne();
+        $client = ClientFactory::createOne(['company' => $company, 'currencyCode' => 'EUR']);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $company,
+            'client' => $client,
+            'total' => 1000,
+            'baseTotal' => 1000,
+            'tax' => 0,
+            'balance' => 1000,
+            'discount' => new Discount(),
+        ]);
+
+        $line = new Line();
+        $line->setName('Consulting');
+        $line->setPrice(1000);
+        $line->setQty(1);
+        $line->updateTotal();
+
+        $invoice->addLine($line);
+
+        $this->em->flush();
+        $this->em->clear();
+
+        self::getContainer()->get(CompanySelector::class)->switchCompany($company->getId());
+
+        /** @var Invoice $freshInvoice */
+        $freshInvoice = $this->em->getRepository(Invoice::class)->find($invoice->getId());
+
+        $eInvoice = $this->mapper()->map($freshInvoice);
+
+        self::assertCount(1, $eInvoice->invoiceLines);
+        self::assertNull($eInvoice->invoiceLines[0]->vat->categoryCode);
+        self::assertNull($eInvoice->invoiceLines[0]->vat->rate);
+    }
+
     private function mapper(): InvoiceMapper
     {
         $systemConfig = self::getContainer()->get(SystemConfig::class);

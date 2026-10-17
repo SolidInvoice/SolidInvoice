@@ -178,7 +178,7 @@ see the `InvoiceMapper::mapDocumentTotals()` docblock.
 | BT-148 | Item gross price | Null — same. #2711 / SOL-75. |
 | BT-149 | Price base quantity | Null — #2707 / SOL-73. |
 | BT-150 | Price base quantity unit code | Null — #2707 / SOL-73. |
-| BT-151 | Line VAT category code | `LineVatInformation::$categoryCode` ← the first (by sequence) of `Line::getTaxes()`. **A line with no tax at all cannot be mapped — `InvoiceLineMapper` throws rather than fabricate a category, the same rule `InvoiceMapper::map()` applies to a missing client. Flagged on SOL-84: design §5.4 names only the "several taxes" case, not the "zero taxes" one, and SolidInvoice allows an untaxed line.** |
+| BT-151 | Line VAT category code | `LineVatInformation::$categoryCode` ← the first (by sequence) of `Line::getTaxes()`, otherwise **null**. A line with no tax at all has no basis for a category: the correct code depends on the seller's VAT registration status, not modelled until #2703 / SOL-71. Mapping null (design §15) lets a BT-coded validation message report it once SOL-108 lands, instead of a guess that would validate and be wrong. Conditionally unsourced; closed by #2703 / SOL-71. |
 | BT-152 | Line VAT rate | `LineVatInformation::$rate`, same source and caveat as BT-151 |
 | BT-153 | Item name | `ItemInformation::$name` ← `Line::getName()` |
 | BT-154 | Item description | `ItemInformation::$description` ← `Line::getDescription()` |
@@ -195,5 +195,6 @@ Six terms have no source and no owning issue anywhere in the design: **BT-46/46-
 (buyer identifier / legal registration identifier), **BT-93** (allowance base amount), **BT-97/98**
 (allowance reason / reason code), and **BT-127** (line note). **BT-116** (taxable amount) is null
 unconditionally rather than only for the compound/document-level cases design §5.5 names, because
-`TaxSummaryRow` carries no taxable base at all today. All of these, plus the untaxed-line gap on
-BT-151/152, are flagged on SOL-84 rather than silently closed with a guess.
+`TaxSummaryRow` carries no taxable base at all today. BT-151/152 are conditionally unsourced for an
+untaxed line — mapped to null rather than a guessed category (design §15, SOL-387) — and close with
+#2703 / SOL-71. All of these are flagged on SOL-84 rather than silently closed with a guess.

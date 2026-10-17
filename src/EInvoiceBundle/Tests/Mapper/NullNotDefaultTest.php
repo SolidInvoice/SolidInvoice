@@ -84,6 +84,15 @@ final class NullNotDefaultTest extends KernelTestCase
 
         $invoice->addLine($line);
 
+        $untaxedLine = new Line();
+        $untaxedLine->setName('Untaxed consulting');
+        $untaxedLine->setPrice(500);
+        $untaxedLine->setQty(1);
+        $untaxedLine->setPosition(1);
+        $untaxedLine->updateTotal();
+
+        $invoice->addLine($untaxedLine);
+
         $eInvoice = $this->mapper()->map($invoice);
 
         // EInvoice root.
@@ -135,7 +144,7 @@ final class NullNotDefaultTest extends KernelTestCase
         self::assertNull($eInvoice->vatBreakdowns[0]->exemptionReasonCode);
 
         // InvoiceLine (BG-25/BG-29/BG-31).
-        self::assertCount(1, $eInvoice->invoiceLines);
+        self::assertCount(2, $eInvoice->invoiceLines);
         $invoiceLine = $eInvoice->invoiceLines[0];
         self::assertNull($invoiceLine->note);
         self::assertNull($invoiceLine->objectIdentifier);
@@ -156,6 +165,12 @@ final class NullNotDefaultTest extends KernelTestCase
         self::assertNull($invoiceLine->item->classificationIdentifier);
         self::assertNull($invoiceLine->item->originCountryCode);
         self::assertSame([], $invoiceLine->item->attributes);
+
+        // BT-151/BT-152 — an untaxed line maps its VAT category and rate to null (design §15),
+        // never a default enum case or a zero rate.
+        $untaxedInvoiceLine = $eInvoice->invoiceLines[1];
+        self::assertNull($untaxedInvoiceLine->vat->categoryCode);
+        self::assertNull($untaxedInvoiceLine->vat->rate);
 
         // BG-20 — no discount was set.
         self::assertSame([], $eInvoice->allowances);

@@ -15,7 +15,6 @@ namespace SolidInvoice\EInvoiceBundle\Mapper;
 
 use Brick\Math\BigDecimal;
 use Doctrine\Common\Collections\Collection;
-use LogicException;
 use Money\Currency;
 use SolidInvoice\EInvoiceBundle\Enum\VatCategoryCode;
 use SolidInvoice\EInvoiceBundle\Model\InvoiceLine;
@@ -62,10 +61,11 @@ final readonly class InvoiceLineMapper
      * allow, so this maps the first tax row by sequence and lets the validator report the rest
      * (design §5.4).
      *
-     * A line with no tax at all has no basis for a category: fail loudly rather than fabricate
-     * one, the same rule {@see InvoiceMapper::map()} applies to a missing client. Flagged on
-     * SOL-84 — SolidInvoice allows an untaxed line and BT-151 is mandatory, so this needs a
-     * design answer rather than a guessed `VatCategoryCode`.
+     * A line with no tax at all has no basis for a category. SolidInvoice allows an untaxed
+     * line (no tax rates configured is the default install), and BT-151's correct value here
+     * depends on the seller's VAT registration status, which the entity model does not carry
+     * until SOL-71. Mapping null lets a BT-coded validation message report it once SOL-108
+     * lands, instead of guessing a category that would validate and be wrong (design §15).
      *
      * @param Collection<int, LineTax> $taxes
      */
@@ -77,7 +77,7 @@ final readonly class InvoiceLineMapper
         $first = $items[0] ?? null;
 
         if (! $first instanceof LineTax) {
-            throw new LogicException('Invoice line has no tax; cannot map BG-30.');
+            return new LineVatInformation(categoryCode: null, rate: null);
         }
 
         return new LineVatInformation(

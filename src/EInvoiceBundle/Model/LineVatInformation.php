@@ -25,8 +25,10 @@ final readonly class LineVatInformation
     public function __construct(
         /**
          * BT-151. The VAT category this line is taxed under.
+         * Null means no VAT category is sourced for this line: the line carries no tax,
+         * so EN 16931 has no category to report. See design §15.
          */
-        public VatCategoryCode $categoryCode,
+        public ?VatCategoryCode $categoryCode = null,
         /**
          * BT-152. The VAT rate for this line, expressed as a percentage.
          */
