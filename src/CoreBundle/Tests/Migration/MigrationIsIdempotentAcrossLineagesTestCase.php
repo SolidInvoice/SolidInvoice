@@ -27,7 +27,10 @@ use function http_build_query;
 use function preg_replace;
 use function rawurlencode;
 use function sprintf;
+use function strlen;
+use function strrpos;
 use function strtolower;
+use function substr;
 
 /**
  * There are two schema lineages in the field: a fresh install, built straight from the ORM
@@ -72,6 +75,11 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
 
     protected function setUp(): void
     {
+        self::assertTrue(
+            class_exists(static::migrationClass()),
+            sprintf('%s::migrationClass() names a class that does not exist.', static::class),
+        );
+
         $url = $_SERVER['SOLIDINVOICE_DATABASE_URL'] ?? $_ENV['SOLIDINVOICE_DATABASE_URL'] ?? getenv('SOLIDINVOICE_DATABASE_URL');
 
         if (! $url) {
@@ -184,12 +192,25 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      * The base name put in the DSN handed to `bin/console`. config/packages/test/doctrine.php
      * appends its own `_test` + TEST_TOKEN suffix to whatever dbname it finds there, so this
      * one must stay unsuffixed - {@see physicalDatabaseName()} is the name actually on disk.
+     *
+     * Built from the short class name only, not the FQCN: MySQL/MariaDB cap identifiers at 64
+     * characters, and the `_test` + TEST_TOKEN suffix still has to fit inside that after this
+     * name is built, so the bound below gives it headroom.
      */
     private function databaseName(string $lineage): string
     {
-        $label = strtolower((string) preg_replace('/[^a-zA-Z0-9]+/', '_', static::migrationClass()));
+        $migrationClass = static::migrationClass();
+        $shortClassName = substr($migrationClass, (int) strrpos($migrationClass, '\\') + 1);
+        $label = strtolower((string) preg_replace('/[^a-zA-Z0-9]+/', '_', $shortClassName));
+        $databaseName = sprintf('mig_%s_%s', $label, $lineage);
 
-        return sprintf('mig_%s_%s', $label, $lineage);
+        self::assertLessThanOrEqual(
+            50,
+            strlen($databaseName),
+            sprintf('Database name "%s" is too long to leave room for its test suffix.', $databaseName),
+        );
+
+        return $databaseName;
     }
 
     /**
