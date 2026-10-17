@@ -69,9 +69,9 @@ final class Version30100_7ConstraintNotFoundErrorTest extends TestCase
 
     private function isConstraintNotFoundError(AbstractPlatform $platform, int $code, string $sqlState): bool
     {
-        $migration = (new ReflectionClass(Version30100_7::class))->newInstanceWithoutConstructor();
+        $migration = new ReflectionClass(Version30100_7::class)->newInstanceWithoutConstructor();
 
-        (new ReflectionProperty($migration, 'platform'))->setValue($migration, $platform);
+        new ReflectionProperty($migration, 'platform')->setValue($migration, $platform);
 
         $driverException = new DriverException(
             new class($code, $sqlState) extends \Exception implements DriverExceptionInterface {
@@ -91,7 +91,7 @@ final class Version30100_7ConstraintNotFoundErrorTest extends TestCase
         );
 
         /** @var bool $result */
-        $result = (new ReflectionMethod($migration, 'isConstraintNotFoundError'))->invoke($migration, $driverException);
+        $result = new ReflectionMethod($migration, 'isConstraintNotFoundError')->invoke($migration, $driverException);
 
         return $result;
     }
