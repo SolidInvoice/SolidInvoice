@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
 use Override;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -51,13 +52,15 @@ final class UnverifiedSendButtonTest extends WebTestCase
         self::assertCount(1, $crawler->filter('form#resend-verification-email[action="' . ResendVerificationEmail::PATH . '"]'));
     }
 
-    public function testThePublishedInvoicePageShowsSendDisabledAndNoClientLink(): void
+    #[TestWith([InvoiceStatus::Draft])]
+    #[TestWith([InvoiceStatus::Pending])]
+    public function testTheInvoicePageShowsSendDisabledAndNoClientLink(InvoiceStatus $status): void
     {
         $client = $this->unverifiedClient();
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']),
-            'status' => InvoiceStatus::Pending,
+            'status' => $status,
         ]);
 
         $crawler = $client->request(Request::METHOD_GET, '/invoices/view/' . $invoice->getId());
