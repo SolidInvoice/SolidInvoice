@@ -18,12 +18,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Lock\LockFactory;
 
 /**
  * Listener class to intercept requests and upgrade the database if necessary.
  */
 readonly class UpgradeListener implements EventSubscriberInterface
 {
+    private const string LOCK_RESOURCE = 'solidinvoice.database_migration';
+
+    private const float LOCK_TTL = 300.0;
+
     /**
      * @return array<string, list<int|string>>
      */
@@ -36,7 +41,8 @@ readonly class UpgradeListener implements EventSubscriberInterface
 
     public function __construct(
         private ?string $installed,
-        private Migration $migration
+        private Migration $migration,
+        private LockFactory $lockFactory,
     ) {
     }
 
@@ -51,8 +57,30 @@ readonly class UpgradeListener implements EventSubscriberInterface
         }
 
         if (! $this->migration->isUpToDate()) {
+            $this->migrateUnderLock();
+        }
+    }
+
+    /**
+     * The lock is backed by the database itself (see services.php), so it serialises every
+     * host pointed at that database, not just concurrent requests on this one. A request that
+     * cannot acquire it falls through and serves normally instead of queueing behind a
+     * migration that may include a long-running backfill.
+     */
+    private function migrateUnderLock(): void
+    {
+        $lock = $this->lockFactory->createLock(self::LOCK_RESOURCE, self::LOCK_TTL);
+
+        if (! $lock->acquire(false)) {
+            return;
+        }
+
+        try {
             foreach ($this->migration->migrate() as $_) {
+                $lock->refresh(self::LOCK_TTL);
             }
+        } finally {
+            $lock->release();
         }
     }
 }
