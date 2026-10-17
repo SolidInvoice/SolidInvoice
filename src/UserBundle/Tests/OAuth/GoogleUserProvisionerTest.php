@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Tests\OAuth;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\OAuth\GoogleIdentity;
@@ -28,17 +29,17 @@ final class GoogleUserProvisionerTest extends TestCase
 {
     private EntityManagerInterface & MockObject $entityManager;
 
-    private UserRepository & MockObject $repository;
+    private UserRepository & Stub $repository;
 
-    private ToggleInterface & MockObject $toggle;
+    private ToggleInterface & Stub $toggle;
 
     private GoogleUserProvisioner $provisioner;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->repository = $this->createMock(UserRepository::class);
-        $this->toggle = $this->createMock(ToggleInterface::class);
+        $this->repository = $this->createStub(UserRepository::class);
+        $this->toggle = $this->createStub(ToggleInterface::class);
 
         $this->entityManager
             ->method('getRepository')

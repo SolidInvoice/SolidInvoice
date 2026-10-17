@@ -16,7 +16,7 @@ namespace SolidInvoice\SaasBundle\Tests\Security\OneTap;
 use Google\Client;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\SaasBundle\Security\OneTap\GoogleIdTokenVerifier;
 use SolidInvoice\SaasBundle\Security\OneTap\InvalidIdTokenException;
@@ -24,13 +24,13 @@ use SolidInvoice\SaasBundle\Security\OneTap\InvalidIdTokenException;
 #[CoversClass(GoogleIdTokenVerifier::class)]
 final class GoogleIdTokenVerifierTest extends TestCase
 {
-    private Client & MockObject $client;
+    private Client & Stub $client;
 
     private GoogleIdTokenVerifier $verifier;
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(Client::class);
+        $this->client = $this->createStub(Client::class);
         $this->verifier = new GoogleIdTokenVerifier($this->client);
     }
 

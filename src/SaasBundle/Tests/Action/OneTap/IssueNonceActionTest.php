@@ -53,7 +53,7 @@ final class IssueNonceActionTest extends TestCase
 
     private function toggle(bool $active): ToggleInterface
     {
-        $toggle = $this->createMock(ToggleInterface::class);
+        $toggle = $this->createStub(ToggleInterface::class);
         $toggle->method('isActive')->willReturn($active);
 
         return $toggle;

@@ -715,6 +715,14 @@ gated. The bar below is the real one.
 - Unit tests sit at the top level of `src/*Bundle/Tests/`; functional tests in
   `Tests/Functional/`; API tests under `Tests/Functional/Api/`.
 - Mocking should use **PHPUnit Mocks**. There are some old tests using Mockery (`mockery/mockery`), plus `phpstan/phpstan-mockery`, but we actively want to move away from this and strictly only use PHPUnit mocks everywhere going forward.
+- **`createStub()` unless the test sets an expectation.** A double that only has
+  `method()->willReturn()` configured is a stub; reach for `createMock()` only when that
+  test calls `expects()` on it. A mock with no expectations triggers a PHPUnit notice
+  ("No expectations were configured for the mock object…"), and the suite should run
+  notice-free. Don't silence it with `#[AllowMockObjectsWithoutExpectations]`. When
+  `setUp()` builds the collaborators, create stubs there and have the tests that assert
+  on calls swap in a mock before building the subject (see `OAuthAuthenticatorTest`).
+  Type stub properties as `Foo & Stub`; a `MockObject` still fits that type.
 - Fixtures are **Foundry** (`zenstruck/foundry ^2.10`) with `FoundryExtension` and
   auto-reset enabled in `phpunit.xml.dist`. Also available:
   `doctrine/doctrine-fixtures-bundle`, `liip/test-fixtures-bundle`. Factories live next to

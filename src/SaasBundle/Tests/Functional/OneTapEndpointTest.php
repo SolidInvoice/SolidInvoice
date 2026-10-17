@@ -207,7 +207,8 @@ final class OneTapEndpointTest extends WebTestCase
 
     private function bootClient(): KernelBrowser
     {
-        // The google_one_tap toggle is off without a client id.
+        // The google_one_tap toggle is off outside the SaaS platform or without a client id.
+        $this->setEnv('SOLIDINVOICE_PLATFORM', 'saas');
         $this->setEnv('SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID', 'test-client-id.apps.googleusercontent.com');
 
         self::ensureKernelShutdown();
@@ -243,7 +244,7 @@ final class OneTapEndpointTest extends WebTestCase
 
     private function useVerifier(OneTapToken | Throwable $result): void
     {
-        $verifier = $this->createMock(IdTokenVerifierInterface::class);
+        $verifier = $this->createStub(IdTokenVerifierInterface::class);
 
         if ($result instanceof Throwable) {
             $verifier->method('verify')->willThrowException($result);

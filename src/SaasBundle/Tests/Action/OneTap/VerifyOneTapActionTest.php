@@ -79,7 +79,7 @@ final class VerifyOneTapActionTest extends TestCase
 
     public function testReturnsUnauthorizedForAnInvalidToken(): void
     {
-        $verifier = $this->createMock(IdTokenVerifierInterface::class);
+        $verifier = $this->createStub(IdTokenVerifierInterface::class);
         $verifier->method('verify')->willThrowException(new InvalidIdTokenException('bad'));
 
         $response = $this->action(verifier: $verifier)($this->request('jwt'));
@@ -127,7 +127,7 @@ final class VerifyOneTapActionTest extends TestCase
         ?GoogleUserProvisionerInterface $provisioner = null,
         ?LoginLinkHandlerInterface $loginLinkHandler = null,
     ): VerifyOneTapAction {
-        $toggle = $this->createMock(ToggleInterface::class);
+        $toggle = $this->createStub(ToggleInterface::class);
         $toggle->method('isActive')->willReturn($toggleActive);
 
         return new VerifyOneTapAction(
@@ -146,7 +146,7 @@ final class VerifyOneTapActionTest extends TestCase
 
     private function verifierReturning(OneTapToken $token): IdTokenVerifierInterface
     {
-        $verifier = $this->createMock(IdTokenVerifierInterface::class);
+        $verifier = $this->createStub(IdTokenVerifierInterface::class);
         $verifier->method('verify')->willReturn($token);
 
         return $verifier;
@@ -154,7 +154,7 @@ final class VerifyOneTapActionTest extends TestCase
 
     private function provisionerReturning(?ProvisionedUser $result): GoogleUserProvisionerInterface
     {
-        $provisioner = $this->createMock(GoogleUserProvisionerInterface::class);
+        $provisioner = $this->createStub(GoogleUserProvisionerInterface::class);
         $provisioner->method('findOrCreate')->willReturn($result);
 
         return $provisioner;
@@ -162,7 +162,7 @@ final class VerifyOneTapActionTest extends TestCase
 
     private function loginLinkHandler(string $url): LoginLinkHandlerInterface
     {
-        $handler = $this->createMock(LoginLinkHandlerInterface::class);
+        $handler = $this->createStub(LoginLinkHandlerInterface::class);
         $handler->method('createLoginLink')->willReturn(new LoginLinkDetails($url, CarbonImmutable::now()->addSeconds(60)));
 
         return $handler;
