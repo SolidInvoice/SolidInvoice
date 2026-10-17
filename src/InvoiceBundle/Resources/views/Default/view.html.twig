@@ -43,8 +43,8 @@
                 <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
                     {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
                 </button>
-                {# The public page 404s while the company is unverified, so only offer a link that works. #}
-                {% if not gated and invoice.status != enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Draft %}
+                {# The public page 404s while the company is unverified, and the archivable filter hides archived invoices from it, so only offer a link that works. #}
+                {% if not gated and invoice.status not in [enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Draft, enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Archived] %}
                     <span {{ stimulus_controller('clipboard', {'success-content': 'invoice.view.toolbar.link_copied'|trans}) }}>
                         <input type="hidden" value="{{ url('_view_invoice_external', {'uuid': invoice.uuid}) }}" {{ stimulus_target('clipboard', 'source') }}>
                         <button type="button" class="btn btn-ghost" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
