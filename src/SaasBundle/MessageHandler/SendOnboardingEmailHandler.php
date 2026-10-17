@@ -24,6 +24,7 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -31,6 +32,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\MessageHandler\SendOnboardingEmailHandlerTest
+ */
 #[AsMessageHandler]
 final readonly class SendOnboardingEmailHandler
 {
@@ -41,6 +45,7 @@ final readonly class SendOnboardingEmailHandler
         private MailerInterface $mailer,
         private SystemConfig $systemConfig,
         private LoggerInterface $logger,
+        private EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
@@ -57,6 +62,16 @@ final readonly class SendOnboardingEmailHandler
 
             if (! $user instanceof User) {
                 $this->logger->warning('Onboarding email skipped: user not found', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
+
+            // Mail to an address nobody has confirmed bounces, and bounces hurt the sending
+            // reputation. The step still counts as done, so verifying later does not replay a backlog.
+            if ($this->emailVerificationGate->isGated($user)) {
+                $this->logger->info('Onboarding email skipped: email address not verified', [
                     'user_id' => $message->userId->toString(),
                     'step_key' => $message->stepKey,
                 ]);
