@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.1.2 / Unreleased
+-------------------
+
+### Fixes
+
+* The search bar in the top header has its border and background again, and its results dropdown no longer shows through onto the page behind it. The company page and subscription pages had the same missing colours and are fixed too
+
 3.1.1 / 2026-10-15
 -------------------
 
