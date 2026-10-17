@@ -81,6 +81,10 @@
             {% endfor %}
         </ul>
 
+        {% if coupon_code %}
+            {% include '@SolidInvoiceSaas/Email/Onboarding/_coupon.html.twig' %}
+        {% endif %}
+
         <div class="onb-cta-wrapper">
             <a href="{{ url('saas_subscription_checkout') }}" class="onb-cta" rel="external" target="_blank">
                 {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans(params, 'email') }} &rarr;
@@ -89,10 +93,4 @@
     {% endif %}
 
     <p class="onb-fine-print" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}</p>
-{% endblock %}
-
-{% block ps %}
-{% if coupon_code %}
-    {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code|e, '%percent%': coupon_percent}, 'email')|raw }}
-{% endif %}
 {% endblock %}
