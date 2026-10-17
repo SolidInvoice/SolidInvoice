@@ -22,6 +22,7 @@ use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
@@ -86,12 +87,6 @@ final readonly class SendOnboardingEmailHandler
 
             $subscription = $trial->getSubscription();
 
-            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL) {
-                // User upgraded, cancelled, or trial expired between dispatch and
-                // handling — stop the sequence silently.
-                return;
-            }
-
             $context = OnboardingContext::fromSubscription($user, $subscription, DateTimeImmutable::createFromInterface($this->clock->now()));
 
             if (! $context instanceof OnboardingContext) {
@@ -109,6 +104,13 @@ final readonly class SendOnboardingEmailHandler
                     'user_id' => $message->userId->toString(),
                     'step_key' => $message->stepKey,
                 ]);
+                return;
+            }
+
+            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL && ! $step instanceof FreeFeedbackStep) {
+                // User upgraded, cancelled, or trial expired between dispatch and
+                // handling — stop the sequence silently. The Free check-in is the
+                // one step meant for after the trial; it checks its own status.
                 return;
             }
 
