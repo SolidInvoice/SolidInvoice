@@ -21,6 +21,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
+use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
@@ -98,6 +99,16 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testTurnInvoicesIntoPaymentsTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(TurnInvoicesIntoPaymentsStep::class)));
+    }
+
+    public function testFeedbackHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(FeedbackStep::class)));
+    }
+
+    public function testFeedbackTextSnapshot(): void
+    {
+        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(FeedbackStep::class)));
     }
 
     public function testTrialAboutToEndHtmlSnapshot(): void

@@ -98,6 +98,14 @@ notification:
         info: 'You can update your notification settings'
         link: here
 onboarding:
+    feedback:
+        cta: 'Share your feedback'
+        eyebrow: 'Quick question'
+        heading: 'How is SolidInvoice working for you?'
+        lede: "You've had some time with SolidInvoice now. We'd love to hear what works, what gets in your way, and what's missing."
+        note: 'It takes about 5 minutes. Every question is optional and the form is anonymous.'
+        ps: 'the form is always one click away under "Share feedback" in your user menu.'
+        subject: 'How is SolidInvoice working for you?'
     footer:
         reason: "You're receiving this because you signed up for SolidInvoice."
         tagline: 'Invoicing for freelancers and small businesses.'
