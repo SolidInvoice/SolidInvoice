@@ -19,7 +19,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection as MessengerConnection;
 
-final class Version30100_20 extends AbstractMigration
+final class Version30102_1 extends AbstractMigration
 {
     private const string TABLE_NAME = 'messenger_messages';
 
