@@ -54,7 +54,7 @@ use function strtolower;
  */
 abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
 {
-    private Engine $engine;
+    protected Engine $engine;
 
     /**
      * @return class-string the migration under test, e.g. \DoctrineMigrations\Version30100_20::class.
@@ -185,7 +185,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      * appends its own `_test` + TEST_TOKEN suffix to whatever dbname it finds there, so this
      * one must stay unsuffixed - {@see physicalDatabaseName()} is the name actually on disk.
      */
-    private function databaseName(string $lineage): string
+    protected function databaseName(string $lineage): string
     {
         $label = strtolower((string) preg_replace('/[^a-zA-Z0-9]+/', '_', static::migrationClass()));
 
@@ -197,12 +197,12 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      * {@see databaseName()} to, once config/packages/test/doctrine.php's dbname_suffix has
      * been applied. This is the name the administrative connection must create and drop.
      */
-    private function physicalDatabaseName(string $databaseName): string
+    protected function physicalDatabaseName(string $databaseName): string
     {
         return $databaseName . '_test' . (getenv('TEST_TOKEN') ?: '');
     }
 
-    private function recreateDatabase(string $databaseName): void
+    protected function recreateDatabase(string $databaseName): void
     {
         $connection = $this->administrativeConnection();
 
@@ -216,7 +216,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
         }
     }
 
-    private function dropDatabase(string $databaseName): void
+    protected function dropDatabase(string $databaseName): void
     {
         $connection = $this->administrativeConnection();
 
@@ -248,9 +248,26 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     }
 
     /**
+     * A connection to a database this harness already created and migrated, for a concrete
+     * test case that needs to read back the rows a migration's postUp() wrote, rather than
+     * only the schema drift {@see testMigrationResolvesDriftAgainstTheUpgradedLineage} checks.
+     */
+    protected function connection(string $databaseName): Connection
+    {
+        return DriverManager::getConnection([
+            'driver' => $this->engine->driver,
+            'host' => $this->engine->host,
+            'port' => $this->engine->port,
+            'user' => $this->engine->user,
+            'password' => $this->engine->password,
+            'dbname' => $this->physicalDatabaseName($databaseName),
+        ]);
+    }
+
+    /**
      * @param list<string> $arguments
      */
-    private function console(string $databaseName, array $arguments): string
+    protected function console(string $databaseName, array $arguments): string
     {
         $engine = $this->engine;
         $scheme = $engine->driver === 'pdo_pgsql' ? 'postgresql' : 'mysql';
