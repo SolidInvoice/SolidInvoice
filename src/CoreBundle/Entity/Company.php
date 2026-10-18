@@ -88,6 +88,21 @@ class Company implements Stringable, SubscribableInterface
     #[Assert\Hostname(requireTld: true)]
     private ?string $customDomain = null;
 
+    #[ORM\Column(name: 'legal_name', type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $legalName = null;
+
+    #[ORM\Column(name: 'registration_number', type: Types::STRING, length: 64, nullable: true)]
+    #[Assert\Length(max: 64)]
+    private ?string $registrationNumber = null;
+
+    #[ORM\Column(name: 'legal_form', type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $legalForm = null;
+
+    #[ORM\Column(name: 'additional_legal_info', type: Types::TEXT, nullable: true)]
+    private ?string $additionalLegalInfo = null;
+
     // Related entities: Only added here to enable orphan removal
     /**
      * @var Collection<int, ApiTokenHistory>
@@ -322,5 +337,53 @@ class Company implements Stringable, SubscribableInterface
         }
 
         return $value === '' ? null : $value;
+    }
+
+    public function getLegalName(): ?string
+    {
+        return $this->legalName;
+    }
+
+    public function setLegalName(?string $legalName): self
+    {
+        $this->legalName = $legalName;
+
+        return $this;
+    }
+
+    public function getRegistrationNumber(): ?string
+    {
+        return $this->registrationNumber;
+    }
+
+    public function setRegistrationNumber(?string $registrationNumber): self
+    {
+        $this->registrationNumber = $registrationNumber;
+
+        return $this;
+    }
+
+    public function getLegalForm(): ?string
+    {
+        return $this->legalForm;
+    }
+
+    public function setLegalForm(?string $legalForm): self
+    {
+        $this->legalForm = $legalForm;
+
+        return $this;
+    }
+
+    public function getAdditionalLegalInfo(): ?string
+    {
+        return $this->additionalLegalInfo;
+    }
+
+    public function setAdditionalLegalInfo(?string $additionalLegalInfo): self
+    {
+        $this->additionalLegalInfo = $additionalLegalInfo;
+
+        return $this;
     }
 }
