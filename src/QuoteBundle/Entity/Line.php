@@ -25,6 +25,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\RoundingMode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -34,10 +35,12 @@ use SolidInvoice\ApiBundle\State\Processor\QuoteLinePersistProcessor;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePosition;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Validator\Constraints\LineDiscountWithinLineTotal;
 use SolidInvoice\QuoteBundle\Repository\LineRepository;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Stringable;
@@ -218,12 +221,18 @@ class Line implements LineInterface, Stringable
     )]
     private BigNumber $total;
 
+    #[ORM\Embedded(class: Discount::class)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[LineDiscountWithinLineTotal]
+    private Discount $discount;
+
     public function __construct()
     {
         $this->total = BigDecimal::zero();
         $this->price = BigDecimal::zero();
         $this->qty = BigDecimal::one();
         $this->taxes = new ArrayCollection();
+        $this->discount = new Discount();
     }
 
     public function getId(): Ulid
@@ -373,6 +382,51 @@ class Line implements LineInterface, Stringable
         return $this->total;
     }
 
+    public function getDiscount(): Discount
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(Discount $discount): static
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * price × qty, before the discount. What the "before" figure on a document is drawn from.
+     */
+    public function getGrossTotal(): BigDecimal
+    {
+        return $this->getPrice()->toBigDecimal()->multipliedBy($this->qty->toBigDecimal());
+    }
+
+    /**
+     * The discount in minor units, never negative and never more than the gross line amount.
+     * Rounded at scale 0 — minor units — with HalfEven, matching BigIntegerType, so that
+     * `gross − getDiscountAmount()` is exactly what the total_amount column will hold.
+     */
+    public function getDiscountAmount(): BigDecimal
+    {
+        $gross = $this->getGrossTotal();
+
+        $amount = match ($this->discount->getType()) {
+            Discount::TYPE_PERCENTAGE => $gross
+                ->multipliedBy(BigDecimal::of((string) ($this->discount->getValuePercentage() ?? 0.0)))
+                ->dividedByExact(100)
+                ->toScale(0, RoundingMode::HalfEven),
+            Discount::TYPE_MONEY => BigDecimal::of($this->discount->getValueMoney()),
+            default => BigDecimal::zero(),
+        };
+
+        return match (true) {
+            $amount->isNegative() => BigDecimal::zero(),
+            $amount->isGreaterThan($gross) => $gross,
+            default => $amount,
+        };
+    }
+
     /**
      * @return Collection<int, LineTax>
      */
@@ -417,9 +471,7 @@ class Line implements LineInterface, Stringable
     #[ORM\PrePersist]
     public function updateTotal(): static
     {
-        $total = $this->getPrice()
-            ->toBigDecimal()
-            ->multipliedBy($this->qty->toBigDecimal());
+        $total = $this->getGrossTotal()->minus($this->getDiscountAmount());
 
         if (! $this->total->isEqualTo($total)) {
             $this->total = $total;

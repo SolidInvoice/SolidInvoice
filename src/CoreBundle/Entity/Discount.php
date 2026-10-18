@@ -41,6 +41,10 @@ class Discount
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private ?string $type = self::TYPE_PERCENTAGE;
 
+    #[ORM\Column(name: 'reason', type: Types::STRING, length: 255, nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
+    private ?string $reason = null;
+
     public function __construct()
     {
         $this->valueMoney = BigInteger::zero();
@@ -81,6 +85,18 @@ class Discount
     public function setValuePercentage(float $valuePercentage): self
     {
         $this->valuePercentage = $valuePercentage;
+
+        return $this;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(?string $reason): self
+    {
+        $this->reason = $reason;
 
         return $this;
     }

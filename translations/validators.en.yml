@@ -6,6 +6,10 @@ client:
 core:
     constraint:
         application_url_host: 'This domain is reserved for the default application URL.'
+        line_discount:
+            exceeds_line_total: 'The discount cannot be more than the line total.'
+            percentage_range: 'The discount percentage must be between 0 and 100.'
+            reason_too_long: 'The discount reason cannot be longer than {{ limit }} characters.'
     custom_field:
         field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
         similar_label: 'A custom field with a similar label already exists for the selected target.'

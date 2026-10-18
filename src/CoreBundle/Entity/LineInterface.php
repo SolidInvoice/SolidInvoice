@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use const PHP_INT_MAX;
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Doctrine\Common\Collections\Collection;
 use SolidInvoice\TaxBundle\Entity\LineTax;
@@ -64,6 +65,20 @@ interface LineInterface
     public function setTotal(BigNumber | int | string $total): self;
 
     public function getTotal(): BigNumber;
+
+    public function getDiscount(): Discount;
+
+    public function setDiscount(Discount $discount): self;
+
+    /**
+     * The discount in minor units, never negative and never more than the gross line amount.
+     */
+    public function getDiscountAmount(): BigDecimal;
+
+    /**
+     * price × qty, before the discount.
+     */
+    public function getGrossTotal(): BigDecimal;
 
     public function addTax(LineTax $lineTax): static;
 
