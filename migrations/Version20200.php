@@ -21,8 +21,8 @@ use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\IntegerType;
-use Doctrine\DBAL\Types\JsonType;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -97,7 +97,7 @@ final class Version20200 extends AbstractMigration
             ->modifyColumn(
                 'details',
                 [
-                    'type' => new JsonType(),
+                    'type' => Type::getType(Types::JSON),
                     'notnull' => true,
                 ]
             );
@@ -328,7 +328,7 @@ final class Version20200 extends AbstractMigration
                 $table->modifyColumn(
                     'id',
                     [
-                        'type' => new IntegerType(),
+                        'type' => Type::getType(Types::INTEGER),
                         'notnull' => true,
                         'autoincrement' => true,
                     ]
@@ -364,7 +364,7 @@ final class Version20200 extends AbstractMigration
         $table->modifyColumn(
             'id',
             [
-                'type' => new IntegerType(),
+                'type' => Type::getType(Types::INTEGER),
                 'notnull' => true,
                 'autoincrement' => false,
             ]
