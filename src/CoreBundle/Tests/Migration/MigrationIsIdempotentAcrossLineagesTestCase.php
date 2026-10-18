@@ -80,6 +80,12 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
             sprintf('%s::migrationClass() names a class that does not exist.', static::class),
         );
 
+        self::assertStringStartsWith(
+            'DoctrineMigrations\\',
+            static::migrationClass(),
+            sprintf('%s::migrationClass() does not name a class in the DoctrineMigrations namespace.', static::class),
+        );
+
         $url = $_SERVER['SOLIDINVOICE_DATABASE_URL'] ?? $_ENV['SOLIDINVOICE_DATABASE_URL'] ?? getenv('SOLIDINVOICE_DATABASE_URL');
 
         if (! $url) {
