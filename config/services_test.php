@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\CoreBundle\Storage\LocalAttachmentStorage;
 use SolidInvoice\InstallBundle\Listener\UpgradeListener;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFeatureRestrictedExtension;
@@ -49,6 +50,20 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         public function process(ContainerBuilder $container): void
         {
             $container->removeDefinition(UpgradeListener::class);
+        }
+    }, priority: -256);
+
+    // Keep test runs off the real var/attachments directory entirely — each
+    // kernel (Kernel, SaasKernel) already has its own cache dir, so this
+    // isolates attachment blobs the same way those kernels isolate their
+    // databases. A compiler pass, not $services->set(), because the service
+    // is registered by CoreBundle's own services.php (a bundle extension),
+    // which loads after this file.
+    $container->addCompilerPass(new class() implements CompilerPassInterface {
+        public function process(ContainerBuilder $container): void
+        {
+            $container->getDefinition(LocalAttachmentStorage::class)
+                ->setArgument('$attachmentsDir', '%kernel.cache_dir%/attachments');
         }
     }, priority: -256);
 
