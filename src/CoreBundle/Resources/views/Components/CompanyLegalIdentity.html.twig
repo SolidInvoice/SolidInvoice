@@ -1,0 +1,48 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({class: 'company-legal-identity'}) }}>
+    <h3 class="d-flex align-items-center gap-2 mb-2">
+        {{ ux_icon('tabler:building-bank', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+        {{ 'company.legal_identity.title'|trans }}
+    </h3>
+    <p class="text-muted small mb-3">
+        {{ 'company.legal_identity.description'|trans }}
+    </p>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            {{ form_row(form.legalName) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.registrationNumber) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.legalForm) }}
+        </div>
+    </div>
+
+    {{ form_row(form.additionalLegalInfo) }}
+
+    <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary btn-sm">
+            {{ ux_icon('tabler:device-floppy', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
+            {{ 'company.legal_identity.save'|trans }}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+</div>

@@ -68,6 +68,7 @@ final class TaxIdentifierFactory extends PersistentObjectFactory
             'label' => self::faker()->randomElement(['VAT', 'GSTIN', 'TIN']),
             'value' => strtoupper(self::faker()->bothify('??#########')),
             'primary' => false,
+            'scheme' => null,
             'company' => CompanyFactory::random(),
         ];
     }

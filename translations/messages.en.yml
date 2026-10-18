@@ -266,6 +266,14 @@ company:
         trial_title_paid: 'Start Your Trial'
         trial_used: 'You have already used your free trial.'
         view_docs: 'View Documentation'
+    legal_identity:
+        additional_legal_info: 'Additional legal information'
+        description: 'These fields are only needed in some jurisdictions. Fill in what applies to your business.'
+        legal_form: 'Legal form'
+        legal_name: 'Legal name'
+        registration_number: 'Registration number'
+        save: 'Save legal identity'
+        title: 'Company Legal Identity'
     select:
         click_to_access: 'Click to access'
         create_button: 'Create Company'
@@ -2485,6 +2493,7 @@ tax:
         primary: Primary
         remove: 'Remove tax identifier'
         save: 'Save tax identifiers'
+        scheme: Scheme
         title: 'Company Tax Identifiers'
         value: Number
     direction:
@@ -2498,6 +2507,11 @@ tax:
     grid:
         actions:
             edit: Edit
+    identifier_scheme:
+        legal_registration: 'Legal registration'
+        tax_registration: 'Tax registration'
+        tax_representative_vat: 'Tax representative VAT'
+        vat: VAT
     inclusive: Inclusive
     invoice_tax:
         note:

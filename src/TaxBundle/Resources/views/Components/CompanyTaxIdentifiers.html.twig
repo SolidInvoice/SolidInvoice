@@ -23,14 +23,23 @@
         }
     }) }}
 
+    <datalist id="tax-identifier-label-presets">
+        {% for preset in constant('SolidInvoice\\TaxBundle\\Form\\Type\\TaxIdentifierType::LABEL_PRESETS') %}
+            <option value="{{ preset }}"></option>
+        {% endfor %}
+    </datalist>
+
     <div class="tax-identifiers-list mb-3">
         {% for identifier in form.identifiers %}
             <div class="row g-3 align-items-end mb-2 company-tax-identifier-row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     {{ form_row(identifier.label, {label: 'tax.company_identifiers.label'|trans}) }}
                 </div>
                 <div class="col">
                     {{ form_row(identifier.value, {label: 'tax.company_identifiers.value'|trans}) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_row(identifier.scheme, {label: 'tax.company_identifiers.scheme'|trans}) }}
                 </div>
                 <div class="col-auto">
                     {{ form_row(identifier.primary, {label: 'tax.company_identifiers.primary'|trans}) }}
