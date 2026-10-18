@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Closure;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -46,23 +45,8 @@ final class Version30102_1 extends AbstractMigration
         // column set for this table, and it has changed across Symfony minors. Building it
         // this way, instead of hand-rolling the DDL, keeps the migration correct when Symfony
         // changes it.
-        $configured = new MessengerConnection(['table_name' => self::TABLE_NAME], $this->connection)
+        new MessengerConnection(['table_name' => self::TABLE_NAME], $this->connection)
             ->configureSchema($schema, $this->connection, static fn (): bool => true);
-
-        if ($configured === $schema || ! $configured->hasTable(self::TABLE_NAME)) {
-            return;
-        }
-
-        // DBAL's Schema::edit() is immutable, so configureSchema() returned a new Schema
-        // instead of adding the table to $schema in place. Copy the table it built onto the
-        // schema the migration framework actually diffs against - the same backfill
-        // Symfony\Bridge\Doctrine\SchemaListener\AbstractSchemaListener uses for the same
-        // reason.
-        $table = $configured->getTable(self::TABLE_NAME);
-
-        Closure::bind(static function (Schema $schema) use ($table): void {
-            $schema->_addTable($table);
-        }, null, Schema::class)($schema);
     }
 
     public function down(Schema $schema): void
