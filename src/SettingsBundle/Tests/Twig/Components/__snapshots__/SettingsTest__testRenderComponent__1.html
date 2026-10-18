@@ -611,7 +611,57 @@
                 <div class="card settings-content-card mt-4">
             <div class="card-body">
                 
-<div class="company-tax-identifiers" data-controller="live" data-live-name-value="CompanyTaxIdentifiers" data-live-url-value="/_components/CompanyTaxIdentifiers" id="live-1131738994-0" data-live-props-value='{"formName":"company_tax_identifiers","company_tax_identifiers":{"identifiers":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-1131738994-0"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="company-legal-identity" data-controller="live" data-live-name-value="CompanyLegalIdentity" data-live-url-value="/_components/CompanyLegalIdentity" id="live-1131738994-0" data-live-props-value='{"formName":"company_legal_identity","company_legal_identity":{"legalName":"","registrationNumber":"","legalForm":"","additionalLegalInfo":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-1131738994-0"},"@checksum":"REPLACED_CHECKSUM"}'>
+    <h3 class="d-flex align-items-center gap-2 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 10h18M5 6l7-3l7 3M4 10v11m16-11v11M8 14v3m4-3v3m4-3v3"></path></svg>
+        Company Legal Identity
+    </h3>
+    <p class="text-muted small mb-3">
+        These fields are only needed in some jurisdictions. Fill in what applies to your business.
+    </p>
+
+    <form name="company_legal_identity" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save">
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <div class="mb-3">    
+            <label class="control-label form-label" for="company_legal_identity_legalName">Legal name</label><input type="text" id="company_legal_identity_legalName" name="company_legal_identity[legalName]" class="form-control">
+</div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">    
+            <label class="control-label form-label" for="company_legal_identity_registrationNumber">Registration number</label><input type="text" id="company_legal_identity_registrationNumber" name="company_legal_identity[registrationNumber]" class="form-control">
+</div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">    
+            <label class="control-label form-label" for="company_legal_identity_legalForm">Legal form</label><input type="text" id="company_legal_identity_legalForm" name="company_legal_identity[legalForm]" class="form-control">
+</div>
+        </div>
+    </div>
+
+    <div class="mb-3">    
+            <label class="control-label form-label" for="company_legal_identity_additionalLegalInfo">Additional legal information</label><textarea id="company_legal_identity_additionalLegalInfo" name="company_legal_identity[additionalLegalInfo]" class="form-control"></textarea>
+</div>
+
+    <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+            Save legal identity
+        </button>
+    </div>
+
+    <input type="hidden" id="company_legal_identity__token" name="company_legal_identity[_token]" data-controller="csrf-protection">
+</form>
+</div>
+
+            </div>
+        </div>
+    
+                <div class="card settings-content-card mt-4">
+            <div class="card-body">
+                
+<div class="company-tax-identifiers" data-controller="live" data-live-name-value="CompanyTaxIdentifiers" data-live-url-value="/_components/CompanyTaxIdentifiers" id="live-3832747674-0" data-live-props-value='{"formName":"company_tax_identifiers","company_tax_identifiers":{"identifiers":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-3832747674-0"},"@checksum":"REPLACED_CHECKSUM"}'>
     <h3 class="d-flex align-items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 14l6-6"></path><path fill="currentColor" d="M9 8.5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0m5 5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2l-2 2l-2-2l-2 2l-2-2z"></path></g></svg>
         Company Tax Identifiers
@@ -621,6 +671,16 @@
     </p>
 
     <form name="company_tax_identifiers" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save">
+
+    <datalist id="tax-identifier-label-presets">
+                    <option value="VAT"></option>
+                    <option value="GSTIN"></option>
+                    <option value="TIN"></option>
+                    <option value="ABN"></option>
+                    <option value="CNPJ"></option>
+                    <option value="TRN"></option>
+                    <option value="Other"></option>
+            </datalist>
 
     <div class="tax-identifiers-list mb-3">
                     <p class="text-muted small mb-2">
