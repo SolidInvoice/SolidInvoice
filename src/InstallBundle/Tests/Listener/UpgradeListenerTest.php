@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Listener;
 
+use const LOCK_EX;
+use const LOCK_NB;
+use const LOCK_UN;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Metadata\AvailableMigrationsList;
 use Doctrine\Migrations\Metadata\ExecutedMigration;
@@ -34,9 +37,6 @@ use function fopen;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
-use const LOCK_EX;
-use const LOCK_NB;
-use const LOCK_UN;
 
 #[CoversClass(UpgradeListener::class)]
 final class UpgradeListenerTest extends TestCase

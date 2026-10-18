@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
+use const LOCK_EX;
+use const LOCK_UN;
 use RuntimeException;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,8 +29,6 @@ use function fopen;
 use function is_dir;
 use function mkdir;
 use function sprintf;
-use const LOCK_EX;
-use const LOCK_UN;
 
 /**
  * Listener class to intercept requests and upgrade the database if necessary.
