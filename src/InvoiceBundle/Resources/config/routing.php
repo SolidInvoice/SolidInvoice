@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Action\Index;
 use SolidInvoice\InvoiceBundle\Action\RecurringIndex;
 use SolidInvoice\InvoiceBundle\Action\RecurringTransition;
 use SolidInvoice\InvoiceBundle\Action\SendManualReminder;
+use SolidInvoice\InvoiceBundle\Action\SendTestCopy;
 use SolidInvoice\InvoiceBundle\Action\Transition;
 use SolidInvoice\InvoiceBundle\Action\Transition\Send;
 use SolidInvoice\InvoiceBundle\Action\View;
@@ -79,7 +80,13 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_send_invoice', '/action/send/{id}')
+        ->methods(['POST'])
         ->controller(Send::class);
+
+    $routingConfigurator
+        ->add('_invoices_send_test_copy', '/action/send-test-copy/{id}')
+        ->methods(['POST'])
+        ->controller(SendTestCopy::class);
 
     $routingConfigurator
         ->add('_send_manual_reminder', '/action/send-reminder/{id}')
@@ -88,7 +95,11 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_action_invoice', '/action/{action}/{id}')
-        ->controller(Transition::class);
+        ->controller(Transition::class)
+        // Exclude 'send' and 'send-reminder'. Those actions have their own POST-only
+        // route above. Without this, a GET request falls through to this route instead
+        // of getting a 405 from the route above.
+        ->requirements(['action' => '(?!send/|send-reminder/)[^/]+']);
 
     $routingConfigurator
         ->add('_action_recurring_invoice', '/recurring-action/{action}/{id}')

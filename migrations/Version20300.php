@@ -143,12 +143,14 @@ final class Version20300 extends AbstractMigration
         $this->setColumnType($schema, 'invoice_lines', 'total_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'quote_lines', 'price_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'quote_lines', 'total_amount', BigIntegerType::NAME);
+        $this->setLegacyIntegerIdToUlid($schema, 'recurringinvoice_contact', 'recurringinvoice_id');
+        $this->setLegacyIntegerIdToUlid($schema, 'recurringinvoice_contact', 'contact_id');
         $this->setColumnType($schema, 'recurringinvoice_contact', 'company_id', UlidType::NAME);
-        $this->setColumnType($schema, 'invoice_contact', 'invoice_id', UlidType::NAME);
-        $this->setColumnType($schema, 'invoice_contact', 'contact_id', UlidType::NAME);
+        $this->setLegacyIntegerIdToUlid($schema, 'invoice_contact', 'invoice_id');
+        $this->setLegacyIntegerIdToUlid($schema, 'invoice_contact', 'contact_id');
         $this->setColumnType($schema, 'invoice_contact', 'company_id', UlidType::NAME);
-        $this->setColumnType($schema, 'quote_contact', 'quote_id', UlidType::NAME);
-        $this->setColumnType($schema, 'quote_contact', 'contact_id', UlidType::NAME);
+        $this->setLegacyIntegerIdToUlid($schema, 'quote_contact', 'quote_id');
+        $this->setLegacyIntegerIdToUlid($schema, 'quote_contact', 'contact_id');
         $this->setColumnType($schema, 'quote_contact', 'company_id', UlidType::NAME);
 
         foreach ($clientCredit->getIndexes() as $index) {
@@ -258,78 +260,84 @@ final class Version20300 extends AbstractMigration
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/strategy',
                         'setting_value' => 'auto_increment',
                         'description' => '',
                         'field_type' => BillingIdConfigurationType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
 
             $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/id_prefix',
                         'setting_value' => '',
                         'description' => 'Example: INV-',
                         'field_type' => TextType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
 
             $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/id_suffix',
                         'setting_value' => '',
                         'description' => 'Example: -INV',
                         'field_type' => TextType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
 
             $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/strategy',
                         'setting_value' => 'auto_increment',
                         'description' => '',
                         'field_type' => BillingIdConfigurationType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
 
             $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/id_prefix',
                         'setting_value' => '',
                         'description' => 'Example: QUOT-',
                         'field_type' => TextType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
 
             $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => (new Ulid())->toBinary(),
+                        'id' => new Ulid(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/id_suffix',
                         'setting_value' => '',
                         'description' => 'Example: -QUOT',
                         'field_type' => TextType::class,
-                    ]
+                    ],
+                    ['id' => UlidType::NAME],
                 );
         }
 
@@ -366,15 +374,17 @@ final class Version20300 extends AbstractMigration
                     }
                 }
             }
+        }
 
-            if ($this->platform instanceof AbstractMySQLPlatform) {
-                $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
-            } elseif ($this->platform instanceof SQLitePlatform) {
-                $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
-            } elseif ($this->platform instanceof SQLServerPlatform) {
-                foreach ($schema->getTables() as $table) {
-                    $this->connection->executeQuery("ALTER TABLE {$table->getName()} CHECK CONSTRAINT ALL;");
-                }
+        // Unconditional: preUp() always disables the checks, and on a fresh install
+        // $columnsToUpdate is empty, which left them off for every later migration
+        if ($this->platform instanceof AbstractMySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
+        } elseif ($this->platform instanceof SQLitePlatform) {
+            $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
+        } elseif ($this->platform instanceof SQLServerPlatform) {
+            foreach ($schema->getTables() as $table) {
+                $this->connection->executeQuery("ALTER TABLE {$table->getName()} CHECK CONSTRAINT ALL;");
             }
         }
     }
@@ -389,5 +399,25 @@ final class Version20300 extends AbstractMigration
             ->getColumn($columnName)
             ->setType(Type::getType($type))
             ->setNotnull(true);
+    }
+
+    /**
+     * Changes a legacy integer foreign key column to a ULID column.
+     *
+     * Postgres has no automatic cast from integer to uuid, and the bare `ALTER <column> TYPE UUID`
+     * that DBAL emits is rejected outright. The column is empty by the time this migration runs
+     * (its foreign key was already dropped earlier in the chain), so the cast never has to convert
+     * a real value.
+     *
+     * @throws SchemaException
+     * @throws Exception
+     */
+    private function setLegacyIntegerIdToUlid(Schema $schema, string $tableName, string $columnName): void
+    {
+        if ($this->platform instanceof PostgreSQLPlatform) {
+            $this->addSql(sprintf('ALTER TABLE %s ALTER %s TYPE UUID USING %s::text::uuid', $tableName, $columnName, $columnName));
+        }
+
+        $this->setColumnType($schema, $tableName, $columnName, UlidType::NAME);
     }
 }

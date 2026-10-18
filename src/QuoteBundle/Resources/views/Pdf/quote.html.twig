@@ -8,7 +8,7 @@
  #}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 
 <html>
 <head>
@@ -31,7 +31,7 @@
    STATUS WATERMARK
 ============================================================================ #}
 {% if setting('quote/watermark') %}
-    <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ ('status.' ~ quote.status.value)|trans|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# ============================================================================
@@ -39,7 +39,7 @@
 ============================================================================ #}
 <pagefooter
     name="footer"
-    content-left="{{ setting('system/general/hide_powered_by') is not same as ('1') ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
+    content-left="{{ (setting('system/general/hide_powered_by') is not same as('1') or not feature_enabled('custom_branding')) ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
     content-right="{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}"
     line="on"
     footer-style="border-top: 1px solid #e2e8f0; font-size: 8pt; color: #64748b; padding-top: 8px;"

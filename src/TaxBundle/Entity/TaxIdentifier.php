@@ -142,6 +142,10 @@ class TaxIdentifier implements Stringable
     {
         $this->client = $client;
 
+        if ($client instanceof Client) {
+            $this->setCompany($client->getCompany());
+        }
+
         return $this;
     }
 

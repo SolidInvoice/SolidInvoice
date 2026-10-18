@@ -61,6 +61,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
     $services->alias('test.' . ProfileRegistry::class, ProfileRegistry::class);
     $services->alias('test.' . ValidatorRegistry::class, ValidatorRegistry::class);
+    $services->alias('test.state_machine.invoice', 'state_machine.invoice');
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when the app mode is 'saas'. Mirror the same gate from bundles.php so

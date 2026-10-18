@@ -20,6 +20,7 @@ use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
 use Liip\TestFixturesBundle\LiipTestFixturesBundle;
 use Meilisearch\Bundle\MeilisearchBundle;
+use Nelmio\CorsBundle\NelmioCorsBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Sentry\SentryBundle\SentryBundle;
 use SolidInvoice\ApiBundle\SolidInvoiceApiBundle;
@@ -61,7 +62,6 @@ use Symfony\UX\TogglePassword\TogglePasswordBundle;
 use Symfony\UX\TwigComponent\TwigComponentBundle;
 use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
-use SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle;
 use Zenstruck\Foundry\ZenstruckFoundryBundle;
 use Zenstruck\Mailer\Test\ZenstruckMailerTestBundle;
 
@@ -109,7 +109,6 @@ return [
     LiveComponentBundle::class => ['all' => true],
     AutocompleteBundle::class => ['all' => true],
     BabDevPagerfantaBundle::class => ['all' => true],
-    SymfonyCastsVerifyEmailBundle::class => ['all' => true],
     KnpUOAuth2ClientBundle::class => ['all' => true],
     TogglePasswordBundle::class => ['all' => true],
     SymfonyCastsResetPasswordBundle::class => ['all' => true],
@@ -118,5 +117,6 @@ return [
     ChartjsBundle::class => ['all' => true],
     MeilisearchBundle::class => ['all' => true],
     McpBundle::class => ['all' => true],
-    DAMADoctrineTestBundle::class => ['test' => true]
+    DAMADoctrineTestBundle::class => ['test' => true],
+    NelmioCorsBundle::class => ['all' => true],
 ];

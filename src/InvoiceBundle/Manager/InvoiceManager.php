@@ -27,6 +27,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
@@ -34,6 +35,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Service\TaxSnapshotCopier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Uid\Ulid;
@@ -55,6 +57,7 @@ class InvoiceManager
         private readonly BillingIdGenerator $billingIdGenerator,
         private readonly ClockInterface $clock,
         private readonly CustomFieldValueCopier $customFieldValueCopier,
+        private readonly SystemConfig $systemConfig,
         private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
     ) {
         $this->entityManager = $doctrine->getManager();
@@ -131,6 +134,8 @@ class InvoiceManager
         $invoice->setNotes($object->getNotes());
         $invoice->setTotal($object->getTotal());
         $invoice->setTerms($object->getTerms());
+        // Sets the due date from today, the new invoice's date. A quote has no terms of its own.
+        $invoice->setPaymentTerms($object instanceof RecurringInvoice ? $object->getPaymentTerms() : PaymentTerms::forClient($object->getClient(), $this->systemConfig));
         $invoice->setBalance($invoice->getTotal());
         $invoice->setCompany($object->getCompany());
         $invoice->setInvoiceId($this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']));

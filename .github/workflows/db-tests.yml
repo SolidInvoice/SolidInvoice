@@ -178,6 +178,7 @@ jobs:
           allowed-endpoints: >
             bun.sh:443
             packagist.org:443
+            repo.packagist.org:443
             download.oracle.com:443
             azure.archive.ubuntu.com:443
             archive.ubuntu.com:443

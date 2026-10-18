@@ -48,7 +48,6 @@ return App::config([
                         InvoiceStatus::New->value,
                         InvoiceStatus::Draft->value,
                         InvoiceStatus::Pending->value,
-                        InvoiceStatus::Active->value,
                         InvoiceStatus::Overdue->value,
                         InvoiceStatus::Cancelled->value,
                         InvoiceStatus::Archived->value,

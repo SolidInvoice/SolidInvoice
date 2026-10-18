@@ -36,6 +36,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use SolidInvoice\ApiBundle\State\Processor\InvoiceTransitionProcessor;
 use SolidInvoice\ApiBundle\State\Provider\InvoiceTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -47,6 +48,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\InvoiceBundle\Validator\Constraints\WithinPlanInvoiceLimit;
@@ -333,6 +335,8 @@ class Invoice extends BaseInvoice implements Stringable
     public function setDue(?DateTimeInterface $due): self
     {
         $this->due = $due;
+        $this->syncDue();
+
         return $this;
     }
 
@@ -495,6 +499,7 @@ class Invoice extends BaseInvoice implements Stringable
     public function setInvoiceDate(DateTimeInterface $invoiceDate): self
     {
         $this->invoiceDate = $invoiceDate;
+        $this->syncDue();
 
         return $this;
     }
@@ -562,5 +567,24 @@ class Invoice extends BaseInvoice implements Stringable
         }
 
         return $this;
+    }
+
+    #[Override]
+    public function setPaymentTerms(PaymentTerms $paymentTerms): static
+    {
+        parent::setPaymentTerms($paymentTerms);
+        $this->syncDue();
+
+        return $this;
+    }
+
+    /**
+     * A preset term owns the due date, so it wins whatever order the setters run in.
+     */
+    private function syncDue(): void
+    {
+        if ($this->paymentTerms !== PaymentTerms::Custom) {
+            $this->due = $this->paymentTerms->dueDate($this->invoiceDate);
+        }
     }
 }

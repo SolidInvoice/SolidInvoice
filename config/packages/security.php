@@ -19,9 +19,9 @@ use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
+use SolidInvoice\UserBundle\Security\LoginLinkSuccessHandler;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidInvoice\UserBundle\Security\UserChecker;
-use SolidInvoice\UserBundle\Security\VerifiedUserChecker;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -76,7 +76,8 @@ $config = LoginExtension::defaultFormLoginConfig([
             'pattern' => '^/api',
             'stateless' => true,
             'provider' => 'api_token_user_provider',
-            'user_checker' => VerifiedUserChecker::class,
+            // UserChecker + the platform's VerifiedUserChecker, tagged in config/services.php.
+            'user_checker' => 'security.user_checker.chain.api',
             'custom_authenticators' => [ApiTokenAuthenticator::class],
         ],
         'mcp_oauth_endpoints' => [
@@ -98,14 +99,36 @@ $config = LoginExtension::defaultFormLoginConfig([
             'pattern' => '^/_mcp',
             'stateless' => true,
             'provider' => 'mcp_oauth_user_provider',
-            'user_checker' => VerifiedUserChecker::class,
+            'user_checker' => 'security.user_checker.chain.mcp',
             'custom_authenticators' => [McpOAuthAuthenticator::class],
+        ],
+        // Google One Tap verify/nonce endpoints are stateless and cross-origin;
+        // they authenticate from the request body (the Google JWT + single-use
+        // nonce), never from a session, so the firewall itself carries no
+        // security. The `_onetap_login_check` route is deliberately excluded
+        // from this pattern so it falls through to `main`, where the login_link
+        // authenticator can establish the session. (Only present in the SaaS
+        // build, where the `^/onetap/*` routes are registered.)
+        'onetap' => [
+            'pattern' => '^/onetap/(verify|nonce)$',
+            'security' => false,
         ],
         'main' => [
             'user_checker' => UserChecker::class,
             'custom_authenticators' => [OAuthAuthenticator::class],
             'form_login' => [
                 'default_target_path' => '_select_company',
+            ],
+            // Consumes the single-use login links minted by the Google One Tap
+            // verify endpoint. Short-lived and single-use so a leaked link cannot
+            // be reused. Inert outside the SaaS build (the check route does not
+            // exist there, so the authenticator never matches a request).
+            'login_link' => [
+                'check_route' => '_onetap_login_check',
+                'lifetime' => 60,
+                'max_uses' => 1,
+                'signature_properties' => ['id'],
+                'success_handler' => LoginLinkSuccessHandler::class,
             ],
         ],
     ],
@@ -126,6 +149,7 @@ $config = LoginExtension::defaultFormLoginConfig([
                 '/\.well-known/api-catalog$|' .
                 '/install|' .
                 '/verify$|' .
+                '/onetap/login-check$|' .
                 '/logout$|' .
                 '/invite/accept/[a-zA-Z0-9-]{26}$|' .
                 '/payments/create/[a-zA-Z0-9-]{36}$|' .

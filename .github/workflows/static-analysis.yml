@@ -110,7 +110,7 @@ jobs:
           php-version-file: .php-version
           coverage: none
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
       - run: bin/rector --ansi
       - run: bin/ecs --fix --ansi
 

@@ -18,11 +18,15 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Action\RecurringTransitionTest
+ */
 final class RecurringTransition
 {
     use SaveableTrait;
@@ -55,7 +59,11 @@ final class RecurringTransition
 
             public function getFlash(): Generator
             {
-                yield self::FLASH_SUCCESS => 'invoice.transition.action.' . $this->action;
+                // A recurring invoice never calls itself an invoice in a flash, so this
+                // uses its own catalog block rather than the plain-invoice one.
+                $severity = Graph::TRANSITION_CANCEL === $this->action ? self::FLASH_INFO : self::FLASH_SUCCESS;
+
+                yield $severity => 'invoice.transition.recurring.action.' . $this->action;
             }
         };
     }

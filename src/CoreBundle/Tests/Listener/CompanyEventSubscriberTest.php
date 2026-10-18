@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
@@ -57,6 +58,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $user = new User();
         $user->addCompany(new Company());
@@ -93,6 +95,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 
@@ -133,6 +136,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $security->shouldNotReceive('getUser');
 
@@ -152,6 +156,30 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertNull($event->getResponse());
     }
 
+    public function testItDoesNotRedirectWhileTwoFactorAuthenticationIsInProgress(): void
+    {
+        $router = M::mock(RouterInterface::class);
+        $router->shouldNotReceive('generate');
+
+        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturn(M::mock(TwoFactorTokenInterface::class));
+        $security->shouldNotReceive('getUser');
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = new Request();
+        $request->setSession($session);
+        $request->attributes->set('_route', '_solidworx_platform_security_two_factor_resend');
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertNull($companySelector->getCompany());
+    }
+
     public function testItContinueExecutionWhenNoCompanyIsSetAndNoUserIsLoggedIn(): void
     {
         // Test that it continues execution when no company is set and no user is logged in
@@ -159,6 +187,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $security
             ->shouldReceive('getUser')
@@ -185,6 +214,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 
@@ -219,6 +249,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 
@@ -256,6 +287,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 
@@ -301,6 +333,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 
@@ -351,6 +384,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
 
         $companySelector = new CompanySelector($registry);
 

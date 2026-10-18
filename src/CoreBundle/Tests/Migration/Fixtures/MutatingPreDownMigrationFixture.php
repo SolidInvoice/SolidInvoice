@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Doctrine\Migrations\DryRunAwareMigration;
 
 /**
  * Reproduces the SOL-155 hazard on a throwaway table: a `preDown()` hook that mutates a
- * row through `$this->connection` directly, the same way {@see \DoctrineMigrations\Version30100_7::preDown()}
+ * row through `$this->connection` directly, the same way {@see \DoctrineMigrations\Version30200_2::preDown()}
  * and {@see \DoctrineMigrations\Version30100_6::preDown()} do, guarded the same way they are.
  *
  * @see \SolidInvoice\CoreBundle\Tests\Migration\MigrationDryRunGuardTest

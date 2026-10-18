@@ -8,13 +8,13 @@
  #}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 
 <div class="ext-doc-page">
     <div class="container-xl py-4">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
-                {% if setting('system/general/hide_powered_by') is not same as('1') %}
+                {% if (setting('system/general/hide_powered_by') is not same as('1') or not feature_enabled('custom_branding')) %}
                     {# App Branding Header #}
                     <div class="app-branding-header mb-4 no-print">
                         <div class="d-flex align-items-center justify-content-between">
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'quote.total'|trans }}</div>
-                                        <div class="ext-doc-metadata-total text-primary fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
+                                        <div class="ext-doc-metadata-total fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -220,24 +220,24 @@
                                         {% if quote.discount.type is not empty %}
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">{{ 'quote.discount'|trans }}</div>
-                                                <div class="ext-doc-totals-value text-success">-{{ discount(quote)|formatCurrency(currency) }}</div>
+                                                <div class="ext-doc-totals-value">-{{ discount(quote)|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endif %}
                                         <div class="ext-doc-totals-final">
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">{{ 'quote.total'|trans }}</div>
-                                                <div class="ext-doc-totals-value text-primary">{{ quote.total|formatCurrency(currency) }}</div>
+                                                <div class="ext-doc-totals-value">{{ quote.total|formatCurrency(currency) }}</div>
                                             </div>
                                         </div>
                                         {% if quote.withholdingAmount.positive %}
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">{{ 'quote.withholding'|trans }}</div>
-                                                <div class="ext-doc-totals-value text-danger">-{{ quote.withholdingAmount|formatCurrency(currency) }}</div>
+                                                <div class="ext-doc-totals-value">-{{ quote.withholdingAmount|formatCurrency(currency) }}</div>
                                             </div>
                                             <div class="ext-doc-totals-final">
                                                 <div class="ext-doc-totals-row">
                                                     <div class="ext-doc-totals-label">{{ 'quote.amount_payable'|trans }}</div>
-                                                    <div class="ext-doc-totals-value text-primary">{{ payable_amount(quote)|formatCurrency(currency) }}</div>
+                                                    <div class="ext-doc-totals-value">{{ payable_amount(quote)|formatCurrency(currency) }}</div>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -258,7 +258,7 @@
                 </div>
                 {% endif %}
 
-                {% if setting('system/general/hide_powered_by') is not same as('1') %}
+                {% if (setting('system/general/hide_powered_by') is not same as('1') or not feature_enabled('custom_branding')) %}
                     {# Footer #}
                     <div class="ext-doc-footer mt-5 no-print">
                         <div class="card">

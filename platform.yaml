@@ -7,6 +7,12 @@ platform:
         two_factor:
             enabled: true
             base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"
+        email_verification:
+            enabled: '%env(bool:default:email_verification_enabled:SOLIDINVOICE_EMAIL_VERIFICATION_ENABLED)%'
+            banner_template: "@SolidInvoiceUser/EmailVerification/banner.html.twig"
+            email:
+                template: "@SolidInvoiceUser/Email/confirm_email.html.twig"
+                subject: "Please Confirm your Email"
     models:
         user: SolidInvoice\UserBundle\Entity\User
 
@@ -90,3 +96,5 @@ ui:
     icon_pack: tabler
     templates:
         login: '@SolidInvoiceUser/Security/login.html.twig'
+        layouts:
+            app: '@SolidInvoiceCore/Layout/default.html.twig'

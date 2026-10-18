@@ -50,6 +50,22 @@ final class InvoiceRepositoryTest extends KernelTestCase
         $this->repository = new InvoiceRepository($registry, $this->clock, new CreditNoteRepository($registry));
     }
 
+    /**
+     * The onboarding wizard leaves a draft behind, which must not read as the
+     * user having sent their first invoice.
+     */
+    public function testCountIssuedIgnoresDrafts(): void
+    {
+        InvoiceFactory::createOne(['company' => $this->company, 'status' => InvoiceStatus::Draft]);
+
+        self::assertSame(0, $this->repository->countIssued($this->company));
+
+        InvoiceFactory::createOne(['company' => $this->company, 'status' => InvoiceStatus::Pending]);
+        InvoiceFactory::createOne(['company' => $this->company, 'status' => InvoiceStatus::Overdue]);
+
+        self::assertSame(2, $this->repository->countIssued($this->company));
+    }
+
     public function testGetInvoicesNeedingPreDueRemindersReturnsInvoicesDueInSpecifiedDays(): void
     {
         $dueDate = $this->clock->now()->modify('+3 days')->setTime(0, 0)->modify('+6 hours');

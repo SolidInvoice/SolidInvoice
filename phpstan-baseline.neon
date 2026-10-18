@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method DoctrineMigrations\\Version20201\:\:getTableForeignKeys\(\) should return array\<array\<array\<string\>\|string\>\> but returns list\<array\<string, bool\|list\<string\>\|string\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: migrations/Version20201.php
-
-		-
 			message: '#^Access to constant NAME on an unknown class Ramsey\\Uuid\\Doctrine\\UuidBinaryOrderedTimeType\.$#'
 			identifier: class.notFound
 			count: 1
@@ -251,12 +245,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: src/CoreBundle/Serializer/Normalizer/CustomFieldsNormalizer.php
-
-		-
-			message: '#^Property SolidInvoice\\CoreBundle\\Service\\CustomField\\CustomFieldStagingStore\:\:\$entries \(WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\) does not accept WeakMap\<object, array\<string, array\{field\: SolidInvoice\\CoreBundle\\Entity\\CustomField\\CustomField, value\: string\|null\}\>\>\.$#'
-			identifier: assign.propertyType
-			count: 3
-			path: src/CoreBundle/Service/CustomField/CustomFieldStagingStore.php
 
 		-
 			message: '#^Cannot unset property SolidInvoice\\CoreBundle\\Test\\LiveComponentTest\:\:\$company because it might have hooks in a subclass\.$#'
@@ -535,10 +523,64 @@ parameters:
 			path: src/InvoiceBundle/Tests/Search/RecurringInvoiceResultFormatterTest.php
 
 		-
-			message: '#^Method SolidInvoice\\MailerBundle\\Factory\\MailerConfigFactory\:\:fromStrings\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
 			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
+			path: src/McpBundle/Entity/ConsentGrant.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\ConsentGrant\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/ConsentGrant.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpAccessToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpAccessToken\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpAccessToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpRefreshToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\McpRefreshToken\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/McpRefreshToken.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthAuthCode.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthAuthCode\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthAuthCode.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthClient.php
+
+		-
+			message: '#^Property SolidInvoice\\McpBundle\\Entity\\OAuthClient\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/McpBundle/Entity/OAuthClient.php
 
 		-
 			message: '#^Call to function is_string\(\) with null will always evaluate to false\.$#'

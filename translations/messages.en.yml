@@ -14,6 +14,35 @@ active_clients: 'Active Clients'
 add_client: 'Add Client'
 add_info: 'Add Info'
 address: Address
+affiliate:
+    card:
+        text: 'Earn up to %earnings% a year for every customer you refer.'
+        title: 'Refer & earn'
+    footer_link: 'Refer & earn'
+    page:
+        details:
+            commission:
+                text: "You earn %commission% of every payment a customer you refer makes to SolidInvoice Cloud, not just the first one. That is up to %earnings% a year per customer on the Business plan. Sign-ups that never pay don't count."
+                title: 'What you earn'
+            payout:
+                text: 'Lemon Squeezy runs the program for us. They track your referrals, show your earnings in their affiliate dashboard and pay you out.'
+                title: 'How you get paid'
+            terms:
+                link: 'Read the affiliate terms'
+            title: 'How the program works'
+            who:
+                text: 'Anyone, whether you use SolidInvoice Cloud or host SolidInvoice yourself.'
+                title: 'Who can join'
+    pitch:
+        cta: 'Join the affiliate program'
+        lead: 'Refer new customers to SolidInvoice Cloud and earn %commission% of every payment they make, month after month. Self-hosted users can take part too.'
+        steps:
+            earn: 'Earn %commission% of every payment they make'
+            join: 'Join the affiliate program'
+            share: 'Share your referral link'
+        title: 'Earn up to %earnings% a year for every customer you refer'
+    prompt:
+        not_now: 'Not now'
 all_clients: 'All Clients'
 billing:
     discount: Discount
@@ -117,6 +146,10 @@ client:
         name:
             label: Name
             placeholder: 'Acme Corporation'
+        payment_terms:
+            help: 'Sets the due date on new invoices for this client.'
+            label: 'Payment terms'
+            placeholder: 'Company default (%terms%)'
         subtitle: 'Add a new client to start creating invoices and quotes'
         tax_identifiers_description: "The client's tax registration numbers (VAT, GSTIN, TIN, ABN, etc.). These appear on invoices and quotes issued to this client."
         website:
@@ -366,6 +399,9 @@ dashboard:
         create_client:
             description: 'Add a client to start invoicing'
             name: 'Create Your First Client'
+        create_company:
+            description: 'Your business details are saved'
+            name: 'Create Your Company'
         customize_settings:
             description: 'Set up your business details and preferences'
             name: 'Customize Company Settings'
@@ -541,8 +577,6 @@ email_verification:
         send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
         send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
         send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
-    gate:
-        reason: 'Please verify your email address before %action%.'
 exception:
     403:
         text: "You don't have permission to view this page."
@@ -914,6 +948,10 @@ invoice:
     payment:
         capture: 'Do you want to capture a payment for this invoice?'
         label: Payment
+    payment_terms:
+        due_help: 'Calculated from the payment terms. Choose Custom to pick your own date.'
+        label: 'Payment terms'
+        recurring_help: 'Each invoice this creates is due according to these terms, counted from the day it is issued.'
     pdf:
         due_in_days: 'Due in %days% days'
         due_today: 'DUE TODAY'
@@ -999,10 +1037,14 @@ invoice:
         draft: 'Save as Draft'
         enable: 'Save and Enable'
         publish: Publish
-        send: 'Save and Send'
-        update: Update
+        publish_only: 'Publish without sending'
+        send: 'Send to client'
+        update: 'Save changes'
     send:
-        no_recipients: 'Cannot send invoice: no contacts with email addresses found'
+        invalid_csrf: 'Invalid CSRF token'
+        no_recipients: 'There is no one to send this invoice to. Edit it and choose a contact with an email address.'
+        resend_link: 'send a new link'
+        verify_hint: "Confirm your email address to send invoices. Can't find the email? Check spam, or"
     send_to: 'Send invoice to:'
     stats:
         active_recurring: 'Active Recurring'
@@ -1056,10 +1098,14 @@ invoice:
             engagement: engagement
             project_label: Project
             studio: Studio
-    terms: Terms
+    terms: 'Terms & Conditions'
     terms_notes:
         title: 'Terms & Notes'
         toggle: 'Toggle terms and notes section'
+    test_copy:
+        button: 'Email me a test copy'
+        sent: 'Test copy sent. Open it in your inbox and confirm your email to start sending invoices.'
+        too_many: "You've used all your test copies. Confirm your email from the link we sent to start sending invoices."
     title: 'Invoice #%id%'
     to: To
     total: Total
@@ -1069,13 +1115,13 @@ invoice:
     transition:
         action:
             accept: 'Invoice has been accepted'
-            activate: 'Invoice has been activated'
             archive: 'Invoice has been archived'
             cancel: 'Invoice has been cancelled'
-            pause: 'Recurring invoice has been paused'
+            edit: 'Invoice has been returned to draft'
+            new: 'Invoice is now a draft'
+            overdue: 'Invoice is now overdue'
             pay: 'Invoice has been paid'
             reopen: 'Invoice has been re-opened'
-            resume: 'Recurring invoice has been resumed'
             sent: 'Invoice has been sent'
         exception:
             accept: 'Invoice cannot be accepted'
@@ -1084,6 +1130,16 @@ invoice:
             pay: 'Invoice cannot be paid'
             reopen: 'Invoice cannot be re-opened'
             sent: 'Invoice cannot be sent'
+        recurring:
+            action:
+                activate: 'Recurring invoice is now active'
+                archive: 'Recurring invoice has been archived'
+                cancel: 'Recurring invoice has been cancelled'
+                complete: 'Recurring invoice has finished its schedule'
+                edit: 'Recurring invoice has been returned to draft'
+                new: 'Recurring invoice is now a draft'
+                pause: 'Recurring invoice has been paused'
+                resume: 'Recurring invoice has been resumed'
     view:
         online: 'View this invoice online at: %url%'
         payments: Payments
@@ -1092,7 +1148,9 @@ invoice:
             archive: Archive
             cancel: Cancel
             clone: Clone
+            copy_link: 'Copy client link'
             edit: Edit
+            link_copied: 'Link copied'
             mark_paid: 'Mark Paid'
             more_actions: 'More Actions'
             pay_now: 'Pay Now'
@@ -1125,6 +1183,7 @@ layout:
         open_user_menu: 'Open user menu'
         toggle_navigation: 'Toggle navigation'
     data_export: 'Data Export'
+    feedback: 'Share feedback'
     profile: Profile
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
     user_image: 'User Image'
@@ -1268,23 +1327,8 @@ notifications:
     subtitle: 'Choose which events trigger notifications and where you receive them'
     title: 'Notification Preferences'
 onboarding:
-    client:
-        benefits: "Create your first invoice in the next step\nKeep all client info organized in one place\nTrack payment history and outstanding invoices\nSend invoices directly via email\n"
-        description: 'Who will you be invoicing? This step is optional, but recommended'
-        fields:
-            email:
-                help: "We'll use this to send them invoices"
-                label: 'Email Address'
-                placeholder: client@example.com
-            name:
-                help: 'Can be a person or company name'
-                label: 'Client Name'
-                placeholder: 'John Doe or Acme Corp'
-        title: 'Add your first client'
-        why_title: 'Why add a client now?'
     company:
-        benefits: "Your business details - This appears on all your invoices\nYour first client - Optional, but gets you started faster\nYour first invoice - See how easy it is to get paid\n"
-        description: "First, we'll need a bit of information about your business. This helps us customize your experience and ensures your invoices look professional."
+        description: "Add your business name and currency. Next, you'll write and send your first invoice."
         fields:
             currency:
                 help: "The currency you'll use for invoices and quotes"
@@ -1293,60 +1337,12 @@ onboarding:
                 help: 'This is how your business will appear on invoices and quotes'
                 label: 'Company Name'
                 placeholder: 'Acme Corporation'
-        setup_title: "What we're setting up:"
-        subtitle: 'First, tell us about your business'
-        time: 'Takes less than 2 minutes'
-        title: "Let's get you set up"
+        submit: 'Continue to your first invoice'
+        title: "Who's sending the invoice?"
         welcome: 'Welcome to %app_name%!'
-    complete:
-        cta_create_invoice: 'Create Your First Invoice →'
-        dashboard_link: 'Go to Dashboard'
-        description: "Congratulations! Your account is ready and you're good to go. You can start creating invoices, managing clients, and tracking payments."
-        docs_link: 'View Documentation'
-        need_help: 'Need help? Check out our'
-        next_add_client: 'Add your first client'
-        next_connect_payment: 'Connect a payment gateway'
-        next_send_invoice: 'Send your first invoice'
-        next_steps: "Create and send professional invoices\nTrack payments and outstanding balances\nManage your clients and contacts\nGenerate reports on your business\n"
-        next_steps_title: "Here's what to do next:"
-        next_title: 'What happens next?'
-        pro_tip_text: 'You can customize your invoice templates, add your logo, and configure payment gateways in Settings.'
-        pro_tip_title: 'Pro tip:'
-        subtitle: "Your account is ready and you're good to go"
-        thanks: 'Thanks for choosing %app_name%'
-        title: "You're all set!"
     flash:
-        invoice_created: '🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF.'
-        onboarding_complete: "Welcome to SolidInvoice! You're all set up and ready to go."
-    invoice:
-        aha_title: 'Send your first invoice:'
-        benefits: "See exactly what your invoices will look like\nSend it immediately or save as draft\nTrack when it's paid\nGet paid faster with online payments\n"
-        description: 'Experience how easy it is to get paid.'
-        fields:
-            amount:
-                help: "Don't worry about perfection - you can edit this later"
-                label: Amount
-                placeholder: '1000.00'
-            description:
-                help: 'What service or product are you invoicing for?'
-                label: 'Service Description'
-                placeholder: 'e.g., Website Design Services, Consulting, Monthly Retainer'
-        security: 'Your invoice will be saved as a draft - nothing is sent automatically'
-        time: 'Takes just 30 seconds to create'
-        title: 'Create your first invoice'
-    navigation:
-        back: Back
-        continue: Continue
-        create_invoice: 'Create & View My Invoice'
-        finish: 'Go to Dashboard'
-        skip: "I'll do this later"
-        skip_client: "Skip — I'll add clients & invoices from the dashboard"
-    progress:
-        client: 'First Client'
-        company: 'Your Business'
-        complete: Ready!
-        invoice: 'First Invoice'
-        label: Progress
+        first_invoice: 'Your company is set up. Last step: add your client and send your first invoice.'
+    page_title: 'Get started - %app_name%'
 optional: Optional
 payment:
     action:
@@ -1607,11 +1603,24 @@ payment:
         this_month: 'This Month'
         total_received: 'Total Received'
 payment_made: 'Payment has been received'
+payment_terms:
+    custom: 'Custom'
+    due_on_receipt: 'Due on receipt'
+    end_of_month: 'End of month'
+    end_of_next_month: 'End of next month'
+    net_14: 'Net 14'
+    net_15: 'Net 15'
+    net_30: 'Net 30'
+    net_45: 'Net 45'
+    net_60: 'Net 60'
+    net_7: 'Net 7'
+    net_90: 'Net 90'
 pdf:
     additional_information: 'Additional information'
     'no': 'No'
     of: of
     page: Page
+    status: Status
     'yes': 'Yes'
 powered_by: 'Powered By'
 profile:
@@ -1685,6 +1694,7 @@ profile:
         notifications: Notifications
         preferences: Preferences
         profile: Profile
+        refer_and_earn: 'Refer & earn'
         two_factor: 'Two-Factor Authentication'
     password_change:
         success: 'Your password has been updated'
@@ -1845,6 +1855,8 @@ quote:
         publish: Publish
         send: 'Save and Send'
         update: Update
+    send:
+        verify_hint: "Confirm your email address to send quotes. Can't find the email? Check spam, or"
     send_to: 'Send quote to:'
     sent: 'Quote Sent'
     stats:
@@ -1881,14 +1893,15 @@ quote:
         title: Summary
     transition:
         action:
-            accept: 'Quote Accepted and invoice created'
-            archive: 'Quote has been Archived'
-            cancel: 'Quote Cancelled'
-            decline: 'Quote Declined'
-            publish: 'Quote Published'
-            reopen: 'Quote Re-Opened'
-            send: 'Quote Sent'
-            sent: 'Quote Sent'
+            accept: 'Quote accepted, and an invoice has been created'
+            archive: 'Quote has been archived'
+            cancel: 'Quote has been cancelled'
+            decline: 'Quote has been declined'
+            new: 'Quote is now a draft'
+            publish: 'Quote has been published'
+            reopen: 'Quote has been re-opened'
+            send: 'Quote has been sent'
+            sent: 'Quote has been sent'
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'
@@ -1966,6 +1979,7 @@ saas:
         plan_update_failed: 'Could not update your plan: %error%'
         plan_updated: 'Your plan has been updated.'
         subscription_activated: 'Your subscription has been activated.'
+        trial_ended_on_free: "Your trial has ended, so your account is now on the Free plan. Everything you created is still here."
     menu:
         billing: Subscription
     overview:
@@ -2251,10 +2265,6 @@ security:
         try_another_method: 'Try another verification method'
         verification_code: 'Verification Code'
         verify_continue: 'Verify & Continue'
-    verify_email:
-        flash:
-            invalid: 'The email verification link is invalid.'
-            success: 'Your email address has been verified.'
 settings:
     address:
         city: City
@@ -2292,7 +2302,7 @@ settings:
             contact_email_placeholder: contact@yourcompany.com
             contact_help: 'This information will appear on your invoices and quotes.'
             currency: 'Default Currency'
-            currency_help: 'The default currency used for new invoices and quotes.'
+            currency_help: 'The default currency used for new invoices and quotes. Invoices and quotes you have already issued keep the currency they were issued in.'
             logo: 'Company Logo'
             name: 'Company Name'
             name_placeholder: 'Your company name'
@@ -2354,6 +2364,10 @@ settings:
             suffix: 'ID Suffix'
             suffix_help: 'Added after the number. E.g., "-2024" results in 001-2024'
             title: 'Numbering Scheme'
+        payment_terms:
+            help: 'New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.'
+            label: 'Default payment terms'
+            title: 'Payment Terms'
         reminder:
             enable: 'Enable Automatic Reminders'
             enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'

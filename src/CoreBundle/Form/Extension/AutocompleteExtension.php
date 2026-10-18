@@ -16,14 +16,20 @@ namespace SolidInvoice\CoreBundle\Form\Extension;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Form\Extension\AutocompleteExtensionTest
+ */
 #[AutoconfigureTag('form.type_extension', attributes: ['priority' => -1])]
 class AutocompleteExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('autocomplete', true);
+        // An expanded choice renders as a div of radios or checkboxes, and the autocomplete
+        // controller only works on an <input> or <select> — it throws on connect otherwise.
+        $resolver->setDefault('autocomplete', static fn (Options $options): bool => ! $options['expanded']);
     }
 
     public static function getExtendedTypes(): iterable

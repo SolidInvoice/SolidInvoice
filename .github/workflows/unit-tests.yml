@@ -6,8 +6,8 @@ on:
             - 'docs/**'
     push:
         branches:
-            - 3.0.x
             - 3.1.x
+            - 3.2.x
         paths-ignore:
             - 'docs/**'
 
@@ -184,5 +184,5 @@ jobs:
             JOB_NAME: Unit ( PHP ${{ matrix.php }} )
         with:
           script: |
-            const script = require('./scripts/e2e-failure.js')
+            const script = require('./scripts/e2e-failure.cjs')
             await script({github, context, core})

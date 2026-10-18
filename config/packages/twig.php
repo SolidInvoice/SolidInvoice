@@ -18,6 +18,9 @@ return App::config([
         'debug' => param('kernel.debug'),
         'strict_variables' => param('kernel.debug'),
         'file_name_pattern' => '*.twig',
+        'globals' => [
+            'feedback_form_url' => 'https://docs.google.com/forms/d/e/1FAIpQLSeJ5pJjGzLXaN_a2TjT4_rMYnl71hi7xYuLCopkhphg-VTfgg/viewform',
+        ],
         'form_themes' => [
             '@SolidInvoiceNotification/Form/fields.html.twig',
             '@SolidInvoiceCore/Form/fields.html.twig',

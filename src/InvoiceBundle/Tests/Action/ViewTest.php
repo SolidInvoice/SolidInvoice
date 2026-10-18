@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action;
 use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -51,17 +52,36 @@ final class ViewTest extends KernelTestCase
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
+    /**
+     * The Send controls render a real CSRF token. Mock the token manager so the
+     * snapshot fixtures stay deterministic instead of embedding a fresh, random
+     * token value on every run.
+     */
+    private function mockCsrfTokenManager(): void
+    {
+        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
+        $csrfTokenManager->method('getToken')
+            ->willReturnCallback(static fn (string $tokenId): CsrfToken => new CsrfToken($tokenId, $tokenId));
+
+        self::getContainer()->set('security.csrf.token_manager', $csrfTokenManager);
+    }
+
     #[DataProvider('invoiceStatusProvider')]
     public function testView(InvoiceStatus $status): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -126,6 +146,7 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -202,13 +223,18 @@ final class ViewTest extends KernelTestCase
     public function testViewWithDiscount(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -268,13 +294,18 @@ final class ViewTest extends KernelTestCase
     public function testViewWithTax(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -330,13 +361,18 @@ final class ViewTest extends KernelTestCase
     public function testViewWithRelatedQuote(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -400,27 +436,19 @@ final class ViewTest extends KernelTestCase
 
     public function testViewWithClientContacts(): void
     {
-        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
-
-        self::getContainer()
-            ->set('security.csrf.token_manager', $csrfTokenManager);
-
-        $csrfTokenManager
-            ->expects(self::atLeastOnce())
-            ->method('getToken')
-            ->with('send_manual_reminder')
-            ->willReturn(new CsrfToken('send_manual_reminder', 'send_manual_reminder'));
-
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
 
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
+        $this->mockCsrfTokenManager();
+
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -482,13 +510,18 @@ final class ViewTest extends KernelTestCase
     public function testViewWithPartialPayment(): void
     {
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),

@@ -17,7 +17,7 @@ use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Line;
-use SolidInvoice\TaxBundle\Entity\LineTax;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -48,11 +48,13 @@ class LineRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
+        // Rooted at the quote, because DQL cannot select an entity reached only through a
+        // join: the select clause has to name an alias from the FROM clause.
         $query = $em->createQueryBuilder()
             ->select('DISTINCT q')
-            ->from(LineTax::class, 'lt')
-            ->join('lt.quoteLine', 'l')
-            ->join('l.quote', 'q')
+            ->from(Quote::class, 'q')
+            ->join('q.lines', 'l')
+            ->join('l.taxes', 'lt')
             ->where('lt.tax = :tax')
             ->setParameter('tax', $tax->getId(), UlidType::NAME)
             ->getQuery();

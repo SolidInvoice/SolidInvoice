@@ -32,12 +32,16 @@
         {{ ux_icon('tabler:database-export', {width: 16, height: 16}) }}
         {{ 'layout.data_export'|trans }}
     </a>
+    <a href="{{ feedback_form_url }}" class="dropdown-item" target="_blank" rel="noopener">
+        {{ ux_icon('tabler:message-circle', {width: 16, height: 16}) }}
+        {{ 'layout.feedback'|trans }}
+    </a>
     <div class="dropdown-divider"></div>
     <twig:Ui:Security:LogoutLink />
 {% endblock user_menu_items %}
 
 {% block footer %}
-    <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %}</small>
+    <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %} &middot; <a href="{{ feedback_form_url }}" target="_blank" rel="noopener">{{ 'layout.feedback'|trans }}</a>{% if affiliate_program().enabled %} &middot; <a href="{{ path('_profile_affiliate', {source: 'footer'}) }}" class="text-secondary">{{ 'affiliate.footer_link'|trans }}</a>{% endif %}</small>
 {% endblock footer %}
 
 {% block sidebar_brand %}

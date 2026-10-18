@@ -17,6 +17,7 @@ return App::config([
     'monolog' => [
         'channels' => [
             'mcp',
+            'deprecation',
         ],
     ],
 ]);

@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Listener;
 
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\EmailFromListenerTest
@@ -29,7 +32,10 @@ final readonly class EmailFromListener implements EventSubscriberInterface
 {
     public function __construct(
         private SystemConfig $config,
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
+        private CompanySelectorInterface $companySelector,
+        #[Autowire(env: 'SOLIDINVOICE_MAILER_SENDER')]
+        private string $defaultSender,
     ) {
     }
 
@@ -41,26 +47,59 @@ final readonly class EmailFromListener implements EventSubscriberInterface
             return;
         }
 
-        $fromAddress = (string) $this->config->get('email/from_address');
-
-        if ('' !== $fromAddress) {
-            $fromName = (string) $this->config->get('email/from_name');
-            $from = new Address($fromAddress, $fromName);
+        // Without a company (e.g. the 2FA code mail sent mid-login) the company
+        // settings can't be resolved, so send from the system sender instead.
+        if (! $this->companySelector->getCompany() instanceof Ulid) {
+            $from = Address::create($this->defaultSender);
             $message->from($from);
             $event->getEnvelope()->setSender($from);
             $message->getHeaders()->remove('Sender');
-        } else {
-            $token = $this->tokenStorage->getToken();
 
-            if ($token instanceof TokenInterface) {
-                /** @var User $user */
-                $user = $token->getUser();
-                $from = Address::create($user->getEmail());
-                $message->from($from);
-                $event->getEnvelope()->setSender($from);
-                $message->getHeaders()->remove('Sender');
+            return;
+        }
+
+        // Without a company (e.g. the 2FA code mail sent mid-login) the company
+        // settings can't be resolved, so send from the system sender instead.
+        if (! $this->companySelector->getCompany() instanceof Ulid) {
+            $from = Address::create($this->defaultSender);
+            $message->from($from);
+            $event->getEnvelope()->setSender($from);
+            $message->getHeaders()->remove('Sender');
+
+            return;
+        }
+
+        $fromAddress = (string) $this->config->get('email/from_address');
+
+        if ('' !== $fromAddress) {
+            $from = new Address($fromAddress, (string) $this->config->get('email/from_name'));
+        } elseif (null !== ($userEmail = $this->currentUserEmail())) {
+            $from = Address::create($userEmail);
+        } else {
+            // A worker (e.g. scheduled reminders) has no signed-in user; without a From the send throws.
+            $from = Address::create($this->defaultSender);
+        }
+
+        $message->from($from);
+        $event->getEnvelope()->setSender($from);
+        $message->getHeaders()->remove('Sender');
+
+        // A client replying to an invoice or quote should reach the business, not the no-reply sender.
+        if ($message instanceof ClientEmailInterface && [] === $message->getReplyTo()) {
+            $replyTo = (string) $this->config->get('system/company/contact_details/email');
+            $replyTo = '' !== $replyTo ? $replyTo : $this->currentUserEmail();
+
+            if (null !== $replyTo) {
+                $message->replyTo($replyTo);
             }
         }
+    }
+
+    private function currentUserEmail(): ?string
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        return $user instanceof User ? $user->getEmail() : null;
     }
 
     public static function getSubscribedEvents(): array

@@ -14,13 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Onboarding\Manager;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use SolidInvoice\ClientBundle\Repository\ClientRepository;
-use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Onboarding\DTO\OnboardingData;
@@ -38,26 +34,16 @@ final class OnboardingManagerTest extends KernelTestCase
 
     private UserSettingRepository $userSettingRepository;
 
-    private ClientRepository $clientRepository;
-
-    private InvoiceRepository $invoiceRepository;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
-        $companyRepository = self::getContainer()->get(CompanyRepository::class);
-        $this->clientRepository = self::getContainer()->get(ClientRepository::class);
-        $this->invoiceRepository = self::getContainer()->get(InvoiceRepository::class);
 
-        // Manually create OnboardingManager since it may not be public in test container
         $this->manager = new OnboardingManager(
             $this->em,
-            $companyRepository,
-            $this->clientRepository,
-            $this->invoiceRepository,
-            $this->userSettingRepository
+            self::getContainer()->get(CompanyRepository::class),
+            $this->userSettingRepository,
         );
     }
 
@@ -81,79 +67,7 @@ final class OnboardingManagerTest extends KernelTestCase
         self::assertTrue($this->manager->isOnboardingComplete($user));
     }
 
-    public function testGetCurrentStepReturnsNullWhenNotSet(): void
-    {
-        $user = $this->createUser('test3@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        self::assertNull($this->manager->getCurrentStep($user));
-    }
-
-    public function testGetCurrentStepReturnsStepName(): void
-    {
-        $user = $this->createUser('test4@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $this->manager->setCurrentStep($user, 'client');
-
-        self::assertSame('client', $this->manager->getCurrentStep($user));
-    }
-
-    public function testSetCurrentStepSavesSetting(): void
-    {
-        $user = $this->createUser('test5@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $this->manager->setCurrentStep($user, 'invoice');
-
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingStep,
-        ]);
-
-        self::assertNotNull($setting);
-        self::assertSame('invoice', $setting->getValue());
-    }
-
-    public function testMarkStepSkippedAddsStepToSkippedList(): void
-    {
-        $user = $this->createUser('test6@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $this->manager->markStepSkipped($user, 'client');
-
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingSkipped,
-        ]);
-
-        self::assertNotNull($setting);
-        $skipped = json_decode((string) $setting->getValue(), true);
-        self::assertSame(['client'], $skipped);
-    }
-
-    public function testStartOnboardingSetsInitialStep(): void
-    {
-        $user = $this->createUser('test7@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $this->manager->startOnboarding($user);
-
-        self::assertSame('company', $this->manager->getCurrentStep($user));
-
-        $startedAtSetting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingStartedAt,
-        ]);
-        self::assertNotNull($startedAtSetting);
-    }
-
-    public function testCompleteOnboardingWithFullData(): void
+    public function testCompleteOnboardingCreatesTheCompanyAndMarksOnboardingComplete(): void
     {
         $user = $this->createUser('test8@example.com');
         $this->em->persist($user);
@@ -161,135 +75,19 @@ final class OnboardingManagerTest extends KernelTestCase
 
         $data = new OnboardingData();
         $data->companyName = 'Test Company';
-        $data->companyCurrency = 'USD';
-        $data->clientName = 'Test Client';
-        $data->clientEmail = 'client@example.com';
-        $data->invoiceDescription = 'Test Service';
-        $data->invoiceAmount = '1000.00';
-
-        $invoice = $this->manager->completeOnboarding($user, $data);
-
-        self::assertInstanceOf(Invoice::class, $invoice);
-        self::assertTrue($this->manager->isOnboardingComplete($user));
-
-        // Verify company was created
-        self::assertCount(1, $user->getCompanies());
-        $company = $user->getCompanies()->first();
-        self::assertSame('Test Company', $company->getName());
-
-        // Verify client was created
-        $clients = $this->clientRepository->findBy(['company' => $company]);
-        self::assertCount(1, $clients);
-        self::assertSame('Test Client', $clients[0]->getName());
-
-        // Verify invoice was created
-        $invoices = $this->invoiceRepository->findBy(['company' => $company]);
-        self::assertCount(1, $invoices);
-        self::assertSame('Test Service', $invoices[0]->getLines()->first()->getName());
-    }
-
-    /**
-     * "Service Description" is an unbounded textarea and this invoice is never validated,
-     * so a long answer has to fit the line's VARCHAR(255) name without being thrown away.
-     * The tests run on SQLite, which ignores the column width, so assert the length here —
-     * on MySQL the flush itself would fail.
-     */
-    public function testALongServiceDescriptionFitsTheLineName(): void
-    {
-        $user = $this->createUser('test-long-description@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $description = str_repeat('Consulting and advisory work, billed monthly. ', 10);
-
-        $data = new OnboardingData();
-        $data->companyName = 'Test Company';
-        $data->companyCurrency = 'USD';
-        $data->clientName = 'Test Client';
-        $data->clientEmail = 'client@example.com';
-        $data->invoiceDescription = $description;
-        $data->invoiceAmount = '1000.00';
-
-        $invoice = $this->manager->completeOnboarding($user, $data);
-
-        self::assertInstanceOf(Invoice::class, $invoice);
-
-        $line = $invoice->getLines()
-            ->first();
-
-        self::assertLessThanOrEqual(LineName::MAX_LENGTH, mb_strlen($line->getName()));
-        self::assertSame($description, $line->getDescription());
-    }
-
-    public function testCompleteOnboardingWithoutClientAndInvoice(): void
-    {
-        $user = $this->createUser('test9@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $data = new OnboardingData();
-        $data->companyName = 'Test Company';
         $data->companyCurrency = 'EUR';
 
-        $invoice = $this->manager->completeOnboarding($user, $data);
+        $company = $this->manager->completeOnboarding($user, $data);
 
-        self::assertNull($invoice);
-        self::assertTrue($this->manager->isOnboardingComplete($user));
-
-        // Verify company was created
-        self::assertCount(1, $user->getCompanies());
-        $company = $user->getCompanies()->first();
         self::assertSame('Test Company', $company->getName());
         self::assertSame('EUR', $company->currency);
-
-        // Verify no clients or invoices were created
-        self::assertCount(0, $this->clientRepository->findBy(['company' => $company]));
-        self::assertCount(0, $this->invoiceRepository->findBy(['company' => $company]));
-
-        // Verify steps were marked as skipped
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingSkipped,
-        ]);
-        self::assertNotNull($setting);
-        $skipped = json_decode((string) $setting->getValue(), true);
-        self::assertContains('client', $skipped);
-        self::assertContains('invoice', $skipped);
-    }
-
-    public function testCompleteOnboardingWithClientButNoInvoice(): void
-    {
-        $user = $this->createUser('test10@example.com');
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $data = new OnboardingData();
-        $data->companyName = 'Test Company';
-        $data->companyCurrency = 'GBP';
-        $data->clientName = 'Jane Doe';
-        $data->clientEmail = 'jane@example.com';
-
-        $invoice = $this->manager->completeOnboarding($user, $data);
-
-        self::assertNull($invoice);
+        self::assertSame([$company], $user->getCompanies()->toArray());
         self::assertTrue($this->manager->isOnboardingComplete($user));
-
-        // Verify company and client were created
-        $company = $user->getCompanies()->first();
-        self::assertCount(1, $this->clientRepository->findBy(['company' => $company]));
-
-        // Verify no invoice was created
-        self::assertCount(0, $this->invoiceRepository->findBy(['company' => $company]));
-
-        // Verify only invoice step was skipped
-        $setting = $this->userSettingRepository->findOneBy([
+        // AffiliateProgram times its prompt from this setting.
+        self::assertNotNull($this->userSettingRepository->findOneBy([
             'user' => $user,
-            'key' => UserSettingType::OnboardingSkipped,
-        ]);
-        self::assertNotNull($setting);
-        $skipped = json_decode((string) $setting->getValue(), true);
-        self::assertContains('invoice', $skipped);
-        self::assertNotContains('client', $skipped);
+            'key' => UserSettingType::OnboardingCompletedAt,
+        ]));
     }
 
     public function testDismissOnboardingMarksAsComplete(): void

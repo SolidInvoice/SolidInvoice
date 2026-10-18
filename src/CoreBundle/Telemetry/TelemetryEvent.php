@@ -31,6 +31,13 @@ enum TelemetryEvent: string
     case QuoteCreated = 'quote_created';
     case PaymentReceived = 'payment_received';
 
+    // Affiliate-programme prompt. Emitted on every install, self-hosted included,
+    // because self-hosted users can refer customers to SolidInvoice Cloud too.
+    case AffiliatePromptShown = 'affiliate_prompt_shown';
+    case AffiliatePromptDismissed = 'affiliate_prompt_dismissed';
+    case AffiliatePageViewed = 'affiliate_page_viewed';
+    case AffiliateCtaClicked = 'affiliate_cta_clicked';
+
     // SaaS (hosted) upgrade-funnel events. Emitted only by SaasBundle, which is
     // registered only when SOLIDINVOICE_PLATFORM=saas, so these never fire on
     // self-hosted installations. See docs/superpowers/specs/2026-06-22-saas-conversion-telemetry-design.md

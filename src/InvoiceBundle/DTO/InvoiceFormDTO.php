@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientName;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -65,6 +66,8 @@ final class InvoiceFormDTO
     #[Assert\Type(DateTimeInterface::class)]
     public ?DateTimeInterface $due = null;
 
+    public PaymentTerms $paymentTerms = PaymentTerms::Custom;
+
     public ?Discount $discount = null;
 
     public ?string $terms = null;
@@ -87,7 +90,7 @@ final class InvoiceFormDTO
     /**
      * @var Collection<int, Contact>
      */
-    #[Assert\Count(min: 1, groups: ['existing_client'])]
+    #[Assert\Count(min: 1, minMessage: 'invoice.users.min', groups: ['existing_client'])]
     public Collection $users;
 
     /**
