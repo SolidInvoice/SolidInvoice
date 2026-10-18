@@ -48,6 +48,9 @@ billing:
     discount: Discount
     due_date: 'Due Date'
     notes_help: 'Notes will not be visible to the client'
+    reference: 'Customer Reference'
+    reference_help: "Your customer's own reference for this document, such as their purchase order number. Shown on the PDF."
+    reference_pdf_label: 'Your Reference'
     subtotal: SubTotal
     tax: Tax
     total: Total
@@ -126,6 +129,8 @@ client:
     create:
         success: 'Client Successfully Saved!'
     custom_fields: 'Custom fields'
+    default_reference: 'Default Customer Reference'
+    default_reference_help: 'Pre-filled on new invoices and quotes for this client. Leave empty if the reference changes per order.'
     delete:
         confirm:
             message: 'This will permanently delete this client and all associated data including invoices, quotes, and payments. This action cannot be undone.'
