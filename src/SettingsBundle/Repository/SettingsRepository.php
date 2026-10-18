@@ -15,6 +15,7 @@ namespace SolidInvoice\SettingsBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\CoreBundle\Company\CompanyAddressManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -32,6 +33,7 @@ class SettingsRepository extends EntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private readonly CompanySelector $companySelector,
+        private readonly CompanyAddressManager $companyAddressManager,
     ) {
         parent::__construct($registry, Setting::class);
     }
@@ -66,6 +68,10 @@ class SettingsRepository extends EntityRepository
 
                     if ('system/company/company_name' === $key) {
                         $this->getEntityManager()->getRepository(Company::class)->updateCompanyName($value);
+                    }
+
+                    if ('system/company/contact_details/address' === $key) {
+                        $this->companyAddressManager->store(empty($value) ? null : $value);
                     }
                 }
             });
