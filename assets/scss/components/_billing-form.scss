@@ -1609,9 +1609,9 @@
 .recurring-variables-help {
     margin-block-start: var(--tblr-space-3);
     padding: var(--tblr-space-3);
-    border: 1px solid var(--tblr-info-border-subtle);
+    border: 1px solid var(--tblr-info-light);
     border-radius: var(--tblr-radius-md);
-    background: var(--tblr-info-bg-subtle);
+    background: var(--tblr-info-lighter);
 
     .variables-summary {
         display: flex;
@@ -1633,14 +1633,14 @@
         }
 
         &:hover {
-            color: var(--tblr-info-text-emphasis);
+            color: var(--tblr-info-dark);
         }
     }
 
     .variables-content {
         margin-block-start: var(--tblr-space-3);
         padding-block-start: var(--tblr-space-3);
-        border-block-start: 1px solid var(--tblr-info-border-subtle);
+        border-block-start: 1px solid var(--tblr-info-light);
 
         .variables-description {
             font-size: var(--tblr-text-sm);
