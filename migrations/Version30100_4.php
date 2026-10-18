@@ -20,7 +20,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\InvoiceBundle\Form\Type\PaymentTermsSettingType;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 final class Version30100_4 extends AbstractMigration
@@ -65,26 +64,21 @@ final class Version30100_4 extends AbstractMigration
         foreach ($this->connection->fetchFirstColumn('SELECT id FROM companies') as $companyId) {
             $exists = $this->connection->fetchOne(
                 'SELECT 1 FROM app_config WHERE company_id = ? AND setting_key = ?',
-                [$companyId, self::SETTING_KEY],
-                [UlidType::NAME]
+                [$companyId, self::SETTING_KEY]
             );
 
             if ($exists !== false) {
                 continue;
             }
 
-            $this->connection->insert(
-                'app_config',
-                [
-                    'id' => new Ulid(),
-                    'company_id' => $companyId,
-                    'setting_key' => self::SETTING_KEY,
-                    'setting_value' => 'net_30',
-                    'description' => 'Default payment terms for new invoices. A client can override this.',
-                    'field_type' => PaymentTermsSettingType::class,
-                ],
-                ['id' => UlidType::NAME, 'company_id' => UlidType::NAME],
-            );
+            $this->connection->insert('app_config', [
+                'id' => (new Ulid())->toBinary(),
+                'company_id' => $companyId,
+                'setting_key' => self::SETTING_KEY,
+                'setting_value' => 'net_30',
+                'description' => 'Default payment terms for new invoices. A client can override this.',
+                'field_type' => PaymentTermsSettingType::class,
+            ]);
         }
     }
 
