@@ -529,6 +529,18 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceAttachment\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/InvoiceAttachment.php
+
+		-
+			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceAttachment\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/InvoiceBundle/Entity/InvoiceAttachment.php
+
+		-
 			message: '#^Property SolidInvoice\\InvoiceBundle\\Entity\\InvoiceReminder\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
