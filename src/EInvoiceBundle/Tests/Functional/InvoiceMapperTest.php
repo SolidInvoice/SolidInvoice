@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\EInvoiceBundle\Tests\Functional;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -50,22 +49,55 @@ final class InvoiceMapperTest extends WebTestCase
      * invoice this should be a no-op in value terms, so Doctrine's change tracker should compute
      * no changeset and no `UPDATE` should reach `invoice_lines`.
      *
-     * It is not a no-op. `Line::updateTotal()` always assigns a `Brick\Math\BigDecimal`
-     * (`$this->getPrice()->toBigDecimal()->multipliedBy(...)`), but `BigIntegerType` hydrates the
-     * stored value as a `Brick\Math\BigInteger`. Both represent 1000, but
-     * `UnitOfWork::computeChangeSets()` compares the old and new field values with `!==`, and a
-     * `BigInteger` is never identical to a `BigDecimal` even when numerically equal — so every
-     * mapped invoice dirties every one of its lines, confirmed here with a real
-     * `computeChangeSets()` call (diff: `BigInteger('1000')` → `BigDecimal('1000', scale: 0)`,
-     * both numerically 1000). Flagged on SOL-84 with the full reproduction, per the design's own
-     * instruction: the fix is a read-only calculation path in `TaxBundle`, not a workaround here.
-     * The full reproduction (fixture, `computeChangeSets()` call, exact diff) is on that comment;
-     * rewrite this test against the fixed `TaxBundle` path once it lands.
+     * This used to dirty every line: `Line::updateTotal()` unconditionally assigned a fresh
+     * `Brick\Math\BigDecimal`, and `UnitOfWork::computeChangeSets()` compares old and new values
+     * with `===`, so a freshly constructed value object never matched the hydrated one even when
+     * numerically equal (see {@see \SolidInvoice\InvoiceBundle\Entity\Line::updateTotal()} for the
+     * fix — SOL-334). Mapping an invoice runs `TaxCalculator::calculate()`, so this is the
+     * e-invoicing side of that defect.
      */
-    #[DoesNotPerformAssertions]
     public function testMappingAFreshlyLoadedInvoiceIssuesNoLineUpdate(): void
     {
-        self::markTestSkipped('Known TaxBundle defect (BigInteger/BigDecimal changeset mismatch on Line::$total) — see the SOL-84 comment this test cites above. Remove this skip once TaxBundle gets a read-only calculation path.');
+        $company = CompanyFactory::createOne();
+        $client = ClientFactory::createOne(['company' => $company, 'currencyCode' => 'EUR']);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $company,
+            'client' => $client,
+            'total' => 1000,
+            'baseTotal' => 1000,
+            'tax' => 0,
+            'balance' => 1000,
+            'discount' => new Discount(),
+        ]);
+
+        $line = new Line();
+        $line->setName('Consulting');
+        $line->setPrice(1000);
+        $line->setQty(1);
+        $line->updateTotal();
+        $line->addTax($this->standardVat());
+
+        $invoice->addLine($line);
+
+        $this->em->flush();
+        $this->em->clear();
+
+        self::getContainer()->get(CompanySelector::class)->switchCompany($company->getId());
+
+        /** @var Invoice $freshInvoice */
+        $freshInvoice = $this->em->getRepository(Invoice::class)->find($invoice->getId());
+
+        $this->mapper()->map($freshInvoice);
+
+        $this->em->getUnitOfWork()->computeChangeSets();
+
+        $scheduledLines = array_filter(
+            $this->em->getUnitOfWork()->getScheduledEntityUpdates(),
+            static fn (object $scheduled): bool => $scheduled instanceof Line,
+        );
+
+        self::assertCount(0, $scheduledLines, 'Mapping the invoice must not schedule a line update');
     }
 
     /**
