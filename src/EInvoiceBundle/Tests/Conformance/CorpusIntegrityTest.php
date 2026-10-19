@@ -15,14 +15,11 @@ namespace SolidInvoice\EInvoiceBundle\Tests\Conformance;
 
 use DOMDocument;
 use DOMElement;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusEntry;
-use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusKind;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusManifest;
-use SolidInvoice\EInvoiceBundle\Tests\Conformance\Corpus\CorpusNotFetchedException;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Provider\CorpusFiles;
 use function count;
 use function file_get_contents;
@@ -38,10 +35,6 @@ use function sprintf;
  * Only the presence and minCases checks need a fetched corpus, so only they carry the tag: the
  * "Fetch conformance corpus" step in unit-tests.yml (SOL-141) is the only place that fetches one.
  */
-#[CoversClass(CorpusEntry::class)]
-#[CoversClass(CorpusKind::class)]
-#[CoversClass(CorpusManifest::class)]
-#[CoversClass(CorpusNotFetchedException::class)]
 final class CorpusIntegrityTest extends TestCase
 {
     /**
