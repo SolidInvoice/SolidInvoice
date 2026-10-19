@@ -19,7 +19,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SolidInvoice\EInvoiceBundle\Tests\Conformance\Case\Profile;
-use function dirname;
 use function iterator_to_array;
 
 /**
@@ -100,6 +99,6 @@ final class TestSetParserTest extends TestCase
 
     private function fixture(string $name): string
     {
-        return dirname(__DIR__) . '/Fixtures/parser/' . $name;
+        return __DIR__ . '/../Fixtures/parser/' . $name;
     }
 }
