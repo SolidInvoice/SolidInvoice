@@ -58,6 +58,8 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
     $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class);
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
     $services->alias('test.state_machine.invoice', 'state_machine.invoice');
+    // Signs pagination cursors with kernel.secret; must build even before SOLIDINVOICE_APP_SECRET is set
+    $services->alias('test.pagerfanta.cursor_encoder.signed', 'pagerfanta.cursor_encoder.signed');
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when the app mode is 'saas'. Mirror the same gate from bundles.php so
