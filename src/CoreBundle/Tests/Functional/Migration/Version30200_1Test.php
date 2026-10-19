@@ -24,7 +24,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
-use DoctrineMigrations\Version30200_2;
+use DoctrineMigrations\Version30200_1;
 use PHPUnit\Framework\Attributes\Group;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -33,7 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * `Version30200_2` widens the `invoice_tax_exactly_one_document` CHECK constraint that
+ * `Version30200_1` widens the `invoice_tax_exactly_one_document` CHECK constraint that
  * {@see \DoctrineMigrations\Version30000_9} added, and its `down()` drops FKs that reach back
  * into a table it also drops. Neither behaviour is observable on SQLite: SQLite neither
  * enforces `ALTER TABLE ADD CONSTRAINT CHECK` nor rejects a same-transaction FK ordering
@@ -47,13 +47,13 @@ use Symfony\Component\Uid\Ulid;
  * surrounding transaction — never touches the shared application test database. It covers every
  * leg of that matrix whose server enforces CHECK constraints: PostgreSQL, MariaDB, and MySQL
  * from 8.0.16 — see {@see self::enforcesCheckConstraints()}. MySQL matters on its own account
- * and not as a MariaDB stand-in: `Version30200_2::dropClause()` sends MySQL `DROP CHECK` and
+ * and not as a MariaDB stand-in: `Version30200_1::dropClause()` sends MySQL `DROP CHECK` and
  * MariaDB `DROP CONSTRAINT`, so each engine exercises a statement the other never issues.
  *
- * @see Version30200_2
+ * @see Version30200_1
  */
 #[Group('functional')]
-final class Version30200_2Test extends KernelTestCase
+final class Version30200_1Test extends KernelTestCase
 {
     private const string CHECK_CONSTRAINT = 'invoice_tax_exactly_one_document';
 
@@ -74,7 +74,7 @@ final class Version30200_2Test extends KernelTestCase
             self::markTestSkipped(sprintf(
                 '%s manipulates a CHECK constraint the database has to actually enforce '
                 . '(current platform: %s).',
-                Version30200_2::class,
+                Version30200_1::class,
                 $platform::class,
             ));
         }
@@ -140,6 +140,49 @@ final class Version30200_2Test extends KernelTestCase
 
         $checkClause = $this->fetchCheckClause();
         self::assertNotNull($checkClause, 'invoice_tax_exactly_one_document is missing after up()/postUp() — Defect 1 (MariaDB DROP CHECK) regressed.');
+        self::assertStringContainsString('credit_note_id', $checkClause);
+    }
+
+    /**
+     * `up()` on a database where `invoice_tax_exactly_one_document` does not exist. A 3.0.x
+     * database is in this state whenever {@see \DoctrineMigrations\Version30000_9} could not add
+     * the constraint: it adds it best-effort, so a non-conforming `invoice_tax` row at that time
+     * leaves the constraint absent while the migration still records as applied.
+     *
+     * Every other case here starts from {@see self::buildPreCreditNoteSchema()}, which always
+     * puts the three-column constraint in place, so `postUp()` only ever reaches its `ADD` path
+     * after a successful `DROP`. This case is the one that reaches `ADD` with nothing to drop,
+     * which is also the only path where `constraintExists()` returning false has to stop the
+     * migration from issuing a `DROP` that would fail. On MySQL that `DROP` is `DROP CHECK`
+     * rather than `DROP CONSTRAINT` (see {@see self::dropCheckClause()}), so the two engines
+     * exercise different statements here.
+     *
+     * Covers criterion 3 of the SOL-157 migration check, previously verified only by hand.
+     *
+     * @throws Exception
+     */
+    public function testUpEstablishesTheCheckConstraintWhenItIsAbsent(): void
+    {
+        $this->connection->executeStatement(sprintf(
+            'ALTER TABLE invoice_tax %s %s',
+            $this->dropCheckClause(),
+            self::CHECK_CONSTRAINT,
+        ));
+
+        self::assertNull(
+            $this->fetchCheckClause(),
+            'Precondition: invoice_tax_exactly_one_document has to be absent before up() runs.',
+        );
+
+        $this->applyUp();
+
+        $checkClause = $this->fetchCheckClause();
+        self::assertNotNull(
+            $checkClause,
+            'up()/postUp() did not establish invoice_tax_exactly_one_document on a database that '
+            . 'never had it — a 3.0.x database where Version30000_9 could not add it keeps no '
+            . 'invariant at all.',
+        );
         self::assertStringContainsString('credit_note_id', $checkClause);
     }
 
@@ -216,7 +259,7 @@ final class Version30200_2Test extends KernelTestCase
     /**
      * Builds the schema as it exists immediately after {@see \DoctrineMigrations\Version30000_9}:
      * `invoice_lines`/`invoice_tax` without a `credit_note_id` column, and the three-column
-     * `invoice_tax_exactly_one_document` CHECK already in place. `Version30200_2::postUp()` has
+     * `invoice_tax_exactly_one_document` CHECK already in place. `Version30200_1::postUp()` has
      * to replace this exact constraint — this is the state that reproduces Defect 1, since
      * without a pre-existing CHECK to drop, `postUp()` would only ever exercise the `ADD` path.
      *
@@ -260,7 +303,7 @@ final class Version30200_2Test extends KernelTestCase
 
         // The three-column form Version30000_9::addInvoiceTaxCheckConstraint() builds. Inlined
         // rather than reused: that method is private, and frozen by design — each migration's
-        // check-building SQL stays independent of the others (see Version30200_2's own copy).
+        // check-building SQL stays independent of the others (see Version30200_1's own copy).
         $this->connection->executeStatement(sprintf(
             'ALTER TABLE invoice_tax ADD CONSTRAINT %s CHECK ('
             . '(invoice_id IS NOT NULL AND quote_id IS NULL AND recurring_invoice_id IS NULL) OR '
@@ -333,7 +376,7 @@ final class Version30200_2Test extends KernelTestCase
     /**
      * `DbalExecutor` hands `preDown()` a lazy `Schema` proxy ({@see \Doctrine\Migrations\Provider\LazySchemaDiffProvider})
      * that is not actually introspected from the database until something reads it — which
-     * `Version30200_2::preDown()` never does, since it drops the inbound foreign keys straight
+     * `Version30200_1::preDown()` never does, since it drops the inbound foreign keys straight
      * through the connection instead of mutating the `Schema` it is given. So by the time
      * `fromSchema` is finally introspected for the `down()` diff, `preDown()`'s DDL has already
      * committed and the dropped foreign keys are already gone from it. Introspecting only after
@@ -410,11 +453,11 @@ final class Version30200_2Test extends KernelTestCase
     }
 
     /**
-     * Scoped to the current database/schema for the same reason {@see Version30200_2::constraintExists()}
+     * Scoped to the current database/schema for the same reason {@see Version30200_1::constraintExists()}
      * is: `information_schema.check_constraints` spans every schema the connection user can see
      * on MariaDB, and every schema in the current database on PostgreSQL, so an unscoped lookup
      * can return another database's same-named constraint instead of this test's own throwaway
-     * one — for example another `Version30200_2Test` throwaway database left over on a shared
+     * one — for example another `Version30200_1Test` throwaway database left over on a shared
      * MariaDB instance from an interrupted run.
      *
      * @throws Exception
@@ -435,8 +478,27 @@ final class Version30200_2Test extends KernelTestCase
         return $clause === false ? null : (string) $clause;
     }
 
-    private function migration(): Version30200_2
+    /**
+     * Mirrors {@see Version30200_1::dropClause()}: MySQL takes `DROP CHECK`, every other platform
+     * this test runs on takes `DROP CONSTRAINT`. `MariaDBPlatform` is a sibling of
+     * `MySQLPlatform` rather than a subclass, so the `AbstractMySQLPlatform` check alone would
+     * send MariaDB a statement it rejects with a syntax error.
+     *
+     * Duplicated rather than read off the migration: `dropClause()` is private, and each
+     * migration stays frozen — the same reason {@see self::buildPreCreditNoteSchema()} inlines
+     * `Version30000_9`'s constraint SQL.
+     */
+    private function dropCheckClause(): string
     {
-        return new Version30200_2($this->connection, new NullLogger());
+        $platform = $this->connection->getDatabasePlatform();
+
+        return $platform instanceof AbstractMySQLPlatform && ! $platform instanceof MariaDBPlatform
+            ? 'DROP CHECK'
+            : 'DROP CONSTRAINT';
+    }
+
+    private function migration(): Version30200_1
+    {
+        return new Version30200_1($this->connection, new NullLogger());
     }
 }
