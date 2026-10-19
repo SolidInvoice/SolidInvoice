@@ -298,27 +298,29 @@
                         </div>
 
                         {% set _tb = tax_breakdown(quote) %}
-                        {% if quote.tax.positive %}
-                            <div class="totals-row">
-                                <span class="totals-label">{{ 'quote.line_tax'|trans }}</span>
-                                <span class="totals-value">{{ quote.tax|formatCurrency(currency) }}</span>
-                            </div>
+                        {% if quote.tax.positive or _tb.lineTaxRows is not empty %}
+                            {% if quote.tax.positive %}
+                                <div class="totals-row">
+                                    <span class="totals-label">{{ 'quote.line_tax'|trans }}</span>
+                                    <span class="totals-value">{{ quote.tax|formatCurrency(currency) }}</span>
+                                </div>
+                            {% endif %}
                             {% for row in _tb.lineTaxRows %}
                                 <div class="totals-row totals-row-tax-breakdown">
-                                    <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%)</span>
+                                    <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%) {{ 'quote.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</span>
                                     <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
                                 </div>
                             {% endfor %}
                         {% endif %}
                         {% for row in _tb.additiveRows %}
                             <div class="totals-row">
-                                <span class="totals-label">{{ row.name }} ({{ row.rate }}%)</span>
+                                <span class="totals-label">{{ row.name }} ({{ row.rate }}%) {{ 'quote.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</span>
                                 <span class="totals-value">{{ row.amount|formatCurrency(currency) }}</span>
                             </div>
                         {% endfor %}
                         {% for row in _tb.informationalRows %}
                             <div class="totals-row totals-row-tax-breakdown">
-                                <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}</span>
+                                <span class="totals-label totals-label-sub">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %} {{ 'quote.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</span>
                                 <span class="totals-value text-muted">{{ 'quote.invoice_taxes.informational'|trans }}</span>
                             </div>
                         {% endfor %}
