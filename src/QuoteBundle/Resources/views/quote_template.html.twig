@@ -276,13 +276,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 text-center text-md-end">
-                                        <a href="https://solidinvoice.co" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
-                                            {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
-                                            {{ 'quote.external.footer.visit_website'|trans }}
-                                        </a>
-                                        <a href="https://github.com/SolidInvoice/SolidInvoice" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm ms-2">
-                                            {{ ux_icon('tabler:brand-github', {width: 16, height: 16}) }}
-                                            {{ 'quote.external.footer.github'|trans }}
+                                        <a href="https://solidinvoice.co/invoiced-with-solidinvoice?utm_source=quote&amp;utm_medium=product&amp;utm_campaign=g02-powered-by&amp;utm_content={{ toggle('saas_enabled') ? 'cloud' : 'self-hosted' }}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                                            {{ 'quote.external.footer.cta'|trans }}
                                         </a>
                                     </div>
                                 </div>

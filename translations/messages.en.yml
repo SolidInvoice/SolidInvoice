@@ -846,10 +846,9 @@ invoice:
         send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:
@@ -1826,10 +1825,9 @@ quote:
         send_failed: 'Failed to send quote email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:
