@@ -24,9 +24,7 @@ jobs:
   migrations:
     name: DB (${{ matrix.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
 
-    # Not ubuntu-latest: 26.04 ships libxml2 2.14, whose HTML serialiser changes the Spatie
-    # HtmlDriver output (raw UTF-8, double-quoted attributes). Snapshots match libxml2 2.9.
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
