@@ -36,6 +36,7 @@ use Symfony\Component\Uid\Ulid;
  * A file attached to an invoice. The blob itself lives behind
  * `SolidInvoice\CoreBundle\Storage\AttachmentStorageInterface`; this entity only
  * carries the metadata and the generated `storageKey` that locates it.
+ * @see \SolidInvoice\InvoiceBundle\Tests\Entity\InvoiceAttachmentTest
  */
 #[ORM\Table(name: InvoiceAttachment::TABLE_NAME)]
 #[ORM\Index(columns: ['company_id'])]
@@ -100,29 +101,6 @@ class InvoiceAttachment
     #[Groups(['invoice_attachment_api:read'])]
     private Ulid $id;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'attachments')]
-    #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private Invoice $invoice;
-
-    #[ORM\Column(name: 'filename', type: Types::STRING, length: 255)]
-    #[Groups(['invoice_attachment_api:read'])]
-    private string $filename;
-
-    #[ORM\Column(name: 'mime_type', type: Types::STRING, length: 127)]
-    #[Groups(['invoice_attachment_api:read'])]
-    private string $mimeType;
-
-    #[ORM\Column(name: 'file_size', type: Types::INTEGER)]
-    #[Groups(['invoice_attachment_api:read'])]
-    private int $fileSize;
-
-    /**
-     * Generated from ULIDs, never derived from user input, and never serialized —
-     * it must not leave the server.
-     */
-    #[ORM\Column(name: 'storage_key', type: Types::STRING, length: 512, unique: true)]
-    private string $storageKey;
-
     /**
      * Bare ULID rather than a `ManyToOne` to `User`, for the same reason given at
      * `ExportJob::$requestedBy`: InvoiceBundle has no production dependency on
@@ -136,14 +114,26 @@ class InvoiceAttachment
     #[Groups(['invoice_attachment_api:read', 'invoice_attachment_api:write'])]
     private bool $sharedWithClient = false;
 
-    public function __construct(Invoice $invoice, string $filename, string $mimeType, int $fileSize, string $storageKey)
-    {
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'attachments')]
+        #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+        private Invoice $invoice,
+        #[ORM\Column(name: 'filename', type: Types::STRING, length: 255)]
+        #[Groups(['invoice_attachment_api:read'])]
+        private string $filename,
+        #[ORM\Column(name: 'mime_type', type: Types::STRING, length: 127)]
+        #[Groups(['invoice_attachment_api:read'])]
+        private string $mimeType,
+        #[ORM\Column(name: 'file_size', type: Types::INTEGER)]
+        #[Groups(['invoice_attachment_api:read'])]
+        private int $fileSize, /**
+     * Generated from ULIDs, never derived from user input, and never serialized —
+     * it must not leave the server.
+     */
+        #[ORM\Column(name: 'storage_key', type: Types::STRING, length: 512, unique: true)]
+        private string $storageKey
+    ) {
         $this->id = new Ulid();
-        $this->invoice = $invoice;
-        $this->filename = $filename;
-        $this->mimeType = $mimeType;
-        $this->fileSize = $fileSize;
-        $this->storageKey = $storageKey;
     }
 
     public function getId(): Ulid
