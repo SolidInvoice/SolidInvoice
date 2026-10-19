@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\EInvoiceBundle\Mapper\BuyerMapper;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 
@@ -26,6 +27,7 @@ final class BuyerMapperTest extends TestCase
     public function testMapsClientAddressAndContactToBuyer(): void
     {
         $client = new Client()->setName('Acme Ltd');
+        $client->setCompany(new Company());
 
         $taxIdentifier = new TaxIdentifier()->setLabel('VAT')->setValue('GB123456789');
         $client->addTaxIdentifier($taxIdentifier);

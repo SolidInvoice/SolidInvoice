@@ -29,6 +29,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\CoreBundle\Doctrine\Migrations\DryRunAwareMigration;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
+use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
@@ -90,6 +91,9 @@ final class Version30200_1 extends AbstractMigration
             $table->addColumn('credit_note_id', Types::STRING, ['length' => 255]);
             $table->addColumn('uuid', Types::STRING, ['length' => 36]);
             $table->addColumn('status', Types::STRING, ['length' => 25]);
+            // CreditNote::$invoiceTypeCode (BT-3) — same column shape Version30200_3 gives
+            // invoices, owned here instead because this migration creates the table.
+            $table->addColumn('invoice_type_code', Types::STRING, ['length' => 4, 'notnull' => true, 'default' => InvoiceTypeCode::CreditNote->value]);
             $table->addColumn('credit_note_date', Types::DATE_IMMUTABLE);
             $table->addColumn('reason', Types::TEXT, ['notnull' => false]);
             $table->addColumn('total_amount', BigIntegerType::NAME);
