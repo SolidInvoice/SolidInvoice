@@ -32,7 +32,7 @@ use Doctrine\Migrations\AbstractMigration;
  * Rolling back later discards every reference a user has typed since, which is the data
  * this column exists to keep.
  */
-final class Version30200_1 extends AbstractMigration
+final class Version30200_10 extends AbstractMigration
 {
     private const array DOCUMENT_TABLES = ['invoices', 'recurring_invoices', 'quotes'];
 

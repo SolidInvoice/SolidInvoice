@@ -16,7 +16,7 @@ namespace SolidInvoice\CoreBundle\Tests\Migration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
-use DoctrineMigrations\Version30200_1;
+use DoctrineMigrations\Version30200_10;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -130,8 +130,8 @@ final class ReferenceColumnMigrationTest extends TestCase
         return $schema;
     }
 
-    private function migration(): Version30200_1
+    private function migration(): Version30200_10
     {
-        return new Version30200_1($this->connection, new NullLogger());
+        return new Version30200_10($this->connection, new NullLogger());
     }
 }
