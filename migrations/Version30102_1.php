@@ -61,6 +61,13 @@ final class Version30102_1 extends AbstractMigration
             throw new LogicException(sprintf('%s::configureSchema() did not build the "%s" table.', MessengerConnection::class, self::TABLE_NAME));
         }
 
+        if ($built->getSequences() !== []) {
+            // Oracle >= 12.1 is the only platform for which configureSchema() also emits a sequence,
+            // and src/InstallBundle/Doctrine/Drivers.php does not offer Oracle. Refuse rather than
+            // create a table whose id default points at a sequence this migration never copies.
+            throw new LogicException(sprintf('%s::configureSchema() emitted sequences, which this migration does not copy.', MessengerConnection::class));
+        }
+
         $source = $built->getTable(self::TABLE_NAME);
         $table = $schema->createTable(self::TABLE_NAME);
 
