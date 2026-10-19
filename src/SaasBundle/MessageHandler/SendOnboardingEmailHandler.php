@@ -15,22 +15,30 @@ namespace SolidInvoice\SaasBundle\MessageHandler;
 
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Controller\Security\VerifyEmail;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
+/**
+ * @see \SolidInvoice\SaasBundle\Tests\MessageHandler\SendOnboardingEmailHandlerTest
+ */
 #[AsMessageHandler]
 final readonly class SendOnboardingEmailHandler
 {
@@ -41,6 +49,9 @@ final readonly class SendOnboardingEmailHandler
         private MailerInterface $mailer,
         private SystemConfig $systemConfig,
         private LoggerInterface $logger,
+        private ClockInterface $clock,
+        private EmailVerificationGateInterface $emailVerificationGate,
+        private ?VerifyEmailHelperInterface $verifyEmailHelper = null,
     ) {
     }
 
@@ -76,15 +87,9 @@ final readonly class SendOnboardingEmailHandler
 
             $subscription = $trial->getSubscription();
 
-            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL) {
-                // User upgraded, cancelled, or trial expired between dispatch and
-                // handling — stop the sequence silently.
-                return;
-            }
+            $context = OnboardingContext::fromSubscription($user, $subscription, DateTimeImmutable::createFromInterface($this->clock->now()));
 
-            $company = $subscription->getSubscriber();
-
-            if (! $company instanceof Company) {
+            if (! $context instanceof OnboardingContext) {
                 $this->logger->warning('Onboarding email skipped: subscriber is not a Company', [
                     'user_id' => $message->userId->toString(),
                     'step_key' => $message->stepKey,
@@ -102,17 +107,28 @@ final readonly class SendOnboardingEmailHandler
                 return;
             }
 
-            $this->companySelector->switchCompany($company->getId());
+            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL && ! $step instanceof FreeFeedbackStep) {
+                // User upgraded, cancelled, or trial expired between dispatch and
+                // handling — stop the sequence silently. The Free check-in is the
+                // one step meant for after the trial; it checks its own status.
+                return;
+            }
 
-            $context = new OnboardingContext(
-                user: $user,
-                company: $company,
-                subscription: $subscription,
-                plan: $subscription->getPlan(),
-                trialStart: DateTimeImmutable::createFromInterface($subscription->getStartDate()),
-                trialEnd: DateTimeImmutable::createFromInterface($subscription->getEndDate()),
-            );
+            // Mail to an address nobody has confirmed bounces, and bounces hurt the sending
+            // reputation, so only the reminders whose job is to get it confirmed go to one.
+            // The step still counts as done, so verifying later does not replay a backlog.
+            if (! $step instanceof VerifyEmailReminderStep && $this->emailVerificationGate->isGated($user)) {
+                $this->logger->info('Onboarding email skipped: email address not verified', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
 
+            $this->companySelector->switchCompany($context->company->getId());
+
+            // Re-checked because the user may have acted (verified, sent an
+            // invoice) between the tick that dispatched this and now.
             if (! $step->shouldSend($context)) {
                 $this->logger->info('Onboarding email skipped by step condition', [
                     'user_id' => $message->userId->toString(),
@@ -122,6 +138,20 @@ final readonly class SendOnboardingEmailHandler
             }
 
             $email = $step->createEmail($context);
+
+            // Only the verify reminders get past the check above for an unverified
+            // user; they carry the link that fixes it. The helper only exists when
+            // verification is enabled.
+            if ($this->verifyEmailHelper instanceof VerifyEmailHelperInterface && $this->emailVerificationGate->isGated($user)) {
+                $email->context($email->getContext() + [
+                    'verify_url' => $this->verifyEmailHelper->generateSignature(
+                        VerifyEmail::ROUTE_NAME,
+                        $user->getId()->toString(),
+                        (string) $user->getEmail(),
+                        ['id' => $user->getId()->toBase58()],
+                    )->getSignedUrl(),
+                ]);
+            }
 
             $email->to(Address::create((string) $user->getEmail()));
 

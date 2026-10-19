@@ -1,0 +1,9 @@
+# The Google API client is only used by the Google One Tap sign-in feature,
+# which is part of the SaaS build. Its Google\Client service is therefore
+# registered in the SaaS bundle rather than globally — see
+# src/SaasBundle/Resources/config/services/onetap.php.
+#
+# (This file is kept, intentionally empty, because the google/apiclient Flex
+# recipe owns it; its default configuration wired GOOGLE_* env vars that this
+# application does not define.)
+services: {}

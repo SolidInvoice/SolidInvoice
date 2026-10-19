@@ -56,6 +56,8 @@
     <server name="APP_ENV" value="test"/>
     <server name="APP_DEBUG" value="0"/>
     <server name="KERNEL_CLASS" value="SolidInvoice\Test\Kernel"/>
+    <!-- Read when the SaaS container is built (config/packages/saas/nelmio_cors.php), so it can't be set per test. -->
+    <server name="SOLIDINVOICE_ONE_TAP_ALLOWED_ORIGINS" value="https://marketing.example.test"/>
     <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
   </php>
   <extensions>

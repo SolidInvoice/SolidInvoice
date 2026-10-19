@@ -1,0 +1,39 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{{ 'trial_downgraded.heading'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
+
+{% autoescape false -%}
+{{ 'trial_downgraded.greeting'|trans({}, 'email') }}
+
+{{ 'trial_downgraded.intro'|trans({}, 'email') }}
+
+{{ 'trial_downgraded.keep.heading'|trans({}, 'email') }}
+* {{ 'trial_downgraded.keep.invoices'|trans({}, 'email') }}
+* {{ 'trial_downgraded.keep.payments'|trans({}, 'email') }}
+* {{ 'trial_downgraded.keep.clients'|trans({}, 'email') }}
+
+{{ 'trial_downgraded.lost.heading'|trans({}, 'email') }}
+* {{ 'trial_downgraded.lost.clients'|trans({}, 'email') }}
+* {{ 'trial_downgraded.lost.recurring'|trans({}, 'email') }}
+* {{ 'trial_downgraded.lost.reminders'|trans({}, 'email') }}
+* {{ 'trial_downgraded.lost.seats'|trans({}, 'email') }}
+* {{ 'trial_downgraded.lost.branding'|trans({}, 'email') }}
+
+{{ 'trial_downgraded.upsell'|trans({}, 'email') }}
+
+{{ '-'|repeat(60) }}
+
+{{ 'trial_downgraded.cta'|trans({}, 'email') }}:
+{{ url('saas_subscription_change') }}
+
+{{ '-'|repeat(60) }}
+
+{{ 'trial_downgraded.closing'|trans({}, 'email') }}
+{%- endautoescape -%}

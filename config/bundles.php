@@ -20,6 +20,7 @@ use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle;
 use Liip\TestFixturesBundle\LiipTestFixturesBundle;
 use Meilisearch\Bundle\MeilisearchBundle;
+use Nelmio\CorsBundle\NelmioCorsBundle;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Sentry\SentryBundle\SentryBundle;
 use SolidInvoice\ApiBundle\SolidInvoiceApiBundle;
@@ -114,5 +115,6 @@ return [
     ChartjsBundle::class => ['all' => true],
     MeilisearchBundle::class => ['all' => true],
     McpBundle::class => ['all' => true],
-    DAMADoctrineTestBundle::class => ['test' => true]
+    DAMADoctrineTestBundle::class => ['test' => true],
+    NelmioCorsBundle::class => ['all' => true],
 ];

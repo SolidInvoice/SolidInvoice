@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Branch to release from (e.g. 3.1.x)"
+        description: "Branch to release from (e.g. 3.2.x)"
         required: true
         type: string
       version:
-        description: "Pre-release version string (e.g. 3.0.0-alpha1, 3.0.0-rc2)"
+        description: "Pre-release version string (e.g. 3.2.0-alpha1, 3.2.0-rc2)"
         required: true
         type: string
 

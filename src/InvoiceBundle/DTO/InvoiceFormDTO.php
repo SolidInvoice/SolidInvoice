@@ -90,7 +90,7 @@ final class InvoiceFormDTO
     /**
      * @var Collection<int, Contact>
      */
-    #[Assert\Count(min: 1, groups: ['existing_client'])]
+    #[Assert\Count(min: 1, minMessage: 'invoice.users.min', groups: ['existing_client'])]
     public Collection $users;
 
     /**
