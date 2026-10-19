@@ -599,3 +599,12 @@
         }
     }
 }
+
+// Onboarding "How did you hear about us?" (SaasBundle): the free-text box only shows when "Other" is picked.
+.heard-about-other {
+    display: none;
+}
+
+form:has(.heard-about option[value='other']:checked) .heard-about-other {
+    display: block;
+}

@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Action;
 use SolidInvoice\UserBundle\DTO\Registration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -84,6 +85,7 @@ final class Register extends AbstractController
             $user = new User();
             $user->setEmail($invitation instanceof UserInvitation ? $invitation->getEmail() : $data->email);
             $user->setPassword($data->plainPassword);
+            $user->setSignupMethod($invitation instanceof UserInvitation ? SignupMethod::Invitation : SignupMethod::Registration);
 
             // If invited, add to existing company
             if ($invitation instanceof UserInvitation) {

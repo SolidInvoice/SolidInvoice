@@ -1333,6 +1333,19 @@ onboarding:
             currency:
                 help: "The currency you'll use for invoices and quotes"
                 label: Currency
+            heard_about:
+                choices:
+                    ai_assistant: 'ChatGPT / Claude / AI assistant'
+                    colleague: 'A colleague or client'
+                    github: 'GitHub / self-hosted'
+                    google: 'Google search'
+                    invoice_received: 'An invoice I received'
+                    launch: 'Product Hunt / Hacker News'
+                    other: Other
+                    review_site: 'Review site (G2, Capterra)'
+                label: 'How did you hear about SolidInvoice? (optional)'
+                other_placeholder: 'Where did you hear about us?'
+                placeholder: 'Choose one'
             name:
                 help: 'This is how your business will appear on invoices and quotes'
                 label: 'Company Name'

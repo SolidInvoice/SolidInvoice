@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\OAuth;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidWorx\Toggler\ToggleInterface;
 use function bin2hex;
 use function random_bytes;
@@ -37,7 +38,7 @@ final readonly class GoogleUserProvisioner implements GoogleUserProvisionerInter
     ) {
     }
 
-    public function findOrCreate(GoogleIdentity $identity, ?User $currentUser = null): ?ProvisionedUser
+    public function findOrCreate(GoogleIdentity $identity, ?User $currentUser = null, SignupMethod $signupMethod = SignupMethod::Google): ?ProvisionedUser
     {
         $repository = $this->entityManager->getRepository(User::class);
 
@@ -78,6 +79,7 @@ final readonly class GoogleUserProvisioner implements GoogleUserProvisionerInter
         $user->setPassword(bin2hex(random_bytes(24)));
         $user->setEnabled(true);
         $user->setVerified($identity->emailVerified);
+        $user->setSignupMethod($signupMethod);
 
         return $this->link($user, $identity, true);
     }

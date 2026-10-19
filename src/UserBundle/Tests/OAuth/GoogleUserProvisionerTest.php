@@ -19,6 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\OAuth\GoogleIdentity;
 use SolidInvoice\UserBundle\OAuth\GoogleUserProvisioner;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -130,6 +131,7 @@ final class GoogleUserProvisionerTest extends TestCase
 
         self::assertNotNull($result);
         self::assertTrue($result->isNew);
+        self::assertSame(SignupMethod::Google, $result->user->getSignupMethod());
         self::assertSame('user@example.com', $result->user->getEmail());
         self::assertSame('Ada', $result->user->getFirstName());
         self::assertSame('Lovelace', $result->user->getLastName());
