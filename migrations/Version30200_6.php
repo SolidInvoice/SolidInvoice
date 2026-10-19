@@ -42,7 +42,7 @@ use function implode;
 use function in_array;
 use function sprintf;
 
-final class Version30200_1 extends AbstractMigration
+final class Version30200_6 extends AbstractMigration
 {
     use DryRunAwareMigration;
 
@@ -91,7 +91,7 @@ final class Version30200_1 extends AbstractMigration
             $table->addColumn('credit_note_id', Types::STRING, ['length' => 255]);
             $table->addColumn('uuid', Types::STRING, ['length' => 36]);
             $table->addColumn('status', Types::STRING, ['length' => 25]);
-            // CreditNote::$invoiceTypeCode (BT-3) — same column shape Version30200_3 gives
+            // CreditNote::$invoiceTypeCode (BT-3) — same column shape Version30200_8 gives
             // invoices, owned here instead because this migration creates the table.
             $table->addColumn('invoice_type_code', Types::STRING, ['length' => 4, 'notnull' => true, 'default' => InvoiceTypeCode::CreditNote->value]);
             $table->addColumn('credit_note_date', Types::DATE_IMMUTABLE);

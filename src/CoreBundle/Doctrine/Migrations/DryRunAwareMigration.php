@@ -25,7 +25,7 @@ namespace SolidInvoice\CoreBundle\Doctrine\Migrations;
  *
  * Where a hook runs after `up()`/`down()` would have reached the database, prefer
  * checking that the resulting state actually landed (see
- * `Version30200_1::postUp()`'s column-existence guard) over this trait: it stays
+ * `Version30200_6::postUp()`'s column-existence guard) over this trait: it stays
  * correct even where the dry-run flag failed to propagate for some other reason.
  * Use this trait for hooks that run before that state exists, most commonly `preDown()`.
  */

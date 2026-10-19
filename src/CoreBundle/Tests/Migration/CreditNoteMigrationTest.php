@@ -17,17 +17,17 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
-use DoctrineMigrations\Version30200_1;
+use DoctrineMigrations\Version30200_6;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 /**
- * `Version30200_1` on SQLite in particular: SQLite cannot add a foreign key to an existing
+ * `Version30200_6` on SQLite in particular: SQLite cannot add a foreign key to an existing
  * table by `ALTER`, so Doctrine recreates `invoice_lines` and `invoice_tax` under the hood.
  * `invoice_lines` is populated on any real 3.0.x database, so this proves that recreation
  * preserves every existing row and its `type` discriminator value, not just the new column.
  *
- * @see Version30200_1
+ * @see Version30200_6
  */
 final class CreditNoteMigrationTest extends TestCase
 {
@@ -200,8 +200,8 @@ final class CreditNoteMigrationTest extends TestCase
         }
     }
 
-    private function migration(): Version30200_1
+    private function migration(): Version30200_6
     {
-        return new Version30200_1($this->connection, new NullLogger());
+        return new Version30200_6($this->connection, new NullLogger());
     }
 }

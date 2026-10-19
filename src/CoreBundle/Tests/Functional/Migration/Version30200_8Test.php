@@ -19,7 +19,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\Schema;
-use DoctrineMigrations\Version30200_3;
+use DoctrineMigrations\Version30200_8;
 use PHPUnit\Framework\Attributes\Group;
 use Psr\Log\NullLogger;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -29,7 +29,7 @@ use function bin2hex;
 use function random_bytes;
 
 /**
- * `Version30200_3` adds a `NOT NULL DEFAULT` column, which backfills pre-existing rows as part
+ * `Version30200_8` adds a `NOT NULL DEFAULT` column, which backfills pre-existing rows as part
  * of the DDL itself. SQLite honours `ADD COLUMN ... DEFAULT` differently enough from the engines
  * users actually run that only a real engine proves the backfill — see the `schema` document on
  * SOL-82 §6. This test runs against the real connection the current test matrix provides (see
@@ -37,7 +37,7 @@ use function random_bytes;
  * so the migration's DDL — which commits immediately on MariaDB regardless of any surrounding
  * transaction — never touches the shared application test database.
  *
- * @see Version30200_3
+ * @see Version30200_8
  */
 #[Group('functional')]
 final class Version30200_3Test extends KernelTestCase
@@ -61,7 +61,7 @@ final class Version30200_3Test extends KernelTestCase
             self::markTestSkipped(sprintf(
                 '%s proves a NOT NULL DEFAULT backfill on the engines users actually run; SQLite cannot '
                 . 'create the throwaway database this test needs (current platform: %s).',
-                Version30200_3::class,
+                Version30200_8::class,
                 $platform::class,
             ));
         }
@@ -218,8 +218,8 @@ final class Version30200_3Test extends KernelTestCase
         }
     }
 
-    private function migration(): Version30200_3
+    private function migration(): Version30200_8
     {
-        return new Version30200_3($this->connection, new NullLogger());
+        return new Version30200_8($this->connection, new NullLogger());
     }
 }

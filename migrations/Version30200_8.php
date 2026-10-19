@@ -20,7 +20,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use function array_keys;
 
-final class Version30200_3 extends AbstractMigration
+final class Version30200_8 extends AbstractMigration
 {
     private const string COLUMN = 'invoice_type_code';
 

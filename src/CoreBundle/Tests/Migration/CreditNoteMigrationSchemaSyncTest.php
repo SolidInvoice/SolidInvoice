@@ -19,7 +19,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use DoctrineMigrations\Version30200_1;
+use DoctrineMigrations\Version30200_6;
 use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -34,7 +34,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * proves `down()` followed by `up()`/`postUp()` round-trips back to exactly that, column names,
  * indexes and all.
  *
- * @see Version30200_1
+ * @see Version30200_6
  */
 final class CreditNoteMigrationSchemaSyncTest extends KernelTestCase
 {
@@ -61,7 +61,7 @@ final class CreditNoteMigrationSchemaSyncTest extends KernelTestCase
         // against in the abstract — a `Schema` object never disagrees with itself.
         $groundTruth = $connection->createSchemaManager()->introspectSchema();
 
-        $migration = new Version30200_1($connection, new NullLogger());
+        $migration = new Version30200_6($connection, new NullLogger());
 
         // One migration back...
         $beforeDown = $connection->createSchemaManager()->introspectSchema();

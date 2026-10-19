@@ -28,7 +28,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
  * `schema` documents on SOL-89. Purely additive: no existing table is touched, no data is moved or
  * backfilled, and `down()` is a genuine inverse (see `schema` §4 on SOL-89).
  */
-final class Version30200_2 extends AbstractMigration
+final class Version30200_7 extends AbstractMigration
 {
     public function getDescription(): string
     {

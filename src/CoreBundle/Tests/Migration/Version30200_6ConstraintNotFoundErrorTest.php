@@ -19,14 +19,14 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use DoctrineMigrations\Version30200_1;
+use DoctrineMigrations\Version30200_6;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * `Version30200_1::isConstraintNotFoundError()` maps each platform's native "constraint does
+ * `Version30200_6::isConstraintNotFoundError()` maps each platform's native "constraint does
  * not exist" signal onto the `DriverException` MySQL, MariaDB and PostgreSQL actually raise for
  * a `DROP CHECK`/`DROP CONSTRAINT` target that is already gone. The path it guards is reached
  * only when `constraintExists()` cannot tell the constraint is already absent, which the
@@ -38,7 +38,7 @@ use ReflectionProperty;
  * (3821), not `ER_CONSTRAINT_NOT_FOUND` (3940) — `DROP CONSTRAINT`'s code, which this migration
  * never sends on MySQL. See SOL-395.
  *
- * @see Version30200_1
+ * @see Version30200_6
  */
 final class Version30200_1ConstraintNotFoundErrorTest extends TestCase
 {
@@ -69,7 +69,7 @@ final class Version30200_1ConstraintNotFoundErrorTest extends TestCase
 
     private function isConstraintNotFoundError(AbstractPlatform $platform, int $code, string $sqlState): bool
     {
-        $migration = new ReflectionClass(Version30200_1::class)->newInstanceWithoutConstructor();
+        $migration = new ReflectionClass(Version30200_6::class)->newInstanceWithoutConstructor();
 
         new ReflectionProperty($migration, 'platform')->setValue($migration, $platform);
 
