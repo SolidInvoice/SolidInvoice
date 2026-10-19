@@ -131,6 +131,17 @@
                             </li>
                         {% endif %}
 
+                        {# A draft has nothing billed yet to credit, and an archived/cancelled
+                           invoice is a closed document — see `design` §11 on SOL-69. #}
+                        {% if invoice.status not in [enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Draft, enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Archived, enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Cancelled] %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_invoices_credit', {'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:receipt-refund', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.credit"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+
                         {% if workflow_can(invoice, 'archive') %}
                             <li><hr class="dropdown-divider"></li>
                             <li>

@@ -1,0 +1,160 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block page_title %}
+    {{ "credit_note.title"|trans({"%id%" : creditNote.creditNoteId}) }}
+{% endblock page_title %}
+
+{% block content %}
+{% set currency = creditNote.currency %}
+<div class="doc-view-page">
+    <div class="doc-view-header no-print">
+        <div class="doc-view-header-left">
+            <div class="doc-view-icon">
+                {{ ux_icon('tabler:receipt-refund', {width: 32, height: 32}) }}
+            </div>
+            <div class="doc-view-title-group">
+                <h1 class="doc-view-title">{{ "credit_note.title"|trans({"%id%" : creditNote.creditNoteId}) }}</h1>
+                <div class="doc-view-meta">
+                    {{ credit_note_label(creditNote.status) }}
+                    {% if creditNote.invoice is not null %}
+                        <span class="doc-view-meta-item">
+                            {{ ux_icon('tabler:file-invoice', {width: 14, height: 14}) }}
+                            <a href="{{ path('_invoices_view', {'id': creditNote.invoice.id}) }}">{{ creditNote.invoice.invoiceId }}</a>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="doc-view-header-actions">
+            <div class="doc-view-utility-actions">
+                <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
+                    {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
+                </button>
+
+                <div class="dropdown">
+                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'invoice.view.toolbar.more_actions'|trans }}">
+                        {{ ux_icon('tabler:dots-vertical', {width: 20, height: 20}) }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if workflow_can(creditNote, 'issue') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_credit_notes_edit', {'id' : creditNote.id}) }}">
+                                    {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.edit"|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <form method="post" action="{{ path('_credit_notes_delete', {'id' : creditNote.id}) }}" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ creditNote.id) }}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                                        {{ "credit_note.view.toolbar.delete"|trans }}
+                                    </button>
+                                </form>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{{ path('_credit_notes_transition', {'id' : creditNote.id, 'action': 'issue'}) }}" class="d-inline">
+                                    <button type="submit" class="dropdown-item">
+                                        {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                        {{ "credit_note.view.toolbar.issue"|trans }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endif %}
+                        {% if workflow_can(creditNote, 'cancel') %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{{ path('_credit_notes_transition', {'id' : creditNote.id, 'action': 'cancel'}) }}" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
+                                        {{ "credit_note.view.toolbar.cancel"|trans }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="doc-view-content">
+        <div class="doc-view-document">
+            <div class="doc-card">
+                <div class="doc-header-from-to">
+                    <div class="doc-party doc-party-from">
+                        <div class="doc-party-label">{{ 'invoice.from'|trans }}</div>
+                        <h3 class="doc-party-name">{{ company_name() }}</h3>
+                    </div>
+
+                    <div class="doc-party doc-party-to">
+                        <div class="doc-party-label">{{ 'invoice.to'|trans }}</div>
+                        <h3 class="doc-party-name">{{ creditNote.client }}</h3>
+                    </div>
+                </div>
+
+                {% if creditNote.reason is not empty %}
+                    <div class="doc-party-detail">
+                        <span class="detail-label">{{ 'credit_note.reason'|trans }}</span>
+                        <span class="detail-value">{{ creditNote.reason }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="doc-items">
+                    <table class="doc-items-table">
+                        <thead>
+                            <tr>
+                                <th class="column-description">{{ 'invoice.item.heading.description'|trans }}</th>
+                                <th class="column-price">{{ 'invoice.item.heading.price'|trans }}</th>
+                                <th class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</th>
+                                <th class="column-total">{{ 'invoice.item.heading.total'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in creditNote.lines %}
+                                <tr>
+                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}</td>
+                                    <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
+                                    <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
+                                    <td class="column-total" data-label="{{ 'invoice.item.heading.total'|trans }}">{{ item.total|formatCurrency(currency) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-totals">
+                    <div class="doc-totals-grid">
+                        <div class="totals-row">
+                            <span class="totals-label">{{ 'invoice.subtotal'|trans }}</span>
+                            <span class="totals-value">{{ creditNote.baseTotal|formatCurrency(currency) }}</span>
+                        </div>
+                        {% if creditNote.tax.positive %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ 'invoice.line_tax'|trans }}</span>
+                                <span class="totals-value">{{ creditNote.tax|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="totals-row totals-row-total">
+                            <span class="totals-label">{{ 'billing.total'|trans }}</span>
+                            <span class="totals-value">{{ creditNote.total|formatCurrency(currency) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,268 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({class: 'billing-form-page'}) }}>
+    {% set currency = creditNote.client ? creditNote.client.currency : null %}
+
+    {{ form_start(form) }}
+
+    <div class="billing-form-container">
+        {# Page Header #}
+        <div class="billing-form-header">
+            <div class="billing-form-header-content">
+                <div class="billing-form-icon">
+                    {{ ux_icon('tabler:receipt-refund', {width: 28, height: 28}) }}
+                </div>
+                <div>
+                    {% if isEdit %}
+                        <h1 class="billing-form-title">{{ 'credit_note.edit.title'|trans }}</h1>
+                    {% else %}
+                        <h1 class="billing-form-title">{{ 'credit_note.create.title'|trans }}</h1>
+                        <p class="billing-form-subtitle">{{ 'credit_note.create.subtitle'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Credit Note Details Section (Client + Discount) #}
+        <div class="billing-details-section">
+            <div class="billing-details-grid">
+                <div class="billing-details-left">
+                    <div class="client-selection">
+                        {{ form_row(form.client, {attr: {'data-action': 'live#$render'}}) }}
+                    </div>
+                </div>
+
+                <div class="billing-details-right">
+                    {{ form_row(form.discount) }}
+                </div>
+            </div>
+        </div>
+
+        {# Main Content: 2-Column Layout #}
+        <div class="billing-form-main">
+            {# Line Items Section #}
+            <div class="billing-items-section">
+                <div class="billing-items-header">
+                    <div class="billing-items-icon">
+                        {{ ux_icon('tabler:list-details', {width: 20, height: 20}) }}
+                    </div>
+                    <h2 class="billing-items-title">{{ 'invoice.items.title'|trans }}</h2>
+                </div>
+
+                <div class="billing-items-body">
+                    {% if form.lines|length == 0 %}
+                        <div class="billing-items-empty">
+                            <div class="billing-items-empty-icon">
+                                {{ ux_icon('tabler:file-plus', {width: 32, height: 32}) }}
+                            </div>
+                            <h3 class="billing-items-empty-title">{{ 'invoice.items.empty.title'|trans }}</h3>
+                            <p class="billing-items-empty-text">{{ 'invoice.items.empty.description'|trans }}</p>
+                        </div>
+                    {% else %}
+                        <div class="billing-items-list" {{ stimulus_controller('line-reorder', {announcement: 'invoice.item.reordered'|trans}) }}
+                             {{ stimulus_action('line-reorder', 'keydown', 'keydown') }}>
+                            <div class="billing-items-header-row">
+                                <div class="column-drag"></div>
+                                <div class="column-description">{{ 'invoice.item.heading.name'|trans }}</div>
+                                <div class="column-price">{{ 'invoice.item.heading.price'|trans }}</div>
+                                <div class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</div>
+                                {% if hasTax %}
+                                    <div class="column-tax">{{ 'invoice.item.heading.tax'|trans }}</div>
+                                {% endif %}
+                                <div class="column-total">{{ 'invoice.item.heading.total'|trans }}</div>
+                                <div class="column-actions"></div>
+                            </div>
+
+                            {% for index, item in form.lines %}
+                                <div class="billing-item-row" data-line-reorder-row>
+                                    <div class="column-drag">
+                                        <button type="button" class="line-drag-handle" data-line-reorder-handle
+                                                title="{{ 'invoice.item.reorder'|trans }}"
+                                                aria-label="{{ 'invoice.item.reorder'|trans }}">
+                                            {{ ux_icon('tabler:grip-vertical', {width: 16, height: 16}) }}
+                                        </button>
+                                    </div>
+                                    <div class="column-description">
+                                        <span class="mobile-label">{{ 'invoice.item.heading.name'|trans }}</span>
+                                        {{ form_widget(item.name, {attr: {placeholder: 'invoice.item.name.placeholder'|trans, 'aria-label': 'invoice.item.name.label'|trans}}) }}
+                                        {{ form_errors(item.name) }}
+                                        <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
+                                            <summary class="line-description-toggle">{{ 'invoice.item.description.add'|trans }}</summary>
+                                            {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2, 'aria-label': 'invoice.item.description.label'|trans}}) }}
+                                            {{ form_errors(item.description) }}
+                                        </details>
+                                    </div>
+                                    <div class="column-price">
+                                        <span class="mobile-label">{{ 'invoice.item.heading.price'|trans }}</span>
+                                        {{ form_widget(item.price) }}
+                                        {{ form_errors(item.price) }}
+                                    </div>
+                                    <div class="column-qty">
+                                        <span class="mobile-label">{{ 'invoice.item.heading.qty'|trans }}</span>
+                                        {{ form_widget(item.qty) }}
+                                        {{ form_errors(item.qty) }}
+                                    </div>
+                                    {% if hasTax %}
+                                        <div class="column-tax">
+                                            <span class="mobile-label">{{ 'invoice.item.heading.tax'|trans }}</span>
+                                            {% if item.taxes is defined %}
+                                                <div class="line-tax-collection" {{ stimulus_controller('line-tax') }}>
+                                                    {% if item.taxes|length > 0 %}
+                                                        <div class="line-tax-list">
+                                                            {% for taxIndex, lineTax in item.taxes %}
+                                                                <div class="line-tax-row" data-line-tax-target="row">
+                                                                    <div class="line-tax-field line-tax-field-tax">
+                                                                        {{ form_widget(lineTax.tax) }}
+                                                                        {{ form_errors(lineTax.tax) }}
+                                                                    </div>
+                                                                    {{ form_widget(lineTax.sequence) }}
+                                                                    <div class="line-tax-actions">
+                                                                        {{ form_widget(lineTax.vars.button_delete, {
+                                                                            label: ux_icon('tabler:x', {width: 14, height: 14})|raw,
+                                                                            label_html: true,
+                                                                            attr: {class: 'btn btn-sm line-tax-remove-btn', title: 'invoice.item.tax.remove'|trans, 'aria-label': 'invoice.item.tax.remove'|trans}
+                                                                        }) }}
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {{ form_widget(item.taxes.vars.button_add, {
+                                                        label: 'invoice.item.tax.add'|trans,
+                                                        attr: {class: 'line-tax-add-btn'}
+                                                    }) }}
+                                                </div>
+
+                                                {%- do item.taxes.setRendered() -%}
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="column-total">
+                                        <span class="mobile-label">{{ 'invoice.item.heading.total'|trans }}</span>
+                                        <span class="item-total-value">{{ item.vars.value.total|formatCurrency(currency) }}</span>
+                                    </div>
+                                    <div class="column-actions">
+                                        {% if form.lines|length > 1 %}
+                                            {{ form_widget(item.vars.button_delete, {
+                                                label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,
+                                                label_html: true,
+                                                attr: {class: 'btn btn-sm remove-item-btn', title: 'invoice.item.remove'|trans, 'aria-label': 'invoice.item.remove'|trans}
+                                            }) }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="add-item-action">
+                        {{ form_widget(form.lines.vars.button_add, {
+                            label: 'invoice.item.add'|trans,
+                            attr: {class: 'add-item-btn btn-sm'}
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            {# Totals Sidebar #}
+            <div class="billing-totals-sidebar">
+                <div class="billing-totals-card">
+                    <div class="billing-totals-header">
+                        <div class="billing-totals-icon">
+                            {{ ux_icon('tabler:calculator', {width: 20, height: 20}) }}
+                        </div>
+                        <h2 class="billing-totals-title">{{ 'invoice.totals.title'|trans }}</h2>
+                    </div>
+
+                    <div class="billing-totals-body">
+                        <div class="totals-row">
+                            <span class="totals-label">{{ 'billing.subtotal'|trans }}</span>
+                            <span class="totals-value">{{ creditNote.baseTotal|formatCurrency(currency) }}</span>
+                        </div>
+
+                        {% if hasTax %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ 'billing.tax'|trans }}</span>
+                                <span class="totals-value">{{ creditNote.tax|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
+
+                        <div class="totals-row totals-row-discount">
+                            <span class="totals-label">{{ 'billing.discount'|trans }}</span>
+                            <span class="totals-value">{{ discount(creditNote)|formatCurrency(currency) }}</span>
+                        </div>
+
+                        <div class="totals-row totals-row-total">
+                            <span class="totals-label">{{ 'billing.total'|trans }}</span>
+                            <span class="totals-value">{{ creditNote.total|formatCurrency(currency) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Terms & Notes / Reason - Collapsible Section #}
+        <details class="billing-terms-section"{{ (creditNote.reason or creditNote.terms or creditNote.notes) ? ' open' : '' }}>
+            <summary class="terms-summary" aria-label="{{ 'invoice.terms_notes.toggle'|trans }}">
+                <span class="terms-summary-icon">
+                    {{ ux_icon('tabler:chevron-right', {width: 18, height: 18}) }}
+                </span>
+                <span class="terms-summary-text">
+                    <span class="terms-summary-title">{{ 'invoice.terms_notes.title'|trans }}</span>
+                    <span class="terms-summary-badge">{{ 'optional'|trans }}</span>
+                </span>
+            </summary>
+            <div class="terms-content">
+                <div class="terms-grid">
+                    {{ form_row(form.reason) }}
+                    {{ form_row(form.terms) }}
+                    {{ form_row(form.notes) }}
+                </div>
+            </div>
+        </details>
+
+        {# Hidden fields #}
+        {{ form_widget(form.total) }}
+        {{ form_widget(form.baseTotal) }}
+        {{ form_widget(form.tax) }}
+
+        {# Sticky Form Actions #}
+        <div class="billing-form-actions">
+            <div class="billing-form-actions-inner">
+                <a href="{{ path('_credit_notes_index') }}" class="btn btn-ghost">
+                    {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
+                    {{ 'invoice.save.cancel'|trans }}
+                </a>
+
+                <div class="btn-group save-button-group">
+                    <button type="submit" class="btn btn-primary btn-save-primary" name="save" value="draft">
+                        {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                        {{ 'credit_note.save.draft'|trans }}
+                    </button>
+                    {% if not isEdit or workflow_can(creditNote, 'issue') %}
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="submit" class="dropdown-item" name="save" value="issue">
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                    {{ 'credit_note.save.issue'|trans }}
+                                </button>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>

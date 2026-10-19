@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use SolidInvoice\InvoiceBundle\Action\CloneInvoice;
 use SolidInvoice\InvoiceBundle\Action\CloneRecurringInvoice;
+use SolidInvoice\InvoiceBundle\Action\CreditNote\CreateFromInvoice;
 use SolidInvoice\InvoiceBundle\Action\Create;
 use SolidInvoice\InvoiceBundle\Action\CreateRecurring;
 use SolidInvoice\InvoiceBundle\Action\Edit;
@@ -73,6 +74,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_invoices_clone', '/clone/{id}')
         ->controller(CloneInvoice::class);
+
+    $routingConfigurator
+        ->add('_invoices_credit', '/{id}/credit')
+        ->controller(CreateFromInvoice::class);
 
     $routingConfigurator
         ->add('_invoices_clone_recurring', '/clone-recurring/{id}')

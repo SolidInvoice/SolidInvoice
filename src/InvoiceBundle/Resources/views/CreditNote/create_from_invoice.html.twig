@@ -1,0 +1,33 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block page_title %}
+    {{ "credit_note.create_from_invoice.title"|trans({"%id%": invoice.invoiceId}) }}
+{% endblock page_title %}
+
+{% block content %}
+    <twig:Ui:Card>
+        {{ form_start(form) }}
+
+        <p>{{ "credit_note.create_from_invoice.remaining"|trans({"%amount%": remaining|formatCurrency(invoice.currency)}) }}</p>
+
+        {{ form_row(form.mode) }}
+        {{ form_row(form.amount) }}
+        {{ form_row(form.reason) }}
+
+        <button type="submit" class="btn btn-primary">
+            {{ ux_icon('tabler:receipt-refund', {width: 18, height: 18}) }}
+            {{ "credit_note.menu.create"|trans }}
+        </button>
+
+        {{ form_end(form) }}
+    </twig:Ui:Card>
+{% endblock content %}

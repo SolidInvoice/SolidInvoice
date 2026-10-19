@@ -285,6 +285,47 @@ contact_saved: 'The contact was saved successfully'
 create_new: 'Create New'
 create_now: 'Create one now.'
 created: Created
+credit_note:
+    create:
+        subtitle: 'Reduce an invoice balance, or grant client credit directly'
+        success: 'Credit note created successfully'
+        title: 'Create Credit Note'
+    create_from_invoice:
+        amount: Amount
+        line_name: 'Credit for invoice %invoice%'
+        mode:
+            full: 'Credit the full remaining balance'
+            partial: 'Credit a specific amount'
+        remaining: 'Remaining creditable amount: %amount%'
+        title: 'Credit Invoice %id%'
+    delete:
+        invalid_token: 'Invalid CSRF token'
+        not_draft: 'Only a draft credit note can be deleted'
+        success: 'Credit note deleted successfully'
+    edit:
+        not_draft: 'Only a draft credit note can be edited'
+        success: 'Credit note updated successfully'
+        title: 'Edit Credit Note'
+    list:
+        title: 'Credit Notes'
+    menu:
+        create: 'Create Credit Note'
+        list: 'List Credit Notes'
+        main: 'Credit Notes'
+    reason: Reason
+    save:
+        draft: 'Save as Draft'
+        issue: 'Issue Credit Note'
+    title: 'Credit Note #%id%'
+    transition:
+        action:
+            cancel: 'Credit note has been cancelled'
+            issue: 'Credit note has been issued'
+    view:
+        toolbar:
+            cancel: Cancel
+            delete: Delete
+            issue: Issue
 custom_field:
     add: 'Add field'
     badge:
@@ -541,6 +582,9 @@ datagrid:
         client:
             title: 'No clients yet'
             description: 'Add the people and companies you bill. Once a client exists, you can send them an invoice or quote in seconds.'
+        credit_note:
+            title: 'No credit notes yet'
+            description: 'Credit notes reduce an invoice balance or refund a client directly. Create one from an invoice, or standalone.'
         invoice:
             title: 'No invoices yet'
             description: 'Create your first invoice and send it in under a minute. Turn on online payments and clients can pay you straight from it.'
@@ -1149,6 +1193,7 @@ invoice:
             cancel: Cancel
             clone: Clone
             copy_link: 'Copy client link'
+            credit: 'Credit this invoice'
             edit: Edit
             link_copied: 'Link copied'
             mark_paid: 'Mark Paid'
@@ -2419,6 +2464,7 @@ status:
     expired: Expired
     failed: Failed
     inactive: Inactive
+    issued: Issued
     new: New
     overdue: Overdue
     paid: Paid

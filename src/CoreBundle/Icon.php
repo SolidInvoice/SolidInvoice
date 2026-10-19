@@ -32,4 +32,8 @@ class Icon
     final public const string RECURRING_INVOICE = 'rotate-2';
 
     final public const string RECURRING_INVOICE_ADD = 'text-plus';
+
+    final public const string CREDIT_NOTE = 'receipt-refund';
+
+    final public const string CREDIT_NOTE_ADD = 'file-plus';
 }

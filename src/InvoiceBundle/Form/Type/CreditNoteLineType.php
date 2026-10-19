@@ -1,0 +1,130 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\InvoiceBundle\Form\Type;
+
+use Doctrine\Persistence\ManagerRegistry;
+use Money\Currency;
+use Override;
+use SolidInvoice\CoreBundle\Form\Transformer\QuantityTransformer;
+use SolidInvoice\InvoiceBundle\Entity\CreditNoteLine;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\CreditNoteLineTypeTest
+ * @extends AbstractType<CreditNoteLine>
+ */
+class CreditNoteLineType extends AbstractType
+{
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        // Before `description`, so that a line submitted with only a description still gets
+        // a name out of it. See Line::setDescription().
+        $builder->add(
+            'name',
+            TextType::class,
+            [
+                'empty_data' => '',
+                'required' => false,
+                'attr' => [
+                    'class' => 'input-medium invoice-item-name',
+                ],
+            ]
+        );
+
+        $builder->add(
+            'description',
+            TextareaType::class,
+            [
+                'required' => false,
+                'attr' => [
+                    'class' => 'input-medium invoice-item-description',
+                ],
+            ]
+        );
+
+        $builder->add(
+            'price',
+            MoneyType::class,
+            [
+                'attr' => [
+                    'class' => 'input-small invoice-item-price',
+                ],
+                'currency' => $options['currency'],
+            ]
+        );
+
+        $builder->add(
+            'qty',
+            NumberType::class,
+            [
+                'empty_data' => '1',
+                'attr' => [
+                    'class' => 'input-mini invoice-item-qty',
+                ],
+            ]
+        );
+
+        // NumberType's own view transformer round-trips through a float, which would undo
+        // the exact-decimal quantity the entity now holds.
+        $builder->get('qty')
+            ->resetViewTransformers()
+            ->addViewTransformer(new QuantityTransformer());
+
+        if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
+            $builder->add(
+                'taxes',
+                LiveCollectionType::class,
+                [
+                    'entry_type' => LineTaxType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'required' => false,
+                    'by_reference' => false,
+                    'label' => false,
+                    'attr' => [
+                        'data-controller' => 'line-tax',
+                    ],
+                ]
+            );
+        }
+    }
+
+    #[Override]
+    public function getBlockPrefix(): string
+    {
+        return 'credit_note_line';
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefault('data_class', CreditNoteLine::class)
+            ->setRequired('currency')
+            ->setAllowedTypes('currency', [Currency::class]);
+    }
+}

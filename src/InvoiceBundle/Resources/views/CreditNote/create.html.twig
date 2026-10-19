@@ -1,0 +1,19 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block content %}
+    <twig:CreateCreditNote
+        :form="form"
+        :creditNote="creditNote"
+        :isEdit="isEdit"
+        :clientLocked="creditNote.invoice is not null"
+    />
+{% endblock content %}

@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use BackedEnum;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
@@ -80,6 +81,15 @@ final readonly class StatusExtension
     public function renderClientStatusLabel(Environment $environment, ?ClientStatus $status = null, ?string $tooltip = null): string | array
     {
         return $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip);
+    }
+
+    /**
+     * @return string|array<string, string>
+     */
+    #[AsTwigFunction(name: 'credit_note_label', needsEnvironment: true, isSafe: ['html'])]
+    public function renderCreditNoteStatusLabel(Environment $environment, ?CreditNoteStatus $status = null, ?string $tooltip = null): string | array
+    {
+        return $this->renderStatusOrAll($environment, $status, CreditNoteStatus::class, $tooltip);
     }
 
     /**
