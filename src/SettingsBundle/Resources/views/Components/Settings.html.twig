@@ -488,6 +488,15 @@
 
     {{ form_end(form) }}
 
+    {# Company Legal Identity - Only for System Section #}
+    {% if section is same as('system') %}
+        <div class="card settings-content-card mt-4">
+            <div class="card-body">
+                <twig:CompanyLegalIdentity />
+            </div>
+        </div>
+    {% endif %}
+
     {# Company Tax Identifiers - Only for System Section #}
     {% if section is same as('system') %}
         <div class="card settings-content-card mt-4">

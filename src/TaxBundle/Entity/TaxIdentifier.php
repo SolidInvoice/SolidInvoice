@@ -25,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\TaxBundle\Enum\TaxIdentifierScheme;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
 use SolidInvoice\TaxBundle\Validator\Constraints\SameCompanyAsClient;
 use Stringable;
@@ -86,6 +87,10 @@ class TaxIdentifier implements Stringable
     #[Groups(['client_api:read', 'client_api:write'])]
     private bool $primary = false;
 
+    #[ORM\Column(name: 'scheme', type: Types::STRING, length: 32, nullable: true, enumType: TaxIdentifierScheme::class)]
+    #[Groups(['client_api:read', 'client_api:write'])]
+    private ?TaxIdentifierScheme $scheme = null;
+
     #[ApiProperty(readableLink: false, writableLink: false)]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'taxIdentifiers')]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
@@ -129,6 +134,18 @@ class TaxIdentifier implements Stringable
     public function setPrimary(bool $primary): self
     {
         $this->primary = $primary;
+
+        return $this;
+    }
+
+    public function getScheme(): ?TaxIdentifierScheme
+    {
+        return $this->scheme;
+    }
+
+    public function setScheme(?TaxIdentifierScheme $scheme): self
+    {
+        $this->scheme = $scheme;
 
         return $this;
     }
