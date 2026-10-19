@@ -78,6 +78,33 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::assertStringContainsString('Powered By', $output);
     }
 
+    public function testGatedPlanAlwaysShowsPoweredByInTheLegacyPdfTemplates(): void
+    {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
+        $featureGate = $this->createStub(FeatureGate::class);
+        $featureGate->method('isEnabled')
+            ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
+        self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('1');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $invoice = $this->createFixtureInvoice();
+        $quote = QuoteFactory::createOne([
+            'company' => $this->company,
+            'client' => $invoice->getClient(),
+            'users' => $invoice->getUsers()->toArray(),
+        ]);
+
+        self::assertStringContainsString('Powered By', $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]));
+        self::assertStringContainsString('Powered By', $twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote]));
+    }
+
     public function testGatedPlanAlwaysShowsPoweredByOnTheClientPortal(): void
     {
         self::ensureKernelShutdown();
