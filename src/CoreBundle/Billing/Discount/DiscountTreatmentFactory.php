@@ -18,10 +18,10 @@ use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
-final class DiscountTreatmentFactory
+final readonly class DiscountTreatmentFactory
 {
     public function __construct(
-        private readonly Calculator $calculator,
+        private Calculator $calculator,
     ) {
     }
 

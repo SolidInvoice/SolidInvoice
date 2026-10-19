@@ -404,7 +404,7 @@ class Quote
 
     public function isIssued(): bool
     {
-        return $this->status !== null && ! in_array($this->status, [QuoteStatus::New, QuoteStatus::Draft], true);
+        return $this->status instanceof QuoteStatus && ! in_array($this->status, [QuoteStatus::New, QuoteStatus::Draft], true);
     }
 
     public function getClient(): ?Client

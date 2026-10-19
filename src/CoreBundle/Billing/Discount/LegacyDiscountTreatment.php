@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Billing\Discount;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -23,9 +24,15 @@ use function count;
 
 /**
  * {@see \SolidInvoice\CoreBundle\Enum\TaxArithmeticVersion::Legacy} — behaviour-preserving,
- * must not be "tidied". It reproduces today's arithmetic exactly, including reading the
- * document's persisted totals rather than the pass-1 figures, and the order-dependency that
- * comes with it.
+ * must not be "tidied". It reproduces today's arithmetic exactly, including the
+ * order-dependency that comes with it: {@see \SolidInvoice\CoreBundle\Billing\TotalCalculator}
+ * resolves this treatment while computing a fresh pass, before the document's own
+ * `tax` field has been overwritten for that pass. This mirrors that exactly rather
+ * than calling {@see Calculator::calculateDiscount()}, which reads the document's
+ * {@see BaseInvoice::getBaseTotal()}/{@see Quote::getBaseTotal()} directly — a value
+ * this treatment is resolved before the document's own base total is updated for the
+ * same pass, so reading it here would use the previous pass's figure instead of this
+ * one's $subTotal.
  */
 final readonly class LegacyDiscountTreatment implements DiscountTreatment
 {
@@ -39,7 +46,15 @@ final readonly class LegacyDiscountTreatment implements DiscountTreatment
      */
     public function amount(BaseInvoice | Quote $document, BigDecimal $subTotal, BigDecimal $totalLineTax): BigDecimal
     {
-        return $this->calculator->calculateDiscount($document)->toBigDecimal();
+        $discount = $document->getDiscount();
+
+        if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
+            $invoiceTotal = $subTotal->plus($document->getTax());
+
+            return BigDecimal::of((string) $this->calculator->calculatePercentage($invoiceTotal, $discount->getValue()));
+        }
+
+        return $discount->getValueMoney()->toBigDecimal();
     }
 
     public function allocate(BigDecimal $amount, array $lineSubtotals): array
