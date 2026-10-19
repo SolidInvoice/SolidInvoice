@@ -28,7 +28,7 @@ use function is_array;
 use function json_decode;
 use function sprintf;
 
-final class Version30200_1 extends AbstractMigration
+final class Version30200_9 extends AbstractMigration
 {
     private const string SETTING_KEY = 'system/company/contact_details/address';
 
