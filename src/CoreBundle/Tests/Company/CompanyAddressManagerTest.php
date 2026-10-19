@@ -55,7 +55,7 @@ final class CompanyAddressManagerTest extends TestCase
         $selector = new CompanySelector(M::mock(ManagerRegistry::class));
 
         if ($companyId instanceof Ulid) {
-            (new ReflectionProperty(CompanySelector::class, 'companyId'))->setValue($selector, $companyId);
+            new ReflectionProperty(CompanySelector::class, 'companyId')->setValue($selector, $companyId);
         }
 
         return new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->systemConfig);
@@ -142,12 +142,10 @@ final class CompanyAddressManagerTest extends TestCase
         $this->companyRepository->shouldReceive('find')->once()->with($companyId)->andReturn($company);
         $this->addressRepository->shouldReceive('save')
             ->once()
-            ->with(M::on(function (Address $address) use ($company): bool {
-                return $address->getCompany() === $company
-                    && '123 Main St' === $address->getStreet1()
-                    && 'Cape Town' === $address->getCity()
-                    && 'ZA' === $address->getCountry();
-            }));
+            ->with(M::on(fn (Address $address): bool => $address->getCompany() === $company
+                && '123 Main St' === $address->getStreet1()
+                && 'Cape Town' === $address->getCity()
+                && 'ZA' === $address->getCountry()));
 
         $this->manager($companyId)->store('{"street1":"123 Main St","city":"Cape Town","country":"ZA"}');
     }
