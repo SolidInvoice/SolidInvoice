@@ -48,6 +48,10 @@ Changelog
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 * Added the `messenger_messages` table to the migration chain. It was previously missing, so an instance upgraded from the tarball or a Helm `pre-upgrade` job would have the failed-message transport create it with a runtime `CREATE TABLE`, which fails on a database user without DDL privileges
 
+### Fixes
+
+* A percentage discount of 1% or less was applied as a whole percent instead (1% became 100%, 0.5% became 50%). The stored value is now the plain percentage the user typed, with no boundary guess. A migration normalises existing rows and leaves every issued document's total unchanged.
+
 3.0.0 / 2026-06-17
 -------------------
 

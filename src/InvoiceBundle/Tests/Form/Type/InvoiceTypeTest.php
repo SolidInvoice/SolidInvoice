@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
-use Brick\Math\BigDecimal;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
@@ -80,7 +79,7 @@ final class InvoiceTypeTest extends FormTestCase
 
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+        $discount->setValue($discountValue);
 
         $dto->discount = $discount;
         $dto->total = '0';
@@ -129,7 +128,7 @@ final class InvoiceTypeTest extends FormTestCase
 
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
+        $discount->setValue($discountValue);
 
         $dto->discount = $discount;
         $dto->total = '0';
