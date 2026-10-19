@@ -22,7 +22,7 @@ use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 
-final class Version30200_1 extends AbstractMigration
+final class Version30200_11 extends AbstractMigration
 {
     public function getDescription(): string
     {
