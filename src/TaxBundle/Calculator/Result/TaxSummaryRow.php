@@ -33,6 +33,7 @@ final readonly class TaxSummaryRow
         public TaxType $type,
         public bool $compound,
         public BigDecimal $amount,
+        public BigDecimal $taxableBase,
         public int $sequence = 0,
         public TaxDirection $direction = TaxDirection::Additive,
         public ?string $note = null,

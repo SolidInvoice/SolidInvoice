@@ -121,6 +121,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
                 type: $existing->type,
                 compound: $existing->compound,
                 amount: $existing->amount->plus($row->amount),
+                taxableBase: $existing->taxableBase->plus($row->taxableBase),
                 sequence: $existing->sequence,
                 direction: $existing->direction,
                 note: $existing->note,
