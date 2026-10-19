@@ -1,0 +1,64 @@
+{#
+ # Editorial credit note — same serif, numbered-section identity as the
+ # invoice variant. The kicker becomes the credit note title itself rather
+ # than "Statement of Account", which does not describe this document.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set invoice = creditNote %}
+{% set currency = creditNote.currency %}
+
+{% block extra_styles %}
+    body { font-family: Georgia, 'Times New Roman', serif; color: #2a2a2a; }
+    .editorial-marker { font-style: italic; font-size: 11pt; color: #7c4a1e; letter-spacing: 1px; }
+{% endblock %}
+
+{% block body %}
+<div style="border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; margin-bottom: 28px;">
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td style="vertical-align: bottom;">
+                {% if setting('system/company/logo') is not empty %}<div style="margin-bottom: 8px;">{{ app_logo(50) }}</div>{% endif %}
+                <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #7c4a1e;">{{ 'invoice.credit_note.pdf.title'|trans }}</div>
+                <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ creditNote.creditNoteId }}</div>
+            </td>
+            <td style="vertical-align: bottom; text-align: right;">
+                <div style="font-style: italic; font-size: 14pt; color: #2a2a2a;">{{ company_name() }}</div>
+                <div style="font-size: 9pt; color: #6b6b6b;">{{ creditNote.creditNoteDate|date('F j, Y') }}</div>
+                {% if creditNote.invoice %}
+                    <div style="font-size: 9pt; color: #6b6b6b;">{{ 'invoice.credit_note.pdf.invoice_reference'|trans }}: {{ creditNote.invoice.invoiceId }}, {{ creditNote.invoice.invoiceDate|date('F j, Y') }}</div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 28px;">
+    <tr>
+        <td style="width: 8%; vertical-align: top;"><span class="editorial-marker">I.</span></td>
+        <td style="width: 46%; vertical-align: top;">{{ inv.from_block() }}</td>
+        <td style="width: 8%; vertical-align: top;"><span class="editorial-marker">II.</span></td>
+        <td style="width: 38%; vertical-align: top;">{{ inv.credit_note_bill_to_block(creditNote) }}</td>
+    </tr>
+</table>
+
+<div class="editorial-marker" style="margin-bottom: 12px;">III. {{ 'invoice.item.heading.description'|trans }}</div>
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
+    {% for line in creditNote.lines %}
+        <tr>
+            <td style="padding: 14px 0; font-size: 11pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; vertical-align: top;">
+                <em>{{ line.name }}</em>{{ inv.line_description(line) }}
+                <div style="font-size: 9pt; color: #6b6b6b; margin-top: 2px;">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+            </td>
+            <td style="padding: 14px 0; font-size: 13pt; color: #1a1a1a; border-bottom: 1px solid #e8dcc4; text-align: right; vertical-align: top; width: 25%;">
+                {{ line.total|formatCurrency(currency) }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'invoice.total'|trans }}</div>
+{{ inv.credit_note_totals_block(creditNote, currency, {totalBg: '#f5ebd9', totalColor: '#1e293b', mono: 'Georgia, serif'}) }}
+{{ inv.terms_block(creditNote, {labelColor: '#7c4a1e', borderColor: '#e8dcc4'}) }}
+{% endblock %}

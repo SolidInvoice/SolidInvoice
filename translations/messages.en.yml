@@ -837,6 +837,12 @@ invoice:
         success: 'Invoice created successfully'
         title: 'Create Invoice'
     created: Created
+    credit_note:
+        pdf:
+            amount: 'Credit Amount'
+            date: 'Credit Note Date'
+            invoice_reference: 'For Invoice'
+            title: CREDIT NOTE
     custom_fields: 'Custom fields'
     date: 'Invoice Date'
     discount: Discount
@@ -2419,6 +2425,7 @@ status:
     expired: Expired
     failed: Failed
     inactive: Inactive
+    issued: Issued
     new: New
     overdue: Overdue
     paid: Paid

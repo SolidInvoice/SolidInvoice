@@ -1,0 +1,78 @@
+{#
+ # Compact Dense credit note — same dense, zebra-row, dark-header identity as
+ # the invoice variant. No outstanding-balance hero: a credit note has no
+ # balance of its own, so the header band shows the credit amount instead.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set invoice = creditNote %}
+{% set currency = creditNote.currency %}
+
+{% block body %}
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <tr>
+        <td style="background-color: #2e963a; width: 6px;"></td>
+        <td style="background-color: #0f172a; padding: 14px 18px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tr>
+                    <td style="vertical-align: middle; color: #ffffff;">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                {% if setting('system/company/logo') is not empty %}
+                                    <td style="vertical-align: middle; padding-right: 12px;">{{ app_logo(36) }}</td>
+                                {% endif %}
+                                <td style="vertical-align: middle; color: #ffffff;">
+                                    <div style="font-size: 16pt; font-weight: bold;">{{ company_name() }}</div>
+                                    <div style="font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.credit_note.pdf.title'|trans }} #{{ creditNote.creditNoteId }}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="vertical-align: middle; text-align: right; color: #ffffff;">
+                        <div style="font-size: 8pt; color: #94a3b8;">
+                            {{ 'invoice.credit_note.pdf.date'|trans }}: {{ creditNote.creditNoteDate|date('Y-m-d') }}
+                            {% if creditNote.invoice %} · {{ 'invoice.credit_note.pdf.invoice_reference'|trans }}: {{ creditNote.invoice.invoiceId }} ({{ creditNote.invoice.invoiceDate|date('Y-m-d') }}){% endif %}
+                        </div>
+                        <div style="font-size: 16pt; font-weight: bold;">{{ creditNote.total|formatCurrency(currency) }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 12px;">
+    <tr>
+        <td style="width: 40%; vertical-align: top;">{{ inv.from_block() }}</td>
+        <td style="width: 40%; vertical-align: top;">{{ inv.credit_note_bill_to_block(creditNote) }}</td>
+        <td style="width: 20%; vertical-align: top; text-align: right;">{{ inv.status_pair(creditNote.status) }}</td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <thead>
+        <tr style="background-color: #334155; color: #ffffff;">
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: center; width: 32px;">#</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: left;">{{ 'invoice.item.heading.description'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 60px;">{{ 'invoice.item.heading.qty'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 90px;">{{ 'invoice.item.heading.price'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 100px;">{{ 'invoice.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in creditNote.lines %}
+            <tr{% if loop.index0 is divisible by(2) %} style="background-color: #f8fafc;"{% endif %}>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: center; color: #64748b;">{{ loop.index }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; color: #1e293b;">{{ line.name }}{{ inv.line_description(line) }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.qty }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ inv.credit_note_totals_block(creditNote, currency, {totalBg: '#1e293b', totalColor: '#ffffff', totalLabelColor: '#e2e8f0'}) }}
+{{ inv.terms_block(creditNote) }}
+{% endblock %}

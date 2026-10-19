@@ -36,6 +36,31 @@
     </div>
 {% endmacro %}
 
+{#
+ # creditNote has no `invoice_primary_contact()` support — that function calls
+ # `Invoice::getUsers()`, which `CreditNote` does not have — so this is `bill_to_block`
+ # without the primary-contact line, not a palette variant of it.
+ #}
+{% macro credit_note_bill_to_block(creditNote, label='invoice.to') %}
+    <div>
+        <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
+            {{ label|trans }}
+        </div>
+        <div style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+            {{ creditNote.client }}
+        </div>
+        <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
+            {% for identifier in tax_identifiers(creditNote.client) %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+            {% endfor %}
+
+            {% for clientAddress in creditNote.client.addresses %}
+                <div>{{ clientAddress|replace({"\n": ", "}) }}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro from_block(label='invoice.from') %}
     <div>
         <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
@@ -231,6 +256,82 @@
                 </td>
             </tr>
         {% endif %}
+    </table>
+{% endmacro %}
+
+{#
+ # credit_note_totals_block
+ #
+ # A credit note has no balance or payment history of its own — it reduces the
+ # referenced invoice's balance, it does not carry one — so this drops the
+ # `hasOutstandingBalance`/payment rows of `totals_block` and always prints the
+ # plain total. `invoice_has_outstanding_balance()` and `invoice_captured_payments()`
+ # both require an `Invoice`, which `CreditNote` is not, so those two calls could
+ # not stay in a shared macro.
+ #
+ # palette keys: subtotalColor, labelColor, discountColor, totalBg, totalColor,
+ # totalLabelColor, mono
+ #}
+{% macro credit_note_totals_block(creditNote, currency, palette={}) %}
+    {% set p = {
+        subtotalColor: '#1e293b',
+        labelColor: '#475569',
+        discountColor: '#ef4444',
+        totalBg: '#f0fdf4',
+        totalColor: '#166534',
+        totalLabelColor: '#1e293b',
+        mono: 'Courier New, monospace'
+    }|merge(palette) %}
+
+    <table cellpadding="0" cellspacing="0" style="width: 280px; border-collapse: collapse; margin-left: auto;">
+        <tr>
+            <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; font-weight: 600; color: {{ p.subtotalColor }};">
+                {{ 'invoice.subtotal'|trans }}
+            </td>
+            <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                {{ creditNote.baseTotal|formatCurrency(currency) }}
+            </td>
+        </tr>
+        {% set _tb = tax_breakdown(creditNote) %}
+        {% if creditNote.tax.positive %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'invoice.line_tax'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                    {{ creditNote.tax|formatCurrency(currency) }}
+                </td>
+            </tr>
+            {% for row in _tb.lineTaxRows %}
+                <tr>
+                    <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ row.name }} ({{ row.rate }}%)
+                    </td>
+                    <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #475569;">
+                        {{ row.amount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        {% if creditNote.discount.type is not empty %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'invoice.discount'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.discountColor }};">
+                    -{{ discount(creditNote)|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+        <tr><td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"></td></tr>
+        <tr style="background-color: {{ p.totalBg }};">
+            <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.totalLabelColor }};">
+                {{ 'invoice.total'|trans }}
+            </td>
+            <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
+                {{ creditNote.total|formatCurrency(currency) }}
+            </td>
+        </tr>
     </table>
 {% endmacro %}
 

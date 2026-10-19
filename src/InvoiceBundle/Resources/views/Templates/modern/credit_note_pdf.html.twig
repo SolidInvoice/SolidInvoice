@@ -1,0 +1,69 @@
+{#
+ # Modern Minimal credit note — same hero-amount, whitespace-first identity
+ # as the invoice variant, with the hero showing the credit amount rather
+ # than a balance due.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set invoice = creditNote %}
+{% set currency = creditNote.currency %}
+
+{% block extra_styles %}
+    body { font-family: helvetica, Arial, sans-serif; color: #1e293b; }
+{% endblock %}
+
+{% block body %}
+<div style="padding: 30mm 0 12mm 0;">
+    {% if setting('system/company/logo') is not empty %}
+        <div style="margin-bottom: 16px;">{{ app_logo(50) }}</div>
+    {% endif %}
+    <div style="font-size: 9pt; color: #475569; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">
+        {{ 'invoice.credit_note.pdf.title'|trans }} · #{{ creditNote.creditNoteId }}
+    </div>
+    <div style="font-size: 11pt; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">
+        {{ 'invoice.credit_note.pdf.amount'|trans }}
+    </div>
+    <div style="font-size: 36pt; font-weight: bold; color: #0f172a; line-height: 1.0;">
+        {{ creditNote.total|formatCurrency(currency) }}
+    </div>
+</div>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 28px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+    <tr>
+        <td style="width: 33%; vertical-align: top;">{{ inv.from_block() }}</td>
+        <td style="width: 33%; vertical-align: top; padding: 0 12px;">{{ inv.credit_note_bill_to_block(creditNote) }}</td>
+        <td style="width: 34%; vertical-align: top;">
+            {{ inv.meta_pair('invoice.credit_note.pdf.date'|trans, creditNote.creditNoteDate|date('F j, Y')) }}
+            {% if creditNote.invoice %}
+                {{ inv.meta_pair('invoice.credit_note.pdf.invoice_reference'|trans, creditNote.invoice.invoiceId ~ ' · ' ~ creditNote.invoice.invoiceDate|date('F j, Y')) }}
+            {% endif %}
+            {{ inv.status_pair(creditNote.status) }}
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
+    <thead>
+        <tr>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: left; border-bottom: 1px solid #e2e8f0;">{{ 'invoice.item.heading.description'|trans }}</th>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'invoice.item.heading.qty'|trans }}</th>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'invoice.item.heading.price'|trans }}</th>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'invoice.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in creditNote.lines %}
+            <tr>
+                <td style="padding: 16px 0; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1f5f9;">{{ line.name }}{{ inv.line_description(line) }}</td>
+                <td style="padding: 16px 0; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.qty }}</td>
+                <td style="padding: 16px 0; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 16px 0; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ inv.credit_note_totals_block(creditNote, currency, {totalBg: '#ffffff', totalColor: '#0f172a'}) }}
+{{ inv.terms_block(creditNote) }}
+{% endblock %}
