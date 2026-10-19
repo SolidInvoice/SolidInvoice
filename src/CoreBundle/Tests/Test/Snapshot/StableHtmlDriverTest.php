@@ -25,6 +25,14 @@ final class StableHtmlDriverTest extends TestCase
      * quotes instead of being normalised to the double-quoted, &quot;-escaped
      * form. This fixture carries both at once, so a regression in either half
      * fails this test.
+     *
+     * The literal (not entity-encoded) UTF-8 character is the canonical form
+     * here, not an arbitrary choice: saveHTML() itself picks between
+     * `&oacute;` and `ó` depending on the libxml2 version doing the
+     * serializing (confirmed on PR #3045 — identical input, 2.9.14 emits the
+     * entity, the libxml2 shipped with Ubuntu 26.04 emits the literal
+     * character), so asserting the entity form here would pin this test to
+     * this host's libxml2 rather than catching the regression it exists for.
      */
     public function testSerializeIsStableAndEncodingCorrectForSingleQuotedJsonAttributeAndNonAsciiText(): void
     {
@@ -38,13 +46,44 @@ final class StableHtmlDriverTest extends TestCase
         self::assertSame($first, $second, 'Serializing the same input twice must produce byte-identical output.');
 
         self::assertStringContainsString(
-            'data-live-props-value="{&quot;label&quot;:&quot;Costa Rican Col&oacute;n&quot;}"',
+            'data-live-props-value="{&quot;label&quot;:&quot;Costa Rican Colón&quot;}"',
             $first,
             'The attribute must always be double-quoted with its JSON content &quot;-escaped, regardless of host libxml2.',
         );
 
-        self::assertStringContainsString('Caf&eacute;', $first, 'Non-ASCII text must be decoded as UTF-8, not mangled into mojibake.');
-        self::assertStringNotContainsString('&Atilde;', $first, 'A UTF-8 byte sequence misread as Latin-1 (mojibake) means the charset hint was not applied.');
+        self::assertStringContainsString('Café', $first, 'Non-ASCII text must be decoded as a literal UTF-8 character, not left as an entity or mangled into mojibake.');
+        self::assertStringNotContainsString('&Atilde;', $first, 'A UTF-8 byte sequence misread as Latin-1 (mojibake) means the pre-parse ASCII-safe encoding was not applied.');
+    }
+
+    /**
+     * Same fixture, fed in pre-entity-encoded instead of as a literal
+     * character. Whichever form libxml2's serializer picks on this host, the
+     * post-process decode step must still normalise it to the literal
+     * character — this is what makes the driver host-independent rather than
+     * merely reproducing one host's current behaviour.
+     */
+    public function testSerializeNormalisesAPreEncodedNonAsciiEntityToTheSameLiteralCharacter(): void
+    {
+        $driver = new StableHtmlDriver();
+
+        $literal = $driver->serialize('<p>Café</p>');
+        $preEncoded = $driver->serialize('<p>Caf&eacute;</p>');
+
+        self::assertSame($literal, $preEncoded);
+    }
+
+    /**
+     * Regression guard: the pre-parse ASCII-safe encoding step used to go
+     * through mb_encode_numericentity(), whose convmap silently corrupts any
+     * character outside the Basic Multilingual Plane. The onboarding email
+     * snapshot's feature icons are emoji, which is exactly that case — this
+     * fixture pins that an emoji survives serialization intact.
+     */
+    public function testSerializePreservesAnEmojiOutsideTheBasicMultilingualPlane(): void
+    {
+        $result = new StableHtmlDriver()->serialize('<p>👥</p>');
+
+        self::assertStringContainsString('👥', $result);
     }
 
     public function testExtensionIsHtml(): void
@@ -53,21 +92,24 @@ final class StableHtmlDriverTest extends TestCase
     }
 
     /**
-     * The charset hint used to force UTF-8 decoding is itself a processing
-     * instruction prepended to the input. When the input already starts with
-     * its own `<!DOCTYPE ...>` (as the invoice/quote email templates do),
-     * saveHTML() emits the doctype first and the hint right after it instead
-     * of consuming it — the hint must still be stripped from there, not just
-     * from the very start of the string.
+     * Earlier versions of this driver forced UTF-8 decoding with a
+     * `<?xml encoding="utf-8" ?>` processing instruction prepended to the
+     * input, which some libxml2 releases serialize back into the output as a
+     * literal `<!--?xml ... ?-->` comment — worse than the mojibake it was
+     * meant to prevent. This driver no longer injects that hint at all (see
+     * the class docblock), so there is nothing to leak; this test pins that
+     * a leading `<!DOCTYPE ...>` (as the invoice/quote email templates have)
+     * still comes out first and clean.
      */
-    public function testSerializeStripsTheCharsetHintAfterALeadingDoctype(): void
+    public function testSerializeDoesNotLeakAnyParserHintAfterALeadingDoctype(): void
     {
         $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
             . "\n<html xmlns=\"http://www.w3.org/1999/xhtml\"><body><p>café</p></body></html>";
 
         $result = new StableHtmlDriver()->serialize($html);
 
-        self::assertStringNotContainsString('<?xml encoding="utf-8" ?>', $result);
+        self::assertStringNotContainsString('<?xml', $result);
+        self::assertStringNotContainsString('encoding="utf-8"', $result);
         self::assertStringStartsWith('<!DOCTYPE html PUBLIC', $result);
     }
 

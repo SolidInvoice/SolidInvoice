@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Snapshot;
 
+use const ENT_HTML5;
+use const ENT_QUOTES;
 use const LIBXML_HTML_NODEFDTD;
 use const PHP_OS_FAMILY;
 use DOMDocument;
 use PHPUnit\Framework\Assert;
 use Spatie\Snapshots\Driver;
 use Spatie\Snapshots\Exceptions\CantBeSerialized;
+use function html_entity_decode;
 use function is_string;
-use function preg_replace;
+use function mb_ord;
+use function mb_strlen;
 use function preg_replace_callback;
 use function str_replace;
 
@@ -34,12 +38,34 @@ use function str_replace;
  * libxml2 releases. That is what reddened 92 snapshot tests when GitHub moved
  * `ubuntu-latest` from 24.04 to 26.04 with no code change on our side (SOL-518).
  *
- * This driver forces the input encoding with the `<?xml encoding="utf-8" ?>`
- * processing-instruction hint (consumed by the parser, never added as a node,
- * unlike a literal <meta charset> tag which would land in an auto-created <head>
- * and change the snapshot's markup) and then normalises attribute quoting itself
- * instead of trusting saveHTML()'s choice, so the output no longer depends on
- * which libxml2 the test happens to run against.
+ * This driver has two independent steps, neither of which trusts libxml2's own
+ * choices:
+ *
+ * 1. Before parsing, every non-ASCII character is pre-converted to a numeric
+ *    character reference one codepoint at a time with {@see mb_ord()}, so the
+ *    string DOMDocument::loadHTML() actually sees is pure ASCII. That removes
+ *    any chance of the parser misreading a UTF-8 byte sequence as Latin-1
+ *    (the mojibake, e.g. `&Atilde;&sup3;`, that an un-hinted load produces),
+ *    regardless of which libxml2 does the parsing. This has to walk codepoints
+ *    by hand rather than use {@see mb_encode_numericentity()}: that function's
+ *    convmap maps a character outside the Basic Multilingual Plane (an emoji,
+ *    for example) to the wrong number and silently corrupts it.
+ * 2. After DOMDocument::saveHTML(), every HTML character reference that
+ *    decodes to a non-ASCII character is decoded back to the literal UTF-8
+ *    character. This step exists because saveHTML() itself is not
+ *    deterministic here: parsing always turns a reference into a plain
+ *    Unicode text node internally, so which form (`&oacute;` vs the literal
+ *    `ó`) the *serializer* then chooses is a second, independent libxml2
+ *    version difference, left open even once parsing is made safe by step 1.
+ *    A `<?xml encoding="utf-8" ?>` content hint does not avoid this: it only
+ *    helps parsing, and on newer libxml2 the hint itself is serialized back
+ *    into the output as a literal `<!--?xml encoding="utf-8" ?-->` comment,
+ *    which is worse. Decoding is restricted to non-ASCII results so that
+ *    structural references (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`) are
+ *    left untouched.
+ *
+ * Attribute quoting is then normalised separately, so the result no longer
+ * depends on which libxml2 the test happens to run against.
  * @see \SolidInvoice\CoreBundle\Tests\Test\Snapshot\StableHtmlDriverTest
  */
 final class StableHtmlDriver implements Driver
@@ -54,18 +80,21 @@ final class StableHtmlDriver implements Driver
             return "\n";
         }
 
+        $asciiSafeData = (string) preg_replace_callback(
+            '/[\x{80}-\x{10FFFF}]/u',
+            static fn (array $characterMatch): string => '&#' . mb_ord($characterMatch[0], 'UTF-8') . ';',
+            $data,
+        );
+
         $domDocument = new DOMDocument('1.0');
         $domDocument->preserveWhiteSpace = false;
         $domDocument->formatOutput = true;
 
-        @$domDocument->loadHTML('<?xml encoding="utf-8" ?>' . $data, LIBXML_HTML_NODEFDTD);
+        @$domDocument->loadHTML($asciiSafeData, LIBXML_HTML_NODEFDTD);
 
         $html = (string) $domDocument->saveHTML();
-        // When the source has its own <!DOCTYPE ...>, saveHTML() puts the doctype first and
-        // leaves this hint as literal text straight after it instead of consuming it, so the
-        // removal cannot be anchored to the start of the string.
-        $html = (string) preg_replace('/<\?xml\s+encoding="utf-8"\s*\?>/', '', $html);
         $html = $this->withStableAttributeQuoting($html);
+        $html = $this->withLiteralNonAsciiCharacters($html);
 
         if (PHP_OS_FAMILY === 'Windows') {
             return str_replace("\r\n", "\n", $html);
@@ -139,5 +168,30 @@ final class StableHtmlDriver implements Driver
         }
 
         return $attributes;
+    }
+
+    /**
+     * Decode every HTML character reference that represents a non-ASCII
+     * character back to that literal UTF-8 character, so the snapshot does
+     * not depend on whether this host's libxml2 chose to emit `&oacute;` or
+     * `ó`. References that decode to ASCII (`&amp;`, `&lt;`, `&gt;`,
+     * `&quot;`, `&#39;`) are left alone, since those are structural, not
+     * text content.
+     */
+    private function withLiteralNonAsciiCharacters(string $html): string
+    {
+        return (string) preg_replace_callback(
+            '/&(?:#x[0-9a-fA-F]+|#[0-9]+|[a-zA-Z][a-zA-Z0-9]*);/',
+            static function (array $referenceMatch): string {
+                $decoded = html_entity_decode($referenceMatch[0], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                if (mb_strlen($decoded) !== 1 || mb_ord($decoded) < 128) {
+                    return $referenceMatch[0];
+                }
+
+                return $decoded;
+            },
+            $html,
+        );
     }
 }
