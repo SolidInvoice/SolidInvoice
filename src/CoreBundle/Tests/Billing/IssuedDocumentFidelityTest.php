@@ -234,8 +234,7 @@ final class IssuedDocumentFidelityTest extends KernelTestCase
     {
         return new TotalCalculator(
             $this->em->getRepository(Payment::class),
-            new Calculator(),
-            new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory()),
+            new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory(new Calculator())),
         );
     }
 }

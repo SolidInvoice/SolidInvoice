@@ -58,6 +58,12 @@ class LineRepository extends EntityRepository
             ->getQuery();
 
         foreach ($query->toIterable() as $invoice) {
+            if ($invoice->isIssued() && $invoice->hasPinnedTaxArithmetic()) {
+                // Frozen: the historical tax figure stays, the same as any other
+                // recalculation the freeze guard blocks.
+                continue;
+            }
+
             $invoice->setTax(0);
             $this->calculator->calculateTotals($invoice);
 

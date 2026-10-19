@@ -58,6 +58,12 @@ class LineRepository extends EntityRepository
             ->getQuery();
 
         foreach ($query->toIterable() as $quote) {
+            if ($quote->isIssued() && $quote->hasPinnedTaxArithmetic()) {
+                // Frozen: the historical tax figure stays, the same as any other
+                // recalculation the freeze guard blocks.
+                continue;
+            }
+
             $quote->setTax(0);
             $this->calculator->calculateTotals($quote);
 

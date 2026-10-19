@@ -20,12 +20,17 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 
 final class DiscountTreatmentFactory
 {
+    public function __construct(
+        private readonly Calculator $calculator,
+    ) {
+    }
+
     public function for(BaseInvoice | Quote $document): DiscountTreatment
     {
         $version = $document->getTaxArithmeticVersion() ?? TaxArithmeticVersion::current();
 
         return match ($version) {
-            TaxArithmeticVersion::Legacy => new LegacyDiscountTreatment(new Calculator()),
+            TaxArithmeticVersion::Legacy => new LegacyDiscountTreatment($this->calculator),
         };
     }
 }

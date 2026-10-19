@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatmentFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
 use SolidInvoice\TaxBundle\Calculator\LineTaxCalculator;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculator;
@@ -39,7 +40,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->calculator = new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory());
+        $this->calculator = new TaxCalculator(new LineTaxCalculator(), new InvoiceTaxCalculator(), new DiscountTreatmentFactory(new Calculator()));
     }
 
     public function testTdsScenarioFromAcceptanceCriteria(): void

@@ -272,7 +272,7 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function isIssued(): bool
     {
-        return ! in_array($this->status, [InvoiceStatus::New, InvoiceStatus::Draft], true);
+        return $this->status !== null && ! in_array($this->status, [InvoiceStatus::New, InvoiceStatus::Draft], true);
     }
 
     public function getUuid(): Uuid

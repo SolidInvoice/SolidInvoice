@@ -15,20 +15,20 @@ namespace SolidInvoice\CoreBundle\Billing;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
-use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\CoreBundle\Enum\TaxArithmeticVersion;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 
 /**
  * Populates {@see BaseInvoice}/{@see Quote} totals (subtotal, tax, grand total,
- * balance) by delegating tax math to {@see TaxCalculatorInterface} and discount math
- * to {@see Calculator::calculateDiscount()}.
+ * balance) by delegating tax math to {@see TaxCalculatorInterface}, including the
+ * document-level discount, which {@see TaxCalculatorInterface::calculate()} resolves
+ * through the document's {@see TaxArithmeticVersion}-selected
+ * {@see \SolidInvoice\CoreBundle\Billing\Discount\DiscountTreatment}.
  *
  * @see \SolidInvoice\CoreBundle\Tests\Billing\TotalCalculatorTest
  */
@@ -36,7 +36,6 @@ class TotalCalculator
 {
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
-        private readonly Calculator $calculator,
         private readonly TaxCalculatorInterface $taxCalculator,
     ) {
     }
@@ -77,20 +76,12 @@ class TotalCalculator
         $entity->setBaseTotal($subTotal);
 
         if ($entity->getDiscount()->getValue()) {
-            $total = $this->applyDiscount($entity, $total);
+            $total = $total->minus($result->discountAmount);
         }
 
         $entity->setTotal($total);
         $entity->setTax($tax);
         $entity->setWithholdingAmount($withholding);
         $entity->setPayableAmount(BigDecimal::of($total)->minus($withholding));
-    }
-
-    /**
-     * @throws MathException
-     */
-    private function applyDiscount(BaseInvoice | Quote $entity, BigDecimal | BigInteger $total): BigNumber
-    {
-        return $total->minus($this->calculator->calculateDiscount($entity));
     }
 }

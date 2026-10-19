@@ -18,7 +18,8 @@ use Brick\Math\Exception\MathException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use function array_map;
+use function array_fill;
+use function count;
 
 /**
  * {@see \SolidInvoice\CoreBundle\Enum\TaxArithmeticVersion::Legacy} — behaviour-preserving,
@@ -43,6 +44,6 @@ final readonly class LegacyDiscountTreatment implements DiscountTreatment
 
     public function allocate(BigDecimal $amount, array $lineSubtotals): array
     {
-        return array_map(BigDecimal::zero(...), $lineSubtotals);
+        return array_fill(0, count($lineSubtotals), BigDecimal::zero());
     }
 }
