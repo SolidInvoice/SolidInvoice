@@ -161,7 +161,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $row = $this->singleSummaryRow($result, 'VAT 15%');
 
         $rate = BigDecimal::of('15.0000');
-        $expected = (new Rounder(RoundingStrategy::HalfEven))->round(
+        $expected = new Rounder(RoundingStrategy::HalfEven)->round(
             $row->taxableBase->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))
         );
 
@@ -183,6 +183,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line->setPrice(30000);
         $line->setQty(1);
         $line->addTax($this->lineTax('VAT Inclusive 20%', '20.0000', TaxType::Inclusive));
+
         $invoice->addLine($line);
 
         $result = $this->calculator->calculate($invoice);
@@ -204,6 +205,7 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line->setPrice(100000);
         $line->setQty(1);
         $line->addTax($this->lineTax('VAT', '18.0000', TaxType::Exclusive));
+
         $invoice->addLine($line);
 
         $invoice->addInvoiceTax($this->invoiceTax('Surcharge', '5.0000', TaxDirection::Additive));
@@ -231,12 +233,14 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $line1->setPrice(10000);
         $line1->setQty(1);
         $line1->addTax($this->lineTax('VAT A', '10.0000', TaxType::Exclusive));
+
         $invoice->addLine($line1);
 
         $line2 = new Line();
         $line2->setPrice(20000);
         $line2->setQty(1);
         $line2->addTax($this->lineTax('VAT B', '20.0000', TaxType::Exclusive));
+
         $invoice->addLine($line2);
 
         $result = $this->calculator->calculate($invoice);
