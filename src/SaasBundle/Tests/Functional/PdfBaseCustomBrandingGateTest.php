@@ -22,11 +22,13 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -43,8 +45,8 @@ use Twig\Environment;
  * - When the feature is enabled, the setting controls visibility as before.
  * - On self-hosted (NoopFeatureGate), `hide_powered_by=1` suppresses the line.
  *
- * The "Powered By" content lives in the `<pagefooter content-left=...>`
- * attribute of the rendered template (see `classic/pdf.html.twig` which
+ * The "Powered By" link lives in the `<htmlpagefooter>` block of the rendered
+ * template (see `classic/pdf.html.twig` which
  * extends `_pdf_base.html.twig`).
  */
 #[Group('functional')]
@@ -148,6 +150,39 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $output = $this->renderPdfTemplate();
 
         self::assertStringNotContainsString('Powered By', $output);
+    }
+
+    public function testPoweredByFooterLinksMatchPlatform(): void
+    {
+        $this->seedHidePoweredBy('0');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $invoice = $this->createFixtureInvoice();
+        $invoiceView = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $invoice]);
+        $quoteView = $twig->render('@SolidInvoiceQuote/quote_template.html.twig', ['quote' => QuoteFactory::createOne([
+            'company' => $this->company,
+            'client' => $invoice->getClient(),
+            'users' => $invoice->getUsers()->toArray(),
+        ])]);
+        $pdfHtml = $twig->render('@SolidInvoiceInvoice/Templates/classic/pdf.html.twig', ['invoice' => $invoice]);
+
+        // Same footer in both modes; utm_content tells cloud and self-hosted traffic apart.
+        $content = ($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas' ? 'cloud' : 'self-hosted';
+        $utm = '&amp;utm_medium=product&amp;utm_campaign=g02-powered-by&amp;utm_content=' . $content;
+
+        self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=invoice' . $utm, $invoiceView);
+        self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=quote' . $utm, $quoteView);
+        self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=pdf' . $utm, $pdfHtml);
+        self::assertStringNotContainsString('github.com/SolidInvoice/SolidInvoice', $invoiceView . $quoteView);
+
+        $generator = self::getContainer()->get(Generator::class);
+        self::assertInstanceOf(Generator::class, $generator);
+
+        // mPDF must keep the footer anchor as a link annotation. Strings are encrypted
+        // (SetProtection), so the URL itself is checked in the rendered HTML above.
+        self::assertStringContainsString('/S /URI', $generator->generate($pdfHtml));
     }
 
     private function reloadCompany(): void

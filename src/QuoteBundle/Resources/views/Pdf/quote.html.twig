@@ -21,7 +21,7 @@
             margin-bottom: 25mm;
             margin-left: 15mm;
             margin-right: 15mm;
-            footer: footer;
+            footer: html_footer;
         }
     </style>
 </head>
@@ -37,13 +37,14 @@
 {# ============================================================================
    PAGE FOOTER (mPDF specific)
 ============================================================================ #}
-<pagefooter
-    name="footer"
-    content-left="{{ (setting('system/general/hide_powered_by') is not same as('1') or not feature_enabled('custom_branding')) ? 'powered_by'|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}"
-    content-right="{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}"
-    line="on"
-    footer-style="border-top: 1px solid #e2e8f0; font-size: 8pt; color: #64748b; padding-top: 8px;"
-/>
+<htmlpagefooter name="footer">
+    <table width="100%" style="font-size: 8pt; color: #64748b;">
+        <tr>
+            <td style="border-top: 1px solid #e2e8f0; padding-top: 8px;">{% if setting('system/general/hide_powered_by') is not same as ('1') %}<a href="https://solidinvoice.co/invoiced-with-solidinvoice?utm_source=pdf&amp;utm_medium=product&amp;utm_campaign=g02-powered-by&amp;utm_content={{ toggle('saas_enabled') ? 'cloud' : 'self-hosted' }}" style="color: #64748b; text-decoration: none;">{{ 'powered_by'|trans }} {{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% endif %}</td>
+            <td style="border-top: 1px solid #e2e8f0; padding-top: 8px; text-align: right;">{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}</td>
+        </tr>
+    </table>
+</htmlpagefooter>
 
 {# ============================================================================
    HEADER SECTION - Company Info + Quote Details
