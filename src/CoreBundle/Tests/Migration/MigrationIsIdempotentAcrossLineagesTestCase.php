@@ -27,7 +27,9 @@ use function http_build_query;
 use function preg_replace;
 use function rawurlencode;
 use function sprintf;
+use function strrchr;
 use function strtolower;
+use function substr;
 
 /**
  * There are two schema lineages in the field: a fresh install, built straight from the ORM
@@ -187,7 +189,9 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
      */
     protected function databaseName(string $lineage): string
     {
-        $label = strtolower((string) preg_replace('/[^a-zA-Z0-9]+/', '_', static::migrationClass()));
+        // Short class name only: MySQL caps database names at 64 characters, and the
+        // namespace plus the `_test` + TEST_TOKEN suffix can push past it.
+        $label = strtolower((string) preg_replace('/[^a-zA-Z0-9]+/', '_', substr(strrchr('\\' . static::migrationClass(), '\\'), 1)));
 
         return sprintf('mig_%s_%s', $label, $lineage);
     }
