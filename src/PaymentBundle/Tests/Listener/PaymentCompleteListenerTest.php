@@ -80,7 +80,7 @@ final class PaymentCompleteListenerTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
 
-        assert($response instanceof FlashResponse);
+        self::assertInstanceOf(FlashResponse::class, $response);
         $flashes = iterator_to_array($response->getFlash());
         self::assertSame(
             'payment.create.exception.not_enough_credit',
