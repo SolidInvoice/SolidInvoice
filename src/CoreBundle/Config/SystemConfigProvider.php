@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Config;
 
+use SolidInvoice\CoreBundle\Form\Type\CompanyNameSettingType;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
@@ -30,7 +31,7 @@ final class SystemConfigProvider implements ProviderInterface
     {
         return [
             new Config('system/company/logo', null, null, ImageUploadType::class),
-            new Config('system/company/company_name', $data['company_name'] ?? null, null, TextType::class),
+            new Config('system/company/company_name', $data['company_name'] ?? null, null, CompanyNameSettingType::class),
             new Config('system/company/contact_details/address', null, null, AddressType::class),
             new Config('system/company/contact_details/email', null, null, EmailType::class),
             new Config('system/company/contact_details/phone_number', null, null, TextType::class),
