@@ -112,6 +112,6 @@ class CreditRepository extends EntityRepository
             $amount = (string) $amount;
         }
 
-        return BigNumber::of($amount)->toScale(0, RoundingMode::HalfEven)->toInt();
+        return BigNumber::of($amount)->toScale(0, RoundingMode::Unnecessary)->toInt();
     }
 }
