@@ -20,7 +20,9 @@ jobs:
   unit:
     name: Unit ( PHP ${{ matrix.php }} )
 
-    runs-on: ubuntu-latest
+    # Not ubuntu-latest: 26.04 ships libxml2 2.14, whose HTML serialiser changes the Spatie
+    # HtmlDriver output (raw UTF-8, double-quoted attributes). Snapshots match libxml2 2.9.
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
