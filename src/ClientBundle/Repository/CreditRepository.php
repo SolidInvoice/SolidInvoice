@@ -16,7 +16,7 @@ namespace SolidInvoice\ClientBundle\Repository;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
@@ -56,7 +56,7 @@ class CreditRepository extends EntityRepository
             ->where('c.client = :clientId')
             ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('clientId', $client->getId(), UlidType::NAME)
-            ->setParameter('now', new DateTimeImmutable(), Types::DATETIME_IMMUTABLE)
+            ->setParameter('now', CarbonImmutable::now(), Types::DATETIME_IMMUTABLE)
             ->getQuery()
             ->execute();
 
@@ -89,7 +89,7 @@ class CreditRepository extends EntityRepository
             ->andWhere('c.value >= :amount')
             ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('clientId', $client->getId(), UlidType::NAME)
-            ->setParameter('now', new DateTimeImmutable(), Types::DATETIME_IMMUTABLE)
+            ->setParameter('now', CarbonImmutable::now(), Types::DATETIME_IMMUTABLE)
             ->getQuery()
             ->execute();
 
