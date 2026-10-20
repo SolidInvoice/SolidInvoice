@@ -56,6 +56,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MAILER_SENDER)', 'SolidInvoice <no-reply@solidinvoice.co>');
     $parameters->set('env(SOLIDINVOICE_TRANSLATION_DSN)', '');
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
+    $parameters->set('env(SOLIDINVOICE_LOCK_DSN)', 'flock');
     $parameters->set('env(SOLIDINVOICE_PLATFORM)', null);
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_URL)', '');
     $parameters->set('env(SOLIDINVOICE_MEILISEARCH_API_KEY)', '');
