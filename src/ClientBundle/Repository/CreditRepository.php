@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends EntityRepository<Credit>
@@ -45,9 +46,9 @@ class CreditRepository extends EntityRepository
             ->createQueryBuilder()
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value + :amount')
-            ->where('c.client = :client')
+            ->where('c.client = :clientId')
             ->setParameter('amount', $intAmount, Types::BIGINT)
-            ->setParameter('client', $client)
+            ->setParameter('clientId', $client->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
 
@@ -71,10 +72,10 @@ class CreditRepository extends EntityRepository
             ->createQueryBuilder()
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value - :amount')
-            ->where('c.client = :client')
+            ->where('c.client = :clientId')
             ->andWhere('c.value >= :amount')
             ->setParameter('amount', $intAmount, Types::BIGINT)
-            ->setParameter('client', $client)
+            ->setParameter('clientId', $client->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
 
