@@ -235,13 +235,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
 
     private function administrativeConnection(): Connection
     {
-        $params = [
-            'driver' => $this->engine->driver,
-            'host' => $this->engine->host,
-            'port' => $this->engine->port,
-            'user' => $this->engine->user,
-            'password' => $this->engine->password,
-        ];
+        $params = $this->connectionParams();
 
         // pdo_pgsql needs a database to connect to; pdo_mysql does not.
         if ($this->engine->driver === 'pdo_pgsql') {
@@ -252,6 +246,20 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     }
 
     /**
+     * @return array{driver: string, host: string, port: int, user: string, password: string}
+     */
+    private function connectionParams(): array
+    {
+        return [
+            'driver' => $this->engine->driver,
+            'host' => $this->engine->host,
+            'port' => $this->engine->port,
+            'user' => $this->engine->user,
+            'password' => $this->engine->password,
+        ];
+    }
+
+    /**
      * A connection to a database this harness already created and migrated, for a concrete
      * test case that needs to read back the rows a migration's postUp() wrote, rather than
      * only the schema drift {@see testMigrationResolvesDriftAgainstTheUpgradedLineage} checks.
@@ -259,11 +267,7 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
     protected function connection(string $databaseName): Connection
     {
         return DriverManager::getConnection([
-            'driver' => $this->engine->driver,
-            'host' => $this->engine->host,
-            'port' => $this->engine->port,
-            'user' => $this->engine->user,
-            'password' => $this->engine->password,
+            ...$this->connectionParams(),
             'dbname' => $this->physicalDatabaseName($databaseName),
         ]);
     }

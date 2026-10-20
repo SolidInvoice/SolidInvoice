@@ -81,9 +81,11 @@ final class Version30102_1 extends AbstractMigration
 
         $primaryKey = $source->getPrimaryKeyConstraint();
 
-        if ($primaryKey instanceof PrimaryKeyConstraint) {
-            $table->addPrimaryKeyConstraint($primaryKey);
+        if (! $primaryKey instanceof PrimaryKeyConstraint) {
+            throw new LogicException(sprintf('%s::configureSchema() did not define a primary key on the "%s" table.', MessengerConnection::class, self::TABLE_NAME));
         }
+
+        $table->addPrimaryKeyConstraint($primaryKey);
 
         foreach ($source->getIndexes() as $index) {
             if ($index->isPrimary()) {
