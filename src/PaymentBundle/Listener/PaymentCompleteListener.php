@@ -74,10 +74,9 @@ class PaymentCompleteListener implements EventSubscriberInterface
                 // Mark this payment as failed so the invoice stays unpaid.
                 $em = $this->registry->getManager();
                 $payment->setStatus(PaymentStatus::Failed);
-                $em->persist($payment);
                 $em->flush();
 
-                $invoice = $event->getPayment()->getInvoice();
+                $invoice = $payment->getInvoice();
                 $redirectUrl = $invoice instanceof Invoice
                     ? $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
                     : $this->router->generate('_payments_index');
@@ -90,6 +89,8 @@ class PaymentCompleteListener implements EventSubscriberInterface
                         }
                     }
                 );
+
+                $event->stopPropagation();
 
                 return;
             }

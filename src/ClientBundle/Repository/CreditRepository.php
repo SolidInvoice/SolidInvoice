@@ -16,8 +16,10 @@ namespace SolidInvoice\ClientBundle\Repository;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
@@ -42,13 +44,19 @@ class CreditRepository extends EntityRepository
     {
         $intAmount = $this->toIntAmount($amount);
 
+        if ($intAmount <= 0) {
+            throw new InvalidArgumentException('Amount must be positive');
+        }
+
         $this->getEntityManager()
             ->createQueryBuilder()
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value + :amount')
+            ->set('c.updated', ':now')
             ->where('c.client = :clientId')
             ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('clientId', $client->getId(), UlidType::NAME)
+            ->setParameter('now', new DateTimeImmutable(), Types::DATETIME_IMMUTABLE)
             ->getQuery()
             ->execute();
 
@@ -66,16 +74,22 @@ class CreditRepository extends EntityRepository
     {
         $intAmount = $this->toIntAmount($amount);
 
+        if ($intAmount <= 0) {
+            throw new InvalidArgumentException('Amount must be positive');
+        }
+
         // Single atomic UPDATE: checks balance and deducts in one statement.
         // If the WHERE clause fails (insufficient credit), zero rows are affected.
         $affected = $this->getEntityManager()
             ->createQueryBuilder()
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value - :amount')
+            ->set('c.updated', ':now')
             ->where('c.client = :clientId')
             ->andWhere('c.value >= :amount')
             ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('clientId', $client->getId(), UlidType::NAME)
+            ->setParameter('now', new DateTimeImmutable(), Types::DATETIME_IMMUTABLE)
             ->getQuery()
             ->execute();
 

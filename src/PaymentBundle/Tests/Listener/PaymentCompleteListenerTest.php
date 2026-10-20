@@ -59,7 +59,6 @@ final class PaymentCompleteListenerTest extends TestCase
             ->andThrow(InsufficientCreditException::class);
 
         $em = Mockery::mock(EntityManagerInterface::class);
-        $em->shouldReceive('persist')->with($payment)->once();
         $em->shouldReceive('flush')->once();
 
         $registry = Mockery::mock(ManagerRegistry::class);
@@ -80,7 +79,6 @@ final class PaymentCompleteListenerTest extends TestCase
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
 
-        self::assertInstanceOf(FlashResponse::class, $response);
         $flashes = iterator_to_array($response->getFlash());
         self::assertSame(
             'payment.create.exception.not_enough_credit',
