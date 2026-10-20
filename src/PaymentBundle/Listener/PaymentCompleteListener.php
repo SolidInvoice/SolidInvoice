@@ -69,8 +69,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
                 // The atomic deduction guard fired — another concurrent payment
                 // already consumed the credit between Prepare's check and now.
                 // Mark this payment as failed so the invoice stays unpaid.
+                $em = $this->registry->getManager();
                 $payment->setStatus(PaymentStatus::Failed);
-                $this->registry->getManager()->flush();
+                $em->persist($payment);
+                $em->flush();
 
                 $invoice = $event->getPayment()->getInvoice();
                 $redirectUrl = $invoice instanceof Invoice

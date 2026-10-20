@@ -16,6 +16,7 @@ namespace SolidInvoice\ClientBundle\Repository;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -45,7 +46,7 @@ class CreditRepository extends EntityRepository
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value + :amount')
             ->where('c.client = :client')
-            ->setParameter('amount', $intAmount)
+            ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('client', $client)
             ->getQuery()
             ->execute();
@@ -72,7 +73,7 @@ class CreditRepository extends EntityRepository
             ->set('c.value', 'c.value - :amount')
             ->where('c.client = :client')
             ->andWhere('c.value >= :amount')
-            ->setParameter('amount', $intAmount)
+            ->setParameter('amount', $intAmount, Types::BIGINT)
             ->setParameter('client', $client)
             ->getQuery()
             ->execute();
