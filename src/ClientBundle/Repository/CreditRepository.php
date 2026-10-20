@@ -20,6 +20,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
@@ -61,7 +62,7 @@ class CreditRepository extends EntityRepository
             ->execute();
 
         if ((int) $affected === 0) {
-            throw new \RuntimeException('No credit record found for client; credit was not added.');
+            throw new RuntimeException('No credit record found for client; credit was not added.');
         }
 
         $credit = $client->getCredit();
