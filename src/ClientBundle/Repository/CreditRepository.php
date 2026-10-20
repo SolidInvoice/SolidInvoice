@@ -79,7 +79,7 @@ class CreditRepository extends EntityRepository
             ->getQuery()
             ->execute();
 
-        if ($affected === 0) {
+        if ((int) $affected === 0) {
             throw new InsufficientCreditException();
         }
 

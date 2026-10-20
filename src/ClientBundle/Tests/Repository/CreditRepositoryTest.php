@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 
 #[CoversClass(CreditRepository::class)]
+#[CoversClass(InsufficientCreditException::class)]
 final class CreditRepositoryTest extends KernelTestCase
 {
     use DoctrineTestTrait;
