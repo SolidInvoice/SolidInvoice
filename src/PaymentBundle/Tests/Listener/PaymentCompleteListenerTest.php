@@ -84,5 +84,6 @@ final class PaymentCompleteListenerTest extends TestCase
             'payment.create.exception.not_enough_credit',
             $flashes[FlashResponse::FLASH_DANGER]
         );
+        self::assertTrue($event->isPropagationStopped(), 'Propagation must stop so the invoice workflow does not transition on a failed payment');
     }
 }

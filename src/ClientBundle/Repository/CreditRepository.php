@@ -48,7 +48,7 @@ class CreditRepository extends EntityRepository
             throw new InvalidArgumentException('Amount must be positive');
         }
 
-        $this->getEntityManager()
+        $affected = $this->getEntityManager()
             ->createQueryBuilder()
             ->update(Credit::class, 'c')
             ->set('c.value', 'c.value + :amount')
@@ -59,6 +59,10 @@ class CreditRepository extends EntityRepository
             ->setParameter('now', CarbonImmutable::now(), Types::DATETIME_IMMUTABLE)
             ->getQuery()
             ->execute();
+
+        if ((int) $affected === 0) {
+            throw new \RuntimeException('No credit record found for client; credit was not added.');
+        }
 
         $credit = $client->getCredit();
         $this->getEntityManager()->refresh($credit);
