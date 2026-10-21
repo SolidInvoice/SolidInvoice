@@ -81,7 +81,8 @@ final class Version30100_4 extends AbstractMigration
                     'setting_value' => 'net_30',
                     'description' => 'Default payment terms for new invoices. A client can override this.',
                     'field_type' => PaymentTermsSettingType::class,
-                ], [
+                ],
+                [
                     // Unqualified, both columns bind as text and PostgreSQL rejects the raw
                     // ULID bytes as invalid UTF-8 the moment a real company exists to loop over.
                     'id' => UlidType::NAME,
