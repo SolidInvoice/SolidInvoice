@@ -54,6 +54,7 @@ final class Version30102_3MigrationTest extends TestCase
         self::assertContains('ALTER TABLE recurringinvoice_contacts DROP FOREIGN KEY FK_1673913EE31CCDF', $sql);
         self::assertContains('CREATE INDEX IDX_DA79A131E31CCDF ON recurringinvoice_contacts (recurringinvoice_id)', $sql);
         self::assertContains('ALTER TABLE recurringinvoice_contacts ADD CONSTRAINT FK_DA79A131E31CCDF FOREIGN KEY (recurringinvoice_id) REFERENCES recurring_invoices (id) ON DELETE CASCADE', $sql);
+        self::assertContains('DROP INDEX IDX_1673913EE31CCDF979B1AD6 ON recurringinvoice_contacts', $sql);
         $this->assertNoDropOrCreateTable($sql);
     }
 
@@ -131,7 +132,10 @@ final class Version30102_3MigrationTest extends TestCase
 
     private function schemaWithOldTable(): Schema
     {
-        return $this->schemaWithJoinTable('recurringinvoice_contact', '1673913E');
+        $schema = $this->schemaWithJoinTable('recurringinvoice_contact', '1673913E');
+        $schema->getTable('recurringinvoice_contact')->addIndex(['recurringinvoice_id'], 'IDX_1673913EE31CCDF979B1AD6');
+
+        return $schema;
     }
 
     private function schemaWithNewTable(): Schema

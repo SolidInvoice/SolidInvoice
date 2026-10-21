@@ -20,6 +20,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\Migrations\AbstractMigration;
 use function array_flip;
+use function in_array;
 use function strtoupper;
 
 final class Version30102_3 extends AbstractMigration
@@ -39,6 +40,14 @@ final class Version30102_3 extends AbstractMigration
         'IDX_1673913EE31CCDF' => 'IDX_DA79A131E31CCDF',
         'IDX_1673913EE7A1254A' => 'IDX_DA79A131E7A1254A',
     ];
+
+    /**
+     * Version20201 indexed (recurringinvoice_id, company_id), and Version20305 then dropped
+     * company_id. PostgreSQL drops the index with the column, but MySQL and MariaDB keep it on
+     * recurringinvoice_id alone, where it duplicates IDX_DA79A131E31CCDF and is not in the
+     * mapping. It is not restored by down(), being redundant.
+     */
+    private const array REDUNDANT_INDEXES = ['IDX_1673913EE31CCDF979B1AD6'];
 
     private const array DOWN_NAMES = [
         'FK_DA79A131E31CCDF' => 'FK_1673913EE31CCDF',
@@ -90,7 +99,7 @@ final class Version30102_3 extends AbstractMigration
     public function up(Schema $schema): void
     {
         if (! $schema->hasTable(self::NEW_TABLE) && $schema->hasTable(self::OLD_TABLE)) {
-            $this->renameTable($schema, self::OLD_TABLE, self::NEW_TABLE, self::UP_NAMES);
+            $this->renameTable($schema, self::OLD_TABLE, self::NEW_TABLE, self::UP_NAMES, self::REDUNDANT_INDEXES);
         }
 
         foreach (self::COLUMNS as $table => $columns) {
@@ -135,8 +144,9 @@ final class Version30102_3 extends AbstractMigration
 
     /**
      * @param array<string, string> $names
+     * @param list<string>          $redundantIndexes
      */
-    private function renameTable(Schema $schema, string $from, string $to, array $names): void
+    private function renameTable(Schema $schema, string $from, string $to, array $names, array $redundantIndexes = []): void
     {
         $this->addSql($this->platform->getRenameTableSQL($from, $to));
 
@@ -145,12 +155,16 @@ final class Version30102_3 extends AbstractMigration
         $withRenamedIndexes = $withoutForeignKeys->edit();
 
         $renamedIndexes = [];
+        $droppedIndexes = [];
 
         foreach ($renamed->getIndexes() as $index) {
             $oldName = $index->getObjectName()->getIdentifier()->getValue();
             $newName = $names[strtoupper($oldName)] ?? null;
 
-            if (null !== $newName) {
+            if (in_array(strtoupper($oldName), $redundantIndexes, true)) {
+                $droppedIndexes[] = $index;
+                $withRenamedIndexes->dropIndexByUnquotedName($oldName);
+            } elseif (null !== $newName) {
                 $renamedIndexes[$oldName] = $index->edit()->setUnquotedName($newName)->create();
                 $withRenamedIndexes->renameIndexByUnquotedName($oldName, $newName);
             }
@@ -174,7 +188,7 @@ final class Version30102_3 extends AbstractMigration
         // needed by the new foreign key and could not be dropped. Each diff starts from the table
         // as the previous one left it, because SQLite rebuilds the whole table from that state.
         $this->alterTable(new TableDiff($renamed, droppedForeignKeys: $droppedForeignKeys));
-        $this->alterTable(new TableDiff($withoutForeignKeys, renamedIndexes: $renamedIndexes));
+        $this->alterTable(new TableDiff($withoutForeignKeys, droppedIndexes: $droppedIndexes, renamedIndexes: $renamedIndexes));
         $this->alterTable(new TableDiff($withRenamedIndexes->create(), addedForeignKeys: $addedForeignKeys));
     }
 
