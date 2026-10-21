@@ -14,8 +14,48 @@ entries:
         - name: Pierre du Plessis
           email: open-source@solidworx.co
     apiVersion: v2
+    appVersion: 3.1.2
+    created: "2026-10-21T15:47:07.922727456Z"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.x.x
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.x.x
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.x.x
+    description: Simple and elegant open-source invoicing application
+    digest: 119b3ff837138994cc67181aadab46f7d50ea2b91682999ca7d7777ce41140f8
+    icon: https://solidinvoice.co/logo.png
+    name: solidinvoice
+    type: application
+    urls:
+    - https://charts.solidinvoice.co/solidinvoice-3.1.2.tgz
+    version: 3.1.2
+  - annotations:
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Website
+          url: https://solidinvoice.co
+        - name: Documentation
+          url: https://solidinvoice.co/docs
+        - name: Source Code
+          url: https://github.com/SolidInvoice/SolidInvoice
+      artifacthub.io/maintainers: |
+        - name: Pierre du Plessis
+          email: open-source@solidworx.co
+    apiVersion: v2
     appVersion: 3.1.1
-    created: "2026-10-15T19:05:06.576117556Z"
+    created: "2026-10-21T15:47:07.909684869Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -55,7 +95,7 @@ entries:
           email: open-source@solidworx.co
     apiVersion: v2
     appVersion: 3.1.0
-    created: "2026-10-15T19:05:06.559493357Z"
+    created: "2026-10-21T15:47:07.897549713Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -95,7 +135,7 @@ entries:
           email: open-source@solidworx.co
     apiVersion: v2
     appVersion: 3.0.1
-    created: "2026-10-15T19:05:06.542867061Z"
+    created: "2026-10-21T15:47:07.88301579Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -123,7 +163,7 @@ entries:
     version: 3.0.1
   - apiVersion: v2
     appVersion: 3.0.0
-    created: "2026-10-15T19:05:06.528330714Z"
+    created: "2026-10-21T15:47:07.870409477Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -151,7 +191,7 @@ entries:
     version: 3.0.0
   - apiVersion: v2
     appVersion: 3.0.0-alpha2
-    created: "2026-10-15T19:05:06.511740866Z"
+    created: "2026-10-21T15:47:07.857549245Z"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -177,4 +217,4 @@ entries:
     urls:
     - https://charts.solidinvoice.co/solidinvoice-3.0.0-alpha2.tgz
     version: 3.0.0-alpha2
-generated: "2026-10-15T19:05:06.496247169Z"
+generated: "2026-10-21T15:47:07.84391695Z"
