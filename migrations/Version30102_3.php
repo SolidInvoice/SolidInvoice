@@ -15,9 +15,11 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\Migrations\AbstractMigration;
+use function array_flip;
 use function strtoupper;
 
 final class Version30102_3 extends AbstractMigration
@@ -45,9 +47,25 @@ final class Version30102_3 extends AbstractMigration
         'IDX_DA79A131E7A1254A' => 'IDX_1673913EE7A1254A',
     ];
 
+    /**
+     * Columns the ORM mapping renamed to camelCase without a migration ever renaming them in the
+     * database, keyed by table, then old name => new name.
+     */
+    private const array COLUMNS = [
+        'reset_password_request' => [
+            'hashed_token' => 'hashedToken',
+            'requested_at' => 'requestedAt',
+            'expires_at' => 'expiresAt',
+        ],
+        'user_invitations' => [
+            'expires_at' => 'expiresAt',
+            'reminder_sent_at' => 'reminderSentAt',
+        ],
+    ];
+
     public function getDescription(): string
     {
-        return 'Rename recurringinvoice_contact to recurringinvoice_contacts to match the RecurringInvoice::$users join table mapping, keeping its rows, indexes and foreign keys';
+        return 'Rename the tables and columns whose ORM mapping was renamed without a migration (recurringinvoice_contact, reset_password_request and user_invitations), keeping their rows, indexes and foreign keys';
     }
 
     public function isTransactional(): bool
@@ -60,27 +78,59 @@ final class Version30102_3 extends AbstractMigration
     /**
      * doctrine:schema:update's diff cannot see a rename: DBAL's comparator matches tables by name,
      * so renaming the table on $schema would plan `CREATE TABLE recurringinvoice_contacts` plus
-     * `DROP TABLE recurringinvoice_contact`, deleting every recurring-invoice/contact association.
-     * The table is instead renamed in place with the platform's own rename statement, and the
-     * index and foreign key renames go through a hand-built TableDiff, because the comparator
-     * also treats two foreign keys that differ only by name as equal and would leave them alone.
+     * `DROP TABLE recurringinvoice_contact`, deleting every recurring-invoice/contact association,
+     * and a renamed column reads as one dropped column plus one added, empty column. Every rename
+     * here is instead planned directly with the platform: the table with its own rename
+     * statement, and its indexes, foreign keys and the columns through hand-built TableDiffs,
+     * because the comparator also treats two foreign keys that differ only by name as equal.
+     *
+     * Each rename is guarded on the old name still being there, so a fresh install, whose schema
+     * is built straight from the ORM mapping, is a no-op.
      */
     public function up(Schema $schema): void
     {
-        if ($schema->hasTable(self::NEW_TABLE) || ! $schema->hasTable(self::OLD_TABLE)) {
-            return;
+        if (! $schema->hasTable(self::NEW_TABLE) && $schema->hasTable(self::OLD_TABLE)) {
+            $this->renameTable($schema, self::OLD_TABLE, self::NEW_TABLE, self::UP_NAMES);
         }
 
-        $this->renameTable($schema, self::OLD_TABLE, self::NEW_TABLE, self::UP_NAMES);
+        foreach (self::COLUMNS as $table => $columns) {
+            $this->renameColumns($schema, $table, $columns);
+        }
     }
 
     public function down(Schema $schema): void
     {
-        if ($schema->hasTable(self::OLD_TABLE) || ! $schema->hasTable(self::NEW_TABLE)) {
+        if (! $schema->hasTable(self::OLD_TABLE) && $schema->hasTable(self::NEW_TABLE)) {
+            $this->renameTable($schema, self::NEW_TABLE, self::OLD_TABLE, self::DOWN_NAMES);
+        }
+
+        foreach (self::COLUMNS as $table => $columns) {
+            $this->renameColumns($schema, $table, array_flip($columns));
+        }
+    }
+
+    /**
+     * @param array<string, string> $columns old name => new name
+     */
+    private function renameColumns(Schema $schema, string $tableName, array $columns): void
+    {
+        if (! $schema->hasTable($tableName)) {
             return;
         }
 
-        $this->renameTable($schema, self::NEW_TABLE, self::OLD_TABLE, self::DOWN_NAMES);
+        $table = $schema->getTable($tableName);
+        $changedColumns = [];
+
+        foreach ($columns as $from => $to) {
+            if ($table->hasColumn($from) && ! $table->hasColumn($to)) {
+                $column = $table->getColumn($from);
+                $changedColumns[$from] = new ColumnDiff($column, $column->edit()->setUnquotedName($to)->create());
+            }
+        }
+
+        if ([] !== $changedColumns) {
+            $this->alterTable(new TableDiff($table, changedColumns: $changedColumns));
+        }
     }
 
     /**
@@ -91,14 +141,18 @@ final class Version30102_3 extends AbstractMigration
         $this->addSql($this->platform->getRenameTableSQL($from, $to));
 
         $renamed = $schema->getTable($from)->edit()->setUnquotedName($to)->create();
+        $withoutForeignKeys = $renamed->edit()->setForeignKeyConstraints()->create();
+        $withRenamedIndexes = $withoutForeignKeys->edit();
 
         $renamedIndexes = [];
 
         foreach ($renamed->getIndexes() as $index) {
-            $newName = $names[strtoupper($index->getObjectName()->getIdentifier()->getValue())] ?? null;
+            $oldName = $index->getObjectName()->getIdentifier()->getValue();
+            $newName = $names[strtoupper($oldName)] ?? null;
 
             if (null !== $newName) {
-                $renamedIndexes[$index->getObjectName()->getIdentifier()->getValue()] = $index->edit()->setUnquotedName($newName)->create();
+                $renamedIndexes[$oldName] = $index->edit()->setUnquotedName($newName)->create();
+                $withRenamedIndexes->renameIndexByUnquotedName($oldName, $newName);
             }
         }
 
@@ -117,12 +171,11 @@ final class Version30102_3 extends AbstractMigration
         // Three diffs, because MariaDB below 10.5.2 renames an index by dropping and re-creating it:
         // in one diff it would also drop and restore every foreign key on that index under its old
         // name, and it adds foreign keys before dropping indexes, so the old index would then be
-        // needed by the new foreign key and could not be dropped.
-        $withoutForeignKeys = $renamed->edit()->setForeignKeyConstraints()->create();
-
+        // needed by the new foreign key and could not be dropped. Each diff starts from the table
+        // as the previous one left it, because SQLite rebuilds the whole table from that state.
         $this->alterTable(new TableDiff($renamed, droppedForeignKeys: $droppedForeignKeys));
         $this->alterTable(new TableDiff($withoutForeignKeys, renamedIndexes: $renamedIndexes));
-        $this->alterTable(new TableDiff($withoutForeignKeys, addedForeignKeys: $addedForeignKeys));
+        $this->alterTable(new TableDiff($withRenamedIndexes->create(), addedForeignKeys: $addedForeignKeys));
     }
 
     private function alterTable(TableDiff $diff): void
