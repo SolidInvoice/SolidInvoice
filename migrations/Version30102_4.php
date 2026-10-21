@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use function bin2hex;
 use function sprintf;
+use function str_split;
+use function vsprintf;
 
 /**
  * Closes the remaining platform-independent drift between the migration chain and the
@@ -303,26 +311,32 @@ final class Version30102_4 extends AbstractMigration
      * non-midnight time component would have it silently truncated by that cast, so fail
      * loudly instead - the column was never meant to carry one in the first place.
      *
+     * Checked in PHP rather than SQL: there is no portable way to extract a time
+     * component (SQLite has no EXTRACT()).
+     *
      * @throws Exception
      */
     private function assertDateOnly(string $table, string $column): void
     {
-        $quotedTable = $this->platform->quoteSingleIdentifier($table);
-        $quotedColumn = $this->platform->quoteSingleIdentifier($column);
+        // ponytail: streams every non-null value through PHP; fine for a one-off upgrade check.
+        $values = $this->connection->createQueryBuilder()
+            ->select($column)
+            ->from($table)
+            ->where($this->connection->createExpressionBuilder()->isNotNull($column))
+            ->executeQuery()
+            ->iterateColumn();
 
-        $hasTimeComponent = $this->connection->fetchOne(sprintf(
-            'SELECT 1 FROM %s WHERE %s IS NOT NULL AND ('
-            . 'EXTRACT(HOUR FROM %s) <> 0 OR EXTRACT(MINUTE FROM %s) <> 0 OR EXTRACT(SECOND FROM %s) <> 0'
-            . ') LIMIT 1',
-            $quotedTable,
-            $quotedColumn,
-            $quotedColumn,
-            $quotedColumn,
-            $quotedColumn,
-        ));
+        $hasTimeComponent = false;
+
+        foreach ($values as $value) {
+            if (new DateTimeImmutable((string) $value)->format('H:i:s.u') !== '00:00:00.000000') {
+                $hasTimeComponent = true;
+                break;
+            }
+        }
 
         $this->abortIf(
-            $hasTimeComponent !== false,
+            $hasTimeComponent,
             sprintf(
                 '%s.%s has a row with a non-midnight time component; narrowing it to DATE would silently '
                 . 'truncate it. Resolve the offending rows before running this migration.',
@@ -337,14 +351,13 @@ final class Version30102_4 extends AbstractMigration
      */
     private function assertNotNull(string $table, string $column): void
     {
-        $quotedTable = $this->platform->quoteSingleIdentifier($table);
-        $quotedColumn = $this->platform->quoteSingleIdentifier($column);
-
-        $hasNull = $this->connection->fetchOne(sprintf(
-            'SELECT 1 FROM %s WHERE %s IS NULL LIMIT 1',
-            $quotedTable,
-            $quotedColumn,
-        ));
+        $hasNull = $this->connection->createQueryBuilder()
+            ->select('1')
+            ->from($table)
+            ->where($this->connection->createExpressionBuilder()->isNull($column))
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
 
         $this->abortIf(
             $hasNull !== false,
@@ -362,9 +375,10 @@ final class Version30102_4 extends AbstractMigration
      * MySQL/MariaDB - into the plain `VARCHAR(36)` the mapping now declares.
      *
      * A bare type change would reinterpret the 16 raw bytes as if they already were the
-     * 36-character text form, corrupting every existing value. `HEX()`/`SUBSTR()` work
-     * identically on MySQL 5.7+ and every MariaDB version in the support matrix, unlike
-     * `BIN_TO_UUID()`, which MariaDB has never implemented.
+     * 36-character text form, corrupting every existing value. So the text form goes into
+     * a temporary column first, formatted in PHP so no platform-specific SQL function
+     * (`BIN_TO_UUID()`, which MariaDB has never implemented, or `HEX()`) is needed, and
+     * then replaces the packed column.
      *
      * No-op on PostgreSQL (its native `uuid` already cast losslessly to `varchar` in
      * up()) and on a fresh install, where the column is `VARCHAR(36)` from the start.
@@ -379,36 +393,45 @@ final class Version30102_4 extends AbstractMigration
             return;
         }
 
-        $table = $this->platform->quoteSingleIdentifier($tableName);
-        $tempColumn = $this->platform->quoteSingleIdentifier('uuid_migrated');
-        $uuidColumn = $this->platform->quoteSingleIdentifier('uuid');
+        $schemaManager = $this->connection->createSchemaManager();
 
-        $this->connection->executeStatement(sprintf(
-            'ALTER TABLE %s ADD %s VARCHAR(36) DEFAULT NULL',
-            $table,
-            $tempColumn,
+        $tempColumn = Column::editor()
+            ->setUnquotedName('uuid_migrated')
+            ->setTypeName(Types::STRING)
+            ->setLength(36)
+            ->setNotNull(false)
+            ->create();
+
+        $schemaManager->alterTable(new TableDiff(
+            $schemaManager->introspectTableByUnquotedName($tableName),
+            addedColumns: [$tempColumn],
         ));
 
-        $this->connection->executeStatement(sprintf(
-            'UPDATE %s SET %s = LOWER(CONCAT('
-            . 'SUBSTR(HEX(%s), 1, 8), \'-\', SUBSTR(HEX(%s), 9, 4), \'-\', SUBSTR(HEX(%s), 13, 4), \'-\', '
-            . 'SUBSTR(HEX(%s), 17, 4), \'-\', SUBSTR(HEX(%s), 21, 12)'
-            . '))',
-            $table,
-            $tempColumn,
-            $uuidColumn,
-            $uuidColumn,
-            $uuidColumn,
-            $uuidColumn,
-            $uuidColumn,
-        ));
+        $rows = $this->connection->createQueryBuilder()
+            ->select('id', 'uuid')
+            ->from($tableName)
+            ->where($this->connection->createExpressionBuilder()->isNotNull('uuid'))
+            ->executeQuery()
+            ->fetchAllAssociative();
 
-        $this->connection->executeStatement(sprintf(
-            'ALTER TABLE %s DROP %s, CHANGE %s %s VARCHAR(36) NOT NULL',
-            $table,
-            $uuidColumn,
-            $tempColumn,
-            $uuidColumn,
-        ));
+        // ponytail: one UPDATE per row, fine for a one-off upgrade; batch it if a tenant's upgrade is too slow.
+        foreach ($rows as $row) {
+            $this->connection->update(
+                $tableName,
+                ['uuid_migrated' => vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex((string) $row['uuid']), 4))],
+                ['id' => $row['id']],
+                ['id' => ParameterType::BINARY],
+            );
+        }
+
+        // Two diffs: drop the packed column before the temporary one takes its name.
+        $table = $schemaManager->introspectTableByUnquotedName($tableName);
+        $schemaManager->alterTable(new TableDiff($table, droppedColumns: [$table->getColumn('uuid')]));
+
+        $table = $schemaManager->introspectTableByUnquotedName($tableName);
+        $migrated = $table->getColumn('uuid_migrated');
+        $schemaManager->alterTable(new TableDiff($table, changedColumns: [
+            'uuid_migrated' => new ColumnDiff($migrated, $migrated->edit()->setUnquotedName('uuid')->setNotNull(true)->create()),
+        ]));
     }
 }
