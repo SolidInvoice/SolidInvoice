@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
-use DoctrineMigrations\Version30102_5;
+use DoctrineMigrations\Version30102_3;
+use DoctrineMigrations\Version30102_4;
 
-final class Version30102_5MigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
+final class Version30102_4MigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
 {
     protected static function migrationClass(): string
     {
-        return Version30102_5::class;
+        return Version30102_4::class;
+    }
+
+    protected static function predecessorVersion(): string
+    {
+        return Version30102_3::class;
     }
 
     protected static function resolvedDriftFragments(): array
