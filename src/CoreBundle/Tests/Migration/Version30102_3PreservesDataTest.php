@@ -68,6 +68,7 @@ final class Version30102_3PreservesDataTest extends TestCase
         $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->addIndex(['recurringinvoice_id'], 'IDX_1673913EE31CCDF');
         $recurringInvoiceContact->addIndex(['contact_id'], 'IDX_1673913EE7A1254A');
+        $recurringInvoiceContact->addIndex(['recurringinvoice_id'], 'IDX_1673913EE31CCDF979B1AD6');
         $recurringInvoiceContact->addForeignKeyConstraint('recurring_invoices', ['recurringinvoice_id'], ['id'], ['onDelete' => 'CASCADE'], 'FK_1673913EE31CCDF');
         $recurringInvoiceContact->addForeignKeyConstraint('contacts', ['contact_id'], ['id'], ['onDelete' => 'CASCADE'], 'FK_1673913EE7A1254A');
 
@@ -155,6 +156,7 @@ final class Version30102_3PreservesDataTest extends TestCase
 
         self::assertTrue($table->hasIndex('IDX_DA79A131E31CCDF'));
         self::assertTrue($table->hasIndex('IDX_DA79A131E7A1254A'));
+        self::assertFalse($table->hasIndex('IDX_1673913EE31CCDF979B1AD6'));
         self::assertTrue($table->hasForeignKey('FK_DA79A131E31CCDF'));
         self::assertTrue($table->hasForeignKey('FK_DA79A131E7A1254A'));
     }
