@@ -18,12 +18,15 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use LogicException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Currency\FrozenCurrencyThaw;
 use SolidInvoice\CoreBundle\Listener\Doctrine\FrozenCurrencyGuardListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
+#[CoversClass(FrozenCurrencyGuardListener::class)]
 final class FrozenCurrencyGuardListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
@@ -33,7 +36,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Invoice();
         $changeSet = ['currencyCode' => [null, 'USD']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
         $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
 
         $this->addToAssertionCount(1);
@@ -44,7 +47,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Invoice();
         $changeSet = ['currencyCode' => ['USD', 'EUR']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
 
         $this->expectException(LogicException::class);
 
@@ -56,7 +59,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Invoice();
         $changeSet = ['invoiceId' => ['INV-1', 'INV-2']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
         $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
 
         $this->addToAssertionCount(1);
@@ -67,7 +70,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Quote();
         $changeSet = ['currencyCode' => [null, 'USD']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
         $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
 
         $this->addToAssertionCount(1);
@@ -78,7 +81,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Quote();
         $changeSet = ['currencyCode' => ['USD', 'EUR']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
 
         $this->expectException(LogicException::class);
 
@@ -90,7 +93,7 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Quote();
         $changeSet = ['quoteId' => ['QUO-1', 'QUO-2']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
         $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
 
         $this->addToAssertionCount(1);
@@ -101,9 +104,59 @@ final class FrozenCurrencyGuardListenerTest extends TestCase
         $entity = new Client();
         $changeSet = ['currencyCode' => ['USD', 'EUR']];
 
-        $listener = new FrozenCurrencyGuardListener();
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
         $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
 
         $this->addToAssertionCount(1);
+    }
+
+    public function testAllowsANonNullToNullWriteWhenSanctionedAndConsumesTheSanction(): void
+    {
+        $entity = new Invoice();
+        $changeSet = ['currencyCode' => ['USD', null]];
+
+        $thaw = new FrozenCurrencyThaw();
+        $thaw->sanction($entity);
+
+        $listener = new FrozenCurrencyGuardListener($thaw);
+        $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
+
+        $this->addToAssertionCount(1);
+
+        $this->expectException(LogicException::class);
+
+        $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
+    }
+
+    public function testRejectsANonNullToNullWriteWithNoSanction(): void
+    {
+        $entity = new Invoice();
+        $changeSet = ['currencyCode' => ['USD', null]];
+
+        $listener = new FrozenCurrencyGuardListener(new FrozenCurrencyThaw());
+
+        $this->expectException(LogicException::class);
+
+        $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
+    }
+
+    /**
+     * Requirement 3: the sanction only ever covers the `→ NULL` branch. A write to a
+     * different non-null currency must still throw, even while a sanction happens to
+     * be present on the same entity.
+     */
+    public function testRejectsANonNullToDifferentNonNullWriteEvenWhenSanctioned(): void
+    {
+        $entity = new Invoice();
+        $changeSet = ['currencyCode' => ['USD', 'EUR']];
+
+        $thaw = new FrozenCurrencyThaw();
+        $thaw->sanction($entity);
+
+        $listener = new FrozenCurrencyGuardListener($thaw);
+
+        $this->expectException(LogicException::class);
+
+        $listener->preUpdate(new PreUpdateEventArgs($entity, M::mock(EntityManagerInterface::class), $changeSet));
     }
 }

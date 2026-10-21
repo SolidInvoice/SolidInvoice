@@ -76,6 +76,12 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         // The "Powered By" attribute is populated despite the setting being '1'.
         self::assertStringContainsString('Powered By', $output);
+
+        // Invoice emails use the same gate.
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+        $email = $twig->render('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => InvoiceFactory::first()]);
+        self::assertStringContainsString('utm_source=email', $email);
     }
 
     public function testGatedPlanAlwaysShowsPoweredByInTheLegacyPdfTemplates(): void
@@ -143,6 +149,11 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         // With custom_branding ON and hide_powered_by=1, the attribute is empty.
         self::assertStringNotContainsString('Powered By', $output);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+        $email = $twig->render('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => InvoiceFactory::first()]);
+        self::assertStringNotContainsString('g02-powered-by', $email);
     }
 
     public function testUngatedPlanShowsPoweredByWhenSettingNotHidden(): void
@@ -188,11 +199,14 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         $invoice = $this->createFixtureInvoice();
         $invoiceView = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $invoice]);
-        $quoteView = $twig->render('@SolidInvoiceQuote/quote_template.html.twig', ['quote' => QuoteFactory::createOne([
+        $quote = QuoteFactory::createOne([
             'company' => $this->company,
             'client' => $invoice->getClient(),
             'users' => $invoice->getUsers()->toArray(),
-        ])]);
+        ]);
+        $quoteView = $twig->render('@SolidInvoiceQuote/quote_template.html.twig', ['quote' => $quote]);
+        $invoiceEmail = $twig->render('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => $invoice]);
+        $quoteEmail = $twig->render('@SolidInvoiceQuote/Email/quote.html.twig', ['quote' => $quote]);
         $pdfHtml = $twig->render('@SolidInvoiceInvoice/Templates/classic/pdf.html.twig', ['invoice' => $invoice]);
 
         // Same footer in both modes; utm_content tells cloud and self-hosted traffic apart.
@@ -202,6 +216,8 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=invoice' . $utm, $invoiceView);
         self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=quote' . $utm, $quoteView);
         self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=pdf' . $utm, $pdfHtml);
+        self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=email' . $utm, $invoiceEmail);
+        self::assertStringContainsString('invoiced-with-solidinvoice?utm_source=email' . $utm, $quoteEmail);
         self::assertStringNotContainsString('github.com/SolidInvoice/SolidInvoice', $invoiceView . $quoteView);
 
         $generator = self::getContainer()->get(Generator::class);
