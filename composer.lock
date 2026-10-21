@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0aea94486326c609e15562b3861447b",
+    "content-hash": "44f3430cc9e353a1a4bf3a3dab88f20e",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -13272,88 +13272,6 @@
                 }
             ],
             "time": "2026-05-29T05:06:50+00:00"
-        },
-        {
-            "name": "symfony/lock",
-            "version": "v8.1.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/lock.git",
-                "reference": "2b3f8c256882bf6b8d69a0ca1557e9b7c810e548"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/lock/zipball/2b3f8c256882bf6b8d69a0ca1557e9b7c810e548",
-                "reference": "2b3f8c256882bf6b8d69a0ca1557e9b7c810e548",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.4.1",
-                "psr/log": "^1|^2|^3"
-            },
-            "conflict": {
-                "doctrine/dbal": "<4.3"
-            },
-            "require-dev": {
-                "doctrine/dbal": "^4.3",
-                "predis/predis": "^1.1|^2.0",
-                "symfony/serializer": "^6.4|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Lock\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jérémy Derussé",
-                    "email": "jeremy@derusse.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Creates and manages locks, a mechanism to provide exclusive access to a shared resource",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "cas",
-                "flock",
-                "locking",
-                "mutex",
-                "redlock",
-                "semaphore"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/lock/tree/v8.1.9"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-04T15:24:21+00:00"
         },
         {
             "name": "symfony/mailchimp-mailer",
@@ -28586,5 +28504,5 @@
     "platform-overrides": {
         "php": "8.4.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

@@ -116,7 +116,6 @@
         "symfony/iqsms-notifier": "^8.1",
         "symfony/light-sms-notifier": "^8.1",
         "symfony/linked-in-notifier": "^8.1",
-        "symfony/lock": "^8.1",
         "symfony/mailchimp-mailer": "^8.1",
         "symfony/mailer": "^8.1",
         "symfony/mailgun-mailer": "^8.1",

@@ -13,14 +13,27 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Installer\Database;
 
+use Carbon\CarbonImmutable;
 use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\MigratorConfiguration;
+use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
+use Doctrine\Migrations\Version\ExecutionResult;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\SqlFormatter\SqlFormatter;
 use Generator;
-use function count;
 
 /**
- * @see \SolidInvoice\InstallBundle\Tests\Installer\Database\MigrationTest
+ * Builds the schema for a FRESH install. It does not run the migration chain, and that is deliberate.
+ *
+ * A new install has no data, so the data migrations in migrations/ have nothing to do. The schema is
+ * created straight from the ORM metadata, and every migration is then stamped as executed so that later
+ * upgrades only run the migrations added after this install.
+ *
+ * Upgrades of an existing install go through the real migrator: `doctrine:migrations:migrate`, which the
+ * FrankenPHP binary runs at startup (frankenphp/app.go, migrateOnStartup) and the Helm chart runs as a
+ * pre-upgrade job. Nothing runs migrations during an HTTP request. Do not "fix" this class to run the
+ * migrator, and do not bring back a request listener that migrates. See AGENTS.md §9.
  */
 final readonly class Migration
 {
@@ -28,20 +41,9 @@ final readonly class Migration
 
     public function __construct(
         private DependencyFactory $migrationDependencyFactory,
+        private ManagerRegistry $registry,
     ) {
         $this->sqlFormatter = new SqlFormatter();
-    }
-
-    public function isUpToDate(): bool
-    {
-        $statusCalculator = $this->migrationDependencyFactory->getMigrationStatusCalculator();
-
-        $executedUnavailableMigrations = $statusCalculator->getExecutedUnavailableMigrations();
-        $newMigrations = $statusCalculator->getNewMigrations();
-        $newMigrationsCount = count($newMigrations);
-        $executedUnavailableMigrationsCount = count($executedUnavailableMigrations);
-
-        return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
     }
 
     public function migrate(?callable $callback = null): Generator
@@ -50,30 +52,71 @@ final readonly class Migration
 
         $metadataStorage->ensureInitialized();
 
+        $em = $this->registry->getManager();
+        assert($em instanceof EntityManagerInterface);
+        $tables = $em->getMetadataFactory()->getAllMetadata();
+
         $planCalculator = $this->migrationDependencyFactory->getMigrationPlanCalculator();
 
         $version = $this->migrationDependencyFactory->getVersionAliasResolver()->resolveVersionAlias('latest');
 
         $plan = $planCalculator->getPlanUntilVersion($version);
 
-        if (count($plan) === 0) {
-            if (null !== $callback) {
-                yield from $callback('Database schema is already up to date.');
+        $schemaTool = new SchemaTool($em);
+        $conn = $em->getConnection();
+
+        // ORM 3's SchemaTool::getUpdateSchemaSql() no longer has a "save mode" (the
+        // boolean second argument was removed in ORM 3), so it now emits DROP TABLE
+        // statements for any table present in the database but absent from the ORM
+        // metadata. The migrations metadata table (created by ensureInitialized()
+        // above) is exactly such a table, so without excluding it the generated SQL
+        // would try to drop it. Filter it out of the schema introspection while the
+        // update SQL is computed.
+        $dbalConfiguration = $conn->getConfiguration();
+        $previousFilter = $dbalConfiguration->getSchemaAssetsFilter();
+        $migrationsTable = $this->migrationsTableName();
+
+        $dbalConfiguration->setSchemaAssetsFilter(
+            static function (string $assetName) use ($previousFilter, $migrationsTable): bool {
+                if ($migrationsTable !== null && $assetName === $migrationsTable) {
+                    return false;
+                }
+
+                return $previousFilter($assetName);
             }
+        );
 
-            return;
+        try {
+            $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables);
+        } finally {
+            $dbalConfiguration->setSchemaAssetsFilter($previousFilter);
         }
 
-        $executedQueries = $this->migrationDependencyFactory->getMigrator()->migrate($plan, new MigratorConfiguration());
+        if ($updateSchemaSql !== []) {
+            foreach ($updateSchemaSql as $sql) {
+                $conn->executeStatement($sql);
 
-        if (null === $callback) {
-            return;
-        }
-
-        foreach ($executedQueries as $queries) {
-            foreach ($queries as $query) {
-                yield from $callback($this->sqlFormatter->format($query->getStatement()));
+                if (null !== $callback) {
+                    yield from $callback($this->sqlFormatter->format($sql));
+                }
             }
+        } elseif (null !== $callback) {
+            yield from $callback('Database schema is already up to date.');
         }
+
+        $now = CarbonImmutable::now();
+
+        foreach ($plan->getItems() as $item) {
+            $metadataStorage->complete(new ExecutionResult($item->getVersion(), $item->getDirection(), $now));
+        }
+    }
+
+    private function migrationsTableName(): ?string
+    {
+        $storageConfiguration = $this->migrationDependencyFactory->getConfiguration()->getMetadataStorageConfiguration();
+
+        return $storageConfiguration instanceof TableMetadataStorageConfiguration
+            ? $storageConfiguration->getTableName()
+            : null;
     }
 }
