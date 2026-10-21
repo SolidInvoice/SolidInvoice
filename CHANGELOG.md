@@ -4,8 +4,24 @@ Changelog
 3.1.2 / Unreleased
 -------------------
 
+### Changes
+
+* Database migrations no longer run from a web request. The built-in server runs them once at startup, before it serves anything, and the Helm chart runs them as a pre-upgrade job. Other setups should run `bin/console doctrine:migrations:migrate` after deploying
+* Invoices and quotes issued before 3.1.0 now have their currency frozen too, so changing a client's or company's currency no longer changes them. This resolves the 3.1.0 known issue
+* An invoice or quote that goes back to Draft follows its client's currency again. An invoice that already has a payment keeps its currency
+* The "Powered by SolidInvoice" line in emails, invoice and quote PDFs, and the client invoice page now links to a page about SolidInvoice
+
 ### Fixes
 
+* Upgrades actually run each migration's data changes. Before, they were only marked as done, which could lose data (such as VAT numbers) and made upgrades on MySQL, MariaDB and PostgreSQL fail with a server error on every page
+* Upgrading on PostgreSQL no longer fails with an encoding error, and invoice lines no longer lose the ability to belong to a recurring invoice there
+* Recurring invoices keep their contacts when upgrading. The database table is now renamed instead of being at risk of being dropped and recreated empty
+* Password reset requests and pending user invitations keep their data when upgrading
+* The `messenger_messages` table is now actually created by migrations. The 3.1.0 fix for this did nothing
+* Remaining differences between the database and the application's expected schema (column types, nullability, indexes) are now fixed on upgrade
+* Recording a payment through the API or the MCP tools now checks it against the invoice's own currency, not the client's. Correct payments were rejected after a client changed currency
+* Notifications, API keys, Connected apps and Data export are back in the profile menu
+* The API token history table header is bold again, and info boxes show a hover colour again
 * The search bar in the top header has its border and background again, and its results dropdown no longer shows through onto the page behind it. The company page and subscription pages had the same missing colours and are fixed too
 
 3.1.1 / 2026-10-15
