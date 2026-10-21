@@ -29,8 +29,10 @@ use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-/** @implements ProcessorInterface<RecordPaymentInput, Payment>
- * @see \SolidInvoice\ApiBundle\Tests\State\Processor\RecordPaymentProcessorTest */
+/**
+ * @implements ProcessorInterface<RecordPaymentInput, Payment>
+ * @see \SolidInvoice\ApiBundle\Tests\State\Processor\RecordPaymentProcessorTest
+ */
 final readonly class RecordPaymentProcessor implements ProcessorInterface
 {
     public function __construct(
