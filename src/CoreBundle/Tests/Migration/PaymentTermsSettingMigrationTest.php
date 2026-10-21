@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
+use DoctrineMigrations\Version30100_3;
 use DoctrineMigrations\Version30100_4;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -31,6 +32,11 @@ final class PaymentTermsSettingMigrationTest extends MigrationIsIdempotentAcross
     protected static function migrationClass(): string
     {
         return Version30100_4::class;
+    }
+
+    protected static function predecessorVersion(): string
+    {
+        return Version30100_3::class;
     }
 
     protected static function resolvedDriftFragments(): array
