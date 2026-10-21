@@ -18,9 +18,10 @@ use DoctrineMigrations\Version30102_3;
 /**
  * `recurringinvoice_contact` is a substring of `recurringinvoice_contacts`, so asserting its
  * absence from the drift output also covers the plural form - there is no residual reference
- * to the join table under either name once {@see Version30102_3} has run.
+ * to the join table under either name once {@see Version30102_3} has run. The column fragments
+ * are the pre-rename snake_case names on reset_password_request and user_invitations.
  */
-final class RecurringInvoiceContactsRenameMigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
+final class Version30102_3CrossLineageMigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
 {
     protected static function migrationClass(): string
     {
@@ -29,6 +30,12 @@ final class RecurringInvoiceContactsRenameMigrationTest extends MigrationIsIdemp
 
     protected static function resolvedDriftFragments(): array
     {
-        return ['recurringinvoice_contact'];
+        return [
+            'recurringinvoice_contact',
+            'hashed_token',
+            'requested_at',
+            'expires_at',
+            'reminder_sent_at',
+        ];
     }
 }
