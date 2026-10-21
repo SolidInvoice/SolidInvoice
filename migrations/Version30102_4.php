@@ -39,7 +39,7 @@ use function sprintf;
  * its unique index are deliberately left untouched: they are irreversible and sit on top
  * of a pre-existing data-migration gap, tracked separately from this issue.
  */
-final class Version30102_5 extends AbstractMigration
+final class Version30102_4 extends AbstractMigration
 {
     /**
      * `(…, company_id)` variants of an index the mapping still declares on its own
