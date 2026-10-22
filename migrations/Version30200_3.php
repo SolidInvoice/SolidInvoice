@@ -62,8 +62,8 @@ final class Version30200_3 extends AbstractMigration
             $table->addColumn('creditor_identifier', Types::STRING, ['length' => 35, 'notnull' => false]);
             $table->addColumn('instructions', Types::TEXT, ['notnull' => false]);
             $table->addColumn('is_default', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
-            $table->addColumn('created', Types::DATETIME_MUTABLE);
-            $table->addColumn('updated', Types::DATETIME_MUTABLE);
+            $table->addColumn('created', Types::DATETIME_IMMUTABLE);
+            $table->addColumn('updated', Types::DATETIME_IMMUTABLE);
 
             $table->setPrimaryKey(['id']);
             $table->addIndex(['company_id']);

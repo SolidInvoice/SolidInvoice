@@ -90,11 +90,11 @@ class PaymentInstruction implements Stringable
     #[ORM\Column(name: 'account_identifier', type: Types::STRING, length: 34, nullable: true)]
     #[Assert\Length(max: 34)]
     #[Assert\When(
-        expression: 'this.getMeans().value in ["bank_transfer", "sepa_credit_transfer"]',
+        expression: 'this.getMeans().requiresAccountIdentifier()',
         constraints: [new Assert\NotBlank(message: 'payment.constraint.instruction.account_identifier.required')],
     )]
     #[Assert\When(
-        expression: 'this.getMeans().value in ["sepa_credit_transfer", "sepa_direct_debit"]',
+        expression: 'this.getMeans().requiresIban()',
         constraints: [new Assert\Iban()],
     )]
     #[Groups(['payment_instruction_api:read', 'payment_instruction_api:write'])]
@@ -103,7 +103,7 @@ class PaymentInstruction implements Stringable
     #[ORM\Column(name: 'service_provider_identifier', type: Types::STRING, length: 35, nullable: true)]
     #[Assert\Length(max: 35)]
     #[Assert\When(
-        expression: 'this.getMeans().value in ["sepa_credit_transfer", "sepa_direct_debit"]',
+        expression: 'this.getMeans().requiresBic()',
         constraints: [new Assert\Bic()],
     )]
     #[Groups(['payment_instruction_api:read', 'payment_instruction_api:write'])]
@@ -122,7 +122,7 @@ class PaymentInstruction implements Stringable
     #[ORM\Column(name: 'creditor_identifier', type: Types::STRING, length: 35, nullable: true)]
     #[Assert\Length(max: 35)]
     #[Assert\When(
-        expression: 'this.getMeans().value in ["sepa_direct_debit", "direct_debit"]',
+        expression: 'this.getMeans().requiresCreditorIdentifier()',
         constraints: [new Assert\NotBlank(message: 'payment.constraint.instruction.creditor_identifier.required')],
     )]
     #[Groups(['payment_instruction_api:read', 'payment_instruction_api:write'])]

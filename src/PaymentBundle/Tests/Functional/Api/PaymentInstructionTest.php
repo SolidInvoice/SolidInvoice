@@ -96,4 +96,39 @@ final class PaymentInstructionTest extends ApiTestCase
 
         self::assertResponseStatusCodeSame(404);
     }
+
+    public function testCannotModifyPaymentInstructionFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $instruction = PaymentInstructionFactory::createOne(['company' => $otherCompany]);
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        self::$client->request('PATCH', $this->getIriFromResource($instruction), [
+            'json' => ['label' => 'Hijacked'],
+            'headers' => [
+                'content-type' => 'application/merge-patch+json',
+                'accept' => 'application/ld+json',
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testCannotDeletePaymentInstructionFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $instruction = PaymentInstructionFactory::createOne(['company' => $otherCompany]);
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        self::$client->request('DELETE', $this->getIriFromResource($instruction), [
+            'headers' => [
+                'content-type' => 'application/ld+json',
+                'accept' => 'application/ld+json',
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(404);
+    }
 }

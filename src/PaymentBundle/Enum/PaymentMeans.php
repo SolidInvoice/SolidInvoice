@@ -31,4 +31,24 @@ enum PaymentMeans: string
     {
         return 'payment_means.' . $this->value;
     }
+
+    public function requiresAccountIdentifier(): bool
+    {
+        return in_array($this, [self::BankTransfer, self::SepaCreditTransfer], true);
+    }
+
+    public function requiresIban(): bool
+    {
+        return in_array($this, [self::SepaCreditTransfer, self::SepaDirectDebit], true);
+    }
+
+    public function requiresBic(): bool
+    {
+        return in_array($this, [self::SepaCreditTransfer, self::SepaDirectDebit], true);
+    }
+
+    public function requiresCreditorIdentifier(): bool
+    {
+        return in_array($this, [self::SepaDirectDebit, self::DirectDebit], true);
+    }
 }
