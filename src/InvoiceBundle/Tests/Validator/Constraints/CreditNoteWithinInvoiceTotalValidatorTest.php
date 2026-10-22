@@ -16,7 +16,9 @@ namespace SolidInvoice\InvoiceBundle\Tests\Validator\Constraints;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
@@ -37,15 +39,20 @@ final class CreditNoteWithinInvoiceTotalValidatorTest extends ConstraintValidato
 {
     private Stub & CreditNoteRepository $creditNoteRepository;
 
+    private MockObject & TotalCalculator $totalCalculator;
+
     protected function createValidator(): CreditNoteWithinInvoiceTotalValidator
     {
         $this->creditNoteRepository = $this->createStub(CreditNoteRepository::class);
+        $this->totalCalculator = $this->createMock(TotalCalculator::class);
 
-        return new CreditNoteWithinInvoiceTotalValidator($this->creditNoteRepository);
+        return new CreditNoteWithinInvoiceTotalValidator($this->creditNoteRepository, $this->totalCalculator);
     }
 
     public function testNoViolationForAStandaloneCreditNote(): void
     {
+        $this->totalCalculator->expects($this->never())->method('calculateTotals');
+
         $creditNote = new CreditNote();
         $creditNote->setTotal(10000);
         $creditNote->setStatus(CreditNoteStatus::Issued);
@@ -57,6 +64,8 @@ final class CreditNoteWithinInvoiceTotalValidatorTest extends ConstraintValidato
 
     public function testNoViolationForACancelledCreditNoteEvenOverTheCap(): void
     {
+        $this->totalCalculator->expects($this->never())->method('calculateTotals');
+
         $invoice = new Invoice();
         $invoice->setTotal(10000);
 
@@ -77,9 +86,14 @@ final class CreditNoteWithinInvoiceTotalValidatorTest extends ConstraintValidato
 
         $creditNote = new CreditNote();
         $creditNote->setInvoice($invoice);
-        $creditNote->setTotal(4000);
         $creditNote->setStatus(CreditNoteStatus::Issued);
 
+        // Simulates what InvoiceSaveListener would compute from the lines at persist time —
+        // the validator must project from this, not from a client-supplied total.
+        $this->totalCalculator->method('calculateTotals')
+            ->willReturnCallback(static function (CreditNote $creditNote): void {
+                $creditNote->setTotal(4000);
+            });
         $this->creditNoteRepository->method('getTotalCreditedForInvoice')->willReturn(BigInteger::of(6000));
 
         $this->validator->validate($creditNote, new CreditNoteWithinInvoiceTotal());
@@ -96,9 +110,12 @@ final class CreditNoteWithinInvoiceTotalValidatorTest extends ConstraintValidato
 
         $creditNote = new CreditNote();
         $creditNote->setInvoice($invoice);
-        $creditNote->setTotal(4001);
         $creditNote->setStatus(CreditNoteStatus::Issued);
 
+        $this->totalCalculator->method('calculateTotals')
+            ->willReturnCallback(static function (CreditNote $creditNote): void {
+                $creditNote->setTotal(4001);
+            });
         $this->creditNoteRepository->method('getTotalCreditedForInvoice')->willReturn(BigInteger::of(6000));
 
         $this->validator->validate($creditNote, $constraint);

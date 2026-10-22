@@ -133,6 +133,36 @@ final class CreditNoteTest extends ApiTestCase
         ]);
     }
 
+    /**
+     * CreditNoteInvoiceBelongsToSameCompanyValidator used to read the credit note's own
+     * `company` to compare it against the invoice's, but that property is only set by
+     * CompanyListener at prePersist — still uninitialized at validation time for a new credit
+     * note — so posting an `invoice` reference 500'd instead of creating the credit note.
+     */
+    public function testCreateWithInvoiceReference(): void
+    {
+        $client = ClientFactory::createOne();
+        $invoice = InvoiceFactory::createOne([
+            'client' => $client,
+            'lines' => [new Line()->setName('Original Item')->setQty(1)->setPrice(10000)],
+        ]);
+
+        $result = $this->requestPost('/api/credit-notes', [
+            'client' => $this->getIriFromResource($client),
+            'invoice' => $this->getIriFromResource($invoice),
+            'reason' => 'Returned goods',
+            'lines' => [
+                [
+                    'price' => 50,
+                    'qty' => 1,
+                    'name' => 'Refunded Item',
+                ],
+            ],
+        ]);
+
+        self::assertSame($this->getIriFromResource($invoice), $result['invoice']);
+    }
+
     public function testGet(): void
     {
         $client = ClientFactory::createOne();
@@ -266,6 +296,43 @@ final class CreditNoteTest extends ApiTestCase
         self::assertSame($this->getIriFromResource($invoice), $result['invoice']);
         self::assertSame($this->getIriFromResource($client), $result['client']);
         self::assertSame('Service not delivered', $result['reason']);
+    }
+
+    /**
+     * CreditNoteWithinInvoiceTotalValidator used to read `$value->getTotal()` directly, but
+     * that field is only populated by InvoiceSaveListener at prePersist/preUpdate — still 0 at
+     * validation time for a new credit note — so the cap never fired on create. Design §0
+     * decision 4 on SOL-69 requires it to.
+     */
+    public function testCreateFromInvoiceOverTheCapIsRejected(): void
+    {
+        $invoice = InvoiceFactory::createOne([
+            'client' => ClientFactory::createOne(),
+            'lines' => [new Line()->setName('Original Item')->setQty(1)->setPrice(2843)],
+        ]);
+
+        self::$client->request(
+            method: Request::METHOD_POST,
+            url: '/api/invoices/' . $invoice->getId() . '/credit-notes',
+            options: [
+                'json' => [
+                    'reason' => 'Way too much',
+                    'lines' => [
+                        [
+                            'price' => 999999,
+                            'qty' => 1,
+                            'name' => 'Overcredited Item',
+                        ],
+                    ],
+                ],
+                'headers' => [
+                    'content-type' => 'application/ld+json',
+                    'accept' => 'application/ld+json',
+                ],
+            ]
+        );
+
+        self::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
