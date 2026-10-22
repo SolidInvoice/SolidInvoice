@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Security\Voter;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
@@ -33,8 +31,6 @@ use Symfony\Component\Uid\Ulid;
 #[CoversClass(InvoiceAttachmentVoter::class)]
 final class InvoiceAttachmentVoterTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     #[TestWith([InvoiceAttachmentVoter::ATTACHMENT_VIEW])]
     #[TestWith([InvoiceAttachmentVoter::ATTACHMENT_UPLOAD])]
     #[TestWith([InvoiceAttachmentVoter::ATTACHMENT_DELETE])]
@@ -99,8 +95,8 @@ final class InvoiceAttachmentVoterTest extends TestCase
         $companyId = new Ulid();
 
         $voter = $this->makeVoter($companyId);
-        $token = M::mock(TokenInterface::class);
-        $token->shouldReceive('getUser')->andReturn(null);
+        $token = $this->createStub(TokenInterface::class);
+        $token->method('getUser')->willReturn(null);
         $attachment = $this->attachment($companyId);
 
         self::assertSame(
@@ -139,7 +135,7 @@ final class InvoiceAttachmentVoterTest extends TestCase
         // CompanySelector is final, so we construct a real instance with a dummy
         // registry (only touched by switchCompany/reset which the voter never calls)
         // and force the active company via reflection.
-        $selector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $selector = new CompanySelector($this->createStub(ManagerRegistry::class));
 
         $companyIdProp = new ReflectionProperty(CompanySelector::class, 'companyId');
         $companyIdProp->setValue($selector, $activeCompany);
@@ -149,19 +145,19 @@ final class InvoiceAttachmentVoterTest extends TestCase
 
     private function tokenForUser(Ulid $userId): TokenInterface
     {
-        $user = M::mock(User::class);
-        $user->shouldReceive('getId')->andReturn($userId);
+        $user = $this->createStub(User::class);
+        $user->method('getId')->willReturn($userId);
 
-        $token = M::mock(TokenInterface::class);
-        $token->shouldReceive('getUser')->andReturn($user);
+        $token = $this->createStub(TokenInterface::class);
+        $token->method('getUser')->willReturn($user);
 
         return $token;
     }
 
     private function attachment(Ulid $company): InvoiceAttachment
     {
-        $companyEntity = M::mock(Company::class);
-        $companyEntity->shouldReceive('getId')->andReturn($company);
+        $companyEntity = $this->createStub(Company::class);
+        $companyEntity->method('getId')->willReturn($company);
 
         $attachment = new InvoiceAttachment(new Invoice(), 'receipt.pdf', 'application/pdf', 1024, 'storage-key');
         $attachment->setCompany($companyEntity);

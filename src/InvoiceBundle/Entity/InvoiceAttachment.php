@@ -19,11 +19,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Api\InvoiceAttachmentDeleteProcessor;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceAttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -54,7 +54,7 @@ use Symfony\Component\Uid\Ulid;
             ],
         ),
         new Get(),
-        new Delete(),
+        new Delete(processor: InvoiceAttachmentDeleteProcessor::class),
         new Patch(),
     ],
     normalizationContext: [
@@ -196,12 +196,14 @@ class InvoiceAttachment
      * property name — a `#[Groups]` on `getCreated()` itself would merge into that
      * same ignored attribute and never be emitted. A distinctly-named accessor with
      * `#[SerializedName('created')]` is the same workaround Invoice::getCreatedTimestamp()
-     * and Quote::getCreatedTimestamp() use for the `searchable` group.
+     * and Quote::getCreatedTimestamp() use for the `searchable` group, including the
+     * Unix-timestamp return type so this entity serializes `created` the same way as
+     * every other API resource in an invoice response.
      */
     #[Groups(['invoice_attachment_api:read'])]
     #[SerializedName('created')]
-    public function getCreatedDate(): ?DateTimeImmutable
+    public function getCreatedTimestamp(): ?int
     {
-        return $this->getCreated();
+        return $this->getCreated()?->getTimestamp();
     }
 }

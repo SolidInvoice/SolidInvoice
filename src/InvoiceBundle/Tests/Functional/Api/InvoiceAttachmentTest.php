@@ -16,11 +16,17 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Storage\AttachmentStorageInterface;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceAttachment;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceAttachmentFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Uid\Ulid;
 use function array_column;
+use function file_put_contents;
+use function sys_get_temp_dir;
+use function tempnam;
 
 #[Group('functional')]
 final class InvoiceAttachmentTest extends ApiTestCase
@@ -79,12 +85,31 @@ final class InvoiceAttachmentTest extends ApiTestCase
         self::assertArrayNotHasKey('storageKey', $data);
     }
 
-    public function testDelete(): void
+    /**
+     * The default API Platform `RemoveProcessor` only removes the database row,
+     * so this also proves `InvoiceAttachmentDeleteProcessor` cleans up the blob
+     * behind it rather than leaving it orphaned in storage.
+     */
+    public function testDeleteAlsoRemovesTheStoredBlob(): void
     {
+        $storage = self::getContainer()->get(AttachmentStorageInterface::class);
+        $sourcePath = tempnam(sys_get_temp_dir(), 'solidinvoice_attachment_test_');
+        file_put_contents($sourcePath, 'attachment contents');
+        $storageKey = $storage->write($this->company->getId(), new Ulid(), $sourcePath);
+        new Filesystem()->remove($sourcePath);
+
         $invoice = InvoiceFactory::createOne(['company' => $this->company]);
-        $attachment = InvoiceAttachmentFactory::createOne(['invoice' => $invoice, 'company' => $this->company]);
+        $attachment = InvoiceAttachmentFactory::createOne([
+            'invoice' => $invoice,
+            'company' => $this->company,
+            'storageKey' => $storageKey,
+        ]);
+
+        self::assertTrue($storage->exists($storageKey));
 
         $this->requestDelete($this->getIriFromResource($attachment));
+
+        self::assertFalse($storage->exists($storageKey));
     }
 
     public function testCannotAccessAttachmentFromDifferentCompany(): void
