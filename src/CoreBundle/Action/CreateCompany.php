@@ -56,6 +56,7 @@ final class CreateCompany extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $company = $form->getData();
+
             assert($company instanceof Company);
 
             $company->addUser($user);

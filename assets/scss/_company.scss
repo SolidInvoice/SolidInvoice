@@ -184,8 +184,8 @@
             padding: var(--tblr-space-2);
         }
 
-        // Avatar with initials. The dark step, not --swp-primary: these are text at
-        // 20px/600, and white on --swp-primary is 3.79:1. --swp-primary-dark is 6.49:1.
+        // Avatar with initials. The dark step, not --tblr-primary: these are text at
+        // 20px/600, and white on --tblr-primary is 3.79:1. --tblr-primary-dark is 6.49:1.
 
         .avatar.bg-primary {
             background-color: var(--tblr-primary-dark) !important;

@@ -29,7 +29,10 @@ use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-/** @implements ProcessorInterface<RecordPaymentInput, Payment> */
+/**
+ * @implements ProcessorInterface<RecordPaymentInput, Payment>
+ * @see \SolidInvoice\ApiBundle\Tests\State\Processor\RecordPaymentProcessorTest
+ */
 final readonly class RecordPaymentProcessor implements ProcessorInterface
 {
     public function __construct(
@@ -59,11 +62,12 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
         }
 
         $client = $invoice->getClient();
-        $invoiceCurrency = $client?->getCurrencyCode();
 
-        if ($invoiceCurrency === null) {
-            throw new UnprocessableEntityHttpException('Invoice has no resolvable currency.');
+        if ($client === null) {
+            throw new UnprocessableEntityHttpException('Invoice has no client to resolve a currency from.');
         }
+
+        $invoiceCurrency = $invoice->getCurrency()->getCode();
 
         if ($data->currency !== $invoiceCurrency) {
             throw new UnprocessableEntityHttpException(
@@ -84,9 +88,7 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
         $payment->setNotes($data->notes);
         $payment->setMethod($offlineMethod);
         $payment->setInvoice($invoice);
-        if ($client !== null) {
-            $payment->setClient($client);
-        }
+        $payment->setClient($client);
 
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCompleted(CarbonImmutable::now());

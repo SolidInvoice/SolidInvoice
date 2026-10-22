@@ -18,6 +18,7 @@ use JsonException;
 use SolidInvoice\SaasBundle\Security\OneTap\IdTokenVerifierInterface;
 use SolidInvoice\SaasBundle\Security\OneTap\InvalidIdTokenException;
 use SolidInvoice\SaasBundle\Security\OneTap\NonceStore;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\OAuth\GoogleUserProvisionerInterface;
 use SolidInvoice\UserBundle\OAuth\ProvisionedUser;
 use SolidWorx\Toggler\ToggleInterface;
@@ -86,7 +87,7 @@ final readonly class VerifyOneTapAction
             return new JsonResponse(['error' => 'Invalid or expired nonce.'], Response::HTTP_FORBIDDEN);
         }
 
-        $provisioned = $this->provisioner->findOrCreate($token->identity);
+        $provisioned = $this->provisioner->findOrCreate($token->identity, signupMethod: SignupMethod::OneTap);
 
         if (! $provisioned instanceof ProvisionedUser) {
             return new JsonResponse(['error' => 'Registration is not allowed.'], Response::HTTP_FORBIDDEN);

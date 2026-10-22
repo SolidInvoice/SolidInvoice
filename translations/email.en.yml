@@ -256,6 +256,7 @@ payment:
         message: 'A payment has been received.'
     view_invoice: 'View Invoice'
 powered_by: 'Powered by'
+powered_by_cta: 'Send your own invoices free'
 quote:
     amount_payable: 'Amount payable'
     created: Created

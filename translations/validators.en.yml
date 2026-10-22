@@ -4,6 +4,11 @@ client:
             min: 'You need to add at least one contact to this client'
         unique_name: 'A client with the name "{{ value }}" already exists.'
 core:
+    company:
+        name:
+            max_length: 'The company name cannot be longer than {{ limit }} characters.'
+            min_length: 'The company name must be at least {{ limit }} characters.'
+            not_blank: 'Please enter a company name.'
     constraint:
         application_url_host: 'This domain is reserved for the default application URL.'
     custom_field:

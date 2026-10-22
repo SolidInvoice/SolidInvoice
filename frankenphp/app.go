@@ -484,6 +484,11 @@ func setupCommands() {
 					if err := runConsoleCommand("cache:clear"); err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
 					}
+					// Runs before any process starts, so Caddy and the messenger workers never see a
+					// half-migrated schema. On failure the app still boots, so the error is visible.
+					if err := migrateOnStartup(ctx); err != nil {
+						log.Error(ctx, err)
+					}
 					// Generate OAuth2 signing keys for the MCP server on first boot.
 					// Idempotent — skipped if the keys already exist in SOLIDINVOICE_CONFIG_DIR/oauth/.
 					if err := runConsoleCommand("mcp:keys:generate"); err != nil {
@@ -901,6 +906,30 @@ func runConsoleCommand(args ...string) error {
 
 func isAppInstalled() bool {
 	return runConsoleCommand("solidinvoice:is-installed") == nil
+}
+
+// migrateOnStartup runs the real migration chain once at boot, but only for an installed app.
+// This is the binary's only migration path. A fresh install gets its schema from the installer
+// (InstallBundle\Installer\Database\Migration), and nothing migrates during a request (AGENTS.md §9).
+// Output goes through tee into the app log, and -vv makes Doctrine log every SQL query.
+// It is called from the lu.AppStartup hook, which blocks serving until it returns and is not
+// subject to StartupTimeout, so long backfills are fine. It is not retried: a failure (or a
+// database that is not up yet) is logged, and the next restart tries again.
+func migrateOnStartup(ctx context.Context) error {
+	if !isAppInstalled() {
+		return nil
+	}
+	if runConsoleCommand("doctrine:migrations:up-to-date") == nil {
+		return nil
+	}
+
+	log.Info(ctx, "Database is out of date, running migrations...")
+	if err := runConsoleCommand("doctrine:migrations:migrate", "--allow-no-migration", "-vv"); err != nil {
+		return errors.Join(errors.New("database migration failed"), err)
+	}
+	log.Info(ctx, "Database migrations complete")
+
+	return nil
 }
 
 func must(err error) {

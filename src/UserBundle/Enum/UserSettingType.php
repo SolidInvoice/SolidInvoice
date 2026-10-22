@@ -28,4 +28,7 @@ enum UserSettingType: string
     case OnboardingEmailSequenceLastStep = 'onboarding_email_sequence_last_step';
     case OnboardingEmailsSent = 'onboarding_emails_sent';
     case AffiliatePromptDismissedAt = 'affiliate_prompt_dismissed_at';
+    // SaaS onboarding "How did you hear about SolidInvoice?" answer.
+    case SignupHeardAbout = 'signup_heard_about';
+    case SignupHeardAboutOther = 'signup_heard_about_other';
 }
