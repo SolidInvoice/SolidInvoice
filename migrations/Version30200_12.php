@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Uid\Ulid;
 
-final class Version30200_3 extends AbstractMigration
+final class Version30200_12 extends AbstractMigration
 {
     private const string SETTING_KEY = 'invoice/payment_instructions/remittance_reference';
 
