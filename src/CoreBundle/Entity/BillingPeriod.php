@@ -16,12 +16,14 @@ namespace SolidInvoice\CoreBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute as Serialize;
 
 /**
  * EN 16931 BG-14 INVOICE PERIOD: the start (BT-73) and end (BT-74) date of the period an
  * invoice covers. Doctrine never hydrates this as null once it is mapped on an entity —
  * emptiness is {@see self::isEmpty()}, not a null check on the embeddable itself.
+ *
+ * No serialization groups here: {@see \SolidInvoice\ApiBundle\Serializer\Normalizer\BillingPeriodNormalizer}
+ * claims the whole type and builds the wire shape itself, so per-property groups are never read.
  *
  * @see \SolidInvoice\CoreBundle\Tests\Entity\BillingPeriodTest
  */
@@ -29,11 +31,9 @@ use Symfony\Component\Serializer\Attribute as Serialize;
 class BillingPeriod
 {
     #[ORM\Column(name: 'start', type: Types::DATE_IMMUTABLE, nullable: true)]
-    #[Serialize\Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTimeImmutable $start = null;
 
     #[ORM\Column(name: 'end', type: Types::DATE_IMMUTABLE, nullable: true)]
-    #[Serialize\Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTimeImmutable $end = null;
 
     public static function of(?DateTimeImmutable $start, ?DateTimeImmutable $end): self

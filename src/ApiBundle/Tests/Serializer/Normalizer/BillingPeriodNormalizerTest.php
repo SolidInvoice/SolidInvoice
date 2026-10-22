@@ -18,6 +18,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\BillingPeriodNormalizer;
 use SolidInvoice\CoreBundle\Entity\BillingPeriod;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class BillingPeriodNormalizerTest extends TestCase
@@ -76,5 +77,19 @@ final class BillingPeriodNormalizerTest extends TestCase
         $period = $this->normalizer->denormalize([], BillingPeriod::class);
 
         self::assertTrue($period->isEmpty());
+    }
+
+    public function testDenormalizationWithMalformedDateThrows(): void
+    {
+        $this->expectException(NotNormalizableValueException::class);
+
+        $this->normalizer->denormalize(['start' => 'not-a-date', 'end' => '2026-02-28'], BillingPeriod::class);
+    }
+
+    public function testDenormalizationWithNonArrayDataThrows(): void
+    {
+        $this->expectException(NotNormalizableValueException::class);
+
+        $this->normalizer->denormalize('2026-02-01', BillingPeriod::class);
     }
 }

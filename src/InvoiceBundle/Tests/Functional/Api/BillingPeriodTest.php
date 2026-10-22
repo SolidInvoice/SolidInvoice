@@ -23,8 +23,9 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use function array_map;
 
 /**
- * Settles design §9 of SOL-77: proves API Platform round-trips
- * {@see \SolidInvoice\CoreBundle\Entity\BillingPeriod}'s dates without a custom normalizer.
+ * Settles design §9 of SOL-77: proves the round-trip of
+ * {@see \SolidInvoice\CoreBundle\Entity\BillingPeriod}'s dates through
+ * {@see \SolidInvoice\ApiBundle\Serializer\Normalizer\BillingPeriodNormalizer}.
  */
 #[Group('functional')]
 final class BillingPeriodTest extends ApiTestCase

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -31,18 +33,56 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 #[AutoconfigureTag('serializer.normalizer')]
 final class BillingPeriodNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /**
-     * @param array{start?: string|null, end?: string|null} $data
-     */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BillingPeriod
     {
-        $start = $data['start'] ?? null;
-        $end = $data['end'] ?? null;
+        if (! is_array($data)) {
+            throw NotNormalizableValueException::createForUnexpectedDataType(
+                sprintf('The type of the "period" attribute must be array, "%s" given.', get_debug_type($data)),
+                $data,
+                ['array'],
+                $context['deserialization_path'] ?? 'period',
+                true,
+            );
+        }
 
         return BillingPeriod::of(
-            null !== $start ? new DateTimeImmutable($start) : null,
-            null !== $end ? new DateTimeImmutable($end) : null,
+            $this->parseDate($data['start'] ?? null, $context, 'start'),
+            $this->parseDate($data['end'] ?? null, $context, 'end'),
         );
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     */
+    private function parseDate(mixed $value, array $context, string $field): ?DateTimeImmutable
+    {
+        if (null === $value) {
+            return null;
+        }
+
+        if (! is_string($value)) {
+            throw NotNormalizableValueException::createForUnexpectedDataType(
+                sprintf('The type of the "period.%s" attribute must be string, "%s" given.', $field, get_debug_type($value)),
+                $value,
+                ['string'],
+                ($context['deserialization_path'] ?? 'period') . '.' . $field,
+                true,
+            );
+        }
+
+        try {
+            return new DateTimeImmutable($value);
+        } catch (DateMalformedStringException $e) {
+            throw NotNormalizableValueException::createForUnexpectedDataType(
+                sprintf('The period "%s" date "%s" is not a valid date.', $field, $value),
+                $value,
+                ['string'],
+                ($context['deserialization_path'] ?? 'period') . '.' . $field,
+                true,
+                0,
+                $e,
+            );
+        }
     }
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
