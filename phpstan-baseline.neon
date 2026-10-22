@@ -294,11 +294,6 @@ parameters:
 			count: 1
 			path: src/CoreBundle/Tests/FormTestCase.php
 
-		-
-			message: '#^Class SolidInvoice\\CoreBundle\\Tests\\Migration\\Version30101_2 not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/CoreBundle/Tests/Migration/MessengerMessagesMigrationTest.php
 
 		-
 			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'', ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and true will always evaluate to true\.$#'
