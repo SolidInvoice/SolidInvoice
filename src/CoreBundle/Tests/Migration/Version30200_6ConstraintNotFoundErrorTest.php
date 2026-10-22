@@ -40,7 +40,7 @@ use ReflectionProperty;
  *
  * @see Version30200_6
  */
-final class Version30200_1ConstraintNotFoundErrorTest extends TestCase
+final class Version30200_6ConstraintNotFoundErrorTest extends TestCase
 {
     public function testMySqlErrorCode3821IsRecognisedAsConstraintNotFound(): void
     {

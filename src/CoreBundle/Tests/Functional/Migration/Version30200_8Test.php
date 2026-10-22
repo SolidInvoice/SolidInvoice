@@ -40,7 +40,7 @@ use function random_bytes;
  * @see Version30200_8
  */
 #[Group('functional')]
-final class Version30200_3Test extends KernelTestCase
+final class Version30200_8Test extends KernelTestCase
 {
     private const string COLUMN = 'invoice_type_code';
 

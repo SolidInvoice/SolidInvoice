@@ -53,7 +53,7 @@ use Symfony\Component\Uid\Ulid;
  * @see Version30200_6
  */
 #[Group('functional')]
-final class Version30200_1Test extends KernelTestCase
+final class Version30200_6Test extends KernelTestCase
 {
     private const string CHECK_CONSTRAINT = 'invoice_tax_exactly_one_document';
 
@@ -457,7 +457,7 @@ final class Version30200_1Test extends KernelTestCase
      * is: `information_schema.check_constraints` spans every schema the connection user can see
      * on MariaDB, and every schema in the current database on PostgreSQL, so an unscoped lookup
      * can return another database's same-named constraint instead of this test's own throwaway
-     * one — for example another `Version30200_1Test` throwaway database left over on a shared
+     * one — for example another `Version30200_6Test` throwaway database left over on a shared
      * MariaDB instance from an interrupted run.
      *
      * @throws Exception
