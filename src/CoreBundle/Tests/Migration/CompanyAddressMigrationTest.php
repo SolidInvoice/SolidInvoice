@@ -178,6 +178,23 @@ final class CompanyAddressMigrationTest extends TestCase
     }
 
     /**
+     * Legacy settings predate Address::$country's #[Assert\Country], which requires an
+     * uppercase ISO-3166 code. A lowercase legacy value must not fail validation the
+     * first time someone edits the backfilled row.
+     *
+     * @throws Exception
+     */
+    public function testPostUpUppercasesALowercaseLegacyCountryCode(): void
+    {
+        $companyId = new Ulid();
+        $this->insertSetting($companyId, '{"country":"za"}');
+
+        $this->migration()->postUp(new Schema());
+
+        self::assertSame('ZA', $this->addressesFor($companyId)[0]['country']);
+    }
+
+    /**
      * Re-running this migration, or a company address created since install, must not
      * duplicate an existing client-less row.
      *

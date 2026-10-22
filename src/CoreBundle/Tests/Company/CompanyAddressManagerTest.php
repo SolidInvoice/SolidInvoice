@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
+use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Repository\AddressRepository;
 use SolidInvoice\CoreBundle\Company\CompanyAddressManager;
@@ -131,6 +132,58 @@ final class CompanyAddressManagerTest extends TestCase
         $this->systemConfig->shouldNotReceive('get');
 
         self::assertNull($this->manager(null)->get());
+    }
+
+    public function testGetReResolvesWhenTheSelectedCompanyChanges(): void
+    {
+        $companyA = new Ulid();
+        $companyB = new Ulid();
+        $addressA = new Address();
+        $addressB = new Address();
+
+        $selector = new CompanySelector(M::mock(ManagerRegistry::class));
+        new ReflectionProperty(CompanySelector::class, 'companyId')->setValue($selector, $companyA);
+        $manager = new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->systemConfig);
+
+        $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyA)->andReturn($addressA);
+        $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyB)->andReturn($addressB);
+
+        self::assertSame($addressA, $manager->get());
+
+        new ReflectionProperty(CompanySelector::class, 'companyId')->setValue($selector, $companyB);
+
+        self::assertSame($addressB, $manager->get());
+    }
+
+    public function testGetRetriesOnTheNextCallAfterATransientFailure(): void
+    {
+        $companyId = new Ulid();
+        $address = new Address();
+
+        $calls = 0;
+        $this->addressRepository->shouldReceive('findCompanyAddress')
+            ->twice()
+            ->with($companyId)
+            ->andReturnUsing(static function () use (&$calls, $address) {
+                ++$calls;
+
+                if (1 === $calls) {
+                    throw new RuntimeException('connection lost');
+                }
+
+                return $address;
+            });
+
+        $manager = $this->manager($companyId);
+
+        try {
+            $manager->get();
+            self::fail('Expected the first call to propagate the exception.');
+        } catch (RuntimeException) {
+            // Expected: the failed call must not cache anything.
+        }
+
+        self::assertSame($address, $manager->get());
     }
 
     public function testStoreCreatesARowWhenNoneExists(): void

@@ -25,8 +25,10 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function bin2hex;
 use function is_array;
+use function is_string;
 use function json_decode;
 use function sprintf;
+use function strtoupper;
 
 final class Version30200_9 extends AbstractMigration
 {
@@ -120,7 +122,10 @@ final class Version30200_9 extends AbstractMigration
                     'city' => $decoded['city'] ?? null,
                     'state' => $decoded['state'] ?? null,
                     'zip' => $decoded['zip'] ?? null,
-                    'country' => $decoded['country'] ?? null,
+                    // Legacy settings predate Address::$country's #[Assert\Country], which
+                    // requires an uppercase ISO-3166 code; normalize so a lowercase legacy
+                    // value does not fail validation the first time the row is edited.
+                    'country' => $this->normalizeCountry($decoded['country'] ?? null),
                     'created' => $now,
                     'updated' => $now,
                 ], [
@@ -147,7 +152,20 @@ final class Version30200_9 extends AbstractMigration
         }
 
         // Reversible without data loss: the setting row this migration copied from is
-        // kept for a release (SOL-72 design D3), so deleting the copies loses nothing.
+        // kept for a release (SOL-72 design D3), and CompanyAddressManager::store()
+        // mirrors every later edit back onto both the setting and this row, so the two
+        // never drift. This assumes a client-less address row only ever represents a
+        // company's postal address; a future client-less address type would need its
+        // own column or table, not a reuse of this one, or this delete would wipe it too.
         $this->connection->executeStatement('DELETE FROM addresses WHERE client_id IS NULL');
+    }
+
+    private function normalizeCountry(mixed $country): ?string
+    {
+        if (! is_string($country) || '' === $country) {
+            return null;
+        }
+
+        return strtoupper($country);
     }
 }

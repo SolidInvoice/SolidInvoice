@@ -41,6 +41,8 @@ final class CompanyAddressManager
 
     private bool $resolved = false;
 
+    private ?Ulid $resolvedCompanyId = null;
+
     private ?Address $address = null;
 
     public function __construct(
@@ -61,28 +63,44 @@ final class CompanyAddressManager
      * When no `Address` row exists yet, this falls back to the legacy setting and
      * returns a transient `Address` that is never persisted or added to the identity
      * map. Callers must treat it as read-only.
+     *
+     * The result is cached per selected company, so a loop that switches company
+     * mid-request still resolves each company's own address. The cache is only
+     * written after a successful resolution, so a transient failure (e.g. a DB
+     * error) does not poison the cache and is retried on the next call.
      */
     public function get(): ?Address
     {
-        if ($this->resolved) {
+        $companyId = $this->companySelector->getCompany();
+
+        if ($this->resolved && $this->isSameCompany($companyId)) {
             return $this->address;
         }
 
-        $this->resolved = true;
-
-        $companyId = $this->companySelector->getCompany();
-
         if (! $companyId instanceof Ulid) {
+            $this->resolvedCompanyId = null;
+            $this->resolved = true;
+
             return $this->address = null;
         }
 
         $address = $this->addressRepository->findCompanyAddress($companyId);
+        $resolvedAddress = $address instanceof Address ? $address : $this->fromLegacySetting();
 
-        if ($address instanceof Address) {
-            return $this->address = $address;
+        $this->address = $resolvedAddress;
+        $this->resolvedCompanyId = $companyId;
+        $this->resolved = true;
+
+        return $resolvedAddress;
+    }
+
+    private function isSameCompany(?Ulid $companyId): bool
+    {
+        if (! $companyId instanceof Ulid) {
+            return ! $this->resolvedCompanyId instanceof Ulid;
         }
 
-        return $this->address = $this->fromLegacySetting();
+        return $companyId->equals($this->resolvedCompanyId);
     }
 
     /**
@@ -94,6 +112,7 @@ final class CompanyAddressManager
     public function store(?string $settingValue): void
     {
         $this->resolved = false;
+        $this->resolvedCompanyId = null;
         $this->address = null;
 
         $companyId = $this->companySelector->getCompany();

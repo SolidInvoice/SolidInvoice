@@ -71,7 +71,7 @@ class SettingsRepository extends EntityRepository
                     }
 
                     if ('system/company/contact_details/address' === $key) {
-                        $this->companyAddressManager->store(empty($value) ? null : $value);
+                        $this->companyAddressManager->store(null === $value || '' === $value ? null : $value);
                     }
                 }
             });

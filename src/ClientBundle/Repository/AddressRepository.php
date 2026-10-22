@@ -34,8 +34,7 @@ class AddressRepository extends EntityRepository
     public function findCompanyAddress(Ulid $companyId): ?Address
     {
         return $this->createQueryBuilder('a')
-            ->innerJoin('a.company', 'c')
-            ->andWhere('c.id = :company')
+            ->andWhere('a.company = :company')
             ->andWhere('a.client IS NULL')
             ->setParameter('company', $companyId, UlidType::NAME)
             ->orderBy('a.id', 'ASC')
