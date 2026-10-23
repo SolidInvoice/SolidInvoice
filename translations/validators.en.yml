@@ -8,7 +8,9 @@ core:
         name:
             max_length: 'The company name cannot be longer than {{ limit }} characters.'
             min_length: 'The company name must be at least {{ limit }} characters.'
+            no_url: 'The company name cannot contain a website address.'
             not_blank: 'Please enter a company name.'
+            too_many_digits: 'The company name cannot contain more than 5 digits.'
     constraint:
         application_url_host: 'This domain is reserved for the default application URL.'
     custom_field:

@@ -962,10 +962,16 @@ parameters:
 			path: src/UserBundle/Entity/ApiTokenHistory.php
 
 		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ResetPasswordRequest\:\:\$user type mapping mismatch\: property can contain SolidInvoice\\UserBundle\\Entity\\User\|null but database expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
-			identifier: doctrine.associationType
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
 			count: 1
-			path: src/UserBundle/Entity/ResetPasswordRequest.php
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/UserBundle/Entity/User.php
 
 		-
 			message: '#^Property SolidInvoice\\UserBundle\\Entity\\UserInvitation\:\:\$created type mapping mismatch\: property can contain DateTimeInterface but database expects DateTimeImmutable\.$#'

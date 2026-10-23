@@ -58,6 +58,7 @@
     <env name="PANTHER_NO_HEADLESS" value="0"/>
     <env name="PANTHER_APP_ENV" value="test"/>
     <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice_%app_mode%_%env(default:app_mode:TEST_TOKEN)%.db"/>
+    <server name="SOLIDINVOICE_APPLICATION_URL" value="https://app.example.com"/>
     <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st"/>
     <server name="SOLIDINVOICE_ENV" value="test"/>
     <server name="SOLIDINVOICE_DEBUG" value="0"/>

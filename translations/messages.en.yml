@@ -58,7 +58,6 @@ change_password:
         confirm_password: 'Confirm New Password'
         current_password: 'Current Password'
         new_password: 'New Password'
-        repeat_password: 'Repeat Password'
     requirements:
         breach: 'Avoid passwords that have been compromised in data breaches'
         length: 'At least 8 characters long'
@@ -645,8 +644,6 @@ forgot_password:
         title: 'Forgot your password?'
         username: 'Email address'
     reset:
-        flash:
-            success: 'Your password has been changed successfully. You can now log in.'
         heading: 'Reset your password'
         title: 'Reset Password'
 form:
