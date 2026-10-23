@@ -72,7 +72,7 @@ class BillingPeriod
      */
     public function isComplete(): bool
     {
-        return $this->start !== null && $this->end !== null;
+        return $this->start instanceof DateTimeImmutable && $this->end instanceof DateTimeImmutable;
     }
 
     /**
@@ -80,6 +80,6 @@ class BillingPeriod
      */
     public function isEmpty(): bool
     {
-        return $this->start === null && $this->end === null;
+        return ! $this->start instanceof DateTimeImmutable && ! $this->end instanceof DateTimeImmutable;
     }
 }

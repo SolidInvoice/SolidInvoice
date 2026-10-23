@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Validator\Constraints;
 
+use DateTimeImmutable;
 use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -46,7 +47,7 @@ final class ValidBillingPeriodValidator extends ConstraintValidator
         $start = $value->getStart();
         $end = $value->getEnd();
 
-        if ($start === null || $end === null) {
+        if (! $start instanceof DateTimeImmutable || ! $end instanceof DateTimeImmutable) {
             $this->context->buildViolation($constraint->incompleteMessage)->addViolation();
 
             return;
