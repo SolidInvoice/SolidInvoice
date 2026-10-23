@@ -124,6 +124,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'client' => $this->getIriFromResource($client),
             'dateStart' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
+            'billingPeriodMode' => 'none',
             'lines' => [
                 [
                     '@type' => 'RecurringInvoiceLine',
@@ -216,6 +217,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'dateStart' => $recurringInvoice->getDateStart()
                 ->format('c'),
             'dateEnd' => null,
+            'billingPeriodMode' => $recurringInvoice->getBillingPeriodMode()->value,
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($recurringInvoice->getLines()->first()),
@@ -312,6 +314,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ->toString(),
             'client' => $this->getIriFromResource($recurringInvoice->getClient()),
             'dateEnd' => null,
+            'billingPeriodMode' => $recurringInvoice->getBillingPeriodMode()->value,
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($recurringInvoice->getLines()->first()),
