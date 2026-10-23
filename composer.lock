@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1298d80c5a72be4ac44f50728a458774",
+    "content-hash": "a75b04ff2da52e20aaeaf15de524767a",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9654,12 +9654,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "ffdd3b1a2a773cef07f9fa6847e00c9181ff00d0"
+                "reference": "60a2689ef19414886989f7937b124894d5ffb713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/ffdd3b1a2a773cef07f9fa6847e00c9181ff00d0",
-                "reference": "ffdd3b1a2a773cef07f9fa6847e00c9181ff00d0",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/60a2689ef19414886989f7937b124894d5ffb713",
+                "reference": "60a2689ef19414886989f7937b124894d5ffb713",
                 "shasum": ""
             },
             "require": {
@@ -9686,6 +9686,7 @@
                 "symfony/http-kernel": "^8.1",
                 "symfony/mailer": "^8.1",
                 "symfony/property-access": "^8.1",
+                "symfony/rate-limiter": "^8.1",
                 "symfony/routing": "^8.1",
                 "symfony/security-bundle": "^8.1",
                 "symfony/security-core": "^8.1",
@@ -9699,6 +9700,7 @@
                 "symfony/validator": "^8.1",
                 "symfony/webhook": "^8.1",
                 "symfony/webpack-encore-bundle": "^2.3",
+                "symfonycasts/reset-password-bundle": "^1.25",
                 "symfonycasts/verify-email-bundle": "^1.18",
                 "twig/extra-bundle": "^3.21",
                 "twig/html-extra": "^3.24",
@@ -9724,7 +9726,6 @@
                 "symfony/browser-kit": "^8.1",
                 "symfony/css-selector": "^8.1",
                 "symfony/messenger": "^8.1",
-                "symfony/rate-limiter": "^8.1",
                 "symplify/easy-coding-standard": "^13.3"
             },
             "default-branch": true,
@@ -9750,7 +9751,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-10-19T18:31:47+00:00"
+            "time": "2026-10-23T08:58:48+00:00"
         },
         {
             "name": "solidworx/toggler",

@@ -13,7 +13,7 @@ Here's what we'll cover together:
 
 Start with the first step: add a client. Everything else builds from there.
 
-Open your dashboard: http://localhost/dashboard
+Open your dashboard: https://app.example.com/dashboard
 
 P.S. questions? Hit reply — a real person answers.
 
