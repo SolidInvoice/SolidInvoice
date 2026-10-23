@@ -8,14 +8,23 @@
  #}
 {% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
-{% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({'%days%': days_remaining, '%count%': days_remaining}, 'email') }}{% endblock %}
+{% set date = trial_end|date('F j, Y') %}
+{% set params = {'%days%': days_remaining, '%count%': days_remaining, '%plan%': plan.name, '%date%': date} %}
+
+{% block title %}{{ (will_charge ? 'onboarding.trial_about_to_end.charged.subject' : 'onboarding.trial_about_to_end.subject')|trans(params, 'email') }}{% endblock %}
 
 {% block content %}
-    <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
-    <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining, '%count%': days_remaining}, 'email') }}</h1>
-    <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.lede'|trans({}, 'email') }}</p>
+    {% if will_charge %}
+        <span class="onb-eyebrow accent">{{ 'onboarding.trial_about_to_end.charged.eyebrow'|trans({}, 'email') }}</span>
+        <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.charged.heading'|trans(params, 'email') }}</h1>
+        <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.charged.lede'|trans(params, 'email') }}</p>
+    {% else %}
+        <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
+        <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans(params, 'email') }}</h1>
+        <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.lede'|trans(params, 'email') }}</p>
+    {% endif %}
 
-    {# Countdown urgency box #}
+    {# Countdown box #}
     <div class="onb-urgency">
         <div class="onb-days">{{ '%02d'|format(days_remaining) }}</div>
         <div class="onb-days-label">{{ 'onboarding.trial_about_to_end.days_label'|trans({}, 'email') }}</div>
@@ -49,27 +58,39 @@
         </row>
     {% endapply %}
 
-    <p class="onb-p" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.body_intro'|trans({}, 'email') }}</p>
+    {% if will_charge %}
+        <p class="onb-p" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.charged.body'|trans(params, 'email') }}</p>
 
-    <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.if_not_heading'|trans({}, 'email') }}</h2>
-    <ul style="margin: 8px 0 24px 0; Margin: 8px 0 24px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
-        <li>{{ 'onboarding.trial_about_to_end.if_not.1'|trans({}, 'email') }}</li>
-        <li>{{ 'onboarding.trial_about_to_end.if_not.2'|trans({}, 'email') }}</li>
-        <li>{{ 'onboarding.trial_about_to_end.if_not.3'|trans({}, 'email') }}</li>
-        <li>{{ 'onboarding.trial_about_to_end.if_not.4'|trans({}, 'email') }}</li>
-    </ul>
+        <div class="onb-cta-wrapper">
+            <a href="{{ url('saas_subscription_change') }}" class="onb-cta" rel="external" target="_blank">
+                {{ 'onboarding.trial_about_to_end.charged.cta'|trans({}, 'email') }} &rarr;
+            </a>
+        </div>
+    {% else %}
+        <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.keep_heading'|trans({}, 'email') }}</h2>
+        <ul style="margin: 8px 0 20px 0; Margin: 8px 0 20px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
+            {% for i in 1..3 %}
+                <li>{{ ('onboarding.trial_about_to_end.keep.' ~ i)|trans({}, 'email') }}</li>
+            {% endfor %}
+        </ul>
 
-    <div class="onb-cta-wrapper">
-        <a href="{{ url('saas_subscription_checkout') }}" class="onb-cta" rel="external" target="_blank">
-            {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans({}, 'email') }} &rarr;
-        </a>
-    </div>
+        <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.paid_heading'|trans(params, 'email') }}</h2>
+        <ul style="margin: 8px 0 24px 0; Margin: 8px 0 24px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
+            {% for i in 1..5 %}
+                <li>{{ ('onboarding.trial_about_to_end.paid.' ~ i)|trans({}, 'email') }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if coupon_code %}
+            {% include '@SolidInvoiceSaas/Email/Onboarding/_coupon.html.twig' %}
+        {% endif %}
+
+        <div class="onb-cta-wrapper">
+            <a href="{{ url('saas_subscription_checkout') }}" class="onb-cta" rel="external" target="_blank">
+                {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans(params, 'email') }} &rarr;
+            </a>
+        </div>
+    {% endif %}
 
     <p class="onb-fine-print" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}</p>
-{% endblock %}
-
-{% block ps %}
-{% if coupon_code %}
-    {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code|e, '%percent%': coupon_percent}, 'email')|raw }}
-{% endif %}
 {% endblock %}

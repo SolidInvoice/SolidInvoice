@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
+use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
@@ -35,7 +36,10 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
+use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
+use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -45,6 +49,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\TraceableMessageBus;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -56,6 +62,8 @@ final class RequestListenerTest extends KernelTestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
     use EnsureApplicationInstalled;
+
+    private TraceableMessageBus $bus;
 
     #[Override]
     protected static function getKernelClass(): string
@@ -219,7 +227,57 @@ final class RequestListenerTest extends KernelTestCase
         self::assertNull($event->getResponse());
     }
 
-    public function testOnRequestWithTrialStatusAfterEndDate(): void
+    public function testOnRequestWithExpiredLocalTrialMovesToFreePlan(): void
+    {
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-10'));
+        $free = new Plan()->setName('Free')->setPlanId('0')->setPrice(0);
+        $listener = $this->createListener(new User(), CarbonImmutable::parse('2024-01-15'), $subscription, freePlan: $free);
+
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        $event = new RequestEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        $listener->onRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertSame(SubscriptionStatus::ACTIVE, $subscription->getStatus());
+        self::assertSame($free, $subscription->getPlan());
+
+        $messages = $this->bus->getDispatchedMessages();
+        self::assertCount(1, $messages);
+        self::assertInstanceOf(SendTrialDowngradedEmailMessage::class, $messages[0]['message']);
+    }
+
+    public function testOnRequestWithExpiredLemonSqueezyTrialKeepsTheWall(): void
+    {
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-10'));
+        $subscription->setSubscriptionId('ls_sub_123');
+
+        $free = new Plan()->setName('Free')->setPlanId('0')->setPrice(0);
+        $listener = $this->createListener(new User(), CarbonImmutable::parse('2024-01-15'), $subscription, freePlan: $free);
+
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        $event = new RequestEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        $listener->onRequest($event);
+
+        self::assertStringContainsString('Trial Expired Page', (string) $event->getResponse()?->getContent());
+        self::assertSame(SubscriptionStatus::TRIAL, $subscription->getStatus());
+        self::assertSame([], $this->bus->getDispatchedMessages());
+    }
+
+    public function testOnRequestWithExpiredTrialShowsTheWallWhenNoFreePlanExists(): void
     {
         $now = CarbonImmutable::parse('2024-01-15');
         $endDate = CarbonImmutable::parse('2024-01-10');
@@ -453,6 +511,7 @@ final class RequestListenerTest extends KernelTestCase
         ?callable $onBannerRender = null,
         int $couponPercent = 30,
         ?BillingMode $billingMode = null,
+        ?Plan $freePlan = null,
     ): RequestListener {
         // Get real services from container
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -463,6 +522,7 @@ final class RequestListenerTest extends KernelTestCase
         // test kernel's Doctrine mapping, so we can't fetch a real one here.
         $planRepository = M::mock(PlanRepositoryInterface::class);
         $planRepository->shouldReceive('findAllOrdered')->andReturn([]);
+        $planRepository->shouldReceive('findFree')->andReturn($freePlan);
 
         // Mock SubscriptionProviderInterface
         $subscriptionManager = M::mock(SubscriptionProviderInterface::class);
@@ -534,6 +594,14 @@ final class RequestListenerTest extends KernelTestCase
             $trialBannerResolver,
             $translator,
             $billingMode,
+            // SubscriptionManager is final readonly; build a real one over stub
+            // collaborators so downgradeToFree() runs for real.
+            new SubscriptionManager(
+                $this->createStub(SubscriptionRepositoryInterface::class),
+                $planRepository,
+                $this->createStub(PaymentIntegrationInterface::class),
+            ),
+            $this->bus = new TraceableMessageBus(new MessageBus()),
         );
     }
 

@@ -4,9 +4,9 @@ Guidance for AI agents working in this repository. Everything here is derived fr
 repository itself; each rule cites the file that establishes it. Where this file and the
 code disagree, the code wins — fix this file in the same PR.
 
-**Default branch is `3.1.x`, not `main`.** Branch from and target `3.1.x`. Release
+**Default branch is `3.2.x`, not `main`.** Branch from and target `3.2.x`. Release
 branches are one per minor (`2.3.x`, `2.4.x`, `3.0.x`, `3.1.x`); `main` does not exist.
-`unit-tests.yml` only runs on pushes to `3.0.x` and `3.1.x`.
+`unit-tests.yml` only runs on pushes to `3.1.x` and `3.2.x`.
 
 ---
 
@@ -463,6 +463,23 @@ non-obvious parts".
 Remember `db-tests.yml`: your migration runs on MySQL 5.7 through 9, MariaDB 10.4 through
 11.4, and PostgreSQL 16/17.
 
+**Where migrations run. This is deliberate; do not "fix" it.**
+
+- **Fresh install** (the install wizard and `solidinvoice:install`):
+  `InstallBundle\Installer\Database\Migration` builds the schema from the ORM metadata, then
+  stamps every migration as executed. It does **not** run the migration chain. A fresh
+  database has no data, so the data migrations have nothing to do.
+- **Upgrade** of an installed app: the real `doctrine:migrations:migrate`. The FrankenPHP
+  binary runs it in the `lu.AppStartup` hook (`migrateOnStartup` in `frankenphp/app.go`),
+  before Caddy or the messenger workers start, so nothing is served on a half-migrated
+  schema. It checks `doctrine:migrations:up-to-date` first and logs every query to the app
+  log. It is not retried; a failure is logged and the app still boots. The Helm chart also runs it as a `pre-upgrade` job. Tarball installs on a plain
+  PHP host run it by hand (see the distribution-package docs).
+- **Never during an HTTP request.** There used to be an `UpgradeListener` that migrated on
+  `kernel.request`. It was removed because it ran migrations twice under concurrent requests,
+  timed out on long backfills, and added a status query to every page load. Do not bring it
+  back, and do not make the installer run the migrator.
+
 ### Doctrine filters — `src/CoreBundle/Doctrine/Filter/`
 
 Two global filters:
@@ -715,6 +732,14 @@ gated. The bar below is the real one.
 - Unit tests sit at the top level of `src/*Bundle/Tests/`; functional tests in
   `Tests/Functional/`; API tests under `Tests/Functional/Api/`.
 - Mocking should use **PHPUnit Mocks**. There are some old tests using Mockery (`mockery/mockery`), plus `phpstan/phpstan-mockery`, but we actively want to move away from this and strictly only use PHPUnit mocks everywhere going forward.
+- **`createStub()` unless the test sets an expectation.** A double that only has
+  `method()->willReturn()` configured is a stub; reach for `createMock()` only when that
+  test calls `expects()` on it. A mock with no expectations triggers a PHPUnit notice
+  ("No expectations were configured for the mock object…"), and the suite should run
+  notice-free. Don't silence it with `#[AllowMockObjectsWithoutExpectations]`. When
+  `setUp()` builds the collaborators, create stubs there and have the tests that assert
+  on calls swap in a mock before building the subject (see `OAuthAuthenticatorTest`).
+  Type stub properties as `Foo & Stub`; a `MockObject` still fits that type.
 - Fixtures are **Foundry** (`zenstruck/foundry ^2.10`) with `FoundryExtension` and
   auto-reset enabled in `phpunit.xml.dist`. Also available:
   `doctrine/doctrine-fixtures-bundle`, `liip/test-fixtures-bundle`. Factories live next to

@@ -28,6 +28,31 @@ final readonly class OnboardingContext
         public Plan $plan,
         public DateTimeImmutable $trialStart,
         public DateTimeImmutable $trialEnd,
+        public DateTimeImmutable $now,
     ) {
+    }
+
+    public static function fromSubscription(User $user, Subscription $subscription, DateTimeImmutable $now): ?self
+    {
+        $company = $subscription->getSubscriber();
+
+        if (! $company instanceof Company) {
+            return null;
+        }
+
+        return new self(
+            $user,
+            $company,
+            $subscription,
+            $subscription->getPlan(),
+            DateTimeImmutable::createFromInterface($subscription->getStartDate()),
+            DateTimeImmutable::createFromInterface($subscription->getEndDate()),
+            $now,
+        );
+    }
+
+    public function hoursSinceTrialStart(): float
+    {
+        return ($this->now->getTimestamp() - $this->trialStart->getTimestamp()) / 3600;
     }
 }

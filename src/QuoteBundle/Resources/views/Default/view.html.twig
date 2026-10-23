@@ -14,7 +14,9 @@
 
 {% block content %}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
+{% import '@SolidInvoiceInvoice/Default/_send_gate.html.twig' as send_gate %}
 {% set currency = quote.currency %}
+{% set gated = is_email_verification_gated() %}
 <div class="doc-view-page">
     {# ═══════════════════════════════════════════════════════════════════════
        PAGE HEADER - Quote Title, Status, and Actions
@@ -123,15 +125,12 @@
                     {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
                     {{ "quote.view.toolbar.accept"|trans }}
                 </a>
-                {% if is_email_verification_gated() %}
-                    <span class="d-inline-block" tabindex="0"
-                          data-bs-toggle="tooltip"
-                          title="{{ email_verification_message('sending this quote') }}">
-                        <button type="button" class="btn btn-primary btn-hero disabled" disabled style="pointer-events: none;">
-                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
-                            {{ "quote.view.toolbar.send"|trans }}
-                        </button>
-                    </span>
+                {% if gated %}
+                    {{ send_gate.hint('quote.send.verify_hint') }}
+                    <button type="button" class="btn btn-primary btn-hero" disabled aria-describedby="send-gated-hint">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ "quote.view.toolbar.send"|trans }}
+                    </button>
                 {% else %}
                     <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-primary btn-hero">
                         {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
@@ -140,6 +139,9 @@
                 {% endif %}
             {% elseif workflow_can(quote, 'publish') %}
                 {# Draft state: Publish button #}
+                {% if gated %}
+                    {{ send_gate.hint('quote.send.verify_hint') }}
+                {% endif %}
                 <div class="btn-group">
                     <a href="{{ path('_transition_quote', {'action' : 'publish', 'id' : quote.id}) }}" class="btn btn-primary btn-hero">
                         {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
@@ -150,15 +152,11 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            {% if is_email_verification_gated() %}
-                                <span class="d-block" tabindex="0"
-                                      data-bs-toggle="tooltip"
-                                      title="{{ email_verification_message('sending this quote') }}">
-                                    <button type="button" class="dropdown-item disabled" disabled style="pointer-events: none;">
-                                        {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                        {{ 'quote.view.toolbar.publish_and_send'|trans }}
-                                    </button>
-                                </span>
+                            {% if gated %}
+                                <button type="button" class="dropdown-item" disabled aria-describedby="send-gated-hint">
+                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                    {{ 'quote.view.toolbar.publish_and_send'|trans }}
+                                </button>
                             {% else %}
                                 <a class="dropdown-item" href="{{ path('_send_quote', {'id' : quote.id}) }}">
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
@@ -455,5 +453,9 @@
             {% endif %}
         </div>
     </div>
+
+    {% if gated %}
+        {{ send_gate.resend_form() }}
+    {% endif %}
 </div>
 {% endblock content %}

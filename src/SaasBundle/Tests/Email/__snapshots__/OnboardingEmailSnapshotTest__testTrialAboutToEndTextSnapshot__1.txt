@@ -1,26 +1,40 @@
 Your trial ends in 3 days.
 ============================================================
 
-When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe.
+On April 22, 2026 your account moves to the Free plan. Nothing is deleted, and you can keep invoicing.
 
 Days remaining: 3
 Trial ends April 22, 2026 at 12:00am
 
-Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden.
-
-What happens when your trial ends
+Your workspace so far
 ------------------------------------------------------------
 
-* Your account locks — you won't be able to log in or access any data.
-* Pending invoices won't be delivered. Recurring billing pauses.
-* Clients can still pay existing invoices via their direct payment links.
-* Reactivate any time — everything restores immediately on subscription.
+* Clients added: 0
+* Invoices sent: 0
+* Invoices paid: 0
 
-Subscribe and keep going: http://localhost/billing/subscription/activate
+What you keep on Free
+------------------------------------------------------------
+
+* Your clients, invoices and payment history, exactly as they are
+* Unlimited invoices for up to 3 active clients
+* Online payments, so your clients can still pay by card
+
+What SolidInvoice Pro adds
+------------------------------------------------------------
+
+* More than 3 active clients
+* Recurring invoices on any schedule
+* Automatic reminders for overdue invoices
+* Team members on one account
+* Your own branding, without the SolidInvoice footer
+
+Your discount code: SOLID30
+30% off your first three months. Enter this code at checkout before April 22, when your trial ends.
+
+Stay on SolidInvoice Pro: http://localhost/billing/subscription/activate
 
 Questions about billing or what to expect? Reply to this email — we read every one.
-
-P.S. use code SOLID30 at checkout for 30% off your first three months. Offer expires when your trial does.
 
 See you inside,
 — The SolidInvoice team

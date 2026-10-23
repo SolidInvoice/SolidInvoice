@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Security\OAuth;
 
-use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use SensitiveParameter;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\OAuth\GoogleIdentity;
+use SolidInvoice\UserBundle\OAuth\GoogleUserProvisionerInterface;
 use SolidInvoice\UserBundle\OAuth\OAuthUser;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -26,7 +27,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -42,11 +42,10 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
 {
     public function __construct(
         private readonly ClientRegistry $clientRegistry,
-        private readonly EntityManagerInterface $entityManager,
         private readonly RouterInterface $router,
         private readonly ToggleInterface $toggle,
-        private readonly PropertyAccessorInterface $propertyAccessor,
         private readonly Security $security,
+        private readonly GoogleUserProvisionerInterface $provisioner,
     ) {
     }
 
@@ -62,43 +61,22 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
         $accessToken = $this->fetchAccessToken($client);
 
         return new SelfValidatingPassport(
-            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
+            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client): ?User {
 
                 $oauthUser = new OAuthUser($client->fetchUserFromToken($accessToken));
 
-                $userRepository = $this->entityManager->getRepository(User::class);
-                $existingUser = $userRepository->findOneBy([$oauthUser->getPropertyMap() => $oauthUser->getId()]);
+                $identity = new GoogleIdentity(
+                    googleId: $oauthUser->getId(),
+                    email: (string) $oauthUser->getEmail(),
+                    emailVerified: $oauthUser->getEmailVerified(),
+                    firstName: $oauthUser->getFirstName() ?: null,
+                    lastName: $oauthUser->getLastName() ?: null,
+                );
 
-                if ($existingUser instanceof User) {
-                    return $existingUser;
-                }
+                $currentUser = $this->security->getUser();
+                $currentUser = $currentUser instanceof User ? $currentUser : null;
 
-                $user = $userRepository->findOneBy(['email' => $oauthUser->getEmail()]);
-
-                if (! $user instanceof User) {
-                    $currentUser = $this->security->getUser();
-
-                    if ($currentUser instanceof User) {
-                        $user = $currentUser;
-                    } else {
-                        if (! $this->toggle->isActive('allow_registration')) {
-                            return null;
-                        }
-
-                        $user = new User();
-                        $user->setEmail($oauthUser->getEmail());
-                        $user->setPassword(bin2hex(random_bytes(24))); // Generate a secure random password that won't be used
-                        $user->setEnabled(true);
-                        $user->setVerified($oauthUser->getEmailVerified());
-                    }
-                }
-
-                $this->propertyAccessor->setValue($user, $oauthUser->getPropertyMap(), $oauthUser->getId());
-
-                $this->entityManager->persist($user);
-                $this->entityManager->flush();
-
-                return $user;
+                return $this->provisioner->findOrCreate($identity, $currentUser)?->user;
             })
         );
     }

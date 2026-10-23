@@ -748,7 +748,8 @@ final class TemplatesRenderingTest extends KernelTestCase
      */
     public function testCompactStatusLineRendersOutsideTheDarkBand(): void
     {
-        $output = $this->renderPdf('compact');
+        // The page footer is a table too; drop it so the first table is the dark band.
+        $output = (string) preg_replace('~<htmlpagefooter.*?</htmlpagefooter>~s', '', $this->renderPdf('compact'));
 
         [$darkBand, $pageBody] = explode('</table>', $output, 2);
 

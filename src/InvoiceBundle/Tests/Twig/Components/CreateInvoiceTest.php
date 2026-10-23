@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 final class CreateInvoiceTest extends LiveComponentTest
@@ -262,6 +263,31 @@ final class CreateInvoiceTest extends LiveComponentTest
         // The action must have produced a redirect (not a 422 / exception page).
         $response = $this->client->getResponse();
         self::assertInstanceOf(RedirectResponse::class, $response);
+    }
+
+    public function testSendWithoutRecipientsDoesNotPublishTheInvoice(): void
+    {
+        $client = ClientFactory::createOne(['name' => 'No Contacts Ltd', 'currencyCode' => 'USD']);
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+        $dto->client = $client;
+        $dto->lines->add(new Line()->setName('Consulting')->setPrice(10000)->setQty(1));
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        try {
+            $component->call('saveSend');
+            self::fail('A send with nobody to send to must not save.');
+        } catch (UnprocessableEntityHttpException $e) {
+            self::assertStringContainsString(self::getContainer()->get('translator')->trans('invoice.users.min', [], 'validators'), $e->getMessage());
+        }
+
+        self::assertSame(0, self::getContainer()->get('doctrine')->getRepository(Invoice::class)->count([]));
     }
 
     /**

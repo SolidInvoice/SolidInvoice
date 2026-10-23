@@ -18,11 +18,17 @@ enum UserSettingType: string
     case Timezone = 'timezone';
     case Location = 'location';
     case OnboardComplete = 'onboard_complete';
+    // No longer written. Kept so rows saved by the old multi-step wizard still
+    // hydrate: `setting_key` is mapped with this enum as its enumType.
     case OnboardingStep = 'onboarding_step';
     case OnboardingSkipped = 'onboarding_skipped';
     case OnboardingStartedAt = 'onboarding_started_at';
     case OnboardingCompletedAt = 'onboarding_completed_at';
     case OnboardingChecklistDismissed = 'onboarding_checklist_dismissed';
     case OnboardingEmailSequenceLastStep = 'onboarding_email_sequence_last_step';
+    case OnboardingEmailsSent = 'onboarding_emails_sent';
     case AffiliatePromptDismissedAt = 'affiliate_prompt_dismissed_at';
+    // SaaS onboarding "How did you hear about SolidInvoice?" answer.
+    case SignupHeardAbout = 'signup_heard_about';
+    case SignupHeardAboutOther = 'signup_heard_about_other';
 }

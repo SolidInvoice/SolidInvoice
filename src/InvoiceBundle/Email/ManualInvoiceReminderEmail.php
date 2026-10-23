@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
@@ -21,7 +22,7 @@ use Symfony\Component\Mime\Address;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Email\ManualInvoiceReminderEmailTest
  */
-final class ManualInvoiceReminderEmail extends TemplatedEmail
+final class ManualInvoiceReminderEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
         private readonly Invoice $invoice

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Override;
-use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -23,13 +22,20 @@ use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function ceil;
 
+/**
+ * Four days before the trial ends: a recap of what the user has done, and
+ * either what they keep on Free or, when a card is on file, the date it will be
+ * charged. A charge nobody saw coming is what turns into a cancellation.
+ */
 #[AsTaggedItem(priority: 50)]
 final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
 {
+    private const int NOTICE_DAYS = 4;
+
     public function __construct(
         TranslatorInterface $translator,
-        private readonly ClockInterface $clock,
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly BillingMode $billingMode,
@@ -37,15 +43,10 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         parent::__construct($translator);
     }
 
-    /**
-     * A paid trial already has a card on file, so warning the user that it is
-     * about to end — and offering a coupon to convert — is meaningless. The
-     * subscription simply bills at the end of the trial.
-     */
     #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
-        return ! $this->billingMode->requiresCardForTrial() && parent::shouldSend($context);
+        return $context->now >= $context->trialEnd->modify('-' . self::NOTICE_DAYS . ' days');
     }
 
     public static function key(): string
@@ -63,11 +64,16 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     {
         $email = parent::createEmail($context);
 
-        $daysRemaining = $this->calculateDaysRemaining($context);
+        $daysRemaining = $this->daysRemaining($context);
 
         $email->subject($this->translator->trans(
-            'onboarding.trial_about_to_end.subject',
-            ['%days%' => $daysRemaining, '%count%' => $daysRemaining],
+            $this->willCharge($context) ? 'onboarding.trial_about_to_end.charged.subject' : 'onboarding.trial_about_to_end.subject',
+            [
+                '%days%' => $daysRemaining,
+                '%count%' => $daysRemaining,
+                '%plan%' => $context->plan->getName(),
+                '%date%' => $context->trialEnd->format('F j'),
+            ],
             'email',
         ));
 
@@ -77,24 +83,33 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     #[Override]
     protected function templateContext(OnboardingContext $context): array
     {
-        $daysRemaining = $this->calculateDaysRemaining($context);
+        $willCharge = $this->willCharge($context);
 
         return parent::templateContext($context) + [
-            'days_remaining' => $daysRemaining,
-            'coupon_code' => $this->billingMode->couponCode(),
+            'days_remaining' => $this->daysRemaining($context),
+            'will_charge' => $willCharge,
+            // A coupon cannot be redeemed on a subscription that is already billed.
+            'coupon_code' => $willCharge ? '' : $this->billingMode->couponCode(),
             'coupon_percent' => $this->billingMode->couponPercent(),
             'usage_clients' => $this->clientRepository->getTotalClients(),
-            'usage_invoices' => $this->invoiceRepository->getTotalInvoices(),
+            'usage_invoices' => $this->invoiceRepository->countIssued($context->company),
             'usage_collected' => $this->invoiceRepository->getCountByStatus(InvoiceStatus::Paid),
         ];
     }
 
-    private function calculateDaysRemaining(OnboardingContext $context): int
+    /**
+     * A card is on file either because this deployment takes one up front, or
+     * because the user added one during a no-card trial.
+     */
+    private function willCharge(OnboardingContext $context): bool
     {
-        $now = $this->clock->now();
+        return $this->billingMode->requiresCardForTrial() || $context->subscription->isExternallyBilled();
+    }
 
-        return $now < $context->trialEnd
-            ? (int) ceil(($context->trialEnd->getTimestamp() - $now->getTimestamp()) / 86400)
+    private function daysRemaining(OnboardingContext $context): int
+    {
+        return $context->now < $context->trialEnd
+            ? (int) ceil(($context->trialEnd->getTimestamp() - $context->now->getTimestamp()) / 86400)
             : 0;
     }
 }

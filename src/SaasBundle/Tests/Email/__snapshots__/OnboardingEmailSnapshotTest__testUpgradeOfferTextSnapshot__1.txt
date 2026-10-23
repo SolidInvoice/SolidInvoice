@@ -1,25 +1,24 @@
-One last thing before your trial closes.
+Here's 30% off SolidInvoice Pro, before your trial ends.
 ============================================================
 
-When your trial ends, your account locks. Before that happens — here's an offer to make subscribing an easy decision.
+Your trial ends on April 22, and your account then moves to the Free plan. If you'd like to keep everything, here's a code that makes it cheaper.
+
+Your discount code: SOLID30
+30% off your first three months. Enter this code at checkout before April 22, when your trial ends.
 
 SolidInvoice Pro — $12.00 / month
 
-* Unlimited clients and invoices
-* Recurring billing on any schedule
-* Automatic payment reminders
-* Online payments via your own Stripe or PayPal account
-* Multiple team members on one account
-* Backups, updates, and SolidInvoice branding removed from your invoices
+* More than 3 active clients
+* Recurring invoices on any schedule
+* Automatic reminders for overdue invoices
+* Team members on one account
+* Your own branding, without the SolidInvoice footer
 
-Your discount code: SOLID30
-30% off your first three months. Enter this code at checkout.
+Claim my 30% off: http://localhost/billing/subscription/activate
 
-Subscribe now: http://localhost/billing/subscription/activate
+Cancel anytime. No surprise fees.
 
-Cancel anytime. No surprise fees. Your data restores immediately on subscription.
-
-P.S. your account locks when the trial ends. Subscribe before that happens to keep sending without interruption.
+P.S. if Free is enough for you, there's nothing to do. Your clients and invoices stay where they are.
 
 See you inside,
 — The SolidInvoice team

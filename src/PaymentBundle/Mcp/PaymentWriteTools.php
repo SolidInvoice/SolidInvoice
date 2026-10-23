@@ -80,11 +80,12 @@ final readonly class PaymentWriteTools
         }
 
         $client = $invoice->getClient();
-        $invoiceCurrency = $client?->getCurrencyCode();
 
-        if ($invoiceCurrency === null) {
-            throw new ToolCallException('Invoice has no resolvable currency.');
+        if (! $client instanceof Client) {
+            throw new ToolCallException('Invoice has no client to resolve a currency from.');
         }
+
+        $invoiceCurrency = $invoice->getCurrency()->getCode();
 
         if (strtoupper($currency) !== strtoupper($invoiceCurrency)) {
             throw new ToolCallException(sprintf(
@@ -126,10 +127,7 @@ final readonly class PaymentWriteTools
         $payment->setNotes($notes);
         $payment->setMethod($offlineMethod);
         $payment->setInvoice($invoice);
-
-        if ($client instanceof Client) {
-            $payment->setClient($client);
-        }
+        $payment->setClient($client);
 
         $payment->setStatus(PaymentStatus::Captured);
         $payment->setCompleted(CarbonImmutable::now());

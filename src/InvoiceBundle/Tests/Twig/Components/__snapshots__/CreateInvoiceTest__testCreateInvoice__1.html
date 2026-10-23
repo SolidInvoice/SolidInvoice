@@ -1,6 +1,6 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[],"invoiceTaxes":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","paymentTerms":"custom","due":"","customFields":[],"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value="{&quot;isEdit&quot;:false,&quot;invoiceEntity&quot;:null,&quot;previousClientId&quot;:null,&quot;formName&quot;:&quot;invoice&quot;,&quot;invoice&quot;:{&quot;clientMode&quot;:&quot;existing&quot;,&quot;discount&quot;:{&quot;type&quot;:&quot;&quot;,&quot;value&quot;:0},&quot;lines&quot;:[],&quot;invoiceTaxes&quot;:[],&quot;invoiceId&quot;:&quot;1&quot;,&quot;terms&quot;:&quot;&quot;,&quot;notes&quot;:&quot;&quot;,&quot;total&quot;:0,&quot;baseTotal&quot;:0,&quot;tax&quot;:0,&quot;invoiceDate&quot;:&quot;2021-01-01&quot;,&quot;paymentTerms&quot;:&quot;custom&quot;,&quot;due&quot;:&quot;&quot;,&quot;customFields&quot;:[],&quot;__dynamic_error&quot;:&quot;&quot;,&quot;client&quot;:&quot;&quot;,&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
+            
     <form name="invoice" method="post" data-controller="solidworx--platform--loading" data-action="submit-&gt;solidworx--platform--loading#onSubmit" data-model="on(change)|*">
 
     <div class="billing-form-container">
@@ -194,10 +194,17 @@
                     Cancel
                 </a>
 
-                <div class="btn-group save-button-group">
-                                            <button type="button" class="btn btn-primary btn-save-primary" data-action="live#action:prevent" data-live-action-param="saveDraft">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
-                            Save as Draft
+                <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                    
+                    <button type="button" class="btn btn-outline-secondary" data-action="live#action:prevent" data-live-action-param="saveDraft">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+                        Save as Draft
+                    </button>
+
+                    <div class="btn-group save-button-group">
+                        <button type="button" class="btn btn-primary btn-save-primary" data-action="live#action:prevent" data-live-action-param="saveSend">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"></path></svg>
+                            Send to client
                         </button>
                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
@@ -206,17 +213,12 @@
                             <li>
                                 <button type="button" class="dropdown-item" data-action="live#action:prevent" data-live-action-param="savePublish">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"></path></svg>
-                                    Publish
+                                    Publish without sending
                                 </button>
                             </li>
-                                                        <li>
-                                <button type="button" class="dropdown-item" data-action="live#action:prevent" data-live-action-param="saveSend">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"></path></svg>
-                                    Save and Send
-                                </button>
-                            </li>
-                                                    </ul>
-                                    </div>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -226,5 +228,6 @@
 </fieldset>
 <input type="hidden" id="invoice___dynamic_error" name="invoice[__dynamic_error]"><input type="hidden" id="invoice__token" name="invoice[_token]" data-controller="csrf-protection">
 </form>
-</div>
+
+    </div>
 </body></html>

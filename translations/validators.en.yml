@@ -4,6 +4,11 @@ client:
             min: 'You need to add at least one contact to this client'
         unique_name: 'A client with the name "{{ value }}" already exists.'
 core:
+    company:
+        name:
+            max_length: 'The company name cannot be longer than {{ limit }} characters.'
+            min_length: 'The company name must be at least {{ limit }} characters.'
+            not_blank: 'Please enter a company name.'
     constraint:
         application_url_host: 'This domain is reserved for the default application URL.'
     custom_field:
@@ -31,7 +36,7 @@ invoice:
     lines:
         min: 'You need to add at least 1 line to the Invoice'
     users:
-        min: 'You need to select at least 1 user to attach to the Invoice'
+        min: 'Choose who gets this invoice. If the client has no contacts yet, add one with an email address.'
 notification:
     constraint:
         transport_setting:
@@ -40,7 +45,7 @@ quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'
     users:
-        min: 'You need to select at least 1 user to attach to the Quote'
+        min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
 recurring_invoice:
     end_date:
         future: 'End date must be in the future'

@@ -20,11 +20,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class SolidInvoiceCoreBundle extends Bundle
 {
-    public const string VERSION = '3.1.1';
+    public const string VERSION = '3.2.0-dev';
 
     public const string APP_NAME = 'SolidInvoice';
 
-    public const NAMESPACE = __NAMESPACE__;
+    public const string NAMESPACE = __NAMESPACE__;
 
     public function build(ContainerBuilder $container): void
     {

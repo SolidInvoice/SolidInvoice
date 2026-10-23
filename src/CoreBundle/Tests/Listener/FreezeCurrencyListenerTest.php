@@ -18,9 +18,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Currency\FrozenCurrencyThaw;
 use SolidInvoice\CoreBundle\Listener\FreezeCurrencyListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use Symfony\Component\Workflow\Event\Event;
@@ -39,7 +41,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onInvoiceTransition($this->makeEvent(
             $invoice,
             new Transition('accept', InvoiceStatus::Draft->value, InvoiceStatus::Pending->value),
@@ -58,7 +60,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $invoice->setClient($client);
         $invoice->setCurrencyCode('USD');
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onInvoiceTransition($this->makeEvent(
             $invoice,
             new Transition('accept', InvoiceStatus::Draft->value, InvoiceStatus::Pending->value),
@@ -76,7 +78,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onInvoiceTransition($this->makeEvent(
             $invoice,
             new Transition('edit', InvoiceStatus::Pending->value, InvoiceStatus::Draft->value),
@@ -98,7 +100,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onInvoiceTransition($this->makeEvent(
             $invoice,
             new Transition('cancel', InvoiceStatus::Draft->value, InvoiceStatus::Cancelled->value),
@@ -116,7 +118,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $invoice = new Invoice();
         $invoice->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onInvoiceTransition($this->makeEvent(
             $invoice,
             new Transition('archive', InvoiceStatus::Draft->value, InvoiceStatus::Archived->value),
@@ -129,7 +131,7 @@ final class FreezeCurrencyListenerTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testNonFrozenCurrencySubjectIsIgnoredOnInvoiceTransition(): void
     {
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
 
         $listener->onInvoiceTransition($this->makeEvent(
             new Client(),
@@ -146,7 +148,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $quote = new Quote();
         $quote->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onQuoteTransition($this->makeEvent(
             $quote,
             new Transition('send', QuoteStatus::Draft->value, QuoteStatus::Pending->value),
@@ -165,7 +167,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $quote->setClient($client);
         $quote->setCurrencyCode('USD');
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onQuoteTransition($this->makeEvent(
             $quote,
             new Transition('send', QuoteStatus::Draft->value, QuoteStatus::Pending->value),
@@ -183,7 +185,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $quote = new Quote();
         $quote->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onQuoteTransition($this->makeEvent(
             $quote,
             new Transition('reopen', QuoteStatus::Declined->value, QuoteStatus::Draft->value),
@@ -205,7 +207,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $quote = new Quote();
         $quote->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onQuoteTransition($this->makeEvent(
             $quote,
             new Transition('cancel', QuoteStatus::Draft->value, QuoteStatus::Cancelled->value),
@@ -223,7 +225,7 @@ final class FreezeCurrencyListenerTest extends TestCase
         $quote = new Quote();
         $quote->setClient($client);
 
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
         $listener->onQuoteTransition($this->makeEvent(
             $quote,
             new Transition('archive', QuoteStatus::Draft->value, QuoteStatus::Archived->value),
@@ -236,13 +238,88 @@ final class FreezeCurrencyListenerTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testNonFrozenCurrencySubjectIsIgnoredOnQuoteTransition(): void
     {
-        $listener = new FreezeCurrencyListener();
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
 
         $listener->onQuoteTransition($this->makeEvent(
             new Client(),
             new Transition('send', QuoteStatus::Draft->value, QuoteStatus::Pending->value),
             'quote',
         ));
+    }
+
+    /**
+     * `reopen` is `[Cancelled] → [Draft]` — its only `from` is already a non-issued
+     * place, so this is the path a froms-based predicate would miss.
+     */
+    public function testFrozenInvoiceReopenedFromCancelledIsThawedAndSanctioned(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+        $invoice->setCurrencyCode('USD');
+
+        $thaw = new FrozenCurrencyThaw();
+        $listener = new FreezeCurrencyListener($thaw);
+        $listener->onInvoiceTransition($this->makeEvent(
+            $invoice,
+            new Transition('reopen', InvoiceStatus::Cancelled->value, InvoiceStatus::Draft->value),
+            'invoice',
+        ));
+
+        self::assertNull($invoice->getCurrencyCode());
+        self::assertTrue($thaw->consume($invoice));
+    }
+
+    /**
+     * An invoice with a payment row retains its frozen currency forever, per
+     * {@see Invoice::retainsFrozenCurrency()}. It must not be thawed, and must not be
+     * sanctioned either.
+     */
+    public function testFrozenInvoiceWithPaymentsIsNotThawedOnReopen(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+        $invoice->setCurrencyCode('USD');
+        $invoice->addPayment(new Payment());
+
+        $thaw = new FrozenCurrencyThaw();
+        $listener = new FreezeCurrencyListener($thaw);
+        $listener->onInvoiceTransition($this->makeEvent(
+            $invoice,
+            new Transition('reopen', InvoiceStatus::Cancelled->value, InvoiceStatus::Draft->value),
+            'invoice',
+        ));
+
+        self::assertSame('USD', $invoice->getCurrencyCode());
+        self::assertFalse($thaw->consume($invoice));
+    }
+
+    /**
+     * `cancel` leaves an issued invoice in Cancelled, not Draft, so an already-frozen
+     * currency must stay frozen.
+     */
+    public function testFrozenInvoiceIsNotThawedWhenDestinationIsNotADraftPlace(): void
+    {
+        $client = new Client();
+        $client->setCurrency(new Currency('EUR'));
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+        $invoice->setCurrencyCode('USD');
+
+        $listener = new FreezeCurrencyListener(new FrozenCurrencyThaw());
+        $listener->onInvoiceTransition($this->makeEvent(
+            $invoice,
+            new Transition('cancel', InvoiceStatus::Pending->value, InvoiceStatus::Cancelled->value),
+            'invoice',
+        ));
+
+        self::assertSame('USD', $invoice->getCurrencyCode());
     }
 
     /**

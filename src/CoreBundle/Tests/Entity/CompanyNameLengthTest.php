@@ -42,6 +42,14 @@ final class CompanyNameLengthTest extends TestCase
         $violations = $this->validator->validatePropertyValue(Company::class, 'name', str_repeat('a', 46));
 
         self::assertCount(1, $violations);
-        self::assertSame('The company name cannot be longer than 45 characters.', $violations->get(0)->getMessage());
+        self::assertSame('core.company.name.max_length', $violations->get(0)->getMessageTemplate());
+    }
+
+    public function testNameUnderMinimumIsInvalid(): void
+    {
+        $violations = $this->validator->validatePropertyValue(Company::class, 'name', 'ab');
+
+        self::assertCount(1, $violations);
+        self::assertSame('core.company.name.min_length', $violations->get(0)->getMessageTemplate());
     }
 }

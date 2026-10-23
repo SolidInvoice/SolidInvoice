@@ -18,6 +18,8 @@ use JsonException;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
+use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
@@ -25,6 +27,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Workflow\WorkflowInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
@@ -39,6 +42,7 @@ final readonly class CreateInvoiceFromRecurringHandler
         private LoggerInterface $logger,
         private ClockInterface $clock,
         private RecurringInvoiceRepository $recurringInvoiceRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -61,6 +65,10 @@ final readonly class CreateInvoiceFromRecurringHandler
             $newInvoice = $this->invoiceManager->createFromRecurring($invoice);
             $this->invoiceManager->create($newInvoice);
             $this->invoiceStateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);
+
+            // Every other path that publishes an invoice mails it too. This is the event
+            // InvoiceMailerListener sends on, and nothing else dispatched it.
+            $this->eventDispatcher->dispatch(new InvoiceEvent($newInvoice), InvoiceEvents::INVOICE_POST_ACCEPT);
         } catch (MathException | InvalidTransitionException | JsonException $e) {
             $this->logger->error('An error occurred while creating invoice from recurring', ['exception' => $e]);
         } finally {
