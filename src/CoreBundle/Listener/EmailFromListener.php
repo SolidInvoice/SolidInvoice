@@ -58,17 +58,6 @@ final readonly class EmailFromListener implements EventSubscriberInterface
             return;
         }
 
-        // Without a company (e.g. the 2FA code mail sent mid-login) the company
-        // settings can't be resolved, so send from the system sender instead.
-        if (! $this->companySelector->getCompany() instanceof Ulid) {
-            $from = Address::create($this->defaultSender);
-            $message->from($from);
-            $event->getEnvelope()->setSender($from);
-            $message->getHeaders()->remove('Sender');
-
-            return;
-        }
-
         $fromAddress = (string) $this->config->get('email/from_address');
 
         if ('' !== $fromAddress) {
