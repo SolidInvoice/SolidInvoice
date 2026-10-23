@@ -23,7 +23,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\InvoiceBundle\Api\InvoiceAttachmentDeleteProcessor;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceAttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -54,7 +53,7 @@ use Symfony\Component\Uid\Ulid;
             ],
         ),
         new Get(),
-        new Delete(processor: InvoiceAttachmentDeleteProcessor::class),
+        new Delete(),
         new Patch(),
     ],
     normalizationContext: [
@@ -130,7 +129,7 @@ class InvoiceAttachment
      * Generated from ULIDs, never derived from user input, and never serialized —
      * it must not leave the server.
      */
-        #[ORM\Column(name: 'storage_key', type: Types::STRING, length: 512, unique: true)]
+        #[ORM\Column(name: 'storage_key', type: Types::STRING, length: 64, unique: true)]
         private string $storageKey
     ) {
         $this->id = new Ulid();

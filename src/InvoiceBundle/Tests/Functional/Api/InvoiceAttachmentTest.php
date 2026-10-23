@@ -87,8 +87,8 @@ final class InvoiceAttachmentTest extends ApiTestCase
 
     /**
      * The default API Platform `RemoveProcessor` only removes the database row,
-     * so this also proves `InvoiceAttachmentDeleteProcessor` cleans up the blob
-     * behind it rather than leaving it orphaned in storage.
+     * so this also proves `InvoiceAttachmentBlobCleanupListener` cleans up the
+     * blob behind it rather than leaving it orphaned in storage.
      */
     public function testDeleteAlsoRemovesTheStoredBlob(): void
     {
@@ -108,6 +108,34 @@ final class InvoiceAttachmentTest extends ApiTestCase
         self::assertTrue($storage->exists($storageKey));
 
         $this->requestDelete($this->getIriFromResource($attachment));
+
+        self::assertFalse($storage->exists($storageKey));
+    }
+
+    /**
+     * `Invoice::$attachments` cascades on remove with `orphanRemoval: true`, so
+     * deleting the invoice removes the attachment rows without the attachment's
+     * own `Delete` operation ever running. `InvoiceAttachmentBlobCleanupListener`
+     * has to catch this path too, or the blob survives the invoice that owned it.
+     */
+    public function testDeletingTheInvoiceAlsoRemovesItsAttachmentBlobs(): void
+    {
+        $storage = self::getContainer()->get(AttachmentStorageInterface::class);
+        $sourcePath = tempnam(sys_get_temp_dir(), 'solidinvoice_attachment_test_');
+        file_put_contents($sourcePath, 'attachment contents');
+        $storageKey = $storage->write($this->company->getId(), new Ulid(), $sourcePath);
+        new Filesystem()->remove($sourcePath);
+
+        $invoice = InvoiceFactory::createOne(['company' => $this->company]);
+        InvoiceAttachmentFactory::createOne([
+            'invoice' => $invoice,
+            'company' => $this->company,
+            'storageKey' => $storageKey,
+        ]);
+
+        self::assertTrue($storage->exists($storageKey));
+
+        $this->requestDelete($this->getIriFromResource($invoice));
 
         self::assertFalse($storage->exists($storageKey));
     }

@@ -58,7 +58,7 @@ final class Version30200_4 extends AbstractMigration
         $table->addColumn('filename', Types::STRING, ['length' => 255, 'notnull' => true]);
         $table->addColumn('mime_type', Types::STRING, ['length' => 127, 'notnull' => true]);
         $table->addColumn('file_size', Types::INTEGER, ['notnull' => true]);
-        $table->addColumn('storage_key', Types::STRING, ['length' => 512, 'notnull' => true]);
+        $table->addColumn('storage_key', Types::STRING, ['length' => 64, 'notnull' => true]);
         $table->addColumn('uploaded_by', UlidType::NAME, ['notnull' => false]);
         $table->addColumn('shared_with_client', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
         $table->addColumn('created', Types::DATETIME_IMMUTABLE, ['notnull' => true]);
