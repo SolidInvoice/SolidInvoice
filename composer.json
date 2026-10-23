@@ -181,7 +181,6 @@
         "symfony/yunpian-notifier": "^8.1",
         "symfony/zulip-notifier": "^8.1",
         "symfonycasts/dynamic-forms": "^0.2",
-        "symfonycasts/reset-password-bundle": "^1.25",
         "symfonycasts/verify-email-bundle": "^1.18",
         "tijsverkoyen/css-to-inline-styles": "^2.4",
         "twig/cssinliner-extra": "^3.26",

@@ -7,7 +7,7 @@ Included on every invoice, nothing extra to configure
 ------------------------------------------------------------
 Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method and your client gets a 'Pay now' button too.
 
-Create your first invoice: http://localhost/invoices/create
+Create your first invoice: https://app.example.com/invoices/create
 
 P.S. a draft stays a draft until you press Send. Your client only sees the invoice once it's sent.
 
