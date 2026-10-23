@@ -32,6 +32,7 @@ use function trim;
  * the migration under test resolved - this strips that pending drift out before a subclass's
  * {@see MigrationIsIdempotentAcrossLineagesTestCase::resolvedDriftFragments()} is checked
  * against it, scoping the dump to tables that already exist in the lineage being tested.
+ * @see \SolidInvoice\CoreBundle\Tests\Migration\SchemaDriftDumpTest
  */
 final class SchemaDriftDump
 {
