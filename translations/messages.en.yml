@@ -1612,6 +1612,13 @@ payment:
         this_month: 'This Month'
         total_received: 'Total Received'
 payment_made: 'Payment has been received'
+payment_means:
+    bank_transfer: 'Bank transfer'
+    direct_debit: 'Direct debit'
+    other: 'Other'
+    sepa_credit_transfer: 'SEPA credit transfer'
+    sepa_direct_debit: 'SEPA direct debit'
+    standing_agreement: 'Standing agreement'
 payment_terms:
     custom: 'Custom'
     due_on_receipt: 'Due on receipt'

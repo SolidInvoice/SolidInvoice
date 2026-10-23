@@ -799,6 +799,18 @@ parameters:
 			path: src/PaymentBundle/Entity/Payment.php
 
 		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentInstruction\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentInstruction.php
+
+		-
+			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentInstruction\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentInstruction.php
+
+		-
 			message: '#^Property SolidInvoice\\PaymentBundle\\Entity\\PaymentMethod\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1
