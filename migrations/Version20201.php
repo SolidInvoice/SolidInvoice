@@ -594,8 +594,12 @@ final class Version20201 extends AbstractMigration
     private function foreignColumnShouldBeNullable(array $foreignKey): bool
     {
         if ($foreignKey['table'] === 'invoice_lines') {
+            // PostgreSQL folds the unquoted camelCase 'recurringInvoice_id' column to
+            // 'recurringinvoice_id' on introspection, while MySQL and SQLite keep the case
+            // (see the same note in Version30100_5). A case-sensitive match here left the
+            // column NOT NULL on PostgreSQL only.
             return $foreignKey['key'] === 'invoice_id' ||
-                $foreignKey['key'] === 'recurringInvoice_id' ||
+                strtolower((string) $foreignKey['key']) === 'recurringinvoice_id' ||
                 $foreignKey['key'] === 'tax_id';
         }
 

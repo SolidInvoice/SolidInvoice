@@ -463,6 +463,23 @@ non-obvious parts".
 Remember `db-tests.yml`: your migration runs on MySQL 5.7 through 9, MariaDB 10.4 through
 11.4, and PostgreSQL 16/17.
 
+**Where migrations run. This is deliberate; do not "fix" it.**
+
+- **Fresh install** (the install wizard and `solidinvoice:install`):
+  `InstallBundle\Installer\Database\Migration` builds the schema from the ORM metadata, then
+  stamps every migration as executed. It does **not** run the migration chain. A fresh
+  database has no data, so the data migrations have nothing to do.
+- **Upgrade** of an installed app: the real `doctrine:migrations:migrate`. The FrankenPHP
+  binary runs it in the `lu.AppStartup` hook (`migrateOnStartup` in `frankenphp/app.go`),
+  before Caddy or the messenger workers start, so nothing is served on a half-migrated
+  schema. It checks `doctrine:migrations:up-to-date` first and logs every query to the app
+  log. It is not retried; a failure is logged and the app still boots. The Helm chart also runs it as a `pre-upgrade` job. Tarball installs on a plain
+  PHP host run it by hand (see the distribution-package docs).
+- **Never during an HTTP request.** There used to be an `UpgradeListener` that migrated on
+  `kernel.request`. It was removed because it ran migrations twice under concurrent requests,
+  timed out on long backfills, and added a status query to every page load. Do not bring it
+  back, and do not make the installer run the migrator.
+
 ### Doctrine filters — `src/CoreBundle/Doctrine/Filter/`
 
 Two global filters:

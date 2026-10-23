@@ -849,10 +849,9 @@ invoice:
         send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:
@@ -1333,6 +1332,19 @@ onboarding:
             currency:
                 help: "The currency you'll use for invoices and quotes"
                 label: Currency
+            heard_about:
+                choices:
+                    ai_assistant: 'ChatGPT / Claude / AI assistant'
+                    colleague: 'A colleague or client'
+                    github: 'GitHub / self-hosted'
+                    google: 'Google search'
+                    invoice_received: 'An invoice I received'
+                    launch: 'Product Hunt / Hacker News'
+                    other: Other
+                    review_site: 'Review site (G2, Capterra)'
+                label: 'How did you hear about SolidInvoice? (optional)'
+                other_placeholder: 'Where did you hear about us?'
+                placeholder: 'Choose one'
             name:
                 help: 'This is how your business will appear on invoices and quotes'
                 label: 'Company Name'
@@ -1775,10 +1787,9 @@ quote:
         send_failed: 'Failed to send quote email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:

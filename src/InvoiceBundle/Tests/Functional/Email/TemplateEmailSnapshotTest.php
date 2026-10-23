@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -40,6 +41,9 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 

@@ -1404,20 +1404,20 @@ tbody tr:hover .datagrid-more-btn,
 
     h4 {
         font-size: 1rem;
-        font-weight: var(--tblr-font-weight-semibold);
+        font-weight: var(--tblr-font-semibold);
         color: var(--tblr-text-primary);
     }
 
     .table {
         margin-bottom: 0;
-        background: var(--tblr-white);
+        background: var(--tblr-surface);
         border: 1px solid var(--tblr-border-light);
         border-radius: var(--tblr-radius-md);
         overflow: hidden;
 
         thead th {
             font-size: 0.75rem;
-            font-weight: var(--tblr-font-weight-semibold);
+            font-weight: var(--tblr-font-semibold);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--tblr-text-muted);
@@ -1452,6 +1452,6 @@ tbody tr:hover .datagrid-more-btn,
     .badge {
         font-size: 0.75rem;
         padding: 0.25rem 0.5rem;
-        font-weight: var(--tblr-font-weight-medium);
+        font-weight: var(--tblr-font-medium);
     }
 }
