@@ -28,6 +28,7 @@ use SolidInvoice\SaasBundle\Security\OneTap\InvalidIdTokenException;
 use SolidInvoice\SaasBundle\Security\OneTap\OneTapToken;
 use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\OAuth\GoogleIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -132,6 +133,7 @@ final class OneTapEndpointTest extends WebTestCase
         $stored = $this->userRepository()->findOneBy(['email' => 'new-user@example.com']);
         self::assertInstanceOf(User::class, $stored);
         self::assertSame('google-id-2', $stored->getGoogleId());
+        self::assertSame(SignupMethod::OneTap, $stored->getSignupMethod());
         self::assertTrue($stored->isEnabled());
         self::assertTrue($stored->isVerified());
     }

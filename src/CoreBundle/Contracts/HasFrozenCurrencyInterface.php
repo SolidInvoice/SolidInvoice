@@ -32,4 +32,12 @@ interface HasFrozenCurrencyInterface
     public function setCurrencyCode(?string $currencyCode): self;
 
     public function getCurrency(): Currency;
+
+    /**
+     * Whether this document keeps its frozen currency even when it returns to Draft.
+     * True once money has been recorded against it: `payments.currency_code` is a
+     * recorded fact, and a re-issued document must not assert a currency that
+     * contradicts it.
+     */
+    public function retainsFrozenCurrency(): bool;
 }

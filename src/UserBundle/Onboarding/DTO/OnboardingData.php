@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Onboarding\DTO;
 
+use SolidInvoice\CoreBundle\Validator\Constraints\CompanyName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class OnboardingData
 {
-    #[Assert\NotBlank]
+    #[CompanyName]
     public ?string $companyName = null;
 
     #[Assert\NotBlank]

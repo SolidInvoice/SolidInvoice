@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Override;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
@@ -45,6 +46,9 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string FROZEN_NOW = '2026-04-19 12:00:00';
 

@@ -38,6 +38,9 @@
                                 {{ form_row(form.companyCurrency, {'attr': {'class': 'form-control'}}) }}
                             </div>
 
+                            {# Fields added by form type extensions (e.g. SaasBundle's signup question). #}
+                            {{ form_rest(form) }}
+
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg w-100">
                                     {{ 'onboarding.company.submit'|trans }}

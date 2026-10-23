@@ -18,8 +18,9 @@ use LogicException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @extends EntityRepository<Company>
@@ -29,25 +30,44 @@ class CompanyRepository extends EntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly CompanySelector $companySelector
+        private readonly CompanySelector $companySelector,
+        private readonly ValidatorInterface $validator,
     ) {
         parent::__construct($registry, Company::class);
     }
 
-    public function updateCompanyName(string $value): void
+    /**
+     * Validates against the Company entity's own constraints, so a name written through the
+     * settings store (or anything else that bypasses a form) meets the same rules as one
+     * entered when the company was created.
+     *
+     * @throws ValidationFailedException
+     */
+    public function updateCompanyName(?string $value): void
     {
-        $company = $this->companySelector->getCompany();
+        $companyId = $this->companySelector->getCompany();
 
-        if ($company instanceof Ulid) {
-            $this->createQueryBuilder('c')
-                ->update()
-                ->set('c.name', ':name')
-                ->where('c.id = :id')
-                ->setParameter('name', $value)
-                ->setParameter('id', $company, UlidType::NAME)
-                ->getQuery()
-                ->execute();
+        if (! $companyId instanceof Ulid) {
+            return;
         }
+
+        $company = $this->find($companyId);
+
+        if (! $company instanceof Company) {
+            return;
+        }
+
+        $company->setName((string) $value);
+
+        $violations = $this->validator->validateProperty($company, 'name');
+
+        if ($violations->count() > 0) {
+            $this->getEntityManager()->refresh($company);
+
+            throw new ValidationFailedException($value, $violations);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
     public function updateCustomDomain(?string $value): ?string

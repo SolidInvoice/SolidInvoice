@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Twig\Components\Settings;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use function preg_replace;
 
@@ -74,6 +75,27 @@ final class SettingsTest extends LiveComponentTest
         self::assertSame('/settings?section=system', $response->getTargetUrl());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
+    }
+
+    public function testSaveRejectsInvalidCompanyName(): void
+    {
+        $this->settingsComponent->set('section', 'system');
+        $this->settingsComponent->set('settings.company.company_name', 'ab');
+
+        try {
+            $this->settingsComponent->call('save');
+            self::fail('Expected the settings form to reject the company name');
+        } catch (UnprocessableEntityHttpException $e) {
+            self::assertStringContainsString('The company name must be at least 3 characters.', $e->getMessage());
+        }
+
+        $setting = self::getContainer()
+            ->get('doctrine')
+            ->getRepository(Setting::class)
+            ->findOneBy(['key' => 'system/company/company_name']);
+
+        self::assertNotSame('ab', $setting->getValue());
+        self::assertNotSame('ab', $this->company->getName());
     }
 
     public function testInvalidSectionFallsBackToFirstSection(): void
