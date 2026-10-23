@@ -18,7 +18,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
-use DoctrineMigrations\Version30200_9;
+use DoctrineMigrations\Version30200_4;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -30,7 +30,7 @@ use Symfony\Component\Uid\Ulid;
  * {@see LinePositionBackfillMigrationTest}: SQLite in-memory, hand-built fixture
  * tables, `postUp()` called directly.
  *
- * @see Version30200_9
+ * @see Version30200_4
  */
 final class CompanyAddressMigrationTest extends TestCase
 {
@@ -274,9 +274,9 @@ final class CompanyAddressMigrationTest extends TestCase
         self::assertSame('Client address', $remaining[0]['street1']);
     }
 
-    private function migration(): Version30200_9
+    private function migration(): Version30200_4
     {
-        return new Version30200_9($this->connection, new NullLogger());
+        return new Version30200_4($this->connection, new NullLogger());
     }
 
     /**

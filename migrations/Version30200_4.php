@@ -30,7 +30,7 @@ use function json_decode;
 use function sprintf;
 use function strtoupper;
 
-final class Version30200_9 extends AbstractMigration
+final class Version30200_4 extends AbstractMigration
 {
     private const string SETTING_KEY = 'system/company/contact_details/address';
 
@@ -63,16 +63,24 @@ final class Version30200_9 extends AbstractMigration
         // migration, or a company address created since install, must not duplicate it.
         $companiesWithAddress = [];
 
-        foreach ($this->connection->fetchAllAssociative(
-            'SELECT company_id FROM addresses WHERE client_id IS NULL'
-        ) as $row) {
+        $existingAddressRows = $this->connection->createQueryBuilder()
+            ->select('company_id')
+            ->from('addresses')
+            ->where('client_id IS NULL')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($existingAddressRows as $row) {
             $companiesWithAddress[bin2hex((string) $row['company_id'])] = true;
         }
 
-        $legacyRows = $this->connection->fetchAllAssociative(
-            'SELECT company_id, setting_value FROM app_config WHERE setting_key = ?',
-            [self::SETTING_KEY],
-        );
+        $legacyRows = $this->connection->createQueryBuilder()
+            ->select('company_id', 'setting_value')
+            ->from('app_config')
+            ->where('setting_key = :settingKey')
+            ->setParameter('settingKey', self::SETTING_KEY)
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         foreach ($legacyRows as $row) {
             $companyId = $row['company_id'];
@@ -157,7 +165,10 @@ final class Version30200_9 extends AbstractMigration
         // never drift. This assumes a client-less address row only ever represents a
         // company's postal address; a future client-less address type would need its
         // own column or table, not a reuse of this one, or this delete would wipe it too.
-        $this->connection->executeStatement('DELETE FROM addresses WHERE client_id IS NULL');
+        $this->connection->createQueryBuilder()
+            ->delete('addresses')
+            ->where('client_id IS NULL')
+            ->executeStatement();
     }
 
     private function normalizeCountry(mixed $country): ?string
