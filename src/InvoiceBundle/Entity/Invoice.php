@@ -229,6 +229,13 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $invoiceTaxes;
 
+    /**
+     * @var Collection<int, InvoiceAttachment>
+     */
+    #[ORM\OneToMany(targetEntity: InvoiceAttachment::class, mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['invoice_api:read'])]
+    private Collection $attachments;
+
     public function __construct()
     {
         parent::__construct();
@@ -237,6 +244,7 @@ class Invoice extends BaseInvoice implements Stringable
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->invoiceTaxes = new ArrayCollection();
+        $this->attachments = new ArrayCollection();
         $this->balance = BigInteger::zero();
         $this->invoiceDate = CarbonImmutable::now();
         $this->setUuid(Uuid::v7());
@@ -552,6 +560,30 @@ class Invoice extends BaseInvoice implements Stringable
         if ($this->invoiceTaxes->removeElement($invoiceTax) && $invoiceTax->getInvoice() === $this) {
             $invoiceTax->setInvoice(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InvoiceAttachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(InvoiceAttachment $attachment): self
+    {
+        if (! $this->attachments->contains($attachment)) {
+            $this->attachments->add($attachment);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(InvoiceAttachment $attachment): self
+    {
+        $this->attachments->removeElement($attachment);
 
         return $this;
     }
