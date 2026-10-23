@@ -1,15 +1,15 @@
-Time to send your first invoice.
+Your first invoice takes about two minutes.
 ============================================================
 
-Sending a professional invoice takes under five minutes. Pick your client, add line items, set a due date — SolidInvoice handles the formatting, delivery, and tracking.
+Pick your client, add a line item, hit Send. No client yet? Add one right on the invoice form. SolidInvoice handles the formatting, delivery, and tracking.
 
 Included on every invoice, nothing extra to configure
 ------------------------------------------------------------
-Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a 'Pay now' button too.
+Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method and your client gets a 'Pay now' button too.
 
 Create your first invoice: http://localhost/invoices/create
 
-P.S. tip: connect a payment method before sending and your client will see a 'Pay now' button. Online invoices get paid much faster.
+P.S. a draft stays a draft until you press Send. Your client only sees the invoice once it's sent.
 
 See you inside,
 — The SolidInvoice team

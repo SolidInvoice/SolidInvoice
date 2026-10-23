@@ -17,13 +17,20 @@ use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use ReflectionProperty;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\SaasBundle\EventSubscriber\CompanyEventSubscriber;
+use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
+use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
@@ -34,12 +41,16 @@ use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * In paid-trial mode the trial belongs to the payment provider, so signup must
@@ -53,6 +64,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[CoversClass(CompanyEventSubscriber::class)]
 final class CompanyEventSubscriberPaidTrialTest extends TestCase
 {
+    /**
+     * @var list<string>
+     */
+    private array $dispatchedSteps = [];
+
     public function testPaidTrialModeLeavesTheSubscriptionPending(): void
     {
         [, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial());
@@ -104,6 +120,23 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
     }
 
     /**
+     * The welcome goes out at signup, not at the next hourly scheduler run.
+     */
+    public function testFreeTrialModeSendsTheWelcomeEmailAtSignup(): void
+    {
+        $this->dispatchSignup(BillingModeFactory::freeTrial());
+
+        self::assertSame(['first'], $this->dispatchedSteps);
+    }
+
+    public function testPaidTrialModeSendsNoEmailBeforeCheckout(): void
+    {
+        $this->dispatchSignup(BillingModeFactory::paidTrial());
+
+        self::assertSame([], $this->dispatchedSteps);
+    }
+
+    /**
      * @return array{0: ResponseEvent, 1: Subscription}
      */
     private function dispatchSignup(
@@ -144,8 +177,20 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
             $trialManager->method('createTrial')->willReturn(new Trial());
         }
 
+        $user = new User();
+        new ReflectionProperty($user, 'id')->setValue($user, new Ulid());
+
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn(new User());
+        $security->method('getUser')->willReturn($user);
+
+        $messageBus = $this->createStub(MessageBusInterface::class);
+        $messageBus->method('dispatch')->willReturnCallback(
+            function (SendOnboardingEmailMessage $message): Envelope {
+                $this->dispatchedSteps[] = $message->stepKey;
+
+                return new Envelope($message);
+            },
+        );
 
         $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('wrapInTransaction')->willReturnCallback(
@@ -168,6 +213,14 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
             $entityManager,
             $urlGenerator,
             $billingMode,
+            new OnboardingDispatcher(
+                new OnboardingStepRegistry([new StepFirst()]),
+                $this->createStub(UserSettingRepositoryInterface::class),
+                $messageBus,
+                new MockClock(),
+                new NullLogger(),
+            ),
+            new NullLogger(),
         );
 
         $company = new Company();

@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +51,10 @@ final class RegisterTest extends WebTestCase
 
         self::assertResponseRedirects();
         self::assertSame(1, $this->userCount());
+
+        /** @var ManagerRegistry $registry */
+        $registry = self::getContainer()->get('doctrine');
+        self::assertSame(SignupMethod::Registration, $registry->getRepository(User::class)->findOneBy([])?->getSignupMethod());
     }
 
     /**

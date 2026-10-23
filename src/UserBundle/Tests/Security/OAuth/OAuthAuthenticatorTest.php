@@ -20,9 +20,11 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\OAuth\GoogleUserProvisioner;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidWorx\Toggler\ToggleInterface;
@@ -32,53 +34,38 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 #[CoversClass(OAuthAuthenticator::class)]
 final class OAuthAuthenticatorTest extends TestCase
 {
-    private OAuthAuthenticator $authenticator;
+    // Collaborators default to stubs; a test that asserts on calls swaps in a
+    // mock before calling authenticator().
+    private ClientRegistry & Stub $clientRegistry;
 
-    private ClientRegistry | MockObject $clientRegistry;
+    private EntityManagerInterface & Stub $entityManager;
 
-    private EntityManagerInterface | MockObject $entityManager;
+    private RouterInterface & Stub $router;
 
-    private RouterInterface | MockObject $router;
+    private ToggleInterface & Stub $toggle;
 
-    private ToggleInterface | MockObject $toggle;
+    private Security & Stub $security;
 
-    private PropertyAccessorInterface | MockObject $propertyAccessor;
-
-    private Security | MockObject $security;
-
-    private UserRepository | MockObject $userRepository;
-
-    private OAuth2ClientInterface | MockObject $client;
+    private UserRepository & Stub $userRepository;
 
     protected function setUp(): void
     {
-        $this->clientRegistry = $this->createMock(ClientRegistry::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->toggle = $this->createMock(ToggleInterface::class);
-        $this->propertyAccessor = $this->createMock(PropertyAccessorInterface::class);
-        $this->security = $this->createMock(Security::class);
-        $this->userRepository = $this->createMock(UserRepository::class);
-        $this->client = $this->createMock(OAuth2ClientInterface::class);
-
-        $this->authenticator = new OAuthAuthenticator(
-            $this->clientRegistry,
-            $this->entityManager,
-            $this->router,
-            $this->toggle,
-            $this->propertyAccessor,
-            $this->security
-        );
+        $this->clientRegistry = $this->createStub(ClientRegistry::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
+        $this->router = $this->createStub(RouterInterface::class);
+        $this->toggle = $this->createStub(ToggleInterface::class);
+        $this->security = $this->createStub(Security::class);
+        $this->userRepository = $this->createStub(UserRepository::class);
     }
 
     public function testSupportsWithValidRoute(): void
@@ -87,21 +74,15 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->attributes->set('_route', OAuthConnectCheck::ROUTE);
         $request->attributes->set('service', 'google');
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->router->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
-
-        $this->toggle
+        $toggle = $this->createMock(ToggleInterface::class);
+        $this->toggle = $toggle;
+        $toggle
             ->expects($this->once())
             ->method('isActive')
             ->with('google_oauth_login')
             ->willReturn(true);
 
-        self::assertTrue($this->authenticator->supports($request));
+        self::assertTrue($this->authenticator()->supports($request));
     }
 
     public function testSupportsWithInvalidRoute(): void
@@ -110,19 +91,11 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->attributes->set('_route', 'invalid_route');
         $request->attributes->set('service', 'google');
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->router->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
+        $toggle = $this->createMock(ToggleInterface::class);
+        $this->toggle = $toggle;
+        $toggle->expects($this->never())->method('isActive');
 
-        $this->toggle
-            ->expects($this->never())
-            ->method('isActive');
-
-        self::assertFalse($this->authenticator->supports($request));
+        self::assertFalse($this->authenticator()->supports($request));
     }
 
     public function testSupportsWithDisabledOAuth(): void
@@ -131,429 +104,126 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->attributes->set('_route', OAuthConnectCheck::ROUTE);
         $request->attributes->set('service', 'google');
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->router->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
-
-        $this->toggle
+        $toggle = $this->createMock(ToggleInterface::class);
+        $this->toggle = $toggle;
+        $toggle
             ->expects($this->once())
             ->method('isActive')
             ->with('google_oauth_login')
             ->willReturn(false);
 
-        self::assertFalse($this->authenticator->supports($request));
+        self::assertFalse($this->authenticator()->supports($request));
     }
 
     public function testAuthenticateWithExistingUser(): void
     {
-        $request = new Request();
-        $request->attributes->set('service', 'google');
-
-        $accessToken = new AccessToken(['access_token' => 'test_token']);
         $user = new User();
+        $googleUser = $this->googleUser();
 
-        $googleUser = new GoogleUser([
-            'sub' => '123456789',
-            'email' => 'test@example.com',
-            'email_verified' => true,
-        ]);
-
-        $this->router->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-
-        $this->clientRegistry
-            ->expects($this->once())
-            ->method('getClient')
-            ->with('google')
-            ->willReturn($this->client);
-
-        $this->client
-            ->expects($this->once())
-            ->method('fetchUserFromToken')
-            ->with($accessToken)
-            ->willReturn($googleUser);
-
-        $this->client
-            ->expects($this->once())
-            ->method('getAccessToken')
-            ->willReturn($accessToken);
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(User::class)
-            ->willReturn($this->userRepository);
+        $this->prepareClient($googleUser);
 
         $this->userRepository
-            ->expects($this->once())
             ->method('findOneBy')
-            ->with(['googleId' => '123456789'])
-            ->willReturn($user);
+            ->willReturnCallback(static fn (array $criteria): ?User => isset($criteria['googleId']) ? $user : null);
 
-        // Execute the authenticate method
-        $passport = $this->authenticator->authenticate($request);
+        $entityManager = $this->mockEntityManager();
+        $entityManager->expects($this->never())->method('flush');
 
-        // Extract and execute the user loader
-        $userBadge = $passport->getBadge(UserBadge::class);
-        self::assertInstanceOf(UserBadge::class, $userBadge);
-
-        $result = $userBadge->getUser();
+        $result = $this->resolveUser($this->authenticator()->authenticate($this->request()));
 
         self::assertSame($user, $result);
     }
 
     public function testAuthenticateWithExistingEmailButNoOAuthId(): void
     {
-        $request = new Request();
-        $request->attributes->set('service', 'google');
-
-        $accessToken = new AccessToken(['access_token' => 'test_token']);
         $user = new User();
+        $googleUser = $this->googleUser();
 
-        $googleUser = new GoogleUser([
-            'sub' => '123456789',
-            'email' => 'test@example.com',
-            'email_verified' => true,
-        ]);
+        $this->prepareClient($googleUser);
 
-        $this->router->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-
-        $this->clientRegistry
-            ->expects($this->once())
-            ->method('getClient')
-            ->with('google')
-            ->willReturn($this->client);
-
-        $this->client
-            ->expects($this->once())
-            ->method('fetchUserFromToken')
-            ->with($accessToken)
-            ->willReturn($googleUser);
-
-        $this->client
-            ->expects($this->once())
-            ->method('getAccessToken')
-            ->willReturn($accessToken);
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(User::class)
-            ->willReturn($this->userRepository);
-
-        // First findOneBy returns null (no user with this OAuth ID), second returns user
         $this->userRepository
-            ->expects($this->exactly(2))
             ->method('findOneBy')
-            ->willReturnCallback(function ($criteria) use ($user) {
-                if (isset($criteria['googleId']) && $criteria['googleId'] === '123456789') {
-                    return null;
-                }
+            ->willReturnCallback(static fn (array $criteria): ?User => isset($criteria['email']) ? $user : null);
 
-                if (isset($criteria['email']) && $criteria['email'] === 'test@example.com') {
-                    return $user;
-                }
+        $this->security->method('getUser')->willReturn(null);
+        $entityManager = $this->mockEntityManager();
+        $entityManager->expects($this->once())->method('persist')->with($user);
+        $entityManager->expects($this->once())->method('flush');
 
-                return null;
-            });
-
-        // Expect property accessor to set the OAuth ID on the user
-        $this->propertyAccessor
-            ->expects($this->once())
-            ->method('setValue')
-            ->with($user, 'googleId', '123456789');
-
-        // Expect entity manager to persist and flush the user
-        $this->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($user);
-        $this->entityManager
-            ->expects($this->once())
-            ->method('flush');
-
-        // Execute the authenticate method
-        $passport = $this->authenticator->authenticate($request);
-
-        // Extract and execute the user loader
-        $userBadge = $passport->getBadge(UserBadge::class);
-        self::assertInstanceOf(UserBadge::class, $userBadge);
-        $result = $userBadge->getUser();
+        $result = $this->resolveUser($this->authenticator()->authenticate($this->request()));
 
         self::assertSame($user, $result);
+        self::assertSame('123456789', $user->getGoogleId());
     }
 
     public function testAuthenticateWithNewUserAndRegistrationAllowed(): void
     {
-        $request = new Request();
-        $request->attributes->set('service', 'google');
+        $this->prepareClient($this->googleUser());
 
-        $accessToken = new AccessToken(['access_token' => 'test_token']);
-
-        $googleUser = new GoogleUser([
-            'sub' => '123456789',
-            'email' => 'test@example.com',
-            'email_verified' => true,
-        ]);
-
-        $this->router->expects($this->never())->method($this->anything());
-
-        $this->clientRegistry
-            ->expects($this->once())
-            ->method('getClient')
-            ->with('google')
-            ->willReturn($this->client);
-
-        $this->client
-            ->expects($this->once())
-            ->method('fetchUserFromToken')
-            ->with($accessToken)
-            ->willReturn($googleUser);
-
-        $this->client
-            ->expects($this->once())
-            ->method('getAccessToken')
-            ->willReturn($accessToken);
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(User::class)
-            ->willReturn($this->userRepository);
-
-        // Both findOneBy calls return null (no existing user)
-        $this->userRepository
-            ->expects($this->exactly(2))
-            ->method('findOneBy')
-            ->willReturnCallback(function ($criteria) {
-                if ((isset($criteria['googleId']) && $criteria['googleId'] === '123456789') ||
-                    (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
-                    return null;
-                }
-
-                return null;
-            });
-
-        // No current user
-        $this->security
-            ->expects($this->once())
-            ->method('getUser')
-            ->willReturn(null);
-
-        // Registration is allowed
-        $this->toggle
+        $this->userRepository->method('findOneBy')->willReturn(null);
+        $this->security->method('getUser')->willReturn(null);
+        $toggle = $this->createMock(ToggleInterface::class);
+        $this->toggle = $toggle;
+        $toggle
             ->expects($this->once())
             ->method('isActive')
             ->with('allow_registration')
             ->willReturn(true);
 
-        // Expect property accessor to set the OAuth ID on the new user
-        $this->propertyAccessor
-            ->expects($this->once())
-            ->method('setValue')
-            ->with(
-                $this->callback(function ($user): bool {
-                    self::assertInstanceOf(User::class, $user);
-                    self::assertSame('test@example.com', $user->getEmail());
-                    return true;
-                }),
-                'googleId',
-                '123456789'
-            );
+        $entityManager = $this->mockEntityManager();
+        $entityManager->expects($this->once())->method('persist');
+        $entityManager->expects($this->once())->method('flush');
 
-        // Expect entity manager to persist and flush the user
-        $this->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($this->callback(function ($user): bool {
-                self::assertInstanceOf(User::class, $user);
-                self::assertSame('test@example.com', $user->getEmail());
-                return true;
-            }));
-        $this->entityManager
-            ->expects($this->once())
-            ->method('flush');
+        $result = $this->resolveUser($this->authenticator()->authenticate($this->request()));
 
-        // Execute the authenticate method
-        $passport = $this->authenticator->authenticate($request);
-
-        // Extract and execute the user loader
-        $userBadge = $passport->getBadge(UserBadge::class);
-        self::assertInstanceOf(UserBadge::class, $userBadge);
-        $result = $userBadge->getUser();
-
-        self::assertInstanceOf(User::class, $result);
         self::assertSame('test@example.com', $result->getEmail());
+        self::assertSame('123456789', $result->getGoogleId());
         self::assertTrue($result->isEnabled());
         self::assertTrue($result->isVerified());
     }
 
     public function testAuthenticateWithNewUserAndRegistrationNotAllowed(): void
     {
-        $request = new Request();
-        $request->attributes->set('service', 'google');
+        $this->prepareClient($this->googleUser());
 
-        $accessToken = new AccessToken(['access_token' => 'test_token']);
-
-        $googleUser = new GoogleUser([
-            'sub' => '123456789',
-            'email' => 'test@example.com',
-            'email_verified' => true,
-        ]);
-
-        $this->router->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-
-        $this->clientRegistry
-            ->expects($this->once())
-            ->method('getClient')
-            ->with('google')
-            ->willReturn($this->client);
-
-        $this->client
-            ->expects($this->once())
-            ->method('fetchUserFromToken')
-            ->with($accessToken)
-            ->willReturn($googleUser);
-
-        $this->client
-            ->expects($this->once())
-            ->method('getAccessToken')
-            ->willReturn($accessToken);
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(User::class)
-            ->willReturn($this->userRepository);
-
-        // Both findOneBy calls return null (no existing user)
-        $this->userRepository
-            ->expects($this->exactly(2))
-            ->method('findOneBy')
-            ->willReturnCallback(function ($criteria) {
-                if ((isset($criteria['googleId']) && $criteria['googleId'] === '123456789') ||
-                    (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
-                    return null;
-                }
-
-                return null;
-            });
-
-        // No current user
-        $this->security->expects($this->once())
-            ->method('getUser')
-            ->willReturn(null);
-
-        // Registration is not allowed
-        $this->toggle
+        $this->userRepository->method('findOneBy')->willReturn(null);
+        $this->security->method('getUser')->willReturn(null);
+        $toggle = $this->createMock(ToggleInterface::class);
+        $this->toggle = $toggle;
+        $toggle
             ->expects($this->once())
             ->method('isActive')
             ->with('allow_registration')
             ->willReturn(false);
 
-        // Execute the authenticate method
-        $passport = $this->authenticator->authenticate($request);
+        $entityManager = $this->mockEntityManager();
+        $entityManager->expects($this->never())->method('flush');
 
-        // Extract and execute the user loader
-        $userBadge = $passport->getBadge(UserBadge::class);
-        $this->expectException(UserNotFoundException::class);
+        $userBadge = $this->authenticator()->authenticate($this->request())->getBadge(UserBadge::class);
         self::assertInstanceOf(UserBadge::class, $userBadge);
+
+        $this->expectException(UserNotFoundException::class);
         $userBadge->getUser();
     }
 
     public function testAuthenticateWithCurrentUser(): void
     {
-        $request = new Request();
-        $request->attributes->set('service', 'google');
-
-        $accessToken = new AccessToken(['access_token' => 'test_token']);
         $currentUser = new User();
         $currentUser->setEmail('current@example.com');
 
-        $googleUser = new GoogleUser([
-            'sub' => '123456789',
-            'email' => 'test@example.com',
-            'email_verified' => true,
-        ]);
+        $this->prepareClient($this->googleUser());
 
-        $this->router->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
+        $this->userRepository->method('findOneBy')->willReturn(null);
+        $this->security->method('getUser')->willReturn($currentUser);
 
-        $this->clientRegistry
-            ->expects($this->once())
-            ->method('getClient')
-            ->with('google')
-            ->willReturn($this->client);
+        $entityManager = $this->mockEntityManager();
+        $entityManager->expects($this->once())->method('persist')->with($currentUser);
+        $entityManager->expects($this->once())->method('flush');
 
-        $this->client
-            ->expects($this->once())
-            ->method('fetchUserFromToken')
-            ->with($accessToken)
-            ->willReturn($googleUser);
-
-        $this->client
-            ->expects($this->once())
-            ->method('getAccessToken')
-            ->willReturn($accessToken);
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(User::class)
-            ->willReturn($this->userRepository);
-
-        // Both findOneBy calls return null (no existing user)
-        $this->userRepository
-            ->expects($this->exactly(2))
-            ->method('findOneBy')
-            ->willReturnCallback(function ($criteria) {
-                if ((isset($criteria['googleId']) && $criteria['googleId'] === '123456789') ||
-                    (isset($criteria['email']) && $criteria['email'] === 'test@example.com')) {
-                    return null;
-                }
-
-                return null;
-            });
-
-        // Return current user
-        $this->security
-            ->expects($this->once())
-            ->method('getUser')
-            ->willReturn($currentUser);
-
-        // Expect property accessor to set the OAuth ID on the current user
-        $this->propertyAccessor
-            ->expects($this->once())
-            ->method('setValue')
-            ->with($currentUser, 'googleId', '123456789');
-
-        // Expect entity manager to persist and flush the user
-        $this->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($currentUser);
-        $this->entityManager
-            ->expects($this->once())
-            ->method('flush');
-
-        // Execute the authenticate method
-        $passport = $this->authenticator->authenticate($request);
-
-        // Extract and execute the user loader
-        $userBadge = $passport->getBadge(UserBadge::class);
-        self::assertInstanceOf(UserBadge::class, $userBadge);
-        $result = $userBadge->getUser();
+        $result = $this->resolveUser($this->authenticator()->authenticate($this->request()));
 
         self::assertSame($currentUser, $result);
+        self::assertSame('123456789', $currentUser->getGoogleId());
     }
 
     public function testOnAuthenticationSuccess(): void
@@ -561,21 +231,15 @@ final class OAuthAuthenticatorTest extends TestCase
         $request = new Request();
         $token = $this->createStub(TokenInterface::class);
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
-
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $this->router = $router;
+        $router
             ->expects($this->once())
             ->method('generate')
             ->with('_select_company')
             ->willReturn('/select-company');
 
-        $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'main');
+        $response = $this->authenticator()->onAuthenticationSuccess($request, $token, 'main');
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/select-company', $response->getTargetUrl());
@@ -589,26 +253,20 @@ final class OAuthAuthenticatorTest extends TestCase
         $request->setSession($session);
         $exception = new AuthenticationException('Authentication failed');
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
-
         $flashBag
             ->expects($this->once())
             ->method('add')
             ->with('error', 'An authentication exception occurred.');
 
-        $this->router
+        $router = $this->createMock(RouterInterface::class);
+        $this->router = $router;
+        $router
             ->expects($this->once())
             ->method('generate')
             ->with('_login_main')
             ->willReturn('/login');
 
-        $response = $this->authenticator->onAuthenticationFailure($request, $exception);
+        $response = $this->authenticator()->onAuthenticationFailure($request, $exception);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/login', $response->getTargetUrl());
@@ -618,22 +276,90 @@ final class OAuthAuthenticatorTest extends TestCase
     {
         $request = new Request();
 
-        $this->clientRegistry->expects($this->never())->method($this->anything());
-        $this->entityManager->expects($this->never())->method($this->anything());
-        $this->toggle->expects($this->never())->method($this->anything());
-        $this->propertyAccessor->expects($this->never())->method($this->anything());
-        $this->security->expects($this->never())->method($this->anything());
-        $this->userRepository->expects($this->never())->method($this->anything());
-        $this->client->expects($this->never())->method($this->anything());
-
-        $this->router->expects($this->once())
+        $router = $this->createMock(RouterInterface::class);
+        $this->router = $router;
+        $router->expects($this->once())
             ->method('generate')
             ->with('_login_main')
             ->willReturn('/login');
 
-        $response = $this->authenticator->start($request);
+        $response = $this->authenticator()->start($request);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/login', $response->getTargetUrl());
+    }
+
+    private function authenticator(): OAuthAuthenticator
+    {
+        return new OAuthAuthenticator(
+            $this->clientRegistry,
+            $this->router,
+            $this->toggle,
+            $this->security,
+            new GoogleUserProvisioner($this->entityManager, $this->toggle),
+        );
+    }
+
+    private function mockEntityManager(): EntityManagerInterface & MockObject
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $entityManager;
+        $entityManager->method('getRepository')->willReturn($this->userRepository);
+
+        return $entityManager;
+    }
+
+    private function request(): Request
+    {
+        $request = new Request();
+        $request->attributes->set('service', 'google');
+
+        return $request;
+    }
+
+    private function googleUser(): GoogleUser
+    {
+        return new GoogleUser([
+            'sub' => '123456789',
+            'email' => 'test@example.com',
+            'email_verified' => true,
+        ]);
+    }
+
+    private function prepareClient(GoogleUser $googleUser): void
+    {
+        $accessToken = new AccessToken(['access_token' => 'test_token']);
+
+        $client = $this->createMock(OAuth2ClientInterface::class);
+        $clientRegistry = $this->createMock(ClientRegistry::class);
+        $this->clientRegistry = $clientRegistry;
+
+        $clientRegistry
+            ->expects($this->once())
+            ->method('getClient')
+            ->with('google')
+            ->willReturn($client);
+
+        $client
+            ->expects($this->once())
+            ->method('getAccessToken')
+            ->willReturn($accessToken);
+
+        $client
+            ->expects($this->once())
+            ->method('fetchUserFromToken')
+            ->with($accessToken)
+            ->willReturn($googleUser);
+    }
+
+    private function resolveUser(Passport $passport): User
+    {
+        $userBadge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $userBadge);
+
+        $user = $userBadge->getUser();
+        self::assertInstanceOf(User::class, $user);
+
+        return $user;
     }
 }

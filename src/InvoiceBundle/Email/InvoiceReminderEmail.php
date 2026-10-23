@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email;
 
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-final class InvoiceReminderEmail extends TemplatedEmail
+final class InvoiceReminderEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
         private readonly Invoice $invoice,

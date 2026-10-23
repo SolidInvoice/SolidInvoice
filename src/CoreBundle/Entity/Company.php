@@ -23,6 +23,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Validator\Constraints\CompanyName;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoieLine;
@@ -70,8 +71,7 @@ class Company implements Stringable, SubscribableInterface
     private Ulid $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    #[Assert\NotBlank()]
-    #[Assert\Length(max: 45, maxMessage: 'The company name cannot be longer than {{ limit }} characters.')]
+    #[CompanyName]
     private string $name;
 
     /**

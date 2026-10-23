@@ -18,8 +18,6 @@ use SensitiveParameter;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Onboarding\Manager\OnboardingManager;
@@ -44,7 +42,7 @@ final class OnboardingFlowTest extends WebTestCase
         $this->userSettingRepository = self::getContainer()->get(UserSettingRepository::class);
     }
 
-    public function testCompleteOnboardingWithAllSteps(): void
+    public function testOnboardingCreatesTheCompanyAndOpensTheInvoiceEditor(): void
     {
         $user = $this->createUser('test@example.com', 'password');
 
@@ -52,144 +50,41 @@ final class OnboardingFlowTest extends WebTestCase
             ->actingAs($user)
             ->visit('/onboarding')
             ->assertSuccessful()
-            ->assertOn('/onboarding')
-            ->assertSee("What we're setting up:")
-            ->assertSee('Company Name')
-            // Fill company step
-            ->fillField('onboarding[company][companyName]', 'Acme Corporation')
-            ->selectFieldOption('onboarding[company][companyCurrency]', 'USD')
-            ->click('Continue')
-            // Client step
-            ->assertSuccessful()
-            ->assertSee('Add your first client')
-            ->fillField('onboarding[client][clientName]', 'John Doe')
-            ->fillField('onboarding[client][clientEmail]', 'john@example.com')
-            ->click('Continue')
-            // Invoice step
-            ->assertSuccessful()
-            ->assertSee('Create your first invoice')
-            ->fillField('onboarding[invoice][invoiceDescription]', 'Website Design')
-            ->fillField('onboarding[invoice][invoiceAmount]', '1500.00')
+            ->fillField('company_setup_step[companyName]', 'Acme Corporation')
+            ->selectFieldOption('company_setup_step[companyCurrency]', 'EUR')
             ->interceptRedirects()
-            ->click('Create & View My Invoice')
-            // Should redirect to invoice detail page
-            ->assertRedirectedTo('/invoices/view/' . self::getContainer()->get(InvoiceRepository::class)->findOneBy([])->getId()->toString())
-            ->followRedirect()
-            ->assertSeeIn('.alert-success', 'Your first invoice is ready!')
+            ->click('Continue to your first invoice')
+            ->assertRedirectedTo('/invoices/create')
+            ->assertOn('/invoices/create')
+            // A company with no clients gets the editor in new-client mode.
+            ->assertElementCount('[name="invoice[newClientName]"]', 1)
+            ->assertSee('Last step: add your client and send your first invoice.')
         ;
 
-        // Refresh user
         $user = self::getContainer()->get(UserRepository::class)->find($user->getId());
-
-        // Verify onboarding is marked complete
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardComplete,
-        ]);
-        self::assertNotNull($setting);
-        self::assertSame('true', $setting->getValue());
-
-        // Verify company was created
         self::assertCount(1, $user->getCompanies());
+        $company = $user->getCompanies()->first();
+        self::assertSame('Acme Corporation', $company->getName());
 
-        // Verify invoice was created
-        $invoices = $this->em->getRepository(Invoice::class)->findBy(['company' => $user->getCompanies()->first()]);
-        self::assertCount(1, $invoices);
-        self::assertSame('Website Design', $invoices[0]->getLines()->first()->getName());
+        $setting = $this->userSettingRepository->findOneBy(['user' => $user, 'key' => UserSettingType::OnboardComplete]);
+        self::assertSame('true', $setting?->getValue());
+        self::assertNotNull($this->userSettingRepository->findOneBy(['user' => $user, 'key' => UserSettingType::OnboardingCompletedAt]));
     }
 
-    public function testSkipClientStep(): void
+    public function testOnboardingRequiresACompanyName(): void
     {
-        $user = $this->createUser('test2@example.com', 'password');
+        $user = $this->createUser('blank@example.com', 'password');
 
         $this->browser()
             ->actingAs($user)
             ->visit('/onboarding')
-            ->assertSuccessful()
-            // Company step
-            ->fillField('onboarding[company][companyName]', 'Test Company')
-            ->selectFieldOption('onboarding[company][companyCurrency]', 'USD')
-            ->click('Continue')
-            // Skip client step
-            ->assertSuccessful()
-            ->assertSee('Add your first client')
-            ->click('#onboarding_navigator_skip')
-            // Should go to complete step (invoice auto-skipped)
-            ->assertSuccessful()
-            ->assertSee("You're all set!")
-            ->interceptRedirects()
-            ->click('Go to Dashboard')
-            ->assertRedirectedTo('/dashboard')
-            ->followRedirect()
-            ->assertSeeIn('.alert-success', 'Welcome to SolidInvoice!')
+            ->fillField('company_setup_step[companyName]', '')
+            ->click('Continue to your first invoice')
+            ->assertOn('/onboarding')
+            ->assertStatus(422)
         ;
 
-        // Verify both client and invoice were skipped
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingSkipped,
-        ]);
-        self::assertNotNull($setting);
-        $skipped = json_decode((string) $setting->getValue(), true);
-        self::assertContains('client', $skipped);
-        self::assertContains('invoice', $skipped);
-    }
-
-    public function testSkipInvoiceStepOnly(): void
-    {
-        $user = $this->createUser('test3@example.com', 'password');
-
-        $this->browser()
-            ->actingAs($user)
-            ->visit('/onboarding')
-            ->assertSuccessful()
-            // Company step
-            ->fillField('onboarding[company][companyName]', 'Test Company')
-            ->selectFieldOption('onboarding[company][companyCurrency]', 'USD')
-            ->click('Continue')
-            // Client step
-            ->assertSuccessful()
-            ->fillField('onboarding[client][clientName]', 'Jane Smith')
-            ->fillField('onboarding[client][clientEmail]', 'jane@example.com')
-            ->click('Continue')
-            // Skip invoice step
-            ->assertSuccessful()
-            ->assertSee('Create your first invoice')
-            ->click("I'll do this later")
-            // Should go to complete step
-            ->assertSuccessful()
-            ->assertSee("You're all set!")
-            ->interceptRedirects()
-            ->click('Go to Dashboard')
-            ->assertRedirectedTo('/dashboard')
-            ->followRedirect()
-            ->assertSeeIn('.alert-success', 'Welcome to SolidInvoice!')
-        ;
-
-        // Verify only invoice was skipped
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => UserSettingType::OnboardingSkipped,
-        ]);
-        self::assertNotNull($setting);
-        $skipped = json_decode((string) $setting->getValue(), true);
-        self::assertContains('invoice', $skipped);
-        self::assertNotContains('client', $skipped);
-    }
-
-    public function testCompanyStepHasNoSkipButton(): void
-    {
-        $user = $this->createUser('test4@example.com', 'password');
-
-        $browser = $this->browser()
-            ->actingAs($user)
-            ->visit('/onboarding')
-            ->assertSuccessful()
-            ->assertSee('Company Name')
-        ;
-
-        // Verify skip button is not present on company step
-        $browser->assertNotSee("I'll do this later");
+        self::assertFalse(self::getContainer()->get(OnboardingManager::class)->isOnboardingComplete($user));
     }
 
     public function testInvitedUserDoesNotSeeOnboarding(): void
@@ -250,33 +145,6 @@ final class OnboardingFlowTest extends WebTestCase
             ->interceptRedirects()
             ->visit('/onboarding')
             ->assertRedirectedTo('/create-company')
-        ;
-    }
-
-    public function testCanNavigateBackBetweenSteps(): void
-    {
-        $user = $this->createUser('navigator@example.com', 'password');
-
-        $this->browser()
-            ->actingAs($user)
-            ->visit('/onboarding')
-            ->assertSuccessful()
-            // Fill and submit company step
-            ->fillField('onboarding[company][companyName]', 'Test Company')
-            ->selectFieldOption('onboarding[company][companyCurrency]', 'EUR')
-            ->click('Continue')
-            // On client step now
-            ->assertSee('Add your first client')
-            ->fillField('onboarding[client][clientName]', 'Test Client')
-            ->click('Continue')
-            // On invoice step
-            ->assertSee('Create your first invoice')
-            // Click back
-            ->click('#onboarding_navigator_back')
-            // Should be on client step again
-            ->assertSee("Let's get you set up")
-            // Data should be preserved
-            // ->assertFieldEquals('onboarding[client][clientName]', 'Test Client')
         ;
     }
 

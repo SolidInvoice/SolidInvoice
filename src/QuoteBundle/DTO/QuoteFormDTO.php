@@ -82,7 +82,7 @@ final class QuoteFormDTO
     /**
      * @var Collection<int, Contact>
      */
-    #[Assert\Count(min: 1, groups: ['existing_client'])]
+    #[Assert\Count(min: 1, minMessage: 'quote.users.min', groups: ['existing_client'])]
     public Collection $users;
 
     /**

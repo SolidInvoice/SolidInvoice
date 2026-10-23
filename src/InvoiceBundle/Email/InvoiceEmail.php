@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email;
 
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-final class InvoiceEmail extends TemplatedEmail
+final class InvoiceEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
         private readonly Invoice $invoice

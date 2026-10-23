@@ -13,36 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Onboarding\DTO;
 
+use SolidInvoice\CoreBundle\Validator\Constraints\CompanyName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Main DTO for onboarding flow
- */
 final class OnboardingData
 {
-    public ?string $currentStep = null;
-
-    // Step 1: Company
-    #[Assert\NotBlank(groups: ['company'])]
+    #[CompanyName]
     public ?string $companyName = null;
 
-    #[Assert\NotBlank(groups: ['company'])]
-    #[Assert\Currency(groups: ['company'])]
+    #[Assert\NotBlank]
+    #[Assert\Currency]
     public ?string $companyCurrency = 'USD';
-
-    // Step 2: Client (optional)
-    #[Assert\NotBlank(groups: ['client'])]
-    public ?string $clientName = null;
-
-    #[Assert\NotBlank(groups: ['client'])]
-    #[Assert\Email(groups: ['client'])]
-    public ?string $clientEmail = null;
-
-    // Step 3: Invoice (optional)
-    #[Assert\NotBlank(groups: ['invoice'])]
-    public ?string $invoiceDescription = null;
-
-    #[Assert\NotBlank(groups: ['invoice'])]
-    #[Assert\Positive(groups: ['invoice'])]
-    public ?string $invoiceAmount = null;
 }

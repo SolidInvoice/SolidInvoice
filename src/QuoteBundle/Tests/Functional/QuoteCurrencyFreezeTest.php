@@ -202,4 +202,52 @@ final class QuoteCurrencyFreezeTest extends KernelTestCase
 
         self::assertSame('USD', $reloaded->getCurrency()->getCode());
     }
+
+    /**
+     * `QuoteStatus::Declined` is an issued place (`FreezeCurrencyListener::QUOTE_ISSUED_PLACES`),
+     * so a declined quote is frozen, and `reopen` (`[Declined, Cancelled] → [Draft]`) must
+     * thaw it exactly as it does for a cancelled one.
+     */
+    public function testDeclinedThenReopenedQuoteThawsAndFollowsItsClientAgain(): void
+    {
+        $usdClient = ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company]);
+        $eurClient = ClientFactory::createOne(['currencyCode' => 'EUR', 'company' => $this->company]);
+        $quoteId = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'client' => $usdClient,
+            'company' => $this->company,
+        ])->getId();
+
+        $container = self::getContainer();
+        $entityManager = $container->get('doctrine')->getManager();
+        self::assertInstanceOf(EntityManagerInterface::class, $entityManager);
+        $entityManager->clear();
+
+        $repository = $container->get(QuoteRepository::class);
+        $quote = $repository->find($quoteId);
+        self::assertInstanceOf(Quote::class, $quote);
+
+        $workflow = $container->get('state_machine.quote');
+        self::assertInstanceOf(WorkflowInterface::class, $workflow);
+
+        $workflow->apply($quote, Graph::TRANSITION_DECLINE);
+        $entityManager->flush();
+        self::assertSame('USD', $quote->getCurrencyCode());
+
+        $workflow->apply($quote, Graph::TRANSITION_REOPEN);
+        $entityManager->flush();
+        self::assertNull($quote->getCurrencyCode());
+
+        $reloadedEurClient = $entityManager->find(Client::class, $eurClient->getId());
+        self::assertInstanceOf(Client::class, $reloadedEurClient);
+        $quote->setClient($reloadedEurClient);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $quote->getCurrency()->getCode());
+
+        $workflow->apply($quote, Graph::TRANSITION_PUBLISH);
+        $entityManager->flush();
+
+        self::assertSame('EUR', $quote->getCurrencyCode());
+    }
 }

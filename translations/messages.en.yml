@@ -399,6 +399,9 @@ dashboard:
         create_client:
             description: 'Add a client to start invoicing'
             name: 'Create Your First Client'
+        create_company:
+            description: 'Your business details are saved'
+            name: 'Create Your Company'
         customize_settings:
             description: 'Set up your business details and preferences'
             name: 'Customize Company Settings'
@@ -846,10 +849,9 @@ invoice:
         send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:
@@ -1034,11 +1036,14 @@ invoice:
         draft: 'Save as Draft'
         enable: 'Save and Enable'
         publish: Publish
-        send: 'Save and Send'
-        update: Update
+        publish_only: 'Publish without sending'
+        send: 'Send to client'
+        update: 'Save changes'
     send:
         invalid_csrf: 'Invalid CSRF token'
-        no_recipients: 'Cannot send invoice: no contacts with email addresses found'
+        no_recipients: 'There is no one to send this invoice to. Edit it and choose a contact with an email address.'
+        resend_link: 'send a new link'
+        verify_hint: "Confirm your email address to send invoices. Can't find the email? Check spam, or"
     send_to: 'Send invoice to:'
     stats:
         active_recurring: 'Active Recurring'
@@ -1096,6 +1101,10 @@ invoice:
     terms_notes:
         title: 'Terms & Notes'
         toggle: 'Toggle terms and notes section'
+    test_copy:
+        button: 'Email me a test copy'
+        sent: 'Test copy sent. Open it in your inbox and confirm your email to start sending invoices.'
+        too_many: "You've used all your test copies. Confirm your email from the link we sent to start sending invoices."
     title: 'Invoice #%id%'
     to: To
     total: Total
@@ -1138,7 +1147,9 @@ invoice:
             archive: Archive
             cancel: Cancel
             clone: Clone
+            copy_link: 'Copy client link'
             edit: Edit
+            link_copied: 'Link copied'
             mark_paid: 'Mark Paid'
             more_actions: 'More Actions'
             pay_now: 'Pay Now'
@@ -1315,85 +1326,35 @@ notifications:
     subtitle: 'Choose which events trigger notifications and where you receive them'
     title: 'Notification Preferences'
 onboarding:
-    client:
-        benefits: "Create your first invoice in the next step\nKeep all client info organized in one place\nTrack payment history and outstanding invoices\nSend invoices directly via email\n"
-        description: 'Who will you be invoicing? This step is optional, but recommended'
-        fields:
-            email:
-                help: "We'll use this to send them invoices"
-                label: 'Email Address'
-                placeholder: client@example.com
-            name:
-                help: 'Can be a person or company name'
-                label: 'Client Name'
-                placeholder: 'John Doe or Acme Corp'
-        title: 'Add your first client'
-        why_title: 'Why add a client now?'
     company:
-        benefits: "Your business details - This appears on all your invoices\nYour first client - Optional, but gets you started faster\nYour first invoice - See how easy it is to get paid\n"
-        description: "First, we'll need a bit of information about your business. This helps us customize your experience and ensures your invoices look professional."
+        description: "Add your business name and currency. Next, you'll write and send your first invoice."
         fields:
             currency:
                 help: "The currency you'll use for invoices and quotes"
                 label: Currency
+            heard_about:
+                choices:
+                    ai_assistant: 'ChatGPT / Claude / AI assistant'
+                    colleague: 'A colleague or client'
+                    github: 'GitHub / self-hosted'
+                    google: 'Google search'
+                    invoice_received: 'An invoice I received'
+                    launch: 'Product Hunt / Hacker News'
+                    other: Other
+                    review_site: 'Review site (G2, Capterra)'
+                label: 'How did you hear about SolidInvoice? (optional)'
+                other_placeholder: 'Where did you hear about us?'
+                placeholder: 'Choose one'
             name:
                 help: 'This is how your business will appear on invoices and quotes'
                 label: 'Company Name'
                 placeholder: 'Acme Corporation'
-        setup_title: "What we're setting up:"
-        subtitle: 'First, tell us about your business'
-        time: 'Takes less than 2 minutes'
-        title: "Let's get you set up"
+        submit: 'Continue to your first invoice'
+        title: "Who's sending the invoice?"
         welcome: 'Welcome to %app_name%!'
-    complete:
-        cta_create_invoice: 'Create Your First Invoice →'
-        dashboard_link: 'Go to Dashboard'
-        description: "Congratulations! Your account is ready and you're good to go. You can start creating invoices, managing clients, and tracking payments."
-        docs_link: 'View Documentation'
-        need_help: 'Need help? Check out our'
-        next_add_client: 'Add your first client'
-        next_connect_payment: 'Connect a payment gateway'
-        next_send_invoice: 'Send your first invoice'
-        next_steps: "Create and send professional invoices\nTrack payments and outstanding balances\nManage your clients and contacts\nGenerate reports on your business\n"
-        next_steps_title: "Here's what to do next:"
-        next_title: 'What happens next?'
-        pro_tip_text: 'You can customize your invoice templates, add your logo, and configure payment gateways in Settings.'
-        pro_tip_title: 'Pro tip:'
-        subtitle: "Your account is ready and you're good to go"
-        thanks: 'Thanks for choosing %app_name%'
-        title: "You're all set!"
     flash:
-        invoice_created: '🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF.'
-        onboarding_complete: "Welcome to SolidInvoice! You're all set up and ready to go."
-    invoice:
-        aha_title: 'Send your first invoice:'
-        benefits: "See exactly what your invoices will look like\nSend it immediately or save as draft\nTrack when it's paid\nGet paid faster with online payments\n"
-        description: 'Experience how easy it is to get paid.'
-        fields:
-            amount:
-                help: "Don't worry about perfection - you can edit this later"
-                label: Amount
-                placeholder: '1000.00'
-            description:
-                help: 'What service or product are you invoicing for?'
-                label: 'Service Description'
-                placeholder: 'e.g., Website Design Services, Consulting, Monthly Retainer'
-        security: 'Your invoice will be saved as a draft - nothing is sent automatically'
-        time: 'Takes just 30 seconds to create'
-        title: 'Create your first invoice'
-    navigation:
-        back: Back
-        continue: Continue
-        create_invoice: 'Create & View My Invoice'
-        finish: 'Go to Dashboard'
-        skip: "I'll do this later"
-        skip_client: "Skip — I'll add clients & invoices from the dashboard"
-    progress:
-        client: 'First Client'
-        company: 'Your Business'
-        complete: Ready!
-        invoice: 'First Invoice'
-        label: Progress
+        first_invoice: 'Your company is set up. Last step: add your client and send your first invoice.'
+    page_title: 'Get started - %app_name%'
 optional: Optional
 payment:
     action:
@@ -1826,10 +1787,9 @@ quote:
         send_failed: 'Failed to send quote email. Please verify your email configuration in Settings.'
     external:
         footer:
-            description: 'Open-source invoicing software for freelancers and small businesses'
-            github: GitHub
+            cta: 'Send your own invoices free'
+            description: 'Invoicing for freelancers and small businesses'
             powered_by: 'Powered by'
-            visit_website: 'Visit SolidInvoice.co'
         tagline: 'Professional Invoicing Made Simple'
     from: From
     grid:
@@ -1906,6 +1866,8 @@ quote:
         publish: Publish
         send: 'Save and Send'
         update: Update
+    send:
+        verify_hint: "Confirm your email address to send quotes. Can't find the email? Check spam, or"
     send_to: 'Send quote to:'
     sent: 'Quote Sent'
     stats:
@@ -2028,6 +1990,7 @@ saas:
         plan_update_failed: 'Could not update your plan: %error%'
         plan_updated: 'Your plan has been updated.'
         subscription_activated: 'Your subscription has been activated.'
+        trial_ended_on_free: "Your trial has ended, so your account is now on the Free plan. Everything you created is still here."
     menu:
         billing: Subscription
     overview:

@@ -422,6 +422,11 @@ class Invoice extends BaseInvoice implements Stringable
         return $this->payments;
     }
 
+    public function retainsFrozenCurrency(): bool
+    {
+        return ! $this->payments->isEmpty();
+    }
+
     public function getQuote(): ?Quote
     {
         return $this->quote;
