@@ -139,7 +139,6 @@ $config = LoginExtension::defaultFormLoginConfig([
                 '/webhook/lemon_squeezy|' .
                 '/view/(?:quote|invoice)/[A-Za-z0-9-]{36}(?:\.pdf)?|' .
                 '/(?:login|register)$|' .
-                '/forgot-password|' .
                 '/oauth/connect|' .
                 '/oauth/(token|register|revoke)$|' .
                 '/\.well-known/oauth-authorization-server|' .
