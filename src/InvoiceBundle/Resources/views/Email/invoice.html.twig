@@ -86,18 +86,21 @@
     {{ email.info_row('invoice.subtotal'|trans({}, 'email'), invoice.baseTotal|formatCurrency(invoice.currency)) }}
 
     {% set _tb = tax_breakdown(invoice) %}
-    {% if invoice.tax.positive %}
-        {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.line_tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.currency)) }}
+    {% if invoice.tax.positive or _tb.lineTaxRows is not empty %}
+        {% if invoice.tax.positive %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row('invoice.line_tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.currency)) }}
+        {% endif %}
         {% for row in _tb.lineTaxRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.currency)) }}
-        {% endfor %}
-        {% for row in _tb.additiveRows %}
-            {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ')', row.amount|formatCurrency(invoice.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ') ' ~ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(invoice.currency)}, 'email'), row.amount|formatCurrency(invoice.currency)) }}
         {% endfor %}
     {% endif %}
+
+    {% for row in _tb.additiveRows %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row(row.name ~ ' (' ~ (row.type.value == 'Flat Rate' ? row.rate : row.rate ~ '%') ~ ') ' ~ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(invoice.currency)}, 'email'), row.amount|formatCurrency(invoice.currency)) }}
+    {% endfor %}
 
     {% if invoice.discount.type is not empty %}
         {{ email.spacer('xs') }}

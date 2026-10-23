@@ -78,6 +78,33 @@ final class InvoiceTaxCalculatorTest extends TestCase
         );
         self::assertCount(1, $breakdown->taxRows);
         self::assertSame(TaxDirection::Deductive, $breakdown->taxRows[0]->direction);
+        // Exclusive invoice-level tax bases on the subtotal alone.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(100000)));
+    }
+
+    public function testInclusiveTaxExtractsFromSubtotalPlusLineTax(): void
+    {
+        // 20% inclusive tax extracted from (subtotal + line tax) = 120000
+        // net = 120000 / 1.2 = 100000, amount = 20000.
+        $invoice = new Invoice();
+        $invoice->addInvoiceTax($this->invoiceTax(
+            name: 'Inclusive surcharge',
+            rate: '20.0000',
+            direction: TaxDirection::Additive,
+            taxType: TaxType::Inclusive,
+        ));
+
+        $breakdown = $this->calculator->calculateInvoiceLevel(
+            $invoice,
+            BigDecimal::of(120000),
+            BigDecimal::zero(),
+            $this->rounder,
+        );
+
+        self::assertTrue($breakdown->totalInvoiceLevelTax->isEqualTo(BigDecimal::of(20000)));
+        self::assertCount(1, $breakdown->taxRows);
+        // base = subTotal + totalLineTax - amount, the net the rate was extracted from.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(100000)));
     }
 
     public function testFlatRateAdditiveAddsToInvoiceLevelTax(): void
@@ -100,6 +127,8 @@ final class InvoiceTaxCalculatorTest extends TestCase
 
         self::assertTrue($breakdown->totalInvoiceLevelTax->isEqualTo(BigDecimal::of(500)));
         self::assertTrue($breakdown->totalWithholding->isEqualTo(BigDecimal::zero()));
+        // FlatRate invoice-level tax still carries the subtotal it was levied against.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(10000)));
     }
 
     public function testInformationalEmitsZeroAmountRowAndPreservesNote(): void
@@ -129,6 +158,8 @@ final class InvoiceTaxCalculatorTest extends TestCase
         self::assertTrue($row->amount->isEqualTo(BigDecimal::zero()));
         self::assertSame('Customer accounts for VAT under reverse charge.', $row->note);
         self::assertSame(TaxDirection::Informational, $row->direction);
+        // Informational rows carry the real subtotal as their base, not zero.
+        self::assertTrue($row->taxableBase->isEqualTo(BigDecimal::of(100000)));
     }
 
     public function testMixedAdditiveAndDeductiveAreSeparated(): void
@@ -157,6 +188,9 @@ final class InvoiceTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->totalInvoiceLevelTax->isEqualTo(BigDecimal::of(5000)));
         self::assertTrue($breakdown->totalWithholding->isEqualTo(BigDecimal::of(10000)));
         self::assertCount(2, $breakdown->taxRows);
+        // Both rows base on the same subtotal independently.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(100000)));
+        self::assertTrue($breakdown->taxRows[1]->taxableBase->isEqualTo(BigDecimal::of(100000)));
     }
 
     private function invoiceTax(
@@ -177,6 +211,7 @@ final class InvoiceTaxCalculatorTest extends TestCase
         $invoiceTax->setTax($tax);
         $invoiceTax->setNameSnapshot($name);
         $invoiceTax->setRateSnapshot($rate);
+        $invoiceTax->setTypeSnapshot($taxType);
         $invoiceTax->setCategorySnapshot($category);
         $invoiceTax->setDirection($direction);
         $invoiceTax->setSequence($sequence);

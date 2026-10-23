@@ -69,12 +69,12 @@ final class InvoiceTaxCalculator
             $direction = $invoiceTax->getDirection();
 
             if ($direction === TaxDirection::Informational) {
-                $rows[] = $this->summary($invoiceTax, BigDecimal::zero());
+                $rows[] = $this->summary($invoiceTax, BigDecimal::zero(), $subTotal);
                 continue;
             }
 
-            $amount = $this->computeAmount($invoiceTax, $subTotal, $totalLineTax, $rounder);
-            $rows[] = $this->summary($invoiceTax, $amount);
+            [$amount, $base] = $this->computeAmount($invoiceTax, $subTotal, $totalLineTax, $rounder);
+            $rows[] = $this->summary($invoiceTax, $amount, $base);
 
             if ($direction === TaxDirection::Deductive) {
                 $totalWithholding = $totalWithholding->plus($amount);
@@ -88,6 +88,8 @@ final class InvoiceTaxCalculator
     }
 
     /**
+     * @return array{BigDecimal, BigDecimal}
+     *
      * @throws MathException
      */
     private function computeAmount(
@@ -95,29 +97,34 @@ final class InvoiceTaxCalculator
         BigDecimal $subTotal,
         BigDecimal $totalLineTax,
         Rounder $rounder,
-    ): BigDecimal {
+    ): array {
         $rate = BigDecimal::of($invoiceTax->getRateSnapshot());
 
         return match ($this->typeFor($invoiceTax)) {
             TaxType::Inclusive => $this->extractInclusive($subTotal->plus($totalLineTax), $rate, $rounder),
-            TaxType::Exclusive => $rounder->round($subTotal->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))),
-            TaxType::FlatRate => $rounder->round($rate->multipliedBy(100)),
+            TaxType::Exclusive => [$rounder->round($subTotal->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))), $subTotal],
+            TaxType::FlatRate => [$rounder->round($rate->multipliedBy(100)), $subTotal],
         };
     }
 
     /**
+     * Extracts the inclusive tax component from a gross figure, returning the
+     * amount alongside the taxable base it was extracted from.
+     *
+     * @return array{BigDecimal, BigDecimal}
+     *
      * @throws MathException
      */
-    private function extractInclusive(BigDecimal $gross, BigDecimal $rate, Rounder $rounder): BigDecimal
+    private function extractInclusive(BigDecimal $gross, BigDecimal $rate, Rounder $rounder): array
     {
         if ($rate->isZero()) {
-            return BigDecimal::zero();
+            return [BigDecimal::zero(), $gross];
         }
 
         $divisor = $rate->dividedBy(100, 10, RoundingMode::HalfEven)->plus(1);
         $net = $gross->dividedBy($divisor, 2, $rounder->getStrategy()->toRoundingMode());
 
-        return $gross->minus($net);
+        return [$gross->minus($net), $net];
     }
 
     private function typeFor(InvoiceTax $invoiceTax): TaxType
@@ -125,7 +132,7 @@ final class InvoiceTaxCalculator
         return $invoiceTax->getTypeSnapshot();
     }
 
-    private function summary(InvoiceTax $invoiceTax, BigDecimal $amount): TaxSummaryRow
+    private function summary(InvoiceTax $invoiceTax, BigDecimal $amount, BigDecimal $taxableBase): TaxSummaryRow
     {
         return new TaxSummaryRow(
             name: (string) $invoiceTax->getNameSnapshot(),
@@ -134,6 +141,7 @@ final class InvoiceTaxCalculator
             type: $this->typeFor($invoiceTax),
             compound: false,
             amount: $amount,
+            taxableBase: $taxableBase,
             sequence: $invoiceTax->getSequence(),
             direction: $invoiceTax->getDirection(),
             note: $invoiceTax->getNote(),

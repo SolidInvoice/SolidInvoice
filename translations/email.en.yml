@@ -80,6 +80,7 @@ invoice:
         view_invoice: 'View Invoice'
     subtotal: Subtotal
     tax: Tax
+    taxable_base_on: 'on %base%'
     terms: 'Terms & Conditions'
     test_copy:
         button: 'Confirm my email'
@@ -277,6 +278,7 @@ quote:
         view_quote: 'View Quote'
     subtotal: Subtotal
     tax: Tax
+    taxable_base_on: 'on %base%'
     terms: 'Terms & Conditions'
     title: 'Quote %id%'
     total: Total

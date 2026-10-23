@@ -210,27 +210,29 @@
                                         <div class="ext-doc-totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</div>
                                     </div>
                                     {% set _tb = tax_breakdown(invoice) %}
-                                    {% if invoice.tax.positive %}
-                                        <div class="ext-doc-totals-row">
-                                            <div class="ext-doc-totals-label">{{ 'invoice.line_tax'|trans }}</div>
-                                            <div class="ext-doc-totals-value">{{ invoice.tax|formatCurrency(currency) }}</div>
-                                        </div>
+                                    {% if invoice.tax.positive or _tb.lineTaxRows is not empty %}
+                                        {% if invoice.tax.positive %}
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'invoice.line_tax'|trans }}</div>
+                                                <div class="ext-doc-totals-value">{{ invoice.tax|formatCurrency(currency) }}</div>
+                                            </div>
+                                        {% endif %}
                                         {% for row in _tb.lineTaxRows %}
                                             <div class="ext-doc-totals-row ext-doc-totals-row-sub">
-                                                <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%)</div>
+                                                <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%) {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</div>
                                                 <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endfor %}
                                     {% endif %}
                                     {% for row in _tb.additiveRows %}
                                         <div class="ext-doc-totals-row">
-                                            <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%)</div>
+                                            <div class="ext-doc-totals-label">{{ row.name }} ({{ row.rate }}%) {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</div>
                                             <div class="ext-doc-totals-value">{{ row.amount|formatCurrency(currency) }}</div>
                                         </div>
                                     {% endfor %}
                                     {% for row in _tb.informationalRows %}
                                         <div class="ext-doc-totals-row ext-doc-totals-row-sub">
-                                            <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}</div>
+                                            <div class="ext-doc-totals-label small opacity-75">{{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %} {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}</div>
                                             <div class="ext-doc-totals-value text-muted">{{ 'invoice.invoice_taxes.informational'|trans }}</div>
                                         </div>
                                     {% endfor %}
