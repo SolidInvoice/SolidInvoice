@@ -21,6 +21,7 @@ use SolidInvoice\EInvoiceBundle\Entity\EInvoiceDocument;
 use SolidInvoice\EInvoiceBundle\Repository\EInvoiceDocumentRepository;
 use SolidInvoice\EInvoiceBundle\Test\Factory\EInvoiceDocumentFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -84,7 +85,7 @@ final class EInvoiceDocumentIsolationTest extends WebTestCase
         );
 
         $dqlResult = $this->em->createQuery('SELECT d FROM ' . EInvoiceDocument::class . ' d WHERE d.id = :id')
-            ->setParameter('id', $betaDocument->getId())
+            ->setParameter('id', $betaDocument->getId(), UlidType::NAME)
             ->getResult();
 
         self::assertSame([], $dqlResult, "Alpha must not be able to load Beta's document through a plain DQL query.");
