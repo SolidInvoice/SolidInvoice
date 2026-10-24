@@ -1,6 +1,12 @@
 Unreleased
 ==========
 
+* The tax breakdown on invoices and quotes now shows the taxable base each
+  rate was calculated on, next to the rate (for example "VAT (15%) on
+  $1,200.00"). An invoice or quote whose only tax is zero-rated, out-of-scope
+  or reverse-charge now shows a breakdown too, where it previously showed
+  none.
+
 3.1.1 / 2026-10-15
 ==================
 
