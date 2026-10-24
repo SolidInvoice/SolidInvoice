@@ -18,11 +18,14 @@ use SolidInvoice\EInvoiceBundle\Enum\ViolationSeverity;
 
 final readonly class ValidationViolation
 {
+    /**
+     * @param list<string> $businessTerms
+     */
     public function __construct(
         public string $ruleId,
         public ViolationSeverity $severity,
         public ValidationStage $stage,
-        public ?string $businessTerm,
+        public array $businessTerms,
         public ?string $xpath,
         public string $message,
     ) {
