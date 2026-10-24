@@ -229,12 +229,6 @@ parameters:
 			path: src/CoreBundle/Listener/CompanyEventSubscriber.php
 
 		-
-			message: '#^Instanceof between Symfony\\Component\\Uid\\Ulid and Symfony\\Component\\Uid\\Ulid will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/CoreBundle/Listener/EmailFromListener.php
-
-		-
 			message: '#^Call to method getFieldKey\(\) on an unknown class SolidInvoice\\CoreBundle\\Serializer\\Normalizer\\CustomField\.$#'
 			identifier: class.notFound
 			count: 1
