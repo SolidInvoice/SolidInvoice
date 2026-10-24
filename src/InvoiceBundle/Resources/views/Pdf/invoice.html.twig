@@ -110,6 +110,17 @@
                         {{ invoice.invoiceDate|date('F j, Y') }}
                     </td>
                 </tr>
+                {% set period = billing_period(invoice) %}
+                {% if period is not empty %}
+                    <tr>
+                        <td class="date-label" style="font-size: 9pt; color: #64748b; text-align: right; padding: 4px 16px 4px 0;">
+                            {{ 'billing.period.label'|trans }}
+                        </td>
+                        <td class="date-value" style="font-size: 9pt; color: #1e293b; font-weight: 500; text-align: right; padding: 4px 0;">
+                            {{ period }}
+                        </td>
+                    </tr>
+                {% endif %}
                 {% if invoice.due %}
                     {% set now = "now"|date("U") %}
                     {% set dueTimestamp = invoice.due|date("U") %}

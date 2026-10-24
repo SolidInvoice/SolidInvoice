@@ -93,6 +93,13 @@
                                     <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.date'|trans }}</div>
                                     <div class="ext-doc-metadata-value fw-medium">{{ invoice.invoiceDate|date('M d, Y') }}</div>
                                 </div>
+                                {% set period = billing_period(invoice) %}
+                                {% if period is not empty %}
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'billing.period.label'|trans }}</div>
+                                        <div class="ext-doc-metadata-value fw-medium">{{ period }}</div>
+                                    </div>
+                                {% endif %}
                                 {% if invoice.due is not empty %}
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.due_date'|trans }}</div>

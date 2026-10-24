@@ -97,6 +97,11 @@
                                 <dl class="dl-horizontal">
                                     <dt>{{ "invoice.date"|trans }}</dt>
                                     <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
+                                    {% set period = billing_period(invoice) %}
+                                    {% if period is not empty %}
+                                        <dt>{{ "billing.period.label"|trans }}</dt>
+                                        <dd>{{ period }}</dd>
+                                    {% endif %}
                                     {% if invoice.due is not empty %}
                                         <dt>{{ "invoice.due_date"|trans }}</dt>
                                         <dd>{{ invoice.due | date('d F Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</dd>

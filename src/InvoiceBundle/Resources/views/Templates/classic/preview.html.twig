@@ -26,6 +26,8 @@
                 </div>
                 <div class="col-md-6">
                     <div><span class="text-muted small">{{ 'invoice.date'|trans }}:</span> <strong>{{ invoice.invoiceDate|date('M j, Y') }}</strong></div>
+                    {% set period = billing_period(invoice) %}
+                    {% if period is not empty %}<div><span class="text-muted small">{{ 'billing.period.label'|trans }}:</span> <strong>{{ period }}</strong></div>{% endif %}
                     {% if invoice.due %}<div><span class="text-muted small">{{ 'invoice.due_date'|trans }}:</span> <strong>{{ invoice.due|date('M j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</strong></div>{% endif %}
                 </div>
             </div>

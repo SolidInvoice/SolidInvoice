@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -181,6 +182,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         InvoiceStatus $status = InvoiceStatus::Pending,
         int $lineCount = 1,
         bool $withDue = true,
+        ?BillingPeriod $period = null,
     ): Invoice {
         $this->seedCompanyLogo();
 
@@ -211,7 +213,7 @@ final class TemplatesRenderingTest extends KernelTestCase
 
         $total = BigInteger::of(150000)->multipliedBy($lineCount);
 
-        return InvoiceFactory::createOne([
+        $attributes = [
             'company' => $this->company,
             'client' => $client,
             'status' => $status,
@@ -229,7 +231,25 @@ final class TemplatesRenderingTest extends KernelTestCase
                 ->setType(null),
             'lines' => $lines,
             'users' => [$contact],
-        ]);
+        ];
+
+        if ($period instanceof BillingPeriod) {
+            $attributes['period'] = $period;
+        }
+
+        return InvoiceFactory::createOne($attributes);
+    }
+
+    /**
+     * 1–28 February 2026: same month and year, so it also exercises the
+     * extension's collapsing rule inside a real template render.
+     */
+    private function februaryBillingPeriod(): BillingPeriod
+    {
+        return BillingPeriod::of(
+            CarbonImmutable::parse('2026-02-01'),
+            CarbonImmutable::parse('2026-02-28'),
+        );
     }
 
     /**
@@ -325,6 +345,159 @@ final class TemplatesRenderingTest extends KernelTestCase
                 yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
             }
         }
+    }
+
+    /**
+     * The seven templates this issue touches. `studio` is the project's own
+     * eighth template — SOL-488's file list never names it, so it carries no
+     * `billing_period()` call and is excluded here on purpose.
+     *
+     * @return iterable<string, array{string, string}>
+     */
+    public static function billingPeriodTemplateChannelProvider(): iterable
+    {
+        foreach (['classic', 'compact', 'editorial', 'friendly', 'modern', 'monochrome', 'photographer'] as $slug) {
+            foreach (['pdf', 'preview'] as $channel) {
+                yield sprintf('%s/%s', $slug, $channel) => [$slug, $channel];
+            }
+        }
+    }
+
+    /**
+     * Every one of the seven design templates prints the period next to the
+     * existing invoice-date pair, in both the `pdf` and `preview` channel.
+     */
+    #[DataProvider('billingPeriodTemplateChannelProvider')]
+    public function testTemplateRendersBillingPeriodWhenSet(string $slug, string $channel): void
+    {
+        $invoice = $this->createFixtureInvoice(period: $this->februaryBillingPeriod());
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceInvoice/Templates/%s/%s.html.twig', $slug, $channel),
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringContainsString('Billing Period', $output);
+        self::assertStringContainsString('1–28 February 2026', $output);
+    }
+
+    /**
+     * An invoice with no period must render exactly as it did before this
+     * feature: no "Billing Period" label, and — because the label and the
+     * separator that would join it to the surrounding metadata live in the
+     * same `{% if %}` block — no stray `·` left behind either.
+     */
+    #[DataProvider('lineChannelProvider')]
+    public function testTemplateOmitsBillingPeriodWhenEmpty(string $slug, string $channel): void
+    {
+        $invoice = $this->createFixtureInvoice();
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            sprintf('@SolidInvoiceInvoice/Templates/%s/%s.html.twig', $slug, $channel),
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringNotContainsString('Billing Period', $output);
+        self::assertDoesNotMatchRegularExpression('/·\s*·/', $output);
+    }
+
+    /**
+     * `compact` is the one template that joins date, period and due date on a
+     * single `·`-separated line, so an empty period could leave a double
+     * separator even where the generic check above would not catch it
+     * (the due date still renders after the missing period).
+     */
+    public function testCompactJoinsPeriodAndDueWithASingleSeparatorWhenBothRender(): void
+    {
+        $invoice = $this->createFixtureInvoice(period: $this->februaryBillingPeriod());
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            '@SolidInvoiceInvoice/Templates/compact/pdf.html.twig',
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringContainsString('Billing Period: 1–28 February 2026 ·', $output);
+        self::assertDoesNotMatchRegularExpression('/·\s*·/', $output);
+    }
+
+    /**
+     * The same line with no period and no due date must not leave a
+     * trailing separator after the invoice date either.
+     */
+    public function testCompactLeavesNoTrailingSeparatorWhenPeriodAndDueAreBothEmpty(): void
+    {
+        $invoice = $this->createFixtureInvoice(withDue: false);
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render(
+            '@SolidInvoiceInvoice/Templates/compact/pdf.html.twig',
+            ['invoice' => $invoice]
+        );
+
+        self::assertStringNotContainsString('Billing Period', $output);
+        self::assertDoesNotMatchRegularExpression('/·\s*·/', $output);
+        self::assertDoesNotMatchRegularExpression('/·\s*<\/div>/', $output);
+    }
+
+    public function testExternalInvoiceViewRendersBillingPeriodWhenSet(): void
+    {
+        $invoice = $this->createFixtureInvoice(period: $this->februaryBillingPeriod());
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringContainsString('Billing Period', $output);
+        self::assertStringContainsString('1–28 February 2026', $output);
+    }
+
+    public function testExternalInvoiceViewOmitsBillingPeriodWhenEmpty(): void
+    {
+        $invoice = $this->createFixtureInvoice();
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringNotContainsString('Billing Period', $output);
+    }
+
+    public function testStandaloneDocumentRendersBillingPeriodWhenSet(): void
+    {
+        $invoice = $this->createFixtureInvoice(period: $this->februaryBillingPeriod());
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringContainsString('Billing Period', $output);
+        self::assertStringContainsString('1–28 February 2026', $output);
+    }
+
+    public function testStandaloneDocumentOmitsBillingPeriodWhenEmpty(): void
+    {
+        $invoice = $this->createFixtureInvoice();
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]);
+
+        self::assertStringNotContainsString('Billing Period', $output);
     }
 
     /**

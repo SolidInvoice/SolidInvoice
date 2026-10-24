@@ -42,6 +42,11 @@
             <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
                 <div style="font-size: 8pt; color: #7c4a1e; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
                 <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                {% set period = billing_period(invoice) %}
+                {% if period is not empty %}
+                    <div style="font-size: 8pt; color: #7c4a1e; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px;">{{ 'billing.period.label'|trans }}</div>
+                    <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{{ period }}</div>
+                {% endif %}
             </td>
             <td style="width: 4px;"></td>
             <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">

@@ -22,6 +22,11 @@
                 <div class="text-end">
                     <div class="text-muted small text-uppercase">{{ 'invoice.date'|trans }}</div>
                     <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    {% set period = billing_period(invoice) %}
+                    {% if period is not empty %}
+                        <div class="text-muted small text-uppercase mt-2">{{ 'billing.period.label'|trans }}</div>
+                        <div>{{ period }}</div>
+                    {% endif %}
                 </div>
             </div>
 

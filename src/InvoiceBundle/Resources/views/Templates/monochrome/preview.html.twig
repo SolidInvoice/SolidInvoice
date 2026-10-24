@@ -25,6 +25,11 @@
                 <div class="col-md-4">
                     <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'invoice.date'|trans }}</div>
                     <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    {% set period = billing_period(invoice) %}
+                    {% if period is not empty %}
+                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 2px;">{{ 'billing.period.label'|trans }}</div>
+                        <div>{{ period }}</div>
+                    {% endif %}
                 </div>
                 <div class="col-md-4 text-end">
                     <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>

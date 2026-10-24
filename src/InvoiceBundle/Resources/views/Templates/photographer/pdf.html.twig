@@ -32,6 +32,10 @@
                     </td>
                     <td style="vertical-align: top; text-align: right;">
                         {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
+                        {% set period = billing_period(invoice) %}
+                        {% if period is not empty %}
+                            {{ inv.meta_pair('billing.period.label'|trans, period) }}
+                        {% endif %}
                         {% if invoice.due %}
                             {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
                         {% endif %}
