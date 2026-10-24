@@ -15,7 +15,9 @@ namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\UserBundle\Entity\User;
@@ -30,6 +32,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Throwable;
 use function assert;
 
 #[AsEventListener(CompanyCreatedEvent::class, 'onCompanyCreated')]
@@ -46,6 +49,8 @@ final class CompanyEventSubscriber
         private readonly EntityManagerInterface $entityManager,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly BillingMode $billingMode,
+        private readonly OnboardingDispatcher $onboardingDispatcher,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -84,6 +89,8 @@ final class CompanyEventSubscriber
                         $this->subscriptionManager->startTrial($this->subscription);
                         $this->trialManager->createTrial($user, $this->subscription);
                     });
+
+                    $this->sendWelcomeEmail($user, $this->subscription);
                 } catch (TrialAlreadyExistsException) {
                     // Race condition: another request already created a trial for this user
                     $event->setResponse($this->createPlanSelectionRedirect());
@@ -119,6 +126,20 @@ final class CompanyEventSubscriber
         } catch (TrialAlreadyExistsException) {
             // Race condition: another request already recorded a trial for this
             // user. Harmless — the user is headed to plan selection regardless.
+        }
+    }
+
+    /**
+     * Ticks the onboarding sequence once so the welcome email goes out at
+     * signup rather than at the next hourly run. The hourly run still picks it
+     * up if this fails, so a failure must not fail the signup.
+     */
+    private function sendWelcomeEmail(User $user, Subscription $subscription): void
+    {
+        try {
+            $this->onboardingDispatcher->tick($user, $subscription);
+        } catch (Throwable $e) {
+            $this->logger->error('Could not dispatch the welcome email at signup', ['exception' => $e]);
         }
     }
 

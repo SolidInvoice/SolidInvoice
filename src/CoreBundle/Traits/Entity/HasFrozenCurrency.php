@@ -70,4 +70,9 @@ trait HasFrozenCurrency
 
         return $client->getCurrency();
     }
+
+    public function retainsFrozenCurrency(): bool
+    {
+        return false;
+    }
 }

@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Action\Index;
 use SolidInvoice\InvoiceBundle\Action\RecurringIndex;
 use SolidInvoice\InvoiceBundle\Action\RecurringTransition;
 use SolidInvoice\InvoiceBundle\Action\SendManualReminder;
+use SolidInvoice\InvoiceBundle\Action\SendTestCopy;
 use SolidInvoice\InvoiceBundle\Action\Transition;
 use SolidInvoice\InvoiceBundle\Action\Transition\Send;
 use SolidInvoice\InvoiceBundle\Action\View;
@@ -81,6 +82,11 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_send_invoice', '/action/send/{id}')
         ->methods(['POST'])
         ->controller(Send::class);
+
+    $routingConfigurator
+        ->add('_invoices_send_test_copy', '/action/send-test-copy/{id}')
+        ->methods(['POST'])
+        ->controller(SendTestCopy::class);
 
     $routingConfigurator
         ->add('_send_manual_reminder', '/action/send-reminder/{id}')

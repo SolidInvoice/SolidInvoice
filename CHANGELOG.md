@@ -4,9 +4,71 @@ Changelog
 3.1.2 / Unreleased
 -------------------
 
+### Changes
+
+* Database migrations no longer run from a web request. The built-in server runs them once at startup, before it serves anything, and the Helm chart runs them as a pre-upgrade job. Other setups should run `bin/console doctrine:migrations:migrate` after deploying
+* Invoices and quotes issued before 3.1.0 now have their currency frozen too, so changing a client's or company's currency no longer changes them. This resolves the 3.1.0 known issue
+* An invoice or quote that goes back to Draft follows its client's currency again. An invoice that already has a payment keeps its currency
+* The "Powered by SolidInvoice" line in emails, invoice and quote PDFs, and the client invoice page now links to a page about SolidInvoice
+
 ### Fixes
 
+* Upgrades actually run each migration's data changes. Before, they were only marked as done, which could lose data (such as VAT numbers) and made upgrades on MySQL, MariaDB and PostgreSQL fail with a server error on every page
+* Upgrading on PostgreSQL no longer fails with an encoding error, and invoice lines no longer lose the ability to belong to a recurring invoice there
+* Recurring invoices keep their contacts when upgrading. The database table is now renamed instead of being at risk of being dropped and recreated empty
+* Password reset requests and pending user invitations keep their data when upgrading
+* The `messenger_messages` table is now actually created by migrations. The 3.1.0 fix for this did nothing
+* Remaining differences between the database and the application's expected schema (column types, nullability, indexes) are now fixed on upgrade
+* Recording a payment through the API or the MCP tools now checks it against the invoice's own currency, not the client's. Correct payments were rejected after a client changed currency
+* Notifications, API keys, Connected apps and Data export are back in the profile menu
+* The API token history table header is bold again, and info boxes show a hover colour again
 * The search bar in the top header has its border and background again, and its results dropdown no longer shows through onto the page behind it. The company page and subscription pages had the same missing colours and are fixed too
+
+3.1.1 / 2026-10-15
+-------------------
+
+### Changes
+
+* Application logs now show up in the server output. Production logs everything from `info` up (set `SOLIDINVOICE_LOG_LEVEL`, e.g. to `warning`, to change that), web requests log through the web server's own logger, and log lines from background workers and console commands keep their level instead of all showing as `info`
+
+### Fixes
+
+* A company's own mail delivery settings now apply only to that company's emails. Emails sent before a company was selected (such as the two-factor login code) could go out through another company's mail provider, and long-running workers kept using the first company's provider for every company
+* "Resend code" on the two-factor login page works again. Users with more than one company were redirected to company selection and back without a new code being sent
+* The two-factor login code email is now sent from `SOLIDINVOICE_MAILER_SENDER`. It used to pick up another company's sender address, or the user's own address, so mail providers often rejected it and the code never arrived
+* `SOLIDINVOICE_APP_SECRET` is used again. 3.1.0 ignored it and used a value that changed every time the cache was rebuilt, so API tokens, "remember me" logins and signed links stopped working after each deploy or restart. API tokens created while running 3.1.0 need to be regenerated
+* The built-in web server now caches only content-hashed static files for a year. Other static files are revalidated after an hour, so a release can no longer be hidden behind a long-cached copy of a file whose name did not change
+* Setting up an authenticator app no longer fails when the code it shows starts with 0
+* Authenticator app codes now use the standard 30-second period instead of 20 seconds, so Google Authenticator and Microsoft Authenticator codes are accepted reliably. If you set up 2FA with an app that honours the period from the QR code (such as 1Password, Authy or Bitwarden), remove the entry and scan the QR code again under **Profile → Two-Factor Authentication**
+* Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
+
+3.1.0 / 2026-10-15
+-------------------
+
+### Highlights
+
+* Invoice, recurring invoice and quote lines can now be named separately from their description, and keep an explicit order
+* Invoices, recurring invoices and clients can have payment terms (Net 15, Net 30, Net 60, due on receipt, or a custom date), with a configurable company-wide default
+* Issued invoices and quotes now freeze their currency going forward, so changing a client's or company's default currency no longer retroactively restates documents issued *after* upgrading. Documents issued before the upgrade are not covered yet — see "Known issues" below
+
+### Changes
+
+* Getting started is now a single step. New users enter their company name and currency, then go straight to the invoice editor to add their first client and send their first invoice. The separate client, invoice and "you're all set" screens are gone; the first invoice used to be saved without a recipient, so it could not be sent
+* The dashboard setup checklist now starts with "Create Your Company" already ticked off
+* "Send to client" is now the main button when creating or editing an invoice, and on a draft invoice's page. "Save as Draft" and "Publish without sending" are still one click away
+* Until you confirm your email address, the Send button stays visible but disabled, with the reason next to it and a link to get a new confirmation email
+* Invoice, quote and reminder emails now carry a Reply-To of your company's email address (or your own, if the company has none), so a client's reply reaches you instead of the no-reply sender
+* A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
+* Saving an invoice or quote with no contact selected now says to choose a contact or add one with an email address
+* Before you confirm your email address, an invoice's page offers "Email me a test copy". It sends the invoice, with its PDF, to your own inbox only, along with a link that confirms your address and brings you back to the invoice, ready to send. Limited to 3 per account
+* SolidInvoice Cloud trial emails now follow what you do instead of arriving every day and a half. The welcome is sent at signup; a "your first invoice takes 2 minutes" nudge goes out after a day with nothing sent; sending your first invoice brings the "now let them pay by card" email; and four days before the trial ends you get a recap of your usage with what you keep on Free. The logo, recurring billing, feedback, add-a-client and last-chance offer emails have been dropped
+* Trial users who have not confirmed their email get a reminder after one day and again after three, and those reminders carry the confirmation link. Other trial emails are not sent to an unconfirmed address, so they cannot bounce
+* With a card on file, the trial-ending email now goes out too, and says on which date the card will be charged
+
+### Fixes
+
+* Invoices generated from a recurring invoice are now emailed to their recipients. They were created and published, but no email went out
+* A draft invoice, such as the one the onboarding wizard creates, no longer stops the "send your first invoice" email
 
 3.1.1 / 2026-10-15
 -------------------
@@ -37,6 +99,9 @@ Changelog
 * The editorial and friendly invoice/quote PDF templates no longer print some money values in brown with no status meaning; the invoice balance (both templates) and the quote editorial total now use the same neutral ink as every other template. Labels and headings keep a warmer accent colour instead, now meeting contrast on every background they appear on
 * Sending an invoice now requires a `POST` request with a valid CSRF token; the old `GET` link no longer works
 * Added a **Refer & earn** page to the profile, a footer link and a small dashboard card for the SolidInvoice Cloud affiliate program, plus a one-off corner prompt on the dashboard a few days after onboarding. Self-hosted installs show it too; set `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED=0` to turn it off
+* Invoice and quote line quantities are now stored with six decimal places instead of as a floating-point number
+* A line description is now optional
+* Invoice reminder and overdue scans are now backed by an index on due date and status
 
 ### Fixes
 
@@ -47,6 +112,12 @@ Changelog
 * Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
 * Fixed the migration chain so installing or upgrading on MariaDB and PostgreSQL applies the `company_id` backfill and ID-to-ULID conversions correctly; they were silently skipped or failed outright on these platforms before
 * Added the `messenger_messages` table to the migration chain. It was previously missing, so an instance upgraded from the tarball or a Helm `pre-upgrade` job would have the failed-message transport create it with a runtime `CREATE TABLE`, which fails on a database user without DDL privileges
+
+### Known issues
+
+* Documents issued **before** upgrading to 3.1.0 are not covered by the currency freeze above. If a client's or your company's default currency changes, pre-upgrade invoices and quotes still restate retroactively. A backfill is planned (tracked as SOL-396/SOL-398) but did not ship in 3.1.0.
+* On MySQL, MariaDB and PostgreSQL, upgrading with the in-app upgrade instead of the command line can fail partway through and leave every page showing a server error. See `UPGRADE.md` for the command to run instead, and what to do if you already hit this.
+* Overdue status uses the server's UTC clock, not your company's local time zone. If your business is west of UTC (for example, in the Americas), an invoice can show as overdue up to a day before it is actually due. If your business is east of UTC, the overdue reminder can arrive up to a day late. Per-company time zones are planned; this will be fixed then.
 
 3.0.0 / 2026-06-17
 -------------------

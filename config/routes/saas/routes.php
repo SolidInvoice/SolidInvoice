@@ -16,4 +16,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->import('@SolidInvoiceSaasBundle/Resources/config/routing.php')
         ->prefix('/billing');
+
+    $routingConfigurator->import('@SolidInvoiceSaasBundle/Resources/config/routing/onetap.php')
+        ->prefix('/onetap');
 };

@@ -35,11 +35,11 @@ final class LoadPlanFeatures extends Fixture implements DependentFixtureInterfac
      */
     private const array MATRIX = [
         LoadPlans::REF_FREE => [
-            Feature::TotalClients->value => 5,
-            Feature::InvoicesPerMonth->value => 10,
+            Feature::TotalClients->value => 3,
+            Feature::InvoicesPerMonth->value => -1,
             Feature::TeamSeats->value => 1,
             Feature::Quotes->value => false,
-            Feature::OnlinePayments->value => false,
+            Feature::OnlinePayments->value => true,
             Feature::RecurringInvoices->value => false,
             Feature::AutomatedReminders->value => false,
             Feature::MultiCurrency->value => false,

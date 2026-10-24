@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -47,6 +48,9 @@ final class ViewTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string CLIENT_ID = '01JGXKV8QZ0000000000000001';
 

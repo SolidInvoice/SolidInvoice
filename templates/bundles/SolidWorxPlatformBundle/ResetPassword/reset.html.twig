@@ -1,0 +1,36 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceUser/Security/layout.html.twig' %}
+
+{% block page_title %}{{ app_name }} - {{ 'forgot_password.reset.title'|trans }}{% endblock page_title %}
+
+{% block auth_content %}
+    <twig:Ui:AuthCard title="{{ 'forgot_password.reset.heading'|trans }}">
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <twig:Ui:PasswordRequirements :requirements="password_requirements" class="mb-3" />
+
+            {{ form_row(form.newPassword.first, {label: 'change_password.form.new_password'}) }}
+            {{ form_row(form.newPassword.second, {label: 'change_password.form.confirm_password'}) }}
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary w-100">
+                    {{ ux_icon('tabler:lock', {class: 'icon'}) }}
+                    {{ 'forgot_password.request.submit'|trans }}
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </twig:Ui:AuthCard>
+
+    <div class="text-center text-secondary mt-3 bg-white p-2">
+        <a href="{{ path(login_route) }}">{{ 'forgot_password.request.back_to_login'|trans }}</a>
+    </div>
+{% endblock auth_content %}
