@@ -150,6 +150,16 @@ class Client implements Stringable
     private ?PaymentTerms $paymentTerms = null;
 
     /**
+     * Seeds the reference field when a new invoice or quote is created for this client.
+     * Useful where the buyer's reference is stable rather than per-order — a Leitweg-ID,
+     * or a standing contract number. A per-order PO number is normally typed per document.
+     */
+    #[ORM\Column(name: 'default_reference', type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    private ?string $defaultReference = null;
+
+    /**
      * @var Collection<int, TaxIdentifier>
      */
     #[ORM\OneToMany(targetEntity: TaxIdentifier::class, mappedBy: 'client', cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -465,6 +475,18 @@ class Client implements Stringable
     public function setPaymentTerms(?PaymentTerms $paymentTerms): self
     {
         $this->paymentTerms = $paymentTerms;
+
+        return $this;
+    }
+
+    public function getDefaultReference(): ?string
+    {
+        return $this->defaultReference;
+    }
+
+    public function setDefaultReference(?string $defaultReference): self
+    {
+        $this->defaultReference = $defaultReference;
 
         return $this;
     }

@@ -274,6 +274,19 @@ class Quote implements HasFrozenCurrencyInterface
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $terms = null;
 
+    /**
+     * The reference the *recipient* needs to see on the document — in practice their
+     * purchase order number. Distinct from {@see Quote::$quoteId}, which is ours.
+     *
+     * This is the stable home for EN 16931 BT-10 (Buyer reference) and, for German B2G,
+     * the Leitweg-ID. Format validation is deliberately absent — it belongs with the
+     * e-invoicing profile work, which knows which profile applies.
+     */
+    #[ORM\Column(name: 'reference', type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Groups(['quote_api:read', 'quote_api:write', 'searchable'])]
+    private ?string $reference = null;
+
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $notes = null;
@@ -503,6 +516,17 @@ class Quote implements HasFrozenCurrencyInterface
     public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
         return $this;
     }
 
