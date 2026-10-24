@@ -8,6 +8,10 @@ Unreleased
 
 * API authentication now uses the `X-API-TOKEN` header exclusively; the `?token=` query-string fallback has been removed
 
+### Fixes
+
+* Viewing an invoice or quote no longer rewrites every line's row and bumps its last-updated timestamp. Reading the totals used to mark each line as changed even when nothing did.
+
 3.0.0 / 2026-06-17
 -------------------
 
