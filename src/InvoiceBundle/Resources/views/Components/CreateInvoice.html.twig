@@ -130,6 +130,8 @@
                             attr: {readonly: true},
                             help: 'invoice.payment_terms.due_help',
                         }) }}
+                        {{ form_row(form.periodStart) }}
+                        {{ form_row(form.periodEnd) }}
                     </div>
                     {{ form_row(form.discount) }}
                 </div>

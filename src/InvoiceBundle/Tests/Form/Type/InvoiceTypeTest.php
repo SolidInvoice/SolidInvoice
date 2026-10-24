@@ -67,6 +67,8 @@ final class InvoiceTypeTest extends FormTestCase
             'total' => '0',
             'baseTotal' => '0',
             'invoiceDate' => '2021-01-01',
+            'periodStart' => '2026-02-01',
+            'periodEnd' => '2026-02-28',
             'tax' => '0',
             'users' => [],
         ];
@@ -87,8 +89,51 @@ final class InvoiceTypeTest extends FormTestCase
         $dto->baseTotal = '0';
         $dto->tax = '0';
         $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+        $dto->periodStart = CarbonImmutable::parse('2026-02-01');
+        $dto->periodEnd = CarbonImmutable::parse('2026-02-28');
 
         $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
+    }
+
+    public function testSubmitWithoutPeriodLeavesBothDatesNull(): void
+    {
+        $client = ClientFactory::createOne();
+
+        $formData = [
+            'clientMode' => 'existing',
+            'client' => $client->getId()
+                ->toString(),
+            'discount' => [
+                'value' => 0,
+                'type' => Discount::TYPE_PERCENTAGE,
+            ],
+            'lines' => [],
+            'invoiceId' => '10',
+            'total' => '0',
+            'baseTotal' => '0',
+            'invoiceDate' => '2021-01-01',
+            'tax' => '0',
+            'users' => [],
+        ];
+
+        $dto = new InvoiceFormDTO();
+        $dto->clientMode = InvoiceClientMode::Existing;
+        $dto->client = $client;
+        $dto->invoiceId = '10';
+
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(BigDecimal::zero());
+
+        $dto->discount = $discount;
+        $dto->total = '0';
+        $dto->baseTotal = '0';
+        $dto->tax = '0';
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+
+        $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
+        self::assertNull($dto->periodStart);
+        self::assertNull($dto->periodEnd);
     }
 
     public function testSubmitWithNewClient(): void
