@@ -68,11 +68,18 @@ final class PaymentInstructionTest extends ApiTestCase
 
     public function testGetCollectionIsScopedByCompany(): void
     {
-        PaymentInstructionFactory::createMany(2, ['company' => $this->company]);
+        $company = $this->company;
+        PaymentInstructionFactory::createMany(2, static fn (int $index): array => [
+            'company' => $company,
+            'label' => sprintf('Company account %d', $index),
+        ]);
 
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
-        PaymentInstructionFactory::createMany(3, ['company' => $otherCompany]);
+        PaymentInstructionFactory::createMany(3, static fn (int $index): array => [
+            'company' => $otherCompany,
+            'label' => sprintf('Other company account %d', $index),
+        ]);
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $data = $this->requestGetCollection('/api/payment-instructions');

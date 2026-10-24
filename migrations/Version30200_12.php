@@ -66,7 +66,6 @@ final class Version30200_12 extends AbstractMigration
             $table->addColumn('updated', Types::DATETIME_IMMUTABLE);
 
             $table->setPrimaryKey(['id']);
-            $table->addIndex(['company_id']);
             $table->addUniqueIndex(['company_id', 'label'], 'uniq_payment_instructions_company_label');
 
             $table->addForeignKeyConstraint(

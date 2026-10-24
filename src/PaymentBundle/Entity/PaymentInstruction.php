@@ -38,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @see \SolidInvoice\PaymentBundle\Tests\Entity\PaymentInstructionTest
  */
 #[ORM\Table(name: PaymentInstruction::TABLE_NAME)]
+#[ORM\UniqueConstraint(name: 'uniq_payment_instructions_company_label', columns: ['company_id', 'label'])]
 #[ORM\Entity(repositoryClass: PaymentInstructionRepository::class)]
 #[UniqueEntity(fields: ['company', 'label'])]
 #[ApiResource(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Repository;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -88,5 +89,31 @@ final class PaymentInstructionRepositoryTest extends KernelTestCase
 
         self::assertCount(1, $result);
         self::assertSame('Business account', $result[0]->getLabel());
+    }
+
+    /**
+     * Fresh-install regression: the database must reject a duplicate (company, label)
+     * pair on its own, not just through the {@see \Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity}
+     * validator. This bypasses the validator by flushing a second entity directly.
+     */
+    public function testDuplicateLabelInSameCompanyViolatesDatabaseUniqueConstraint(): void
+    {
+        PaymentInstructionFactory::createOne([
+            'company' => $this->company,
+            'label' => 'Business account',
+        ]);
+
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+
+        $duplicate = new PaymentInstruction()
+            ->setCompany($this->company)
+            ->setLabel('Business account')
+            ->setMeans(PaymentMeans::BankTransfer);
+
+        $em->persist($duplicate);
+
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        $em->flush();
     }
 }
