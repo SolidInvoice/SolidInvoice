@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\CoreBundle\Tests\Company;
+namespace SolidInvoice\ClientBundle\Tests\Manager;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -20,13 +20,17 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\ClientBundle\Manager\CompanyAddressManager;
 use SolidInvoice\ClientBundle\Repository\AddressRepository;
-use SolidInvoice\CoreBundle\Company\CompanyAddressManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @see CompanyAddressManager
@@ -41,11 +45,15 @@ final class CompanyAddressManagerTest extends TestCase
 
     private SystemConfig & M\MockInterface $systemConfig;
 
+    private ValidatorInterface & M\MockInterface $validator;
+
     protected function setUp(): void
     {
         $this->addressRepository = M::mock(AddressRepository::class);
         $this->companyRepository = M::mock(CompanyRepository::class);
         $this->systemConfig = M::mock(SystemConfig::class);
+        $this->validator = M::mock(ValidatorInterface::class);
+        $this->validator->shouldReceive('validateProperty')->andReturn(new ConstraintViolationList())->byDefault();
     }
 
     private function manager(?Ulid $companyId): CompanyAddressManager
@@ -59,7 +67,7 @@ final class CompanyAddressManagerTest extends TestCase
             new ReflectionProperty(CompanySelector::class, 'companyId')->setValue($selector, $companyId);
         }
 
-        return new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->systemConfig);
+        return new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->validator, $this->systemConfig);
     }
 
     public function testGetReturnsThePersistedAddressRow(): void
@@ -143,7 +151,7 @@ final class CompanyAddressManagerTest extends TestCase
 
         $selector = new CompanySelector(M::mock(ManagerRegistry::class));
         new ReflectionProperty(CompanySelector::class, 'companyId')->setValue($selector, $companyA);
-        $manager = new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->systemConfig);
+        $manager = new CompanyAddressManager($this->addressRepository, $this->companyRepository, $selector, $this->validator, $this->systemConfig);
 
         $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyA)->andReturn($addressA);
         $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyB)->andReturn($addressB);
@@ -241,5 +249,41 @@ final class CompanyAddressManagerTest extends TestCase
         $this->addressRepository->shouldNotReceive('remove');
 
         $this->manager($companyId)->store('{"street1": not valid json');
+    }
+
+    public function testStoreUppercasesALowercaseLegacyCountryCode(): void
+    {
+        $companyId = new Ulid();
+        $company = new Company();
+
+        $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyId)->andReturn(null);
+        $this->companyRepository->shouldReceive('find')->once()->with($companyId)->andReturn($company);
+        $this->addressRepository->shouldReceive('save')
+            ->once()
+            ->with(M::on(fn (Address $address): bool => 'ZA' === $address->getCountry()));
+
+        $this->manager($companyId)->store('{"street1":"123 Main St","country":"za"}');
+    }
+
+    public function testStoreRejectsAnInvalidCountryAndDoesNotPersist(): void
+    {
+        $companyId = new Ulid();
+        $address = new Address();
+
+        $violation = new ConstraintViolation('This value is not a valid country.', null, [], $address, 'country', 'XX');
+        $this->validator->shouldReceive('validateProperty')
+            ->once()
+            ->with($address, 'country')
+            ->andReturn(new ConstraintViolationList([$violation]));
+
+        $this->addressRepository->shouldReceive('findCompanyAddress')->once()->with($companyId)->andReturn($address);
+        $this->addressRepository->shouldNotReceive('save');
+
+        try {
+            $this->manager($companyId)->store('{"street1":"123 Main St","country":"XX"}');
+            self::fail('Expected a ValidationFailedException');
+        } catch (ValidationFailedException) {
+            // Expected: an invalid country must not be persisted.
+        }
     }
 }

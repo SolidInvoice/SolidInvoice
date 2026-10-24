@@ -15,7 +15,7 @@ namespace SolidInvoice\SettingsBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use SolidInvoice\CoreBundle\Company\CompanyAddressManager;
+use SolidInvoice\ClientBundle\Manager\CompanyAddressManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;

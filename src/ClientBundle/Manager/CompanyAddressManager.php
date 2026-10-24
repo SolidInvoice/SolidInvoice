@@ -11,19 +11,24 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\CoreBundle\Company;
+namespace SolidInvoice\ClientBundle\Manager;
 
 use const JSON_THROW_ON_ERROR;
 use JsonException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Repository\AddressRepository;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function is_array;
+use function is_string;
 use function json_decode;
+use function strtoupper;
 
 /**
  * Reads and writes the company's postal address.
@@ -33,7 +38,7 @@ use function json_decode;
  * Until that row exists, reads fall back to the legacy
  * `system/company/contact_details/address` setting, which `store()` still mirrors.
  *
- * @see \SolidInvoice\CoreBundle\Tests\Company\CompanyAddressManagerTest
+ * @see \SolidInvoice\ClientBundle\Tests\Manager\CompanyAddressManagerTest
  */
 final class CompanyAddressManager
 {
@@ -49,6 +54,7 @@ final class CompanyAddressManager
         private readonly AddressRepository $addressRepository,
         private readonly CompanyRepository $companyRepository,
         private readonly CompanySelector $companySelector,
+        private readonly ValidatorInterface $validator,
         // Lazy: SettingsRepository depends on this manager, and SystemConfig depends on
         // SettingsRepository, so an eager reference here is a circular service graph.
         // SystemConfig is only touched on the legacy-fallback path in fromLegacySetting().
@@ -108,6 +114,8 @@ final class CompanyAddressManager
      * at most one per company by updating the existing row rather than appending.
      *
      * @param ?string $settingValue the raw JSON the settings form produced
+     *
+     * @throws ValidationFailedException
      */
     public function store(?string $settingValue): void
     {
@@ -154,9 +162,27 @@ final class CompanyAddressManager
             ->setCity($decoded['city'] ?? null)
             ->setState($decoded['state'] ?? null)
             ->setZip($decoded['zip'] ?? null)
-            ->setCountry($decoded['country'] ?? null);
+            // Legacy settings predate Address::$country's #[Assert\Country], which
+            // requires an uppercase ISO-3166 code; normalize the same way
+            // Version30200_4::normalizeCountry() does, so the two cannot disagree.
+            ->setCountry($this->normalizeCountry($decoded['country'] ?? null));
+
+        $violations = $this->validator->validateProperty($address, 'country');
+
+        if ($violations->count() > 0) {
+            throw new ValidationFailedException($decoded['country'] ?? null, $violations);
+        }
 
         $this->addressRepository->save($address);
+    }
+
+    private function normalizeCountry(mixed $country): ?string
+    {
+        if (! is_string($country) || '' === $country) {
+            return null;
+        }
+
+        return strtoupper($country);
     }
 
     private function removeExisting(Ulid $companyId): void
