@@ -51,6 +51,7 @@ final readonly class OpenApiFactory implements OpenApiFactoryInterface
             'Tax' => 'Manage tax rates applied to invoice lines',
             'RecurringInvoice' => 'Manage recurring invoice templates and generate invoices from them',
             'ApiToken' => 'Manage API tokens for authentication',
+            'EInvoiceDocument' => 'Read e-invoice transmission status, payloads and clearance receipts',
         ];
 
         $tags = array_map(
