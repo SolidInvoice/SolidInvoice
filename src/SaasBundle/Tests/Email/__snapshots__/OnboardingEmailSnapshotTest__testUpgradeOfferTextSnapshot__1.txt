@@ -14,7 +14,7 @@ SolidInvoice Pro — $12.00 / month
 * Team members on one account
 * Your own branding, without the SolidInvoice footer
 
-Claim my 30% off: http://localhost/billing/subscription/activate
+Claim my 30% off: https://app.example.com/billing/subscription/activate
 
 Cancel anytime. No surprise fees.
 

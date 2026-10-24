@@ -46,59 +46,54 @@ final class ResetPasswordTest extends WebTestCase
 
     public function testPasswordReset(): void
     {
-        // Create a test user
         $user = new User()
             ->setEmail('me@example.com')
-            ->setPassword('a-test-password-that-will-be-changed-later');
+            ->setPassword('a-test-password-that-will-be-changed-later')
+            ->setEnabled(true);
         $this->em->persist($user);
         $this->em->flush();
 
         $emailLink = '';
 
         $this->browser()
+            ->visit('/login')
             ->withProfiling()
-            ->request('GET', '/forgot-password')
-            ->assertSuccessful()
-            // ->assertSeeIn('title', 'Reset your password')
+            ->click('Forgot password?')
+            ->assertOn('/reset-password')
+            ->assertSeeIn('title', 'Forgot your password?')
             ->use(static fn (MailerComponent $component) => $component->assertNoEmailSent())
             ->withProfiling()
             ->interceptRedirects()
-            ->fillField('reset_password_request_form[email]', 'me@example.com')
+            ->fillField('reset_password_request[email]', 'me@example.com')
             ->click('Reset Password')
             ->use(static function (MailerComponent $component) use (&$emailLink): void {
                 $component
                     ->assertSentEmailCount(1)
-                    ->assertEmailSentTo('me@example.com', function (TestEmail $email) use (&$emailLink): void {
+                    ->assertEmailSentTo('me@example.com', static function (TestEmail $email) use (&$emailLink): void {
                         $email
-                            ->assertSubject('Your password reset request')
-                            ->assertTextContains('A password reset was requested for user me@example.com.')
-                            ->assertTextContains('If you did not request your password to be reset, you can safely ignore this message.')
-                            ->assertTextContains('To reset your password, please copy and paste the below link in your browser')
-                            ->assertTextContains('http://localhost/forgot-password/reset/')
+                            ->assertSubject('Reset your password')
                             ->assertHtmlContains('A password reset was requested for user')
-                            ->assertHtmlContains('http://localhost/forgot-password/reset/');
+                            ->assertHtmlContains('/reset-password/reset/');
 
-                        self::assertSame(1, preg_match('#(/forgot-password/reset/[a-zA-Z0-9]+)#', $email->getTextBody(), $resetLink));
+                        self::assertSame(1, preg_match('#(/reset-password/reset/[a-zA-Z0-9]+)#', (string) $email->getHtmlBody(), $resetLink));
                         $emailLink = $resetLink[0];
                     });
-
-                $component->sentEmails();
             })
             ->followRedirect()
-            ->assertOn('/forgot-password/check')
+            ->assertOn('/reset-password/check-email')
             ->assertSee('An email has been sent. It contains a link you must click to reset your password')
             ->visit($emailLink)
-            ->assertRedirectedTo('/forgot-password/reset')
+            ->assertRedirectedTo('/reset-password/reset')
             ->followRedirect()
-            ->assertOn('/forgot-password/reset')
-            // ->assertSeeIn('title', 'Reset Password')
-            ->fillField('change_password_form[plainPassword][first]', 'newStrongPassword')
-            ->fillField('change_password_form[plainPassword][second]', 'newStrongPassword')
+            ->assertOn('/reset-password/reset')
+            ->assertSeeIn('title', 'Reset Password')
+            ->fillField('reset_password[newPassword][first]', 'C0rrect-Horse-Battery-Staple!')
+            ->fillField('reset_password[newPassword][second]', 'C0rrect-Horse-Battery-Staple!')
             ->click('Reset Password')
             ->assertRedirectedTo('/login')
             ->followRedirect()
             ->assertOn('/login')
-            ->assertSeeIn('.alert-success', 'Your password has been changed successfully. You can now log in.')
+            ->assertSee('Your password has been reset.')
         ;
 
         $user = $this->userRepository->findOneBy(['email' => 'me@example.com']);
@@ -107,6 +102,6 @@ final class ResetPasswordTest extends WebTestCase
 
         /** @var UserPasswordHasherInterface $passwordHasher */
         $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
-        self::assertTrue($passwordHasher->isPasswordValid($user, 'newStrongPassword'));
+        self::assertTrue($passwordHasher->isPasswordValid($user, 'C0rrect-Horse-Battery-Staple!'));
     }
 }

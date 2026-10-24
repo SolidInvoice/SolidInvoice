@@ -287,7 +287,6 @@ reset_password:
     button_text: 'Reset Password'
     expires: 'This link will expire in %resetTimestamp%.'
     message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
-    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
     subject: 'Reset your password for %username%'
 trial_downgraded:

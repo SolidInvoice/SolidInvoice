@@ -1,0 +1,35 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceUser/Security/layout.html.twig' %}
+
+{% block page_title %}{{ app_name }} - {{ 'forgot_password.check_email.title'|trans }}{% endblock page_title %}
+
+{% block auth_content %}
+    <twig:Ui:AuthCard title="{{ 'forgot_password.check_email.heading'|trans }}">
+        <div class="text-center">
+            <div class="mb-4 text-success">
+                {{ ux_icon('tabler:mail-check', {width: 64, height: 64}) }}
+            </div>
+            <p class="text-secondary mb-3">
+                {{ 'forgot_password.check_email.content'|trans|nl2br }}
+            </p>
+            <p class="text-secondary small mb-4">
+                {{ 'forgot_password.check_email.expiry'|trans({'%tokenLifetime%': reset_token.expirationMessageKey|trans(reset_token.expirationMessageData, 'ResetPasswordBundle')}) }}
+            </p>
+        </div>
+
+        <div class="form-footer">
+            <a class="btn btn-primary w-100" href="{{ path(login_route) }}">
+                {{ ux_icon('tabler:login', {class: 'icon'}) }}
+                {{ 'security.login.login'|trans }}
+            </a>
+        </div>
+    </twig:Ui:AuthCard>
+{% endblock auth_content %}

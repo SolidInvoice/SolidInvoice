@@ -32,7 +32,7 @@ What SolidInvoice Pro adds
 Your discount code: SOLID30
 30% off your first three months. Enter this code at checkout before April 22, when your trial ends.
 
-Stay on SolidInvoice Pro: http://localhost/billing/subscription/activate
+Stay on SolidInvoice Pro: https://app.example.com/billing/subscription/activate
 
 Questions about billing or what to expect? Reply to this email — we read every one.
 

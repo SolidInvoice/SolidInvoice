@@ -22,7 +22,7 @@
                     {{ 'reset_password.message_html'|trans({'%username%': user.email}, 'email') }}
                 </p>
                 <p style="color: #626976; font-size: 14px; line-height: 1.5; margin: 0; Margin: 0;">
-                    {{ 'reset_password.expires'|trans({'%resetTimestamp%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}, 'email') }}
+                    {{ 'reset_password.expires'|trans({'%resetTimestamp%': expiresAtMessageKey|trans(expiresAtMessageData, 'ResetPasswordBundle')}, 'email') }}
                 </p>
             </columns>
         </row>
@@ -31,12 +31,11 @@
     {{ email.spacer('md') }}
 
     {# Reset password button #}
-    {{ email.button('reset_password.button_text'|trans([], 'email'), url('_user_password_reset', {'token': resetToken.token}), 'primary', 'large') }}
+    {{ email.button('reset_password.button_text'|trans([], 'email'), resetUrl, 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
     {# Alternative link #}
-    {% set resetUrl = url('_user_password_reset', {'token': resetToken.token}) %}
     {% apply inky_to_html %}
         <row>
             <columns>
