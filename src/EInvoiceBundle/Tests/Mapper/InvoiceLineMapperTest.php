@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\EInvoiceBundle\Tests\Mapper;
 
 use Brick\Math\BigDecimal;
-use LogicException;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\EInvoiceBundle\Enum\VatCategoryCode;
@@ -104,14 +103,15 @@ final class InvoiceLineMapperTest extends TestCase
         self::assertSame('20.0000', (string) $invoiceLine->vat->rate);
     }
 
-    public function testALineWithNoTaxFailsLoudlyRatherThanGuessingACategory(): void
+    public function testALineWithNoTaxMapsBT151ToNullRatherThanGuessingACategory(): void
     {
         $line = $this->makeLine(price: 1000, qty: 1);
         $breakdown = new LineBreakdown(BigDecimal::of(1000), BigDecimal::of(1000), BigDecimal::zero(), []);
 
-        $this->expectException(LogicException::class);
+        $invoiceLine = $this->mapper->map($line, $breakdown, $this->currency);
 
-        $this->mapper->map($line, $breakdown, $this->currency);
+        self::assertNull($invoiceLine->vat->categoryCode);
+        self::assertNull($invoiceLine->vat->rate);
     }
 
     private function makeLine(int $price, int $qty, int $position = 0): Line
