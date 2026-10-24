@@ -182,12 +182,12 @@ A slate-and-paper palette with a single warm-green accent. The neutral scale car
 
 These four colors are reserved for status meaning and must never be used decoratively.
 
-They are **fill** colors, not **text** colors. At full saturation none of them clears 4.5:1 on `surface` (measured: success 2.54:1, danger 3.76:1, warning and info lower still). Use them for chip backgrounds, icon fills, and borders; when a status needs to be rendered as *text*, use the `-dark` step. See The Legible Status Rule below.
+They are **fill** colors, not **text** colors. At full saturation none of them clears 4.5:1 on `surface` (measured: danger 3.76:1, info 3.68:1, success 2.54:1, warning 2.15:1). Use them for chip backgrounds, icon fills, and borders; when a status needs to be rendered as *text*, use the `-dark` step. Every semantic color now has one. See The Legible Status Rule below.
 
-- **Success** (`#10b981`): Distinct from primary green. Used on payment confirmation toasts, "Settled" states, and positive deltas. Pair with `success-light` (#d1fae5) for backgrounds. For success-colored text use **`success-dark`** (`#047857`, emerald-700 — 5.48:1 on surface, 5.06:1 on body-bg).
-- **Danger** (`#ef4444`): Overdue invoices, destructive confirmations, validation errors. Pair with `danger-light` (#fee2e2). For danger-colored text use **`danger-dark`** (`#b91c1c`, red-700 — 6.47:1 on surface, 5.97:1 on body-bg).
-- **Warning** (`#f59e0b`): "Due soon", soft alerts, partial-payment hints. Pair with `warning-light` (#fef3c7). For warning-colored text use **`warning-dark`** (`#92400e`, amber-800 — 7.09:1 on surface, 6.54:1 on body-bg).
-- **Info** (`#3b82f6`): Neutral information, "Draft" badges, system messages. Pair with `info-light` (#dbeafe). For info-colored text use **`info-dark`** (`#1d4ed8`, blue-700 — 6.70:1 on surface, 6.19:1 on body-bg).
+- **Success** (`#10b981`): Distinct from primary green. Used on payment confirmation toasts, "Settled" states, and positive deltas. Pair with `success-light` (#d1fae5) for backgrounds. For success-colored text use **`success-dark`** (`#047857`, emerald-700 — 5.48:1 on surface, 5.06:1 on body-bg, 4.84:1 on `success-light`).
+- **Danger** (`#ef4444`): Overdue invoices, destructive confirmations, validation errors. Pair with `danger-light` (#fee2e2). For danger-colored text use **`danger-dark`** (`#b91c1c`, red-700 — 6.47:1 on surface, 5.97:1 on body-bg, 5.30:1 on `danger-light`).
+- **Warning** (`#f59e0b`): "Due soon", soft alerts, partial-payment hints. Pair with `warning-light` (#fef3c7). For warning-colored text use **`warning-dark`** (`#92400e`, amber-800 — 7.09:1 on surface, 6.54:1 on body-bg, 6.37:1 on `warning-light`).
+- **Info** (`#3b82f6`): Neutral information, "Draft" badges, system messages. Pair with `info-light` (#dbeafe). For info-colored text use **`info-dark`** (`#1d4ed8`, blue-700 — 6.70:1 on surface, 6.19:1 on body-bg, 5.49:1 on `info-light`).
 
 ### Neutral
 
@@ -212,11 +212,9 @@ A 10-step slate ramp. Every neutral is tinted cool, not pure gray.
 
 **The Money-Color Rule.** Color on money is informational, never decorative. Green amounts mean "Paid". Red amounts mean "Overdue". Black/text-primary amounts mean "neutral" (Draft, Pending, Sent) — this is the default and the common case. A green total without a "Paid" label is wrong — color alone is never the carrier of meaning.
 
-**The Legible Status Rule.** Status colors are fills, not text. `success`, `danger`, `warning`, and `info` are tuned for chip backgrounds and icon fills, and none of them clears 4.5:1 as text — on white or on their own `-light` tint. Status *text* uses the `-dark` step (`success-dark`, `danger-dark`). This matters most on money: an amount is the one value in the product that must never be hard to read, so the `.money` component binds its colors to AA-safe steps on every surface rather than to the raw status colors.
+**The Legible Status Rule.** Status colors are fills, not text. `success`, `danger`, `warning`, and `info` are tuned for chip backgrounds and icon fills, and none of them clears 4.5:1 as text — on white or on their own `-light` tint. Status *text* uses the `-dark` step (`success-dark`, `danger-dark`). This matters most on money: an amount is the one value in the product that must never be hard to read, so the `.money` component binds its colors to AA-safe steps on every surface rather than to the raw status colors. The status chip is the reference implementation of this rule: five variants, each a `-dark` text step on its own `-light` tint, none below 4.5:1. See §5.
 
 **The Fill-Label Rule.** A filled control's label is chosen from the fill's lightness, and it never changes across states: a light fill takes `text-primary` (`#1e293b`); a saturated mid fill takes `on-primary` / `on-{name}` (`#f9fafb`) and starts one step down its own ramp. Every step of that ramp must hold the one label at 4.5:1, measured — where the ramp runs out of legible steps, the ramp stops, not the label: a control that changes label color between rest and press has a bug, not a state. This is why the primary button's fill is `primary-fill` (`primary-hover`) rather than `primary` itself, and why the secondary, warning, success, danger and info buttons each take their own `on-{name}` label over a `{name}-fill` ramp rather than the raw status colour — see §5.
-
-*Known non-conformance, closed:* the chip variants in §5 used to specify raw status text on `-light` tints (measured: Paid 2.24:1, Overdue 3.08:1, Warning 1.93:1, Info 3.01:1 — all failed). The `.status-chip` component now binds all four to their `-dark` step instead — Paid `success-dark` (4.84:1), Overdue `danger-dark` (5.30:1), Warning `warning-dark` (6.37:1 on its own tint), Info `info-dark` (5.49:1) — closing the non-conformance this rule originally flagged.
 
 ## 3. Typography
 
@@ -232,7 +230,7 @@ A 10-step slate ramp. Every neutral is tinted cool, not pure gray.
 - **Headline** (600, 24px / 1.5rem, line-height 1.25, tracking -0.025em): Page titles ("Invoices", "Client: Acme Corp"). The `.text-page-title` utility.
 - **Title** (600, 18px / 1.125rem, line-height 1.375): Card titles, modal titles, section headers within a page. The `.text-card-title` utility.
 - **Body** (400, 15px / 0.9375rem, line-height 1.625): Default body text. Generous 1.625 leading for comfortable reading of invoice notes, descriptions, and form help text. Max line length 65–75ch on long-form content.
-- **Label** (600, 12px / 0.75rem, line-height 1.5, tracking 0.05em, uppercase): Table headers, small section labels, badge text. The `.text-table-header` utility.
+- **Label** (600, 12px / 0.75rem, line-height 1.5, tracking 0.05em, uppercase): Table headers and small section labels. The `.text-table-header` utility. **Not chips** — a chip is 12px / 500 / sentence case with no tracking, and does not use this style (§5).
 - **Mono** (400, 13px / 0.8125rem): IDs, invoice numbers, codes, API tokens. Anything that's a copyable identifier.
 
 ### Named Rules
@@ -249,7 +247,7 @@ Subtle ambient layering. Most surfaces lift slightly off the canvas at rest — 
 
 ### Shadow Vocabulary
 
-- **`shadow-xs`** (`0 1px 2px 0 rgb(0 0 0 / 5%)`): The faintest lift. Buttons at rest, chips.
+- **`shadow-xs`** (`0 1px 2px 0 rgb(0 0 0 / 5%)`): The faintest lift. Buttons at rest.
 - **`shadow-sm`** (`0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%)`): Default card resting shadow. Soft, ambient, paper-on-desk.
 - **`shadow-md`** (`0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%)`): Dropdowns, popovers, hovered cards.
 - **`shadow-lg`** (`0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%)`): Floating action elements.
@@ -342,9 +340,66 @@ Soft and approachable. Generous radii, gentle shadows, restrained color. Buttons
 
 ### Chips / Badges
 
-- **Style:** Pill-shaped (`radius-full`), tinted background + matching saturated text. 2px × 10px padding, weight 500.
-- **Status variants:** `Paid` (success-light bg / success text), `Overdue` (danger-light / danger), `Pending` / `Due Soon` (warning-light / warning), `Draft` / `Sent` (info-light / info), `Cancelled` (gray-100 / text-muted).
-- **Rule:** A chip never appears with color alone — it carries a text label. Color is amplification, not signal.
+One component carries every status word in the application: `.status-chip`
+(`assets/scss/components/_status-chip.scss`). It has five semantic variants and no others, and a
+status is never styled at its call site.
+
+**Shape:** Pill (`radius-full`). Padding 2px × 10px (`space-0-5` / `space-2-5`), `text-xs` (12px),
+weight 500 (`font-medium`), line-height 1.25, `letter-spacing: 0`, `white-space: nowrap`,
+`text-transform: none`. No border, no shadow, no transition.
+
+**Markup contract** — one span, the base class, and exactly one modifier:
+
+```html
+<span class="status-chip status-chip--danger">Overdue</span>
+```
+
+The base class alone renders the neutral treatment, so a chip with no modifier is still legible
+and still looks like a chip. Two modifiers on one chip is a bug, not a combination.
+
+**Variants.** Each is a `-dark` text step on its own `-light` tint. Measured against the tint:
+
+| Modifier | Background | Text | Ratio | Carries |
+| --- | --- | --- | --- | --- |
+| `--neutral` | `gray-100` | `text-secondary` | 6.92:1 | New, Draft, Cancelled, Archived, Complete, Inactive |
+| `--info` | `info-light` | `info-dark` | 5.49:1 | Active (client, recurring), New (payment), Authorized, Credit |
+| `--success` | `success-light` | `success-dark` | 4.84:1 | Paid, Accepted, Captured |
+| `--warning` | `warning-light` | `warning-dark` | 6.37:1 | Pending, Paused, Suspended, Refunded, Unknown |
+| `--danger` | `danger-light` | `danger-dark` | 5.30:1 | Overdue, Declined, Failed, Expired |
+
+The tint measures 1.01:1–1.22:1 against the page. That is deliberate: the label carries the
+meaning and is AA-safe on every variant, so the pill is a grouping device, not a boundary that
+1.4.11 applies to.
+
+**Rules.**
+
+- **A chip is never color alone.** It always carries its status as a word. Color amplifies; it
+  never signals on its own.
+- **A chip is never interactive.** No hover, no focus, no cursor change, no shadow, no transition,
+  and it is never a focus target. A status that can be changed gets a control next to the chip,
+  not a clickable chip.
+- **A chip is never truncated.** `white-space: nowrap` is part of the component. A half-shown
+  status is worse than a wider column; width is won back in the layout, never at render time.
+- **A chip is never emphasised.** One weight (500), one size (12px), one tracking (0). There is no
+  `--lg`, no `--bold`, and a consuming stylesheet does not add one. A status that needs to be
+  louder than its neighbours is louder by being the only chip on the surface.
+- **A chip is never re-cased.** The label is whatever the translation catalog says, rendered as-is.
+  No `text-transform` in CSS and no case filter in Twig. Status words are translated, and case
+  mapping on translated text is wrong in Turkish and unhelpful in German.
+- **A chip is not the Label type style** (§3). It is 12px / 500 / sentence case. The Label style is
+  12px / 600 / uppercase / 0.05em and belongs to table headers.
+
+**Channels.** The chip's markup renders in two of the product's three output channels. In the
+application it is `.status-chip` with `--swp-*` custom properties, and it resolves correctly. Four
+email templates render the same markup through the same Twig functions
+(`InvoiceBundle`/`QuoteBundle` `status_change.html.twig`, `InvoiceBundle`'s
+`notification_overdue.html.twig`, `PaymentBundle`'s `payment.html.twig`), but neither
+`modern.css.twig` nor `foundation.css.twig` defines `.status-chip`, so today those four render as
+bare, unstyled text — a pre-existing gap, not something this component introduces. Email
+stylesheets are inlined and cannot resolve custom properties, so closing the gap means mirroring
+the five variants as literal hex in `modern.css.twig`; that work is tracked as SOL-34 and is not
+done yet. **No PDF template renders a status chip**; the printed document carries status by other
+means, so there is nothing to mirror there.
 
 ### Cards
 
