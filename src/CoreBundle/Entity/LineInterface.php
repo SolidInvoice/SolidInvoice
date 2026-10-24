@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Entity;
 use const PHP_INT_MAX;
 use Brick\Math\BigNumber;
 use Doctrine\Common\Collections\Collection;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Symfony\Component\Uid\Ulid;
 
@@ -60,6 +61,13 @@ interface LineInterface
     public function setQty(BigNumber | int | string $qty): self;
 
     public function getQty(): BigNumber;
+
+    public function setUnitCode(UnitCode $unitCode): self;
+
+    /**
+     * What {@see self::getQty()} is counted in. {@see UnitCode::UNIT} unless a line says otherwise.
+     */
+    public function getUnitCode(): UnitCode;
 
     public function setTotal(BigNumber | int | string $total): self;
 

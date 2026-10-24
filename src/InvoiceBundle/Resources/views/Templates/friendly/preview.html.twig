@@ -65,7 +65,7 @@
                     {% for line in invoice.lines %}
                         <tr style="border-bottom: 1px solid #f1eada;">
                             <td>{{ line.name }}{{ inv.line_description(line) }}</td>
-                            <td class="text-end text-muted">{{ line.qty }}</td>
+                            <td class="text-end text-muted">{{ quantity(line) }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>
                     {% endfor %}

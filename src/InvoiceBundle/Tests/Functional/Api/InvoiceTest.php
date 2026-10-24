@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -113,6 +114,10 @@ final class InvoiceTest extends ApiTestCase
                     'price' => 100,
                     'qty' => 1,
                     'name' => 'Foo Item',
+                    // Deliberately not the default: the write group is only proven by a
+                    // value the entity would not have arrived at on its own. testGet and
+                    // testEdit cover the C62 a line gets when the field is left out.
+                    'unitCode' => UnitCode::HOUR->value,
                 ],
             ],
         ];
@@ -140,6 +145,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::HOUR->value,
                 ],
             ],
             'users' => $contacts,
@@ -224,6 +230,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::UNIT->value,
                 ],
             ],
             'users' => array_map($this->getIriFromResource(...), $contacts),
@@ -317,6 +324,7 @@ final class InvoiceTest extends ApiTestCase
                     'description' => null,
                     'taxes' => [],
                     'position' => 0,
+                    'unitCode' => UnitCode::UNIT->value,
                 ],
             ],
             'users' => array_map($this->getIriFromResource(...), $contacts),
