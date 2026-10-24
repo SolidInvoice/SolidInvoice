@@ -15,9 +15,10 @@ namespace SolidInvoice\InvoiceBundle\Tests\Validator\Constraints;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
-use SolidInvoice\CoreBundle\Entity\Company;
+use PHPUnit\Framework\MockObject\Stub;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Validator\Constraints\CreditNoteInvoiceBelongsToSameCompany;
 use SolidInvoice\InvoiceBundle\Validator\Constraints\CreditNoteInvoiceBelongsToSameCompanyValidator;
 use Symfony\Component\Validator\Constraint;
@@ -32,47 +33,48 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 #[CoversClass(CreditNoteInvoiceBelongsToSameCompanyValidator::class)]
 final class CreditNoteInvoiceBelongsToSameCompanyValidatorTest extends ConstraintValidatorTestCase
 {
+    private Stub & InvoiceRepository $invoiceRepository;
+
     protected function createValidator(): CreditNoteInvoiceBelongsToSameCompanyValidator
     {
-        return new CreditNoteInvoiceBelongsToSameCompanyValidator();
+        $this->invoiceRepository = $this->createStub(InvoiceRepository::class);
+
+        return new CreditNoteInvoiceBelongsToSameCompanyValidator($this->invoiceRepository);
     }
 
     public function testNoViolationForAStandaloneCreditNote(): void
     {
         $creditNote = new CreditNote();
-        $creditNote->setCompany(new Company());
 
         $this->validator->validate($creditNote, new CreditNoteInvoiceBelongsToSameCompany());
 
         $this->assertNoViolation();
     }
 
-    public function testNoViolationWhenInvoiceBelongsToTheSameCompany(): void
+    public function testNoViolationWhenInvoiceIsVisibleUnderTheCompanyFilter(): void
     {
-        $company = new Company();
-
         $invoice = new Invoice();
-        $invoice->setCompany($company);
 
         $creditNote = new CreditNote();
-        $creditNote->setCompany($company);
         $creditNote->setInvoice($invoice);
+
+        $this->invoiceRepository->method('isVisible')->willReturn(true);
 
         $this->validator->validate($creditNote, new CreditNoteInvoiceBelongsToSameCompany());
 
         $this->assertNoViolation();
     }
 
-    public function testViolationWhenInvoiceBelongsToAnotherCompany(): void
+    public function testViolationWhenInvoiceIsNotVisibleUnderTheCompanyFilter(): void
     {
         $constraint = new CreditNoteInvoiceBelongsToSameCompany();
 
         $invoice = new Invoice();
-        $invoice->setCompany(new Company());
 
         $creditNote = new CreditNote();
-        $creditNote->setCompany(new Company());
         $creditNote->setInvoice($invoice);
+
+        $this->invoiceRepository->method('isVisible')->willReturn(false);
 
         $this->validator->validate($creditNote, $constraint);
 
