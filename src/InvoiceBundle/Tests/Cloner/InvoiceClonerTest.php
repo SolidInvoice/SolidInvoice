@@ -15,11 +15,13 @@ namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator;
@@ -30,6 +32,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Enum\BillingPeriodMode;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\LineTax;
@@ -80,6 +83,7 @@ final class InvoiceClonerTest extends TestCase
         $invoice->setTotal(987);
         $invoice->setClient($client);
         $invoice->addLine($line);
+        $invoice->setPeriod(BillingPeriod::of(CarbonImmutable::parse('2026-02-01'), CarbonImmutable::parse('2026-02-28')));
 
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
@@ -133,6 +137,13 @@ final class InvoiceClonerTest extends TestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+
+        self::assertNotSame($invoice->getPeriod(), $newInvoice->getPeriod());
+        self::assertEquals($invoice->getPeriod()->getStart(), $newInvoice->getPeriod()->getStart());
+        self::assertEquals($invoice->getPeriod()->getEnd(), $newInvoice->getPeriod()->getEnd());
+
+        $newInvoice->getPeriod()->setStart(CarbonImmutable::parse('2026-01-01'));
+        self::assertNotEquals($invoice->getPeriod()->getStart(), $newInvoice->getPeriod()->getStart());
     }
 
     public function testCloneWithRecurring(): void
@@ -175,6 +186,7 @@ final class InvoiceClonerTest extends TestCase
         $invoice->setClient($client);
         $invoice->addLine($line);
         $invoice->setDateStart($date);
+        $invoice->setBillingPeriodMode(BillingPeriodMode::Previous);
         $invoice->getRecurringOptions()->setType(ScheduleRecurringType::WEEKLY);
         $invoice->getRecurringOptions()->setEndType(ScheduleEndType::AFTER);
         $invoice->getRecurringOptions()->setEndOccurrence(1);
@@ -211,5 +223,6 @@ final class InvoiceClonerTest extends TestCase
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
         self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
         self::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
+        self::assertSame(BillingPeriodMode::Previous, $newInvoice->getBillingPeriodMode());
     }
 }

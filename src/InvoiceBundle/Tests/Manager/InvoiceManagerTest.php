@@ -32,10 +32,12 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldValueCopier;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Enum\BillingPeriodMode;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
@@ -373,6 +375,43 @@ final class InvoiceManagerTest extends KernelTestCase
         self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertTrue($line->getQty()->isEqualTo($invoiceLine[0]->getQty()));
+
+        // The template never opted into a billing period: BillingPeriodMode::None, by default.
+        self::assertTrue($invoice->getPeriod()->isEmpty());
+    }
+
+    public function testCreateFromRecurringDerivesBillingPeriod(): void
+    {
+        $client = new Client();
+        $client->setName('Test Client');
+
+        $recurringInvoice = new RecurringInvoice();
+        $recurringInvoice->setClient($client);
+        $recurringInvoice->setCompany(new Company());
+        $recurringInvoice->setBillingPeriodMode(BillingPeriodMode::Previous);
+        $recurringInvoice->getRecurringOptions()->setType(ScheduleRecurringType::MONTHLY);
+
+        // The clock in buildManager() is fixed to 2024-01-15, so the previous calendar
+        // month is December 2023.
+        $invoice = $this->manager->createFromRecurring($recurringInvoice);
+
+        self::assertSame('2023-12-01', $invoice->getPeriod()->getStart()?->format('Y-m-d'));
+        self::assertSame('2023-12-31', $invoice->getPeriod()->getEnd()?->format('Y-m-d'));
+    }
+
+    public function testCreateFromRecurringLeavesPeriodEmptyForNoneMode(): void
+    {
+        $client = new Client();
+        $client->setName('Test Client');
+
+        $recurringInvoice = new RecurringInvoice();
+        $recurringInvoice->setClient($client);
+        $recurringInvoice->setCompany(new Company());
+        $recurringInvoice->getRecurringOptions()->setType(ScheduleRecurringType::MONTHLY);
+
+        $invoice = $this->manager->createFromRecurring($recurringInvoice);
+
+        self::assertTrue($invoice->getPeriod()->isEmpty());
     }
 
     /**

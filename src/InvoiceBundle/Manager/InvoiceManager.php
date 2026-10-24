@@ -33,6 +33,7 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
+use SolidInvoice\InvoiceBundle\Recurring\BillingPeriodCalculator;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -59,6 +60,7 @@ class InvoiceManager
         private readonly CustomFieldValueCopier $customFieldValueCopier,
         private readonly SystemConfig $systemConfig,
         private readonly TaxSnapshotCopier $taxSnapshotCopier = new TaxSnapshotCopier(),
+        private readonly BillingPeriodCalculator $billingPeriodCalculator = new BillingPeriodCalculator(),
     ) {
         $this->entityManager = $doctrine->getManager();
     }
@@ -81,6 +83,8 @@ class InvoiceManager
         $invoice->setRecurringInvoice($recurringInvoice);
 
         $now = CarbonImmutable::instance($this->clock->now());
+
+        $invoice->setPeriod($this->billingPeriodCalculator->calculate($recurringInvoice, $now));
 
         $tokens = [
             '{day}',
