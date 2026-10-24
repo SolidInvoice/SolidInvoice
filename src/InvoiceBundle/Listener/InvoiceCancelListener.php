@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -20,6 +21,7 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
+use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
@@ -40,6 +42,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
 
     public function __construct(
         private readonly ManagerRegistry $registry,
+        private readonly CreditNoteRepository $creditNoteRepository,
     ) {
     }
 
@@ -57,7 +60,12 @@ class InvoiceCancelListener implements EventSubscriberInterface
 
         $em = $this->registry->getManager();
 
-        $invoice->setBalance($invoice->getTotal());
+        // Any amount already credited against this invoice still reduces what it is worth, even
+        // once cancelled — the paid amount is refunded as client credit below, but credit notes
+        // are a separate, already-settled adjustment. See `design` §5 on SOL-69.
+        $credited = $this->creditNoteRepository->getTotalCreditedForInvoice($invoice);
+        $balance = $invoice->getTotal()->toBigDecimal()->minus($credited);
+        $invoice->setBalance($balance->isNegative() ? BigInteger::zero() : $balance);
         $em->persist($invoice);
 
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
