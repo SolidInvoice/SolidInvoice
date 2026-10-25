@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
@@ -96,7 +97,7 @@ final class OnboardingStepTriggerTest extends TestCase
         // context() starts the subscription on 2026-01-01, here the day it moved to Free.
         self::assertFalse($step->shouldSend($this->context('2026-01-30 23:00', free: true)));
         self::assertTrue($step->shouldSend($this->context('2026-01-31 00:00', free: true)));
-        self::assertFalse($step->shouldSend($this->context('2026-02-15')), 'still on the trial');
+        self::assertSame(OnboardingAudience::Free, $step::audience(), 'never sent during a trial');
     }
 
     public function testVerifyRemindersGoToUnverifiedUsersAt24And72Hours(): void

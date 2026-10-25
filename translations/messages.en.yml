@@ -250,6 +250,7 @@ company:
         checkout_after_create: "After creating this company, you'll choose a plan and proceed to checkout."
         create_button: 'Create Company'
         currency_help: 'All invoices and payments will use this currency'
+        free_title: 'Free forever. No credit card.'
         month: month
         name_help: 'This will be displayed on your invoices and quotes'
         name_placeholder: 'e.g., Acme Corporation'
@@ -625,6 +626,9 @@ export:
 feature:
     available_on_plan: 'Available on the %plan% plan and higher.'
     contact_admin: 'Contact your administrator to enable this feature.'
+    trial_move_up: 'Add %plan% to your trial'
+    trial_start: '{1} Try %plan% free for %count% day|]1,Inf[ Try %plan% free for %count% days'
+    trial_start_short: 'Try %plan% free'
     upgrade_required: 'This feature requires an upgrade'
     upgrade_to: 'Upgrade to %plan%'
     view_all_plans: 'View all plans'
@@ -1988,6 +1992,8 @@ saas:
         plan_updated: 'Your plan has been updated.'
         subscription_activated: 'Your subscription has been activated.'
         trial_ended_on_free: "Your trial has ended, so your account is now on the Free plan. Everything you created is still here."
+        trial_started: '%plan% is on until %date%. No card needed.'
+        trial_upgraded: 'Your trial now includes %plan%. It still ends on %date%.'
     menu:
         billing: Subscription
     overview:
@@ -2070,19 +2076,28 @@ saas:
     settings:
         template_preview:
             title: 'Template preview'
+    trial_start:
+        after: 'When it ends you go back to %plan% and keep everything.'
+        button: 'Start my %plan% trial'
+        move_up:
+            body: 'Your trial moves to %plan% and still ends on %date%. No card needed.'
+            button: 'Move my trial to %plan%'
+            heading: 'Add %plan% to your trial'
+        no_card: 'No card needed.'
+        title: 'Try %plan%'
     trial_banner:
         cancelled:
             cta: 'Renew Subscription'
             message: 'Your subscription has been cancelled. Your access will be revoked on %date%.'
             title: 'Subscription Cancelled'
         coupon:
-            cta: 'Extend & save %percent%%'
-            message: 'Add your card now to keep going %days% more days free, then take %percent%% off your first 3 months with code %code%.'
-            title: '%days% more days + %percent%% off'
-        extend:
-            cta: 'Extend my trial'
-            message: "Add your payment details before your trial ends and we'll extend it by %days% days. No charge today, cancel anytime."
-            title: 'Get %days% more days, free'
+            cta: 'Keep %plan%'
+            message: 'Your trial ends on %date%. Keep %plan% and take %percent%% off your first 3 months with code %code%.'
+            title: '%percent%% off %plan%'
+        ending:
+            cta: 'Keep %plan%'
+            message: 'Keep %plan% to keep using everything you have been trying.'
+            title: 'Your %plan% trial ends on %date%'
     trial_expired:
         activate: 'Activate Subscription'
         activate_save: 'Activate & Save %percent%%'

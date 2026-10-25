@@ -1,0 +1,59 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Variables:
+ #   - plan: Plan, the plan the trial runs on
+ #   - trialDays: int, the plan's trial length
+ #   - trialEnd: DateTimeInterface, when a running trial ends (moving up only)
+ #   - freePlan: ?Plan, where the account goes when the trial ends
+ #   - movingUp: bool, true when a running trial moves to a dearer plan
+ #   - feature, planId, return: string|null, carried through to the POST
+ #   - csrfToken: string
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block title %}{{ ux_icon('tabler:sparkles', {width: 24, height: 24, class: 'me-2'}) }}{{ 'saas.trial_start.title'|trans({'%plan%': plan.name}) }}{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <div class="mb-3 text-primary">{{ ux_icon('tabler:sparkles', {width: 40, height: 40}) }}</div>
+                    {% if movingUp %}
+                        <h2 class="h2 mb-3">{{ 'saas.trial_start.move_up.heading'|trans({'%plan%': plan.name}) }}</h2>
+                        <p class="text-secondary mb-0">
+                            {{ 'saas.trial_start.move_up.body'|trans({'%plan%': plan.name, '%date%': trialEnd|date('F j')}) }}
+                        </p>
+                    {% else %}
+                        <h2 class="h2 mb-3">{{ 'feature.trial_start'|trans({'%plan%': plan.name, '%count%': trialDays}) }}</h2>
+                        <p class="text-secondary mb-0">
+                            {{ 'saas.trial_start.no_card'|trans }}
+                            {% if freePlan %}{{ 'saas.trial_start.after'|trans({'%plan%': freePlan.name}) }}{% endif %}
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="card-footer d-flex justify-content-center gap-2">
+                    <a href="{{ return ?: path('_dashboard') }}" class="btn btn-outline-secondary">
+                        {{ 'action.cancel'|trans }}
+                    </a>
+                    <form method="post" action="{{ path('saas_trial_start') }}">
+                        <input type="hidden" name="feature" value="{{ feature }}">
+                        <input type="hidden" name="plan" value="{{ planId }}">
+                        <input type="hidden" name="return" value="{{ return }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token(csrfToken) }}">
+                        <button type="submit" class="btn btn-primary">
+                            {{ (movingUp ? 'saas.trial_start.move_up.button' : 'saas.trial_start.button')|trans({'%plan%': plan.name}) }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

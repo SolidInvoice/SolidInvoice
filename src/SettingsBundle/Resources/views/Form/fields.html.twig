@@ -14,7 +14,18 @@
  # carries the plan name as both the visible label and the hover tooltip. Used in
  # place of the previous static "Subscription Required" badge + bulky form-hint.
  #}
-{% macro feature_gated_badge(plan) %}
+{% macro feature_gated_badge(plan, feature = null) %}
+    {% set trial = feature ? trial_offer(feature) : null %}
+    {% if trial %}
+    <a href="{{ trial.url }}"
+       class="badge bg-azure-lt text-decoration-none text-azure"
+       title="{{ trial.moving_up
+            ? 'feature.trial_move_up'|trans({'%plan%': trial.plan})
+            : 'feature.trial_start'|trans({'%plan%': trial.plan, '%count%': trial.days}) }}">
+        {{ ux_icon('tabler:sparkles', {width: 14, height: 14, class: 'me-1'}) }}
+        {{- (trial.moving_up ? 'feature.trial_move_up' : 'feature.trial_start_short')|trans({'%plan%': trial.plan}) -}}
+    </a>
+    {% else %}
     <a href="{{ path('saas_subscription_plans') }}"
        class="badge bg-azure-lt text-decoration-none text-azure"
        title="{{ plan
@@ -27,6 +38,7 @@
             {{ 'settings.upgrade.label'|trans }}
         {%- endif -%}
     </a>
+    {% endif %}
 {% endmacro %}
 
 {% macro trial_restricted_badge() %}
@@ -45,7 +57,7 @@
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label mb-0">{{ label|trans }}</label>
-                {{ upgrade.feature_gated_badge(feature_gated_plan|default(null)) }}
+                {{ upgrade.feature_gated_badge(feature_gated_plan|default(null), feature_gated_feature|default(null)) }}
             </div>
 
             {# Suppress the inner switch label to avoid duplicate-label visual #}
@@ -76,7 +88,7 @@
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label">{{ label|trans }}</label>
-                {{ upgrade.feature_gated_badge(feature_gated_plan|default(null)) }}
+                {{ upgrade.feature_gated_badge(feature_gated_plan|default(null), feature_gated_feature|default(null)) }}
             </div>
 
             {{ form_widget(form) }}

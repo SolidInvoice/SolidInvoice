@@ -74,7 +74,7 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
             dirname(__DIR__, 3) . '/Form/Extension/FeatureRestrictedExtension.php',
         ]);
 
-    // The no-op FeatureExtension shadows three SaaS-only Twig function names so
+    // The no-op FeatureExtension shadows the SaaS-only Twig function names so
     // self-hosted templates can call them safely. SaaS deployments register the
     // real implementations from SolidInvoice\SaasBundle\Twig\FeatureExtension —
     // registering both would duplicate the function names and trigger a Twig

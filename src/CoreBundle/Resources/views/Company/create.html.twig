@@ -65,7 +65,16 @@
                                 {# Pricing Information #}
                                 {% toggle 'saas_enabled' %}
                                     {% set paidTrial = toggle('saas_paid_trial') %}
-                                    {% if not userHasTrial and planHasTrial %}
+                                    {% if planIsFree %}
+                                        <div class="alert alert-success d-flex align-items-start" role="alert">
+                                            <div class="me-3">
+                                                {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
+                                            </div>
+                                            <div class="flex-fill">
+                                                <div class="alert-title fw-semibold">{{ 'company.create.free_title'|trans }}</div>
+                                            </div>
+                                        </div>
+                                    {% elseif not userHasTrial and planHasTrial %}
                                         <div class="alert alert-info d-flex align-items-start" role="alert">
                                             <div class="me-3">
                                                 {{ ux_icon(paidTrial ? 'tabler:credit-card' : 'tabler:gift', {width: 24, height: 24}) }}
