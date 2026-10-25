@@ -111,6 +111,16 @@ final class OnboardingStepTriggerTest extends TestCase
         self::assertTrue($final->shouldSend($this->context('2026-01-04 00:00')));
     }
 
+    public function testAnAccountReachedAfter72HoursOnlyGetsTheFinalVerifyReminder(): void
+    {
+        $first = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+        $final = new VerifyEmailFinalReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+
+        self::assertTrue($first->shouldSend($this->context('2026-01-03 23:00')));
+        self::assertFalse($first->shouldSend($this->context('2026-01-04 00:00')));
+        self::assertTrue($final->shouldSend($this->context('2026-01-10')));
+    }
+
     public function testVerifyRemindersSkipVerifiedUsers(): void
     {
         $step = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: true));
