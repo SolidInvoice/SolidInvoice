@@ -36,6 +36,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Enum\BillingPeriodMode;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
@@ -142,6 +143,10 @@ class RecurringInvoice extends BaseInvoice
     #[ORM\Column(name: 'date_end', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?DateTimeInterface $dateEnd = null;
+
+    #[ORM\Column(name: 'billing_period_mode', type: Types::STRING, length: 25, enumType: BillingPeriodMode::class, options: ['default' => BillingPeriodMode::None->value])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    private BillingPeriodMode $billingPeriodMode = BillingPeriodMode::None;
 
     /**
      * @var Collection<int, RecurringInvoiceLine>
@@ -257,6 +262,18 @@ class RecurringInvoice extends BaseInvoice
     public function setDateEnd(?DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    public function getBillingPeriodMode(): BillingPeriodMode
+    {
+        return $this->billingPeriodMode;
+    }
+
+    public function setBillingPeriodMode(BillingPeriodMode $billingPeriodMode): self
+    {
+        $this->billingPeriodMode = $billingPeriodMode;
 
         return $this;
     }

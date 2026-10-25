@@ -1,3 +1,7 @@
+billing:
+    period:
+        incomplete: 'Set both a period start and end date, or leave both empty.'
+        inverted: 'The period end date must not be before the period start date.'
 client:
     constraint:
         contacts:

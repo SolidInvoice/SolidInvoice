@@ -42,10 +42,12 @@ use SolidInvoice\ApiBundle\State\Provider\InvoiceTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Validator\Constraints\ValidBillingPeriod;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
@@ -181,6 +183,12 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTimeInterface $paidDate = null;
 
+    #[ORM\Embedded(class: BillingPeriod::class)]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'invoice_api', 'create_invoice_api', 'client_api'])]
+    #[Assert\Valid]
+    #[ValidBillingPeriod]
+    private BillingPeriod $period;
+
     /**
      * @var Collection<int, Payment>
      */
@@ -239,6 +247,7 @@ class Invoice extends BaseInvoice implements Stringable
         $this->invoiceTaxes = new ArrayCollection();
         $this->balance = BigInteger::zero();
         $this->invoiceDate = CarbonImmutable::now();
+        $this->period = new BillingPeriod();
         $this->setUuid(Uuid::v7());
     }
 
@@ -330,6 +339,18 @@ class Invoice extends BaseInvoice implements Stringable
     public function setPaidDate(?DateTimeImmutable $paidDate): self
     {
         $this->paidDate = $paidDate;
+        return $this;
+    }
+
+    public function getPeriod(): BillingPeriod
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(BillingPeriod $period): self
+    {
+        $this->period = $period;
+
         return $this;
     }
 
@@ -456,6 +477,7 @@ class Invoice extends BaseInvoice implements Stringable
             $this->addLine(clone $line);
         }
 
+        $this->period = clone $this->period;
         $this->setUuid(Uuid::v7());
     }
 
