@@ -2027,7 +2027,7 @@ saas:
         trial_days_left: '%count% days left in your trial'
         trial_ended: 'Your trial has ended.'
         trial_ends: 'Trial ends'
-        trial_keep_features: 'Pick a paid plan to keep using all features after the trial ends.'
+        trial_keep_features: 'Subscribe to keep using all features after the trial ends.'
     paused:
         feature_clients: 'Client and contact management'
         feature_invoices: 'Unlimited invoices and quotes'
@@ -2058,6 +2058,7 @@ saas:
         continue_free: 'Continue with Free'
         start_trial: '{1}Start 1-day trial|]1,Inf[Start %days%-day trial'
         subscribe: Subscribe
+        subscribe_to: 'Subscribe to %plan%'
         current: 'Current plan'
         included: Included
         just_getting_started: 'Just getting started?'
