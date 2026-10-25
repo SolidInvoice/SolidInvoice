@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -53,6 +54,9 @@ final class ResetPasswordTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
+        // A signed-out request has no company, so the email must not borrow one's name.
+        self::getContainer()->get(SystemConfig::class)->set('system/company/company_name', 'Some Test');
+
         $emailLink = '';
 
         $this->browser()
@@ -74,6 +78,8 @@ final class ResetPasswordTest extends WebTestCase
                             ->assertSubject('Reset your password')
                             ->assertHtmlContains('A password reset was requested for user')
                             ->assertHtmlContains('/reset-password/reset/');
+
+                        self::assertStringNotContainsString('Some Test', (string) $email->getHtmlBody());
 
                         self::assertSame(1, preg_match('#(/reset-password/reset/[a-zA-Z0-9]+)#', (string) $email->getHtmlBody(), $resetLink));
                         $emailLink = $resetLink[0];
