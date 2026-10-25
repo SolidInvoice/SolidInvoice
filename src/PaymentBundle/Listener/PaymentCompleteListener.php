@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Listener\PaymentCompleteListenerTest
+ */
 class PaymentCompleteListener implements EventSubscriberInterface
 {
     /**
@@ -104,14 +107,18 @@ class PaymentCompleteListener implements EventSubscriberInterface
     {
         match ($status) {
             PaymentStatus::Captured->value => yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success',
-            PaymentStatus::Cancelled->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled',
+            PaymentStatus::Cancelled->value => yield FlashResponse::FLASH_INFO => 'payment.flash.status.cancelled',
+            PaymentStatus::Credit->value => yield FlashResponse::FLASH_INFO => 'payment.flash.status.credit',
             PaymentStatus::Pending->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending',
             PaymentStatus::Expired->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired',
             PaymentStatus::Failed->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed',
-            PaymentStatus::New->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new',
-            PaymentStatus::Suspended->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended',
+            PaymentStatus::New->value => yield FlashResponse::FLASH_INFO => 'payment.flash.status.new',
+            PaymentStatus::Suspended->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.suspended',
             PaymentStatus::Authorized->value => yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized',
             PaymentStatus::Refunded->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded',
+            PaymentStatus::Unknown->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.unconfirmed',
+            // Reached only by a value that is not a PaymentStatus at all. That is a
+            // genuine error, and the only one left in this map.
             default => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown',
         };
     }
