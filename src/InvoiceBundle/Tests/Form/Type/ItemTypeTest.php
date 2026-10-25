@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 use Brick\Math\BigDecimal;
 use Money\Currency;
 use Override;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
@@ -69,6 +70,24 @@ final class ItemTypeTest extends FormTestCase
         $object->setPrice(BigDecimal::of($price * 100));
 
         $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
+    }
+
+    public function testSubmitUnitOfMeasure(): void
+    {
+        $formData = [
+            'description' => 'Consulting',
+            'price' => 125,
+            'qty' => '12',
+            'unitCode' => UnitCode::HOUR->value,
+        ];
+
+        $object = new Line();
+        $object->setDescription('Consulting');
+        $object->setQty('12');
+        $object->setPrice(BigDecimal::of(12500));
+        $object->setUnitCode(UnitCode::HOUR);
+
+        $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => new Currency('USD')]), $formData, $object);
     }
 
     /**
