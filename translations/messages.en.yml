@@ -2441,7 +2441,9 @@ tax:
         save: 'Save tax identifiers'
         title: 'Company Tax Identifiers'
         value: Number
-    default_rate_name: 'VAT %rate%%'
+    default_rate:
+        gst: 'GST %rate%%'
+        vat: 'VAT %rate%%'
     direction:
         additive: Additive
         deductive: Deductive
