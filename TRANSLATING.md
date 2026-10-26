@@ -163,7 +163,7 @@ CI (`.github/workflows/translations-lint.yml`) runs:
 
 ```bash
 bin/console lint:yaml translations
-bin/console lint:translations --locale=en     # message syntax, incl. ICU
+bin/console lint:translations                 # message syntax (incl. ICU) for framework.enabled_locales
 bin/console lint:twig src templates
 bin/phpunit src/CoreBundle/Tests/Translation/TranslationCatalogTest.php
 ```
@@ -181,9 +181,11 @@ bin/phpunit src/CoreBundle/Tests/Translation/TranslationCatalogTest.php
 
 ## Adding a new language
 
-1. Add the locale to the list in `config/packages/translation.php`.
+1. Add the locale to the provider list (`$locales`) in `config/packages/translation.php`.
 2. Provide the translated catalogs (or let the translation provider pull them — see below).
    Missing strings fall back to English automatically.
+3. Once its catalogs are in the repo, add it to `enabled_locales` in the same file, so
+   `lint:translations` checks it and the translator warms it up.
 
 ## Keeping the English catalog in sync
 
@@ -220,7 +222,7 @@ SOLIDINVOICE_TRANSLATION_DSN=crowdin://PROJECT_ID:API_TOKEN@ORGANIZATION_DOMAIN.
 Then:
 
 ```bash
-bin/console translation:push   crowdin --force               # upload the English source
+bin/console translation:push   crowdin --force --locales=en  # upload the English source only
 bin/console translation:pull   crowdin --force --format=yml   # download translations
 ```
 

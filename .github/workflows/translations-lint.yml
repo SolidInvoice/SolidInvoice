@@ -60,8 +60,8 @@ jobs:
 
       # Every message parses with the formatter for its domain (ICU syntax in *+intl-icu).
       - name: Lint message syntax
-        # framework.enabled_locales is unset, so pass every locale that has a catalog.
-        run: bin/console lint:translations $(printf '%s\n' translations/*.yml | sed -E 's/.*\.([A-Za-z_]+)\.yml$/--locale=\1/' | sort -u)
+        # Lints framework.enabled_locales (config/packages/translation.php).
+        run: bin/console lint:translations
 
       - name: Lint Twig templates
         run: bin/console lint:twig src templates
