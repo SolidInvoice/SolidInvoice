@@ -91,6 +91,20 @@ final class OnboardingFlowTest extends WebTestCase
         self::assertFalse(self::getContainer()->get(OnboardingManager::class)->isOnboardingComplete($user));
     }
 
+    public function testABlankCountryIsReportedOnce(): void
+    {
+        $user = $this->createUser('test-country@example.com', 'password');
+
+        $this->browser()
+            ->actingAs($user)
+            ->visit('/onboarding')
+            ->fillField('company_setup_step[companyName]', 'Acme Corporation')
+            ->click('Continue to your first invoice')
+            ->assertStatus(422)
+            ->assertElementCount('.invalid-feedback', 1)
+        ;
+    }
+
     public function testInvitedUserDoesNotSeeOnboarding(): void
     {
         // Create a company first
