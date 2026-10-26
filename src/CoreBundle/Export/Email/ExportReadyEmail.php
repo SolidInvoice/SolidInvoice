@@ -26,7 +26,6 @@ final class ExportReadyEmail extends TemplatedEmail
     ) {
         parent::__construct();
 
-        $this->subject('Your data export is ready');
         $this->htmlTemplate('@SolidInvoiceCore/Email/export_ready.html.twig');
         $this->textTemplate('@SolidInvoiceCore/Email/export_ready.text.twig');
         $this->context([

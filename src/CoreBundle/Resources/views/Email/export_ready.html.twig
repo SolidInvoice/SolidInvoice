@@ -36,7 +36,7 @@
 
     {% if job.fileSize %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('export.email.archive_size'|trans, (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
+        {{ email.info_row('export.email.archive_size'|trans, 'export.email.archive_size_value'|trans({'%size%': (job.fileSize / 1024 / 1024)|number_format(2)})) }}
     {% endif %}
 
     {{ email.divider('md') }}

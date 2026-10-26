@@ -36,7 +36,7 @@
     {{ email.info_row('invitation.email'|trans({}, 'email'), invitation.email) }}
     {% if invitation.expiresAt is not null %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invitation.reminder.expires'|trans({}, 'email'), invitation.expiresAt|date('d F Y')) }}
+        {{ email.info_row('invitation.reminder.expires'|trans({}, 'email'), invitation.expiresAt|format_date(pattern: 'dd MMMM y')) }}
     {% endif %}
 
     {{ email.spacer('lg') }}

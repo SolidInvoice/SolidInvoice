@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\SaasBundle\EventSubscriber\RecurringInvoiceVerificationGuardListener;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
+use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
@@ -28,7 +29,6 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
     {
         $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn(true);
-        $gate->method('reason')->willReturn('Please verify your email address before activating this recurring invoice.');
 
         $event = new GuardEvent(
             new RecurringInvoice(),
@@ -37,13 +37,13 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             $this->createStub(WorkflowInterface::class),
         );
 
-        new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);
+        new RecurringInvoiceVerificationGuardListener($gate, new IdentityTranslator())->onGuardActivate($event);
 
         self::assertTrue($event->isBlocked());
         $blockers = iterator_to_array($event->getTransitionBlockerList());
         self::assertCount(1, $blockers);
         self::assertSame(
-            'Please verify your email address before activating this recurring invoice.',
+            'email_verification.blocked.activate_recurring_invoice',
             $blockers[0]->getMessage(),
         );
     }
@@ -60,7 +60,7 @@ final class RecurringInvoiceVerificationGuardListenerTest extends TestCase
             $this->createStub(WorkflowInterface::class),
         );
 
-        new RecurringInvoiceVerificationGuardListener($gate)->onGuardActivate($event);
+        new RecurringInvoiceVerificationGuardListener($gate, new IdentityTranslator())->onGuardActivate($event);
 
         self::assertFalse($event->isBlocked());
     }

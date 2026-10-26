@@ -31,8 +31,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: ClientCreateNotification::EVENT,
-    title: 'Client Created',
-    description: 'When a new client is added to your account',
+    title: 'notifications.events.client_created.title',
+    description: 'notifications.events.client_created.description',
     icon: 'tabler:user-plus',
     category: NotificationCategory::CLIENT,
 )]
@@ -50,7 +50,7 @@ class ClientCreateNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
         return 'client.create.subject';
     }
@@ -103,7 +103,7 @@ class ClientCreateNotification extends NotificationMessage
                     'style' => 'primary',
                     'text' => [
                         'type' => 'plain_text',
-                        'text' => new TranslationReference('View Client'),
+                        'text' => new TranslationReference('client.create.view_client', domain: 'email'),
                     ],
                     'url' => new UrlRouteReference('_clients_view', ['id' => $this->getParameters()['client']->getId()->toString()]),
                 ],

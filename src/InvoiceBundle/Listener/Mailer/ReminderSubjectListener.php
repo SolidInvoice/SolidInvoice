@@ -14,34 +14,34 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use SolidInvoice\InvoiceBundle\Email\InvoiceReminderEmail;
-use SolidInvoice\InvoiceBundle\Entity\ReminderType;
+use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\ReminderSubjectListenerTest
  */
 class ReminderSubjectListener implements EventSubscriberInterface
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
     public function __invoke(MessageEvent $event): void
     {
-        /** @var InvoiceReminderEmail $message */
         $message = $event->getMessage();
 
-        if ($message instanceof InvoiceReminderEmail && null === $message->getSubject()) {
-            $invoice = $message->getInvoice();
-            $invoiceId = $invoice->getInvoiceId();
-            $reminderType = $message->getReminderType();
-
-            $subject = match ($reminderType) {
-                ReminderType::PreDue => 'Upcoming Payment Due: Invoice ' . $invoiceId,
-                ReminderType::Overdue1 => 'Payment Reminder: Invoice ' . $invoiceId,
-                ReminderType::Overdue7 => 'Payment Overdue: Invoice ' . $invoiceId,
-                ReminderType::Overdue14 => sprintf('URGENT: Invoice %s - Immediate Action Required', $invoiceId),
-            };
-
-            $message->subject($subject);
+        if (! $message instanceof InvoiceReminderEmail && ! $message instanceof ManualInvoiceReminderEmail || null !== $message->getSubject()) {
+            return;
         }
+
+        $key = $message instanceof InvoiceReminderEmail
+            ? 'invoice.reminder.subject.' . $message->getReminderType()->value
+            : 'invoice.manual_reminder.subject';
+
+        $message->subject($this->translator->trans($key, ['%id%' => (string) $message->getInvoice()->getInvoiceId()], 'email'));
     }
 
     public static function getSubscribedEvents(): array

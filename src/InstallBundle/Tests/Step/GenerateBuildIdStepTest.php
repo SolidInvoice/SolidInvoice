@@ -21,6 +21,8 @@ use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Step\GenerateBuildIdStep;
 use Symfony\Bundle\FrameworkBundle\Secrets\DotenvVault;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Uid\Uuid;
 use function sys_get_temp_dir;
 use function uniqid;
@@ -60,7 +62,7 @@ final class GenerateBuildIdStepTest extends TestCase
         $vault = new DotenvVault($dotenvFile);
         $configWriter = new ConfigWriter($vault, $this->tempDir);
 
-        $step = new GenerateBuildIdStep($configWriter);
+        $step = new GenerateBuildIdStep($configWriter, $this->translator());
         iterator_to_array($step->execute(new Installation()));
 
         self::assertFileExists($dotenvFile);
@@ -78,7 +80,7 @@ final class GenerateBuildIdStepTest extends TestCase
         $vault = new DotenvVault($this->tempDir . '/.env.local');
         $configWriter = new ConfigWriter($vault, $this->tempDir);
 
-        $step = new GenerateBuildIdStep($configWriter);
+        $step = new GenerateBuildIdStep($configWriter, $this->translator());
 
         $callbackMessages = [];
         $callback = static function (string $message) use (&$callbackMessages): Generator {
@@ -98,9 +100,18 @@ final class GenerateBuildIdStepTest extends TestCase
         $vault = new DotenvVault($this->tempDir . '/.env.local');
         $configWriter = new ConfigWriter($vault, $this->tempDir);
 
-        $step = new GenerateBuildIdStep($configWriter);
+        $step = new GenerateBuildIdStep($configWriter, $this->translator());
         $result = iterator_to_array($step->execute(new Installation()));
 
         self::assertSame([], $result);
+    }
+
+    private function translator(): Translator
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', __DIR__ . '/../../../../translations/messages.en.yml', 'en');
+
+        return $translator;
     }
 }

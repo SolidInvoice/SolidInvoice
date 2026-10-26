@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: UserInvitation::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserInvitationRepository::class)]
-#[UniqueEntity(fields: ['email', 'company'], message: 'users.invitation.exists')]
+#[UniqueEntity(fields: ['email', 'company'], message: 'user.invitation.exists')]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'userInvitations')])]
 class UserInvitation
 {

@@ -51,8 +51,15 @@ final readonly class StatusFormatter implements FormatterInterface
             ? ucwords(strtolower(str_replace(['_', '-'], ' ', $stringValue)))
             : $stringValue;
 
-        // Translate the label if it's a known status
-        $translatedLabel = $this->translator->trans($label);
+        // Known statuses render through the shared `status.*` keys; anything else
+        // falls back to the (title-cased) raw value.
+        $key = 'status.' . strtolower(str_replace([' ', '-'], '_', $stringValue));
+        $translatedLabel = $this->translator->trans($key);
+
+        if ($translatedLabel === $key) {
+            $translatedLabel = $label;
+        }
+
         $escapedLabel = htmlspecialchars($translatedLabel, ENT_QUOTES, 'UTF-8');
 
         return sprintf(

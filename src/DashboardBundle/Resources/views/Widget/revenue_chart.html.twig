@@ -13,7 +13,7 @@
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div>
                     <h3 class="card-title mb-0">{{ 'dashboard.charts.revenue_title'|trans }}</h3>
-                    <small class="text-muted">{{ 'dashboard.charts.revenue_subtitle'|trans }}</small>
+                    <small class="text-muted">{{ 'dashboard.charts.revenue_subtitle'|trans({'%count%': months}) }}</small>
                 </div>
             </div>
         </twig:block>

@@ -53,7 +53,7 @@ final class ApiTokenGridTest extends TestCase
         $actions = $grid->actions();
 
         self::assertCount(1, $actions);
-        self::assertSame('View History', $actions[0]->getLabel());
+        self::assertSame('profile.api.tokens.history', $actions[0]->getLabel());
         self::assertSame('history', $actions[0]->getIcon());
     }
 }

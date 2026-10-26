@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Action;
 
+use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Locale;
 use SolidInvoice\CoreBundle\Telemetry\Telemetry;
 use SolidInvoice\CoreBundle\Telemetry\TelemetryEvent;
 use SolidInvoice\SaasBundle\Analytics\DataLayerQueue;
@@ -141,7 +143,7 @@ final class StartTrialAction extends AbstractController
 
         $this->addFlash('success', $this->translator->trans(
             $movingUp ? 'saas.flash.trial_upgraded' : 'saas.flash.trial_started',
-            ['%plan%' => $plan->getName(), '%date%' => $subscription->getEndDate()->format('F j')],
+            ['%plan%' => $plan->getName(), '%date%' => CarbonImmutable::instance($subscription->getEndDate())->locale(Locale::getDefault())->translatedFormat('F j')],
         ));
 
         return $return !== null ? new RedirectResponse($return) : $this->redirectToRoute('_dashboard');

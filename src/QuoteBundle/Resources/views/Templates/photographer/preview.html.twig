@@ -21,10 +21,10 @@
                 <div style="font-size: 28px; color: #a2492b;">{{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}</div>
                 <div class="text-end">
                     <div class="text-muted small text-uppercase">{{ 'quote.pdf.date'|trans }}</div>
-                    <div>{{ quote.created|date('F j, Y') }}</div>
+                    <div>{{ quote.created|format_date('long') }}</div>
                     {% if quote.due %}
                         <div class="text-muted small text-uppercase mt-2">{{ 'quote.pdf.valid_until'|trans }}</div>
-                        <div>{{ quote.due|date('F j, Y') }}</div>
+                        <div>{{ quote.due|format_date('long') }}</div>
                     {% endif %}
                 </div>
             </div>
@@ -57,10 +57,10 @@
             <div class="row justify-content-end mt-4">
                 <div class="col-md-5">
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'quote.subtotal'|trans }}</span><span>{{ quote.baseTotal|formatCurrency(currency) }}</span></div>
-                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'quote.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
-                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2"><span>{{ 'quote.discount'|trans }}</span><span style="color: #a2492b;">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'billing.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2"><span>{{ 'billing.discount'|trans }}</span><span style="color: #a2492b;">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between p-3 rounded" style="background: #a2492b; color: #faf3e6;">
-                        <strong>{{ 'quote.total'|trans }}</strong>
+                        <strong>{{ 'billing.total'|trans }}</strong>
                         <strong>{{ quote.total|formatCurrency(currency) }}</strong>
                     </div>
                 </div>

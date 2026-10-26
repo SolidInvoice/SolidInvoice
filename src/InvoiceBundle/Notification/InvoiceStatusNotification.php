@@ -24,8 +24,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: self::EVENT,
-    title: 'Invoice Status Changed',
-    description: 'When an invoice status changes (draft, sent, paid, etc.)',
+    title: 'notifications.events.invoice_status_changed.title',
+    description: 'notifications.events.invoice_status_changed.description',
     icon: 'tabler:file-invoice',
     category: NotificationCategory::INVOICE,
 )]
@@ -43,9 +43,9 @@ class InvoiceStatusNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        return 'Invoice Status Change';
+        return 'invoice.status.subject';
     }
 
     #[Override]

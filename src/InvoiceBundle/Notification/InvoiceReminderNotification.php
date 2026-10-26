@@ -28,8 +28,8 @@ use Twig\Environment;
  */
 #[AsNotification(
     name: self::EVENT,
-    title: 'Invoice Payment Reminder',
-    description: 'Reminder sent to clients about upcoming or overdue invoices',
+    title: 'notifications.events.invoice_reminder.title',
+    description: 'notifications.events.invoice_reminder.description',
     icon: 'tabler:clock',
     category: NotificationCategory::INVOICE,
 )]
@@ -65,19 +65,21 @@ class InvoiceReminderNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        $parameters = $this->getNormalizedParameters();
-        $reminderType = $parameters['reminder_type'] ?? '';
-        $invoiceId = $parameters['invoice']?->getInvoiceId() ?? '';
-
-        return match ($reminderType) {
-            'pre_due' => 'Upcoming Payment Due: Invoice ' . $invoiceId,
-            'overdue_1' => 'Payment Reminder: Invoice ' . $invoiceId,
-            'overdue_7' => 'Payment Overdue: Invoice ' . $invoiceId,
-            'overdue_14' => sprintf('URGENT: Invoice %s - Immediate Action Required', $invoiceId),
-            default => 'Invoice Payment Reminder: ' . $invoiceId,
+        return match ($this->getNormalizedParameters()['reminder_type'] ?? '') {
+            'pre_due' => 'invoice.reminder.subject.pre_due',
+            'overdue_1' => 'invoice.reminder.subject.overdue_1',
+            'overdue_7' => 'invoice.reminder.subject.overdue_7',
+            'overdue_14' => 'invoice.reminder.subject.overdue_14',
+            default => 'invoice.reminder.subject.default',
         };
+    }
+
+    #[Override]
+    public function getSubjectParameters(): array
+    {
+        return ['%id%' => (string) ($this->getParameters()['invoice']?->getInvoiceId() ?? '')];
     }
 
     #[Override]
