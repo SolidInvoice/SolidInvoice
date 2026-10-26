@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+### Fixes
+
+* Trimmed internal payment method fields from API payment responses
+
 3.1.2 / 2026-10-21
 -------------------
 
