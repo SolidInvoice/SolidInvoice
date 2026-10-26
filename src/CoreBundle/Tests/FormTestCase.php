@@ -21,6 +21,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Extension\FeatureRestrictedExtension as NoopFeatureRestrictedExtension;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\CompanyCountryType;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -48,6 +49,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -136,6 +138,7 @@ abstract class FormTestCase extends KernelTestCase
         return [
             new ImageUploadType($validator),
             new CurrencyType('en'),
+            new CompanyCountryType(new RequestStack()),
         ];
     }
 

@@ -76,11 +76,14 @@ final class OnboardingManagerTest extends KernelTestCase
         $data = new OnboardingData();
         $data->companyName = 'Test Company';
         $data->companyCurrency = 'EUR';
+        $data->companyCountry = 'NL';
 
         $company = $this->manager->completeOnboarding($user, $data);
 
         self::assertSame('Test Company', $company->getName());
         self::assertSame('EUR', $company->currency);
+        self::assertSame('NL', $company->getCountry());
+        self::assertSame($user, $company->getOwner());
         self::assertSame([$company], $user->getCompanies()->toArray());
         self::assertTrue($this->manager->isOnboardingComplete($user));
         // AffiliateProgram times its prompt from this setting.

@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use Mpociot\VatCalculator\VatCalculator;
 use RuntimeException;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
@@ -26,8 +27,12 @@ use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use function array_unique;
 use function get_debug_type;
+use function round;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Company\DefaultDataTest
@@ -43,6 +48,8 @@ final readonly class DefaultData
         ManagerRegistry $registry,
         #[AutowireIterator(ProviderInterface::class)]
         private iterable $configProviders,
+        private VatCalculator $vatCalculator,
+        private TranslatorInterface $translator,
     ) {
         $this->em = $registry->getManager();
     }
@@ -56,8 +63,34 @@ final readonly class DefaultData
         $this->createAppConfig($company, $data);
         $this->createDefaultCustomFields($company);
         $this->createPaymentMethods();
+        $this->createTaxRates($company);
 
         $this->em->flush();
+    }
+
+    /**
+     * One rate per distinct VAT rate of the company's country. The VatCalculator only knows
+     * the EU, Switzerland, Monaco and the Isle of Man; anywhere else starts with no rates.
+     */
+    private function createTaxRates(Company $company): void
+    {
+        $country = $company->getCountry();
+
+        if ($country === null || ! $this->vatCalculator->shouldCollectVAT($country)) {
+            return;
+        }
+
+        foreach (array_unique($this->vatCalculator->getTaxRatesForCountry($country)) as $rate) {
+            $percentage = round($rate * 100, 2);
+
+            $tax = new Tax();
+            $tax->setName($this->translator->trans('tax.default_rate_name', ['%rate%' => $percentage]));
+            $tax->setRate($percentage);
+            $tax->setType(Tax::TYPE_EXCLUSIVE);
+            $tax->setCompany($company);
+
+            $this->em->persist($tax);
+        }
     }
 
     private function createDefaultCustomFields(Company $company): void
