@@ -25,7 +25,7 @@ final class OnboardingData
     #[Assert\Currency]
     public ?string $companyCurrency = 'USD';
 
-    #[Assert\NotBlank]
+    // Required by CompanyCountryType itself, which also covers CompanyType.
     #[Assert\Country]
     public ?string $companyCountry = null;
 }

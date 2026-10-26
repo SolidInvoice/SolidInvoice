@@ -159,7 +159,7 @@ final class Version30200_5 extends AbstractMigration
                 ->where('id = :id')
                 ->andWhere('country IS NULL')
                 ->setParameter('country', $country)
-                ->setParameter('id', $row['company_id'])
+                ->setParameter('id', $row['company_id'], UlidType::NAME)
                 ->executeStatement();
         }
     }
