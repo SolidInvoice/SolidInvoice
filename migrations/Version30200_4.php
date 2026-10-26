@@ -23,7 +23,7 @@ final class Version30200_4 extends AbstractMigration
     private const string TABLE_NAME = 'app_config';
 
     /**
-     * Setting key => [description stored by older releases, translation key the ConfigProviders now store].
+     * Setting key => [English description older releases stored, translation key the ConfigProviders now store].
      *
      * @var array<string, array{string, string}>
      */
@@ -61,21 +61,26 @@ final class Version30200_4 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        foreach (self::DESCRIPTIONS as $key => [$english, $translationKey]) {
-            $this->addSql(
-                'UPDATE ' . self::TABLE_NAME . ' SET description = ? WHERE setting_key = ? AND description = ?',
-                [$translationKey, $key, $english],
-            );
+        foreach (self::DESCRIPTIONS as $key => [, $translationKey]) {
+            $this->updateDescription($key, $translationKey);
         }
     }
 
     public function down(Schema $schema): void
     {
-        foreach (self::DESCRIPTIONS as $key => [$english, $translationKey]) {
-            $this->addSql(
-                'UPDATE ' . self::TABLE_NAME . ' SET description = ? WHERE setting_key = ? AND description = ?',
-                [$english, $key, $translationKey],
-            );
+        foreach (self::DESCRIPTIONS as $key => [$english]) {
+            $this->updateDescription($key, $english);
         }
+    }
+
+    private function updateDescription(string $settingKey, string $description): void
+    {
+        $query = $this->connection->createQueryBuilder()
+            ->update(self::TABLE_NAME)
+            ->set('description', ':description')
+            ->where('setting_key = :setting_key');
+
+        // addSql() rather than executing the builder, so --dry-run does not write.
+        $this->addSql($query->getSQL(), ['description' => $description, 'setting_key' => $settingKey]);
     }
 }
