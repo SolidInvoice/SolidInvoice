@@ -73,23 +73,33 @@ final class Version30200_5 extends AbstractMigration
     {
         // The owner is the company's earliest-registered user, and the company is taken to
         // have been created when they registered. A company with no users keeps no owner.
-        $firstUser = static fn (string $column): string => <<<SQL
-            (SELECT u.{$column} FROM user_company uc
-                INNER JOIN users u ON u.id = uc.user_id
-                WHERE uc.company_id = companies.id
-                ORDER BY u.created ASC, u.id ASC
-                LIMIT 1)
-            SQL;
+        $firstUser = fn (string $column): string => '(' . $this->connection->createQueryBuilder()
+            ->select('u.' . $column)
+            ->from('user_company', 'uc')
+            ->innerJoin('uc', 'users', 'u', 'u.id = uc.user_id')
+            ->where('uc.company_id = ' . self::TABLE_NAME . '.id')
+            ->orderBy('u.created', 'ASC')
+            ->addOrderBy('u.id', 'ASC')
+            ->setMaxResults(1)
+            ->getSQL() . ')';
 
-        $this->connection->executeStatement(
-            'UPDATE companies SET owner_id = ' . $firstUser('id') . ' WHERE owner_id IS NULL'
-        );
+        $this->connection->createQueryBuilder()
+            ->update(self::TABLE_NAME)
+            ->set('owner_id', $firstUser('id'))
+            ->where('owner_id IS NULL')
+            ->executeStatement();
 
-        $this->connection->executeStatement(
-            'UPDATE companies SET created = COALESCE(' . $firstUser('created') . ', CURRENT_TIMESTAMP) WHERE created IS NULL'
-        );
+        $this->connection->createQueryBuilder()
+            ->update(self::TABLE_NAME)
+            ->set('created', 'COALESCE(' . $firstUser('created') . ', ' . $this->platform->getCurrentTimestampSQL() . ')')
+            ->where('created IS NULL')
+            ->executeStatement();
 
-        $this->connection->executeStatement('UPDATE companies SET updated = created WHERE updated IS NULL');
+        $this->connection->createQueryBuilder()
+            ->update(self::TABLE_NAME)
+            ->set('updated', 'created')
+            ->where('updated IS NULL')
+            ->executeStatement();
 
         $this->backfillCountries();
     }
