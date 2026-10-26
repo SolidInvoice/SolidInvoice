@@ -22,19 +22,20 @@ use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
-use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\PlatformBundle\Controller\Security\VerifyEmail;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
+use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
-use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Uid\Ulid;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use function get_object_vars;
 
 /**
  * @see \SolidInvoice\SaasBundle\Tests\MessageHandler\SendOnboardingEmailHandlerTest
@@ -74,18 +75,15 @@ final readonly class SendOnboardingEmailHandler
                 return;
             }
 
-            $trialManager = $this->registry->getManagerForClass(Trial::class);
-            $trial = $trialManager?->getRepository(Trial::class)->findOneBy(['user' => $user]);
+            $subscription = $this->subscription($message, $user);
 
-            if (! $trial instanceof Trial) {
-                $this->logger->warning('Onboarding email skipped: no trial for user', [
+            if (! $subscription instanceof Subscription) {
+                $this->logger->warning('Onboarding email skipped: no subscription', [
                     'user_id' => $message->userId->toString(),
                     'step_key' => $message->stepKey,
                 ]);
                 return;
             }
-
-            $subscription = $trial->getSubscription();
 
             $context = OnboardingContext::fromSubscription($user, $subscription, DateTimeImmutable::createFromInterface($this->clock->now()));
 
@@ -107,10 +105,9 @@ final readonly class SendOnboardingEmailHandler
                 return;
             }
 
-            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL && ! $step instanceof FreeFeedbackStep) {
-                // User upgraded, cancelled, or trial expired between dispatch and
-                // handling — stop the sequence silently. The Free check-in is the
-                // one step meant for after the trial; it checks its own status.
+            if (! $step::audience()->matches($subscription, $user, $context->now)) {
+                // User upgraded, cancelled, or their trial ended between dispatch
+                // and handling, so the step is no longer written for them.
                 return;
             }
 
@@ -182,5 +179,21 @@ final readonly class SendOnboardingEmailHandler
         } finally {
             $this->companySelector->reset();
         }
+    }
+
+    private function subscription(SendOnboardingEmailMessage $message, User $user): ?Subscription
+    {
+        // Not $message->subscriptionId: a message serialized before the property
+        // existed unserializes with it uninitialized, and reading that throws.
+        // get_object_vars() leaves uninitialized properties out.
+        $subscriptionId = get_object_vars($message)['subscriptionId'] ?? null;
+
+        if ($subscriptionId instanceof Ulid) {
+            return $this->registry->getManagerForClass(Subscription::class)?->find(Subscription::class, $subscriptionId);
+        }
+
+        $trial = $this->registry->getManagerForClass(Trial::class)?->getRepository(Trial::class)->findOneBy(['user' => $user]);
+
+        return $trial instanceof Trial ? $trial->getSubscription() : null;
     }
 }

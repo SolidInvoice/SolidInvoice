@@ -220,27 +220,27 @@ onboarding:
         lede: 'Your account is ready. The last step before your first invoice can reach a client is confirming %email%.'
         subject: 'Confirm your email to send invoices'
     welcome:
-        closing: 'Start with the first step: add a client. Everything else builds from there.'
-        cta: 'Open your dashboard'
-        eyebrow: 'Your trial just started'
+        closing: 'Your first invoice is the best place to start. It takes a few minutes.'
+        cta: 'Create your first invoice'
+        eyebrow: 'Your account is ready'
         feature:
-            clients:
-                desc: 'The foundation. Name, email, currency — takes sixty seconds.'
-                title: 'Add your first client'
             dashboard:
-                desc: 'Set up recurring billing and automatic reminders. Get paid every month without lifting a finger.'
-                title: 'Automate recurring work'
+                desc: 'Your dashboard shows what is outstanding, what is overdue and what has been paid.'
+                title: 'See who owes you'
             invoices:
-                desc: 'Line items, taxes, discounts, and a due date — all built in.'
-                title: 'Send a professional invoice'
+                desc: 'Add your client as you go. Line items, tax and a due date are all built in.'
+                title: 'Send your first invoice'
             payments:
-                desc: "Stripe or PayPal — clients pay in two clicks, you're notified instantly."
-                title: 'Connect online payments'
+                desc: 'Connect Stripe or PayPal and your clients can pay by card straight from the invoice.'
+                title: 'Get paid online'
+            quotes:
+                desc: 'Send a quote first. When your client accepts it, it becomes an invoice.'
+                title: 'Quote before you bill'
         heading: 'Good to have you, %name%.'
-        intro: "Here's what we'll cover together:"
-        lede: "Your trial is live. We'll check in as you go, with the next step that gets your first invoice paid."
-        ps: 'questions? Hit reply — a real person answers.'
-        subject: "Welcome to SolidInvoice — let's get you paid"
+        intro: "Here's where most people start:"
+        lede: 'Your account is set up and ready to use.'
+        ps: 'questions? Just reply to this email. A real person answers.'
+        subject: 'Your SolidInvoice account is ready'
 payment:
     capture:
         subject: 'A Payment has been made'
@@ -289,7 +289,6 @@ reset_password:
     button_text: 'Reset Password'
     expires: 'This link will expire in %resetTimestamp%.'
     message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
-    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
     subject: 'Reset your password for %username%'
 trial_downgraded:

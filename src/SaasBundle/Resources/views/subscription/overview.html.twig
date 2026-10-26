@@ -126,7 +126,16 @@
                     {% endblock %}
                 </div>
                 <div class="card-footer d-flex flex-wrap gap-2">
-                    <a href="{{ path('saas_subscription_change') }}" class="btn btn-primary">
+                    {# A local trial has no card on file yet: checkout without a plan
+                     # parameter subscribes to the plan being trialled. #}
+                    {% set canSubscribe = isTrial and not hasExternalBilling %}
+                    {% if canSubscribe %}
+                        <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-primary">
+                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                            {{ 'saas.plan.subscribe_to'|trans({'%plan%': plan.name}) }}
+                        </a>
+                    {% endif %}
+                    <a href="{{ path('saas_subscription_change') }}" class="btn {{ canSubscribe ? 'btn-outline-secondary' : 'btn-primary' }}">
                         {{ ux_icon('tabler:arrows-exchange', {width: 18, height: 18}) }}
                         {{ 'saas.overview.change_plan'|trans }}
                     </a>

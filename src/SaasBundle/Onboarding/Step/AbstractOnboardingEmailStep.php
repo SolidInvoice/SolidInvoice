@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -23,6 +24,11 @@ abstract class AbstractOnboardingEmailStep implements OnboardingEmailStepInterfa
     public function __construct(
         protected readonly TranslatorInterface $translator,
     ) {
+    }
+
+    public static function audience(): OnboardingAudience
+    {
+        return OnboardingAudience::Any;
     }
 
     public function shouldSend(OnboardingContext $context): bool

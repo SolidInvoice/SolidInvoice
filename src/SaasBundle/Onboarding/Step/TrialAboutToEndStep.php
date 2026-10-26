@@ -17,6 +17,7 @@ use Override;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -57,6 +58,12 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     public static function priority(): int
     {
         return 50;
+    }
+
+    #[Override]
+    public static function audience(): OnboardingAudience
+    {
+        return OnboardingAudience::Trial;
     }
 
     #[Override]

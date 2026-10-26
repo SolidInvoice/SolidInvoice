@@ -19,7 +19,6 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
-use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
@@ -41,35 +40,39 @@ final class TrialBannerResolverTest extends TestCase
         self::assertNull($banner);
     }
 
-    public function testExtendVariantWithinBannerWindow(): void
+    public function testEndingVariantWithinBannerWindow(): void
     {
         // 5 days remaining: <= 7 (banner) and > 2 (no coupon)
         $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06');
 
         self::assertInstanceOf(TrialBanner::class, $banner);
         self::assertSame('info', $banner->type);
-        self::assertSame('saas.trial_banner.extend.title', $banner->titleKey);
-        self::assertSame(['%days%' => 14], $banner->params);
+        self::assertSame('saas.trial_banner.ending.title', $banner->titleKey);
+        self::assertSame(['%plan%' => 'Pro', '%date%' => 'January 6'], $banner->params);
         self::assertNull($banner->code);
     }
 
-    public function testExtensionDaysAreDerivedFromThePlanTrialDuration(): void
+    /**
+     * "Keep %plan%" checks out the plan being trialled, which after a move-up is
+     * not the plan the trial started on.
+     */
+    public function testTheCtaChecksOutTheTrialPlan(): void
     {
-        // 5 days remaining (extend window); the plan grants a 7-day trial, so
-        // the copy must say 7 — proving the value comes from the Plan, not a constant.
-        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06', trialDuration: 'P7D');
+        $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06');
 
         self::assertInstanceOf(TrialBanner::class, $banner);
-        self::assertSame(['%days%' => 7], $banner->params);
+        self::assertSame('variant-123', $banner->planId);
     }
 
-    public function testNoBannerWhenPlanHasNoTrialDuration(): void
+    /**
+     * The banner no longer promises extra days, so it does not depend on the
+     * plan's trial length.
+     */
+    public function testBannerShowsWhenThePlanHasNoTrialDuration(): void
     {
-        // Within the banner window, but the plan carries no trial length — we
-        // cannot promise "N more days", so no banner is shown.
         $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-06', trialDuration: '');
 
-        self::assertNull($banner);
+        self::assertInstanceOf(TrialBanner::class, $banner);
     }
 
     public function testCouponVariantInFinalDaysWhenCodeConfigured(): void
@@ -80,18 +83,19 @@ final class TrialBannerResolverTest extends TestCase
         self::assertInstanceOf(TrialBanner::class, $banner);
         self::assertSame('saas.trial_banner.coupon.title', $banner->titleKey);
         self::assertSame(
-            ['%days%' => 14, '%percent%' => 30, '%code%' => 'SAVE30'],
+            ['%plan%' => 'Pro', '%date%' => 'January 3', '%percent%' => 30, '%code%' => 'SAVE30'],
             $banner->params,
         );
         self::assertSame('SAVE30', $banner->code);
+        self::assertSame('variant-123', $banner->planId);
     }
 
-    public function testExtendVariantInFinalDaysWhenNoCouponConfigured(): void
+    public function testEndingVariantInFinalDaysWhenNoCouponConfigured(): void
     {
         $banner = $this->resolve(SubscriptionStatus::TRIAL, '2024-01-03', couponCode: '');
 
         self::assertInstanceOf(TrialBanner::class, $banner);
-        self::assertSame('saas.trial_banner.extend.title', $banner->titleKey);
+        self::assertSame('saas.trial_banner.ending.title', $banner->titleKey);
         self::assertNull($banner->code);
     }
 
@@ -183,7 +187,6 @@ final class TrialBannerResolverTest extends TestCase
         $resolver = new TrialBannerResolver(
             $clock,
             $billingMode,
-            new TrialPeriod(),
             bannerDays: 7,
             couponDays: 2,
         );

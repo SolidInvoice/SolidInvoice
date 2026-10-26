@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Override;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
-use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 /**
- * The feedback email again, a month after the account moved to Free. The only
- * step that goes to a subscription after its trial: moving to Free restarts the
- * subscription, so its start date is the day it moved.
+ * The feedback email again, a month into Free. Moving to Free restarts the
+ * subscription, so its start date is the day it moved (or signed up).
  */
 #[AsTaggedItem(priority: 10)]
 final class FreeFeedbackStep extends AbstractOnboardingEmailStep
@@ -40,11 +39,15 @@ final class FreeFeedbackStep extends AbstractOnboardingEmailStep
     }
 
     #[Override]
+    public static function audience(): OnboardingAudience
+    {
+        return OnboardingAudience::Free;
+    }
+
+    #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
-        return $context->subscription->getStatus() === SubscriptionStatus::ACTIVE
-            && $context->plan->isFree()
-            && $context->hoursSinceTrialStart() >= self::AFTER_DAYS * 24;
+        return $context->hoursSinceTrialStart() >= self::AFTER_DAYS * 24;
     }
 
     #[Override]

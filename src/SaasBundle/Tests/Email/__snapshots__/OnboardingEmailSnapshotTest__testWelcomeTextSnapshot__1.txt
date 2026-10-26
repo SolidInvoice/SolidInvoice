@@ -2,20 +2,20 @@ Good to have you, Alex.
 ============================================================
 
 
-Your trial is live. We'll check in as you go, with the next step that gets your first invoice paid.
+Your account is set up and ready to use.
 
-Here's what we'll cover together:
+Here's where most people start:
 
-* Add your first client — The foundation. Name, email, currency — takes sixty seconds.
-* Send a professional invoice — Line items, taxes, discounts, and a due date — all built in.
-* Connect online payments — Stripe or PayPal — clients pay in two clicks, you're notified instantly.
-* Automate recurring work — Set up recurring billing and automatic reminders. Get paid every month without lifting a finger.
+* Send your first invoice: Add your client as you go. Line items, tax and a due date are all built in.
+* Get paid online: Connect Stripe or PayPal and your clients can pay by card straight from the invoice.
+* Quote before you bill: Send a quote first. When your client accepts it, it becomes an invoice.
+* See who owes you: Your dashboard shows what is outstanding, what is overdue and what has been paid.
 
-Start with the first step: add a client. Everything else builds from there.
+Your first invoice is the best place to start. It takes a few minutes.
 
-Open your dashboard: http://localhost/dashboard
+Create your first invoice: https://app.example.com/invoices/create
 
-P.S. questions? Hit reply — a real person answers.
+P.S. questions? Just reply to this email. A real person answers.
 
 See you inside,
 — The SolidInvoice team
