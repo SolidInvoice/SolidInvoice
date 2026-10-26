@@ -13,19 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use SolidInvoice\SaasBundle\Email\OnboardingEmail;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractOnboardingEmailStep implements OnboardingEmailStepInterface
 {
-    public function __construct(
-        protected readonly TranslatorInterface $translator,
-    ) {
-    }
-
     public static function audience(): OnboardingAudience
     {
         return OnboardingAudience::Any;
@@ -38,13 +33,9 @@ abstract class AbstractOnboardingEmailStep implements OnboardingEmailStepInterfa
 
     public function createEmail(OnboardingContext $context): TemplatedEmail
     {
-        $email = new TemplatedEmail();
+        $email = new OnboardingEmail($this->subjectParameters($context));
 
-        $email->subject($this->translator->trans(
-            'onboarding.' . static::key() . '.subject',
-            [],
-            'email',
-        ));
+        $email->subject('onboarding.' . static::key() . '.subject');
 
         $email->htmlTemplate('@SolidInvoiceSaas/Email/Onboarding/' . static::key() . '.html.twig');
         $email->textTemplate('@SolidInvoiceSaas/Email/Onboarding/' . static::key() . '.txt.twig');
@@ -52,6 +43,14 @@ abstract class AbstractOnboardingEmailStep implements OnboardingEmailStepInterfa
         $email->context($this->templateContext($context));
 
         return $email;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function subjectParameters(OnboardingContext $context): array
+    {
+        return [];
     }
 
     /**

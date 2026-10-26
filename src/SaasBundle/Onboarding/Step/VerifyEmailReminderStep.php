@@ -18,7 +18,6 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * An unverified user cannot send an invoice, so a day in, and again at three
@@ -30,10 +29,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class VerifyEmailReminderStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
-        TranslatorInterface $translator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string

@@ -39,7 +39,7 @@ class InvoiceReminderNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.txt.twig';
 
     /**
      * Returns parameters with 'reminder_type' normalized to string value.

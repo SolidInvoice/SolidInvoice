@@ -29,7 +29,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
@@ -66,7 +65,6 @@ final readonly class ProcessCompanyExportHandler
         private MailerInterface $mailer,
         private UrlGeneratorInterface $urlGenerator,
         private LoggerInterface $logger,
-        private TranslatorInterface $translator,
         private string $projectDir,
     ) {
     }
@@ -169,8 +167,7 @@ final readonly class ProcessCompanyExportHandler
         );
 
         $email = new ExportReadyEmail($job, $user, $downloadUrl)
-            ->to($user->getEmail())
-            ->subject($this->translator->trans('export.email.ready'));
+            ->to($user->getEmail());
 
         $this->mailer->send($email);
     }

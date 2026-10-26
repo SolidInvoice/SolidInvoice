@@ -42,7 +42,7 @@ class ClientCreateNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {

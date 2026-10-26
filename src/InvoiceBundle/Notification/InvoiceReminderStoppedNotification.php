@@ -38,7 +38,7 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder_stopped.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {

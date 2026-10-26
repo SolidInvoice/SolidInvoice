@@ -24,7 +24,6 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use function ceil;
 
 /**
@@ -38,12 +37,10 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     private const int NOTICE_DAYS = 4;
 
     public function __construct(
-        TranslatorInterface $translator,
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly BillingMode $billingMode,
     ) {
-        parent::__construct($translator);
     }
 
     #[Override]
@@ -73,20 +70,24 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     {
         $email = parent::createEmail($context);
 
-        $daysRemaining = $this->daysRemaining($context);
-
-        $email->subject($this->translator->trans(
-            $this->willCharge($context) ? 'onboarding.trial_about_to_end.charged.subject' : 'onboarding.trial_about_to_end.subject',
-            [
-                '%days%' => $daysRemaining,
-                '%count%' => $daysRemaining,
-                '%plan%' => $context->plan->getName(),
-                '%date%' => CarbonImmutable::instance($context->trialEnd)->locale(Locale::getDefault())->translatedFormat('F j'),
-            ],
-            'email',
-        ));
+        if ($this->willCharge($context)) {
+            $email->subject('onboarding.trial_about_to_end.charged.subject');
+        }
 
         return $email;
+    }
+
+    #[Override]
+    protected function subjectParameters(OnboardingContext $context): array
+    {
+        $daysRemaining = $this->daysRemaining($context);
+
+        return [
+            '%days%' => $daysRemaining,
+            '%count%' => $daysRemaining,
+            '%plan%' => $context->plan->getName(),
+            '%date%' => CarbonImmutable::instance($context->trialEnd)->locale(Locale::getDefault())->translatedFormat('F j'),
+        ];
     }
 
     #[Override]

@@ -35,7 +35,7 @@ class InvoiceOverdueNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {

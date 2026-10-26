@@ -17,7 +17,6 @@ use Override;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Asks for feedback once the user has really used the app: a week in, with at
@@ -29,10 +28,8 @@ final class FeedbackStep extends AbstractOnboardingEmailStep
     private const int AFTER_HOURS = 7 * 24;
 
     public function __construct(
-        TranslatorInterface $translator,
         private readonly InvoiceRepository $invoiceRepository,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string
