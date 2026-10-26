@@ -9,6 +9,7 @@ Changelog
 * Every piece of text in the app, emails, PDFs and installer now comes from the translation files, so all of it can be translated. This covers payment reminder emails, notification and email subjects, list columns and filters, statuses, the installer, plan upgrade prompts and form validation messages
 * Dates show month and day names in the user's language, and counts use the right singular or plural form (for example "1 day overdue" instead of "1 days overdue")
 * Dates on invoice and quote emails no longer include a meaningless time, and short dates no longer pad the day ("Sep 1, 2021" instead of "Sep 01, 2021")
+* Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, Switzerland, Monaco and the Isle of Man start with their country's VAT rates already set up
 
 ### Fixes
 

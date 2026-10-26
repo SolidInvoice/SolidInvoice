@@ -211,6 +211,10 @@ client:
             payments: Payments
             quotes: Quotes
 company:
+    country:
+        help: 'Where your business is based.'
+        label: Country
+        placeholder: 'Select a country'
     create:
         back: Back
         cancel_anytime: 'Cancel anytime'
@@ -2437,6 +2441,7 @@ tax:
         save: 'Save tax identifiers'
         title: 'Company Tax Identifiers'
         value: Number
+    default_rate_name: 'VAT %rate%%'
     direction:
         additive: Additive
         deductive: Deductive

@@ -60,7 +60,7 @@ final class CreateCompany extends AbstractController
             assert($company instanceof Company);
 
             $company->addUser($user);
-            // @TODO: Set the user as the owner of the company
+            $company->setOwner($user);
 
             $this->companyRepository->save($company);
 

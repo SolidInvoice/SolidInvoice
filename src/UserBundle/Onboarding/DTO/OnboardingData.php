@@ -24,4 +24,8 @@ final class OnboardingData
     #[Assert\NotBlank]
     #[Assert\Currency]
     public ?string $companyCurrency = 'USD';
+
+    #[Assert\NotBlank]
+    #[Assert\Country]
+    public ?string $companyCountry = null;
 }
