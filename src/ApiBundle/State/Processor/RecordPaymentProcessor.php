@@ -96,8 +96,15 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
 
         $em = $this->registry->getManager();
         $em->persist($payment);
+        $em->flush();
 
-        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
+        // Only a settling payment marks the invoice paid, matching PaymentCompleteListener.
+        if ($this->invoiceRepository->isFullyPaid($invoice)) {
+            $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
+        } else {
+            $totalPaid = $this->registry->getRepository(Payment::class)->getTotalPaidForInvoice($invoice);
+            $invoice->setBalance($invoice->getTotal()->toBigDecimal()->minus($totalPaid));
+        }
 
         $em->flush();
 

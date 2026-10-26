@@ -79,6 +79,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
      * @var Collection<int, Payment>
      */
     #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'method', cascade: ['persist'])]
+    #[Ignore]
     private Collection $payments;
 
     public function __construct()

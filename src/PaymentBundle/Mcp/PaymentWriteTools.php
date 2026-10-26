@@ -58,7 +58,7 @@ final readonly class PaymentWriteTools
      *
      * @return array<string, mixed>
      */
-    #[McpTool(name: 'record_payment', description: 'Record an offline payment against an invoice and transition it to paid.')]
+    #[McpTool(name: 'record_payment', description: 'Record an offline payment against an invoice; the invoice transitions to paid once its balance is settled.')]
     #[McpScopeRequired(McpScope::Write)]
     public function recordPayment(
         string $invoice_id,
@@ -135,7 +135,16 @@ final readonly class PaymentWriteTools
         $payment->setCompany($invoice->getCompany());
 
         $this->entityManager->persist($payment);
-        $this->invoiceWorkflow->apply($invoice, InvoiceGraph::TRANSITION_PAY);
+        $this->entityManager->flush();
+
+        // Only a settling payment marks the invoice paid, matching PaymentCompleteListener.
+        if ($this->invoiceRepository->isFullyPaid($invoice)) {
+            $this->invoiceWorkflow->apply($invoice, InvoiceGraph::TRANSITION_PAY);
+        } else {
+            $totalPaid = $this->entityManager->getRepository(Payment::class)->getTotalPaidForInvoice($invoice);
+            $invoice->setBalance($invoice->getTotal()->toBigDecimal()->minus($totalPaid));
+        }
+
         $this->entityManager->flush();
 
         return $this->normalizer->normalize($payment);
