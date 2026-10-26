@@ -158,7 +158,7 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
 
         $handler = new SendOnboardingEmailHandler(
             self::getContainer()->get('doctrine'),
-            new OnboardingStepRegistry([new WelcomeStep($translator), new VerifyEmailReminderStep($translator, $this->gate()), new FreeFeedbackStep($translator)]),
+            new OnboardingStepRegistry([new WelcomeStep(), new VerifyEmailReminderStep($this->gate()), new FreeFeedbackStep()]),
             self::getContainer()->get(CompanySelector::class),
             $this->mailer(),
             self::getContainer()->get(SystemConfig::class),

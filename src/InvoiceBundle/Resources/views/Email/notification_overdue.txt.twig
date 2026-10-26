@@ -5,7 +5,7 @@
  #
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
- #}{% autoescape false %}
+ #}
 
 {{ 'invoice.notification_overdue.heading'|trans({}, 'email') }}
 {{ '='|repeat(60) }}
@@ -30,4 +30,3 @@
 
 {{ '-'|repeat(60) }}
 {{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
-{% endautoescape %}

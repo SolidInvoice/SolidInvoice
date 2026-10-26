@@ -40,7 +40,6 @@ use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(OnboardingDispatcher::class)]
 final class OnboardingDispatcherTest extends TestCase
@@ -118,8 +117,8 @@ final class OnboardingDispatcherTest extends TestCase
         $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: true);
         $this->now = '2025-02-01';
 
-        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep($this->createStub(TranslatorInterface::class)));
-        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep($this->createStub(TranslatorInterface::class)));
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
 
         self::assertSame(['save:first', 'dispatch:first', 'save:first,free_feedback', 'dispatch:free_feedback'], $this->log);
     }
@@ -129,7 +128,7 @@ final class OnboardingDispatcherTest extends TestCase
         $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false);
         $this->now = '2025-02-01';
 
-        $this->tick(new FreeFeedbackStep($this->createStub(TranslatorInterface::class)), $this->trialOnly());
+        $this->tick(new FreeFeedbackStep(), $this->trialOnly());
 
         self::assertSame(['save:trial_only', 'dispatch:trial_only'], $this->log);
     }
@@ -144,7 +143,7 @@ final class OnboardingDispatcherTest extends TestCase
         $this->userCreated = '2024-06-01';
         $this->now = '2025-02-01';
 
-        $this->tick(new StepFirst(), new FreeFeedbackStep($this->createStub(TranslatorInterface::class)));
+        $this->tick(new StepFirst(), new FreeFeedbackStep());
 
         self::assertSame([], $this->log);
     }

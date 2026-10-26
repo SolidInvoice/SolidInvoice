@@ -18,6 +18,9 @@ email:
         message: 'Please confirm your email address by clicking the button below. This helps us ensure the security of your account.'
         security: "If you didn't create an account, you can safely ignore this email."
         title: 'Please confirm your email address'
+export:
+    ready:
+        subject: 'Your data export is ready'
 invitation:
     accept: 'Accept Invitation'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"

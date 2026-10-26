@@ -396,6 +396,9 @@ The rules that bite:
   legacy `{1}…|]1,Inf[` syntax fails the lint.
 - Whole sentences with `%placeholders%`; never concatenate translated fragments.
 - JS has no translator: pass translated strings to Stimulus controllers as values.
+- Email subjects are `email`-domain keys set on the email class (parameters via
+  `MessageSubjectParametersInterface`); one listener translates them. Plain-text email
+  templates are `*.txt.twig`, which Twig does not HTML-escape.
 - Keys are dotted, lowercase, feature-namespaced (`invoice.list.title`), stored **nested**
   and alphabetically sorted. English is the source locale.
 - **Never use natural-language text as a key.** `'Save'|trans` is wrong — use `action.save`.

@@ -13,45 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\UserInvitation;
 
+use SolidInvoice\UserBundle\Email\UserInvitationEmail;
 use SolidInvoice\UserBundle\Entity\UserInvitation as UserInvitationEntity;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class UserInvitation
 {
     public function __construct(
         private MailerInterface $mailer,
-        private TranslatorInterface $translator,
     ) {
     }
 
     public function sendUserInvitation(UserInvitationEntity $invitation): void
     {
-        $mail = new TemplatedEmail();
-
-        $mail->to($invitation->getEmail())
-            ->from($invitation->getInvitedBy()?->getEmail())
-            ->subject($this->translator->trans('invitation.title', ['%company%' => $invitation->getCompany()->getName()], 'email'))
-            ->htmlTemplate('@SolidInvoiceUser/Email/invitation.html.twig')
-            ->context([
-                'invitation' => $invitation,
-            ]);
-
-        $this->mailer->send($mail);
+        $this->send(new UserInvitationEmail($invitation), $invitation);
     }
 
     public function sendExpiryReminder(UserInvitationEntity $invitation): void
     {
-        $mail = new TemplatedEmail();
+        $this->send(new UserInvitationEmail($invitation, expiryReminder: true), $invitation);
+    }
 
+    private function send(UserInvitationEmail $mail, UserInvitationEntity $invitation): void
+    {
         $mail->to($invitation->getEmail())
-            ->from($invitation->getInvitedBy()?->getEmail())
-            ->subject($this->translator->trans('invitation.reminder.title', ['%company%' => $invitation->getCompany()->getName()], 'email'))
-            ->htmlTemplate('@SolidInvoiceUser/Email/invitation_reminder.html.twig')
-            ->context([
-                'invitation' => $invitation,
-            ]);
+            ->from($invitation->getInvitedBy()?->getEmail());
 
         $this->mailer->send($mail);
     }

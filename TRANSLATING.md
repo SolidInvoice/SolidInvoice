@@ -138,10 +138,29 @@ BatchAction::new('action.archive');
 `status.pending`). Enums rendered by code that expects an object implement
 `TranslatableInterface` (see `TaxType`, `ScheduleEndType`).
 
-**Emails and notifications** — subjects are keys in the `email` domain, translated when the
-message is built (`NotificationMessage::getSubjectKey()`, `ReminderSubjectListener`). Plain-text
-email templates wrap their body in `{% autoescape false %}` — Twig escapes `*.text.twig` as
-HTML, which would turn `don't` into `don&#039;t`.
+**Emails** — an email class sets a key from the `email` domain as its subject, and
+`TranslateEmailSubjectListener` (MailerBundle) translates every outgoing subject. An email whose
+subject needs parameters implements `MessageSubjectParametersInterface`:
+
+```php
+final class ManualInvoiceReminderEmail extends TemplatedEmail implements MessageSubjectParametersInterface
+{
+    public function __construct(private readonly Invoice $invoice)
+    {
+        parent::__construct();
+        $this->subject('invoice.manual_reminder.subject');
+    }
+
+    public function getMessageSubjectParameters(): array
+    {
+        return ['%id%' => (string) $this->invoice->getInvoiceId()];
+    }
+}
+```
+
+A subject that is not a key (one the user configured) passes through unchanged. Plain-text email
+templates are named `*.txt.twig`: Twig does not HTML-escape that extension, so `don't` stays
+`don't` (the HTML part is a separate `*.html.twig` and is escaped as usual).
 
 **Dates** — month and day names are text too. In Twig use `twig/intl-extra`
 (`value|format_date('long')`, `|format_datetime('medium', 'short')`, or

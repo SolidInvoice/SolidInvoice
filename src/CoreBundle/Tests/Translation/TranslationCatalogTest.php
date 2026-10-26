@@ -213,7 +213,7 @@ final class TranslationCatalogTest extends TestCase
     {
         $errors = [];
 
-        foreach ($this->sourceFiles(['*.html.twig', '*.text.twig', '*.txt.twig']) as $file) {
+        foreach ($this->sourceFiles(['*.html.twig', '*.txt.twig']) as $file) {
             $path = $file->getPathname();
 
             if (str_contains($path, '/NotificationBundle/Resources/views/dev/')) {
@@ -228,6 +228,20 @@ final class TranslationCatalogTest extends TestCase
         }
 
         self::assertSame([], $errors, 'Move this text into translations/*.en.yml and render it with |trans');
+    }
+
+    public function testTextEmailsUseTheTxtExtension(): void
+    {
+        // Twig picks the escaping strategy from the extension: *.txt.twig is not HTML-escaped,
+        // anything else is, which turns "don't" into "don&#039;t" in a plain-text email.
+        $misnamed = [];
+        foreach ($this->sourceFiles(['*.twig']) as $file) {
+            if (str_contains($file->getPathname(), '/Email/') && ! str_ends_with($file->getFilename(), '.html.twig') && ! str_ends_with($file->getFilename(), '.txt.twig')) {
+                $misnamed[] = $this->relative($file->getPathname());
+            }
+        }
+
+        self::assertSame([], $misnamed, 'Name plain-text email templates *.txt.twig');
     }
 
     public function testEveryKeyIsUsed(): void

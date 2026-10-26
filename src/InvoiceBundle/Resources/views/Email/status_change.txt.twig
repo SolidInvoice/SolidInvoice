@@ -5,7 +5,7 @@
  #
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
- #}{% autoescape false %}
+ #}
 
 {{ 'invoice.status_change.heading'|trans({}, 'email') }}
 {{ '='|repeat(60) }}
@@ -20,4 +20,3 @@
 
 {{ '-'|repeat(60) }}
 {{ 'invoice.status_change.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
-{% endautoescape %}

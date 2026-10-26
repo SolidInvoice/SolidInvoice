@@ -6,7 +6,6 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% autoescape false %}
 {%- if reminder_type == 'pre_due' -%}
 {{ 'invoice.reminder.title.pre_due'|trans({}, 'email')|upper }}
 
@@ -51,4 +50,3 @@
 {{ 'invoice.reminder.view_and_pay'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}
 
 {{ 'invoice.reminder.contact'|trans({}, 'email') }}
-{% endautoescape %}

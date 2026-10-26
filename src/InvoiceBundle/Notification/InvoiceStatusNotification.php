@@ -35,7 +35,7 @@ class InvoiceStatusNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/status_change.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {
