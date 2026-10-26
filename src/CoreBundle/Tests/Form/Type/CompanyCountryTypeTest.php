@@ -54,8 +54,18 @@ final class CompanyCountryTypeTest extends TestCase
         self::assertSame($expected, $form->getData());
     }
 
-    public function testFlagSpellsTheCodeInRegionalIndicators(): void
+    public function testLabelsAreATablerFlagFollowedByTheEscapedName(): void
     {
-        self::assertSame("\u{1F1FF}\u{1F1E6}", CompanyCountryType::flag('za'));
+        $form = Forms::createFormFactoryBuilder()
+            ->addExtension(new PreloadedExtension([new CompanyCountryType(new RequestStack())], []))
+            ->getFormFactory()
+            ->create(CompanyCountryType::class);
+
+        $labels = [];
+        foreach ($form->createView()->vars['choices'] as $choice) {
+            $labels[$choice->value] = $choice->label;
+        }
+
+        self::assertSame('<span class="flag flag-xs flag-country-ba me-2"></span>Bosnia &amp; Herzegovina', $labels['BA']);
     }
 }

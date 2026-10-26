@@ -23,14 +23,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use function mb_chr;
-use function ord;
-use function str_split;
+use function htmlspecialchars;
+use function strtolower;
 use function strtoupper;
 
 /**
  * The country a company trades from: names come from Intl in the request locale, each
- * prefixed with its flag emoji, and a new company starts on the visitor's country.
+ * prefixed with its Tabler flag, and a new company starts on the visitor's country.
  *
  * @extends AbstractType<string|null>
  * @see \SolidInvoice\CoreBundle\Tests\Form\Type\CompanyCountryTypeTest
@@ -60,7 +59,10 @@ final class CompanyCountryType extends AbstractType
             'label' => 'company.country.label',
             'placeholder' => 'company.country.placeholder',
             'help' => 'company.country.help',
-            'choice_label' => static fn (string $code, string $name): string => self::flag($code) . ' ' . $name,
+            // The autocomplete renders the labels as HTML, and searches them with the tags stripped.
+            'autocomplete' => true,
+            'options_as_html' => true,
+            'choice_label' => static fn (string $code, string $name): string => self::flag($code) . htmlspecialchars($name),
             'constraints' => [new NotBlank()],
         ]);
     }
@@ -73,14 +75,7 @@ final class CompanyCountryType extends AbstractType
 
     public static function flag(string $code): string
     {
-        // A flag emoji is the country code spelled in regional indicator symbols (U+1F1E6 = A).
-        $flag = '';
-
-        foreach (str_split(strtoupper($code)) as $letter) {
-            $flag .= mb_chr(0x1F1E6 + ord($letter) - ord('A'));
-        }
-
-        return $flag;
+        return '<span class="flag flag-xs flag-country-' . strtolower($code) . ' me-2"></span>';
     }
 
     private function detectCountry(): ?string
