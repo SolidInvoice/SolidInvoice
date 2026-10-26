@@ -66,7 +66,7 @@ final class ProcessCompanyExportHandlerTest extends KernelTestCase
         $this->assertArchiveContainsManifest($absolutePath);
 
         $this->mailer()->sentEmails()->assertCount(1);
-        $this->mailer()->sentEmails()->first()->assertTo('exporter@example.com');
+        $this->mailer()->sentEmails()->first()->assertTo('exporter@example.com')->assertSubject('Your data export is ready');
 
         new Filesystem()->remove($absolutePath);
     }
