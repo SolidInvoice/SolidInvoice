@@ -58,7 +58,7 @@
                                 data-live-filter-key-param="{{ key }}"
                                 title="{{ 'datagrid.filter.remove'|trans }}"
                             >
-                                <span class="datagrid-active-filter-key">{{ filterLabels[key]|default(key)|trans }}</span>
+                                <span class="datagrid-active-filter-key">{{ filterLabels[key] is defined ? filterLabels[key]|trans : key|replace({'_': ' '})|title }}</span>
                                 <span class="datagrid-active-filter-value">{{ displayValue }}</span>
                                 {{ ux_icon('tabler:x', {width: 14, height: 14, class: 'datagrid-active-filter-remove'}) }}
                             </button>
@@ -99,7 +99,7 @@
                                 {% for child in form.children|filter(c => c.vars.name != '_token') %}
                                     <div class="datagrid-filter-field">
                                         <label class="datagrid-filter-label">
-                                            {{ filterLabels[child.vars.name]|default(child.vars.name)|trans }}
+                                            {{ filterLabels[child.vars.name] is defined ? filterLabels[child.vars.name]|trans : child.vars.name|replace({'_': ' '})|title }}
                                         </label>
                                         <div class="datagrid-filter-widget">
                                             {# Check if this is an expanded choice (checkboxes/radios) #}
