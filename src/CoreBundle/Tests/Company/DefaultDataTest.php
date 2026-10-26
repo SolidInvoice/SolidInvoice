@@ -29,6 +29,7 @@ use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\QuoteBundle\Config\ConfigProvider as QuoteConfigProvider;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Translator;
 use function array_map;
@@ -77,7 +78,7 @@ final class DefaultDataTest extends TestCase
         // Austria's 13% is listed twice (low1 and parking) and must only be created once.
         self::assertSame(['VAT 20%', 'VAT 10%', 'VAT 13%'], array_map(static fn (Tax $tax): ?string => $tax->getName(), $taxes));
         self::assertSame([20.0, 10.0, 13.0], array_map(static fn (Tax $tax): ?float => $tax->getRate(), $taxes));
-        self::assertSame(Tax::TYPE_EXCLUSIVE, $taxes[0]->getType());
+        self::assertSame(TaxType::Exclusive->value, $taxes[0]->getType());
     }
 
     /**
