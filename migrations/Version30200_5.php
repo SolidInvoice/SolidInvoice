@@ -21,6 +21,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Intl\Countries;
+use function array_map;
+use function in_array;
 use function is_array;
 use function is_string;
 use function json_decode;
@@ -109,13 +111,13 @@ final class Version30200_5 extends AbstractMigration
         $table = $schema->getTable(self::TABLE_NAME);
 
         foreach ($table->getForeignKeys() as $foreignKey) {
-            if ($foreignKey->getLocalColumns() === ['owner_id']) {
+            if (in_array('owner_id', array_map(strtolower(...), $foreignKey->getLocalColumns()), true)) {
                 $table->removeForeignKey($foreignKey->getName());
             }
         }
 
         foreach ($table->getIndexes() as $index) {
-            if ($index->getColumns() === ['owner_id']) {
+            if (in_array('owner_id', array_map(strtolower(...), $index->getColumns()), true)) {
                 $table->dropIndex($index->getName());
             }
         }

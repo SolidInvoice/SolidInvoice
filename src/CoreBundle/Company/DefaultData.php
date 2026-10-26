@@ -28,6 +28,7 @@ use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
@@ -106,7 +107,7 @@ final readonly class DefaultData
             $tax = new Tax();
             $tax->setName($this->translator->trans($nameKey, ['%rate%' => $percentage]));
             $tax->setRate($percentage);
-            $tax->setType(Tax::TYPE_EXCLUSIVE);
+            $tax->setType(TaxType::Exclusive->value);
             $tax->setCompany($company);
 
             $this->em->persist($tax);
