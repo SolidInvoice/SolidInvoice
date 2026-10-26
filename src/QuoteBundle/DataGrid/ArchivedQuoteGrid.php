@@ -35,7 +35,7 @@ final class ArchivedQuoteGrid extends BaseQuoteGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Activate')
+        yield BatchAction::new('action.activate')
             ->icon('refresh')
             ->color('success')
             ->action(static function (QuoteRepository $repository, array $selectedItems): void {

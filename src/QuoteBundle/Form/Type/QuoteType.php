@@ -114,7 +114,7 @@ class QuoteType extends AbstractType
                 $field->add(
                     TextType::class,
                     [
-                        'label' => 'contact.firstName',
+                        'label' => 'client.contact.first_name.label',
                         'allow_single_quotes' => true,
                     ]
                 );
@@ -126,7 +126,7 @@ class QuoteType extends AbstractType
                 $field->add(
                     TextType::class,
                     [
-                        'label' => 'contact.lastName',
+                        'label' => 'client.contact.last_name.label',
                         'required' => false,
                         'allow_single_quotes' => true,
                     ]

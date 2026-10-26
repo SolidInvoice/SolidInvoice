@@ -1,0 +1,72 @@
+name: Translations Lint
+
+on:
+  pull_request:
+    paths:
+      - 'translations/**'
+      - 'src/**'
+      - 'templates/**'
+      - 'assets/**'
+      - 'config/**'
+      - '.github/workflows/translations-lint.yml'
+  push:
+    branches:
+      - 3.1.x
+      - 3.2.x
+    paths:
+      - 'translations/**'
+      - 'src/**'
+      - 'templates/**'
+      - 'assets/**'
+      - 'config/**'
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint translations
+    runs-on: ubuntu-latest
+
+    env:
+      SOLIDINVOICE_ENV: test
+      SOLIDINVOICE_DEBUG: 0
+      SOLIDINVOICE_APP_SECRET: '$ecretf0rt3st'
+      # SaaS mode registers every bundle, so SaaS-only Twig functions resolve in lint:twig.
+      SOLIDINVOICE_PLATFORM: saas
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
+          extensions: intl, gd, :xdebug
+          coverage: none
+
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+
+      # Catalog files are valid YAML.
+      - name: Lint YAML catalogs
+        run: bin/console lint:yaml translations
+
+      # Every message parses with the formatter for its domain (ICU syntax in *+intl-icu).
+      - name: Lint message syntax
+        # framework.enabled_locales is unset, so pass every locale that has a catalog.
+        run: bin/console lint:translations $(printf '%s\n' translations/*.yml | sed -E 's/.*\.([A-Za-z_]+)\.yml$/--locale=\1/' | sort -u)
+
+      - name: Lint Twig templates
+        run: bin/console lint:twig src templates
+
+      # Sorted keys, snake_case ids, ICU plurals, no missing/unused keys, no natural-language keys
+      # and no hard-coded text in templates. See TRANSLATING.md.
+      - name: Check catalogs against the code
+        run: bin/phpunit src/CoreBundle/Tests/Translation/TranslationCatalogTest.php

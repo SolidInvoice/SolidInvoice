@@ -40,7 +40,7 @@
                         <strong>{{ 'saas.overview.pending_change_title'|trans }}</strong> —
                         {{ 'saas.overview.pending_change_message'|trans({
                             '%plan%': subscription.pendingPlan.name,
-                            '%date%': subscription.pendingPlanChangeAt|date('M j, Y'),
+                            '%date%': subscription.pendingPlanChangeAt|format_date('medium'),
                         }) }}
                     </div>
                     <form method="post" action="{{ path('saas_subscription_cancel_downgrade') }}" class="ms-3">
@@ -107,17 +107,17 @@
 
                     <dl class="row mb-0">
                         <dt class="col-sm-4 text-subtle">{{ 'saas.overview.started'|trans }}</dt>
-                        <dd class="col-sm-8">{{ subscription.startDate|date('M j, Y') }}</dd>
+                        <dd class="col-sm-8">{{ subscription.startDate|format_date('medium') }}</dd>
 
                         {% if isTrial %}
                             <dt class="col-sm-4 text-subtle">{{ 'saas.overview.trial_ends'|trans }}</dt>
-                            <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
+                            <dd class="col-sm-8">{{ subscription.endDate|format_date('medium') }}</dd>
                         {% elseif isFree %}
                             <dt class="col-sm-4 text-subtle">{{ 'saas.overview.renewal'|trans }}</dt>
                             <dd class="col-sm-8">{{ 'saas.overview.renewal_none'|trans }}</dd>
                         {% else %}
                             <dt class="col-sm-4 text-subtle">{{ 'saas.overview.next_renewal'|trans }}</dt>
-                            <dd class="col-sm-8">{{ subscription.endDate|date('M j, Y') }}</dd>
+                            <dd class="col-sm-8">{{ subscription.endDate|format_date('medium') }}</dd>
                         {% endif %}
                     </dl>
 

@@ -16,11 +16,13 @@ namespace SolidInvoice\UserBundle\UserInvitation;
 use SolidInvoice\UserBundle\Entity\UserInvitation as UserInvitationEntity;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class UserInvitation
 {
     public function __construct(
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -30,7 +32,7 @@ final readonly class UserInvitation
 
         $mail->to($invitation->getEmail())
             ->from($invitation->getInvitedBy()?->getEmail())
-            ->subject(sprintf('Invitation to join %s', $invitation->getCompany()->getName()))
+            ->subject($this->translator->trans('invitation.title', ['%company%' => $invitation->getCompany()->getName()], 'email'))
             ->htmlTemplate('@SolidInvoiceUser/Email/invitation.html.twig')
             ->context([
                 'invitation' => $invitation,
@@ -45,7 +47,7 @@ final readonly class UserInvitation
 
         $mail->to($invitation->getEmail())
             ->from($invitation->getInvitedBy()?->getEmail())
-            ->subject(sprintf('Your invitation to join %s is about to expire', $invitation->getCompany()->getName()))
+            ->subject($this->translator->trans('invitation.reminder.title', ['%company%' => $invitation->getCompany()->getName()], 'email'))
             ->htmlTemplate('@SolidInvoiceUser/Email/invitation_reminder.html.twig')
             ->context([
                 'invitation' => $invitation,

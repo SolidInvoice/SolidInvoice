@@ -28,12 +28,12 @@ final class ConfigProvider implements ProviderInterface
     public function provide(array $data): array
     {
         return [
-            new Config('quote/watermark', '1', 'Display a watermark on the quote with the status', CheckboxType::class),
-            new Config('quote/bcc_address', null, 'Send BCC copy of quote to this address', EmailType::class),
-            new Config('quote/email_subject', 'New Quotation - #{id}', 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', TextType::class),
+            new Config('quote/watermark', '1', 'settings.description.quote.watermark', CheckboxType::class),
+            new Config('quote/bcc_address', null, 'settings.description.quote.bcc_address', EmailType::class),
+            new Config('quote/email_subject', 'New Quotation - #{id}', 'settings.description.quote.email_subject', TextType::class),
             new Config('quote/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
-            new Config('quote/id_generation/id_prefix', '', 'Example: QUOT-', TextType::class),
-            new Config('quote/id_generation/id_suffix', '', 'Example: -QUOT', TextType::class),
+            new Config('quote/id_generation/id_prefix', '', 'settings.description.quote.id_generation.id_prefix', TextType::class),
+            new Config('quote/id_generation/id_suffix', '', 'settings.description.quote.id_generation.id_suffix', TextType::class),
         ];
     }
 }

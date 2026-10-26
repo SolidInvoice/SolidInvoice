@@ -16,7 +16,7 @@ namespace SolidInvoice\CoreBundle\Enum;
 interface HasStatusLabel
 {
     /**
-     * Returns a human-friendly label for display on the frontend.
+     * Returns the translation key (`status.*`) of the label shown on the frontend.
      */
     public function getLabel(): string;
 

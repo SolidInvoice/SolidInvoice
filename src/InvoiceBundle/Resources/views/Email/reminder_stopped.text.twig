@@ -6,34 +6,36 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% autoescape false %}
 
-FINAL REMINDER SENT - MANUAL FOLLOW-UP REQUIRED
+{{ 'invoice.reminder_stopped.heading'|trans({}, 'email')|upper }}
 
-The final automated payment reminder has been sent for invoice {{ invoice.invoiceId }}{% if days_overdue is defined and days_overdue is not null %}, which is now {{ days_overdue }} days overdue{% endif %}. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.
+{% if days_overdue is defined and days_overdue is not null %}{{ 'invoice.reminder_email.stopped_days_overdue'|trans({'invoice': invoice.invoiceId, 'days': days_overdue}, 'messages') }}{% else %}{{ 'invoice.reminder_stopped.message'|trans({'%invoice%': invoice.invoiceId}, 'email') }}{% endif %}
 
-Invoice Details:
+{{ 'invoice.reminder.details'|trans({}, 'email') }}:
 ----------------
-Invoice Number: {{ invoice.invoiceId }}
+{{ 'invoice.overdue.invoice_number'|trans({}, 'email') }}: {{ invoice.invoiceId }}
 {% if invoice.client %}
-Client: {{ invoice.client.name }}
+{{ 'invoice.notification_overdue.client'|trans({}, 'email') }}: {{ invoice.client.name }}
 {% endif %}
 {% if invoice.due %}
-Due Date: {{ invoice.due|date('Y-m-d') }}
+{{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
 {% endif %}
 {% if days_overdue %}
-Days Overdue: {{ days_overdue }}
+{{ 'invoice.reminder_stopped.days_overdue'|trans({}, 'email') }}: {{ days_overdue }}
 {% endif %}
 {% if invoice.balance %}
-Outstanding Amount: {{ invoice.balance|formatCurrency(invoice.currency) }}
+{{ 'invoice.reminder_stopped.outstanding_amount'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.currency) }}
 {% endif %}
 
-Recommended Actions:
+{{ 'invoice.reminder_stopped.actions.heading'|trans({}, 'email') }}:
 -------------------
-- Contact the client directly via phone or email
-- Review the client's payment history and account status
-- Consider setting up a payment plan if needed
-- Evaluate whether further services should be provided
+- {{ 'invoice.reminder_stopped.actions.contact'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.history'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.payment_plan'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.services'|trans({}, 'email') }}
 
-View Invoice: {{ url("_view_invoice", {"id" : invoice.id}) }}
+{{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url("_view_invoice", {"id" : invoice.id}) }}
 
-This is an automated notification. No further reminder emails will be sent to the client for this invoice unless manually triggered.
+{{ 'invoice.reminder_stopped.footer'|trans({}, 'email') }}
+{% endautoescape %}

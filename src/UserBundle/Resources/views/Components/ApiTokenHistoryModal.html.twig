@@ -14,7 +14,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="apiTokenHistoryModalLabel">
                             {{ ux_icon('tabler:history', {width: 20, height: 20, class: 'me-2'}) }}
-                            API Request History - {{ this.token.name }}
+                            {{ 'profile.api.history.modal_title'|trans({'%name%': this.token.name}) }}
                         </h5>
                         <button type="button"
                                 class="btn-close"
@@ -24,7 +24,7 @@
                     <div class="modal-body p-0">
                         <div class="alert alert-info m-3 mb-0" role="alert">
                             {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'me-2'}) }}
-                            Showing API requests made with this token.
+                            {{ 'profile.api.history.description'|trans }}
                         </div>
                         <div class="p-3">
                             <twig:DataGrid
@@ -37,14 +37,14 @@
                         <button type="button"
                                 class="btn"
                                 data-bs-dismiss="modal">
-                            Close
+                            {{ 'action.close'|trans }}
                         </button>
                     </div>
                 {% else %}
                     <div class="modal-body">
                         <div class="text-center py-5">
                             <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ 'label.loading'|trans }}</span>
                             </div>
                         </div>
                     </div>

@@ -21,6 +21,7 @@ final readonly class TranslationReference
     public function __construct(
         public string $translationId,
         public array $parameters = [],
+        public ?string $domain = null,
     ) {
     }
 }

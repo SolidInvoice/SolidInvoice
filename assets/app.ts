@@ -3,7 +3,6 @@ import './webmcp';
 
 import { getApp, registerControllers } from '@solidworx/platform';
 
-import PasswordStrength from './controllers/password-strength-controller';
 
 // Reuse the Stimulus application the platform's `_platform_ui` entry bootstraps,
 // rather than starting a second one that would register every controller twice.
@@ -15,6 +14,5 @@ registerControllers(require.context(
     /\.[jt]sx?$/
 ));
 
-app.register('password-strength', PasswordStrength);
 
 export default app

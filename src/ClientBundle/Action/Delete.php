@@ -39,7 +39,7 @@ final readonly class Delete
         $token = $request->request->get('_token');
 
         if (! $this->csrfTokenManager->isTokenValid(new CsrfToken('delete' . $client->getId(), $token))) {
-            $session->getFlashBag()->add('danger', $this->translator->trans('Invalid CSRF token'));
+            $session->getFlashBag()->add('danger', $this->translator->trans('client.delete_invalid_csrf'));
 
             return new RedirectResponse($this->router->generate('_clients_view', ['id' => $client->getId()]));
         }

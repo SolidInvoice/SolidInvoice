@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Enum;
 
-enum TaxType: string
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+enum TaxType: string implements TranslatableInterface
 {
     case Inclusive = 'Inclusive';
     case Exclusive = 'Exclusive';
@@ -22,9 +25,14 @@ enum TaxType: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::Inclusive => 'Inclusive',
-            self::Exclusive => 'Exclusive',
-            self::FlatRate => 'Flat Rate',
+            self::Inclusive => 'tax.inclusive',
+            self::Exclusive => 'tax.exclusive',
+            self::FlatRate => 'tax.flat_rate',
         };
+    }
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return $translator->trans($this->getLabel(), [], null, $locale);
     }
 }

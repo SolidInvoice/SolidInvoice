@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Carbon\CarbonImmutable;
+use Locale;
 use Override;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -79,7 +81,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
                 '%days%' => $daysRemaining,
                 '%count%' => $daysRemaining,
                 '%plan%' => $context->plan->getName(),
-                '%date%' => $context->trialEnd->format('F j'),
+                '%date%' => CarbonImmutable::instance($context->trialEnd)->locale(Locale::getDefault())->translatedFormat('F j'),
             ],
             'email',
         ));

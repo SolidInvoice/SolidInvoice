@@ -24,9 +24,9 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter\ColumnFormatterTest
@@ -45,7 +45,7 @@ final readonly class ColumnFormatter implements ServiceSubscriberInterface, Form
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function format(Column $column, mixed $value): string | TranslatableMessage
+    public function format(Column $column, mixed $value): string | TranslatableInterface
     {
         if (! $this->locator->has($column::class)) {
             // @phpstan-ignore-next-line

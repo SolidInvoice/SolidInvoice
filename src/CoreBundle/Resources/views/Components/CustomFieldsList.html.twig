@@ -49,7 +49,7 @@
                             {% elseif t == 'email' %}
                                 <a href="mailto:{{ row.raw }}">{{ row.raw }}</a>
                             {% elseif t == 'date' %}
-                                {{ row.raw|date('M d, Y') }}
+                                {{ row.raw|format_date('medium') }}
                             {% elseif t == 'textarea' %}
                                 <span class="text-pre-wrap">{{ row.formatted|nl2br }}</span>
                             {% elseif t == 'checkbox' %}

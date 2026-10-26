@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Service;
 
+use Carbon\CarbonImmutable;
+use Locale;
 use Psr\Clock\ClockInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -52,7 +54,7 @@ final readonly class TrialBannerResolver
                 'tabler:alert-circle',
                 'saas.trial_banner.cancelled.title',
                 'saas.trial_banner.cancelled.message',
-                ['%date%' => $subscription->getEndDate()->format('F j, Y')],
+                ['%date%' => CarbonImmutable::instance($subscription->getEndDate())->locale(Locale::getDefault())->translatedFormat('F j, Y')],
                 'saas.trial_banner.cancelled.cta',
             );
         }
@@ -88,7 +90,7 @@ final readonly class TrialBannerResolver
         }
 
         $plan = $subscription->getPlan();
-        $params = ['%plan%' => $plan->getName(), '%date%' => $endDate->format('F j')];
+        $params = ['%plan%' => $plan->getName(), '%date%' => CarbonImmutable::instance($endDate)->locale(Locale::getDefault())->translatedFormat('F j')];
         $couponCode = $this->billingMode->couponCode();
 
         if ($couponCode !== '' && $daysRemaining <= $this->couponDays) {

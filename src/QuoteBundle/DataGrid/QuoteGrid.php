@@ -32,7 +32,7 @@ final class QuoteGrid extends BaseQuoteGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Archive')
+        yield BatchAction::new('action.archive')
             ->icon('trash')
             ->color('warning')
             ->action(static function (QuoteRepository $repository, array $selectedItems): void {
@@ -70,7 +70,7 @@ final class QuoteGrid extends BaseQuoteGrid
     #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
-        return new TranslatableMessage('Create Quote');
+        return new TranslatableMessage('quote.create.new');
     }
 
     #[Override]

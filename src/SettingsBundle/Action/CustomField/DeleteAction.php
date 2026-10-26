@@ -43,7 +43,7 @@ final class DeleteAction extends AbstractController
 
         $token = (string) $request->request->get('_token');
         if (! $this->isCsrfTokenValid('cf_delete_' . $id, $token)) {
-            $this->addFlash('error', 'Invalid CSRF token. Please try again.');
+            $this->addFlash('error', 'custom_field.flash.invalid_csrf');
             return new RedirectResponse($this->generateUrl('_settings_custom_fields'));
         }
 

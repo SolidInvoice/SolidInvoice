@@ -24,6 +24,8 @@ use SolidInvoice\InvoiceBundle\Listener\Mailer\ReminderSubjectListener;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 
 #[CoversClass(ReminderSubjectListener::class)]
 final class ReminderSubjectListenerTest extends TestCase
@@ -37,7 +39,7 @@ final class ReminderSubjectListenerTest extends TestCase
 
         $email = new InvoiceReminderEmail($invoice, ReminderType::PreDue, 3);
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -53,7 +55,7 @@ final class ReminderSubjectListenerTest extends TestCase
 
         $email = new InvoiceReminderEmail($invoice, ReminderType::Overdue1);
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -69,7 +71,7 @@ final class ReminderSubjectListenerTest extends TestCase
 
         $email = new InvoiceReminderEmail($invoice, ReminderType::Overdue7);
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -85,7 +87,7 @@ final class ReminderSubjectListenerTest extends TestCase
 
         $email = new InvoiceReminderEmail($invoice, ReminderType::Overdue14);
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -99,7 +101,7 @@ final class ReminderSubjectListenerTest extends TestCase
         $email = M::mock(Email::class);
         $email->shouldNotReceive('setSubject');
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -114,7 +116,7 @@ final class ReminderSubjectListenerTest extends TestCase
         $email = new InvoiceReminderEmail($invoice, ReminderType::PreDue);
         $email->subject('Custom Subject');
 
-        $listener = new ReminderSubjectListener();
+        $listener = new ReminderSubjectListener($this->translator());
 
         $event = new MessageEvent($email, M::mock(Envelope::class), 'smtp');
 
@@ -122,5 +124,14 @@ final class ReminderSubjectListenerTest extends TestCase
 
         // Should not modify existing subject
         self::assertSame('Custom Subject', $email->getSubject());
+    }
+
+    private function translator(): Translator
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', dirname(__DIR__, 5) . '/translations/email.en.yml', 'en', 'email');
+
+        return $translator;
     }
 }

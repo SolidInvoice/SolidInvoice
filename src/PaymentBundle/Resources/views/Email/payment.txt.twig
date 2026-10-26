@@ -23,7 +23,7 @@
 {% endif %}
 
 {{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method.name ?? payment.method }}
-{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|date }}
+{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|format_datetime('long', 'short') }}
 {{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status.label }}
 
 {% if payment.invoice is not empty %}

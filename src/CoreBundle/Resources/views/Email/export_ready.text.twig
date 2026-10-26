@@ -5,7 +5,7 @@
  #
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
- #}
+ #}{% autoescape false %}
 {{ 'export.email.ready'|trans|upper }}
 
 {{ 'export.email.ready_body'|trans }}
@@ -14,9 +14,10 @@
 ----------------
 {{ 'export.format'|trans }}: {{ job.format.value|upper }}
 {{ 'export.email.requested'|trans }}: {{ job.createdAt|date('Y-m-d H:i') }}
-{% if job.fileSize %}{{ 'export.email.archive_size'|trans }}: {{ (job.fileSize / 1024 / 1024)|number_format(2) }} MB
+{% if job.fileSize %}{{ 'export.email.archive_size'|trans }}: {{ 'export.email.archive_size_value'|trans({'%size%': (job.fileSize / 1024 / 1024)|number_format(2)}) }}
 {% endif %}
 
 {{ 'export.email.download_link'|trans }}: {{ downloadUrl }}
 
 {{ 'export.email.auth_note'|trans }}
+{% endautoescape %}

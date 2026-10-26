@@ -17,11 +17,12 @@ use const PHP_VERSION;
 use const PHP_VERSION_ID;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Requirements\SymfonyRequirements;
 use function get_cfg_var;
 use function getcwd;
+use function htmlspecialchars;
 use function is_writable;
-use function sprintf;
 use function str_replace;
 
 /**
@@ -36,17 +37,12 @@ class AppRequirements extends SymfonyRequirements
         string $cacheDir,
         #[Autowire(param: 'kernel.logs_dir')]
         string $logsDir,
+        TranslatorInterface $translator,
     ) {
         $this->addRequirement(
             PHP_VERSION_ID >= 80400,
-            sprintf('PHP version must be at least %s (%s installed)', '8.4.0', PHP_VERSION),
-            sprintf(
-                'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
-            Before using SolidInvoice, upgrade your PHP installation, preferably to the latest version.',
-                PHP_VERSION,
-                '8.4.0',
-            ),
-            sprintf('Install PHP %s or newer (installed version is %s)', '8.4.0', PHP_VERSION)
+            $translator->trans('installation.requirements_check.php_version.test', ['%required%' => '8.4.0', '%installed%' => PHP_VERSION]),
+            $translator->trans('installation.requirements_check.php_version.help', ['%required%' => '8.4.0', '%installed%' => PHP_VERSION]),
         );
 
         $configDir = dirname($configDir);
@@ -55,9 +51,8 @@ class AppRequirements extends SymfonyRequirements
 
             $this->addRequirement(
                 is_writable($dir),
-                sprintf('The "%s" directory must be writable', $trimmedDir),
-                sprintf('Make the "%s" directory writable by the web server user.', $trimmedDir),
-                sprintf('Give write permissions to the "%s" directory', $trimmedDir)
+                $translator->trans('installation.requirements_check.writable_dir.test', ['%dir%' => $trimmedDir]),
+                $translator->trans('installation.requirements_check.writable_dir.help', ['%dir%' => htmlspecialchars($trimmedDir)]),
             );
         }
 
@@ -65,20 +60,20 @@ class AppRequirements extends SymfonyRequirements
 
         $this->addRequirement(
             extension_loaded('openssl'),
-            'openssl must be loaded',
-            'Install and enable the <strong>Openssl</strong> extension.'
+            $translator->trans('installation.requirements_check.openssl.test'),
+            $translator->trans('installation.requirements_check.openssl.help'),
         );
 
         $this->addRecommendation(
             extension_loaded('mbstring'),
-            'mbstring extension is required to generate PDF invoices and quotes',
-            'Install the PHP mbstring extension'
+            $translator->trans('installation.requirements_check.mbstring.test'),
+            $translator->trans('installation.requirements_check.mbstring.help'),
         );
 
         $this->addRecommendation(
             extension_loaded('gd'),
-            'GD extension is required to generate PDF invoices and quotes',
-            'Install the PHP GD extension'
+            $translator->trans('installation.requirements_check.gd.test'),
+            $translator->trans('installation.requirements_check.gd.help'),
         );
     }
 

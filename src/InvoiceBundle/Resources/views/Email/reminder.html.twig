@@ -12,15 +12,15 @@
 
 {%- block title -%}
     {%- if reminder_type == 'pre_due' -%}
-        Upcoming Payment Due
+        {{ 'invoice.reminder.title.pre_due'|trans({}, 'email') }}
     {%- elseif reminder_type == 'overdue_1' -%}
-        Payment Reminder
+        {{ 'invoice.reminder.title.overdue_1'|trans({}, 'email') }}
     {%- elseif reminder_type == 'overdue_7' -%}
-        Payment Overdue
+        {{ 'invoice.reminder.title.overdue_7'|trans({}, 'email') }}
     {%- elseif reminder_type == 'overdue_14' -%}
-        Urgent: Payment Required
+        {{ 'invoice.reminder.title.overdue_14'|trans({}, 'email') }}
     {%- else -%}
-        Invoice Reminder
+        {{ 'invoice.reminder.title.default'|trans({}, 'email') }}
     {%- endif -%}
 {%- endblock -%}
 
@@ -30,35 +30,35 @@
             <columns>
                 {%- if reminder_type == 'pre_due' -%}
                     <p style="color: #0891b2; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                        💡 Friendly Reminder
+                        💡 {{ 'invoice.reminder.heading.pre_due'|trans({}, 'email') }}
                     </p>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        This is a friendly reminder that invoice <strong>{{ invoice.invoiceId }}</strong> is due in {{ days_until_due }} {{ days_until_due == 1 ? 'day' : 'days' }}. We wanted to give you advance notice to make payment arrangements convenient.
+                        {{ 'invoice.reminder_email.pre_due'|trans({'invoice': '<strong>' ~ invoice.invoiceId|e ~ '</strong>', 'days': days_until_due ?? 0}, 'messages')|raw }}
                     </p>
                 {%- elseif reminder_type == 'overdue_1' -%}
                     <p style="color: #f59e0b; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                        📋 Payment Reminder
+                        📋 {{ 'invoice.reminder.heading.overdue_1'|trans({}, 'email') }}
                     </p>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        Invoice <strong>{{ invoice.invoiceId }}</strong> became overdue yesterday. If you've already sent payment, please disregard this reminder. Otherwise, we'd appreciate your prompt attention to settle this invoice.
+                        {{ 'invoice.reminder.message.overdue_1'|trans({'%invoice%': '<strong>' ~ invoice.invoiceId|e ~ '</strong>'}, 'email')|raw }}
                     </p>
                 {%- elseif reminder_type == 'overdue_7' -%}
                     <p style="color: #ea580c; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                        ⏰ Payment Overdue
+                        ⏰ {{ 'invoice.reminder.heading.overdue_7'|trans({}, 'email') }}
                     </p>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        Invoice <strong>{{ invoice.invoiceId }}</strong> is now 7 days overdue. Please arrange payment at your earliest convenience. If there are any issues preventing payment, please contact us so we can help resolve them.
+                        {{ 'invoice.reminder_email.overdue_7'|trans({'invoice': '<strong>' ~ invoice.invoiceId|e ~ '</strong>', 'days': 7}, 'messages')|raw }}
                     </p>
                 {%- elseif reminder_type == 'overdue_14' -%}
                     <p style="color: #dc2626; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                        🚨 Urgent: Immediate Action Required
+                        🚨 {{ 'invoice.reminder.heading.overdue_14'|trans({}, 'email') }}
                     </p>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        Invoice <strong>{{ invoice.invoiceId }}</strong> remains unpaid after 14 days. This is our final automated reminder. Immediate payment is required to avoid service interruption. Please contact us if you need to discuss payment arrangements.
+                        {{ 'invoice.reminder_email.overdue_14'|trans({'invoice': '<strong>' ~ invoice.invoiceId|e ~ '</strong>', 'days': 14}, 'messages')|raw }}
                     </p>
                 {%- else -%}
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        This is a reminder about invoice <strong>{{ invoice.invoiceId }}</strong>.
+                        {{ 'invoice.reminder.message.default'|trans({'%invoice%': '<strong>' ~ invoice.invoiceId|e ~ '</strong>'}, 'email')|raw }}
                     </p>
                 {%- endif -%}
             </columns>
@@ -68,21 +68,21 @@
     {{ email.spacer('sm') }}
 
     {# Invoice details #}
-    {{ email.info_row('Invoice Number', invoice.invoiceId) }}
+    {{ email.info_row('invoice.overdue.invoice_number'|trans({}, 'email'), invoice.invoiceId) }}
 
     {% if invoice.invoiceDate %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Invoice Date', invoice.invoiceDate|date('Y-m-d')) }}
+        {{ email.info_row('invoice.reminder.invoice_date'|trans({}, 'email'), invoice.invoiceDate|date('Y-m-d')) }}
     {% endif %}
 
     {% if invoice.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Due Date', invoice.due|date('Y-m-d')) }}
+        {{ email.info_row('invoice.due'|trans({}, 'email'), invoice.due|date('Y-m-d')) }}
     {% endif %}
 
     {% if invoice.balance %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Amount Due', invoice.balance|formatCurrency(invoice.currency), true) }}
+        {{ email.info_row('invoice.reminder.amount_due'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.currency), true) }}
     {% endif %}
 
     {{ email.divider('md') }}
@@ -92,9 +92,9 @@
             <columns>
                 <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
                     {%- if reminder_type == 'pre_due' -%}
-                        Thank you for your business. We appreciate prompt payment.
+                        {{ 'invoice.reminder.closing.pre_due'|trans({}, 'email') }}
                     {%- else -%}
-                        We appreciate your immediate attention to this matter.
+                        {{ 'invoice.reminder.closing.overdue'|trans({}, 'email') }}
                     {%- endif -%}
                 </p>
             </columns>
@@ -104,7 +104,7 @@
     {{ email.spacer('sm') }}
 
     {# View/Pay button #}
-    {{ email.button('View Invoice & Pay', url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
+    {{ email.button('invoice.reminder.view_and_pay'|trans({}, 'email'), url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
@@ -112,7 +112,7 @@
         <row>
             <columns>
                 <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
-                    If you have any questions or concerns about this invoice, please don't hesitate to contact us.
+                    {{ 'invoice.reminder.contact'|trans({}, 'email') }}
                 </p>
             </columns>
         </row>

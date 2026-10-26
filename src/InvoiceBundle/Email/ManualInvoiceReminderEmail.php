@@ -29,7 +29,6 @@ final class ManualInvoiceReminderEmail extends TemplatedEmail implements ClientE
     ) {
         parent::__construct();
 
-        $this->subject('Payment Reminder: Invoice ' . $invoice->getInvoiceId());
         $this->htmlTemplate('@SolidInvoiceInvoice/Email/manual_reminder.html.twig');
         $this->textTemplate('@SolidInvoiceInvoice/Email/manual_reminder.text.twig');
         $this->context(['invoice' => $this->invoice]);

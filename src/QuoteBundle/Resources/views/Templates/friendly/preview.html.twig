@@ -35,13 +35,13 @@
                 <div class="col-md-4 mb-2">
                     <div class="p-3 rounded" style="background: #fff1e0;">
                         <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'quote.pdf.date'|trans }}</div>
-                        <strong>{{ quote.created|date('M j, Y') }}</strong>
+                        <strong>{{ quote.created|format_date('medium') }}</strong>
                     </div>
                 </div>
                 <div class="col-md-4 mb-2">
                     <div class="p-3 rounded" style="background: #fff1e0;">
                         <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'quote.pdf.valid_until'|trans }}</div>
-                        <strong>{% if quote.due %}{{ quote.due|date('M j, Y') }}{% else %}—{% endif %}</strong>
+                        <strong>{% if quote.due %}{{ quote.due|format_date('medium') }}{% else %}—{% endif %}</strong>
                     </div>
                 </div>
                 <div class="col-md-4 mb-2">
@@ -55,9 +55,9 @@
             <table class="table">
                 <thead>
                     <tr style="border-bottom: 1px solid #e8d7b8;">
-                        <th class="text-uppercase small" style="color: #94704a;">{{ 'quote.item.heading.description'|trans }}</th>
+                        <th class="text-uppercase small" style="color: #94704a;">{{ 'label.description'|trans }}</th>
                         <th class="text-uppercase small text-end" style="color: #94704a;">{{ 'quote.item.heading.qty'|trans }}</th>
-                        <th class="text-uppercase small text-end" style="color: #94704a;">{{ 'quote.item.heading.total'|trans }}</th>
+                        <th class="text-uppercase small text-end" style="color: #94704a;">{{ 'billing.total'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,10 +74,10 @@
             <div class="row justify-content-end mt-4">
                 <div class="col-md-5">
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'quote.subtotal'|trans }}</span><span>{{ quote.baseTotal|formatCurrency(currency) }}</span></div>
-                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
-                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'quote.discount'|trans }}</span><span class="text-danger">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'billing.tax'|trans }}</span><span>{{ quote.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if quote.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'billing.discount'|trans }}</span><span class="text-danger">-{{ discount(quote)|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between p-3 rounded" style="background: #ecf7ee;">
-                        <strong>{{ 'quote.total'|trans }}</strong>
+                        <strong>{{ 'billing.total'|trans }}</strong>
                         <strong style="color: #166534;" class="fs-4">{{ quote.total|formatCurrency(currency) }}</strong>
                     </div>
                 </div>

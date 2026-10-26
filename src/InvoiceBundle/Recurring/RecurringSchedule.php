@@ -25,6 +25,7 @@ use NumberFormatter;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_slice;
 use function array_sum;
 
@@ -35,7 +36,8 @@ readonly class RecurringSchedule
 {
     public function __construct(
         private string $locale,
-        private ClockInterface $clock
+        private ClockInterface $clock,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -148,13 +150,31 @@ readonly class RecurringSchedule
             return '';
         }
 
-        $formatter = new NumberFormatter($this->locale, NumberFormatter::ORDINAL);
+        $type = $options->getType();
+        $days = $options->getDays();
 
-        return ($options->getType()->isDaily() || [] !== $options->getDays()) ? 'Every ' . match ($options->getType()) {
-            ScheduleRecurringType::DAILY => 'day',
-            ScheduleRecurringType::WEEKLY => Arr::join(array_map(static fn (WeekDay $day) => $day->name, array_map(WeekDay::from(...), $options->getDays())), ', ', ' and '),
-            ScheduleRecurringType::MONTHLY => sprintf('%s of the month', Arr::join(array_map(static fn ($day) => $formatter->format((int) $day), $options->getDays()), ', ', ' and ')),
-            ScheduleRecurringType::YEARLY => Arr::join(array_map(static fn ($month) => CarbonImmutable::create(null, $month)?->format('F'), $options->getDays()), ', ', ' and '),
-        } : '';
+        if (! $type->isDaily() && [] === $days) {
+            return '';
+        }
+
+        $formatter = new NumberFormatter($this->locale, NumberFormatter::ORDINAL);
+        $join = fn (array $items): string => Arr::join(
+            $items,
+            $this->translator->trans('invoice.recurring.frequency_summary.list_separator'),
+            $this->translator->trans('invoice.recurring.frequency_summary.list_last_separator'),
+        );
+
+        return match ($type) {
+            ScheduleRecurringType::DAILY => $this->translator->trans('invoice.recurring.frequency_summary.daily'),
+            ScheduleRecurringType::WEEKLY => $this->translator->trans('invoice.recurring.frequency_summary.weekly', [
+                '%days%' => $join(array_map(fn ($day): string => $this->translator->trans('invoice.recurring.days.' . strtolower(($day instanceof WeekDay ? $day : WeekDay::from((int) $day))->name)), $days)),
+            ]),
+            ScheduleRecurringType::MONTHLY => $this->translator->trans('invoice.recurring.frequency_summary.monthly', [
+                '%days%' => $join(array_map(static fn ($day): string => (string) $formatter->format((int) $day), $days)),
+            ]),
+            ScheduleRecurringType::YEARLY => $this->translator->trans('invoice.recurring.frequency_summary.yearly', [
+                '%months%' => $join(array_map(fn ($month): string => $this->translator->trans('invoice.recurring.months.' . strtolower((string) CarbonImmutable::create(null, (int) $month)?->format('F'))), $days)),
+            ]),
+        };
     }
 }

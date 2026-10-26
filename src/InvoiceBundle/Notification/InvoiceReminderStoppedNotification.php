@@ -27,8 +27,8 @@ use Twig\Environment;
  */
 #[AsNotification(
     name: self::EVENT,
-    title: 'Invoice Requires Manual Follow-up',
-    description: 'Notifies user after final automated reminder has been sent for an overdue invoice',
+    title: 'notifications.events.invoice_reminder_stopped.title',
+    description: 'notifications.events.invoice_reminder_stopped.description',
     icon: 'tabler:bell-off',
     category: NotificationCategory::INVOICE,
 )]
@@ -46,12 +46,15 @@ class InvoiceReminderStoppedNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        $parameters = $this->getParameters();
-        $invoiceId = $parameters['invoice']?->getInvoiceId() ?? '';
+        return 'invoice.reminder_stopped.subject';
+    }
 
-        return sprintf('Final Reminder Sent for Invoice %s - Manual Follow-up Required', $invoiceId);
+    #[Override]
+    public function getSubjectParameters(): array
+    {
+        return ['%id%' => (string) ($this->getParameters()['invoice']?->getInvoiceId() ?? '')];
     }
 
     #[Override]

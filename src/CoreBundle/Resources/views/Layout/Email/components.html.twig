@@ -247,8 +247,8 @@
                     {% if show_powered_by and not (setting('system/general/hide_powered_by') is same as('1') and feature_enabled('custom_branding')) %}
                         {% set powered_by_url = 'https://solidinvoice.co/invoiced-with-solidinvoice?utm_source=email&utm_medium=product&utm_campaign=g02-powered-by&utm_content=' ~ (toggle('saas_enabled') ? 'cloud' : 'self-hosted') %}
                         <p style="font-size: 14px; color: #626976; margin: 0; Margin: 0;">
-                            {{ "powered_by"|trans({}, 'email') }} <a href="{{ powered_by_url }}" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a>{% if app_version %} - {{ app_version }}{% endif %}
-                            &middot; <a href="{{ powered_by_url }}" target="_blank" style="color: #206bc4; text-decoration: none;">{{ "powered_by_cta"|trans({}, 'email') }}</a>
+                            {{ "layout.powered_by"|trans({}, 'email') }} <a href="{{ powered_by_url }}" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a>{% if app_version %} - {{ app_version }}{% endif %}
+                            &middot; <a href="{{ powered_by_url }}" target="_blank" style="color: #206bc4; text-decoration: none;">{{ "layout.powered_by_cta"|trans({}, 'email') }}</a>
                         </p>
                     {% endif %}
 

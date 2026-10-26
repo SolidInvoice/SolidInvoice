@@ -27,15 +27,7 @@ enum RecurringInvoiceStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::New => 'New',
-            self::Active => 'Active',
-            self::Complete => 'Complete',
-            self::Draft => 'Draft',
-            self::Paused => 'Paused',
-            self::Cancelled => 'Cancelled',
-            self::Archived => 'Archived',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

@@ -25,6 +25,11 @@
                 </div>
 
                 {# Active Filter Chips #}
+                {% set filterLabels = {} %}
+                {% for column in grid.columns %}
+                    {% set filterLabels = filterLabels|merge({(column.field): column.getLabel()}) %}
+                {% endfor %}
+
                 {% if gridFilters is not empty %}
                     <div class="datagrid-active-filters">
                         {% for key, value in gridFilters %}
@@ -34,10 +39,10 @@
                                 {% if value.start is defined or value.end is defined %}
                                     {% set parts = [] %}
                                     {% if value.start is defined and value.start %}
-                                        {% set parts = parts|merge(['From: ' ~ value.start]) %}
+                                        {% set parts = parts|merge(['datagrid.filter.date_range.from'|trans({'%date%': value.start})]) %}
                                     {% endif %}
                                     {% if value.end is defined and value.end %}
-                                        {% set parts = parts|merge(['To: ' ~ value.end]) %}
+                                        {% set parts = parts|merge(['datagrid.filter.date_range.to'|trans({'%date%': value.end})]) %}
                                     {% endif %}
                                     {% set displayValue = parts|join(' ') %}
                                 {% else %}
@@ -53,7 +58,7 @@
                                 data-live-filter-key-param="{{ key }}"
                                 title="{{ 'datagrid.filter.remove'|trans }}"
                             >
-                                <span class="datagrid-active-filter-key">{{ key|replace({'_': ' '})|title }}</span>
+                                <span class="datagrid-active-filter-key">{{ filterLabels[key]|default(key)|trans }}</span>
                                 <span class="datagrid-active-filter-value">{{ displayValue }}</span>
                                 {{ ux_icon('tabler:x', {width: 14, height: 14, class: 'datagrid-active-filter-remove'}) }}
                             </button>
@@ -94,7 +99,7 @@
                                 {% for child in form.children|filter(c => c.vars.name != '_token') %}
                                     <div class="datagrid-filter-field">
                                         <label class="datagrid-filter-label">
-                                            {{ child.vars.name|replace({'_': ' '})|title }}
+                                            {{ filterLabels[child.vars.name]|default(child.vars.name)|trans }}
                                         </label>
                                         <div class="datagrid-filter-widget">
                                             {# Check if this is an expanded choice (checkboxes/radios) #}
@@ -104,7 +109,7 @@
                                                     <div class="form-check">
                                                         {{ form_widget(choice, {attr: {class: 'form-check-input'}}) }}
                                                         <label class="form-check-label" for="{{ choice.vars.id }}">
-                                                            {{ choice.vars.label }}
+                                                            {{ choice.vars.label|trans }}
                                                         </label>
                                                     </div>
                                                 {% endfor %}
@@ -376,7 +381,7 @@
 
                                                     <a
                                                         href="{{ path(action.getRoute, params) }}"
-                                                        class="datagrid-action-btn action-{{ action.getLabel|lower|replace({' ': '-'}) }}"
+                                                        class="datagrid-action-btn action-{{ action.getLabel|split('.')|last|lower|replace({' ': '-', '_': '-'}) }}"
                                                         title="{{ action.getLabel|trans }}"
                                                         aria-label="{{ action.getLabel|trans }}"
                                                     >

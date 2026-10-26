@@ -381,15 +381,21 @@ Live Components (`symfony/ux-live-component`, and `Twig/Components/` directories
 
 ## 8. Translations — no hard-coded strings
 
-`TRANSLATING.md` is a real spec and it is enforced socially, not by a linter. The rules
-that bite:
+`TRANSLATING.md` is a real spec, and CI enforces it: `translations-lint.yml` runs
+`lint:yaml`, `lint:translations`, `lint:twig` and
+`src/CoreBundle/Tests/Translation/TranslationCatalogTest.php` (sorted snake_case keys, ICU
+plurals, no undefined/unused keys, no natural-language keys, no hard-coded template text).
+The rules that bite:
 
 - **No hard-coded user-facing English**, anywhere: templates, forms, controllers,
   validators, enums.
 - Catalogs are app-level, one file per domain+locale: `translations/<domain>.<locale>.yml`.
   They are **not** split per bundle.
 - Domains are a fixed small set: `messages` (default), `email`, `validators`, plus
-  `messages+intl-icu` only where ICU plural/select is needed.
+  `messages+intl-icu` only where ICU plural/select is needed. Plurals are always ICU — the
+  legacy `{1}…|]1,Inf[` syntax fails the lint.
+- Whole sentences with `%placeholders%`; never concatenate translated fragments.
+- JS has no translator: pass translated strings to Stimulus controllers as values.
 - Keys are dotted, lowercase, feature-namespaced (`invoice.list.title`), stored **nested**
   and alphabetically sorted. English is the source locale.
 - **Never use natural-language text as a key.** `'Save'|trans` is wrong — use `action.save`.

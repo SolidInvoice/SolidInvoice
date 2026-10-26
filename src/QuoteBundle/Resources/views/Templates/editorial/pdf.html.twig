@@ -23,10 +23,10 @@
             </td>
             <td style="vertical-align: bottom; text-align: right;">
                 <div style="font-style: italic; font-size: 14pt; color: #2a2a2a;">{{ company_name() }}</div>
-                <div style="font-size: 9pt; color: #6b6b6b;">{{ quote.created|date('F j, Y') }}</div>
+                <div style="font-size: 9pt; color: #6b6b6b;">{{ quote.created|format_date('long') }}</div>
                 {% if quote.due %}
                     <div style="font-size: 9pt; color: #6b6b6b;">
-                        {{ 'quote.pdf.valid_until'|trans }} {{ quote.due|date('F j, Y') }}
+                        {{ 'quote.pdf.valid_until'|trans }} {{ quote.due|format_date('long') }}
                         {{ q.validity_indicator(quote) }}
                     </div>
                 {% endif %}
@@ -44,7 +44,7 @@
     </tr>
 </table>
 
-<div class="editorial-marker" style="margin-bottom: 12px;">III. {{ 'quote.item.heading.description'|trans }}</div>
+<div class="editorial-marker" style="margin-bottom: 12px;">III. {{ 'label.description'|trans }}</div>
 <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
     {% for line in quote.lines %}
         <tr>
@@ -59,7 +59,7 @@
     {% endfor %}
 </table>
 
-<div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'quote.total'|trans }}</div>
+<div class="editorial-marker" style="margin-bottom: 12px; text-align: right;">IV. {{ 'billing.total'|trans }}</div>
 {{ q.totals_block(quote, currency, {totalBg: '#f5ebd9', totalColor: '#1e293b', totalLabelColor: '#1a1a1a', mono: 'Georgia, serif'}) }}
 {{ q.terms_block(quote, {labelColor: '#7c4a1e', borderColor: '#e8dcc4'}) }}
 {% endblock %}
