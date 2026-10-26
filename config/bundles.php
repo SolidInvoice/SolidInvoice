@@ -60,7 +60,6 @@ use Symfony\UX\StimulusBundle\StimulusBundle;
 use Symfony\UX\TogglePassword\TogglePasswordBundle;
 use Symfony\UX\TwigComponent\TwigComponentBundle;
 use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
-use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
 use Zenstruck\Foundry\ZenstruckFoundryBundle;
 use Zenstruck\Mailer\Test\ZenstruckMailerTestBundle;
 
@@ -109,7 +108,6 @@ return [
     BabDevPagerfantaBundle::class => ['all' => true],
     KnpUOAuth2ClientBundle::class => ['all' => true],
     TogglePasswordBundle::class => ['all' => true],
-    SymfonyCastsResetPasswordBundle::class => ['all' => true],
     ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
     SolidWorxPlatformUiBundle::class => ['all' => true],
     ChartjsBundle::class => ['all' => true],

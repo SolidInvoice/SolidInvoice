@@ -78,7 +78,12 @@
                                     {%- else %}
                                         {{ 'client.form.feature_gated.generic'|trans }}
                                     {%- endif %}
-                                    <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'client.form.feature_gated.upgrade'|trans }}</a>
+                                    {%- set trial = trial_offer(form.currencyCode.vars.feature_gated_feature) %}
+                                    {%- if trial %}
+                                        <a href="{{ trial.url }}" class="ms-1">{{ (trial.moving_up ? 'feature.trial_move_up' : 'feature.trial_start_short')|trans({'%plan%': trial.plan}) }}</a>
+                                    {%- else %}
+                                        <a href="{{ path('saas_subscription_plans') }}" class="ms-1">{{ 'client.form.feature_gated.upgrade'|trans }}</a>
+                                    {%- endif %}
                                 </small>
                             {%- endif %}
                         </div>

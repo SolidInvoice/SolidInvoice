@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
@@ -96,7 +97,7 @@ final class OnboardingStepTriggerTest extends TestCase
         // context() starts the subscription on 2026-01-01, here the day it moved to Free.
         self::assertFalse($step->shouldSend($this->context('2026-01-30 23:00', free: true)));
         self::assertTrue($step->shouldSend($this->context('2026-01-31 00:00', free: true)));
-        self::assertFalse($step->shouldSend($this->context('2026-02-15')), 'still on the trial');
+        self::assertSame(OnboardingAudience::Free, $step::audience(), 'never sent during a trial');
     }
 
     public function testVerifyRemindersGoToUnverifiedUsersAt24And72Hours(): void
@@ -108,6 +109,16 @@ final class OnboardingStepTriggerTest extends TestCase
         self::assertTrue($first->shouldSend($this->context('2026-01-02 00:00')));
         self::assertFalse($final->shouldSend($this->context('2026-01-03 23:00')));
         self::assertTrue($final->shouldSend($this->context('2026-01-04 00:00')));
+    }
+
+    public function testAnAccountReachedAfter72HoursOnlyGetsTheFinalVerifyReminder(): void
+    {
+        $first = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+        $final = new VerifyEmailFinalReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+
+        self::assertTrue($first->shouldSend($this->context('2026-01-03 23:00')));
+        self::assertFalse($first->shouldSend($this->context('2026-01-04 00:00')));
+        self::assertTrue($final->shouldSend($this->context('2026-01-10')));
     }
 
     public function testVerifyRemindersSkipVerifiedUsers(): void

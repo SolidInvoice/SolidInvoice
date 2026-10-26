@@ -43,6 +43,9 @@ use Symfony\Component\Mime\RawMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Model\VerifyEmailSignatureComponents;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use function serialize;
+use function str_replace;
+use function unserialize;
 
 #[CoversClass(SendOnboardingEmailHandler::class)]
 final class SendOnboardingEmailHandlerTest extends KernelTestCase
@@ -96,18 +99,60 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
         self::assertSame('@SolidInvoiceSaas/Email/Onboarding/feedback.html.twig', $this->sentEmail()->getHtmlTemplate());
     }
 
-    public function testAnAccountOnFreeGetsNoTrialEmail(): void
+    /**
+     * A Free-default signup has no Trial row; the message names its subscription.
+     */
+    public function testAFreeSignupWithoutATrialRowGetsTheWelcome(): void
     {
-        $this->handle(verified: true, stepKey: 'welcome', free: true);
+        $this->handle(verified: true, stepKey: 'welcome', free: true, trialRow: false);
+
+        self::assertSame('@SolidInvoiceSaas/Email/Onboarding/welcome.html.twig', $this->sentEmail()->getHtmlTemplate());
+    }
+
+    /**
+     * A message queued before the subscription id was added still resolves it
+     * through the Trial row.
+     */
+    public function testAMessageWithoutASubscriptionIdFallsBackToTheTrialRow(): void
+    {
+        $this->handle(verified: true, stepKey: 'welcome', subscriptionId: false);
+
+        self::assertCount(1, $this->sent);
+    }
+
+    /**
+     * The account moved to Free after the trial email was queued.
+     */
+    public function testAFreeAccountGetsNoTrialOnlyEmail(): void
+    {
+        $this->handle(verified: true, stepKey: 'upgrade_offer', free: true, trialRow: false);
 
         self::assertCount(0, $this->sent);
     }
 
-    private function handle(bool $verified, string $stepKey, bool $free = false): void
+    /**
+     * A message queued before the property existed unserializes with it
+     * uninitialized; reading it must not throw.
+     */
+    public function testAMessageQueuedBeforeTheSubscriptionIdExistedStillSends(): void
+    {
+        $this->handle(verified: true, stepKey: 'welcome', subscriptionId: false, legacy: true);
+
+        self::assertCount(1, $this->sent);
+    }
+
+    public function testAPayingAccountGetsNoOnboardingEmail(): void
+    {
+        $this->handle(verified: true, stepKey: 'welcome', paid: true);
+
+        self::assertCount(0, $this->sent);
+    }
+
+    private function handle(bool $verified, string $stepKey, bool $free = false, bool $trialRow = true, bool $subscriptionId = true, bool $paid = false, bool $legacy = false): void
     {
         $user = UserFactory::createOne(['companies' => [$this->company], 'verified' => $verified]);
 
-        $this->createTrial($user, $free);
+        $subscription = $this->createSubscription($user, $free, $trialRow, $paid);
 
         $translator = self::getContainer()->get(TranslatorInterface::class);
 
@@ -124,10 +169,18 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
             $this->verifyEmailHelper(),
         );
 
-        $handler(new SendOnboardingEmailMessage($user->getId(), $stepKey));
+        $message = new SendOnboardingEmailMessage($user->getId(), $stepKey, $subscriptionId ? $subscription->getId() : null);
+
+        if ($legacy) {
+            // As serialized before `subscriptionId` was added: two properties.
+            $message = unserialize(str_replace([':3:{', 's:14:"subscriptionId";N;'], [':2:{', ''], serialize($message)));
+            self::assertInstanceOf(SendOnboardingEmailMessage::class, $message);
+        }
+
+        $handler($message);
     }
 
-    private function createTrial(User $user, bool $free): void
+    private function createSubscription(User $user, bool $free, bool $trialRow, bool $paid): Subscription
     {
         $entityManager = self::getContainer()->get('doctrine')->getManager();
 
@@ -141,18 +194,20 @@ final class SendOnboardingEmailHandlerTest extends KernelTestCase
         $subscription = new Subscription();
         $subscription->setSubscriber($this->company);
         $subscription->setPlan($plan);
-        $subscription->setStatus($free ? SubscriptionStatus::ACTIVE : SubscriptionStatus::TRIAL);
+        $subscription->setStatus($free || $paid ? SubscriptionStatus::ACTIVE : SubscriptionStatus::TRIAL);
         $subscription->setStartDate(CarbonImmutable::parse('2026-01-01'));
         $subscription->setEndDate(CarbonImmutable::parse($free ? '2126-01-01' : '2026-01-15'));
 
-        $trial = new Trial();
-        $trial->setUser($user);
-        $trial->setSubscription($subscription);
-
         $entityManager->persist($plan);
         $entityManager->persist($subscription);
-        $entityManager->persist($trial);
+
+        if ($trialRow) {
+            $entityManager->persist(Trial::create($user, $subscription));
+        }
+
         $entityManager->flush();
+
+        return $subscription;
     }
 
     private function sentEmail(): TemplatedEmail

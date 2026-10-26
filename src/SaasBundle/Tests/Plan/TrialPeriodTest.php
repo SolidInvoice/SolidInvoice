@@ -37,6 +37,17 @@ final class TrialPeriodTest extends TestCase
         self::assertNull(new TrialPeriod()->days($this->planWithTrial('PT0S')));
     }
 
+    /**
+     * Prod stored the Free plan's trial as `P0D`, which passes an instanceof
+     * DateInterval check and would start an already-expired trial at signup.
+     */
+    public function testAZeroDayIntervalIsNoTrial(): void
+    {
+        self::assertFalse(new TrialPeriod()->hasTrial($this->planWithTrial('P0D')));
+        self::assertFalse(new TrialPeriod()->hasTrial(new Plan()));
+        self::assertTrue(new TrialPeriod()->hasTrial($this->planWithTrial('P30D')));
+    }
+
     #[DataProvider('trialDurations')]
     public function testTrialDurationIsReducedToWholeDays(string $duration, int $expected): void
     {

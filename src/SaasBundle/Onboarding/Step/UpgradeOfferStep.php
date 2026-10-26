@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Override;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -45,6 +46,12 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
     public static function priority(): int
     {
         return 40;
+    }
+
+    #[Override]
+    public static function audience(): OnboardingAudience
+    {
+        return OnboardingAudience::Trial;
     }
 
     #[Override]

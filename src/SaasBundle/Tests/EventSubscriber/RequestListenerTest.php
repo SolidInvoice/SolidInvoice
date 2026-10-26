@@ -27,7 +27,6 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
 use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
-use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
@@ -402,9 +401,9 @@ final class RequestListenerTest extends KernelTestCase
         self::assertNull($event->getResponse());
     }
 
-    public function testOnResponseInjectsExtendBannerWithinWindow(): void
+    public function testOnResponseInjectsTheEndingBannerWithinWindow(): void
     {
-        // now = 2024-01-01, endDate 5 days out -> extend variant
+        // now = 2024-01-01, endDate 5 days out -> ending variant
         $now = CarbonImmutable::parse('2024-01-01');
         $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, CarbonImmutable::parse('2024-01-06'));
 
@@ -425,9 +424,10 @@ final class RequestListenerTest extends KernelTestCase
 
         self::assertIsArray($captured);
         self::assertSame('info', $captured['type']);
-        self::assertStringContainsString('extend it by 14 days', (string) $captured['message']);
-        self::assertStringContainsString('14 more days', (string) $captured['title']);
-        self::assertStringContainsString('Extend', (string) $captured['cta_label']);
+        self::assertSame('Your Test Plan trial ends on January 6', $captured['title']);
+        self::assertSame('Keep Test Plan', $captured['cta_label']);
+        // "Keep" checks out the plan being trialled, not whatever plan is default.
+        self::assertSame('/billing/subscription/activate?plan=' . $subscription->getPlan()->getPlanId(), $captured['cta_url']);
         self::assertArrayHasKey('code', $captured);
         self::assertNull($captured['code']);
         self::assertStringContainsString('<div class="alert">Banner</div>', (string) $response->getContent());
@@ -455,8 +455,8 @@ final class RequestListenerTest extends KernelTestCase
         self::assertIsArray($captured);
         self::assertSame('SAVE30', $captured['code']);
         self::assertStringContainsString('30% off', (string) $captured['message']);
-        self::assertStringContainsString('30% off', (string) $captured['title']);
-        self::assertStringContainsString('save', (string) $captured['cta_label']);
+        self::assertSame('30% off Test Plan', $captured['title']);
+        self::assertSame('Keep Test Plan', $captured['cta_label']);
     }
 
     public function testOnResponseInjectsNothingWhenOutsideWindow(): void
@@ -577,7 +577,6 @@ final class RequestListenerTest extends KernelTestCase
         $trialBannerResolver = new TrialBannerResolver(
             $clock,
             $billingMode,
-            new TrialPeriod(),
             bannerDays: 7,
             couponDays: 2,
         );
@@ -609,8 +608,6 @@ final class RequestListenerTest extends KernelTestCase
         SubscriptionStatus $status,
         ?DateTimeImmutable $endDate = null
     ): Subscription {
-        // Create real Plan object. The trial length drives the banner's "N more
-        // days" copy; the back-office syncs this from the payment provider.
         $plan = new Plan();
         $plan->setName('Test Plan');
         $plan->setPlanId('test-plan-' . Ulid::generate());

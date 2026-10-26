@@ -17,6 +17,7 @@ use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\SaasBundle\Action\ConfirmPlanChangeAction;
 use SolidInvoice\SaasBundle\Action\CustomerPortalAction;
 use SolidInvoice\SaasBundle\Action\SelectPlanAction;
+use SolidInvoice\SaasBundle\Action\StartTrialAction;
 use SolidInvoice\SaasBundle\Action\SubscriptionOverviewAction;
 use SolidInvoice\SaasBundle\Action\TemplatePreviewAction;
 use SolidInvoice\SaasBundle\Action\WelcomeAction;
@@ -46,6 +47,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('saas_subscription_choose', '/subscription/plans/choose')
         ->controller(ChoosePlanAction::class)
         ->methods(['POST']);
+
+    $routingConfigurator->add('saas_trial_start', '/subscription/trial')
+        ->controller(StartTrialAction::class)
+        ->methods(['GET', 'POST']);
 
     $routingConfigurator->add('saas_subscription_change', '/subscription/change')
         ->controller(ChangePlanAction::class)
