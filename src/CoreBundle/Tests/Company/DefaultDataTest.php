@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use Mpociot\VatCalculator\VatCalculator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Config\SystemConfigProvider;
@@ -79,9 +80,25 @@ final class DefaultDataTest extends TestCase
         self::assertSame(Tax::TYPE_EXCLUSIVE, $taxes[0]->getType());
     }
 
-    public function testCreatesNoTaxRatesForACountryTheVatCalculatorDoesNotKnow(): void
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
+    public static function otherCountryProvider(): iterable
     {
-        self::assertSame([], $this->persistedTaxesFor('ZA'));
+        yield 'South Africa' => ['ZA', ['VAT 15%']];
+        yield 'United Kingdom' => ['GB', ['VAT 20%', 'VAT 5%']];
+        yield 'Australia' => ['AU', ['GST 10%']];
+        // Sales tax is set per state, so there is no national rate to start from.
+        yield 'United States' => ['US', []];
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[DataProvider('otherCountryProvider')]
+    public function testCreatesTaxRatesForCountriesTheVatCalculatorDoesNotKnow(string $country, array $expected): void
+    {
+        self::assertSame($expected, array_map(static fn (Tax $tax): ?string => $tax->getName(), $this->persistedTaxesFor($country)));
     }
 
     /**
@@ -115,7 +132,7 @@ final class DefaultDataTest extends TestCase
         // Stands in for the catalog entry, so the assertions read like what users see.
         $translator = new Translator('en');
         $translator->addLoader('array', new ArrayLoader());
-        $translator->addResource('array', ['tax.default_rate_name' => 'VAT %rate%%'], 'en');
+        $translator->addResource('array', ['tax.default_rate.gst' => 'GST %rate%%', 'tax.default_rate.vat' => 'VAT %rate%%'], 'en');
 
         return new DefaultData(
             $registry,

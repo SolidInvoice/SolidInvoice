@@ -30,6 +30,7 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function array_map;
 use function array_unique;
 use function get_debug_type;
 use function round;
@@ -39,6 +40,19 @@ use function round;
  */
 final readonly class DefaultData
 {
+    /**
+     * Countries the VatCalculator does not know, as country => [tax name key, percentages].
+     *
+     * ponytail: hand-maintained; update when one of these countries changes its rates.
+     *
+     * @var array<string, array{string, list<float>}>
+     */
+    private const array OTHER_TAX_RATES = [
+        'AU' => ['tax.default_rate.gst', [10.0]],
+        'GB' => ['tax.default_rate.vat', [20.0, 5.0]],
+        'ZA' => ['tax.default_rate.vat', [15.0]],
+    ];
+
     private ObjectManager $em;
 
     /**
@@ -69,22 +83,28 @@ final readonly class DefaultData
     }
 
     /**
-     * One rate per distinct VAT rate of the company's country. The VatCalculator only knows
-     * the EU, Switzerland, Monaco and the Isle of Man; anywhere else starts with no rates.
+     * One rate per distinct VAT/GST rate of the company's country: the EU, Switzerland, Monaco
+     * and the Isle of Man from the VatCalculator, plus OTHER_TAX_RATES. Anywhere else (the US,
+     * whose sales tax is set per state) starts with no rates.
      */
     private function createTaxRates(Company $company): void
     {
         $country = $company->getCountry();
 
-        if ($country === null || ! $this->vatCalculator->shouldCollectVAT($country)) {
+        if ($country === null) {
             return;
         }
 
-        foreach (array_unique($this->vatCalculator->getTaxRatesForCountry($country)) as $rate) {
-            $percentage = round($rate * 100, 2);
+        if ($this->vatCalculator->shouldCollectVAT($country)) {
+            $nameKey = 'tax.default_rate.vat';
+            $percentages = array_map(static fn (float $rate): float => round($rate * 100, 2), $this->vatCalculator->getTaxRatesForCountry($country));
+        } else {
+            [$nameKey, $percentages] = self::OTHER_TAX_RATES[$country] ?? ['', []];
+        }
 
+        foreach (array_unique($percentages) as $percentage) {
             $tax = new Tax();
-            $tax->setName($this->translator->trans('tax.default_rate_name', ['%rate%' => $percentage]));
+            $tax->setName($this->translator->trans($nameKey, ['%rate%' => $percentage]));
             $tax->setRate($percentage);
             $tax->setType(Tax::TYPE_EXCLUSIVE);
             $tax->setCompany($company);
