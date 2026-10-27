@@ -99,7 +99,7 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
 
         $response = new Response('{}', Response::HTTP_CREATED);
 
-        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager, $request, $response);
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager, request: $request, response: $response);
 
         self::assertSame($response, $event->getResponse());
         self::assertSame(SubscriptionStatus::PENDING, $subscription->getStatus());
@@ -228,6 +228,8 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         ?TrialManagerInterface $trialManager = null,
         ?string $trialDuration = 'P14D',
         bool $freePlan = false,
+        Request $request = new Request(),
+        Response $response = new Response(),
     ): array {
         $plan = new Plan();
         $plan->setName($freePlan ? 'Free' : 'Pro');
