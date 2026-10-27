@@ -33,6 +33,7 @@ final class SendDocumentInput
     /**
      * @var list<string>
      */
+    #[Assert\Count(max: 10)]
     #[Assert\All([new Assert\NotBlank(), new Assert\Email()])]
     #[Groups(['billing_api:send'])]
     public array $cc = [];
