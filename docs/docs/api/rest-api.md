@@ -250,7 +250,7 @@ The first send of a new or draft invoice moves it to `pending`, and of a draft q
 | Nobody to send to | `422`, violation with `code` `no_recipients` |
 | A `to` that is not a contact of the document's client | `422`, violation with `code` `unknown_contact` |
 | A `cc` that is not an email address, or more than 10 of them | `422` |
-| More than 5 sends of the same document within an hour | `429`, with `Retry-After` |
+| More than 5 sends of the same document, or more than 500 recipients across your company, within an hour | `429`, with `Retry-After` |
 | Your email address is not verified yet (hosted) | `403`, unless the only recipient is your own address |
 | A document of another company | `404` |
 

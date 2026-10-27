@@ -166,6 +166,21 @@ final class InvoiceSendTest extends ApiTestCase
         self::assertEmailCount(0);
     }
 
+    public function testRecipientsArePerCompanyRateLimitedAcrossDocuments(): void
+    {
+        $cc = array_map(static fn (int $i): string => sprintf('cc%d@example.com', $i), range(1, 10));
+
+        // 45 sends to 11 recipients each (the contact plus 10 Cc) is 495 of the hourly 500.
+        for ($i = 0; $i < 45; ++$i) {
+            $this->send($this->createInvoice(InvoiceStatus::Pending), ['cc' => $cc, 'attachPdf' => false]);
+            self::assertResponseIsSuccessful();
+        }
+
+        $this->send($this->createInvoice(InvoiceStatus::Pending), ['cc' => $cc, 'attachPdf' => false]);
+
+        self::assertResponseStatusCodeSame(429);
+    }
+
     public function testMoreThanTenCcAddressesAreRejected(): void
     {
         $invoice = $this->createInvoice(InvoiceStatus::Draft);
