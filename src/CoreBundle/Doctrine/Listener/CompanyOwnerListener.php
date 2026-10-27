@@ -38,7 +38,7 @@ final readonly class CompanyOwnerListener
     {
         $user = $this->tokenStorage->getToken()?->getUser();
 
-        if ($company->getOwner() === null && $user instanceof User) {
+        if (! $company->getOwner() instanceof User && $user instanceof User) {
             $company->setOwner($user);
         }
     }
