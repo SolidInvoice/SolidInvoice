@@ -47,6 +47,7 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -56,6 +57,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
 use function array_unique;
 use function array_values;
+use function count;
 use function max;
 use function sprintf;
 use function strtolower;
@@ -83,6 +85,7 @@ final readonly class SendDocumentProcessor implements ProcessorInterface
         private TranslatorInterface $translator,
         private LoggerInterface $logger,
         private RateLimiterFactoryInterface $documentSendLimiter,
+        private RateLimiterFactoryInterface $documentSendRecipientsLimiter,
     ) {
     }
 
@@ -135,11 +138,10 @@ final readonly class SendDocumentProcessor implements ProcessorInterface
 
         $this->denyUnverifiedSend($recipients, $userEmail, $document);
 
-        $limit = $this->documentSendLimiter->create(sprintf('%s:%s', $class, $document->getId()))->consume();
+        $recipientCount = count($recipients) + ($data->copyToMe && null !== $userEmail ? 1 : 0);
 
-        if (! $limit->isAccepted()) {
-            throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - Carbon::now()->getTimestamp()));
-        }
+        $this->consume($this->documentSendLimiter->create(sprintf('%s:%s', $class, $document->getId())), 1);
+        $this->consume($this->documentSendRecipientsLimiter->create($document->getCompany()->getId()->toBase32()), $recipientCount);
 
         $options = new DocumentSendOptions(
             to: $to,
@@ -228,6 +230,15 @@ final readonly class SendDocumentProcessor implements ProcessorInterface
         }
 
         return $contacts;
+    }
+
+    private function consume(LimiterInterface $limiter, int $tokens): void
+    {
+        $limit = $limiter->consume($tokens);
+
+        if (! $limit->isAccepted()) {
+            throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - Carbon::now()->getTimestamp()));
+        }
     }
 
     /**

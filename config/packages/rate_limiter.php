@@ -32,6 +32,12 @@ return App::config([
                     'limit' => 5,
                     'interval' => '1 hour',
                 ],
+                // Recipients emailed through the API per company, so many documents cannot add up to a relay.
+                'document_send_recipients' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 500,
+                    'interval' => '1 hour',
+                ],
                 'invoice_manual_reminder' => [
                     'policy' => 'fixed_window',
                     'limit' => 1,
