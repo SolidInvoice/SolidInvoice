@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -21,13 +22,16 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
+use SolidInvoice\ApiBundle\State\Processor\ClientArchiveProcessor;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
@@ -47,17 +51,38 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function in_array;
 
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'status' => 'exact'])]
-#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(OrderFilter::class, properties: ['name', 'created', 'updated'])]
+#[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
 #[ApiResource(
     types: ['https://schema.org/Corporation'],
     operations: [
         new Get(),
-        new Post(),
+        new Post(extraProperties: ['idempotent' => true]),
+        new Post(
+            uriTemplate: '/clients/{id}/archive',
+            uriVariables: ['id' => new Link(fromClass: Client::class)],
+            status: 200,
+            input: false,
+            // The processor loads the client itself, past the archivable filter.
+            read: false,
+            name: ClientArchiveProcessor::ARCHIVE,
+            processor: ClientArchiveProcessor::class,
+        ),
+        new Post(
+            uriTemplate: '/clients/{id}/restore',
+            uriVariables: ['id' => new Link(fromClass: Client::class)],
+            status: 200,
+            input: false,
+            read: false,
+            name: ClientArchiveProcessor::RESTORE,
+            processor: ClientArchiveProcessor::class,
+        ),
         new GetCollection(),
         new Patch(),
         new Delete(),
@@ -527,5 +552,19 @@ class Client implements Stringable
                 yield $invoice;
             }
         }
+    }
+
+    #[Serialize\Groups(['client_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    public function getCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Serialize\Groups(['client_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    public function getUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
     }
 }

@@ -25,6 +25,12 @@ return App::config([
                 // "Email me a test copy" mails an address nobody has verified yet, with content the
                 // account controls. Cap it per account for its unverified life, and per IP so new
                 // accounts don't multiply that.
+                // POST /api/invoices/{id}/reminder, keyed by invoice.
+                'invoice_manual_reminder' => [
+                    'policy' => 'fixed_window',
+                    'limit' => 1,
+                    'interval' => '1 hour',
+                ],
                 'invoice_test_copy' => [
                     'policy' => 'fixed_window',
                     'limit' => 3,

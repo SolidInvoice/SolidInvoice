@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -26,7 +29,9 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function array_key_exists;
@@ -34,6 +39,17 @@ use function array_key_exists;
 #[ORM\Table(name: PaymentMethod::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
 #[UniqueEntity('gatewayName')]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    normalizationContext: [
+        'groups' => ['payment_method_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    graphQlOperations: [],
+)]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'paymentMethods')])]
 class PaymentMethod implements GatewayConfigInterface, Stringable
 {
@@ -52,13 +68,15 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
-    // #[Serialize\Groups(['payment_api'])]
+    #[Groups(['payment_method_api:read', 'payment_api:read'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'gateway_name', type: Types::STRING, length: 125)]
+    #[Groups(['payment_method_api:read', 'payment_api:read'])]
     private ?string $gatewayName = null;
 
     #[ORM\Column(name: 'factory', type: Types::STRING, length: 125)]
+    #[Groups(['payment_method_api:read'])]
     private ?string $factoryName = null;
 
     /**
@@ -70,9 +88,11 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     private array $config = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]
+    #[Groups(['payment_method_api:read'])]
     private bool $internal = false;
 
     #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, nullable: true)]
+    #[Groups(['payment_method_api:read'])]
     private bool $enabled;
 
     /**
@@ -232,6 +252,15 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     public function isOffline(): bool
     {
         return self::FACTORY_OFFLINE === $this->factoryName;
+    }
+
+    /**
+     * Charged through a gateway, rather than recorded by hand as offline and internal methods are.
+     */
+    #[Groups(['payment_method_api:read'])]
+    public function isOnline(): bool
+    {
+        return ! $this->isOffline() && ! $this->internal;
     }
 
     public function __toString(): string

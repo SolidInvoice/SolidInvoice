@@ -57,6 +57,17 @@
 
 
 {%- block content -%}
+    {# Optional note from the sender, escaped by nl2br before its line breaks are added #}
+    {% if personal_note is defined and personal_note is not empty %}
+        {% apply inky_to_html %}
+            <row>
+                <columns>
+                    <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">{{ personal_note|nl2br }}</p>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
     {# Invoice intro message #}
     {% apply inky_to_html %}
         <row>

@@ -110,6 +110,7 @@ final class RecurringInvoiceTest extends ApiTestCase
         ];
 
         $result = $this->requestPost('/api/recurring-invoices', $data);
+        $result = self::assertTimestampsAndRemove($result);
 
         self::assertArrayHasKey('id', $result);
         self::assertArrayHasKey('id', $result['lines'][0]);
@@ -122,6 +123,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             '@context' => '/api/contexts/RecurringInvoice',
             '@type' => 'RecurringInvoice',
             'client' => $this->getIriFromResource($client),
+            'currencyCode' => $client->getCurrency()->getCode(),
             'dateStart' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
             'lines' => [
@@ -194,6 +196,7 @@ final class RecurringInvoiceTest extends ApiTestCase
         ]);
 
         $data = $this->requestGet($this->getIriFromResource($recurringInvoice));
+        $data = self::assertTimestampsAndRemove($data);
 
         unset($data['recurringOptions']['@id']);
 
@@ -213,6 +216,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'id' => $recurringInvoice->getId()
                 ->toString(),
             'client' => '/api/clients/' . $recurringInvoice->getClient()->getId()->toString(),
+            'currencyCode' => $recurringInvoice->getCurrency()->getCode(),
             'dateStart' => $recurringInvoice->getDateStart()
                 ->format('c'),
             'dateEnd' => null,
@@ -292,6 +296,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ],
             ]
         );
+        $data = self::assertTimestampsAndRemove($data);
 
         unset($data['recurringOptions']['@id']);
 
@@ -311,6 +316,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'id' => $recurringInvoice->getId()
                 ->toString(),
             'client' => $this->getIriFromResource($recurringInvoice->getClient()),
+            'currencyCode' => $recurringInvoice->getCurrency()->getCode(),
             'dateEnd' => null,
             'lines' => [
                 [

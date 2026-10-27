@@ -140,6 +140,22 @@ final class GatewayMetadataProvider
                 overview: $key('bank_transfer', 'overview'),
             ),
             new GatewayInfo(
+                name: 'cheque',
+                displayName: $key('cheque', 'display_name'),
+                tagline: $key('cheque', 'tagline'),
+                icon: 'tabler:receipt',
+                category: GatewayCategory::Offline,
+                overview: $key('cheque', 'overview'),
+            ),
+            new GatewayInfo(
+                name: 'card_terminal',
+                displayName: $key('card_terminal', 'display_name'),
+                tagline: $key('card_terminal', 'tagline'),
+                icon: 'tabler:credit-card',
+                category: GatewayCategory::Offline,
+                overview: $key('card_terminal', 'overview'),
+            ),
+            new GatewayInfo(
                 name: 'custom',
                 displayName: $key('custom', 'display_name'),
                 tagline: $key('custom', 'tagline'),
