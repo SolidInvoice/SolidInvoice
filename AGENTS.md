@@ -194,6 +194,9 @@ Explicitly **skipped**: `MethodChainingNewlineFixer`, `PhpdocLineSpanFixer`,
 - `declare(strict_types=1);` everywhere.
 - Full parameter and return types.
 - `final` by default. **Doctrine entities are never `final`** — proxies extend them.
+  **`#[ORM\Embeddable]` classes are also never `final`** (e.g.
+  `src/CoreBundle/Entity/Discount.php`), for consistency with entities, not because
+  Doctrine proxies them — it does not.
 - Typed class constants where the value is fixed: `private const string INDEX_NAME = '…';`
   (`migrations/Version30100_1.php`), `private const int DEFAULT_SUBUNIT = 2;`
   (`src/MoneyBundle/Currency/CurrencyScale.php`).

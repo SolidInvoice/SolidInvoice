@@ -26,6 +26,7 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function array_key_exists;
@@ -65,6 +66,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
      */
     #[ORM\Column(name: 'config', type: Types::JSON)]
     #[ExportIgnore]
+    #[Ignore]
     private array $config = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]

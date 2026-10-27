@@ -17,7 +17,15 @@ Changelog
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
 * Apostrophes in plain-text emails no longer show up as `&#039;`
 
-3.1.2 / Unreleased
+
+3.1.3 / Unreleased
+------------------
+
+### Fixes
+
+* Trimmed internal payment method fields from API payment responses
+
+3.1.2 / 2026-10-21
 -------------------
 
 ### Changes
