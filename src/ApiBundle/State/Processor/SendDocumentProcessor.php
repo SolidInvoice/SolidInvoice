@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use ApiPlatform\Validator\Exception\ValidationException;
+use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
 use Psr\Log\LoggerInterface;
@@ -42,9 +43,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -53,6 +56,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_map;
 use function array_unique;
 use function array_values;
+use function max;
 use function sprintf;
 use function strtolower;
 use function trim;
@@ -78,6 +82,7 @@ final readonly class SendDocumentProcessor implements ProcessorInterface
         private EventDispatcherInterface $eventDispatcher,
         private TranslatorInterface $translator,
         private LoggerInterface $logger,
+        private RateLimiterFactoryInterface $documentSendLimiter,
     ) {
     }
 
@@ -129,6 +134,12 @@ final readonly class SendDocumentProcessor implements ProcessorInterface
         $userEmail = $user instanceof User ? $user->getEmail() : null;
 
         $this->denyUnverifiedSend($recipients, $userEmail, $document);
+
+        $limit = $this->documentSendLimiter->create(sprintf('%s:%s', $class, $document->getId()))->consume();
+
+        if (! $limit->isAccepted()) {
+            throw new TooManyRequestsHttpException(max(1, $limit->getRetryAfter()->getTimestamp() - Carbon::now()->getTimestamp()));
+        }
 
         $options = new DocumentSendOptions(
             to: $to,

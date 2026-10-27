@@ -26,6 +26,12 @@ return App::config([
                 // account controls. Cap it per account for its unverified life, and per IP so new
                 // accounts don't multiply that.
                 // POST /api/invoices/{id}/reminder, keyed by invoice.
+                // Sending an invoice or quote by email, per document, so the API cannot be used to relay mail.
+                'document_send' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 5,
+                    'interval' => '1 hour',
+                ],
                 'invoice_manual_reminder' => [
                     'policy' => 'fixed_window',
                     'limit' => 1,

@@ -34,6 +34,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use function array_map;
+use function range;
+use function sprintf;
 
 #[Group('functional')]
 final class InvoiceSendTest extends ApiTestCase
@@ -162,6 +164,30 @@ final class InvoiceSendTest extends ApiTestCase
 
         self::assertResponseStatusCodeSame(422);
         self::assertEmailCount(0);
+    }
+
+    public function testMoreThanTenCcAddressesAreRejected(): void
+    {
+        $invoice = $this->createInvoice(InvoiceStatus::Draft);
+
+        $this->send($invoice, ['cc' => array_map(static fn (int $i): string => sprintf('cc%d@example.com', $i), range(1, 11))]);
+
+        self::assertResponseStatusCodeSame(422);
+    }
+
+    public function testSendsArePerDocumentRateLimited(): void
+    {
+        $invoice = $this->createInvoice(InvoiceStatus::Pending);
+
+        for ($i = 0; $i < 5; ++$i) {
+            $this->send($invoice);
+            self::assertResponseIsSuccessful();
+        }
+
+        $this->send($invoice);
+
+        self::assertResponseStatusCodeSame(429);
+        self::assertResponseHasHeader('retry-after');
     }
 
     public function testUnverifiedUserCannotSend(): void
