@@ -47,6 +47,12 @@ final readonly class OnboardingLoginListener implements EventSubscriberInterface
 
     public function onLoginSuccess(LoginSuccessEvent $event): void
     {
+        // Onboarding is a web page. A token login on a stateless firewall (API, MCP) must get its API
+        // response, not a redirect.
+        if ($event->getFirewallName() !== 'main') {
+            return;
+        }
+
         $user = $event->getUser();
 
         // Only handle User entities

@@ -127,6 +127,12 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 
     private function isOnCompanySelectionRoute(Request $request): bool
     {
+        // A route can declare that it picks the company itself (route default `_company_selection`),
+        // e.g. an OAuth authorize endpoint that binds the token it issues to a company.
+        if ($request->attributes->getBoolean('_company_selection')) {
+            return true;
+        }
+
         $routeName = $request->attributes->get('_route');
 
         return in_array(

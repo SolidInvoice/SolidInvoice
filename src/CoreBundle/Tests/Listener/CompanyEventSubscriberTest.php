@@ -156,6 +156,27 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertNull($event->getResponse());
     }
 
+    public function testItContinuesTheRequestOnARouteThatSelectsTheCompanyItself(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects($this->never())->method('generate');
+
+        $security = $this->createStub(Security::class);
+        $security->method('getToken')->willReturn(null);
+
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->attributes->set('_route', 'some_oauth_authorize');
+        $request->attributes->set('_company_selection', true);
+
+        $listener = new CompanyEventSubscriber($router, new CompanySelector($this->createStub(ManagerRegistry::class)), $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+    }
+
     public function testItDoesNotRedirectWhileTwoFactorAuthenticationIsInProgress(): void
     {
         $router = M::mock(RouterInterface::class);
