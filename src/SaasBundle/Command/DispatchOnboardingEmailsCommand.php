@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserSetting;
+use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -27,6 +30,7 @@ use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Throwable;
 use function assert;
 use function function_exists;
+use function is_array;
 use function Sentry\captureException;
 use function sprintf;
 
@@ -68,17 +72,28 @@ final class DispatchOnboardingEmailsCommand extends Command
             // Subscription.status is not flipped when a trial lapses — the app
             // only compares endDate against now — so filter expired trials out
             // here to keep this scan bounded as historical trial volume grows.
+            //
+            // The user, subscription and the user's onboarding progress setting
+            // are loaded in the same query so the loop below does not issue
+            // per-trial lookups (N+1).
             $qb = $entityManager->createQueryBuilder()
-                ->select('t')
+                ->select('t', 's', 'u')
+                ->addSelect('us.value AS lastStepKey')
                 ->from(Trial::class, 't')
                 ->innerJoin('t.subscription', 's')
+                ->leftJoin('t.user', 'u')
+                ->leftJoin(UserSetting::class, 'us', Join::WITH, 'us.user = t.user AND us.key = :lastStepKey')
                 ->where('s.status = :status')
                 ->andWhere('s.endDate > :now')
                 ->setParameter('status', SubscriptionStatus::TRIAL)
-                ->setParameter('now', $this->clock->now());
+                ->setParameter('now', $this->clock->now())
+                ->setParameter('lastStepKey', UserSettingType::OnboardingEmailSequenceLastStep);
 
-            foreach ($qb->getQuery()->toIterable() as $trial) {
+            foreach ($qb->getQuery()->toIterable() as $row) {
+                assert(is_array($row));
+                $trial = $row[0];
                 assert($trial instanceof Trial);
+                $lastStepKey = $row['lastStepKey'] ?? null;
 
                 $user = $trial->getUser();
                 $subscription = $trial->getSubscription();
@@ -90,7 +105,7 @@ final class DispatchOnboardingEmailsCommand extends Command
                 ++$processed;
 
                 try {
-                    $this->dispatcher->tick($user, $subscription);
+                    $this->dispatcher->tick($user, $subscription, $lastStepKey);
                 } catch (Throwable $e) {
                     if (function_exists('Sentry\\captureException')) {
                         captureException($e);
