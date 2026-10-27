@@ -180,6 +180,22 @@ final readonly class DefaultData
                 'factory' => 'offline',
             ],
             [
+                'name' => $this->translator->trans('payment.gateway.cheque.display_name'),
+                'gateway_name' => 'cheque',
+                'config' => [],
+                'internal' => true,
+                'enabled' => true,
+                'factory' => 'offline',
+            ],
+            [
+                'name' => $this->translator->trans('payment.gateway.card_terminal.display_name'),
+                'gateway_name' => 'card_terminal',
+                'config' => [],
+                'internal' => true,
+                'enabled' => true,
+                'factory' => 'offline',
+            ],
+            [
                 'name' => 'Credit',
                 'gateway_name' => 'credit',
                 'config' => [],

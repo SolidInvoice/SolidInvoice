@@ -47,7 +47,7 @@ readonly class QuotePdfListener implements EventSubscriberInterface
         /** @var QuoteEmail $message */
         $message = $event->getMessage();
 
-        if ($message instanceof QuoteEmail && $this->generator->canPrintPdf()) {
+        if ($message instanceof QuoteEmail && $message->attachesPdf() && $this->generator->canPrintPdf()) {
             $this->clientRepository->initializeArchived($message->getQuote()->getClient());
 
             $content = $this->generator->generate(

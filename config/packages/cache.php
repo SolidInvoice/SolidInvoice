@@ -15,6 +15,14 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'framework' => [
-        'cache' => [],
+        'cache' => [
+            'pools' => [
+                // Responses stored against an Idempotency-Key, see IdempotencyListener.
+                'cache.idempotency' => [
+                    'adapter' => 'cache.app',
+                    'default_lifetime' => 86400,
+                ],
+            ],
+        ],
     ],
 ]);

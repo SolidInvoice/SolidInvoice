@@ -48,6 +48,7 @@ final class ClientTest extends ApiTestCase
         ];
 
         $result = $this->requestPost('/api/clients', $data);
+        $result = self::assertTimestampsAndRemove($result);
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
@@ -84,6 +85,21 @@ final class ClientTest extends ApiTestCase
             '@id' => '/api/clients',
             '@type' => 'Collection',
         ], $data);
+    }
+
+    public function testClientControlsItemsPerPageUpToTheMaximum(): void
+    {
+        ClientFactory::createMany(101);
+
+        $data = $this->requestGetCollection('/api/clients?itemsPerPage=2');
+
+        self::assertCount(2, $data['member']);
+        self::assertSame(101, $data['totalItems']);
+
+        $data = $this->requestGetCollection('/api/clients?itemsPerPage=500');
+
+        self::assertCount(100, $data['member']);
+        self::assertSame(101, $data['totalItems']);
     }
 
     public function testCannotAccessClientFromDifferentCompany(): void
@@ -130,6 +146,7 @@ final class ClientTest extends ApiTestCase
             ->create();
 
         $data = $this->requestGet($this->getIriFromResource($client));
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($client),
@@ -182,6 +199,7 @@ final class ClientTest extends ApiTestCase
                 'contacts' => $contactInfo,
             ]
         );
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($client),

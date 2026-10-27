@@ -59,6 +59,31 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
+     * Backs the UniqueEntity constraint on Invoice::$invoiceId. Archived documents keep their
+     * number, so they count; a blank number is not a number, so it never collides. The
+     * CompanyFilter scopes the lookup to the current company.
+     *
+     * @param array<string, mixed> $criteria
+     *
+     * @return list<Invoice>
+     */
+    public function findByInvoiceIdIncludingArchived(array $criteria): array
+    {
+        if (($criteria['invoiceId'] ?? '') === '') {
+            return [];
+        }
+
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        try {
+            return array_values($this->findBy($criteria));
+        } finally {
+            $filters->enable('archivable');
+        }
+    }
+
+    /**
      * Get the total amount for paid invoices.
      *
      * @throws MathException

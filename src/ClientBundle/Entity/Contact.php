@@ -39,6 +39,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -424,5 +425,19 @@ class Contact implements Serializable, Stringable
     public function __toString(): string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    #[Serialize\Groups(['contact_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    public function getCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Serialize\Groups(['contact_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    public function getUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
     }
 }
