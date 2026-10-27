@@ -25,8 +25,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 /**
  * Per-user tick driver for the onboarding email sequence.
  *
- * Called from the hourly scheduler command. Looks up the user's progress in
- * user_settings, computes the next due step using the schedule calculator,
+ * Called from the hourly scheduler command, which pre-loads the user's progress
+ * from user_settings in its trial scan. Computes the next due step using the schedule calculator,
  * and dispatches a Messenger message for the handler to actually send.
  *
  * The progress setting is advanced BEFORE the message is dispatched so that
@@ -48,14 +48,12 @@ final readonly class OnboardingDispatcher
     ) {
     }
 
-    public function tick(User $user, Subscription $subscription): void
+    /**
+     * @param string|null $lastKey The user's current OnboardingEmailSequenceLastStep value,
+     *                             pre-loaded by the caller to avoid a per-user lookup query.
+     */
+    public function tick(User $user, Subscription $subscription, ?string $lastKey): void
     {
-        $lastSetting = $this->userSettingRepository->getSetting(
-            $user,
-            UserSettingType::OnboardingEmailSequenceLastStep,
-        );
-        $lastKey = $lastSetting?->getValue();
-
         $next = $this->registry->nextAfter($lastKey);
 
         if (! $next instanceof OnboardingEmailStepInterface) {

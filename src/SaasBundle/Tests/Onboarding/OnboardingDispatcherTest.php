@@ -25,7 +25,6 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepSecond;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Entity\UserSetting;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
@@ -44,10 +43,7 @@ final class OnboardingDispatcherTest extends TestCase
         $subscription = $this->subscription();
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->with($user, UserSettingType::OnboardingEmailSequenceLastStep)
-            ->andReturnNull();
+        $userSettingRepository->shouldNotReceive('getSetting');
 
         $userSettingRepository
             ->shouldReceive('saveSetting')
@@ -70,7 +66,7 @@ final class OnboardingDispatcherTest extends TestCase
             new NullLogger(),
         );
 
-        $dispatcher->tick($user, $subscription);
+        $dispatcher->tick($user, $subscription, null);
     }
 
     public function testDispatchesNextStepAfterLast(): void
@@ -78,12 +74,8 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = new UserSetting()->setValue('first');
-
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
+        $userSettingRepository->shouldNotReceive('getSetting');
 
         $userSettingRepository
             ->shouldReceive('saveSetting')
@@ -106,7 +98,7 @@ final class OnboardingDispatcherTest extends TestCase
             new NullLogger(),
         );
 
-        $dispatcher->tick($user, $subscription);
+        $dispatcher->tick($user, $subscription, 'first');
     }
 
     public function testNoOpWhenSequenceAlreadyComplete(): void
@@ -114,12 +106,8 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = new UserSetting()->setValue('second');
-
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
+        $userSettingRepository->shouldNotReceive('getSetting');
 
         $userSettingRepository->shouldNotReceive('saveSetting');
 
@@ -135,7 +123,7 @@ final class OnboardingDispatcherTest extends TestCase
             new NullLogger(),
         );
 
-        $dispatcher->tick($user, $subscription);
+        $dispatcher->tick($user, $subscription, 'second');
     }
 
     public function testNoDispatchWhenTargetTimeInFuture(): void
@@ -143,12 +131,8 @@ final class OnboardingDispatcherTest extends TestCase
         $user = $this->user();
         $subscription = $this->subscription();
 
-        $existing = new UserSetting()->setValue('first');
-
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
+        $userSettingRepository->shouldNotReceive('getSetting');
 
         $userSettingRepository->shouldNotReceive('saveSetting');
 
@@ -166,7 +150,7 @@ final class OnboardingDispatcherTest extends TestCase
             new NullLogger(),
         );
 
-        $dispatcher->tick($user, $subscription);
+        $dispatcher->tick($user, $subscription, 'first');
     }
 
     public function testAdvancesSettingBeforeDispatch(): void
@@ -175,9 +159,7 @@ final class OnboardingDispatcherTest extends TestCase
         $subscription = $this->subscription();
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturnNull();
+        $userSettingRepository->shouldNotReceive('getSetting');
 
         $order = [];
 
@@ -207,7 +189,7 @@ final class OnboardingDispatcherTest extends TestCase
             new NullLogger(),
         );
 
-        $dispatcher->tick($user, $subscription);
+        $dispatcher->tick($user, $subscription, null);
 
         self::assertSame(['save', 'dispatch'], $order);
     }
