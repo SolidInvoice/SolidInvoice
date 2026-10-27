@@ -121,6 +121,26 @@ Invoices and quotes can also be searched by number and client name (`?invoiceId=
 
 Errors are returned in [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) `application/problem+json` format with a human-readable `title`, `detail`, and a machine-readable `type`.
 
+## Money format and API versions
+
+Send an `Api-Version: 2026-10` header to get amounts as **decimal strings in the currency's own units and precision**:
+
+| Currency | Amount |
+| --- | --- |
+| USD (2 decimals) | `"1250.00"` |
+| JPY (no decimals) | `"1250"` |
+| BHD (3 decimals) | `"12.500"` |
+
+This applies to every amount: document totals, balances, line prices and totals, tax amounts, money discounts, client credit and payment amounts. Quantities are decimal strings too (`"1.5"`), so no precision is lost. On input, amounts may be numbers or strings in the same units; an amount with more decimal places than its currency allows (`"12.5"` for JPY) is rejected with `400 Bad Request` rather than rounded. An unknown `Api-Version` is also a `400`.
+
+```bash
+curl -H "X-API-TOKEN: <your-token>" \
+     -H "Api-Version: 2026-10" \
+     "https://your-instance.example/api/invoices"
+```
+
+Without the header the original format is used: amounts are JSON numbers scaled by a fixed 100, which is only correct for two-decimal currencies. That format is deprecated. Every response served in it carries `Deprecation` and `Sunset` headers, and it will be removed after **1 May 2027**. Send `Api-Version: 2026-10` on all requests to move to the new format.
+
 ## Document PDFs and public links
 
 `GET /api/invoices/{id}/pdf` and `GET /api/quotes/{id}/pdf` return the document as a PDF, rendered with the same template as the page your client sees. Send `Accept: application/pdf` (or `*/*`):
@@ -331,7 +351,7 @@ The main resource roots are:
 - `/api/taxes`
 - `/api/api-tokens` (manage your own tokens via the API)
 
-All resources support standard CRUD verbs: `GET` for collections and items, `POST` to create, `PATCH` to update, `DELETE` to remove. Amounts are JSON numbers in the currency's major units, scaled by a fixed 100, and the currency itself comes from the associated client.
+All resources support standard CRUD verbs: `GET` for collections and items, `POST` to create, `PATCH` to update, `DELETE` to remove. Amounts are in the currency's major units (see [Money format and API versions](#money-format-and-api-versions)), and the currency itself comes from the associated client.
 
 ## Troubleshooting
 

@@ -198,7 +198,7 @@ Explicitly **skipped**: `MethodChainingNewlineFixer`, `PhpdocLineSpanFixer`,
   `src/CoreBundle/Entity/Discount.php`), for consistency with entities, not because
   Doctrine proxies them — it does not.
 - Typed class constants where the value is fixed: `private const string INDEX_NAME = '…';`
-  (`migrations/Version30100_1.php`), `private const int DEFAULT_SUBUNIT = 2;`
+  (`migrations/Version30100_1.php`), `public const int DEFAULT_SUBUNIT = 2;`
   (`src/MoneyBundle/Currency/CurrencyScale.php`).
 - **Backed enums, never class constants, for fixed sets of values.** The codebase is
   consistent on this: `src/TaxBundle/Enum/{TaxType,TaxDirection,TaxCategory,RoundingStrategy}.php`,
