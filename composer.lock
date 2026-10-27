@@ -1840,23 +1840,23 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "6d6c96277ea252fc1304627204c3d5e6e15faa3b"
+                "reference": "46351b6812b7b6d52b82c3efa5dfb786a198ec88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/6d6c96277ea252fc1304627204c3d5e6e15faa3b",
-                "reference": "6d6c96277ea252fc1304627204c3d5e6e15faa3b",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/46351b6812b7b6d52b82c3efa5dfb786a198ec88",
+                "reference": "46351b6812b7b6d52b82c3efa5dfb786a198ec88",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^12.0 || ^13.0",
+                "doctrine/coding-standard": "^12.0 || ^14.0",
                 "phpstan/phpstan": "^1.12 || ^2.0",
                 "phpstan/phpstan-phpunit": "^1.4 || ^2.0",
                 "phpstan/phpstan-strict-rules": "^1.6 || ^2.0",
@@ -1910,7 +1910,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/inflector/issues",
-                "source": "https://github.com/doctrine/inflector/tree/2.1.0"
+                "source": "https://github.com/doctrine/inflector/tree/2.1.1"
             },
             "funding": [
                 {
@@ -1926,7 +1926,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-10T19:31:58+00:00"
+            "time": "2026-10-26T08:14:14+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -9655,12 +9655,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "56576de77a4f2e6f273122a19ca02724287e5270"
+                "reference": "4e37dfd1545ed748e217ccb010a7239920169789"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/56576de77a4f2e6f273122a19ca02724287e5270",
-                "reference": "56576de77a4f2e6f273122a19ca02724287e5270",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/4e37dfd1545ed748e217ccb010a7239920169789",
+                "reference": "4e37dfd1545ed748e217ccb010a7239920169789",
                 "shasum": ""
             },
             "require": {
@@ -9726,6 +9726,7 @@
                 "spatie/phpunit-snapshot-assertions": "^5.4",
                 "symfony/browser-kit": "^8.1",
                 "symfony/css-selector": "^8.1",
+                "symfony/intl": "^8.1",
                 "symfony/messenger": "^8.1",
                 "symplify/easy-coding-standard": "^13.3"
             },
@@ -9752,7 +9753,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-10-25T09:51:28+00:00"
+            "time": "2026-10-27T18:32:23+00:00"
         },
         {
             "name": "solidworx/toggler",
