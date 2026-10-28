@@ -51,6 +51,7 @@ final readonly class ContactResultFormatter implements QualifiedResultFormatterI
             title: $name !== '' ? $name : ($hit['email'] ?? ''),
             subtitle: $hit['email'] ?? '',
             url: $url,
+            clientId: $hit['clientId'] ?? null,
         );
     }
 }
