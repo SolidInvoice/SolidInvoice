@@ -54,7 +54,7 @@ final class DefaultDataTest extends TestCase
 
         $entityManager->expects('persist')
             ->with(M::type(CustomField::class))
-            ->times(3);
+            ->times(1);
 
         $entityManager->expects('persist')
             ->with(M::type(PaymentMethod::class))

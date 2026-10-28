@@ -52,6 +52,12 @@
                     }
                 }) }}
             </div>
+            <div class="contact-field contact-field-name">
+                {{ form_row(form.phone) }}
+            </div>
+            <div class="contact-field contact-field-name">
+                {{ form_row(form.mobile) }}
+            </div>
         </div>
 
         {% if form.customFields is defined and form.customFields|length > 0 %}
