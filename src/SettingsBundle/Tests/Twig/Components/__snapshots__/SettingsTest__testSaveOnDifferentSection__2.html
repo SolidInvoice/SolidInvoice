@@ -1,5 +1,5 @@
 <html><body>
-<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value="{&quot;section&quot;:{&quot;name&quot;:&quot;section&quot;}}" data-live-props-value="{&quot;section&quot;:&quot;invoice&quot;,&quot;formName&quot;:&quot;settings&quot;,&quot;settings&quot;:{&quot;watermark&quot;:&quot;1&quot;,&quot;bcc_address&quot;:&quot;&quot;,&quot;email_subject&quot;:&quot;invoice subject&quot;,&quot;payment_terms&quot;:&quot;net_30&quot;,&quot;id_generation&quot;:{&quot;strategy&quot;:&quot;random_number&quot;,&quot;id_prefix&quot;:&quot;&quot;,&quot;id_suffix&quot;:&quot;&quot;},&quot;reminder&quot;:{&quot;enabled&quot;:&quot;1&quot;,&quot;pre_due_enabled&quot;:&quot;1&quot;,&quot;pre_due_days&quot;:&quot;3&quot;},&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value="{&quot;section&quot;:{&quot;name&quot;:&quot;section&quot;}}" data-live-props-value="{&quot;section&quot;:&quot;invoice&quot;,&quot;formName&quot;:&quot;settings&quot;,&quot;settings&quot;:{&quot;watermark&quot;:&quot;1&quot;,&quot;bcc_address&quot;:&quot;&quot;,&quot;email_subject&quot;:&quot;invoice subject&quot;,&quot;payment_terms&quot;:&quot;net_30&quot;,&quot;default_terms&quot;:&quot;&quot;,&quot;default_notes&quot;:&quot;&quot;,&quot;id_generation&quot;:{&quot;strategy&quot;:&quot;random_number&quot;,&quot;id_prefix&quot;:&quot;&quot;,&quot;id_suffix&quot;:&quot;&quot;},&quot;reminder&quot;:{&quot;enabled&quot;:&quot;1&quot;,&quot;pre_due_enabled&quot;:&quot;1&quot;,&quot;pre_due_days&quot;:&quot;3&quot;},&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
         <ul class="nav nav-underline mb-4" role="tablist">
                                 <li class="nav-item">
                 <a href="/settings?section=system" class="nav-link">
@@ -76,6 +76,30 @@
 <option value="custom">Custom</option></select><div class="form-text text-muted mb-0" id="settings_payment_terms_help">New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.</div>
 </div>
     
+                    </div>
+                
+                                                    <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"></path></g></svg>
+                            Document Defaults
+                        </h3>
+                        <p class="text-muted small mb-3">
+                            Filled in on every new invoice. You can still change them on each one.
+                        </p>
+                        <div class="row g-3">
+                                                        <div class="col-12">
+                                                <div class="mb-3">    
+            <label class="control-label form-label" for="settings_default_terms">Default Terms</label><textarea id="settings_default_terms" name="settings[default_terms]" aria-describedby="settings_default_terms_help" class="form-control"></textarea><div class="form-text text-muted mb-0" id="settings_default_terms_help">Terms added to every new invoice</div>
+</div>
+    
+                            </div>
+                                                            <div class="col-12">
+                                                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_default_notes">Default Notes</label><textarea id="settings_default_notes" name="settings[default_notes]" aria-describedby="settings_default_notes_help" class="form-control"></textarea><div class="form-text text-muted mb-0" id="settings_default_notes_help">For example, your bank details for EFT payments.</div>
+</div>
+    
+                                </div>
+                                                    </div>
                     </div>
                 
                                 <div class="mb-4 pb-4 border-bottom">

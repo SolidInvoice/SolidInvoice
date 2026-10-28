@@ -89,6 +89,8 @@ recurring_invoice:
             required: 'You must select a recurrence type'
     users:
         min: 'You need to select at least 1 user to attach to the Invoice'
+settings:
+    feature_unavailable: 'Your plan does not include this feature.'
 tax:
     constraint:
         exactly_one_document: 'Exactly one of invoice, quote, or recurring invoice must be set on an InvoiceTax.'
