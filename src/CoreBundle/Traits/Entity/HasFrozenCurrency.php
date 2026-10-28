@@ -71,6 +71,19 @@ trait HasFrozenCurrency
         return $client->getCurrency();
     }
 
+    /**
+     * The code of {@see self::getCurrency()}, or null while there is neither a frozen
+     * currency nor a client to take one from.
+     */
+    public function resolveCurrencyCode(): ?string
+    {
+        if ($this->currencyCode === null && ! $this->getClient() instanceof Client) {
+            return null;
+        }
+
+        return $this->getCurrency()->getCode();
+    }
+
     public function retainsFrozenCurrency(): bool
     {
         return false;

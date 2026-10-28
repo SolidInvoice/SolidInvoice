@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
+use Carbon\CarbonImmutable;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -22,6 +23,7 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
+use function array_map;
 
 #[Group('functional')]
 final class PaymentTest extends ApiTestCase
@@ -61,6 +63,7 @@ final class PaymentTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
         unset($data['search'], $data['view']);
+        $data['member'] = array_map(self::assertTimestampsAndRemove(...), $data['member']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -73,35 +76,15 @@ final class PaymentTest extends ApiTestCase
                     '@type' => 'Payment',
                     'id' => $payment->getId()
                         ->toString(),
-                    'companyId' => $this->company->getId()
-                        ->toBase58(),
                     'invoice' => $this->getIriFromResource($invoice),
                     'client' => null,
                     'method' => null,
                     'status' => 'captured',
-                    'message' => $payment->getMessage(),
-                    'completed' => $payment->getCompleted()
-                        ->format('c'),
                     'reference' => null,
                     'notes' => null,
-                    'number' => $payment->getNumber(),
-                    'description' => $payment->getDescription(),
-                    'clientEmail' => $payment->getClientEmail(),
-                    'clientId' => null,
-                    'totalAmount' => $payment->getTotalAmount(),
                     'currencyCode' => $payment->getCurrencyCode(),
-                    'details' => [],
-                    'creditCard' => null,
-                    'bankAccount' => null,
-                    'amount' => [
-                        'amount' => $payment->getAmount()
-                            ->getAmount(),
-                        'currency' => $payment->getAmount()
-                            ->getCurrency()
-                            ->getCode(),
-                    ],
-                    'total' => $payment->getAmount()
-                        ->getAmount() / 100,
+                    'amount' => $payment->getTotalAmount() / 100,
+                    'paidAt' => CarbonImmutable::instance($payment->getCompleted())->utc()->format('c'),
                 ],
             ],
         ], $data);
@@ -120,6 +103,7 @@ final class PaymentTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
         unset($data['search'], $data['view']);
+        $data['member'] = array_map(self::assertTimestampsAndRemove(...), $data['member']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -132,36 +116,15 @@ final class PaymentTest extends ApiTestCase
                     '@type' => 'Payment',
                     'id' => $payment->getId()
                         ->toString(),
-                    'companyId' => $this->company->getId()
-                        ->toBase58(),
                     'invoice' => null,
                     'client' => $this->getIriFromResource($client),
                     'method' => null,
                     'status' => 'captured',
-                    'message' => $payment->getMessage(),
-                    'completed' => $payment->getCompleted()
-                        ->format('c'),
                     'reference' => null,
                     'notes' => null,
-                    'number' => $payment->getNumber(),
-                    'description' => $payment->getDescription(),
-                    'clientEmail' => $payment->getClientEmail(),
-                    'clientId' => $client->getId()
-                        ->toString(),
-                    'totalAmount' => $payment->getTotalAmount(),
                     'currencyCode' => $payment->getCurrencyCode(),
-                    'details' => [],
-                    'creditCard' => null,
-                    'bankAccount' => null,
-                    'amount' => [
-                        'amount' => $payment->getAmount()
-                            ->getAmount(),
-                        'currency' => $payment->getAmount()
-                            ->getCurrency()
-                            ->getCode(),
-                    ],
-                    'total' => $payment->getAmount()
-                        ->getAmount() / 100,
+                    'amount' => $payment->getTotalAmount() / 100,
+                    'paidAt' => CarbonImmutable::instance($payment->getCompleted())->utc()->format('c'),
                 ],
             ],
         ], $data);
@@ -221,8 +184,7 @@ final class PaymentTest extends ApiTestCase
             'invoice' => $invoice,
             'status' => PaymentStatus::Captured,
         ]);
-
-        $data = $this->requestGet($this->getIriFromResource($payment));
+        $data = self::assertTimestampsAndRemove($this->requestGet($this->getIriFromResource($payment)));
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -230,36 +192,15 @@ final class PaymentTest extends ApiTestCase
             '@type' => 'Payment',
             'id' => $payment->getId()
                 ->toString(),
-            'companyId' => $this->company->getId()
-                ->toBase58(),
             'invoice' => $this->getIriFromResource($invoice),
             'client' => $this->getIriFromResource($client),
             'method' => null,
             'status' => 'captured',
-            'message' => $payment->getMessage(),
-            'completed' => $payment->getCompleted()
-                ->format('c'),
             'reference' => null,
             'notes' => null,
-            'number' => $payment->getNumber(),
-            'description' => $payment->getDescription(),
-            'clientEmail' => $payment->getClientEmail(),
-            'clientId' => $client->getId()
-                ->toString(),
-            'totalAmount' => $payment->getTotalAmount(),
             'currencyCode' => $payment->getCurrencyCode(),
-            'details' => [],
-            'creditCard' => null,
-            'bankAccount' => null,
-            'amount' => [
-                'amount' => $payment->getAmount()
-                    ->getAmount(),
-                'currency' => $payment->getAmount()
-                    ->getCurrency()
-                    ->getCode(),
-            ],
-            'total' => $payment->getAmount()
-                ->getAmount() / 100,
+            'amount' => $payment->getTotalAmount() / 100,
+            'paidAt' => CarbonImmutable::instance($payment->getCompleted())->utc()->format('c'),
         ], $data);
     }
 

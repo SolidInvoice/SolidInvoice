@@ -13,6 +13,10 @@
                 "enabled": true,
                 "fetch": "lazy"
             },
+            "country-select": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
             "loading": {
                 "enabled": true,
                 "fetch": "lazy"

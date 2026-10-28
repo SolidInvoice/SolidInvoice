@@ -84,7 +84,7 @@ final class CompanyEventSubscriber
                 $this->sendWelcomeEmail($user, $this->subscription);
             } elseif ($this->billingMode->requiresCardForTrial()) {
                 $this->recordTrialEntry($user);
-                $event->setResponse($this->createWelcomeRedirect());
+                $this->redirect($event, $this->createWelcomeRedirect());
             } elseif (! $this->trialManager->userHasTrial($user) && $this->trialPeriod->hasTrial($plan)) {
                 try {
                     // User is new and plan has a trial configured, start the trial atomically
@@ -96,12 +96,12 @@ final class CompanyEventSubscriber
                     $this->sendWelcomeEmail($user, $this->subscription);
                 } catch (TrialAlreadyExistsException) {
                     // Race condition: another request already created a trial for this user
-                    $event->setResponse($this->createPlanSelectionRedirect());
+                    $this->redirect($event, $this->createPlanSelectionRedirect());
                 }
             } else {
                 // User already had a trial — let them pick a plan for this new
                 // company instead of silently checking them out on the default.
-                $event->setResponse($this->createPlanSelectionRedirect());
+                $this->redirect($event, $this->createPlanSelectionRedirect());
             }
 
             $this->subscription = null;
@@ -144,6 +144,20 @@ final class CompanyEventSubscriber
         } catch (Throwable $e) {
             $this->logger->error('Could not dispatch the welcome email at signup', ['exception' => $e]);
         }
+    }
+
+    /**
+     * Sends a browser on to the next billing step. A JSON client creating a company through the API
+     * keeps the response it asked for: the subscription state the step resolves reaches it through
+     * the API's access checks instead.
+     */
+    private function redirect(ResponseEvent $event, RedirectResponse $redirect): void
+    {
+        if (\in_array($event->getRequest()->getPreferredFormat(), ['json', 'jsonld'], true)) {
+            return;
+        }
+
+        $event->setResponse($redirect);
     }
 
     private function createPlanSelectionRedirect(): RedirectResponse

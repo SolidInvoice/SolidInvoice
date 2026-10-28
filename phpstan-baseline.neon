@@ -34,12 +34,6 @@ parameters:
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
-			path: src/ApiBundle/State/Processor/RecordPaymentProcessor.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
 			path: src/ApiBundle/State/Processor/RecurringInvoiceTransitionProcessor.php
 
 		-
@@ -857,12 +851,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: src/PaymentBundle/Listener/PaymentCompleteListener.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/PaymentBundle/Mcp/PaymentWriteTools.php
 
 		-
 			message: '#^Method SolidInvoice\\PaymentBundle\\Tests\\Form\\Type\\PaymentTypeTest\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'

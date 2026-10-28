@@ -34,6 +34,11 @@ interface HasFrozenCurrencyInterface
     public function getCurrency(): Currency;
 
     /**
+     * The code of {@see self::getCurrency()}, or null while it cannot be resolved yet.
+     */
+    public function resolveCurrencyCode(): ?string;
+
+    /**
      * Whether this document keeps its frozen currency even when it returns to Draft.
      * True once money has been recorded against it: `payments.currency_code` is a
      * recorded fact, and a re-issued document must not assert a currency that

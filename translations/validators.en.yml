@@ -24,6 +24,12 @@ core:
     image_upload:
         invalid_image: 'The uploaded file is not a valid image.'
         invalid_mime_type: 'The uploaded file must be a JPEG, PNG, GIF or WebP image.'
+document:
+    mark_sent:
+        channel_email: 'Use the send endpoint to email a document.'
+    send:
+        no_recipients: 'There is no one to send this to. Add a contact with an email address.'
+        unknown_contact: 'This is not a contact of the client this document is for.'
 install:
     database:
         driver:
@@ -42,6 +48,8 @@ install:
         password:
             not_blank: 'You must enter a secure password'
 invoice:
+    invoice_id:
+        unique: 'This invoice number is already in use.'
     lines:
         min: 'You need to add at least 1 line to the Invoice'
     plan_limit: 'You have reached the maximum number of invoices allowed on your current plan this month.'
@@ -63,6 +71,8 @@ payment:
 quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'
+    quote_id:
+        unique: 'This quote number is already in use.'
     users:
         min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
 recurring_invoice:

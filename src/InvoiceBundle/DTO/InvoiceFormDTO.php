@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientName;
+use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
@@ -41,6 +42,7 @@ final class InvoiceFormDTO
     #[Assert\NotBlank(groups: ['new_client'])]
     #[Assert\Length(max: 125, groups: ['new_client'])]
     #[UniqueClientName(groups: ['new_client'])]
+    #[WithinPlanClientLimit(groups: ['new_client'])]
     public ?string $newClientName = null;
 
     #[Assert\NotBlank(groups: ['new_client'])]

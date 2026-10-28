@@ -100,6 +100,11 @@ class Company implements Stringable, SubscribableInterface
     #[Assert\Hostname(requireTld: true)]
     private ?string $customDomain = null;
 
+    // Only the operator changes this: by hand in the database, or by rejecting a held email
+    // (solidinvoice:saas:held-emails). CompanyEnabledFilter then hides it, and everything it owns, everywhere.
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $enabled = true;
+
     // Related entities: Only added here to enable orphan removal
     /**
      * @var Collection<int, ApiTokenHistory>
@@ -309,6 +314,13 @@ class Company implements Stringable, SubscribableInterface
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function disable(): self
+    {
+        $this->enabled = false;
 
         return $this;
     }
