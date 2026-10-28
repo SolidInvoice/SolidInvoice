@@ -28,7 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Get(uriTemplate: '/settings/documents', uriVariables: []),
-        new Patch(uriTemplate: '/settings/documents', uriVariables: [], processor: DocumentSettingsProcessor::class),
+        // A PATCH without URI variables is not read by default, and would start from a blank object.
+        new Patch(uriTemplate: '/settings/documents', uriVariables: [], read: true, processor: DocumentSettingsProcessor::class),
     ],
     normalizationContext: ['skip_null_values' => false],
     graphQlOperations: [],

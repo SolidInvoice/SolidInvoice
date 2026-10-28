@@ -23,6 +23,7 @@ core:
         visibility_required: 'Visibility is required for invoice and quote custom fields.'
     image_upload:
         invalid_image: 'The uploaded file is not a valid image.'
+        invalid_logo: 'The logo must be a PNG, JPEG or WebP image of at most 5 MB.'
         invalid_mime_type: 'The uploaded file must be a JPEG, PNG, GIF or WebP image.'
 document:
     mark_sent:

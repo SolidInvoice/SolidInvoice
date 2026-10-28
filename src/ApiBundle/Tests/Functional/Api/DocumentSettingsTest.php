@@ -58,6 +58,9 @@ final class DocumentSettingsTest extends ApiTestCase
         self::assertSame('net_7', $settings['paymentTerms']);
         self::assertSame('INV-', $settings['invoiceNumberPrefix']);
         self::assertNull($settings['quoteNotes']);
+        // Untouched by the PATCH.
+        self::assertSame('New Invoice - #{id}', $settings['invoiceEmailSubject']);
+        self::assertTrue($settings['remindersEnabled']);
 
         $config = self::getContainer()->get(SystemConfig::class);
         self::assertNull($config->get('invoice/default_notes', $other));
