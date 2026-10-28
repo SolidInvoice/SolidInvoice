@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SaasBundle\Action\Robots;
+use SolidInvoice\SaasBundle\Action\Sitemap;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
@@ -19,4 +21,14 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->import('@SolidInvoiceSaasBundle/Resources/config/routing/onetap.php')
         ->prefix('/onetap');
+
+    $routingConfigurator
+        ->add('_robots', '/robots.txt')
+        ->controller(Robots::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_sitemap', '/sitemap.xml')
+        ->controller(Sitemap::class)
+        ->methods(['GET']);
 };

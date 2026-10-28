@@ -10,9 +10,11 @@ Changelog
 * Dates show month and day names in the user's language, and counts use the right singular or plural form (for example "1 day overdue" instead of "1 days overdue")
 * Dates on invoice and quote emails no longer include a meaningless time, and short dates no longer pad the day ("Sep 1, 2021" instead of "Sep 01, 2021")
 * Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, the UK, Switzerland, Monaco, the Isle of Man, South Africa and Australia start with their country's VAT or GST rates already set up
+* AI agents can discover SolidInvoice on their own: the app now serves `/auth.md` with sign-in steps for agents, an agent skill for connecting over MCP, and an `/.well-known/ai-catalog.json` listing the MCP server and REST API
 
 ### Fixes
 
+* MCP clients that connect without a token now receive a `WWW-Authenticate` header pointing them to the OAuth metadata, so they can start sign-in automatically
 * The installer no longer stops with a JavaScript error when installation finishes
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
 * Apostrophes in plain-text emails no longer show up as `&#039;`
