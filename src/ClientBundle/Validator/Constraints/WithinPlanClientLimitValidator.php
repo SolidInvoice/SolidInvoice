@@ -22,7 +22,6 @@ use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Validator\Constraints\WithinPlanClientLimitValidatorTest
@@ -43,10 +42,6 @@ final class WithinPlanClientLimitValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, WithinPlanClientLimit::class);
         }
 
-        if (! $value instanceof Client) {
-            throw new UnexpectedValueException($value, Client::class);
-        }
-
         // SaaS-only. On self-hosted the Noop feature gate allows everything anyway,
         // but the toggle guard avoids the count query and makes the intent explicit.
         if (! $this->toggle->isActive('saas_enabled')) {
@@ -56,7 +51,9 @@ final class WithinPlanClientLimitValidator extends ConstraintValidator
         // Only new clients count against the limit; a managed (already-persisted) entity
         // is an edit and must not be blocked. The id cannot be used here because Client
         // assigns its ULID in the constructor, so it is never null.
-        if ($this->entityManager->contains($value)) {
+        // Any non-Client value is the inline new-client name on the invoice/quote form DTOs,
+        // whose Client is cascaded on save and never validated itself.
+        if ($value instanceof Client && $this->entityManager->contains($value)) {
             return;
         }
 

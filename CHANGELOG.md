@@ -18,6 +18,7 @@ Changelog
 * The installer no longer stops with a JavaScript error when installation finishes
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
 * Apostrophes in plain-text emails no longer show up as `&#039;`
+* Adding a new client while creating an invoice or quote now respects the plan's client limit
 
 
 3.1.3 / Unreleased
