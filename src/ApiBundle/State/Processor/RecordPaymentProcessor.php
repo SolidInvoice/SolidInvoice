@@ -23,6 +23,7 @@ use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use LogicException;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
@@ -76,7 +77,7 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
 
         // A JSON integer is the original minor-unit form, still accepted for one deprecation cycle.
         if (is_int($data->amount) && $request instanceof Request && $operation instanceof HttpOperation) {
-            $request->attributes->set('_api_operation', $operation->withHeaders([...($operation->getHeaders() ?? []), 'Deprecation' => 'true']));
+            $request->attributes->set('_api_operation', $operation->withHeaders([...($operation->getHeaders() ?? []), 'Deprecation' => ApiVersion::LEGACY_DEPRECATION]));
 
             // API Platform builds the Link header from this provider, so a Link set on the operation is lost.
             $links = $request->attributes->get('_api_platform_links') ?? new GenericLinkProvider();
@@ -122,6 +123,11 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
         // Rejected rather than rounded: a silently rounded payment is a wrong payment.
         if ($minor->strippedOfTrailingZeros()->getScale() > 0) {
             throw $this->violation('amount', $this->translator->trans('payment.record.error.amount_too_precise', ['%currency%' => $currency->getCode()]), $amount);
+        }
+
+        // Payments store the amount as a PHP integer.
+        if ($minor->isGreaterThan(PHP_INT_MAX)) {
+            throw $this->violation('amount', $this->translator->trans('payment.record.error.amount_too_large'), $amount);
         }
 
         return $minor->toBigInteger();

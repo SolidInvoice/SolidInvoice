@@ -291,11 +291,11 @@ A payment that does not cover the balance only reduces it, and the invoice stays
 
 Only `pending` and `overdue` invoices take payments. Any other invoice returns `409`, with a problem `type` ending in:
 
-#### `invoice_not_issued`
+### `invoice_not_issued`
 
 The invoice is still new or a draft. Issue it first.
 
-#### `invoice_not_payable`
+### `invoice_not_payable`
 
 The invoice is paid, cancelled or archived.
 
@@ -309,9 +309,11 @@ An integer `amount` (`1000`) is read the old way, in minor units (cents). It sti
 
 `POST /api/payments/{id}/void` cancels a payment you recorded by hand and returns it with `status` `cancelled`. It takes no body. The payment is kept, and the invoice balance goes back up. If the payment had settled the invoice, the invoice goes back to `pending`, or `overdue` when its due date has passed; no notification is sent again. Credit moves back too: the excess an overpayment added is taken off the client, and a `credit` payment is refunded to it.
 
-The payment cannot be voided, and the response is `409` with a problem `type` ending in `payment_not_voidable`, when:
+A payment that cannot be voided returns `409`, with a problem `type` ending in:
 
-#### `payment_not_voidable`
+### `payment_not_voidable`
+
+The payment cannot be voided because:
 
 - it was taken by an online gateway (refund it with the gateway instead),
 - it is not a completed (`captured`) payment, for example it was already voided,

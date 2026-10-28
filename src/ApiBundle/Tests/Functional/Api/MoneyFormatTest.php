@@ -111,6 +111,8 @@ final class MoneyFormatTest extends ApiTestCase
 
     public function testRequestsWithoutAVersionKeepTheOriginalFormatAndAreDeprecated(): void
     {
+        self::mockTime('2026-11-01 00:00:00 UTC');
+
         $response = $this->postInvoice('USD', ['price' => 10.5, 'qty' => 2], version: null);
 
         self::assertResponseStatusCodeSame(201);
@@ -130,6 +132,13 @@ final class MoneyFormatTest extends ApiTestCase
         self::assertSame('21.00', $response->toArray(false)['total']);
         self::assertResponseNotHasHeader('deprecation');
         self::assertResponseNotHasHeader('sunset');
+    }
+
+    public function testANonScalarAmountIsRejected(): void
+    {
+        $this->postInvoice('USD', ['price' => ['10.00'], 'qty' => '1']);
+
+        self::assertResponseStatusCodeSame(400);
     }
 
     public function testAnUnknownVersionIsRejected(): void

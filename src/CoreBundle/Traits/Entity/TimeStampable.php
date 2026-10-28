@@ -19,23 +19,20 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
-/**
- * Neither timestamp is in a serializer group here: a resource that exposes them
- * re-declares {@see self::getCreated()} and {@see self::getUpdated()} with its own read
- * group. A shared group would put them in every resource's group, and API Platform would
- * then embed each related resource instead of returning its IRI.
- */
 trait TimeStampable
 {
     #[Gedmo\Timestampable(on: 'create')]
-    #[ApiProperty(writable: false, iris: ['https://schema.org/DateTime'])]
+    #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'created', type: Types::DATETIME_IMMUTABLE)]
+    #[Ignore]
     protected ?DateTimeImmutable $created = null;
 
     #[Gedmo\Timestampable(on: 'update')]
-    #[ApiProperty(writable: false, iris: ['https://schema.org/DateTime'])]
+    #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'updated', type: Types::DATETIME_IMMUTABLE)]
+    #[Ignore]
     protected ?DateTimeImmutable $updated = null;
 
     /**

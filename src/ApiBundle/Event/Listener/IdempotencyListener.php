@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -75,7 +76,14 @@ final readonly class IdempotencyListener
         }
 
         $cacheKey = hash('sha256', $key . '|' . $this->security->getUser()?->getUserIdentifier() . '|' . $this->companySelector->getCompany()?->toRfc4122());
-        $requestHash = hash('sha256', $request->getMethod() . ' ' . $request->getPathInfo() . "\n" . $request->getContent());
+        // The headers that choose the response's representation are part of the request: replaying a body
+        // in another money format or media type would hand the client something it did not ask for.
+        $requestHash = hash('sha256', implode("\n", [
+            $request->getMethod() . ' ' . $request->getPathInfo(),
+            (string) $request->headers->get(ApiVersion::HEADER),
+            (string) $request->headers->get('Accept'),
+            $request->getContent(),
+        ]));
 
         $lock = $this->lockFactory->createLock('idempotency_' . $cacheKey);
 
@@ -119,25 +127,32 @@ final readonly class IdempotencyListener
         $request->attributes->remove(self::LOCK_ATTRIBUTE);
         $response = $event->getResponse();
 
-        // Only successes are kept: a failed request may be retried with the same key.
-        if ($response->isSuccessful()) {
-            $headers = [];
-
-            foreach (self::REPLAYED_HEADERS as $name) {
-                if ($response->headers->has($name)) {
-                    $headers[$name] = $response->headers->get($name);
-                }
+        try {
+            // Only successes are kept: a failed request may be retried with the same key.
+            if ($response->isSuccessful()) {
+                $this->store($request, $response);
             }
+        } finally {
+            $lock->release();
+        }
+    }
 
-            $this->cache->save($this->cache->getItem((string) $request->attributes->get(self::CACHE_KEY_ATTRIBUTE))->set([
-                'hash' => $request->attributes->get(self::HASH_ATTRIBUTE),
-                'status' => $response->getStatusCode(),
-                'headers' => $headers,
-                'body' => $response->getContent(),
-            ]));
+    private function store(Request $request, Response $response): void
+    {
+        $headers = [];
+
+        foreach (self::REPLAYED_HEADERS as $name) {
+            if ($response->headers->has($name)) {
+                $headers[$name] = $response->headers->get($name);
+            }
         }
 
-        $lock->release();
+        $this->cache->save($this->cache->getItem((string) $request->attributes->get(self::CACHE_KEY_ATTRIBUTE))->set([
+            'hash' => $request->attributes->get(self::HASH_ATTRIBUTE),
+            'status' => $response->getStatusCode(),
+            'headers' => $headers,
+            'body' => $response->getContent(),
+        ]));
     }
 
     private function isIdempotent(Request $request): bool

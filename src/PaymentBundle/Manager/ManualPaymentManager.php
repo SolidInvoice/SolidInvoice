@@ -19,6 +19,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -41,6 +42,7 @@ use Symfony\Component\Workflow\Workflow;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 /**
  * Records and voids payments taken outside SolidInvoice (cash, bank transfer, credit, …) for every
@@ -116,8 +118,28 @@ final class ManualPaymentManager
         $paymentMethod = $this->resolveMethod($method);
         $completed = $this->resolvePaidAt($invoice, $paidAt);
 
+        return $this->transactional(fn (): Payment => $this->persistPayment($invoice, $client, $amount, $invoiceCurrency, $paymentMethod, $completed, $reference, $notes));
+    }
+
+    /**
+     * @throws InvalidPaymentException
+     * @throws MathException
+     */
+    private function persistPayment(
+        Invoice $invoice,
+        Client $client,
+        BigInteger $amount,
+        string $invoiceCurrency,
+        PaymentMethod $paymentMethod,
+        DateTimeInterface $completed,
+        ?string $reference,
+        ?string $notes,
+    ): Payment {
         // The same checks, and messages, as the web form.
         if ($paymentMethod->getGatewayName() === self::CREDIT_METHOD) {
+            // Locked, so two credit payments cannot both spend the same credit.
+            $this->lock($client->getCredit());
+
             if ($amount->isGreaterThan($client->getCredit()->getValue())) {
                 throw $this->invalid('amount', 'payment.create.exception.not_enough_credit');
             }
@@ -167,6 +189,20 @@ final class ManualPaymentManager
      */
     public function void(Payment $payment): Payment
     {
+        return $this->transactional(function () use ($payment): Payment {
+            // Locked and re-read, so a concurrent void sees this one's cancellation.
+            $this->lock($payment);
+
+            return $this->cancel($payment);
+        });
+    }
+
+    /**
+     * @throws PaymentConflictException
+     * @throws MathException
+     */
+    private function cancel(Payment $payment): Payment
+    {
         $method = $payment->getMethod();
 
         if (! $method instanceof PaymentMethod || $method->isOnline()) {
@@ -208,6 +244,10 @@ final class ManualPaymentManager
         }
 
         if (! $creditChange->isZero()) {
+            if ($client instanceof Client) {
+                $this->lock($client->getCredit());
+            }
+
             if (! $client instanceof Client || $client->getCredit()->getValue()->toBigDecimal()->plus($creditChange)->isNegative()) {
                 throw $this->conflict(PaymentConflict::PaymentNotVoidable, 'payment.void.error.credit_spent');
             }
@@ -251,6 +291,43 @@ final class ManualPaymentManager
         $this->entityManager->flush();
 
         return $payment;
+    }
+
+    /**
+     * Not EntityManager::wrapInTransaction(): that closes the entity manager on failure, and the
+     * error response still needs it.
+     *
+     * @template T
+     *
+     * @param callable(): T $operation
+     *
+     * @return T
+     */
+    private function transactional(callable $operation): mixed
+    {
+        $connection = $this->entityManager->getConnection();
+        $connection->beginTransaction();
+
+        try {
+            $result = $operation();
+            $connection->commit();
+
+            return $result;
+        } catch (Throwable $exception) {
+            $connection->rollBack();
+
+            throw $exception;
+        }
+    }
+
+    /**
+     * Re-reads a stored row under a write lock, held until the transaction ends.
+     */
+    private function lock(object $entity): void
+    {
+        if ($this->entityManager->contains($entity)) {
+            $this->entityManager->refresh($entity, LockMode::PESSIMISTIC_WRITE);
+        }
     }
 
     /**
