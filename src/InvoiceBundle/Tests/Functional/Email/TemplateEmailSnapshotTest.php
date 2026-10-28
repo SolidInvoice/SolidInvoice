@@ -80,7 +80,7 @@ final class TemplateEmailSnapshotTest extends KernelTestCase
 
         $rendered = $this->twig->render(
             sprintf('@SolidInvoiceInvoice/Templates/%s/email.html.twig', $slug),
-            ['invoice' => $invoice]
+            ['invoice' => $invoice, 'show_powered_by' => false]
         );
 
         $this->assertMatchesHtmlSnapshot($rendered);

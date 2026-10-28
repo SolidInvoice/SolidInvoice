@@ -22,7 +22,7 @@
             {# Headline #}
             <h1 class="subscription-title">{{ 'saas.trial_expired.title'|trans }}</h1>
             <p class="subscription-subtitle">
-                {{ 'saas.trial_expired.subtitle'|trans({'%days%': subscription.startDate.diff(subscription.endDate).days|abs, '%date%': subscription.endDate|date('F j, Y'), '%price%': subscription.plan.price|formatCurrency('USD')}) }}
+                {{ 'saas.trial_expired.subtitle'|trans({'%days%': subscription.startDate.diff(subscription.endDate).days|abs, '%date%': subscription.endDate|format_date('long'), '%price%': subscription.plan.price|formatCurrency('USD')}) }}
             </p>
 
             {# Benefits Reminder #}

@@ -44,7 +44,7 @@ final class ChoiceFilterTest extends TestCase
         self::assertArrayHasKey('multiple', $options);
         self::assertArrayHasKey('placeholder', $options);
         self::assertFalse($options['multiple']);
-        self::assertSame('Choose a value', $options['placeholder']);
+        self::assertSame('datagrid.filter.choose', $options['placeholder']);
         // Choices are flipped: label => value
         self::assertSame(['Draft' => 'draft', 'Pending' => 'pending', 'Paid' => 'paid'], $options['choices']);
     }

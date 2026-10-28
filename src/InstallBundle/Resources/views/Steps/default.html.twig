@@ -31,7 +31,7 @@
                                     </span>
 
                         <div class="d-flex flex-column{{ step.is_current_step and not form.vars.valid ? ' text-danger' }}"{{ step.is_current_step ? ' id="current_step_text"' }}>
-                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
+                            <strong>{{ ('installation.flow.' ~ step.name)|trans }}</strong>
                             {# <small class="text-muted">Review and submit</small> #}
                             {# {% if step.name == 'start' %}
                                             <strong>Personal Information</strong>

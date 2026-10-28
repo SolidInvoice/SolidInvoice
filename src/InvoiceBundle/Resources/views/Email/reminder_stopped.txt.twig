@@ -1,0 +1,39 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ 'invoice.reminder_stopped.heading'|trans({}, 'email')|upper }}
+
+{% if days_overdue is defined and days_overdue is not null %}{{ 'invoice.reminder_email.stopped_days_overdue'|trans({'invoice': invoice.invoiceId, 'days': days_overdue}, 'messages') }}{% else %}{{ 'invoice.reminder_stopped.message'|trans({'%invoice%': invoice.invoiceId}, 'email') }}{% endif %}
+
+{{ 'invoice.reminder.details'|trans({}, 'email') }}:
+----------------
+{{ 'invoice.overdue.invoice_number'|trans({}, 'email') }}: {{ invoice.invoiceId }}
+{% if invoice.client %}
+{{ 'invoice.notification_overdue.client'|trans({}, 'email') }}: {{ invoice.client.name }}
+{% endif %}
+{% if invoice.due %}
+{{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
+{% endif %}
+{% if days_overdue %}
+{{ 'invoice.reminder_stopped.days_overdue'|trans({}, 'email') }}: {{ days_overdue }}
+{% endif %}
+{% if invoice.balance %}
+{{ 'invoice.reminder_stopped.outstanding_amount'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.currency) }}
+{% endif %}
+
+{{ 'invoice.reminder_stopped.actions.heading'|trans({}, 'email') }}:
+-------------------
+- {{ 'invoice.reminder_stopped.actions.contact'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.history'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.payment_plan'|trans({}, 'email') }}
+- {{ 'invoice.reminder_stopped.actions.services'|trans({}, 'email') }}
+
+{{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url("_view_invoice", {"id" : invoice.id}) }}
+
+{{ 'invoice.reminder_stopped.footer'|trans({}, 'email') }}

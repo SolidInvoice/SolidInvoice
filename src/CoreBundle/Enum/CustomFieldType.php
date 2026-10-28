@@ -28,15 +28,15 @@ enum CustomFieldType: string
     public function label(): string
     {
         return match ($this) {
-            self::TEXT => 'Text',
-            self::TEXTAREA => 'Long text',
-            self::NUMBER => 'Number',
-            self::DATE => 'Date',
-            self::EMAIL => 'Email',
-            self::URL => 'URL',
-            self::CHECKBOX => 'Checkbox',
-            self::SELECT => 'Single-select',
-            self::MULTI_SELECT => 'Multi-select',
+            self::TEXT => 'custom_field.type.text',
+            self::TEXTAREA => 'custom_field.type.textarea',
+            self::NUMBER => 'custom_field.type.number',
+            self::DATE => 'custom_field.type.date',
+            self::EMAIL => 'custom_field.type.email',
+            self::URL => 'custom_field.type.url',
+            self::CHECKBOX => 'custom_field.type.checkbox',
+            self::SELECT => 'custom_field.type.select',
+            self::MULTI_SELECT => 'custom_field.type.multi_select',
         };
     }
 

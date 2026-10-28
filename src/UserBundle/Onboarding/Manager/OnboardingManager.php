@@ -49,6 +49,8 @@ final readonly class OnboardingManager
         $company = new Company();
         $company->setName($data->companyName);
         $company->currency = $data->companyCurrency ?? 'USD';
+        $company->setCountry($data->companyCountry);
+        $company->setOwner($user);
 
         $this->companyRepository->save($company);
 

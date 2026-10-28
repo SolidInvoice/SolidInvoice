@@ -38,7 +38,7 @@ final class CurrencyFormatter implements FormatterInterface
 
     public function format(Column $column, mixed $value): string | TranslatableMessage
     {
-        $systemDefault = new TranslatableMessage('System Default (%currency%)', ['%currency%' => $this->config->getCurrency()->getCode()]);
+        $systemDefault = new TranslatableMessage('datagrid.currency.system_default', ['%currency%' => $this->config->getCurrency()->getCode()]);
 
         if (! is_string($value)) {
             return $systemDefault;

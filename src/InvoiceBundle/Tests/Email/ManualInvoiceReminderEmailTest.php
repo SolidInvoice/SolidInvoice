@@ -21,8 +21,12 @@ use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\MailerBundle\Listener\TranslateEmailSubjectListener;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
@@ -58,6 +62,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $invoice->setInvoiceId('INV-2024-001');
 
         $email = new ManualInvoiceReminderEmail($invoice);
+        new TranslateEmailSubjectListener(self::getContainer()->get('translator'))(new MessageEvent($email, new Envelope(new Address('sender@example.com'), [new Address('client@example.com')]), 'smtp'));
 
         self::assertSame('Payment Reminder: Invoice INV-2024-001', $email->getSubject());
     }
@@ -75,7 +80,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $email = new ManualInvoiceReminderEmail($invoice);
 
         self::assertSame('@SolidInvoiceInvoice/Email/manual_reminder.html.twig', $email->getHtmlTemplate());
-        self::assertSame('@SolidInvoiceInvoice/Email/manual_reminder.text.twig', $email->getTextTemplate());
+        self::assertSame('@SolidInvoiceInvoice/Email/manual_reminder.txt.twig', $email->getTextTemplate());
     }
 
     public function testEmailContextIncludesInvoice(): void

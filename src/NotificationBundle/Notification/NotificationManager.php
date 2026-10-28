@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationManager
 {
@@ -41,6 +42,7 @@ class NotificationManager
         private readonly ServiceLocator $transportConfigurations,
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -58,6 +60,8 @@ class NotificationManager
         }
 
         $event = $attributes[0]->getArguments()['name'] ?? null;
+
+        $message->subject($this->translator->trans($message->getSubjectKey(), $message->getSubjectParameters(), 'email'));
 
         $userNotifications = $this->userNotificationRepository->findBy(['event' => $event]);
         $hasTransportFailure = false;

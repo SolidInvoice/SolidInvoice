@@ -20,6 +20,10 @@ description: |
     sudo snap set solidinvoice port=8080
 
 license: MIT
+website: https://solidinvoice.co
+source-code: https://github.com/SolidInvoice/SolidInvoice
+issues: https://github.com/SolidInvoice/SolidInvoice/issues
+contact: open-source@solidworx.co
 base: core24
 confinement: strict
 grade: stable

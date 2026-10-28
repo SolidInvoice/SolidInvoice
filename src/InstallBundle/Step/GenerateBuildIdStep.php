@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\GenerateBuildIdStepTest
@@ -27,6 +28,7 @@ final readonly class GenerateBuildIdStep implements InstallationStepInterface
 {
     public function __construct(
         private ConfigWriter $configWriter,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -42,7 +44,7 @@ final readonly class GenerateBuildIdStep implements InstallationStepInterface
         $this->configWriter->save(['BUILD_ID' => $buildId]);
 
         if ($callback !== null) {
-            yield from $callback(sprintf('Build ID generated: %s', $buildId));
+            yield from $callback($this->translator->trans('installation.progress_log.build_id_generated', ['%build_id%' => $buildId]));
         }
     }
 

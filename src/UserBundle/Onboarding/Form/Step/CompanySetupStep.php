@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Onboarding\Form\Step;
 
+use SolidInvoice\CoreBundle\Form\Type\CompanyCountryType;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Onboarding\Form\Step\CompanySetupStepTest
- * @extends AbstractType<array{companyName: string, companyCurrency: mixed}>
+ * @extends AbstractType<array{companyName: string, companyCountry: string|null, companyCurrency: mixed}>
  */
 final class CompanySetupStep extends AbstractType
 {
@@ -36,6 +37,7 @@ final class CompanySetupStep extends AbstractType
             'help' => 'onboarding.company.fields.name.help',
         ]);
 
+        $builder->add('companyCountry', CompanyCountryType::class);
         $builder->add('companyCurrency', CurrencyType::class, [
             'label' => 'onboarding.company.fields.currency.label',
             'required' => true,

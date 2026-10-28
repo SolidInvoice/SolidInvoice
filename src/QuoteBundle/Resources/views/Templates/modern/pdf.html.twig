@@ -31,9 +31,9 @@
         <td style="width: 33%; vertical-align: top;">{{ q.from_block() }}</td>
         <td style="width: 33%; vertical-align: top; padding: 0 12px;">{{ q.bill_to_block(quote) }}</td>
         <td style="width: 34%; vertical-align: top;">
-            {{ q.meta_pair('quote.pdf.date'|trans, quote.created|date('F j, Y')) }}
+            {{ q.meta_pair('quote.pdf.date'|trans, quote.created|format_date('long')) }}
             {% if quote.due %}
-                {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
+                {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|format_date('long')) }}
                 <div style="margin-top: 2px;">{{ q.validity_indicator(quote) }}</div>
             {% endif %}
             {{ q.status_pair(quote.status) }}
@@ -44,10 +44,10 @@
 <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 28px;">
     <thead>
         <tr>
-            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: left; border-bottom: 1px solid #e2e8f0;">{{ 'quote.item.heading.description'|trans }}</th>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: left; border-bottom: 1px solid #e2e8f0;">{{ 'label.description'|trans }}</th>
             <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'quote.item.heading.qty'|trans }}</th>
             <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'quote.item.heading.price'|trans }}</th>
-            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'quote.item.heading.total'|trans }}</th>
+            <th style="padding: 12px 0; font-size: 8pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px; text-align: right; border-bottom: 1px solid #e2e8f0;">{{ 'billing.total'|trans }}</th>
         </tr>
     </thead>
     <tbody>

@@ -126,7 +126,7 @@
                                                 {% else %}
                                                     {{ ux_icon('tabler:shield-lock', {width: 18, height: 18}) }}
                                                 {% endif %}
-                                                {{ ('Use ' ~ provider)|trans }}
+                                                {{ (provider == 'totp' ? 'security.two_factor.use_totp' : 'security.two_factor.use_email')|trans }}
                                             </a>
                                         {% endfor %}
                                     </div>

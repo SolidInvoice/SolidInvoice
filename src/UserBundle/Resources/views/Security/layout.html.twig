@@ -1,0 +1,31 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{# The signed-out pages other than login (the platform's password reset pages), dressed like the login page. #}
+
+{% extends '@Ui/Layout/security.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock stylesheets %}
+
+{% block brand %}
+    <span class="text-white h1">
+        {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
+    </span>
+{% endblock brand %}
+
+{% block content %}
+    {% block auth_content %}{% endblock %}
+
+    {{ include('@SolidInvoiceUser/Security/_photo_credit.html.twig') }}
+{% endblock content %}

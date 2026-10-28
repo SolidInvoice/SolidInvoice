@@ -45,4 +45,14 @@ final readonly class TrialPeriod
 
         return $days > 0 ? $days : null;
     }
+
+    /**
+     * Whether starting a trial on this plan grants any time at all. A zero
+     * interval (`P0D`) is still a DateInterval, so an instanceof check would
+     * start a trial that is already expired and gets downgraded on the next run.
+     */
+    public function hasTrial(Plan $plan): bool
+    {
+        return $this->days($plan) !== null;
+    }
 }

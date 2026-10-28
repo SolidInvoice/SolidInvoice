@@ -1,7 +1,31 @@
 Changelog
 =========
 
-3.1.2 / Unreleased
+3.2.0 / Unreleased
+-------------------
+
+### Changes
+
+* Every piece of text in the app, emails, PDFs and installer now comes from the translation files, so all of it can be translated. This covers payment reminder emails, notification and email subjects, list columns and filters, statuses, the installer, plan upgrade prompts and form validation messages
+* Dates show month and day names in the user's language, and counts use the right singular or plural form (for example "1 day overdue" instead of "1 days overdue")
+* Dates on invoice and quote emails no longer include a meaningless time, and short dates no longer pad the day ("Sep 1, 2021" instead of "Sep 01, 2021")
+* Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, the UK, Switzerland, Monaco, the Isle of Man, South Africa and Australia start with their country's VAT or GST rates already set up
+
+### Fixes
+
+* The installer no longer stops with a JavaScript error when installation finishes
+* Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
+* Apostrophes in plain-text emails no longer show up as `&#039;`
+
+
+3.1.3 / Unreleased
+------------------
+
+### Fixes
+
+* Trimmed internal payment method fields from API payment responses
+
+3.1.2 / 2026-10-21
 -------------------
 
 ### Changes

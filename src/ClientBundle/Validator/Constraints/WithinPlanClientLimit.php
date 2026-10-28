@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class WithinPlanClientLimit extends Constraint
 {
-    public string $message = 'You have reached the maximum number of clients allowed on your current plan.';
+    public string $message = 'client.constraint.plan_limit';
 
     #[Override]
     public function getTargets(): string

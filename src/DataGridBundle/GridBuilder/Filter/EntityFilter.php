@@ -63,7 +63,7 @@ final class EntityFilter implements ColumnFilterInterface
     public function formOptions(): array
     {
         return [
-            'placeholder' => 'Choose a value',
+            'placeholder' => 'datagrid.filter.choose',
             'multiple' => $this->multiple,
             'choice_name' => $this->field,
             'choice_value' => function (object | string $entity) {

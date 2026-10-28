@@ -85,18 +85,18 @@ class ImageUploadType extends AbstractType
 
                 $violations = $this->validator->validate($value, new FileConstraint(
                     mimeTypes: ImageUploadType::ALLOWED_MIME_TYPES,
-                    mimeTypesMessage: 'The uploaded file must be a JPEG, PNG, GIF or WebP image.',
+                    mimeTypesMessage: 'core.image_upload.invalid_mime_type',
                 ));
 
                 if (count($violations) > 0) {
                     $exception = new TransformationFailedException($violations[0]->getMessage());
-                    $exception->setInvalidMessage($violations[0]->getMessage());
+                    $exception->setInvalidMessage($violations[0]->getMessageTemplate(), $violations[0]->getParameters());
 
                     throw $exception;
                 }
 
                 if (false === @getimagesize($value->getPathname())) {
-                    $message = 'The uploaded file is not a valid image.';
+                    $message = 'core.image_upload.invalid_image';
                     $exception = new TransformationFailedException($message);
                     $exception->setInvalidMessage($message);
 

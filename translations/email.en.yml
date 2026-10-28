@@ -5,9 +5,7 @@ client:
             name: Name
         details:
             email: Email
-            id: ID
             name: 'Client Name'
-            vat_number: 'VAT Number'
             website: Website
         heading: 'A new client has been created.'
         message: 'A new client has been added.'
@@ -20,6 +18,9 @@ email:
         message: 'Please confirm your email address by clicking the button below. This helps us ensure the security of your account.'
         security: "If you didn't create an account, you can safely ignore this email."
         title: 'Please confirm your email address'
+export:
+    ready:
+        subject: 'Your data export is ready'
 invitation:
     accept: 'Accept Invitation'
     alternative: "If the button above doesn't work, copy and paste this link into your browser:"
@@ -32,7 +33,7 @@ invitation:
         expires: Expires
         info: 'If you no longer wish to join, you can safely ignore this email and the invitation will expire automatically.'
         instructions: 'Click the button below to accept your invitation before it expires.'
-        message: 'Your invitation to join %company% on SolidInvoice will expire in 2 days.'
+        message: 'Your invitation to join %company% on SolidInvoice expires soon.'
         title: 'Your invitation to join %company% is about to expire'
     title: 'Invitation to join %company%'
 invoice:
@@ -43,6 +44,12 @@ invoice:
     due: 'Due Date'
     info: 'You have received an invoice from %company% generated on %created%'
     line_tax: 'Line taxes'
+    manual_reminder:
+        closing: 'Thank you for your business. We appreciate your prompt attention to this invoice.'
+        heading: 'Invoice Payment Reminder'
+        message: 'This is a friendly reminder about invoice %invoice%. We kindly ask you to review the invoice details below and arrange payment at your earliest convenience.'
+        subject: 'Payment Reminder: Invoice %id%'
+        title: 'Payment Reminder'
     notification_overdue:
         alert: 'Invoice Marked as Overdue'
         client: Client
@@ -55,18 +62,54 @@ invoice:
         view_invoice: 'View Invoice Details'
     number: 'Invoice #'
     overdue:
-        action_required: 'Please take action to settle this invoice at your earliest convenience.'
-        alert: 'Invoice Payment Overdue'
-        amount_due: 'Total Amount'
-        contact_info: 'If you have any questions or believe this notice was sent in error, please contact us immediately.'
-        due_date: 'Original Due Date'
-        heading: 'Payment Overdue Notice'
         invoice_number: 'Invoice Number'
-        message: 'This invoice is now overdue. Please arrange payment as soon as possible to avoid any late fees or service interruptions.'
-        outstanding_balance: 'Outstanding Balance'
-        view_and_pay: 'View Invoice & Make Payment'
     pay_now: 'Pay Now'
     payment_method: 'Payment (%method%)'
+    reminder:
+        amount_due: 'Amount Due'
+        closing:
+            overdue: 'We appreciate your immediate attention to this matter.'
+            pre_due: 'Thank you for your business. We appreciate prompt payment.'
+        contact: "If you have any questions or concerns about this invoice, please don't hesitate to contact us."
+        details: 'Invoice Details'
+        heading:
+            overdue_1: 'Payment Reminder'
+            overdue_14: 'Urgent: Immediate Action Required'
+            overdue_7: 'Payment Overdue'
+            pre_due: 'Friendly Reminder'
+        invoice_date: 'Invoice Date'
+        message:
+            default: 'This is a reminder about invoice %invoice%.'
+            overdue_1: "Invoice %invoice% became overdue yesterday. If you've already sent payment, please disregard this reminder. Otherwise, we'd appreciate your prompt attention to settle this invoice."
+        subject:
+            default: 'Invoice Payment Reminder: %id%'
+            overdue_1: 'Payment Reminder: Invoice %id%'
+            overdue_14: 'URGENT: Invoice %id% - Immediate Action Required'
+            overdue_7: 'Payment Overdue: Invoice %id%'
+            pre_due: 'Upcoming Payment Due: Invoice %id%'
+        title:
+            default: 'Invoice Reminder'
+            overdue_1: 'Payment Reminder'
+            overdue_14: 'Urgent: Payment Required'
+            overdue_7: 'Payment Overdue'
+            pre_due: 'Upcoming Payment Due'
+        view_and_pay: 'View Invoice & Pay'
+    reminder_stopped:
+        actions:
+            contact: 'Contact the client directly via phone or email'
+            heading: 'Recommended Actions'
+            history: "Review the client's payment history and account status"
+            payment_plan: 'Consider setting up a payment plan if needed'
+            services: 'Evaluate whether further services should be provided'
+        days_overdue: 'Days Overdue'
+        footer: 'This is an automated notification. No further reminder emails will be sent to the client for this invoice unless manually triggered.'
+        heading: 'Final Reminder Sent - Manual Follow-up Required'
+        message: 'The final automated payment reminder has been sent for invoice %invoice%. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.'
+        outstanding_amount: 'Outstanding Amount'
+        subject: 'Final Reminder Sent for Invoice %id% - Manual Follow-up Required'
+        title: 'Manual Follow-up Required'
+    schema:
+        view: 'View invoice'
     status:
         subject: 'Invoice Status Change'
     status_change:
@@ -75,8 +118,6 @@ invoice:
         id: Invoice
         message: 'An invoice status has been updated.'
         new_status: 'New Status'
-        old_status: 'Original Status'
-        status: Status
         view_invoice: 'View Invoice'
     subtotal: Subtotal
     tax: Tax
@@ -92,11 +133,11 @@ invoice:
     view:
         online: 'View this online at %url%'
     withholding: Withholding
+layout:
+    powered_by: 'Powered by'
+    powered_by_cta: 'Send your own invoices free'
 notification:
     preferences: 'Notification Preferences'
-    settings:
-        info: 'You can update your notification settings'
-        link: here
 onboarding:
     coupon:
         desc: '%percent%% off your first three months. Enter this code at checkout before %date%, when your trial ends.'
@@ -118,7 +159,7 @@ onboarding:
         heading: 'Your first invoice takes about two minutes.'
         included_body: "Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method and your client gets a 'Pay now' button too."
         included_heading: 'Included on every invoice, nothing extra to configure'
-        lede: "Pick your client, add a line item, hit Send. No client yet? Add one right on the invoice form. SolidInvoice handles the formatting, delivery, and tracking."
+        lede: 'Pick your client, add a line item, hit Send. No client yet? Add one right on the invoice form. SolidInvoice handles the formatting, delivery, and tracking.'
         mock:
             billed_to: 'Billed to'
             client_email: hello@northbeam.co
@@ -219,44 +260,40 @@ onboarding:
         lede: 'Your account is ready. The last step before your first invoice can reach a client is confirming %email%.'
         subject: 'Confirm your email to send invoices'
     welcome:
-        closing: 'Start with the first step: add a client. Everything else builds from there.'
-        cta: 'Open your dashboard'
-        eyebrow: 'Your trial just started'
+        closing: 'Your first invoice is the best place to start. It takes a few minutes.'
+        cta: 'Create your first invoice'
+        eyebrow: 'Your account is ready'
         feature:
-            clients:
-                desc: 'The foundation. Name, email, currency — takes sixty seconds.'
-                title: 'Add your first client'
             dashboard:
-                desc: 'Set up recurring billing and automatic reminders. Get paid every month without lifting a finger.'
-                title: 'Automate recurring work'
+                desc: 'Your dashboard shows what is outstanding, what is overdue and what has been paid.'
+                title: 'See who owes you'
             invoices:
-                desc: 'Line items, taxes, discounts, and a due date — all built in.'
-                title: 'Send a professional invoice'
+                desc: 'Add your client as you go. Line items, tax and a due date are all built in.'
+                title: 'Send your first invoice'
             payments:
-                desc: "Stripe or PayPal — clients pay in two clicks, you're notified instantly."
-                title: 'Connect online payments'
+                desc: 'Connect Stripe or PayPal and your clients can pay by card straight from the invoice.'
+                title: 'Get paid online'
+            quotes:
+                desc: 'Send a quote first. When your client accepts it, it becomes an invoice.'
+                title: 'Quote before you bill'
         heading: 'Good to have you, %name%.'
-        intro: "Here's what we'll cover together:"
-        lede: "Your trial is live. We'll check in as you go, with the next step that gets your first invoice paid."
-        ps: 'questions? Hit reply — a real person answers.'
-        subject: "Welcome to SolidInvoice — let's get you paid"
+        intro: "Here's where most people start:"
+        lede: 'Your account is set up and ready to use.'
+        ps: 'questions? Just reply to this email. A real person answers.'
+        subject: 'Your SolidInvoice account is ready'
 payment:
-    capture:
-        subject: 'A Payment has been made'
     description: 'A new payment has been made'
     details:
         amount: Amount
         client: Client
-        currency: Currency
         date: Date
         invoice: Invoice
         method: 'Payment Method'
         status: Status
     notification:
         message: 'A payment has been received.'
+        subject: 'A Payment has been received'
     view_invoice: 'View Invoice'
-powered_by: 'Powered by'
-powered_by_cta: 'Send your own invoices free'
 quote:
     amount_payable: 'Amount payable'
     created: Created
@@ -264,6 +301,8 @@ quote:
     expires: Expires
     info: 'You have received a quote from %company% generated on %created%'
     number: 'Quote #'
+    schema:
+        view: 'View quote'
     status:
         subject: 'Quote Status Change'
     status_change:
@@ -272,8 +311,6 @@ quote:
         id: Quote
         message: 'A quote status has been updated.'
         new_status: 'New Status'
-        old_status: 'Original Status'
-        status: Status
         view_quote: 'View Quote'
     subtotal: Subtotal
     tax: Tax
@@ -287,7 +324,6 @@ reset_password:
     button_text: 'Reset Password'
     expires: 'This link will expire in %resetTimestamp%.'
     message_html: "A password reset was requested for user <strong>%username%</strong>.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please follow the link below\n"
-    message_text: "A password reset was requested for user %username%.\n\nIf you did not request your password to be reset, you can safely ignore this message.\n\nTo reset your password, please copy and paste the below link in your browser\n\n%confirmationUrl%\n"
     security: "If you didn't request a password reset, you can safely ignore this email. Your password won't be changed."
     subject: 'Reset your password for %username%'
 trial_downgraded:

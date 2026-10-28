@@ -74,7 +74,7 @@ class PaymentType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Callback(function (BigNumber $value, ExecutionContextInterface $context): void {
                         if ($value->isZero() || $value->isNegative()) {
-                            $context->buildViolation('This value should be greater than {{ compared_value }}.')
+                            $context->buildViolation('payment.amount.greater_than_zero')
                                 ->setParameter('{{ value }}', (string) $value->toBigDecimal()->toFloat())
                                 ->setParameter('{{ compared_value }}', '0')
                                 ->addViolation();

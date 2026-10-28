@@ -61,7 +61,7 @@ final class DeleteActionTest extends KernelTestCase
         $flashBag = $session->getBag('flashes');
         $flashes = $flashBag->all();
         self::assertArrayHasKey('error', $flashes);
-        self::assertContains('Invalid CSRF token. Please try again.', $flashes['error']);
+        self::assertContains('custom_field.flash.invalid_csrf', $flashes['error']);
     }
 
     public function testValidCsrfTokenPassesCsrfCheck(): void

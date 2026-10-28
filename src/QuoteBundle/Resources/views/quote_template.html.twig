@@ -85,10 +85,10 @@
                                 <div class="row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'quote.pdf.date'|trans }}</div>
-                                        <div class="ext-doc-metadata-value fw-medium">{{ quote.created|date('M d, Y') }}</div>
+                                        <div class="ext-doc-metadata-value fw-medium">{{ quote.created|format_date('medium') }}</div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'quote.total'|trans }}</div>
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'billing.total'|trans }}</div>
                                         <div class="ext-doc-metadata-total fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
                                     </div>
                                 </div>
@@ -147,13 +147,13 @@
                             <table class="table ext-doc-items-table">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase small">{{ 'quote.item.heading.description'|trans }}</th>
+                                        <th class="text-uppercase small">{{ 'label.description'|trans }}</th>
                                         <th class="text-uppercase small text-end" style="width: 100px">{{ 'quote.item.heading.price'|trans }}</th>
                                         <th class="text-uppercase small text-center" style="width: 80px">{{ 'quote.item.heading.qty'|trans }}</th>
                                         {% if quote.tax.positive %}
-                                            <th class="text-uppercase small text-end" style="width: 80px">{{ 'quote.item.heading.tax'|trans }}</th>
+                                            <th class="text-uppercase small text-end" style="width: 80px">{{ 'billing.tax'|trans }}</th>
                                         {% endif %}
-                                        <th class="text-uppercase small text-end" style="width: 120px">{{ 'quote.item.heading.total'|trans }}</th>
+                                        <th class="text-uppercase small text-end" style="width: 120px">{{ 'billing.total'|trans }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -219,13 +219,13 @@
                                         {% endfor %}
                                         {% if quote.discount.type is not empty %}
                                             <div class="ext-doc-totals-row">
-                                                <div class="ext-doc-totals-label">{{ 'quote.discount'|trans }}</div>
+                                                <div class="ext-doc-totals-label">{{ 'billing.discount'|trans }}</div>
                                                 <div class="ext-doc-totals-value">-{{ discount(quote)|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endif %}
                                         <div class="ext-doc-totals-final">
                                             <div class="ext-doc-totals-row">
-                                                <div class="ext-doc-totals-label">{{ 'quote.total'|trans }}</div>
+                                                <div class="ext-doc-totals-label">{{ 'billing.total'|trans }}</div>
                                                 <div class="ext-doc-totals-value">{{ quote.total|formatCurrency(currency) }}</div>
                                             </div>
                                         </div>

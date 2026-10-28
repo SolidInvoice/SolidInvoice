@@ -25,7 +25,7 @@ final class EditActionTest extends TestCase
         $action = EditAction::new('route', ['param' => 'value']);
 
         self::assertSame('pencil', $action->getIcon());
-        self::assertSame('Edit', $action->getLabel());
+        self::assertSame('action.edit', $action->getLabel());
         self::assertSame('route', $action->getRoute());
         self::assertSame(['param' => 'value'], $action->getParameters());
     }

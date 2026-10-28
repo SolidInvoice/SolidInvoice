@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
+use Carbon\CarbonImmutable;
 use DateTime;
 use DateTimeInterface;
+use Locale;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -36,6 +38,6 @@ class DateTimeFormatter implements FormatterInterface
             $value = new DateTime($value);
         }
 
-        return $value->format($column->getFormat());
+        return CarbonImmutable::instance($value)->locale(Locale::getDefault())->translatedFormat($column->getFormat());
     }
 }

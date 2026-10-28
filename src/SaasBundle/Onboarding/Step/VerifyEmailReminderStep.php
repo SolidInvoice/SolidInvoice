@@ -18,21 +18,19 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * An unverified user cannot send an invoice, so a day in, and again at three
- * days, they are reminded to confirm their email. The handler adds the verify
+ * days, they are reminded to confirm their email (an account first reached after
+ * three days gets only the final reminder). The handler adds the verify
  * link, and lets this step (and the final one) through to an unverified address.
  */
 #[AsTaggedItem(priority: 90)]
 class VerifyEmailReminderStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
-        TranslatorInterface $translator,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string
@@ -48,7 +46,11 @@ class VerifyEmailReminderStep extends AbstractOnboardingEmailStep
     #[Override]
     public function shouldSend(OnboardingContext $context): bool
     {
-        return $context->hoursSinceTrialStart() >= static::afterHours()
+        $hours = $context->hoursSinceTrialStart();
+        $before = static::beforeHours();
+
+        return $hours >= static::afterHours()
+            && ($before === null || $hours < $before)
             && $this->emailVerificationGate->isGated($context->user);
     }
 
@@ -70,5 +72,15 @@ class VerifyEmailReminderStep extends AbstractOnboardingEmailStep
     protected static function afterHours(): int
     {
         return 24;
+    }
+
+    /**
+     * Once the final reminder is due, the first one no longer is. Otherwise an
+     * account that reaches the sequence late (an audience change, a backlog)
+     * gets both, one tick (an hour) apart.
+     */
+    protected static function beforeHours(): ?int
+    {
+        return VerifyEmailFinalReminderStep::afterHours();
     }
 }

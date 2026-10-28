@@ -58,11 +58,11 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $date);
 
-        self::assertStringContainsString('<time', $result);
-        self::assertStringContainsString('class="datagrid-relative-date"', $result);
-        self::assertStringContainsString('datetime="', $result);
-        self::assertStringContainsString('title="', $result);
-        self::assertStringContainsString('2 days ago', $result);
+        self::assertStringContainsString('<time', (string) $result);
+        self::assertStringContainsString('class="datagrid-relative-date"', (string) $result);
+        self::assertStringContainsString('datetime="', (string) $result);
+        self::assertStringContainsString('title="', (string) $result);
+        self::assertStringContainsString('2 days ago', (string) $result);
     }
 
     public function testFormatReturnsAbsoluteDateBeyondThreshold(): void
@@ -72,10 +72,10 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $date);
 
-        self::assertStringContainsString('<time', $result);
-        self::assertStringNotContainsString('class="datagrid-relative-date"', $result);
+        self::assertStringContainsString('<time', (string) $result);
+        self::assertStringNotContainsString('class="datagrid-relative-date"', (string) $result);
         // Should show absolute date format (Jan 2, 2026 - 10 days = Dec 23, 2025)
-        self::assertStringContainsString('Dec 2025', $result);
+        self::assertStringContainsString('Dec 2025', (string) $result);
     }
 
     public function testFormatUsesCustomThreshold(): void
@@ -86,8 +86,8 @@ final class RelativeDateFormatterTest extends TestCase
         $result = $this->formatter->format($column, $date);
 
         // 15 days is within 30-day threshold, should show relative
-        self::assertStringContainsString('class="datagrid-relative-date"', $result);
-        self::assertStringContainsString('2 weeks ago', $result);
+        self::assertStringContainsString('class="datagrid-relative-date"', (string) $result);
+        self::assertStringContainsString('2 weeks ago', (string) $result);
     }
 
     public function testFormatUsesCustomAbsoluteFormat(): void
@@ -100,7 +100,7 @@ final class RelativeDateFormatterTest extends TestCase
         $result = $this->formatter->format($column, $date);
 
         // Should show the custom format
-        self::assertStringContainsString('2025-12-28', $result);
+        self::assertStringContainsString('2025-12-28', (string) $result);
     }
 
     public function testFormatHandlesDateTimeInterface(): void
@@ -110,8 +110,8 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $date);
 
-        self::assertStringContainsString('<time', $result);
-        self::assertStringContainsString('datetime="', $result);
+        self::assertStringContainsString('<time', (string) $result);
+        self::assertStringContainsString('datetime="', (string) $result);
     }
 
     public function testFormatHandlesStringDate(): void
@@ -121,7 +121,7 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $dateString);
 
-        self::assertStringContainsString('<time', $result);
+        self::assertStringContainsString('<time', (string) $result);
     }
 
     public function testFormatHandlesInvalidStringDate(): void
@@ -142,7 +142,7 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $date);
 
-        self::assertStringNotContainsString('<script>', $result);
+        self::assertStringNotContainsString('<script>', (string) $result);
     }
 
     public function testFormatShowsFutureDates(): void
@@ -152,7 +152,7 @@ final class RelativeDateFormatterTest extends TestCase
 
         $result = $this->formatter->format($column, $date);
 
-        self::assertStringContainsString('class="datagrid-relative-date"', $result);
-        self::assertStringContainsString('3 days', $result);
+        self::assertStringContainsString('class="datagrid-relative-date"', (string) $result);
+        self::assertStringContainsString('3 days', (string) $result);
     }
 }

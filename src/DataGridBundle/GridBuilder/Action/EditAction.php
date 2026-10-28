@@ -28,7 +28,7 @@ final class EditAction extends Action
     {
         return new self()
             ->route($route, $parameters)
-            ->label('Edit')
+            ->label('action.edit')
             ->icon('pencil');
     }
 }

@@ -17,6 +17,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
 use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
@@ -222,7 +223,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             'title' => $this->translator->trans($banner->titleKey, $banner->params),
             'message' => $this->translator->trans($banner->messageKey, $banner->params),
             'cta_label' => $this->translator->trans($banner->ctaLabelKey, $banner->params),
-            'cta_url' => $this->urlGenerator->generate('saas_subscription_checkout'),
+            'cta_url' => $this->urlGenerator->generate('saas_subscription_checkout', $banner->planId !== null ? [ChoosePlanAction::PENDING_PLAN_QUERY_PARAMETER => $banner->planId] : []),
             'code' => $banner->code,
         ]);
 

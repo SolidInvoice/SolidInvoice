@@ -35,7 +35,7 @@ final class ArchivedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Activate')
+        yield BatchAction::new('action.activate')
             ->icon('refresh')
             ->color('success')
             ->action(static function (RecurringInvoiceRepository $repository, array $selectedItems): void {

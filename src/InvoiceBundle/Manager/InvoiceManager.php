@@ -17,6 +17,7 @@ use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Locale;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Billing\LineName;
@@ -91,8 +92,8 @@ class InvoiceManager
 
         $values = [
             (string) $now->day,
-            $now->format('l'),
-            $now->format('F'),
+            CarbonImmutable::instance($now)->locale(Locale::getDefault())->translatedFormat('l'),
+            CarbonImmutable::instance($now)->locale(Locale::getDefault())->translatedFormat('F'),
             (string) $now->year,
         ];
 

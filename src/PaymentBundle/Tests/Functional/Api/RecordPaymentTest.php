@@ -57,6 +57,7 @@ final class RecordPaymentTest extends ApiTestCase
         self::assertSame('captured', $result['status']);
         self::assertSame(1000, $result['totalAmount']);
         self::assertSame('USD', $result['currencyCode']);
+        self::assertArrayNotHasKey('config', $result['method']);
     }
 
     /**
