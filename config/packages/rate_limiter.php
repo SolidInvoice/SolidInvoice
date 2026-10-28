@@ -40,6 +40,13 @@ return App::config([
                     'limit' => 60,
                     'interval' => '1 hour',
                 ],
+                // SaaS: invoice and quote emails a company may send per day in its first week.
+                // Past it they are held for review, not dropped (HoldNewAccountClientEmailListener).
+                'new_account_client_email' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 3,
+                    'interval' => '1 day',
+                ],
                 'one_tap_nonce' => [
                     'policy' => 'sliding_window',
                     'limit' => 30,
