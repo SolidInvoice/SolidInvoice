@@ -493,46 +493,6 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * Get recently sent invoices (pending status) for activity feed.
-     *
-     * @return Invoice[]
-     */
-    public function getRecentlySentInvoices(int $limit = 5): array
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb
-            ->innerJoin('i.client', 'c')
-            ->addSelect('c')
-            ->where('i.status = :status')
-            ->setParameter('status', InvoiceStatus::Pending)
-            ->orderBy('i.updated', 'DESC')
-            ->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Get recently generated recurring invoices for activity feed.
-     *
-     * @return Invoice[]
-     */
-    public function getRecentRecurringGeneratedInvoices(int $limit = 5): array
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb
-            ->innerJoin('i.client', 'c')
-            ->addSelect('c')
-            ->innerJoin('i.recurringInvoice', 'ri')
-            ->addSelect('ri')
-            ->orderBy('i.created', 'DESC')
-            ->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
      * Get pending invoices that are past their due date.
      * Uses toIterable() for memory-efficient streaming.
      *

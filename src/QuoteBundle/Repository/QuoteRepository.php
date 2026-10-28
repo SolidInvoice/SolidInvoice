@@ -213,25 +213,4 @@ class QuoteRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
-    /**
-     * Get recently responded quotes (accepted or declined) for activity feed.
-     *
-     * @return Quote[]
-     */
-    public function getRecentlyRespondedQuotes(int $limit = 5): array
-    {
-        $qb = $this->createQueryBuilder('q');
-
-        $qb
-            ->innerJoin('q.client', 'c')
-            ->addSelect('c')
-            ->where('q.status = :acceptedStatus OR q.status = :declinedStatus')
-            ->setParameter('acceptedStatus', QuoteStatus::Accepted)
-            ->setParameter('declinedStatus', QuoteStatus::Declined)
-            ->orderBy('q.updated', 'DESC')
-            ->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
-    }
 }
