@@ -43,6 +43,7 @@ use function strlen;
 /**
  * The company logo, stored as the `system/company/logo` setting (`<extension>|<base64>`), the way the
  * settings form stores it.
+ * @see \SolidInvoice\CoreBundle\Tests\Company\CompanyLogoTest
  */
 final readonly class CompanyLogo
 {
@@ -57,6 +58,12 @@ final readonly class CompanyLogo
     private const int MAX_SIZE = 512;
 
     private const array ALLOWED_TYPES = [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_WEBP];
+
+    /**
+     * A small file can still decode to a huge bitmap (about 5 bytes a pixel), so the dimensions are
+     * checked before decoding.
+     */
+    private const int MAX_PIXELS = 40_000_000;
 
     public function __construct(
         private SystemConfig $config,
@@ -95,7 +102,10 @@ final readonly class CompanyLogo
         }
 
         $info = @getimagesize('data://application/octet-stream;base64,' . base64_encode($content));
-        $image = $info !== false && in_array($info[2], self::ALLOWED_TYPES, true) ? @imagecreatefromstring($content) : false;
+        $decodable = $info !== false
+            && in_array($info[2], self::ALLOWED_TYPES, true)
+            && $info[0] * $info[1] <= self::MAX_PIXELS;
+        $image = $decodable ? @imagecreatefromstring($content) : false;
 
         if (! $image instanceof GdImage) {
             throw new InvalidArgumentException('The logo must be a PNG, JPEG or WebP image.');
