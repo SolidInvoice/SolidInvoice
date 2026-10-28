@@ -127,6 +127,7 @@ The first-run wizard configures everything you need to get started. The variable
 | `SOLIDINVOICE_MAILER_DSN` | Outbound mail transport (SMTP, Mailgun, SendGrid, etc.). Overrides the transport configured in the UI. |
 | `SOLIDINVOICE_MAILER_SENDER` | The `From:` address SolidInvoice sends mail from. Overrides the address configured in the UI. |
 | `SOLIDINVOICE_LOCALE` | Default locale (e.g. `en`). |
+| `SOLIDINVOICE_LOCK_DSN` | Where locks are stored (used to stop a retried API request being applied twice). Defaults to `flock`, which only works on one server. When several servers share the installation, point it at a shared store, e.g. `redis://redis:6379`. |
 | `SOLIDINVOICE_AFFILIATE_PROGRAM_ENABLED` | Show the SolidInvoice Cloud affiliate program: a one-off prompt on the dashboard, a **Refer & earn** page in your profile and a link in the footer. Defaults to `1`; set to `0` to hide all of it. |
 | `SOLIDINVOICE_AFFILIATE_PROMPT_DELAY_DAYS` | How many days after finishing onboarding the dashboard prompt appears. Defaults to `3`. |
 | `SOLIDINVOICE_AFFILIATE_SIGNUP_URL` | Where the **Join the affiliate program** button leads. Defaults to `https://billing.solidinvoice.co/affiliates`. |

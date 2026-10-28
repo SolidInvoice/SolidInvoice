@@ -1,4 +1,0 @@
-framework:
-    # ponytail: flock is per-host, like the default filesystem cache it pairs with. A deployment
-    # with several web hosts needs a shared store here (and for cache.app).
-    lock: flock
