@@ -21,12 +21,15 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\Component\Clock\Test\ClockSensitiveTrait;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 #[Group('functional')]
 final class MoneyFormatTest extends ApiTestCase
 {
+    use ClockSensitiveTrait;
+
     protected function getResourceClass(): string
     {
         return Invoice::class;
@@ -114,6 +117,19 @@ final class MoneyFormatTest extends ApiTestCase
         self::assertSame(21, $response->toArray(false)['total']);
         self::assertResponseHeaderSame('deprecation', ApiVersion::LEGACY_DEPRECATION);
         self::assertResponseHeaderSame('sunset', ApiVersion::LEGACY_SUNSET);
+        self::assertContains('<' . ApiVersion::LEGACY_DOCS . '>; rel="deprecation"; type="text/html"', $response->getHeaders(false)['link']);
+    }
+
+    public function testRequestsWithoutAVersionGetTheNewFormatAfterTheSunset(): void
+    {
+        self::mockTime('2027-05-01 00:00:01 UTC');
+
+        $response = $this->postInvoice('USD', ['price' => '10.50', 'qty' => '2'], version: null);
+
+        self::assertResponseStatusCodeSame(201);
+        self::assertSame('21.00', $response->toArray(false)['total']);
+        self::assertResponseNotHasHeader('deprecation');
+        self::assertResponseNotHasHeader('sunset');
     }
 
     public function testAnUnknownVersionIsRejected(): void
