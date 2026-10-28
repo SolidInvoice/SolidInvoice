@@ -117,9 +117,8 @@ final readonly class DefaultData
     private function createDefaultCustomFields(Company $company): void
     {
         $defaults = [
+            // Phone and mobile are Contact columns, on every plan.
             ['additional_email', 'Additional Email', CustomFieldType::EMAIL, 0],
-            ['phone', 'Phone', CustomFieldType::TEXT, 1],
-            ['mobile', 'Mobile', CustomFieldType::TEXT, 2],
         ];
 
         foreach ($defaults as [$key, $label, $type, $position]) {

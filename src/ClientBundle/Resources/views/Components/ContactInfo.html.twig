@@ -57,6 +57,23 @@
                     </div>
                 </div>
 
+                {% for field, label in {phone: 'client.contact.details.phone'|trans, mobile: 'client.contact.details.mobile'|trans} %}
+                    {% set number = attribute(computed.contact, field) %}
+                    {% if number is not empty %}
+                        <div class="client-contact-detail">
+                            <span class="client-contact-detail-icon">
+                                {{ ux_icon(field == 'phone' ? 'tabler:phone' : 'tabler:device-mobile', {width: 16, height: 16}) }}
+                            </span>
+                            <div>
+                                <div class="client-contact-detail-label">{{ label }}</div>
+                                <div class="client-contact-detail-value">
+                                    <a href="tel:{{ number|replace({' ': ''}) }}">{{ number }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
                 <twig:CustomFieldsList :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').CONTACT" :recordId="computed.contact.id" />
 
             {% endif %}

@@ -221,6 +221,17 @@ class Contact implements Serializable, Stringable
     #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
     private ?string $email = null;
 
+    #[ApiProperty(iris: ['https://schema.org/telephone'])]
+    #[ORM\Column(name: 'phone', type: Types::STRING, length: 50, nullable: true)]
+    #[Assert\Length(max: 50, groups: ['Default', 'form'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
+    private ?string $phone = null;
+
+    #[ORM\Column(name: 'mobile', type: Types::STRING, length: 50, nullable: true)]
+    #[Assert\Length(max: 50, groups: ['Default', 'form'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
+    private ?string $mobile = null;
+
     /**
      * @var Collection<int, Invoice>
      */
@@ -272,6 +283,30 @@ class Contact implements Serializable, Stringable
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone === '' ? null : $phone;
+
+        return $this;
+    }
+
+    public function getMobile(): ?string
+    {
+        return $this->mobile;
+    }
+
+    public function setMobile(?string $mobile): self
+    {
+        $this->mobile = $mobile === '' ? null : $mobile;
 
         return $this;
     }

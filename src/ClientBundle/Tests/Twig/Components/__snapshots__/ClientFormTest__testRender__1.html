@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value="{&quot;formData&quot;:null,&quot;formName&quot;:&quot;client&quot;,&quot;client&quot;:{&quot;name&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;currencyCode&quot;:&quot;&quot;,&quot;paymentTerms&quot;:&quot;&quot;,&quot;contacts&quot;:[{&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;customFields&quot;:{&quot;additional_email&quot;:&quot;&quot;,&quot;phone&quot;:&quot;&quot;,&quot;mobile&quot;:&quot;&quot;}}],&quot;addresses&quot;:[{&quot;street1&quot;:&quot;&quot;,&quot;street2&quot;:&quot;&quot;,&quot;city&quot;:&quot;&quot;,&quot;state&quot;:&quot;&quot;,&quot;zip&quot;:&quot;&quot;,&quot;country&quot;:&quot;&quot;}],&quot;taxIdentifiers&quot;:[],&quot;customFields&quot;:[],&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value="{&quot;formData&quot;:null,&quot;formName&quot;:&quot;client&quot;,&quot;client&quot;:{&quot;name&quot;:&quot;&quot;,&quot;website&quot;:&quot;&quot;,&quot;currencyCode&quot;:&quot;&quot;,&quot;paymentTerms&quot;:&quot;&quot;,&quot;contacts&quot;:[{&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;email&quot;:&quot;&quot;,&quot;phone&quot;:&quot;&quot;,&quot;mobile&quot;:&quot;&quot;,&quot;customFields&quot;:{&quot;additional_email&quot;:&quot;&quot;}}],&quot;addresses&quot;:[{&quot;street1&quot;:&quot;&quot;,&quot;street2&quot;:&quot;&quot;,&quot;city&quot;:&quot;&quot;,&quot;state&quot;:&quot;&quot;,&quot;zip&quot;:&quot;&quot;,&quot;country&quot;:&quot;&quot;}],&quot;taxIdentifiers&quot;:[],&quot;customFields&quot;:[],&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
     <form name="client" method="post" data-controller="solidworx--platform--loading" data-action="live#action:prevent" data-model="on(change)|*" data-live-action-param="save" class="client-form">
 
     
@@ -294,26 +294,28 @@
     </div>
 </div>
             </div>
+            <div class="contact-field contact-field-name">
+                <div class="mb-3">    
+            <label class="control-label form-label" for="client_contacts_0_phone">Phone</label><input type="tel" id="client_contacts_0_phone" name="client[contacts][0][phone]" class="form-control">
+</div>
+            </div>
+            <div class="contact-field contact-field-name">
+                <div class="mb-3">    
+            <label class="control-label form-label" for="client_contacts_0_mobile">Mobile</label><input type="tel" id="client_contacts_0_mobile" name="client[contacts][0][mobile]" class="form-control">
+</div>
+            </div>
         </div>
 
                 <div class="mt-2">
             <strong class="d-block mb-1">Custom fields</strong>
-            <div id="client_contacts_0_customFields">
-<div class="mb-3">    
+            <div id="client_contacts_0_customFields"><div class="mb-3">    
             <label class="control-label form-label" for="client_contacts_0_customFields_additional_email">Additional Email</label>    <div class="input-group input-icon-group">
         <span class="input-group-text">
             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
         </span>
         <input type="email" id="client_contacts_0_customFields_additional_email" name="client[contacts][0][customFields][additional_email]" class="form-control" value="">
     </div>
-</div>
-<div class="mb-3">    
-            <label class="control-label form-label" for="client_contacts_0_customFields_phone">Phone</label><input type="text" id="client_contacts_0_customFields_phone" name="client[contacts][0][customFields][phone]" class="form-control">
-</div>
-<div class="mb-3">    
-            <label class="control-label form-label" for="client_contacts_0_customFields_mobile">Mobile</label><input type="text" id="client_contacts_0_customFields_mobile" name="client[contacts][0][customFields][mobile]" class="form-control">
-</div>
-</div>
+</div></div>
         </div>
             </div>
 </div>

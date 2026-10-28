@@ -104,6 +104,7 @@ final class ContactTest extends ApiTestCase
             'client' => $this->getIriFromResource($client),
             'firstName' => 'foo bar',
             'email' => 'foo@bar.com',
+            'phone' => '+27 21 555 0100',
         ];
 
         $result = $this->requestPost($this->getIriFromResource($client) . '/contacts', $data);
@@ -120,7 +121,9 @@ final class ContactTest extends ApiTestCase
             'lastName' => null,
             'client' => $this->getIriFromResource($client),
             'email' => 'foo@bar.com',
-            'customFields' => ['additional_email' => null, 'phone' => null, 'mobile' => null],
+            'phone' => '+27 21 555 0100',
+            'mobile' => null,
+            'customFields' => ['additional_email' => null],
         ], $result);
     }
 
@@ -159,7 +162,9 @@ final class ContactTest extends ApiTestCase
             'lastName' => $lastName,
             'client' => $this->getIriFromResource($client),
             'email' => $email,
-            'customFields' => ['additional_email' => null, 'phone' => null, 'mobile' => null],
+            'phone' => null,
+            'mobile' => null,
+            'customFields' => ['additional_email' => null],
         ], $data);
     }
 
@@ -185,7 +190,9 @@ final class ContactTest extends ApiTestCase
             'lastName' => null,
             'client' => $this->getIriFromResource($client),
             'email' => 'test@example.com',
-            'customFields' => ['additional_email' => null, 'phone' => null, 'mobile' => null],
+            'phone' => null,
+            'mobile' => null,
+            'customFields' => ['additional_email' => null],
         ], $data);
     }
 }
