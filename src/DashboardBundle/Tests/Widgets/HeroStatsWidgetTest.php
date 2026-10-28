@@ -217,6 +217,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
             'created' => Carbon::now(),
+            'completed' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(HeroStatsWidget::class);

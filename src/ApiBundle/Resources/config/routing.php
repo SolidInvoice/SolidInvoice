@@ -18,6 +18,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('api_login_check', '/login');
 
     $routingConfigurator->import(ShowCompanyLogo::class, 'attribute');
+    $routingConfigurator->import('../../Action/Reporting/', 'attribute');
 
     $routingConfigurator->import('.', 'api_platform');
 };
