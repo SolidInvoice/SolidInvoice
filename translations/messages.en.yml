@@ -2522,6 +2522,9 @@ tax:
         form:
             description: 'Set up the tax rate details and calculation method'
             subtitle: 'Configure tax rates for invoices and quotes'
+        is_default:
+            help: 'Suggested for new lines. Only one tax rate can be the default.'
+            label: 'Default tax rate'
         title: 'Tax Rates'
         type:
             select: Select

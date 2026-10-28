@@ -63,6 +63,16 @@ class TaxType extends AbstractType
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'default',
+            CheckboxType::class,
+            [
+                'label' => 'tax.rates.is_default.label',
+                'help' => 'tax.rates.is_default.help',
+                'required' => false,
+            ]
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

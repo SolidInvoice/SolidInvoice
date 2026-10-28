@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Test\Factory\TaxFactory;
 use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function array_intersect;
+use function array_values;
 
 #[Group('functional')]
 final class TaxTest extends ApiTestCase
@@ -51,6 +54,7 @@ final class TaxTest extends ApiTestCase
             'type' => Tax::TYPE_INCLUSIVE,
             'category' => 'Standard',
             'compound' => false,
+            'isDefault' => false,
         ], $result);
     }
 
@@ -76,6 +80,7 @@ final class TaxTest extends ApiTestCase
             'category' => $tax->getCategory()
                 ->value,
             'compound' => $tax->isCompound(),
+            'isDefault' => false,
         ], $data);
     }
 
@@ -107,6 +112,7 @@ final class TaxTest extends ApiTestCase
             'category' => $tax->getCategory()
                 ->value,
             'compound' => $tax->isCompound(),
+            'isDefault' => false,
         ], $data);
     }
 
@@ -145,5 +151,20 @@ final class TaxTest extends ApiTestCase
         ]);
 
         self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testOnlyOneTaxIsTheDefaultAndTaxesSortByName(): void
+    {
+        $first = $this->requestPost('/api/taxes', ['name' => 'VAT', 'rate' => 15.0, 'type' => Tax::TYPE_EXCLUSIVE, 'isDefault' => true]);
+        $second = $this->requestPost('/api/taxes', ['name' => 'Levy', 'rate' => 1.0, 'type' => Tax::TYPE_EXCLUSIVE, 'isDefault' => true]);
+
+        self::assertTrue($second['isDefault']);
+        self::assertFalse($this->requestGet($first['@id'])['isDefault']);
+
+        $this->requestPatch($first['@id'], ['isDefault' => true]);
+        self::assertFalse($this->requestGet($second['@id'])['isDefault']);
+
+        $names = array_column($this->requestGetCollection('/api/taxes?order[name]=asc')['member'], 'name');
+        self::assertSame(['Levy', 'VAT'], array_values(array_intersect($names, ['Levy', 'VAT'])));
     }
 }
