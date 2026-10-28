@@ -13,16 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\DashboardBundle\Stats\DashboardStats;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
-use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 /**
  * @see \SolidInvoice\DashboardBundle\Tests\Widgets\AttentionRequiredWidgetTest
@@ -38,11 +32,10 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
 
     private const int UPCOMING_RECURRING_DAYS = 7;
 
-    private ObjectManager $manager;
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->manager = $registry->getManager();
+    public function __construct(
+        private DashboardStats $stats,
+        private RecurringInvoiceRepository $recurringRepository,
+    ) {
     }
 
     /**
@@ -54,28 +47,21 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
      */
     public function getData(): array
     {
-        /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository(Invoice::class);
-        /** @var QuoteRepository $quoteRepository */
-        $quoteRepository = $this->manager->getRepository(Quote::class);
-        /** @var RecurringInvoiceRepository $recurringRepository */
-        $recurringRepository = $this->manager->getRepository(RecurringInvoice::class);
-
-        $overdueInvoices = $invoiceRepository->getOverdueInvoices(self::SECTION_LIMIT);
-        $draftInvoices = $invoiceRepository->getDraftInvoices(self::SECTION_LIMIT);
-        $pendingQuotes = $quoteRepository->getPendingQuotes(self::SECTION_LIMIT);
-        $upcomingRecurring = $recurringRepository->getUpcomingRecurringInvoices(
+        $overdueInvoices = $this->stats->overdueInvoices(self::SECTION_LIMIT);
+        $draftInvoices = $this->stats->draftInvoices(self::SECTION_LIMIT);
+        $pendingQuotes = $this->stats->pendingQuotes(self::SECTION_LIMIT);
+        $upcomingRecurring = $this->recurringRepository->getUpcomingRecurringInvoices(
             self::UPCOMING_RECURRING_DAYS,
             self::UPCOMING_RECURRING_LIMIT
         );
 
         return [
             'overdueInvoices' => $overdueInvoices,
-            'overdueInvoicesTotal' => $invoiceRepository->getCountByStatus(InvoiceStatus::Overdue),
+            'overdueInvoicesTotal' => $this->stats->invoiceCount(InvoiceStatus::Overdue),
             'draftInvoices' => $draftInvoices,
-            'draftInvoicesTotal' => $invoiceRepository->getCountByStatus(InvoiceStatus::Draft),
+            'draftInvoicesTotal' => $this->stats->invoiceCount(InvoiceStatus::Draft),
             'pendingQuotes' => $pendingQuotes,
-            'pendingQuotesTotal' => $quoteRepository->getTotalQuotes(QuoteStatus::Pending),
+            'pendingQuotesTotal' => $this->stats->quoteCount(QuoteStatus::Pending),
             'upcomingRecurring' => $upcomingRecurring,
             // No repository method counts upcoming recurring invoices using the
             // same window as getUpcomingRecurringInvoices(), and the existing
