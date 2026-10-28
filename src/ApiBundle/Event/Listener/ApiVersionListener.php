@@ -18,10 +18,12 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use function sprintf;
 
 /**
  * Rejects an unknown `Api-Version` before the operation runs, and marks every response served in
- * the original (unversioned) format as deprecated, with the date it will be removed.
+ * the original (unversioned) format as deprecated, with the date it will be removed. After that date
+ * the original format is no longer served, so neither header is sent.
  *
  * @see \SolidInvoice\ApiBundle\Tests\Functional\Api\MoneyFormatTest
  */
@@ -47,7 +49,7 @@ final class ApiVersionListener
             return;
         }
 
-        if ($request->headers->has(ApiVersion::HEADER)) {
+        if ($request->headers->has(ApiVersion::HEADER) || ApiVersion::isLegacySunset()) {
             return;
         }
 
@@ -59,5 +61,6 @@ final class ApiVersionListener
         }
 
         $headers->set('Sunset', ApiVersion::LEGACY_SUNSET);
+        $headers->set('Link', sprintf('<%s>; rel="deprecation"; type="text/html"', ApiVersion::LEGACY_DOCS), false);
     }
 }

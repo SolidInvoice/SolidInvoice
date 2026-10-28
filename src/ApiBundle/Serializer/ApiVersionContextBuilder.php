@@ -37,7 +37,10 @@ final readonly class ApiVersionContextBuilder implements SerializerContextBuilde
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
 
         // tryFrom, not fromRequest: this also runs while rendering the error for an unknown version.
-        if (ApiVersion::tryFrom((string) $request->headers->get(ApiVersion::HEADER)) === ApiVersion::V2026_10) {
+        $version = ApiVersion::tryFrom((string) $request->headers->get(ApiVersion::HEADER))
+            ?? (ApiVersion::isLegacySunset() ? ApiVersion::V2026_10 : null);
+
+        if ($version === ApiVersion::V2026_10) {
             $context[ApiVersion::DECIMAL_MONEY] = true;
         }
 

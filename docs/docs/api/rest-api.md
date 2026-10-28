@@ -139,7 +139,7 @@ curl -H "X-API-TOKEN: <your-token>" \
      "https://your-instance.example/api/invoices"
 ```
 
-Without the header the original format is used: amounts are JSON numbers scaled by a fixed 100, which is only correct for two-decimal currencies. That format is deprecated. Every response served in it carries `Deprecation` and `Sunset` headers, and it will be removed after **1 May 2027**. Send `Api-Version: 2026-10` on all requests to move to the new format.
+Without the header the original format is used: amounts are JSON numbers scaled by a fixed 100, which is only correct for two-decimal currencies. That format is deprecated. Every response served in it carries `Deprecation` and `Sunset` headers, and a `Link` header with `rel="deprecation"` pointing to this section. From **1 May 2027** it is no longer served: requests without the header get the new format automatically. Send `Api-Version: 2026-10` on all requests now so the switch does not change what you receive.
 
 ## Document PDFs and public links
 

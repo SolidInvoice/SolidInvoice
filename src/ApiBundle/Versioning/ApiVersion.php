@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Versioning;
 
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use function sprintf;
+use function Symfony\Component\Clock\now;
 
 /**
  * The API versions a client can opt into with the `Api-Version` request header. A request
@@ -47,6 +49,19 @@ enum ApiVersion: string
      * When the original wire format was deprecated, as an RFC 9745 `Deprecation` date (2026-11-01).
      */
     final public const string LEGACY_DEPRECATION = '@1793491200';
+
+    /**
+     * Where the deprecation is explained, sent as the `Link` with `rel="deprecation"`.
+     */
+    final public const string LEGACY_DOCS = 'https://solidinvoice.co/docs/api/rest-api#money-format-and-api-versions';
+
+    /**
+     * Once past, a request without the header gets the latest version instead of the original format.
+     */
+    public static function isLegacySunset(): bool
+    {
+        return now() >= new DateTimeImmutable(self::LEGACY_SUNSET);
+    }
 
     /**
      * Null when the request did not ask for a version.
