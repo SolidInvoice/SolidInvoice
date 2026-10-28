@@ -158,7 +158,7 @@ Invoice and quote responses also include read-only links:
 | --- | --- |
 | `publicUrl` | The public page of the document, the same link sent to your client by email. |
 | `pdfUrl` | The public PDF of the document. |
-| `payUrl` | Invoices only. The page where your client pays online, or `null` when no online payment method is enabled. |
+| `payUrl` | Invoices only. The page where your client pays online, or `null` when the invoice is paid or no online payment method is enabled. |
 
 ## Rate limits
 

@@ -75,7 +75,7 @@ final class BillingLinksNormalizer implements NormalizerAwareInterface, Normaliz
         $data['pdfUrl'] = $this->urlGenerator->generate($route, ['uuid' => $uuid->toString(), '_format' => 'pdf'], UrlGeneratorInterface::ABSOLUTE_URL);
 
         if ($object instanceof Invoice) {
-            $data['payUrl'] = $this->canPayOnline($object)
+            $data['payUrl'] = ! $object->isPaid() && $this->canPayOnline($object)
                 ? $this->urlGenerator->generate('_payments_create', ['uuid' => $uuid->toString()], UrlGeneratorInterface::ABSOLUTE_URL)
                 : null;
         }
@@ -110,7 +110,7 @@ final class BillingLinksNormalizer implements NormalizerAwareInterface, Normaliz
     }
 
     /**
-     * Same rule as the "Pay now" button on the public view: at least one enabled method that is not internal
+     * With an unpaid invoice, the same rule as the "Pay now" button on the public view: at least one enabled method that is not internal
      * (offline methods such as cash are stored as internal).
      */
     private function canPayOnline(Invoice $invoice): bool

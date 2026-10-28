@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use function str_starts_with;
@@ -100,6 +101,14 @@ final class InvoiceDocumentTest extends ApiTestCase
 
         self::assertSame('http://localhost/payments/create/' . $invoice->getUuid()->toString(), $data['payUrl']);
         self::assertSame($data['payUrl'], $this->requestGetCollection('/api/invoices')['member'][0]['payUrl']);
+    }
+
+    public function testPayUrlIsNullForPaidInvoice(): void
+    {
+        PaymentMethodFactory::createOne(['internal' => false, 'enabled' => true, 'company' => $this->company]);
+        $invoice = $this->createInvoice(['status' => InvoiceStatus::Paid]);
+
+        self::assertNull($this->requestGet($this->getIriFromResource($invoice))['payUrl']);
     }
 
     /**
