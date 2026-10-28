@@ -51,35 +51,75 @@ final class Version30200_8 extends AbstractMigration
     {
         $now = new DateTimeImmutable();
 
-        foreach ($this->connection->fetchFirstColumn('SELECT id FROM companies') as $companyId) {
+        $companyIds = $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from('companies')
+            ->fetchFirstColumn();
+
+        foreach ($companyIds as $companyId) {
             foreach (self::METHODS as $gatewayName => $name) {
-                $exists = $this->connection->fetchOne(
-                    'SELECT 1 FROM payment_methods WHERE company_id = ? AND gateway_name = ?',
-                    [$companyId, $gatewayName]
-                );
+                $exists = $this->connection->createQueryBuilder()
+                    ->select('1')
+                    ->from('payment_methods')
+                    ->where('company_id = :company_id')
+                    ->andWhere('gateway_name = :gateway_name')
+                    ->setParameter('company_id', $companyId)
+                    ->setParameter('gateway_name', $gatewayName)
+                    ->fetchOne();
 
                 if ($exists !== false) {
                     continue;
                 }
 
-                $this->addSql(
-                    'INSERT INTO payment_methods (id, company_id, name, gateway_name, factory, config, internal, enabled, created, updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    [new Ulid(), $companyId, $name, $gatewayName, 'offline', [], true, true, $now, $now],
+                $insert = $this->connection->createQueryBuilder()
+                    ->insert('payment_methods')
+                    ->values([
+                        'id' => ':id',
+                        'company_id' => ':company_id',
+                        'name' => ':name',
+                        'gateway_name' => ':gateway_name',
+                        'factory' => ':factory',
+                        'config' => ':config',
+                        'internal' => ':internal',
+                        'enabled' => ':enabled',
+                        'created' => ':created',
+                        'updated' => ':updated',
+                    ])
                     // Unqualified, the ULIDs bind as text and PostgreSQL rejects the raw bytes as invalid UTF-8.
-                    [UlidType::NAME, UlidType::NAME, Types::STRING, Types::STRING, Types::STRING, Types::JSON, Types::BOOLEAN, Types::BOOLEAN, Types::DATETIME_IMMUTABLE, Types::DATETIME_IMMUTABLE]
-                );
+                    ->setParameter('id', new Ulid(), UlidType::NAME)
+                    ->setParameter('company_id', $companyId, UlidType::NAME)
+                    ->setParameter('name', $name)
+                    ->setParameter('gateway_name', $gatewayName)
+                    ->setParameter('factory', 'offline')
+                    ->setParameter('config', [], Types::JSON)
+                    ->setParameter('internal', true, Types::BOOLEAN)
+                    ->setParameter('enabled', true, Types::BOOLEAN)
+                    ->setParameter('created', $now, Types::DATETIME_IMMUTABLE)
+                    ->setParameter('updated', $now, Types::DATETIME_IMMUTABLE);
+
+                $this->addSql($insert->getSQL(), $insert->getParameters(), $insert->getParameterTypes());
             }
         }
     }
 
     public function down(Schema $schema): void
     {
+        $usedMethods = $this->connection->createQueryBuilder()
+            ->select('method_id')
+            ->from('payments')
+            ->where('method_id IS NOT NULL');
+
         foreach (array_keys(self::METHODS) as $gatewayName) {
+            $delete = $this->connection->createQueryBuilder();
+
             // Only the methods that never took a payment; one that did belongs to the company now.
-            $this->addSql(
-                'DELETE FROM payment_methods WHERE gateway_name = ? AND id NOT IN (SELECT method_id FROM payments WHERE method_id IS NOT NULL)',
-                [$gatewayName]
-            );
+            $delete
+                ->delete('payment_methods')
+                ->where('gateway_name = :gateway_name')
+                ->andWhere($delete->expr()->notIn('id', $usedMethods->getSQL()))
+                ->setParameter('gateway_name', $gatewayName);
+
+            $this->addSql($delete->getSQL(), $delete->getParameters(), $delete->getParameterTypes());
         }
     }
 }
