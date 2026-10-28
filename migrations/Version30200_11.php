@@ -25,6 +25,8 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class Version30200_11 extends AbstractMigration
 {
+    private const string TABLE_NAME = 'tax_rates';
+
     public function getDescription(): string
     {
         return 'Add the products table, a company-scoped catalogue of items that can be copied onto invoice and quote lines';
