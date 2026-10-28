@@ -429,14 +429,16 @@ class Contact implements Serializable, Stringable
 
     #[Serialize\Groups(['contact_api:read'])]
     #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
-    public function getCreated(): ?DateTimeImmutable
+    #[Serialize\SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
     {
         return $this->created;
     }
 
     #[Serialize\Groups(['contact_api:read'])]
     #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
-    public function getUpdated(): ?DateTimeImmutable
+    #[Serialize\SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
     {
         return $this->updated;
     }

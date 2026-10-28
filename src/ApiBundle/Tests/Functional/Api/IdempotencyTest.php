@@ -16,6 +16,7 @@ namespace SolidInvoice\ApiBundle\Tests\Functional\Api;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
@@ -59,6 +60,18 @@ final class IdempotencyTest extends ApiTestCase
         self::assertSame(422, $response->getStatusCode());
         self::assertStringEndsWith('idempotency_key_mismatch', $response->toArray(false)['type']);
         self::assertSame(0, ClientFactory::repository()->count(['name' => 'Second']));
+    }
+
+    public function testSameKeyWithADifferentApiVersionIsRejected(): void
+    {
+        $key = Uuid::v4()->toRfc4122();
+
+        self::assertSame(201, $this->postClient($key, ['name' => 'Versioned'])->getStatusCode());
+
+        // Replaying the first response would hand back money in the format this request did not ask for.
+        $response = $this->postClient($key, ['name' => 'Versioned'], [ApiVersion::HEADER => ApiVersion::V2026_10->value]);
+        self::assertSame(422, $response->getStatusCode());
+        self::assertStringEndsWith('idempotency_key_mismatch', $response->toArray(false)['type']);
     }
 
     public function testMalformedKeyIsRejected(): void

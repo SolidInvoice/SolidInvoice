@@ -112,6 +112,11 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
     {
         $currency = $context[MoneyCurrencyNormalizer::CURRENCY] ?? null;
 
+        // BigDecimal::of() throws a TypeError, not a MathException, for anything else.
+        if (! is_int($data) && ! is_string($data)) {
+            throw new UnexpectedValueException(sprintf('"%s" is not a decimal number.', get_debug_type($data)));
+        }
+
         try {
             $value = BigDecimal::of($data);
 
@@ -123,7 +128,7 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
         } catch (RoundingNecessaryException) {
             throw new UnexpectedValueException(sprintf('The amount "%s" has more decimal places than %s allows.', $data, $currency ?? 'the currency'));
         } catch (MathException) {
-            throw new UnexpectedValueException(sprintf('"%s" is not a decimal number.', is_scalar($data) ? $data : get_debug_type($data)));
+            throw new UnexpectedValueException(sprintf('"%s" is not a decimal number.', $data));
         }
     }
 

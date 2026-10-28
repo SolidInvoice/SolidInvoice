@@ -18,6 +18,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\ApiBundle\State\Processor\RecordPaymentProcessor;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -184,6 +185,7 @@ final class RecordPaymentTest extends ApiTestCase
         yield 'zero' => ['0.00'];
         yield 'negative' => ['-5'];
         yield 'not a number' => ['ten'];
+        yield 'larger than a payment can store' => ['100000000000000000000'];
     }
 
     #[DataProvider('invalidAmountProvider')]
@@ -206,7 +208,7 @@ final class RecordPaymentTest extends ApiTestCase
 
         $headers = $response->getHeaders(false);
         self::assertArrayHasKey('deprecation', $headers);
-        self::assertStringContainsString('rel="deprecation"', implode(',', $headers['link'] ?? []));
+        self::assertStringContainsString('<' . RecordPaymentProcessor::LEGACY_AMOUNT_DOCS . '>; rel="deprecation"', implode(',', $headers['link'] ?? []));
     }
 
     public function testADecimalAmountIsNotFlaggedDeprecated(): void
@@ -214,7 +216,8 @@ final class RecordPaymentTest extends ApiTestCase
         $response = $this->postPayment($this->createInvoice(), ['amount' => '10.00']);
 
         self::assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        self::assertStringNotContainsString('rel="deprecation"', implode(',', $response->getHeaders(false)['link'] ?? []));
+        // Only the amount's own deprecation; an unversioned request still carries the money format's.
+        self::assertStringNotContainsString(RecordPaymentProcessor::LEGACY_AMOUNT_DOCS, implode(',', $response->getHeaders(false)['link'] ?? []));
     }
 
     public function testTheMethodDefaultsToCash(): void

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
@@ -56,18 +57,22 @@ final class Version30200_8 extends AbstractMigration
             ->from('companies')
             ->fetchFirstColumn();
 
+        $existing = [];
+
+        $rows = $this->connection->createQueryBuilder()
+            ->select('company_id', 'gateway_name')
+            ->from('payment_methods')
+            ->where('gateway_name IN (:gateway_names)')
+            ->setParameter('gateway_names', array_keys(self::METHODS), ArrayParameterType::STRING)
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $existing[$row['company_id'] . '|' . $row['gateway_name']] = true;
+        }
+
         foreach ($companyIds as $companyId) {
             foreach (self::METHODS as $gatewayName => $name) {
-                $exists = $this->connection->createQueryBuilder()
-                    ->select('1')
-                    ->from('payment_methods')
-                    ->where('company_id = :company_id')
-                    ->andWhere('gateway_name = :gateway_name')
-                    ->setParameter('company_id', $companyId)
-                    ->setParameter('gateway_name', $gatewayName)
-                    ->fetchOne();
-
-                if ($exists !== false) {
+                if (isset($existing[$companyId . '|' . $gatewayName])) {
                     continue;
                 }
 
@@ -104,22 +109,7 @@ final class Version30200_8 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $usedMethods = $this->connection->createQueryBuilder()
-            ->select('method_id')
-            ->from('payments')
-            ->where('method_id IS NOT NULL');
-
-        foreach (array_keys(self::METHODS) as $gatewayName) {
-            $delete = $this->connection->createQueryBuilder();
-
-            // Only the methods that never took a payment; one that did belongs to the company now.
-            $delete
-                ->delete('payment_methods')
-                ->where('gateway_name = :gateway_name')
-                ->andWhere($delete->expr()->notIn('id', $usedMethods->getSQL()))
-                ->setParameter('gateway_name', $gatewayName);
-
-            $this->addSql($delete->getSQL(), $delete->getParameters(), $delete->getParameterTypes());
-        }
+        // Nothing to undo: a company may have had these methods before up() ran, or edited them since,
+        // and up() skips any that exist, so running it again after a rollback is safe.
     }
 }

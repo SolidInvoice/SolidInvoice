@@ -322,14 +322,16 @@ class Payment extends BasePayment
 
     #[Groups(['payment_api:read'])]
     #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
-    public function getCreated(): ?DateTimeImmutable
+    #[SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
     {
         return $this->created;
     }
 
     #[Groups(['payment_api:read'])]
     #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
-    public function getUpdated(): ?DateTimeImmutable
+    #[SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
     {
         return $this->updated;
     }
