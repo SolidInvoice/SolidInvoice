@@ -23,6 +23,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\CoreBundle\Validator\Constraints\CompanyName;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
@@ -64,6 +65,8 @@ class Company implements Stringable, SubscribableInterface
 {
     final public const string TABLE_NAME = 'companies';
 
+    use TimeStampable;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
@@ -83,10 +86,24 @@ class Company implements Stringable, SubscribableInterface
     #[Assert\NotBlank()]
     public ?string $currency = '';
 
+    // Who created the company. Informational only: it grants nothing.
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'owner_id', nullable: true, onDelete: 'SET NULL')]
+    private ?User $owner = null;
+
+    #[ORM\Column(name: 'country', type: Types::STRING, length: 2, nullable: true)]
+    #[Assert\Country]
+    private ?string $country = null;
+
     #[ORM\Column(name: 'custom_domain', type: Types::STRING, length: 253, unique: true, nullable: true)]
     #[Assert\Length(max: 253)]
     #[Assert\Hostname(requireTld: true)]
     private ?string $customDomain = null;
+
+    // Only the operator changes this: by hand in the database, or by rejecting a held email
+    // (solidinvoice:saas:held-emails). CompanyEnabledFilter then hides it, and everything it owns, everywhere.
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $enabled = true;
 
     // Related entities: Only added here to enable orphan removal
     /**
@@ -273,6 +290,37 @@ class Company implements Stringable, SubscribableInterface
         if ($this->users->removeElement($user)) {
             $user->removeCompany($this);
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function disable(): self
+    {
+        $this->enabled = false;
 
         return $this;
     }

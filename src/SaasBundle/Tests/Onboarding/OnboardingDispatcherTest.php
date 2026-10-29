@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Onboarding;
 
 use Carbon\CarbonImmutable;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ReflectionProperty;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
@@ -38,7 +40,6 @@ use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(OnboardingDispatcher::class)]
 final class OnboardingDispatcherTest extends TestCase
@@ -56,6 +57,8 @@ final class OnboardingDispatcherTest extends TestCase
     private ?Subscription $subscription = null;
 
     private string $now = '2025-01-02';
+
+    private string $userCreated = '2025-01-01';
 
     public function testSendsTheFirstDueStepAndRecordsItBeforeDispatching(): void
     {
@@ -109,30 +112,117 @@ final class OnboardingDispatcherTest extends TestCase
         self::assertSame(['save:welcome,add_first_client,first', 'dispatch:first'], $this->log);
     }
 
-    public function testAnAccountOnFreeIsOnlyOfferedTheFreeFeedbackStep(): void
+    public function testAnAccountOnFreeIsOfferedAnyAndFreeStepsButNotTrialOnes(): void
     {
-        $plan = new Plan();
-        $plan->setPrice(0);
-        $plan->setPlanId('0');
-
-        $this->subscription = new Subscription();
-        $this->subscription->setSubscriber(new Company());
-        $this->subscription->setPlan($plan);
-        $this->subscription->setStatus(SubscriptionStatus::ACTIVE);
-        $this->subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
-        $this->subscription->setEndDate(CarbonImmutable::parse('2125-01-01'));
-
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: true);
         $this->now = '2025-02-01';
 
-        $this->tick(new StepFirst(), new FreeFeedbackStep($this->createStub(TranslatorInterface::class)));
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
 
-        self::assertSame(['save:free_feedback', 'dispatch:free_feedback'], $this->log);
+        self::assertSame(['save:first', 'dispatch:first', 'save:first,free_feedback', 'dispatch:free_feedback'], $this->log);
+    }
+
+    public function testATrialIsNotOfferedTheFreeStep(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false);
+        $this->now = '2025-02-01';
+
+        $this->tick(new FreeFeedbackStep(), $this->trialOnly());
+
+        self::assertSame(['save:trial_only', 'dispatch:trial_only'], $this->log);
+    }
+
+    /**
+     * A long-standing user who moves to Free (or adds a Free company) is not
+     * welcomed again: onboarding is for new users.
+     */
+    public function testAnOldUserOnFreeIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: true);
+        $this->userCreated = '2024-06-01';
+        $this->now = '2025-02-01';
+
+        $this->tick(new StepFirst(), new FreeFeedbackStep());
+
+        self::assertSame([], $this->log);
+    }
+
+    /**
+     * An old user who opts into a trial gets the trial emails, not the welcome.
+     */
+    public function testAnOldUserOnATrialOnlyGetsTrialSteps(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false);
+        $this->userCreated = '2024-06-01';
+        $this->now = '2025-02-01';
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame(['save:trial_only', 'dispatch:trial_only'], $this->log);
+    }
+
+    public function testALapsedTrialIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false)->setEndDate(CarbonImmutable::parse('2025-01-15'));
+        $this->now = '2025-01-20';
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame([], $this->log);
+    }
+
+    public function testAPayingAccountIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: false);
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame([], $this->log);
+    }
+
+    private function trialOnly(): OnboardingEmailStepInterface
+    {
+        return new class() extends StubStep {
+            public static function key(): string
+            {
+                return 'trial_only';
+            }
+
+            public static function priority(): int
+            {
+                return 200;
+            }
+
+            #[Override]
+            public static function audience(): OnboardingAudience
+            {
+                return OnboardingAudience::Trial;
+            }
+        };
+    }
+
+    private function subscription(SubscriptionStatus $status, bool $free): Subscription
+    {
+        $plan = new Plan();
+        $plan->setPrice($free ? 0 : 1900);
+        $plan->setPlanId($free ? '0' : 'variant-123');
+
+        $subscription = new Subscription();
+        $subscription->setSubscriber(new Company());
+        $subscription->setPlan($plan);
+        $subscription->setStatus($status);
+        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
+        $subscription->setEndDate(CarbonImmutable::parse('2125-01-01'));
+
+        return $subscription;
     }
 
     private function tick(OnboardingEmailStepInterface ...$steps): void
     {
         $user = new User();
         new ReflectionProperty($user, 'id')->setValue($user, new Ulid());
+        $user->setCreated(CarbonImmutable::parse($this->userCreated));
 
         $subscription = $this->subscription;
 
@@ -140,6 +230,7 @@ final class OnboardingDispatcherTest extends TestCase
             $subscription = new Subscription();
             $subscription->setSubscriber(new Company());
             $subscription->setPlan(new Plan());
+            $subscription->setStatus(SubscriptionStatus::TRIAL);
             $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
             $subscription->setEndDate(CarbonImmutable::parse('2025-01-15'));
         }

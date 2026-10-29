@@ -31,5 +31,10 @@ final class Graph
 
     public const string TRANSITION_REOPEN = 'reopen';
 
+    /**
+     * Paid back to pending, when a payment that settled the invoice is voided.
+     */
+    public const string TRANSITION_UNPAY = 'unpay';
+
     public const string TRANSITION_ARCHIVE = 'archive';
 }

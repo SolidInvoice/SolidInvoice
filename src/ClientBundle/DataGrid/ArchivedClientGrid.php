@@ -29,7 +29,7 @@ final class ArchivedClientGrid extends BaseClientGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Activate')
+        yield BatchAction::new('action.activate')
             ->icon('refresh')
             ->color('success')
             ->action(static function (ClientRepository $repository, array $selectedItems): void {

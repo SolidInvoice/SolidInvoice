@@ -26,6 +26,10 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\MediaType;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\Response;
+use ArrayObject;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
@@ -37,14 +41,23 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
+use SolidInvoice\ApiBundle\DTO\MarkSentInput;
+use SolidInvoice\ApiBundle\DTO\SendDocumentInput;
+use SolidInvoice\ApiBundle\State\Processor\InvoiceCloneProcessor;
+use SolidInvoice\ApiBundle\State\Processor\InvoiceMarkSentProcessor;
+use SolidInvoice\ApiBundle\State\Processor\InvoiceReminderProcessor;
 use SolidInvoice\ApiBundle\State\Processor\InvoiceTransitionProcessor;
+use SolidInvoice\ApiBundle\State\Processor\SendDocumentProcessor;
 use SolidInvoice\ApiBundle\State\Provider\InvoiceTransitionProvider;
+use SolidInvoice\ApiBundle\State\Provider\OptionalBodyProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Action\Api\BillingPdfAction;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
+use SolidInvoice\CoreBundle\Traits\Entity\SentTo;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\EInvoiceBundle\Enum\InvoiceTypeCode;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -58,9 +71,12 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -69,15 +85,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['quote_id'])]
 #[ORM\Index(name: 'idx_invoice_reminder_scan', columns: ['due', 'status'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
-#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
-#[ApiFilter(DateFilter::class, properties: ['invoiceDate', 'due', 'paidDate'])]
-#[ApiFilter(OrderFilter::class, properties: ['invoiceDate', 'due', 'status'])]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact', 'invoiceId' => 'partial', 'client.name' => 'partial'])]
+#[ApiFilter(DateFilter::class, properties: ['invoiceDate', 'due', 'paidDate', 'created', 'updated'])]
+#[ApiFilter(OrderFilter::class, properties: ['invoiceDate', 'due', 'status', 'created', 'updated'])]
 #[ApiFilter(NumericFilter::class, properties: ['balance'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
         new Get(),
-        new Post(),
+        new Post(extraProperties: ['idempotent' => true]),
         new Patch(),
         new Delete(),
         new GetCollection(
@@ -100,6 +116,87 @@ use Symfony\Component\Validator\Constraints as Assert;
             provider: InvoiceTransitionProvider::class,
             processor: InvoiceTransitionProcessor::class,
         ),
+        new Get(
+            uriTemplate: '/invoices/{id}/pdf',
+            outputFormats: ['pdf' => ['application/pdf']],
+            controller: BillingPdfAction::class,
+            openapi: new Operation(
+                responses: [
+                    '200' => new Response(
+                        description: 'The invoice PDF',
+                        content: new ArrayObject(['application/pdf' => new MediaType(new ArrayObject(['type' => 'string', 'format' => 'binary']))]),
+                    ),
+                    '304' => new Response(description: 'The invoice has not changed since the ETag was issued'),
+                ],
+                summary: 'Downloads the invoice as a PDF.',
+                description: 'Rendered with the same template as the public invoice page. Send the returned ETag back in If-None-Match to get a 304 while the invoice is unchanged.',
+            ),
+            serialize: false,
+            name: 'invoice_pdf',
+        ),
+        new Post(
+            uriTemplate: '/invoices/{id}/clone',
+            uriVariables: [
+                'id' => new Link(fromClass: Invoice::class),
+            ],
+            input: false,
+            output: Invoice::class,
+            validate: false,
+            name: 'invoice_clone',
+            provider: InvoiceTransitionProvider::class,
+            processor: InvoiceCloneProcessor::class,
+        ),
+        new Post(
+            uriTemplate: '/invoices/{id}/send',
+            uriVariables: [
+                'id' => new Link(fromClass: Invoice::class),
+            ],
+            status: 200,
+            normalizationContext: [
+                'groups' => ['invoice_api:read', 'billing_api:sent'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+            denormalizationContext: ['groups' => ['billing_api:send']],
+            input: SendDocumentInput::class,
+            output: Invoice::class,
+            // The body is optional and holds the send options; the processor loads the invoice.
+            deserialize: false,
+            name: 'invoice_send',
+            provider: OptionalBodyProvider::class,
+            processor: SendDocumentProcessor::class,
+            extraProperties: ['idempotent' => true],
+        ),
+        new Post(
+            uriTemplate: '/invoices/{id}/reminder',
+            uriVariables: [
+                'id' => new Link(fromClass: Invoice::class),
+            ],
+            status: 200,
+            normalizationContext: [
+                'groups' => ['invoice_api:read', 'billing_api:sent'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+            input: false,
+            output: Invoice::class,
+            validate: false,
+            name: 'invoice_reminder',
+            provider: InvoiceTransitionProvider::class,
+            processor: InvoiceReminderProcessor::class,
+        ),
+        new Post(
+            uriTemplate: '/invoices/{id}/mark-sent',
+            uriVariables: [
+                'id' => new Link(fromClass: Invoice::class),
+            ],
+            status: 200,
+            denormalizationContext: ['groups' => ['billing_api:send']],
+            input: MarkSentInput::class,
+            output: Invoice::class,
+            deserialize: false,
+            name: 'invoice_mark_sent',
+            provider: OptionalBodyProvider::class,
+            processor: InvoiceMarkSentProcessor::class,
+        ),
     ],
     normalizationContext: [
         'groups' => ['invoice_api:read'],
@@ -112,6 +209,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'invoices')])]
 #[WithinPlanInvoiceLimit]
+#[UniqueEntity(fields: ['invoiceId'], message: 'invoice.invoice_id.unique', repositoryMethod: 'findByInvoiceIdIncludingArchived')]
 class Invoice extends BaseInvoice implements Stringable
 {
     final public const string TABLE_NAME = 'invoices';
@@ -121,6 +219,7 @@ class Invoice extends BaseInvoice implements Stringable
         Archivable::isArchived insteadof InvoiceStatusTrait;
     }
     use LinePositions;
+    use SentTo;
     use TimeStampable;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: InvoiceStatus::class)]
@@ -292,6 +391,36 @@ class Invoice extends BaseInvoice implements Stringable
     public function getUuid(): Uuid
     {
         return Uuid::fromString($this->uuid);
+    }
+
+    /**
+     * Placeholder for the API docs; {@see \SolidInvoice\CoreBundle\Serializer\Normalizer\BillingLinksNormalizer} sets the value.
+     */
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(description: 'Absolute URL of the public invoice page, the link sent to the client', writable: false, schema: ['type' => 'string', 'format' => 'uri'])]
+    public function getPublicUrl(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Placeholder for the API docs; {@see \SolidInvoice\CoreBundle\Serializer\Normalizer\BillingLinksNormalizer} sets the value.
+     */
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(description: 'Absolute URL of the public PDF of the invoice', writable: false, schema: ['type' => 'string', 'format' => 'uri'])]
+    public function getPdfUrl(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Placeholder for the API docs; {@see \SolidInvoice\CoreBundle\Serializer\Normalizer\BillingLinksNormalizer} sets the value.
+     */
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(description: 'Absolute URL where the client pays the invoice online; null when the company has no enabled online payment method', writable: false, schema: ['type' => ['string', 'null'], 'format' => 'uri'])]
+    public function getPayUrl(): ?string
+    {
+        return null;
     }
 
     public function setUuid(Uuid $uuid): self
@@ -591,5 +720,29 @@ class Invoice extends BaseInvoice implements Stringable
         if ($this->paymentTerms !== PaymentTerms::Custom) {
             $this->due = $this->paymentTerms->dueDate($this->invoiceDate);
         }
+    }
+
+    #[Groups(['invoice_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Groups(['invoice_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
+    }
+
+    #[Groups(['invoice_api:read'])]
+    #[SerializedName('currencyCode')]
+    #[ApiProperty(writable: false, example: 'USD')]
+    public function getApiCurrencyCode(): ?string
+    {
+        return $this->resolveCurrencyCode();
     }
 }

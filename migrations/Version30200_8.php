@@ -13,57 +13,103 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use DateTimeImmutable;
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use function array_keys;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 final class Version30200_8 extends AbstractMigration
 {
-    private const string COLUMN = 'invoice_type_code';
-
-    private const array DEFAULTS = [
-        'invoices' => '380',
-        'credit_notes' => '381',
+    /**
+     * Gateway name => name. New companies get the name translated; existing ones get English, and
+     * can rename it.
+     */
+    private const array METHODS = [
+        'cheque' => 'Cheque',
+        'card_terminal' => 'Card terminal',
     ];
 
     public function getDescription(): string
     {
-        return 'Add the EN 16931 BT-3 document type code to invoices and credit notes';
+        return 'Add the Cheque and Card terminal offline payment methods to every company that lacks them';
     }
 
     public function isTransactional(): bool
     {
-        // MySQL and MariaDB commit implicitly on DDL. AbstractMySQLPlatform, because
-        // MariaDBPlatform is a sibling of MySQLPlatform rather than a subclass.
         return ! $this->platform instanceof AbstractMySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
+    /**
+     * @throws Exception
+     */
     public function up(Schema $schema): void
     {
-        foreach (self::DEFAULTS as $tableName => $default) {
-            $table = $schema->getTable($tableName);
+        $now = new DateTimeImmutable();
 
-            if (! $table->hasColumn(self::COLUMN)) {
-                $table->addColumn(self::COLUMN, Types::STRING, [
-                    'length' => 4,
-                    'notnull' => true,
-                    'default' => $default,
-                ]);
+        $companyIds = $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from('companies')
+            ->fetchFirstColumn();
+
+        $existing = [];
+
+        $rows = $this->connection->createQueryBuilder()
+            ->select('company_id', 'gateway_name')
+            ->from('payment_methods')
+            ->where('gateway_name IN (:gateway_names)')
+            ->setParameter('gateway_names', array_keys(self::METHODS), ArrayParameterType::STRING)
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $existing[$row['company_id'] . '|' . $row['gateway_name']] = true;
+        }
+
+        foreach ($companyIds as $companyId) {
+            foreach (self::METHODS as $gatewayName => $name) {
+                if (isset($existing[$companyId . '|' . $gatewayName])) {
+                    continue;
+                }
+
+                $insert = $this->connection->createQueryBuilder()
+                    ->insert('payment_methods')
+                    ->values([
+                        'id' => ':id',
+                        'company_id' => ':company_id',
+                        'name' => ':name',
+                        'gateway_name' => ':gateway_name',
+                        'factory' => ':factory',
+                        'config' => ':config',
+                        'internal' => ':internal',
+                        'enabled' => ':enabled',
+                        'created' => ':created',
+                        'updated' => ':updated',
+                    ])
+                    // Unqualified, the ULIDs bind as text and PostgreSQL rejects the raw bytes as invalid UTF-8.
+                    ->setParameter('id', new Ulid(), UlidType::NAME)
+                    ->setParameter('company_id', $companyId, UlidType::NAME)
+                    ->setParameter('name', $name)
+                    ->setParameter('gateway_name', $gatewayName)
+                    ->setParameter('factory', 'offline')
+                    ->setParameter('config', [], Types::JSON)
+                    ->setParameter('internal', true, Types::BOOLEAN)
+                    ->setParameter('enabled', true, Types::BOOLEAN)
+                    ->setParameter('created', $now, Types::DATETIME_IMMUTABLE)
+                    ->setParameter('updated', $now, Types::DATETIME_IMMUTABLE);
+
+                $this->addSql($insert->getSQL(), $insert->getParameters(), $insert->getParameterTypes());
             }
         }
     }
 
     public function down(Schema $schema): void
     {
-        foreach (array_keys(self::DEFAULTS) as $tableName) {
-            $table = $schema->getTable($tableName);
-
-            if ($table->hasColumn(self::COLUMN)) {
-                $table->dropColumn(self::COLUMN);
-            }
-        }
+        // Nothing to undo: a company may have had these methods before up() ran, or edited them since,
+        // and up() skips any that exist, so running it again after a rollback is safe.
     }
 }

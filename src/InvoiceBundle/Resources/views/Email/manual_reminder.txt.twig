@@ -1,0 +1,31 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ 'invoice.manual_reminder.heading'|trans({}, 'email')|upper }}
+
+{{ 'invoice.manual_reminder.message'|trans({'%invoice%': invoice.invoiceId}, 'email') }}
+
+{{ 'invoice.reminder.details'|trans({}, 'email') }}:
+----------------
+{{ 'invoice.overdue.invoice_number'|trans({}, 'email') }}: {{ invoice.invoiceId }}
+{% if invoice.invoiceDate %}
+{{ 'invoice.reminder.invoice_date'|trans({}, 'email') }}: {{ invoice.invoiceDate|date('Y-m-d') }}
+{% endif %}
+{% if invoice.due %}
+{{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
+{% endif %}
+{% if invoice.balance %}
+{{ 'invoice.reminder.amount_due'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.currency) }}
+{% endif %}
+
+{{ 'invoice.manual_reminder.closing'|trans({}, 'email') }}
+
+{{ 'invoice.reminder.view_and_pay'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}
+
+{{ 'invoice.reminder.contact'|trans({}, 'email') }}

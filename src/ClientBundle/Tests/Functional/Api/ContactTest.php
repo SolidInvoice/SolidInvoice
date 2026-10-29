@@ -107,6 +107,7 @@ final class ContactTest extends ApiTestCase
         ];
 
         $result = $this->requestPost($this->getIriFromResource($client) . '/contacts', $data);
+        $result = self::assertTimestampsAndRemove($result);
 
         self::assertTrue(Ulid::isValid($result['id'], Ulid::FORMAT_BASE_32));
 
@@ -146,6 +147,7 @@ final class ContactTest extends ApiTestCase
         ]);
 
         $data = $this->requestGet($this->getIriFromResource($contact));
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
@@ -171,6 +173,7 @@ final class ContactTest extends ApiTestCase
         ]);
 
         $data = $this->requestPatch($this->getIriFromResource($contact), ['firstName' => 'New Test']);
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',

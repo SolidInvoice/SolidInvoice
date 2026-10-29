@@ -24,8 +24,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: self::EVENT,
-    title: 'Quote Status Changed',
-    description: 'When a quote status changes (draft, sent, accepted, etc.)',
+    title: 'notifications.events.quote_status_changed.title',
+    description: 'notifications.events.quote_status_changed.description',
     icon: 'tabler:file-text',
     category: NotificationCategory::QUOTE,
 )]
@@ -35,7 +35,7 @@ class QuoteStatusNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {
@@ -43,9 +43,9 @@ class QuoteStatusNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        return 'Quote Status Change';
+        return 'quote.status.subject';
     }
 
     #[Override]

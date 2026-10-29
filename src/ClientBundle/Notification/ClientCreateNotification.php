@@ -31,8 +31,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: ClientCreateNotification::EVENT,
-    title: 'Client Created',
-    description: 'When a new client is added to your account',
+    title: 'notifications.events.client_created.title',
+    description: 'notifications.events.client_created.description',
     icon: 'tabler:user-plus',
     category: NotificationCategory::CLIENT,
 )]
@@ -42,7 +42,7 @@ class ClientCreateNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {
@@ -50,7 +50,7 @@ class ClientCreateNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
         return 'client.create.subject';
     }
@@ -103,7 +103,7 @@ class ClientCreateNotification extends NotificationMessage
                     'style' => 'primary',
                     'text' => [
                         'type' => 'plain_text',
-                        'text' => new TranslationReference('View Client'),
+                        'text' => new TranslationReference('client.create.view_client', domain: 'email'),
                     ],
                     'url' => new UrlRouteReference('_clients_view', ['id' => $this->getParameters()['client']->getId()->toString()]),
                 ],

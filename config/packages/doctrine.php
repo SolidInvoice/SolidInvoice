@@ -15,6 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
+use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyEnabledFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Doctrine\Function\ToNumberFunction;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -58,6 +59,10 @@ return App::config([
                     'filters' => [
                         'company' => [
                             'class' => CompanyFilter::class,
+                            'enabled' => true,
+                        ],
+                        'company_enabled' => [
+                            'class' => CompanyEnabledFilter::class,
                             'enabled' => true,
                         ],
                         'archivable' => [

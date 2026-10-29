@@ -22,6 +22,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\SqlFormatter\SqlFormatter;
 use Generator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Builds the schema for a FRESH install. It does not run the migration chain, and that is deliberate.
@@ -42,6 +43,7 @@ final readonly class Migration
     public function __construct(
         private DependencyFactory $migrationDependencyFactory,
         private ManagerRegistry $registry,
+        private TranslatorInterface $translator,
     ) {
         $this->sqlFormatter = new SqlFormatter();
     }
@@ -101,7 +103,7 @@ final readonly class Migration
                 }
             }
         } elseif (null !== $callback) {
-            yield from $callback('Database schema is already up to date.');
+            yield from $callback($this->translator->trans('installation.progress_log.schema_up_to_date'));
         }
 
         $now = CarbonImmutable::now();

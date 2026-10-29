@@ -67,6 +67,7 @@ final class NotificationManagerTest extends KernelTestCase
             new ServiceLocator([]),
             new NullLogger(),
             new RequestStack(),
+            self::getContainer()->get('translator'),
         );
     }
 
@@ -221,6 +222,7 @@ final class NotificationManagerTest extends KernelTestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
+            self::getContainer()->get('translator'),
         );
 
         $notificationManager->sendNotification($class);
@@ -297,6 +299,7 @@ final class NotificationManagerTest extends KernelTestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
             new NullLogger(),
             new RequestStack(),
+            self::getContainer()->get('translator'),
         );
 
         $notificationManager->sendNotification($class);
@@ -400,6 +403,7 @@ final class NotificationManagerTest extends KernelTestCase
             new ServiceLocator(['FooBar' => static fn () => $configurator, 'FooBars' => static fn () => $configurator2]),
             new NullLogger(),
             new RequestStack(),
+            self::getContainer()->get('translator'),
         );
 
         $notificationManager->sendNotification($class);
@@ -473,6 +477,7 @@ final class NotificationManagerTest extends KernelTestCase
             new ServiceLocator([]),
             $logger,
             $requestStack,
+            self::getContainer()->get('translator'),
         );
 
         $notificationManager->sendNotification($class);

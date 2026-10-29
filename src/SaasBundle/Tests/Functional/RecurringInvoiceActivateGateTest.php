@@ -20,6 +20,7 @@ use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\SaasBundle\EventSubscriber\RecurringInvoiceVerificationGuardListener;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Workflow\DefinitionBuilder;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
@@ -57,9 +58,8 @@ final class RecurringInvoiceActivateGateTest extends TestCase
     {
         $gate = $this->createStub(EmailVerificationGateInterface::class);
         $gate->method('isGated')->willReturn($gated);
-        $gate->method('reason')->willReturn('Please verify your email address before activating this recurring invoice.');
 
-        $listener = new RecurringInvoiceVerificationGuardListener($gate);
+        $listener = new RecurringInvoiceVerificationGuardListener($gate, new IdentityTranslator());
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(

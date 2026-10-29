@@ -50,7 +50,7 @@
             <row>
                 <columns>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; font-family: {{ headingFont }}; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                        {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|format_date('long')}, 'email') }}
                     </p>
                 </columns>
             </row>
@@ -61,10 +61,10 @@
 
     {{ email.info_row('quote.number'|trans({}, 'email'), quote.quoteId) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|date) }}
+    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|format_date('long')) }}
     {% if quote.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|date) }}
+        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|format_date('long')) }}
     {% endif %}
 
     {{ email.divider('md') }}

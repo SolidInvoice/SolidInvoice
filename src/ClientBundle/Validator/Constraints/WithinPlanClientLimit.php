@@ -21,18 +21,19 @@ use Symfony\Component\Validator\Constraint;
  * Class-level constraint that enforces the hosted plan's "total clients" limit
  * when creating a new client. Because validation runs before persistence on
  * both the UI form submit and the API Platform POST, this single constraint
- * closes the limit on every channel.
+ * closes the limit on those channels. The invoice/quote form DTOs also carry it
+ * on their inline new-client name, since that Client is cascaded unvalidated.
  *
  * @see \SolidInvoice\ClientBundle\Tests\Validator\Constraints\WithinPlanClientLimitValidatorTest
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 final class WithinPlanClientLimit extends Constraint
 {
-    public string $message = 'You have reached the maximum number of clients allowed on your current plan.';
+    public string $message = 'client.constraint.plan_limit';
 
     #[Override]
-    public function getTargets(): string
+    public function getTargets(): array
     {
-        return self::CLASS_CONSTRAINT;
+        return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
 }

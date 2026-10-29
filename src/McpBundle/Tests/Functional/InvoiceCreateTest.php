@@ -314,6 +314,42 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertCount(1, $quote->getLines());
     }
 
+    public function testASuppliedInvoiceNumberIsKeptAndCannotBeReused(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $result = $tool->createInvoice($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+
+        self::assertSame('MCP-7', $result['invoice_number']);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('Invoice number "MCP-7" is already in use.');
+
+        $tool->createInvoice($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+    }
+
+    public function testASuppliedQuoteNumberIsKeptAndCannotBeReused(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company]);
+        $tool = self::getContainer()->get(QuoteWriteTools::class);
+        self::assertInstanceOf(QuoteWriteTools::class, $tool);
+
+        $result = $tool->createQuote($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+
+        self::assertSame('MCP-Q-7', $result['quote_number']);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('Quote number "MCP-Q-7" is already in use.');
+
+        $tool->createQuote($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+    }
+
     /**
      * @param list<string> $scopes
      */

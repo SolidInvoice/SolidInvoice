@@ -145,7 +145,7 @@ final class InviteUser extends AbstractController
         return new class($route) extends RedirectResponse implements FlashResponse {
             public function getFlash(): Generator
             {
-                yield self::FLASH_ERROR => 'User already has access to the company.';
+                yield self::FLASH_ERROR => 'users.invitation.already_member';
             }
         };
     }

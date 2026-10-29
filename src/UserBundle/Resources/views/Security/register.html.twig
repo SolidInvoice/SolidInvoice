@@ -107,7 +107,7 @@
                             {{ form_end(form) }}
                             
                             {% toggle 'google_oauth_login' %}
-                                <div class="hr-text">{{ 'or'|trans }}</div>
+                                <div class="hr-text">{{ 'security.login.or'|trans }}</div>
                                 <div class="row">
                                     <div class="col">
                                         <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">

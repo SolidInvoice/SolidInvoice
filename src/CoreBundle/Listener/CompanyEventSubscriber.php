@@ -98,8 +98,20 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
         }
 
         if ($session->has('company')) {
-            $this->companySelector->switchCompany($session->get('company'));
-        } elseif (! $this->isOnCompanySelectionRoute($request) && ($user = $this->security->getUser()) instanceof UserInterface) {
+            $companyId = $session->get('company');
+            $user = $this->security->getUser();
+
+            // A user's companies are loaded through CompanyEnabledFilter, so a company disabled
+            // after it was put in the session drops out here: forget it and select again.
+            if (! $user instanceof User || $user->getCompanies()->exists(static fn (int $key, Company $company): bool => $company->getId()->equals($companyId))) {
+                $this->companySelector->switchCompany($companyId);
+                return;
+            }
+
+            $session->remove('company');
+        }
+
+        if (! $this->isOnCompanySelectionRoute($request) && ($user = $this->security->getUser()) instanceof UserInterface) {
             assert($user instanceof User);
 
             if (count($user->getCompanies()) === 1) {
@@ -115,6 +127,12 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 
     private function isOnCompanySelectionRoute(Request $request): bool
     {
+        // A route can declare that it picks the company itself (route default `_company_selection`),
+        // e.g. an OAuth authorize endpoint that binds the token it issues to a company.
+        if ($request->attributes->getBoolean('_company_selection')) {
+            return true;
+        }
+
         $routeName = $request->attributes->get('_route');
 
         return in_array(

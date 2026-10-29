@@ -1,0 +1,52 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{%- if reminder_type == 'pre_due' -%}
+{{ 'invoice.reminder.title.pre_due'|trans({}, 'email')|upper }}
+
+{{ 'invoice.reminder_email.pre_due'|trans({'invoice': invoice.invoiceId, 'days': days_until_due ?? 0}, 'messages') }}
+{%- elseif reminder_type == 'overdue_1' -%}
+{{ 'invoice.reminder.heading.overdue_1'|trans({}, 'email')|upper }}
+
+{{ 'invoice.reminder.message.overdue_1'|trans({'%invoice%': invoice.invoiceId}, 'email') }}
+{%- elseif reminder_type == 'overdue_7' -%}
+{{ 'invoice.reminder.heading.overdue_7'|trans({}, 'email')|upper }}
+
+{{ 'invoice.reminder_email.overdue_7'|trans({'invoice': invoice.invoiceId, 'days': 7}, 'messages') }}
+{%- elseif reminder_type == 'overdue_14' -%}
+{{ 'invoice.reminder.heading.overdue_14'|trans({}, 'email')|upper }}
+
+{{ 'invoice.reminder_email.overdue_14'|trans({'invoice': invoice.invoiceId, 'days': 14}, 'messages') }}
+{%- else -%}
+{{ 'invoice.reminder.title.default'|trans({}, 'email')|upper }}
+
+{{ 'invoice.reminder.message.default'|trans({'%invoice%': invoice.invoiceId}, 'email') }}
+{%- endif -%}
+
+{{ 'invoice.reminder.details'|trans({}, 'email') }}:
+----------------
+{{ 'invoice.overdue.invoice_number'|trans({}, 'email') }}: {{ invoice.invoiceId }}
+{% if invoice.invoiceDate %}
+{{ 'invoice.reminder.invoice_date'|trans({}, 'email') }}: {{ invoice.invoiceDate|date('Y-m-d') }}
+{% endif %}
+{% if invoice.due %}
+{{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
+{% endif %}
+{% if invoice.balance %}
+{{ 'invoice.reminder.amount_due'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.currency) }}
+{% endif %}
+
+{%- if reminder_type == 'pre_due' -%}
+{{ 'invoice.reminder.closing.pre_due'|trans({}, 'email') }}
+{%- else -%}
+{{ 'invoice.reminder.closing.overdue'|trans({}, 'email') }}
+{%- endif %}
+
+{{ 'invoice.reminder.view_and_pay'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}
+
+{{ 'invoice.reminder.contact'|trans({}, 'email') }}

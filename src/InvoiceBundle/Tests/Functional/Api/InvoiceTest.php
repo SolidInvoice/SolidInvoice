@@ -15,6 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
+use DateTimeZone;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -24,10 +26,13 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
+use function array_column;
 use function array_map;
+use function urlencode;
 
 #[Group('functional')]
 final class InvoiceTest extends ApiTestCase
@@ -76,6 +81,43 @@ final class InvoiceTest extends ApiTestCase
             '@context' => $this->getContextForResource(Invoice::class),
             '@type' => 'Collection',
         ], $data);
+    }
+
+    public function testOrderAndFilterByUpdated(): void
+    {
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $valid = static fn (): array => ['client' => $client, 'users' => $contacts, 'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)]];
+        $oldest = InvoiceFactory::createOne([...$valid(), 'updated' => new DateTimeImmutable('2020-01-01 00:00:00', new DateTimeZone('UTC'))]);
+        $newest = InvoiceFactory::createOne([...$valid(), 'updated' => new DateTimeImmutable('2022-01-01 00:00:00', new DateTimeZone('UTC'))]);
+        $middle = InvoiceFactory::createOne([...$valid(), 'updated' => new DateTimeImmutable('2021-01-01 00:00:00', new DateTimeZone('UTC'))]);
+
+        $data = $this->requestGetCollection('/api/invoices?order[updated]=desc');
+
+        self::assertSame(
+            array_map($this->getIriFromResource(...), [$newest, $middle, $oldest]),
+            array_column($data['member'], '@id'),
+        );
+
+        $data = $this->requestGetCollection('/api/invoices?order[updated]=asc&updated[after]=' . urlencode('2020-06-01T00:00:00+00:00'));
+
+        self::assertSame(
+            array_map($this->getIriFromResource(...), [$middle, $newest]),
+            array_column($data['member'], '@id'),
+        );
+    }
+
+    public function testSearchByPartialInvoiceId(): void
+    {
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $valid = static fn (): array => ['client' => $client, 'users' => $contacts, 'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)]];
+        $match = InvoiceFactory::createOne([...$valid(), 'status' => InvoiceStatus::Draft, 'invoiceId' => 'INV-ALPHA-001']);
+        InvoiceFactory::createOne([...$valid(), 'status' => InvoiceStatus::Draft, 'invoiceId' => 'INV-BETA-002']);
+
+        $data = $this->requestGetCollection('/api/invoices?invoiceId=ALPHA');
+
+        self::assertSame([$this->getIriFromResource($match)], array_column($data['member'], '@id'));
     }
 
     public function testCannotAccessInvoiceFromDifferentCompany(): void
@@ -192,6 +234,7 @@ final class InvoiceTest extends ApiTestCase
         ]);
 
         $data = $this->requestGet($this->getIriFromResource($invoice));
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Invoice',
@@ -203,6 +246,7 @@ final class InvoiceTest extends ApiTestCase
             'uuid' => $invoice->getUuid()
                 ->toString(),
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
+            'currencyCode' => $invoice->getCurrency()->getCode(),
             'balance' => 100,
             'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
@@ -244,6 +288,9 @@ final class InvoiceTest extends ApiTestCase
             'invoiceTypeCode' => '380',
             'invoiceTaxes' => [],
             'customFields' => [],
+            'publicUrl' => 'http://localhost/view/invoice/' . $invoice->getUuid()->toString(),
+            'pdfUrl' => 'http://localhost/view/invoice/' . $invoice->getUuid()->toString() . '.pdf',
+            'payUrl' => null,
         ], $data);
     }
 
@@ -286,6 +333,7 @@ final class InvoiceTest extends ApiTestCase
                 ],
             ]
         );
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Invoice',
@@ -297,6 +345,7 @@ final class InvoiceTest extends ApiTestCase
             'uuid' => $invoice->getUuid()
                 ->toString(),
             'client' => $this->getIriFromResource($invoice->getClient()),
+            'currencyCode' => $invoice->getCurrency()->getCode(),
             'balance' => 9000,
             'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
@@ -338,6 +387,9 @@ final class InvoiceTest extends ApiTestCase
             'invoiceTypeCode' => '380',
             'invoiceTaxes' => [],
             'customFields' => [],
+            'publicUrl' => 'http://localhost/view/invoice/' . $invoice->getUuid()->toString(),
+            'pdfUrl' => 'http://localhost/view/invoice/' . $invoice->getUuid()->toString() . '.pdf',
+            'payUrl' => null,
         ], $data);
     }
 }

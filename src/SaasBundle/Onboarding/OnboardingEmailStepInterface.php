@@ -33,6 +33,11 @@ interface OnboardingEmailStepInterface
     public static function priority(): int;
 
     /**
+     * Who the step is written for. The dispatcher skips it for anyone else.
+     */
+    public static function audience(): OnboardingAudience;
+
+    /**
      * Whether this email is due now. It is asked on every tick until it answers
      * true; the email is then sent once and the step is never asked again. So the
      * condition is the trigger: elapsed time, what the user has done, or both.

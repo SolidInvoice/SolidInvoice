@@ -27,15 +27,7 @@ enum InvoiceStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::New => 'New',
-            self::Draft => 'Draft',
-            self::Pending => 'Pending',
-            self::Paid => 'Paid',
-            self::Overdue => 'Overdue',
-            self::Cancelled => 'Cancelled',
-            self::Archived => 'Archived',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

@@ -28,7 +28,7 @@ final class ViewAction extends Action
     {
         return new self()
             ->route($route, $parameters)
-            ->label('View')
+            ->label('action.view')
             ->icon('eye');
     }
 }

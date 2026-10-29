@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
-use DateInterval;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
@@ -22,6 +21,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
@@ -60,7 +60,6 @@ final class CreateCompany extends AbstractController
             assert($company instanceof Company);
 
             $company->addUser($user);
-            // @TODO: Set the user as the owner of the company
 
             $this->companyRepository->save($company);
 
@@ -73,25 +72,28 @@ final class CreateCompany extends AbstractController
         $userHasTrial = false;
         $planHasTrial = false;
         $trialDuration = null;
+        $planIsFree = false;
 
         if ($this->toggler->isActive('saas_enabled')) {
             $userHasTrial = $this->trialManager?->userHasTrial($user) ?? false;
+            $plan = $this->defaultPlanProvider?->get();
+
+            // A Free default is activated for every new company, so it holds
+            // whether or not the user has had a trial before.
+            $planIsFree = $plan instanceof Plan && $plan->isFree() && ! new TrialPeriod()->hasTrial($plan);
 
             // Only surface the default plan's price/trial when this is the
             // user's first company — additional companies route through the
             // plan picker after creation, so the price isn't known yet.
-            if (! $userHasTrial) {
-                $plan = $this->defaultPlanProvider?->get();
-                if ($plan instanceof Plan) {
-                    $formatter = new IntlMoneyFormatter(
-                        new NumberFormatter('en_US', NumberFormatter::CURRENCY),
-                        new ISOCurrencies()
-                    );
-                    $planPrice = $formatter->format(Money::USD($plan->getPrice()));
+            if (! $userHasTrial && ! $planIsFree && $plan instanceof Plan) {
+                $formatter = new IntlMoneyFormatter(
+                    new NumberFormatter('en_US', NumberFormatter::CURRENCY),
+                    new ISOCurrencies()
+                );
+                $planPrice = $formatter->format(Money::USD($plan->getPrice()));
 
-                    $trialDuration = $plan->getTrialDuration();
-                    $planHasTrial = $trialDuration instanceof DateInterval;
-                }
+                $trialDuration = $plan->getTrialDuration();
+                $planHasTrial = new TrialPeriod()->hasTrial($plan);
             }
         }
 
@@ -104,6 +106,7 @@ final class CreateCompany extends AbstractController
                 'userHasTrial' => $userHasTrial,
                 'planHasTrial' => $planHasTrial,
                 'trialDuration' => $trialDuration,
+                'planIsFree' => $planIsFree,
             ]
         );
     }

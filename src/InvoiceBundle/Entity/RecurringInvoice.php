@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -23,6 +25,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,6 +46,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -53,6 +57,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
+#[ApiFilter(OrderFilter::class, properties: ['created', 'updated'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -446,5 +452,29 @@ class RecurringInvoice extends BaseInvoice
         }
 
         return false;
+    }
+
+    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[Serialize\SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[Serialize\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[Serialize\SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
+    }
+
+    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[Serialize\SerializedName('currencyCode')]
+    #[ApiProperty(writable: false, example: 'USD')]
+    public function getApiCurrencyCode(): ?string
+    {
+        return $this->resolveCurrencyCode();
     }
 }

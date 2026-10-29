@@ -56,21 +56,21 @@ final class ApiTokenGrid extends Grid
     {
         return [
             StringColumn::new('name')
-                ->label('Name')
+                ->label('label.name')
                 ->searchable(true)
                 ->sortable(true),
             StringColumn::new('description')
-                ->label('Description')
+                ->label('label.description')
                 ->searchable(true)
                 ->sortable(false)
                 ->formatValue(static fn (?string $value) => $value ? (strlen($value) > 50 ? substr($value, 0, 50) . '...' : $value) : '-'),
             StringColumn::new('usageCount')
-                ->label('Usage Count')
+                ->label('profile.api.grid.usage_count')
                 ->searchable(false)
                 ->sortable(false)
                 ->formatValue(static fn ($value, #[SensitiveParameter] ApiToken $token) => $token->getUsageCount()),
             RelativeDateColumn::new('lastUsed')
-                ->label('Last Used')
+                ->label('profile.api.grid.last_used')
                 ->searchable(false)
                 ->sortable(false)
                 ->formatValue(static function ($value, #[SensitiveParameter] ApiToken $token) {
@@ -78,7 +78,7 @@ final class ApiTokenGrid extends Grid
                     return $history->count() > 0 ? $history->first()->getCreated() : null;
                 }),
             RelativeDateColumn::new('created')
-                ->label('Created')
+                ->label('label.created')
                 ->sortable(true),
         ];
     }
@@ -91,7 +91,7 @@ final class ApiTokenGrid extends Grid
     {
         return [
             Action::new('_api_keys_index', ['view_history' => 'id'])
-                ->label('View History')
+                ->label('profile.api.tokens.history')
                 ->icon('history')
                 ->inMenu(),
         ];
@@ -100,7 +100,7 @@ final class ApiTokenGrid extends Grid
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Revoke')
+        yield BatchAction::new('profile.api.tokens.revoke')
             ->icon('ban')
             ->color('danger')
             ->action(function (ApiTokenRepository $repository, array $selectedItems): void {
@@ -143,6 +143,6 @@ final class ApiTokenGrid extends Grid
     #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
-        return new TranslatableMessage('Create API Token');
+        return new TranslatableMessage('profile.api.form.title');
     }
 }

@@ -21,6 +21,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderNotification;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 
 #[CoversClass(InvoiceReminderNotification::class)]
 final class InvoiceReminderNotificationTest extends TestCase
@@ -37,7 +39,7 @@ final class InvoiceReminderNotificationTest extends TestCase
             'days_until_due' => 3,
         ]);
 
-        $subject = $notification->getSubject();
+        $subject = $this->translator()->trans($notification->getSubjectKey(), $notification->getSubjectParameters(), 'email');
 
         self::assertSame('Upcoming Payment Due: Invoice INV-123', $subject);
     }
@@ -51,7 +53,7 @@ final class InvoiceReminderNotificationTest extends TestCase
             'reminder_type' => ReminderType::Overdue1,
         ]);
 
-        $subject = $notification->getSubject();
+        $subject = $this->translator()->trans($notification->getSubjectKey(), $notification->getSubjectParameters(), 'email');
 
         self::assertSame('Payment Reminder: Invoice INV-456', $subject);
     }
@@ -65,7 +67,7 @@ final class InvoiceReminderNotificationTest extends TestCase
             'reminder_type' => ReminderType::Overdue7,
         ]);
 
-        $subject = $notification->getSubject();
+        $subject = $this->translator()->trans($notification->getSubjectKey(), $notification->getSubjectParameters(), 'email');
 
         self::assertSame('Payment Overdue: Invoice INV-789', $subject);
     }
@@ -79,7 +81,7 @@ final class InvoiceReminderNotificationTest extends TestCase
             'reminder_type' => ReminderType::Overdue14,
         ]);
 
-        $subject = $notification->getSubject();
+        $subject = $this->translator()->trans($notification->getSubjectKey(), $notification->getSubjectParameters(), 'email');
 
         self::assertSame('URGENT: Invoice INV-999 - Immediate Action Required', $subject);
     }
@@ -114,5 +116,14 @@ final class InvoiceReminderNotificationTest extends TestCase
         $invoice->shouldReceive('getUsers')->andReturn(collect([]));
 
         return $invoice;
+    }
+
+    private function translator(): Translator
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', dirname(__DIR__, 4) . '/translations/email.en.yml', 'en', 'email');
+
+        return $translator;
     }
 }

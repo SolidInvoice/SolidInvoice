@@ -9,7 +9,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ 'invoice.menu.recurring.main'|trans|default('Recurring Invoices') }}{% endblock title %}
+{% block title %}{{ 'invoice.menu.recurring.main'|trans }}{% endblock title %}
 
 {% block content %}
     {% include '@SolidInvoiceCore/Feature/_gated_page.html.twig' with {
