@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -22,6 +23,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -32,6 +35,7 @@ use Override;
 use Payum\Core\Model\Payment as BasePayment;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
 use SolidInvoice\ApiBundle\State\Processor\RecordPaymentProcessor;
+use SolidInvoice\ApiBundle\State\Processor\VoidPaymentProcessor;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -41,9 +45,11 @@ use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
@@ -51,7 +57,8 @@ use Traversable;
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'invoice' => 'exact', 'client' => 'exact'])]
-#[ApiFilter(DateFilter::class, properties: ['completed'])]
+#[ApiFilter(DateFilter::class, properties: ['completed', 'created', 'updated'])]
+#[ApiFilter(OrderFilter::class, properties: ['completed', 'created', 'updated'])]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -71,8 +78,16 @@ use Traversable;
                     fromClass: Invoice::class,
                 ),
             ],
+            normalizationContext: [
+                'groups' => ['payment_api:read', 'payment_api:record'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
             input: RecordPaymentInput::class,
+            // The `payments` link would otherwise have API Platform read the invoice's existing
+            // payment. A create has nothing to read; the processor loads the invoice itself.
+            read: false,
             processor: RecordPaymentProcessor::class,
+            extraProperties: ['idempotent' => true],
         ),
         new GetCollection(
             uriTemplate: '/clients/{clientId}/payments',
@@ -85,8 +100,16 @@ use Traversable;
         ),
         new Get(),
         new GetCollection(),
+        new Post(
+            uriTemplate: '/payments/{id}/void',
+            status: 200,
+            input: false,
+            read: true,
+            processor: VoidPaymentProcessor::class,
+        ),
     ],
     normalizationContext: [
+        'groups' => ['payment_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
     denormalizationContext: [
@@ -106,24 +129,25 @@ class Payment extends BasePayment
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     protected ?Ulid $id = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     private ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'payments')]
     #[ORM\JoinColumn(name: 'client', nullable: true, onDelete: 'SET NULL')]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
+    #[Groups(['payment_api:read'])]
     private ?PaymentMethod $method = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: PaymentStatus::class)]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     private ?PaymentStatus $status = null;
 
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
@@ -134,12 +158,17 @@ class Payment extends BasePayment
     private ?DateTimeImmutable $completed = null;
 
     #[ORM\Column(name: 'reference', type: Types::STRING, length: 255, nullable: true)]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     private ?string $reference = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     private ?string $notes = null;
+
+    /**
+     * Not persisted: what recording this payment added to the client's credit.
+     */
+    private ?BigNumber $creditAdded = null;
 
     public function getId(): ?Ulid
     {
@@ -248,36 +277,6 @@ class Payment extends BasePayment
         return $this;
     }
 
-    #[ApiProperty(
-        openapiContext: [
-            'type' => 'object',
-            'items' => [
-                'type' => 'object',
-                'properties' => [
-                    'amount' => [
-                        'type' => 'number',
-                    ],
-                    'currency' => [
-                        'type' => 'string',
-                    ],
-                ],
-            ],
-        ],
-        jsonSchemaContext: [
-            'type' => 'object',
-            'items' => [
-                'type' => 'object',
-                'properties' => [
-                    'amount' => [
-                        'type' => 'number',
-                    ],
-                    'currency' => [
-                        'type' => 'string',
-                    ],
-                ],
-            ],
-        ]
-    )]
     public function getAmount(): Money
     {
         return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));
@@ -314,10 +313,58 @@ class Payment extends BasePayment
         return (int) $this->getTotalAmount() / 100;
     }
 
-    #[Groups(['searchable'])]
+    #[Groups(['searchable', 'payment_api:read'])]
     #[SerializedName('currencyCode')]
     public function getSearchableCurrencyCode(): ?string
     {
         return $this->getCurrencyCode() ?: null;
+    }
+
+    #[Groups(['payment_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Groups(['payment_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
+    }
+
+    /**
+     * The amount in the minor unit, for the API's money normalizer.
+     */
+    #[ApiProperty(writable: false, openapiContext: ['type' => 'number'], jsonSchemaContext: ['type' => 'number'])]
+    #[Groups(['payment_api:read'])]
+    #[SerializedName('amount')]
+    public function getApiAmount(): BigInteger
+    {
+        return BigInteger::of($this->getTotalAmount() ?? 0);
+    }
+
+    #[Groups(['payment_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    public function getPaidAt(): ?DateTimeImmutable
+    {
+        return $this->completed;
+    }
+
+    #[ApiProperty(writable: false, openapiContext: ['type' => 'number'], jsonSchemaContext: ['type' => 'number'])]
+    #[Groups(['payment_api:record'])]
+    public function getCreditAdded(): BigNumber
+    {
+        return $this->creditAdded ?? BigInteger::zero();
+    }
+
+    public function setCreditAdded(BigNumber $creditAdded): self
+    {
+        $this->creditAdded = $creditAdded;
+
+        return $this;
     }
 }

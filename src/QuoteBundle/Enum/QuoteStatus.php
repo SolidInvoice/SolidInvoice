@@ -27,15 +27,7 @@ enum QuoteStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::New => 'New',
-            self::Draft => 'Draft',
-            self::Pending => 'Pending',
-            self::Accepted => 'Accepted',
-            self::Cancelled => 'Cancelled',
-            self::Declined => 'Declined',
-            self::Archived => 'Archived',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

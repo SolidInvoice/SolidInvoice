@@ -31,19 +31,7 @@ enum PaymentStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Unknown => 'Unknown',
-            self::Failed => 'Failed',
-            self::Suspended => 'Suspended',
-            self::Expired => 'Expired',
-            self::Pending => 'Pending',
-            self::Cancelled => 'Cancelled',
-            self::New => 'New',
-            self::Captured => 'Captured',
-            self::Authorized => 'Authorized',
-            self::Refunded => 'Refunded',
-            self::Credit => 'Credit',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

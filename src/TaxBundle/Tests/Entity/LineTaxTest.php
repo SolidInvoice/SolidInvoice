@@ -56,7 +56,7 @@ final class LineTaxTest extends KernelTestCase
         $violations = $this->validator->validate($lineTax);
 
         self::assertGreaterThan(0, $violations->count());
-        self::assertSame((new ExactlyOneLine())->message, $violations->get(0)->getMessage());
+        self::assertSame((new ExactlyOneLine())->message, $violations->get(0)->getMessageTemplate());
     }
 
     public function testValidatorRejectsLineTaxWithBothLinesSet(): void
@@ -71,7 +71,7 @@ final class LineTaxTest extends KernelTestCase
         $violations = $this->validator->validate($lineTax);
 
         self::assertGreaterThan(0, $violations->count());
-        self::assertSame((new ExactlyOneLine())->message, $violations->get(0)->getMessage());
+        self::assertSame((new ExactlyOneLine())->message, $violations->get(0)->getMessageTemplate());
     }
 
     public function testValidatorAcceptsLineTaxWithOnlyInvoiceLineSet(): void

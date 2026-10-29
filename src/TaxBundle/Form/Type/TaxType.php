@@ -15,6 +15,7 @@ namespace SolidInvoice\TaxBundle\Form\Type;
 
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxType as TaxTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,7 +39,7 @@ class TaxType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                'choices' => array_map(ucwords(...), Tax::getTypes()),
+                'choices' => array_column(array_map(static fn (TaxTypeEnum $type): array => [$type->getLabel(), $type->value], TaxTypeEnum::cases()), 1, 0),
                 'help' => 'tax.rates.explanation',
                 'help_html' => true,
                 'placeholder' => 'tax.rates.type.select',

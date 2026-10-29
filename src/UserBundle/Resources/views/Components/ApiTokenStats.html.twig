@@ -58,7 +58,7 @@
                     <div class="col">
                         <div class="fw-medium">
                             {% if stats.lastActivity %}
-                                {{ stats.lastActivity|date('d M Y') }}
+                                {{ stats.lastActivity|format_date(pattern: 'dd MMM y') }}
                             {% else %}
                                 {{ 'profile.api.tokens.used.never'|trans }}
                             {% endif %}

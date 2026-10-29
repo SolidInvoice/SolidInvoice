@@ -25,10 +25,10 @@
             {
                 "@context": "http://schema.org",
                 "@type": "EmailMessage",
-                "description": "View quote",
+                "description": {{ 'quote.schema.view'|trans({}, 'email')|json_encode|raw }},
                 "potentialAction": {
                     "@type": "ViewAction",
-                    "name": "View quote",
+                    "name": {{ 'quote.schema.view'|trans({}, 'email')|json_encode|raw }},
                     "target": "{{ quotePath }}"
                 }
             }
@@ -38,12 +38,23 @@
 
 
 {%- block content -%}
+    {# Optional note from the sender, escaped by nl2br before its line breaks are added #}
+    {% if personal_note is defined and personal_note is not empty %}
+        {% apply inky_to_html %}
+            <row>
+                <columns>
+                    <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">{{ personal_note|nl2br }}</p>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
     {# Quote intro message #}
     {% apply inky_to_html %}
         <row>
             <columns>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
+                    {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|format_date('long')}, 'email') }}
                 </p>
             </columns>
         </row>
@@ -54,11 +65,11 @@
     {# Quote details section #}
     {{ email.info_row('quote.number'|trans({}, 'email'), quote.quoteId) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|date) }}
+    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|format_date('long')) }}
 
     {% if quote.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|date) }}
+        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|format_date('long')) }}
     {% endif %}
 
     {{ email.divider('md') }}

@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
+use SolidInvoice\CoreBundle\Mailer\DocumentSendOptions;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -26,6 +27,7 @@ use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Workflow\Event\EnteredEvent;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -91,7 +93,8 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
         $em->flush();
 
         if (($transition = $event->getTransition()) instanceof Transition && QuoteGraph::TRANSITION_SEND === $transition->getName()) {
-            $this->quoteMailer->send($quote);
+            $options = $event instanceof EnteredEvent ? $event->getContext()[QuoteMailer::OPTIONS] ?? null : null;
+            $this->quoteMailer->send($quote, $options instanceof DocumentSendOptions ? $options : null);
         }
 
         if (QuoteStatus::New !== $quote->getStatus()) {

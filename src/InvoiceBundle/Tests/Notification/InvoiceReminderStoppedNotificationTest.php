@@ -20,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceReminderStoppedNotification;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 
 #[CoversClass(InvoiceReminderStoppedNotification::class)]
 final class InvoiceReminderStoppedNotificationTest extends TestCase
@@ -35,7 +37,7 @@ final class InvoiceReminderStoppedNotificationTest extends TestCase
             'days_overdue' => 35,
         ]);
 
-        $subject = $notification->getSubject();
+        $subject = $this->translator()->trans($notification->getSubjectKey(), $notification->getSubjectParameters(), 'email');
 
         self::assertSame('Final Reminder Sent for Invoice INV-123 - Manual Follow-up Required', $subject);
     }
@@ -66,5 +68,14 @@ final class InvoiceReminderStoppedNotificationTest extends TestCase
         $invoice->shouldReceive('getClient')->andReturn($client);
 
         return $invoice;
+    }
+
+    private function translator(): Translator
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', dirname(__DIR__, 4) . '/translations/email.en.yml', 'en', 'email');
+
+        return $translator;
     }
 }

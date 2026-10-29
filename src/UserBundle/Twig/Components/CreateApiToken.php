@@ -57,7 +57,7 @@ final class CreateApiToken extends AbstractController
 
     public function getModalTitle(): string
     {
-        return $this->createdToken ? 'API Token Created Successfully' : 'Create New API Token';
+        return $this->createdToken ? 'profile.api.form.title_created' : 'profile.api.form.title_new';
     }
 
     public function getModalStatus(): string

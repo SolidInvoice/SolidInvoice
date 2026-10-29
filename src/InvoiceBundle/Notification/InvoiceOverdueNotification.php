@@ -24,8 +24,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: self::EVENT,
-    title: 'Invoice Overdue',
-    description: 'When an invoice becomes overdue (past due date while still pending)',
+    title: 'notifications.events.invoice_overdue.title',
+    description: 'notifications.events.invoice_overdue.description',
     icon: 'tabler:alert-triangle',
     category: NotificationCategory::INVOICE,
 )]
@@ -35,7 +35,7 @@ class InvoiceOverdueNotification extends NotificationMessage
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.html.twig';
 
-    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.text.twig';
+    final public const string TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/notification_overdue.txt.twig';
 
     public function getTextContent(Environment $twig): string
     {
@@ -43,9 +43,9 @@ class InvoiceOverdueNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        return 'Invoice Overdue Alert';
+        return 'invoice.notification_overdue.heading';
     }
 
     #[Override]

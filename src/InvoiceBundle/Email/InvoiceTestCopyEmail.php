@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MailerBundle\Email\MessageSubjectParametersInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 /**
  * An invoice sent to the signed-in user's own inbox, carrying the link that confirms their address.
  * Never addressed to the client: it is the one send allowed before the email is verified.
  */
-final class InvoiceTestCopyEmail extends TemplatedEmail
+final class InvoiceTestCopyEmail extends TemplatedEmail implements MessageSubjectParametersInterface
 {
     public function __construct(
         private readonly Invoice $invoice,
@@ -28,8 +29,14 @@ final class InvoiceTestCopyEmail extends TemplatedEmail
     ) {
         parent::__construct();
 
+        $this->subject('invoice.test_copy.subject');
         $this->htmlTemplate('@SolidInvoiceInvoice/Email/test_copy.html.twig');
         $this->context(['invoice' => $this->invoice, 'verifyUrl' => $verifyUrl]);
+    }
+
+    public function getMessageSubjectParameters(): array
+    {
+        return ['%id%' => (string) $this->invoice->getInvoiceId()];
     }
 
     public function getInvoice(): Invoice

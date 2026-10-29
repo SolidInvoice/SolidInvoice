@@ -38,7 +38,6 @@ use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificati
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Each onboarding email is sent when its condition first holds, so the
@@ -82,8 +81,8 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testFeedbackIsAskedForAWeekInOnceAnInvoiceHasBeenSent(): void
     {
-        $sent = new FeedbackStep($this->createStub(TranslatorInterface::class), $this->invoices(1));
-        $none = new FeedbackStep($this->createStub(TranslatorInterface::class), $this->invoices(0));
+        $sent = new FeedbackStep($this->invoices(1));
+        $none = new FeedbackStep($this->invoices(0));
 
         self::assertFalse($sent->shouldSend($this->context('2026-01-07 23:00')));
         self::assertTrue($sent->shouldSend($this->context('2026-01-08 00:00')));
@@ -92,7 +91,7 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testFreeFeedbackIsAskedForAMonthAfterMovingToFree(): void
     {
-        $step = new FreeFeedbackStep($this->createStub(TranslatorInterface::class));
+        $step = new FreeFeedbackStep();
 
         // context() starts the subscription on 2026-01-01, here the day it moved to Free.
         self::assertFalse($step->shouldSend($this->context('2026-01-30 23:00', free: true)));
@@ -102,8 +101,8 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testVerifyRemindersGoToUnverifiedUsersAt24And72Hours(): void
     {
-        $first = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
-        $final = new VerifyEmailFinalReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+        $first = new VerifyEmailReminderStep($this->gate(verified: false));
+        $final = new VerifyEmailFinalReminderStep($this->gate(verified: false));
 
         self::assertFalse($first->shouldSend($this->context('2026-01-01 23:00')));
         self::assertTrue($first->shouldSend($this->context('2026-01-02 00:00')));
@@ -113,8 +112,8 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testAnAccountReachedAfter72HoursOnlyGetsTheFinalVerifyReminder(): void
     {
-        $first = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
-        $final = new VerifyEmailFinalReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: false));
+        $first = new VerifyEmailReminderStep($this->gate(verified: false));
+        $final = new VerifyEmailFinalReminderStep($this->gate(verified: false));
 
         self::assertTrue($first->shouldSend($this->context('2026-01-03 23:00')));
         self::assertFalse($first->shouldSend($this->context('2026-01-04 00:00')));
@@ -123,7 +122,7 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testVerifyRemindersSkipVerifiedUsers(): void
     {
-        $step = new VerifyEmailReminderStep($this->createStub(TranslatorInterface::class), $this->gate(verified: true));
+        $step = new VerifyEmailReminderStep($this->gate(verified: true));
 
         self::assertFalse($step->shouldSend($this->context('2026-01-05')));
     }
@@ -140,13 +139,13 @@ final class OnboardingStepTriggerTest extends TestCase
 
     public function testTheGiftEmailGoesOutTwoDaysBeforeTheEndWhenTheCodeCanBeUsed(): void
     {
-        $step = new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::freeTrial('SAVE30'));
+        $step = new UpgradeOfferStep(BillingModeFactory::freeTrial('SAVE30'));
 
         self::assertFalse($step->shouldSend($this->context('2026-01-12 23:00')));
         self::assertTrue($step->shouldSend($this->context('2026-01-13 00:00')));
         self::assertFalse($step->shouldSend($this->context('2026-01-13', subscriptionId: 'ls_123')), 'a card was added');
-        self::assertFalse(new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::paidTrial('SAVE30'))->shouldSend($this->context('2026-01-13')), 'card mode');
-        self::assertFalse(new UpgradeOfferStep($this->createStub(TranslatorInterface::class), BillingModeFactory::freeTrial(''))->shouldSend($this->context('2026-01-13')), 'no code configured');
+        self::assertFalse(new UpgradeOfferStep(BillingModeFactory::paidTrial('SAVE30'))->shouldSend($this->context('2026-01-13')), 'card mode');
+        self::assertFalse(new UpgradeOfferStep(BillingModeFactory::freeTrial(''))->shouldSend($this->context('2026-01-13')), 'no code configured');
     }
 
     public function testTrialEndingEmailWarnsOfTheChargeWhenACardIsOnFile(): void
@@ -165,7 +164,7 @@ final class OnboardingStepTriggerTest extends TestCase
 
     private function sendFirstInvoice(int $issued, bool $verified): SendFirstInvoiceStep
     {
-        return new SendFirstInvoiceStep($this->createStub(TranslatorInterface::class), $this->invoices($issued), $this->gate($verified));
+        return new SendFirstInvoiceStep($this->invoices($issued), $this->gate($verified));
     }
 
     private function turnInvoicesIntoPayments(int $issued, int $payments): TurnInvoicesIntoPaymentsStep
@@ -173,17 +172,13 @@ final class OnboardingStepTriggerTest extends TestCase
         $paymentRepository = $this->createStub(PaymentRepository::class);
         $paymentRepository->method('count')->willReturn($payments);
 
-        return new TurnInvoicesIntoPaymentsStep($this->createStub(TranslatorInterface::class), $this->invoices($issued), $paymentRepository);
+        return new TurnInvoicesIntoPaymentsStep($this->invoices($issued), $paymentRepository);
     }
 
     private function trialAboutToEnd(bool $paidTrial): TrialAboutToEndStep
     {
         // Echo the key back so the test can tell which copy was chosen.
-        $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturnArgument(0);
-
         return new TrialAboutToEndStep(
-            $translator,
             $this->createStub(ClientRepository::class),
             $this->invoices(0),
             $paidTrial ? BillingModeFactory::paidTrial('SAVE30') : BillingModeFactory::freeTrial('SAVE30'),

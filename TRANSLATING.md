@@ -54,6 +54,31 @@ There is a small, fixed set of domains — pick the one that fits:
 
 (`messages+intl-icu` is used only where ICU plural/select syntax is needed.)
 
+### Plurals and placeholders
+
+Counts use [ICU MessageFormat](https://symfony.com/doc/current/reference/formats/message_format.html)
+in `translations/messages+intl-icu.en.yml`. Code still uses the `messages` domain — Symfony
+looks the key up in the ICU catalog first:
+
+```yaml
+# translations/messages+intl-icu.en.yml
+feature:
+    trial_start: '{count, plural, one {Try {plan} free for # day} other {Try {plan} free for # days}}'
+```
+
+```twig
+{{ 'feature.trial_start'|trans({'%count%': days, '%plan%': plan.name}) }}
+```
+
+`%count%`-style parameter names work for ICU messages too (the `%` is stripped). The legacy
+`{1} …|]1,Inf[ …` pluralisation syntax is not allowed.
+
+Everywhere else, placeholders are `%name%`. Translate **whole sentences**: never build a
+sentence by concatenating translated fragments, and never translate a fragment that is spliced
+into another message — word order differs between languages. Keep HTML out of messages; wrap
+the translated text in markup in the template instead. If a message must carry markup and is
+printed with `|raw`, escape every parameter first (`value|e`).
+
 ### Keys
 
 - Keys are **dotted, lowercase, and namespaced by feature**: `invoice.list.title`,
@@ -102,11 +127,84 @@ $this->addFlash('success', 'custom_field.flash.created');
 > isn't translating it — fix the template/form-theme block (add `|trans`), don't change
 > the key back.
 
+**Grids** — column, action and filter labels are keys; `DataGrid.html.twig` translates them:
+
+```php
+RelativeDateColumn::new('due')->label('billing.due_date');
+BatchAction::new('action.archive');
+```
+
+**Enums** — a label method returns a key, never English (`InvoiceStatus::getLabel()` →
+`status.pending`). Enums rendered by code that expects an object implement
+`TranslatableInterface` (see `TaxType`, `ScheduleEndType`).
+
+**Emails** — an email class sets a key from the `email` domain as its subject, and
+`TranslateEmailSubjectListener` (MailerBundle) translates every outgoing subject. An email whose
+subject needs parameters implements `MessageSubjectParametersInterface`:
+
+```php
+final class ManualInvoiceReminderEmail extends TemplatedEmail implements MessageSubjectParametersInterface
+{
+    public function __construct(private readonly Invoice $invoice)
+    {
+        parent::__construct();
+        $this->subject('invoice.manual_reminder.subject');
+    }
+
+    public function getMessageSubjectParameters(): array
+    {
+        return ['%id%' => (string) $this->invoice->getInvoiceId()];
+    }
+}
+```
+
+A subject that is not a key (one the user configured) passes through unchanged. Plain-text email
+templates are named `*.txt.twig`: Twig does not HTML-escape that extension, so `don't` stays
+`don't` (the HTML part is a separate `*.html.twig` and is escaped as usual).
+
+**Dates** — month and day names are text too. In Twig use `twig/intl-extra`
+(`value|format_date('long')`, `|format_datetime('medium', 'short')`, or
+`|format_date(pattern: 'MMMM d')` when no style fits), never `|date('F j, Y')`. In PHP use
+`CarbonImmutable::instance($date)->locale(Locale::getDefault())->translatedFormat('F j')`.
+Numeric formats (`Y-m-d`) are fine as they are.
+
+**JavaScript** — there is no client-side translator. Pass translated strings to Stimulus
+controllers as values from the template that mounts them:
+
+```twig
+<div data-controller="global-search"
+     data-global-search-no-results-value="{{ 'search.no_results'|trans }}">
+```
+
+## Linting
+
+CI (`.github/workflows/translations-lint.yml`) runs:
+
+```bash
+bin/console lint:yaml translations
+bin/console lint:translations                 # message syntax (incl. ICU) for framework.enabled_locales
+bin/console lint:twig src templates
+bin/phpunit src/CoreBundle/Tests/Translation/TranslationCatalogTest.php
+```
+
+`TranslationCatalogTest` fails when:
+
+- keys are not sorted, or are not lowercase snake_case dotted ids (no bare top-level words);
+- a non-ICU catalog uses the legacy plural syntax;
+- a literal key passed to `|trans`, `trans()`, `t()`, `TranslatableMessage`, `addFlash()`,
+  `->label()`, `buildViolation()` or a form `label`/`help`/`placeholder` option is not defined,
+  or is natural-language text instead of a key;
+- a template contains hard-coded text (brand names and similar go in its allowlist);
+- a catalog key is not referenced anywhere. Keys built at runtime (`'status.' ~ value`) are
+  covered by its `DYNAMIC_PREFIXES` list — add the prefix there when you introduce one.
+
 ## Adding a new language
 
-1. Add the locale to the list in `config/packages/translation.php`.
+1. Add the locale to the provider list (`$locales`) in `config/packages/translation.php`.
 2. Provide the translated catalogs (or let the translation provider pull them — see below).
    Missing strings fall back to English automatically.
+3. Once its catalogs are in the repo, add it to `enabled_locales` in the same file, so
+   `lint:translations` checks it and the translator warms it up.
 
 ## Keeping the English catalog in sync
 
@@ -143,7 +241,7 @@ SOLIDINVOICE_TRANSLATION_DSN=crowdin://PROJECT_ID:API_TOKEN@ORGANIZATION_DOMAIN.
 Then:
 
 ```bash
-bin/console translation:push   crowdin --force               # upload the English source
+bin/console translation:push   crowdin --force --locales=en  # upload the English source only
 bin/console translation:pull   crowdin --force --format=yml   # download translations
 ```
 

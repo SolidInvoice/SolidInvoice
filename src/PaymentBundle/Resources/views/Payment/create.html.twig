@@ -43,7 +43,7 @@
                             <div class="summary-section">
                                 <div class="summary-section-label">
                                     {{ ux_icon('tabler:building', {width: 16, height: 16}) }}
-                                    {{ 'payment.client'|trans }}
+                                    {{ 'label.client'|trans }}
                                 </div>
                                 <div class="summary-client-info">
                                     {% if app.user is not empty %}
@@ -87,18 +87,18 @@
                                     </div>
                                     <div class="detail-item">
                                         <span class="detail-label">{{ 'payment.create.invoice_date'|trans }}</span>
-                                        <span class="detail-value">{{ invoice.invoiceDate|date('d M Y') }}</span>
+                                        <span class="detail-value">{{ invoice.invoiceDate|format_date(pattern: 'dd MMM y') }}</span>
                                     </div>
                                     {% if invoice.due is not empty %}
                                         <div class="detail-item">
                                             <span class="detail-label">{{ 'billing.due_date'|trans }}</span>
                                             <span class="detail-value{% if invoice.due < date() %} text-danger{% endif %}">
-                                                {{ invoice.due|date('d M Y') }}
+                                                {{ invoice.due|format_date(pattern: 'dd MMM y') }}
                                             </span>
                                         </div>
                                     {% endif %}
                                     <div class="detail-item">
-                                        <span class="detail-label">{{ 'payment.list.grid.status'|trans }}</span>
+                                        <span class="detail-label">{{ 'label.status'|trans }}</span>
                                         <span class="detail-value">{{ invoice_label(invoice.status) }}</span>
                                     </div>
                                 </div>
@@ -128,13 +128,13 @@
                                 </div>
                                 {% if invoice.tax.positive %}
                                     <div class="totals-row">
-                                        <span class="totals-label">{{ 'invoice.tax'|trans }}</span>
+                                        <span class="totals-label">{{ 'billing.tax'|trans }}</span>
                                         <span class="totals-value">{{ invoice.tax|formatCurrency(invoice.currency) }}</span>
                                     </div>
                                 {% endif %}
                                 {% if invoice.hasDiscount %}
                                     <div class="totals-row totals-row-discount">
-                                        <span class="totals-label">{{ 'invoice.discount'|trans }}</span>
+                                        <span class="totals-label">{{ 'billing.discount'|trans }}</span>
                                         <span class="totals-value">-{{ discount(invoice)|formatCurrency(invoice.currency) }}</span>
                                     </div>
                                 {% endif %}
@@ -153,7 +153,7 @@
                                         {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
                                             {{ 'invoice.balance'|trans }}
                                         {% else %}
-                                            {{ 'invoice.total'|trans }}
+                                            {{ 'billing.total'|trans }}
                                         {% endif %}
                                     </span>
                                     <span class="totals-value">
@@ -196,7 +196,7 @@
                                                 {% if payment.completed is not empty %}
                                                     <div class="payment-detail">
                                                         {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
-                                                        <span>{{ payment.completed|date('M d, Y \\a\\t H:i') }}</span>
+                                                        <span>{{ payment.completed|format_datetime('medium', 'short') }}</span>
                                                     </div>
                                                 {% endif %}
                                                 {% if payment.reference is not empty %}

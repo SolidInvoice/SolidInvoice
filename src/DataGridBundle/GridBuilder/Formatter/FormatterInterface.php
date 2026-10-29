@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
-use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 interface FormatterInterface
 {
-    public function format(Column $column, mixed $value): string | TranslatableMessage;
+    public function format(Column $column, mixed $value): string | TranslatableInterface;
 }

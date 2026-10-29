@@ -67,12 +67,12 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item d-flex align-items-center gap-2" href="{{ path('_clients_edit', {'id': client.id}) }}">
                             {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
-                            {{ 'client.view.actions.edit'|trans }}
+                            {{ 'action.edit'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" data-bs-toggle="modal" data-bs-target="#delete-client-modal">
                             {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                            {{ 'client.view.actions.delete'|trans }}
+                            {{ 'action.delete'|trans }}
                         </a>
                     </div>
                 </div>
@@ -111,10 +111,10 @@
                 <div class="client-stat-value">{{ client.invoices|length }}</div>
                 <div class="client-stat-badges">
                     <span class="badge bg-success-lt" title="{{ 'client.stats.tooltip.total_paid'|trans }}">
-                        {{ total_invoices_paid }} {{ 'paid'|trans }}
+                        {{ 'client.stats.paid_count'|trans({count: total_invoices_paid}) }}
                     </span>
                     <span class="badge bg-warning-lt" title="{{ 'client.stats.tooltip.total_outstanding'|trans }}">
-                        {{ total_invoices_pending }} {{ 'pending'|trans }}
+                        {{ 'client.stats.pending_count'|trans({count: total_invoices_pending}) }}
                     </span>
                 </div>
             </twig:Ui:Card>
@@ -234,7 +234,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
                 <button type="submit" class="btn btn-danger">
                     {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                    {{ 'client.view.actions.delete'|trans }}
+                    {{ 'action.delete'|trans }}
                 </button>
             </form>
         </twig:block>

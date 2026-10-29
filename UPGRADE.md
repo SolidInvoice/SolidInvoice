@@ -7,6 +7,25 @@ Unreleased
   or reverse-charge now shows a breakdown too, where it previously showed
   none.
 
+3.1.2 / 2026-10-21
+==================
+
+* **Migrations no longer run from a web request.** The built-in server now runs
+  them once at startup, before it serves any request. The Helm chart runs them as
+  a pre-upgrade job. If you deploy another way, run
+  `bin/console doctrine:migrations:migrate` yourself right after you deploy, before
+  the application serves any request.
+* The in-app upgrade failure on MySQL, MariaDB and PostgreSQL named in the 3.1.0
+  notes below is fixed. Migrations now run their real changes instead of only
+  being marked done. This does **not** repair data on an install that already
+  upgraded to 3.1.0 or 3.1.1 and hit that failure; a fix for already-affected
+  installs is still in progress. If you are not sure whether your install was
+  affected, ask before assuming your data is intact.
+* Invoices and quotes issued before 3.1.0 now have their currency frozen too.
+  This closes the gap named in the 3.1.0 notes below. No action is needed; it
+  runs automatically on upgrade.
+* Upgrading on PostgreSQL no longer fails on the `app_config` seed row.
+
 3.1.1 / 2026-10-15
 ==================
 

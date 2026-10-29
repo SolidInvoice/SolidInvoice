@@ -11,7 +11,7 @@
 {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
-    Payment Reminder
+    {{ 'invoice.manual_reminder.title'|trans({}, 'email') }}
 {%- endblock -%}
 
 {%- block content -%}
@@ -19,10 +19,10 @@
         <row>
             <columns>
                 <p style="color: #0891b2; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    📋 Invoice Payment Reminder
+                    📋 {{ 'invoice.manual_reminder.heading'|trans({}, 'email') }}
                 </p>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    This is a friendly reminder about invoice <strong>{{ invoice.invoiceId }}</strong>. We kindly ask you to review the invoice details below and arrange payment at your earliest convenience.
+                    {{ 'invoice.manual_reminder.message'|trans({'%invoice%': '<strong>' ~ invoice.invoiceId|e ~ '</strong>'}, 'email')|raw }}
                 </p>
             </columns>
         </row>
@@ -31,21 +31,21 @@
     {{ email.spacer('sm') }}
 
     {# Invoice details #}
-    {{ email.info_row('Invoice Number', invoice.invoiceId) }}
+    {{ email.info_row('invoice.overdue.invoice_number'|trans({}, 'email'), invoice.invoiceId) }}
 
     {% if invoice.invoiceDate %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Invoice Date', invoice.invoiceDate|date('Y-m-d')) }}
+        {{ email.info_row('invoice.reminder.invoice_date'|trans({}, 'email'), invoice.invoiceDate|date('Y-m-d')) }}
     {% endif %}
 
     {% if invoice.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Due Date', invoice.due|date('Y-m-d')) }}
+        {{ email.info_row('invoice.due'|trans({}, 'email'), invoice.due|date('Y-m-d')) }}
     {% endif %}
 
     {% if invoice.balance %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Amount Due', invoice.balance|formatCurrency(invoice.currency), true) }}
+        {{ email.info_row('invoice.reminder.amount_due'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.currency), true) }}
     {% endif %}
 
     {{ email.divider('md') }}
@@ -54,7 +54,7 @@
         <row>
             <columns>
                 <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    Thank you for your business. We appreciate your prompt attention to this invoice.
+                    {{ 'invoice.manual_reminder.closing'|trans({}, 'email') }}
                 </p>
             </columns>
         </row>
@@ -63,7 +63,7 @@
     {{ email.spacer('sm') }}
 
     {# View/Pay button #}
-    {{ email.button('View Invoice & Pay', url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
+    {{ email.button('invoice.reminder.view_and_pay'|trans({}, 'email'), url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
@@ -71,7 +71,7 @@
         <row>
             <columns>
                 <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
-                    If you have any questions or concerns about this invoice, please don't hesitate to contact us.
+                    {{ 'invoice.reminder.contact'|trans({}, 'email') }}
                 </p>
             </columns>
         </row>

@@ -132,7 +132,7 @@ final class PaymentSettings extends AbstractController
             $session = $this->requestStack->getSession();
             assert($session instanceof Session);
 
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Please correct the validation errors');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'payment.method.validation_errors');
 
             return $this->redirectToRoute('_payment_settings_index', ['selectedGateway' => $this->method]);
         }
@@ -151,7 +151,7 @@ final class PaymentSettings extends AbstractController
                 $session = $this->requestStack->getSession();
                 assert($session instanceof Session);
 
-                $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Invalid gateway name format');
+                $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'payment.method.invalid_gateway_name');
 
                 return $this->redirectToRoute('_payment_settings_index', ['selectedGateway' => $this->method]);
             }
@@ -188,19 +188,19 @@ final class PaymentSettings extends AbstractController
         $paymentMethod = $this->paymentMethod();
         // Check if the payment method exists in the database
         if (! $paymentMethod->getId() instanceof Ulid) {
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Payment method does not exist');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'payment.method.not_found');
 
             return $this->redirectToRoute('_payment_settings_index');
         }
 
         if (count($paymentMethod->getPayments()) > 0) {
-            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Unable to delete payment method as there are payments associated with it');
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'payment.method.delete_has_payments');
 
             return $this->redirectToRoute('_payment_settings_index');
         }
 
         $this->repository->delete($paymentMethod);
-        $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Payment method deleted');
+        $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'payment.method.deleted');
         return $this->redirectToRoute('_payment_settings_index');
     }
 }

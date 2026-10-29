@@ -34,7 +34,7 @@ final readonly class CurrencyScale
      * Used when a currency is not part of the ISO set, so that an unrecognised code degrades
      * to the historical behaviour instead of failing the whole request.
      */
-    private const int DEFAULT_SUBUNIT = 2;
+    public const int DEFAULT_SUBUNIT = 2;
 
     public function __construct(
         private Currencies $currencies = new ISOCurrencies(),

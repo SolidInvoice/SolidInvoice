@@ -88,6 +88,23 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         self::assertSame('/billing/subscription/welcome', $response->getTargetUrl());
     }
 
+    public function testAJsonClientKeepsItsResponseWhileTheTrialLedgerIsStillRecorded(): void
+    {
+        $trialManager = $this->createMock(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(false);
+        $trialManager->expects($this->once())->method('createTrial')->willReturn(new Trial());
+
+        $request = new Request();
+        $request->headers->set('Accept', 'application/json');
+
+        $response = new Response('{}', Response::HTTP_CREATED);
+
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager, request: $request, response: $response);
+
+        self::assertSame($response, $event->getResponse());
+        self::assertSame(SubscriptionStatus::PENDING, $subscription->getStatus());
+    }
+
     /**
      * The Trial row is the ledger the onboarding email scheduler joins against.
      * Without it the whole sequence stops, not just the trial-specific emails.
@@ -211,6 +228,8 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
         ?TrialManagerInterface $trialManager = null,
         ?string $trialDuration = 'P14D',
         bool $freePlan = false,
+        Request $request = new Request(),
+        Response $response = new Response(),
     ): array {
         $plan = new Plan();
         $plan->setName($freePlan ? 'Free' : 'Pro');
@@ -304,9 +323,9 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
 
         $responseEvent = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
-            new Request(),
+            $request,
             HttpKernelInterface::MAIN_REQUEST,
-            new Response(),
+            $response,
         );
 
         $subscriber->onResponse($responseEvent);

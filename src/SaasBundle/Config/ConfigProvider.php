@@ -36,14 +36,14 @@ final class ConfigProvider implements ProviderInterface
             new Config(
                 'system/general/hide_powered_by',
                 '0',
-                'Hide "Powered by SolidInvoice" text in invoices and quotes.',
+                'settings.description.system.general.hide_powered_by',
                 CheckboxType::class,
                 ['feature_gated' => Feature::CustomBranding->value]
             ),
             new Config(
                 'system/domain/custom_domain',
                 null,
-                'Custom domain for this company (leave empty to use the default URL).',
+                'settings.description.system.domain.custom_domain',
                 CustomDomainType::class,
                 [
                     'feature_gated' => Feature::CustomDomain->value,
@@ -53,7 +53,7 @@ final class ConfigProvider implements ProviderInterface
             new Config(
                 BillingTemplateResolver::TEMPLATE_SETTING_KEY,
                 BillingTemplateRegistry::DEFAULT_SLUG,
-                'Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.',
+                'settings.description.design.template',
                 InvoiceTemplateType::class,
                 ['feature_gated' => Feature::CustomTemplates->value],
             ),

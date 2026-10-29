@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class WithinPlanInvoiceLimit extends Constraint
 {
-    public string $message = 'You have reached the maximum number of invoices allowed on your current plan this month.';
+    public string $message = 'invoice.plan_limit';
 
     #[Override]
     public function getTargets(): string

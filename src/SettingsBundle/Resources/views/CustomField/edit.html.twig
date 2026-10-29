@@ -9,7 +9,7 @@
 
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ (mode == 'create' ? 'New custom field' : 'Edit custom field')|trans }}{% endblock %}
+{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ (mode == 'create' ? 'custom_field.page.new_title' : 'custom_field.page.edit_title')|trans }}{% endblock %}
 
 {% block content %}
     <twig:CustomFieldForm :field="field|default(null)" :editing="mode == 'edit'" />

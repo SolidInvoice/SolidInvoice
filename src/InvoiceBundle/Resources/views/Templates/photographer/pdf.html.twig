@@ -31,9 +31,9 @@
                         <div style="font-family: Georgia, serif; font-size: 18pt; color: #a2492b;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
                     </td>
                     <td style="vertical-align: top; text-align: right;">
-                        {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
+                        {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|format_date('long')) }}
                         {% if invoice.due %}
-                            {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
+                            {{ inv.meta_pair('billing.due_date'|trans, invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
                         {% endif %}
                         {{ inv.status_pair(invoice.status) }}
                     </td>

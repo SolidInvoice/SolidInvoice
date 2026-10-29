@@ -29,7 +29,7 @@
                     {% if movingUp %}
                         <h2 class="h2 mb-3">{{ 'saas.trial_start.move_up.heading'|trans({'%plan%': plan.name}) }}</h2>
                         <p class="text-secondary mb-0">
-                            {{ 'saas.trial_start.move_up.body'|trans({'%plan%': plan.name, '%date%': trialEnd|date('F j')}) }}
+                            {{ 'saas.trial_start.move_up.body'|trans({'%plan%': plan.name, '%date%': trialEnd|format_date(pattern: 'MMMM d')}) }}
                         </p>
                     {% else %}
                         <h2 class="h2 mb-3">{{ 'feature.trial_start'|trans({'%plan%': plan.name, '%count%': trialDays}) }}</h2>

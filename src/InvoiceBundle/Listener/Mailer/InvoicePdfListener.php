@@ -47,7 +47,7 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
     {
         $message = $event->getMessage();
 
-        if (($message instanceof InvoiceEmail || $message instanceof InvoiceTestCopyEmail) && $this->generator->canPrintPdf()) {
+        if ((($message instanceof InvoiceEmail && $message->attachesPdf()) || $message instanceof InvoiceTestCopyEmail) && $this->generator->canPrintPdf()) {
             $this->clientRepository->initializeArchived($message->getInvoice()->getClient());
 
             $content = $this->generator->generate(

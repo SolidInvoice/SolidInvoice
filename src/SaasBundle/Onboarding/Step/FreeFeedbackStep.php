@@ -54,7 +54,7 @@ final class FreeFeedbackStep extends AbstractOnboardingEmailStep
     public function createEmail(OnboardingContext $context): TemplatedEmail
     {
         return parent::createEmail($context)
-            ->subject($this->translator->trans('onboarding.feedback.subject', [], 'email'))
+            ->subject('onboarding.feedback.subject')
             ->htmlTemplate('@SolidInvoiceSaas/Email/Onboarding/feedback.html.twig')
             ->textTemplate('@SolidInvoiceSaas/Email/Onboarding/feedback.txt.twig');
     }

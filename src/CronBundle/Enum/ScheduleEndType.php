@@ -39,15 +39,15 @@ enum ScheduleEndType: string implements TranslatableInterface
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return $translator->trans(ucfirst($this->value), [], null, $locale);
+        return $translator->trans($this->formLabel(), [], null, $locale);
     }
 
     public function formLabel(): string
     {
         return match ($this) {
-            self::NEVER => 'Never',
-            self::AFTER => 'After x occurrences',
-            self::ON => 'On the following date',
+            self::NEVER => 'invoice.recurring.end_type_option.never',
+            self::AFTER => 'invoice.recurring.end_type_option.after',
+            self::ON => 'invoice.recurring.end_type_option.on',
         };
     }
 }

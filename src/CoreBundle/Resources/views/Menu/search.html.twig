@@ -13,6 +13,27 @@
              data-controller="global-search"
              data-global-search-url-value="{{ path('_search') }}"
              data-global-search-suggestions-url-value="{{ path('_search_suggestions') }}"
+             data-global-search-labels-value="{{ {
+                 qualifiers: {
+                     in: 'search.qualifiers.in'|trans,
+                     status: 'search.qualifiers.status'|trans,
+                     amount: 'search.qualifiers.amount'|trans,
+                     client: 'search.qualifiers.client'|trans,
+                     created: 'search.qualifiers.created'|trans,
+                     sort: 'search.qualifiers.sort'|trans,
+                 },
+                 groups: {
+                     clients: 'search.groups.clients'|trans,
+                     contacts: 'search.groups.contacts'|trans,
+                     invoices: 'search.groups.invoices'|trans,
+                     recurring_invoices: 'search.groups.recurring_invoices'|trans,
+                     quotes: 'search.groups.quotes'|trans,
+                     payments: 'search.groups.payments'|trans,
+                 },
+                 remove: 'search.remove_filter'|trans,
+                 noResults: 'search.no_results'|trans,
+                 searchFailed: 'search.error'|trans,
+             }|json_encode }}"
         >
             <div class="search-chips-bar" data-global-search-target="chips"></div>
             <div class="global-search-input-wrapper">
@@ -120,7 +141,7 @@
             <div class="row g-0">
                 <div class="col-md-5 p-4 border-end">
                     <h6 class="search-help-section-title">{{ 'search.comparison_operators'|trans }}</h6>
-                    <p class="text-muted mb-3" style="font-size:.8125rem">{{ 'search.applies_to'|trans }} <code>amount:</code> {{ 'search.and'|trans }} <code>created:</code></p>
+                    <p class="text-muted mb-3" style="font-size:.8125rem">{{ 'search.operators_apply_to'|trans({'%amount%': '<code>amount:</code>', '%created%': '<code>created:</code>'})|raw }}</p>
                     <div class="d-flex flex-column gap-2">
                         <div class="d-flex align-items-center gap-3">
                             <code class="search-help-op">100</code>

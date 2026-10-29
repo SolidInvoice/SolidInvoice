@@ -28,6 +28,7 @@ final class CompanyType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('country', CompanyCountryType::class)
             ->add(
                 'currency',
                 CurrencyType::class,

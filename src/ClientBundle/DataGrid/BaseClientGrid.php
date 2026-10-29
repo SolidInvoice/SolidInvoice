@@ -51,8 +51,10 @@ abstract class BaseClientGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('name'),
-            UrlColumn::new('website'),
+            StringColumn::new('name')
+                ->label('label.name'),
+            UrlColumn::new('website')
+                ->label('client.grid.website'),
             CurrencyColumn::new('currencyCode')
                 ->label(new TranslatableMessage('client.grid.currency'))
                 ->filter(new ChoiceFilter('currencyCode', Currencies::getNames($this->locale))),
@@ -87,6 +89,7 @@ abstract class BaseClientGrid extends Grid
                     return $totalOutstanding;
                 }),
             DateTimeColumn::new('created')
+                ->label('label.created')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('created')),
         ];
@@ -112,7 +115,7 @@ abstract class BaseClientGrid extends Grid
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Delete')
+        yield BatchAction::new('action.delete')
             ->icon('trash')
             ->color('danger')
             ->action(static function (ClientRepository $repository, array $selectedItems): void {

@@ -23,10 +23,10 @@ enum CustomFieldTarget: string
     public function label(): string
     {
         return match ($this) {
-            self::CLIENT => 'Client',
-            self::CONTACT => 'Contact',
-            self::INVOICE => 'Invoice',
-            self::QUOTE => 'Quote',
+            self::CLIENT => 'custom_field.target.client',
+            self::CONTACT => 'custom_field.target.contact',
+            self::INVOICE => 'custom_field.target.invoice',
+            self::QUOTE => 'custom_field.target.quote',
         };
     }
 

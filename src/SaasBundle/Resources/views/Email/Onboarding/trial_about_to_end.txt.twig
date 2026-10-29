@@ -1,4 +1,4 @@
-{% set date = trial_end|date('F j, Y') %}
+{% set date = trial_end|format_date('long') %}
 {% set params = {'%days%': days_remaining, '%count%': days_remaining, '%plan%': plan.name, '%date%': date} %}
 {% set copy = will_charge ? 'onboarding.trial_about_to_end.charged' : 'onboarding.trial_about_to_end' %}
 {{ (copy ~ '.heading')|trans(params, 'email') }}
@@ -8,7 +8,7 @@
 {{ (copy ~ '.lede')|trans(params, 'email') }}
 
 {{ 'onboarding.trial_about_to_end.days_label'|trans({}, 'email') }}: {{ days_remaining }}
-{{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|date('F j, Y \\a\\t g:ia')}, 'email')|striptags }}
+{{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|format_datetime('long', 'short')}, 'email')|striptags }}
 
 {{ 'onboarding.trial_about_to_end.usage_heading'|trans({}, 'email') }}
 {{ '-'|repeat(60) }}
@@ -38,7 +38,7 @@
 
 {% if coupon_code %}
 {{ 'onboarding.coupon.heading'|trans({}, 'email') }}: {{ coupon_code }}
-{{ 'onboarding.coupon.desc'|trans({'%percent%': coupon_percent, '%date%': trial_end|date('F j')}, 'email') }}
+{{ 'onboarding.coupon.desc'|trans({'%percent%': coupon_percent, '%date%': trial_end|format_date(pattern: 'MMMM d')}, 'email') }}
 
 {% endif %}
 {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans(params, 'email') }}: {{ url('saas_subscription_checkout') }}

@@ -18,6 +18,8 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
+use function array_map;
+use function in_array;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuoteReceiverListenerTest
@@ -34,16 +36,22 @@ class QuoteReceiverListener implements EventSubscriberInterface
         /** @var QuoteEmail $message */
         $message = $event->getMessage();
 
-        if ($message instanceof QuoteEmail && [] === $message->getTo()) {
-            $quote = $message->getQuote();
+        if (! $message instanceof QuoteEmail) {
+            return;
+        }
 
-            foreach ($quote->getUsers() as $user) {
+        // A send can name its own recipients; the contacts are only the default.
+        if ([] === $message->getTo()) {
+            foreach ($message->getQuote()->getUsers() as $user) {
                 $message->addTo(new Address($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName()))));
             }
+        }
 
-            if ('' !== ($bcc = (string) $this->config->get('quote/bcc_address'))) {
-                $message->bcc($bcc);
-            }
+        // Added, not set, so a sender's own copy survives. The event can fire twice for one message.
+        $bcc = (string) $this->config->get('quote/bcc_address');
+
+        if ('' !== $bcc && ! in_array($bcc, array_map(static fn (Address $address): string => $address->getAddress(), $message->getBcc()), true)) {
+            $message->addBcc($bcc);
         }
     }
 

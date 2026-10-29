@@ -17,9 +17,7 @@ use Override;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Service\BillingMode;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * The discount code on its own, two days before the trial ends, with a subject
@@ -32,10 +30,8 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
     private const int NOTICE_DAYS = 2;
 
     public function __construct(
-        TranslatorInterface $translator,
         private readonly BillingMode $billingMode,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string
@@ -65,12 +61,12 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
     }
 
     #[Override]
-    public function createEmail(OnboardingContext $context): TemplatedEmail
+    protected function subjectParameters(OnboardingContext $context): array
     {
-        return parent::createEmail($context)->subject($this->translator->trans('onboarding.upgrade_offer.subject', [
+        return [
             '%percent%' => $this->billingMode->couponPercent(),
             '%plan%' => $context->plan->getName(),
-        ], 'email'));
+        ];
     }
 
     #[Override]
