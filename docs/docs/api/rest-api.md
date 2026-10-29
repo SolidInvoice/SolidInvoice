@@ -335,6 +335,26 @@ The payment cannot be voided because:
 
 Payments show their method as `{"gatewayName": "cash", "name": "Cash"}`.
 
+## Dashboard, activity and search
+
+These return plain JSON with amounts as decimal strings at each currency's own precision. Totals are always per currency, never added up across currencies.
+
+- `GET /api/dashboard` returns what your dashboard shows: `outstanding`, `overdue`, `paidThisMonth` and `paidLastMonth` (each a list of `{currency, amount, count}`), the number of draft invoices, pending quotes and quotes accepted this month, `needsAttention` (overdue invoices, quotes that expire within 7 days and draft invoices) and six months of `revenueByMonth`. It is cached for a minute.
+- `GET /api/activity` lists recent activity, newest first, 30 a page (`?page=2`): payments received, invoices sent and overdue, quotes sent, accepted and declined, new clients and invoices created from a recurring invoice. Each entry has a `type`, `occurredAt`, a `subject` (`iri` and `label`), the `client`, and an `amount` and `currency` where they apply. `GET /api/clients/{id}/activity` lists one client's.
+- `GET /api/search?q=smi` finds clients, contacts, invoices and quotes, up to 10 of each, grouped by type. Narrow it with `types=clients,invoices`, and use the same qualifiers as the search box in the app, such as `status:overdue` or `client:smith`. `q` must be at least 2 characters.
+
+:::note
+Sent and accepted times in the activity feed are when the invoice or quote was last changed, so editing one moves it up the list.
+:::
+
+## Company and document settings
+
+- `GET /api/company` and `PATCH /api/company` read and change your company's `name`, `email`, `phone`, `address` (`street1`, `street2`, `city`, `state`, `zip`, `country`), `country` and `currency`. The response also lists your `taxIdentifiers`, which you manage in **Settings → Company**, and a `logoUrl` when you have a logo.
+- `POST /api/company/logo` uploads a logo as the `file` field of a `multipart/form-data` request. It must be a PNG, JPEG or WebP image of at most 5 MB. It is scaled down to 512 px and its EXIF data (such as location) is removed. `GET /api/company/logo` returns the image and `DELETE /api/company/logo` removes it.
+- `GET /api/settings/documents` and `PATCH /api/settings/documents` read and change the defaults for new invoices and quotes: `invoiceTerms`, `invoiceNotes`, `quoteTerms`, `quoteNotes`, `quoteValidityDays`, `paymentTerms`, the email subjects, the number prefixes, `invoiceBccAddress` and `remindersEnabled` (which you can only change on a plan with automatic reminders).
+
+Contacts have `phone` and `mobile` fields, and a tax rate with `isDefault: true` is the one suggested for new lines (only one per company can be). `GET /api/taxes?order[name]=asc` sorts tax rates by name.
+
 ## Endpoint reference
 
 The interactive Swagger UI for your installation is the authoritative reference — it always reflects the exact resources and fields available on your version:
