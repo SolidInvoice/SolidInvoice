@@ -20,6 +20,7 @@ use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\DashboardBundle\Stats\DashboardStats;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
@@ -37,6 +38,7 @@ final readonly class AnalyticsTools
         private PaymentRepository $paymentRepository,
         private ClientRepository $clientRepository,
         private McpScopeGuard $scopeGuard,
+        private DashboardStats $stats,
     ) {
     }
 
@@ -59,14 +61,14 @@ final readonly class AnalyticsTools
 
         $outstanding = [];
 
-        foreach ($this->invoiceRepository->getTotalOutstandingByCurrency() as $currency => $total) {
-            $outstanding[(string) $currency] = $total->__toString();
+        foreach ($this->stats->outstanding() as $currency => $total) {
+            $outstanding[(string) $currency] = (string) $total['amount'];
         }
 
         $overdue = [];
 
-        foreach ($this->invoiceRepository->getOverdueAmountByCurrency() as $currency => $total) {
-            $overdue[(string) $currency] = $total->__toString();
+        foreach ($this->stats->overdue() as $currency => $total) {
+            $overdue[(string) $currency] = (string) $total['amount'];
         }
 
         $totalInvoices = (int) $this->invoiceRepository->createQueryBuilder('i')
@@ -104,8 +106,8 @@ final readonly class AnalyticsTools
         if ($client_id === null) {
             $result = [];
 
-            foreach ($this->invoiceRepository->getTotalOutstandingByCurrency() as $currency => $total) {
-                $result[(string) $currency] = $total->__toString();
+            foreach ($this->stats->outstanding() as $currency => $total) {
+                $result[(string) $currency] = (string) $total['amount'];
             }
 
             return $result;
@@ -140,8 +142,8 @@ final readonly class AnalyticsTools
         if ($client_id === null) {
             $result = [];
 
-            foreach ($this->invoiceRepository->getOverdueAmountByCurrency() as $currency => $total) {
-                $result[(string) $currency] = $total->__toString();
+            foreach ($this->stats->overdue() as $currency => $total) {
+                $result[(string) $currency] = (string) $total['amount'];
             }
 
             return $result;

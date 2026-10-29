@@ -17,6 +17,13 @@ Changelog
 * Dates on invoice and quote emails no longer include a meaningless time, and short dates no longer pad the day ("Sep 1, 2021" instead of "Sep 01, 2021")
 * The REST API can download invoices and quotes as PDFs (`/api/invoices/{id}/pdf`, `/api/quotes/{id}/pdf`), and invoice and quote responses now include their public page, public PDF and online payment links
 * API: recording a payment (`POST /api/invoices/{id}/payments`) now works like the web form. The amount is a decimal in the invoice currency (`"150.00"`), a payment method (`cash` by default) and payment date can be chosen, a part-payment only reduces the balance, an overpayment marks the invoice paid and adds the excess to the client's credit (returned as `creditAdded`), and an invoice that has not been issued is refused with a `409`. An integer amount is still read in minor units, but is deprecated
+* API: `GET /api/search?q=` finds clients, contacts, invoices and quotes (up to 10 of each, narrowed with `types=`), with the same qualifiers as the search box (`status:overdue`, `client:smith`). It uses Meilisearch when configured and searches the database otherwise
+* API: `GET /api/activity` lists recent activity newest first (payments received, invoices sent and overdue, quotes sent, accepted and declined, new clients, recurring invoices generated), 30 a page, and `GET /api/clients/{id}/activity` lists one client's. The dashboard's Recent Activity reads the same feed
+* API: `GET /api/dashboard` returns the dashboard figures in one call: outstanding, overdue and paid this and last month per currency, draft invoices, pending and accepted quotes, what needs attention and six months of revenue. The web dashboard, the MCP analytics tools and the API now read the same figures
+* A tax rate can be marked as the default for new lines (`isDefault` in the API, one per company), and `GET /api/taxes` can be sorted by name (`order[name]=asc`)
+* Contacts have Phone and Mobile fields on every plan, in the web app and as `phone` and `mobile` in the API (and the MCP `add_contact` tool). They replace the Phone and Mobile custom fields, whose values move over on upgrade
+* API: `GET/PATCH /api/company` reads and changes the company's name, contact details, address, country and currency, and lists its tax identifiers; `POST /api/company/logo` uploads a logo (PNG, JPEG or WebP up to 5 MB, scaled down to 512 px with its EXIF data removed), `GET` returns it and `DELETE` removes it
+* Settings → Invoice and Settings → Quote have default terms and notes (for example your bank details), and quotes have a validity period, which fill in every new invoice or quote. `GET/PATCH /api/settings/documents` reads and changes them, with the payment terms, email subjects, number prefixes, BCC address and automatic reminders
 * API: a manually recorded payment can be voided within 30 days with `POST /api/payments/{id}/void`, which reopens the invoice if it was paid
 * API: payment responses now contain only the payment's own fields, with its method as `{gatewayName, name}`, and `GET /api/payment-methods` lists the company's payment methods
 * New companies get Cheque and Card terminal payment methods, and existing companies get them on upgrade
@@ -25,6 +32,7 @@ Changelog
 
 ### Fixes
 
+* "Paid this month" on the dashboard counts payments by their payment date, not the date they were recorded
 * MCP clients that connect without a token now receive a `WWW-Authenticate` header pointing them to the OAuth metadata, so they can start sign-in automatically
 * The installer no longer stops with a JavaScript error when installation finishes
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt

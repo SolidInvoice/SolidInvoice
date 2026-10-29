@@ -230,6 +230,42 @@
                     </div>
                 {% endif %}
 
+                {# Document Defaults #}
+                {% if form.default_terms is defined %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:file-text', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+                            {{ 'settings.page.document_defaults.title'|trans }}
+                        </h3>
+                        <p class="text-muted small mb-3">
+                            {{ 'settings.page.document_defaults.help'|trans({'%type%': ('label.' ~ section)|trans|lower}) }}
+                        </p>
+                        <div class="row g-3">
+                            {% if form.validity_days is defined %}
+                                <div class="col-md-6">
+                                    {{ form_row(form.validity_days, {
+                                        label: 'settings.page.document_defaults.validity_days'|trans,
+                                        help: 'settings.page.document_defaults.validity_days_help'|trans
+                                    }) }}
+                                </div>
+                            {% endif %}
+                            <div class="col-12">
+                                {{ form_row(form.default_terms, {
+                                    label: 'settings.page.document_defaults.terms'|trans
+                                }) }}
+                            </div>
+                            {% if form.default_notes is defined %}
+                                <div class="col-12">
+                                    {{ form_row(form.default_notes, {
+                                        label: 'settings.page.document_defaults.notes'|trans,
+                                        help: 'settings.page.document_defaults.notes_help'|trans
+                                    }) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
                 {# Email Settings #}
                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">

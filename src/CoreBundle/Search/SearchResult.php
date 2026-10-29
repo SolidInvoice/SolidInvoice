@@ -26,6 +26,7 @@ final readonly class SearchResult
         public string $url,
         public ?string $status = null,
         public ?string $meta = null,
+        public ?string $clientId = null,
     ) {
     }
 }

@@ -93,6 +93,8 @@ client:
         delete_confirm_inline: 'Are you sure you want to delete the contact?'
         details:
             email: Email
+            mobile: Mobile
+            phone: Phone
         edit: 'Edit Contact'
         email:
             label: Email
@@ -105,6 +107,10 @@ client:
         last_name:
             label: 'Last name'
             placeholder: Doe
+        mobile:
+            label: Mobile
+        phone:
+            label: Phone
     contacts:
         empty:
             description: 'Add contacts to send invoices and quotes to this client.'
@@ -2279,6 +2285,8 @@ settings:
             template: 'Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.'
         invoice:
             bcc_address: 'Send BCC copy of invoice to this address'
+            default_notes: 'Notes added to every new invoice'
+            default_terms: 'Terms added to every new invoice'
             email_subject: 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id'
             id_generation:
                 id_prefix: 'Example: INV-'
@@ -2291,10 +2299,13 @@ settings:
             watermark: 'Display a watermark on the invoice with the status'
         quote:
             bcc_address: 'Send BCC copy of quote to this address'
+            default_notes: 'Notes added to every new quote'
+            default_terms: 'Terms added to every new quote'
             email_subject: 'To include the id of the quote in the subject, add the placeholder {id} where you want the id'
             id_generation:
                 id_prefix: 'Example: QUOT-'
                 id_suffix: 'Example: -QUOT'
+            validity_days: 'Number of days a new quote is valid for'
             watermark: 'Display a watermark on the quote with the status'
         system:
             domain:
@@ -2351,6 +2362,14 @@ settings:
         display:
             title: 'Display Settings'
             watermark: 'Show Status Watermark'
+        document_defaults:
+            help: 'Filled in on every new %type%. You can still change them on each one.'
+            notes: 'Default Notes'
+            notes_help: 'For example, your bank details for EFT payments.'
+            terms: 'Default Terms'
+            title: 'Document Defaults'
+            validity_days: 'Valid For (Days)'
+            validity_days_help: 'Sets the expiry date of a new quote.'
         domain:
             custom_domain: 'Custom Domain'
             dns_footer: 'Once the CNAME is in place, your custom domain will resolve to SolidInvoice automatically — no further action required.'
@@ -2503,6 +2522,9 @@ tax:
         form:
             description: 'Set up the tax rate details and calculation method'
             subtitle: 'Configure tax rates for invoices and quotes'
+        is_default:
+            help: 'Suggested for new lines. Only one tax rate can be the default.'
+            label: 'Default tax rate'
         title: 'Tax Rates'
         type:
             select: Select

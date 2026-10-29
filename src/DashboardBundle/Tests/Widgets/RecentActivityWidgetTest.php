@@ -89,6 +89,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
             'created' => Carbon::now(),
+            'completed' => Carbon::now(),
         ]);
 
         $widget = self::getContainer()->get(RecentActivityWidget::class);
@@ -367,6 +368,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'currencyCode' => 'USD',
             'status' => PaymentStatus::Captured,
             'created' => Carbon::now()->subHours(1),
+            'completed' => Carbon::now()->subHours(1),
         ]);
 
         // Sent invoice
