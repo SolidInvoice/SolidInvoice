@@ -32,7 +32,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use function array_map;
-use function array_values;
 use function sprintf;
 
 /**
@@ -120,7 +119,7 @@ final readonly class Dashboard
             $result[] = ['currency' => $currency, 'amount' => $this->money($total['amount'], $currency), 'count' => $total['count']];
         }
 
-        return array_values($result);
+        return $result;
     }
 
     /**
