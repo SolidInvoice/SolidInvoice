@@ -72,6 +72,7 @@ final class NotificationManagerTest extends KernelTestCase
             self::getContainer()->get('translator'),
             self::getContainer()->get(CompanySelector::class),
             self::getContainer()->get(CompanyRepository::class),
+            true,
         );
     }
 
@@ -103,7 +104,9 @@ final class NotificationManagerTest extends KernelTestCase
 
         $user = new User()
             ->setEmail($email)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $userNotification = new UserNotification()
             ->setEvent('test_event')
@@ -156,7 +159,9 @@ final class NotificationManagerTest extends KernelTestCase
 
         $user = new User()
             ->setEmail($email)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $userNotification = new UserNotification()
             ->setEvent('test_event')
@@ -189,6 +194,8 @@ final class NotificationManagerTest extends KernelTestCase
         $user = new User()
             ->setEmail($email)
             ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true)
             ->addCompany($this->company);
 
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
@@ -217,6 +224,8 @@ final class NotificationManagerTest extends KernelTestCase
         $user = new User()
             ->setEmail($this->getFaker()->email())
             ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true)
             ->addCompany($this->company);
 
         $userNotification = new UserNotification()
@@ -250,7 +259,9 @@ final class NotificationManagerTest extends KernelTestCase
 
         $user = new User()
             ->setEmail($email)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $transportSetting = new TransportSetting()
             ->setName('Test Foo')
@@ -289,6 +300,7 @@ final class NotificationManagerTest extends KernelTestCase
             self::getContainer()->get('translator'),
             self::getContainer()->get(CompanySelector::class),
             self::getContainer()->get(CompanyRepository::class),
+            true,
         );
 
         $notificationManager->sendNotification($class);
@@ -309,10 +321,14 @@ final class NotificationManagerTest extends KernelTestCase
 
         $user1 = new User()
             ->setEmail($email1)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
         $user2 = new User()
             ->setEmail($email2)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $transportSetting1 = new TransportSetting()
             ->setName('Test Foo')
@@ -368,6 +384,7 @@ final class NotificationManagerTest extends KernelTestCase
             self::getContainer()->get('translator'),
             self::getContainer()->get(CompanySelector::class),
             self::getContainer()->get(CompanyRepository::class),
+            true,
         );
 
         $notificationManager->sendNotification($class);
@@ -387,7 +404,9 @@ final class NotificationManagerTest extends KernelTestCase
 
         $user = new User()
             ->setEmail($email)
-            ->setPassword('password');
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $transportSetting = new TransportSetting()
             ->setName('Test Foo')
@@ -474,6 +493,7 @@ final class NotificationManagerTest extends KernelTestCase
             self::getContainer()->get('translator'),
             self::getContainer()->get(CompanySelector::class),
             self::getContainer()->get(CompanyRepository::class),
+            true,
         );
 
         $notificationManager->sendNotification($class);
@@ -550,10 +570,114 @@ final class NotificationManagerTest extends KernelTestCase
             self::getContainer()->get('translator'),
             self::getContainer()->get(CompanySelector::class),
             self::getContainer()->get(CompanyRepository::class),
+            true,
         );
 
         $notificationManager->sendNotification($class);
 
         self::assertSame(['notification.send_failed'], $session->getFlashBag()->get('error'));
+    }
+
+    public function testDisabledUserIsSkipped(): void
+    {
+        $this->assertCompanyUserIsSkipped(static fn (User $user): User => $user->setEnabled(false));
+    }
+
+    public function testUserWithUnverifiedEmailIsSkipped(): void
+    {
+        $this->assertCompanyUserIsSkipped(static fn (User $user): User => $user->setVerified(false));
+    }
+
+    public function testDisabledCompanySendsNothing(): void
+    {
+        $this->assertCompanyUserIsSkipped(function (User $user): User {
+            $this->company->disable();
+
+            return $user;
+        });
+    }
+
+    public function testUnverifiedUserIsNotifiedWhenEmailVerificationIsOff(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $email = $this->getFaker()->email();
+
+        $user = new User()
+            ->setEmail($email)
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(false)
+            ->addCompany($this->company);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->flush();
+        $em->clear();
+
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once();
+
+        $notificationManager = new NotificationManager(
+            $this->notifier,
+            self::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator([]),
+            new NullLogger(),
+            new RequestStack(),
+            self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
+            false,
+        );
+
+        $notificationManager->sendNotification($class);
+    }
+
+    /**
+     * Saves a company user who also has an explicit email preference, then expects nothing to be sent.
+     *
+     * @param callable(User): User $configure
+     */
+    private function assertCompanyUserIsSkipped(callable $configure): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $user = $configure(
+            new User()
+                ->setEmail($this->getFaker()->email())
+                ->setPassword('password')
+                ->setEnabled(true)
+                ->setVerified(true)
+                ->addCompany($this->company)
+        );
+
+        $userNotification = new UserNotification()
+            ->setEvent('test_event')
+            ->setEmail(true)
+            ->setUser($user);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($userNotification);
+        $em->flush();
+        $em->clear();
+
+        $this->notifier
+            ->expects('send')
+            ->never();
+
+        $this->notificationManager->sendNotification($class);
     }
 }
