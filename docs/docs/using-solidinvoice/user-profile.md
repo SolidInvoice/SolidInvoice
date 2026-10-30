@@ -42,6 +42,8 @@ Every notification is sent to you by email until you turn it off. This covers ne
 
 Each notification email names the company it was sent for and links back to this page.
 
+Notifications only go to active accounts. If your account is disabled, or you have not yet verified your email address, you get no notifications on any channel until that is resolved.
+
 Notifications you can turn on or off include:
 
 - **Recurring Invoice Created**: sent when SolidInvoice creates an invoice from one of your recurring invoices. The email lists the invoice number, client, dates, line items and totals, and links to the invoice.

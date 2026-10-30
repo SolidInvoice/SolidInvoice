@@ -318,6 +318,11 @@ class Company implements Stringable, SubscribableInterface
         return $this;
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
     public function disable(): self
     {
         $this->enabled = false;

@@ -26,6 +26,7 @@ Changelog
 * You can now be notified when SolidInvoice creates an invoice from a recurring invoice. The email shows the invoice details and links to the invoice
 * Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
 * Notification emails now show which company they were sent for and link to your notification preferences
+* Notifications are never sent to disabled users, to users who have not verified their email address, or to anyone in a disabled company
 
 ### Fixes
 

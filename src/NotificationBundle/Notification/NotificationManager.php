@@ -23,6 +23,8 @@ use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
+use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -49,6 +51,8 @@ class NotificationManager
         private readonly TranslatorInterface $translator,
         private readonly CompanySelectorInterface $companySelector,
         private readonly CompanyRepository $companyRepository,
+        #[Autowire(param: 'solidworx_platform.security.email_verification.enabled')]
+        private readonly bool $emailVerificationEnabled,
     ) {
     }
 
@@ -69,9 +73,22 @@ class NotificationManager
 
         $message->subject($this->translator->trans($message->getSubjectKey(), $message->getSubjectParameters(), 'email'));
 
+        $companyId = $this->companySelector->getCompany();
+        $company = $companyId instanceof Ulid ? $this->companyRepository->find($companyId) : null;
+
+        // A disabled company sends nothing to anyone. CompanyEnabledFilter already hides it, so a
+        // selected company that no longer loads counts as disabled too.
+        if ($companyId instanceof Ulid && (! $company instanceof Company || ! $company->isEnabled())) {
+            return;
+        }
+
         $recipients = [];
 
         foreach ($this->userNotificationRepository->findBy(['event' => $event]) as $userNotification) {
+            if (! $userNotification->getCompany()->isEnabled()) {
+                continue;
+            }
+
             $user = $userNotification->getUser();
             $channels = [];
 
@@ -100,9 +117,6 @@ class NotificationManager
 
         // Email is on by default: a user who never saved a preference for this event gets it by email.
         // Saving the preferences form writes a row for every event, so "off" is a row with no channels.
-        $companyId = $this->companySelector->getCompany();
-        $company = $companyId instanceof Ulid ? $this->companyRepository->find($companyId) : null;
-
         if ($company instanceof Company) {
             foreach ($company->getUsers() as $user) {
                 $recipients[$user->getId()->toString()] ??= [$user, ['email']];
@@ -112,7 +126,7 @@ class NotificationManager
         $hasTransportFailure = false;
 
         foreach ($recipients as [$user, $channels]) {
-            if ($channels === []) {
+            if ($channels === [] || ! $this->canReceive($user)) {
                 continue;
             }
 
@@ -133,5 +147,14 @@ class NotificationManager
         if ($hasTransportFailure) {
             $this->addFlashError('notification.send_failed');
         }
+    }
+
+    /**
+     * Disabled users, and users who have not verified their email address, get nothing on any channel.
+     * Same rule as Platform's EmailVerificationGate, read off the user rather than the logged-in one.
+     */
+    private function canReceive(User $user): bool
+    {
+        return $user->isEnabled() && (! $this->emailVerificationEnabled || $user->isVerified());
     }
 }
