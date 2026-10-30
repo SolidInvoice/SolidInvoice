@@ -84,7 +84,7 @@ final class InvoiceManagerTest extends KernelTestCase
             ->andReturn(null);
 
         $workflowDispatcher = new EventDispatcher();
-        $workflowDispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, $notification));
+        $workflowDispatcher->addListener('workflow.invoice.entered', new WorkFlowSubscriber($doctrine, $notification)->onWorkflowTransitionApplied(...));
 
         $stateMachine = new StateMachine(
             new Definition(['new', 'draft'], $transitions),

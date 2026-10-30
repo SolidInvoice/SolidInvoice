@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoicePdfListener;
@@ -35,6 +36,8 @@ use Twig\Environment;
 
 final class InvoicePdfListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testListener(): void
@@ -76,7 +79,7 @@ final class InvoicePdfListenerTest extends TestCase
 
     public function testEvents(): void
     {
-        self::assertSame([MessageEvent::class], \array_keys(InvoicePdfListener::getSubscribedEvents()));
+        self::assertSame([MessageEvent::class], \array_keys(self::listenedEvents(InvoicePdfListener::class)));
     }
 
     /**

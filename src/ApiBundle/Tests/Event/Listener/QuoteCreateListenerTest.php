@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Event\Listener\QuoteCreateListener;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -31,12 +32,14 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 final class QuoteCreateListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testSubscribedEvents(): void
     {
-        self::assertSame([KernelEvents::VIEW], array_keys(QuoteCreateListener::getSubscribedEvents()));
-        self::assertSame(EventPriorities::PRE_WRITE, QuoteCreateListener::getSubscribedEvents()[KernelEvents::VIEW][0][1]);
+        self::assertSame([KernelEvents::VIEW], array_keys(self::listenedEvents(QuoteCreateListener::class)));
+        self::assertSame(EventPriorities::PRE_WRITE, self::listenedEvents(QuoteCreateListener::class)[KernelEvents::VIEW][1]);
     }
 
     public function testStatusGetsUpdated(): void

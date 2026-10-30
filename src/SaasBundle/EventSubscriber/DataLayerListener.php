@@ -47,7 +47,8 @@ final readonly class DataLayerListener
     ) {
     }
 
-    #[AsEventListener(event: ResponseEvent::class)]
+    // After Symfony's ResponseListener (0), whose prepare() sets the Content-Type checked below.
+    #[AsEventListener(event: ResponseEvent::class, priority: -1)]
     public function onResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();

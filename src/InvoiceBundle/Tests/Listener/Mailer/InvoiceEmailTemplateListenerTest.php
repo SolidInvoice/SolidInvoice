@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceEmailTemplateListener;
@@ -38,6 +39,8 @@ use function uniqid;
 
 final class InvoiceEmailTemplateListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     private string $invoiceDir;
@@ -94,7 +97,7 @@ final class InvoiceEmailTemplateListenerTest extends TestCase
 
     public function testRunsBeforeTheBodyRenderer(): void
     {
-        $events = InvoiceEmailTemplateListener::getSubscribedEvents();
+        $events = self::listenedEvents(InvoiceEmailTemplateListener::class);
 
         self::assertSame(['__invoke', 100], $events[MessageEvent::class]);
     }
