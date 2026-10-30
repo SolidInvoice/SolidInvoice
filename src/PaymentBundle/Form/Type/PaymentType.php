@@ -89,7 +89,7 @@ class PaymentType extends AbstractType
             $attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
 
             $builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
-            $builder->add('send_receipt', CheckboxType::class, ['data' => true, 'required' => false, 'label' => 'payment.receipt.form.send.label']);
+            $builder->add('send_receipt', CheckboxType::class, ['required' => false, 'label' => 'payment.receipt.form.send.label']);
             $builder->add('reference', null, ['required' => false]);
             $builder->add('notes', TextareaType::class, ['required' => false]);
         }

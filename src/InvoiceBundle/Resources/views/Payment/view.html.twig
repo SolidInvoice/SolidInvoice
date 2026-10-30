@@ -76,6 +76,10 @@
                             <div class="datagrid-title">{{ 'payment.receipt.number'|trans }}</div>
                             <div class="datagrid-content">{{ payment.receiptNumber }}</div>
                         </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'payment.receipt.sent_at'|trans }}</div>
+                            <div class="datagrid-content">{{ payment.receiptSentAt ? payment.receiptSentAt|format_datetime('medium', 'short') : 'payment.receipt.never_sent'|trans }}</div>
+                        </div>
                     {% endif %}
                     <div class="datagrid-item">
                         <div class="datagrid-title">{{ 'payment.list.grid.amount'|trans }}</div>

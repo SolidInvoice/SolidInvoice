@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Manager;
 
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Mpdf\MpdfException;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -38,6 +40,7 @@ final readonly class ReceiptManager
         private Environment $twig,
         private MailerInterface $mailer,
         private ClientRepository $clientRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -92,6 +95,9 @@ final readonly class ReceiptManager
         }
 
         $this->mailer->send($email);
+
+        $payment->setReceiptSentAt(CarbonImmutable::now());
+        $this->entityManager->flush();
 
         return true;
     }
