@@ -38,6 +38,14 @@ The **Security** section shows whether 2FA is active on your account. Click `Ena
 
 From the sidebar, choose `Notifications` under your profile. You can choose which events trigger notifications and which channels receive them (email is always available; other channels depend on your configured integrations).
 
+Every notification is sent to you by email until you turn it off. This covers new accounts, companies you join or create, and any notification added in a future update. Clear the `Email` box next to an event and save to stop those emails.
+
+Each notification email names the company it was sent for and links back to this page.
+
+Notifications you can turn on or off include:
+
+- **Recurring Invoice Created**: sent when SolidInvoice creates an invoice from one of your recurring invoices. The email lists the invoice number, client, dates, line items and totals, and links to the invoice.
+
 ## API tokens
 
 From the sidebar, choose `API Keys` to create, view, and revoke personal API tokens used to authenticate requests to the [REST API](../api/rest-api.md).

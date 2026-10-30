@@ -1,0 +1,44 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ 'invoice.recurring_created.heading'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
+
+{{ 'invoice.recurring_created.message'|trans({}, 'email') }}
+
+{{ 'invoice.number'|trans({}, 'email') }}: {{ invoice.invoiceId }}
+{% if invoice.client -%}
+{{ 'invoice.recurring_created.client'|trans({}, 'email') }}: {{ invoice.client.name }}
+{% endif -%}
+{{ 'invoice.created'|trans({}, 'email') }}: {{ invoice.invoiceDate|date('Y-m-d') }}
+{% if invoice.due -%}
+{{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
+{% endif -%}
+{{ 'invoice.recurring_created.status'|trans({}, 'email') }}: {{ invoice.status.label }}
+{% if invoice.lines|length > 0 %}
+
+{{ '-'|repeat(60) }}
+{% for line in invoice.lines -%}
+{{ line.name }} × {{ line.qty }}: {{ line.total|formatCurrency(invoice.currency) }}
+{% endfor -%}
+{% endif %}
+
+{{ '-'|repeat(60) }}
+{{ 'invoice.subtotal'|trans({}, 'email') }}: {{ invoice.baseTotal|formatCurrency(invoice.currency) }}
+{% if invoice.tax.positive -%}
+{{ 'invoice.tax'|trans({}, 'email') }}: {{ invoice.tax|formatCurrency(invoice.currency) }}
+{% endif -%}
+{% if invoice.discount.type is not empty -%}
+{{ 'invoice.discount'|trans({}, 'email') }}: -{{ discount(invoice)|formatCurrency(invoice.currency) }}
+{% endif -%}
+{{ 'invoice.total'|trans({}, 'email') }}: {{ invoice.total|formatCurrency(invoice.currency) }}
+
+{{ '-'|repeat(60) }}
+{{ 'invoice.recurring_created.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

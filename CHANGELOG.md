@@ -23,6 +23,9 @@ Changelog
 * New companies get Cheque and Card terminal payment methods, and existing companies get them on upgrade
 * Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, the UK, Switzerland, Monaco, the Isle of Man, South Africa and Australia start with their country's VAT or GST rates already set up
 * AI agents can discover SolidInvoice on their own: the app now serves `/auth.md` with sign-in steps for agents, an agent skill for connecting over MCP, and an `/.well-known/ai-catalog.json` listing the MCP server and REST API
+* You can now be notified when SolidInvoice creates an invoice from a recurring invoice. The email shows the invoice details and links to the invoice
+* Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
+* Notification emails now show which company they were sent for and link to your notification preferences
 
 ### Fixes
 

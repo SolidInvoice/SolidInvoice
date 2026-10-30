@@ -20,6 +20,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use RuntimeException;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -68,6 +70,8 @@ final class NotificationManagerTest extends KernelTestCase
             new NullLogger(),
             new RequestStack(),
             self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
         );
     }
 
@@ -166,11 +170,71 @@ final class NotificationManagerTest extends KernelTestCase
 
         $this->notifier
             ->expects('send')
+            ->never();
+
+        $this->notificationManager->sendNotification($class);
+    }
+
+    public function testCompanyUserWithoutPreferenceGetsEmailByDefault(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $email = $this->getFaker()->email();
+
+        $user = new User()
+            ->setEmail($email)
+            ->setPassword('password')
+            ->addCompany($this->company);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->flush();
+        $em->clear();
+
+        $this->notifier
+            ->expects('send')
             ->with($class, IsEqual::equalTo(new Recipient($email, '')))
             ->once();
 
         $this->notificationManager->sendNotification($class);
-        self::assertSame([], $class->getChannels(new Recipient($email, '')));
+        self::assertSame(['email'], $class->getChannels(new Recipient($email, '')));
+    }
+
+    public function testCompanyUserWhoTurnedNotificationOffIsSkipped(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $user = new User()
+            ->setEmail($this->getFaker()->email())
+            ->setPassword('password')
+            ->addCompany($this->company);
+
+        $userNotification = new UserNotification()
+            ->setEvent('test_event')
+            ->setEmail(false)
+            ->setUser($user);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($userNotification);
+        $em->flush();
+        $em->clear();
+
+        $this->notifier
+            ->expects('send')
+            ->never();
+
+        $this->notificationManager->sendNotification($class);
     }
 
     public function testSendTransportNotification(): void
@@ -223,6 +287,8 @@ final class NotificationManagerTest extends KernelTestCase
             new NullLogger(),
             new RequestStack(),
             self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
         );
 
         $notificationManager->sendNotification($class);
@@ -300,6 +366,8 @@ final class NotificationManagerTest extends KernelTestCase
             new NullLogger(),
             new RequestStack(),
             self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
         );
 
         $notificationManager->sendNotification($class);
@@ -404,6 +472,8 @@ final class NotificationManagerTest extends KernelTestCase
             new NullLogger(),
             new RequestStack(),
             self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
         );
 
         $notificationManager->sendNotification($class);
@@ -478,6 +548,8 @@ final class NotificationManagerTest extends KernelTestCase
             $logger,
             $requestStack,
             self::getContainer()->get('translator'),
+            self::getContainer()->get(CompanySelector::class),
+            self::getContainer()->get(CompanyRepository::class),
         );
 
         $notificationManager->sendNotification($class);

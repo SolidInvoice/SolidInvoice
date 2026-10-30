@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification;
+use SolidInvoice\UserBundle\Form\Type\NotificationSettingType;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,6 +154,35 @@ final class NotificationPreferencesTest extends WebTestCase
         // Check that there are checkboxes for notifications
         self::assertSelectorExists('input[type="checkbox"]');
         self::assertGreaterThan(0, $crawler->filter('input[type="checkbox"]')->count());
+    }
+
+    public function testEmailIsCheckedByDefaultUnlessTurnedOff(): void
+    {
+        $user = UserFactory::createOne([
+            'companies' => [$this->company],
+            'email' => 'test@example.com',
+        ]);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+
+        $userNotification = new UserNotification();
+        $userNotification->setEvent('payment_made');
+        $userNotification->setUser($user);
+        $userNotification->setEmail(false);
+
+        $em->persist($userNotification);
+        $em->flush();
+
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->loginUser($user);
+
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
+
+        $emailCheckbox = static fn (string $event) => $crawler->filter(sprintf('input[name*="[%s][transports]"][value="%s"]', $event, NotificationSettingType::EMAIL_NOTIFICATION));
+
+        self::assertSame('checked', $emailCheckbox('recurring_invoice_created')->attr('checked'));
+        self::assertNull($emailCheckbox('payment_made')->attr('checked'));
     }
 
     public function testNotificationPreferencesDisplaysChannelSelections(): void

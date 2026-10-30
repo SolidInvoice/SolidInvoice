@@ -75,7 +75,15 @@ final class UserNotification extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
+        // Email is on by default for any event the user has not saved a preference for yet.
         $formData = [];
+
+        foreach ($this->notificationList as $event) {
+            $formData[$event] = [
+                'event' => $event,
+                'transports' => [NotificationSettingType::EMAIL_NOTIFICATION],
+            ];
+        }
 
         foreach ($this->userNotificationRepository->findBy(['user' => $this->getUser()]) as $userNotification) {
             $event = $userNotification->getEvent();

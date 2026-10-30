@@ -37,7 +37,9 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Notification\RecurringInvoiceCreatedNotification;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\StateMachine;
@@ -126,6 +128,11 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 
         $companySelector = new CompanySelector($registry);
 
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects(self::once())
+            ->method('sendNotification')
+            ->with(self::callback(static fn (RecurringInvoiceCreatedNotification $notification): bool => $notification->getParameters() === ['invoice' => $invoice, 'recurring_invoice' => $recurringInvoice]));
+
         $handler = new CreateInvoiceFromRecurringHandler(
             $invoiceManager,
             $invoiceStateMachine,
@@ -134,6 +141,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $clock,
             $recurringInvoiceRepository,
             $eventDispatcher,
+            $notificationManager,
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
@@ -212,6 +220,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $clock,
             $recurringInvoiceRepository,
             $eventDispatcher,
+            $this->createStub(NotificationManager::class),
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
@@ -256,6 +265,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
             $clock,
             $recurringInvoiceRepository,
             $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(NotificationManager::class),
         );
         $handler(new CreateInvoiceFromRecurring($recurringInvoiceId));
     }
