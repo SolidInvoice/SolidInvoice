@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Manager\ReceiptManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -33,6 +34,7 @@ use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,6 +45,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -76,6 +79,8 @@ final class Prepare
         private readonly RouterInterface $router,
         private readonly CompanySelector $companySelector,
         private readonly InvoiceRepository $invoiceRepository,
+        private readonly ReceiptManager $receiptManager,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
@@ -228,6 +233,19 @@ final class Prepare
 
             $event = new PaymentCompleteEvent($payment);
             $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
+
+            // Only a signed-in user gets the option, and it is on unless they untick it.
+            if (filter_var($data['send_receipt'] ?? false, FILTER_VALIDATE_BOOLEAN) && ! $this->emailVerificationGate->isGated()) {
+                try {
+                    $this->receiptManager->send($payment);
+                } catch (TransportExceptionInterface) {
+                    $session = $request->getSession();
+
+                    if ($session instanceof Session) {
+                        $session->getFlashBag()->add(FlashResponse::FLASH_DANGER, 'payment.receipt.flash.send_failed');
+                    }
+                }
+            }
 
             if (($response = $event->getResponse()) instanceof Response) {
                 return $response;

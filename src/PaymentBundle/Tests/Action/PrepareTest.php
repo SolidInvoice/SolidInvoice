@@ -19,11 +19,13 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Manager\ReceiptManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Action\Prepare;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -57,6 +59,8 @@ final class PrepareTest extends KernelTestCase
             $router,
             self::getContainer()->get(CompanySelector::class),
             $invoiceRepository,
+            self::getContainer()->get(ReceiptManager::class),
+            self::getContainer()->get(EmailVerificationGateInterface::class),
         );
 
         $action->setDoctrine(self::getContainer()->get('doctrine'));

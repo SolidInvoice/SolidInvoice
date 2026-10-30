@@ -1,0 +1,182 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% set invoice = payment.invoice %}
+{% set currency = payment.currencyCode %}
+
+{% block page_title %}
+    {{ 'payment.view.title'|trans({'%amount%': payment.totalAmount|formatCurrency(currency)}) }}
+{% endblock page_title %}
+
+{% block content %}
+{% set gated = is_email_verification_gated() %}
+<div class="doc-view-page">
+    <div class="doc-view-header">
+        <div class="doc-view-header-left">
+            <div class="doc-view-icon">
+                {{ ux_icon('tabler:cash', {width: 32, height: 32}) }}
+            </div>
+            <div class="doc-view-title-group">
+                <h1 class="doc-view-title">{{ 'payment.view.title'|trans({'%amount%': payment.totalAmount|formatCurrency(currency)}) }}</h1>
+                <div class="doc-view-meta">
+                    {{ payment_label(payment.status) }}
+                    {% if payment.completed is not empty %}
+                        <span class="doc-view-meta-item">
+                            {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
+                            {{ payment.completed|format_date('medium') }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if payment.hasReceipt %}
+            <div class="doc-view-header-actions">
+                {% if can_print_pdf() %}
+                    <a href="{{ path('_invoices_receipt_view', {'id': payment.id}) }}" target="_blank" class="btn btn-ghost">
+                        {{ ux_icon('tabler:file-type-pdf', {width: 18, height: 18}) }}
+                        {{ 'payment.receipt.action.view'|trans }}
+                    </a>
+                    <a href="{{ path('_invoices_receipt_download', {'id': payment.id}) }}" class="btn btn-ghost">
+                        {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                        {{ 'payment.receipt.action.download'|trans }}
+                    </a>
+                {% endif %}
+                {% if gated %}
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="{{ 'email_verification.flash.send_receipt'|trans }}">
+                        <button type="button" class="btn btn-primary" disabled>
+                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                            {{ 'payment.receipt.action.send'|trans }}
+                        </button>
+                    </span>
+                {% else %}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#send-receipt-modal">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ 'payment.receipt.action.send'|trans }}
+                    </button>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row row-cards">
+        <div class="col-lg-6">
+            <twig:Ui:Card title="{{ 'payment.details'|trans }}">
+                <div class="datagrid">
+                    {% if payment.hasReceipt %}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'payment.receipt.number'|trans }}</div>
+                            <div class="datagrid-content">{{ payment.receiptNumber }}</div>
+                        </div>
+                    {% endif %}
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">{{ 'payment.list.grid.amount'|trans }}</div>
+                        <div class="datagrid-content">{{ payment.totalAmount|formatCurrency(currency) }}</div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">{{ 'label.status'|trans }}</div>
+                        <div class="datagrid-content">{{ payment_label(payment.status) }}</div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">{{ 'payment.method.label'|trans }}</div>
+                        <div class="datagrid-content">{{ payment.method.name|default('-') }}</div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">{{ 'payment.receipt.payment_date'|trans }}</div>
+                        <div class="datagrid-content">{{ payment.completed ? payment.completed|format_datetime('medium', 'short') : '-' }}</div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">{{ 'payment.reference.label'|trans }}</div>
+                        <div class="datagrid-content">{{ payment.reference|default('-') }}</div>
+                    </div>
+                    {% if payment.notes is not empty %}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'payment.notes.label'|trans }}</div>
+                            <div class="datagrid-content">{{ payment.notes|nl2br }}</div>
+                        </div>
+                    {% endif %}
+                    {% if payment.message is not empty %}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'payment.list.grid.message'|trans }}</div>
+                            <div class="datagrid-content">{{ payment.message }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </twig:Ui:Card>
+        </div>
+
+        {% if invoice is not empty %}
+            <div class="col-lg-6">
+                <twig:Ui:Card title="{{ 'payment.invoice_details'|trans }}">
+                    <div class="datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'invoice.label'|trans }}</div>
+                            <div class="datagrid-content">
+                                <a href="{{ path('_invoices_view', {'id': invoice.id}) }}">{{ invoice.invoiceId }}</a>
+                            </div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'label.client'|trans }}</div>
+                            <div class="datagrid-content">
+                                <a href="{{ path('_clients_view', {'id': invoice.client.id}) }}">{{ invoice.client.name }}</a>
+                            </div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'invoice.date'|trans }}</div>
+                            <div class="datagrid-content">{{ invoice.invoiceDate ? invoice.invoiceDate|format_date('medium') : '-' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'label.status'|trans }}</div>
+                            <div class="datagrid-content">{{ invoice_label(invoice.status) }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'billing.total'|trans }}</div>
+                            <div class="datagrid-content">{{ invoice.total|formatCurrency(invoice.currency) }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{ 'invoice.balance'|trans }}</div>
+                            <div class="datagrid-content">{{ invoice.balance|formatCurrency(invoice.currency) }}</div>
+                        </div>
+                    </div>
+                </twig:Ui:Card>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if payment.hasReceipt and not gated %}
+    <twig:Ui:Modal id="send-receipt-modal" title="{{ 'payment.receipt.action.send'|trans }}" :centered="true">
+        {% if invoice.users|length > 0 %}
+            <p>{{ 'payment.receipt.modal.recipients'|trans }}</p>
+            <ul class="list-unstyled mb-0">
+                {% for contact in invoice.users %}
+                    <li>{{ contact.firstName }} {{ contact.lastName }} &lt;{{ contact.email }}&gt;</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted mb-0">{{ 'payment.receipt.flash.no_contacts'|trans }}</p>
+        {% endif %}
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'action.cancel'|trans }}</button>
+            {% if invoice.users|length > 0 %}
+                <form method="post" action="{{ path('_invoices_receipt_send', {'id': payment.id}) }}" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('send_receipt') }}">
+                    <button type="submit" class="btn btn-primary">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ 'payment.receipt.action.send'|trans }}
+                    </button>
+                </form>
+            {% endif %}
+        </twig:block>
+    </twig:Ui:Modal>
+{% endif %}
+{% endblock content %}

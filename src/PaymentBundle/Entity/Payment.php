@@ -277,6 +277,38 @@ class Payment extends BasePayment
         return $this;
     }
 
+    /**
+     * Only a settled payment against an invoice is something a client can be given a receipt for.
+     */
+    public function hasReceipt(): bool
+    {
+        return $this->status === PaymentStatus::Captured && $this->invoice instanceof Invoice;
+    }
+
+    /**
+     * Receipts are not stored, so the number is derived: the invoice number and this payment's place
+     * among the invoice's payments. ULIDs sort by creation and a payment is never deleted on its own,
+     * so the number does not change once given out.
+     */
+    public function getReceiptNumber(): string
+    {
+        if (! $this->invoice instanceof Invoice || ! $this->id instanceof Ulid) {
+            return (string) $this->id;
+        }
+
+        $position = 1;
+
+        foreach ($this->invoice->getPayments() as $payment) {
+            $id = $payment->getId();
+
+            if ($id instanceof Ulid && $id->compare($this->id) < 0) {
+                ++$position;
+            }
+        }
+
+        return sprintf('%s-%d', $this->invoice->getInvoiceId(), $position);
+    }
+
     public function getAmount(): Money
     {
         return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));
