@@ -36,6 +36,7 @@ final class ServerLogHandlerFactory
     {
         if (function_exists('frankenphp_log')) {
             $handler = new FrankenPhpHandler($level);
+            $handler->setFormatter(new FrankenPhpFormatter());
         } else {
             $handler = new StreamHandler('php://stderr', $level);
             $handler->setFormatter(new JsonFormatter());
