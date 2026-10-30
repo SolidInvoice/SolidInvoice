@@ -91,6 +91,32 @@ final class CurrencyScaleTest extends TestCase
     }
 
     /**
+     * Pins the half-even contract {@see \SolidInvoice\TaxBundle\Twig\Breakdown\RenderedTaxSummaryRow}
+     * leans on to reconcile the printed taxable base with the printed tax on an
+     * inclusive line (SOL-560): the two must agree to the unit, so this is the single
+     * place the rounding is defined.
+     *
+     * @throws MathException
+     */
+    #[DataProvider('toWholeMinorUnitsProvider')]
+    public function testToWholeMinorUnits(float | int | string $value, string $expected): void
+    {
+        self::assertTrue($this->scale->toWholeMinorUnits($value)->isEqualTo(BigDecimal::of($expected)));
+    }
+
+    /**
+     * @return iterable<string, array{float|int|string, string}>
+     */
+    public static function toWholeMinorUnitsProvider(): iterable
+    {
+        yield 'already whole' => [1200, '1200'];
+        yield 'rounds down (not a tie)' => ['1200.49', '1200'];
+        yield 'rounds up (not a tie)' => ['1200.51', '1201'];
+        yield 'half-even tie resolves down to the even neighbour' => ['2.5', '2'];
+        yield 'half-even tie resolves up to the even neighbour' => ['3.5', '4'];
+    }
+
+    /**
      * @return iterable<array{string, int}>
      */
     public static function subunitProvider(): iterable
