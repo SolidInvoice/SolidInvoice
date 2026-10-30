@@ -66,10 +66,8 @@ invoice:
     pay_now: 'Pay Now'
     payment_method: 'Payment (%method%)'
     recurring_created:
-        client: Client
         heading: 'A new recurring invoice has been created'
         message: 'An invoice has been automatically created from a recurring invoice.'
-        status: Status
         subject: 'Invoice %id% was created from a recurring invoice'
         view_invoice: 'View Invoice'
     reminder:

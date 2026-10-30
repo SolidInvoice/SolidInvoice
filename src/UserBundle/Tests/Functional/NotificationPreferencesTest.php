@@ -185,6 +185,25 @@ final class NotificationPreferencesTest extends WebTestCase
         self::assertNull($emailCheckbox('payment_made')->attr('checked'));
     }
 
+    public function testEveryEmailBoxIsCheckedForAUserWhoNeverSavedPreferences(): void
+    {
+        $user = UserFactory::createOne([
+            'companies' => [$this->company],
+            'email' => 'test@example.com',
+        ]);
+
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->loginUser($user);
+
+        $crawler = $client->request(Request::METHOD_GET, '/profile/notifications');
+
+        $emailCheckboxes = $crawler->filter(sprintf('input[value="%s"]', NotificationSettingType::EMAIL_NOTIFICATION));
+
+        self::assertGreaterThan(0, $emailCheckboxes->count());
+        self::assertCount($emailCheckboxes->count(), $emailCheckboxes->filter('[checked]'));
+    }
+
     public function testNotificationPreferencesDisplaysChannelSelections(): void
     {
         $user = UserFactory::createOne([

@@ -7,6 +7,9 @@
  # with this source code in the file LICENSE.
  #}
 
+{# Only notifications sent to users set notification_email; client emails share some of these templates. #}
+{% if notification_email ?? false %}
 {{ '-'|repeat(60) }}
 {{ 'notification.sent_for'|trans({'%company%': company_name()}, 'email') }}
 {{ 'notification.preferences'|trans({}, 'email') }}: {{ url('_profile_notifications') }}
+{% endif %}

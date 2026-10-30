@@ -58,7 +58,7 @@ class InvoiceOverdueNotification extends NotificationMessage
         if ($email instanceof NotificationEmail) {
             $email->textTemplate(self::TEXT_TEMPLATE);
             $email->htmlTemplate(self::HTML_TEMPLATE);
-            $email->context($this->getParameters());
+            $email->context($this->notificationEmailContext($this->getParameters()));
             $email->importance(NotificationEmail::IMPORTANCE_HIGH);
         }
 

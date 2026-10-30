@@ -86,6 +86,20 @@ abstract class NotificationMessage extends Notification implements EmailNotifica
         return $message;
     }
 
+    /**
+     * Email template context. The notification_email flag turns on the footer (company and a link to
+     * the user's notification preferences); some templates are shared with client-facing emails,
+     * which must not show it.
+     *
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    protected function notificationEmailContext(array $parameters): array
+    {
+        return $parameters + ['notification_email' => true];
+    }
+
     public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ChatMessage
     {
         return ChatMessage::fromNotification($this);

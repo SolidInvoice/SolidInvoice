@@ -32,7 +32,7 @@
 
     {% if invoice.client %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.recurring_created.client'|trans({}, 'email'), invoice.client.name) }}
+        {{ email.info_row('label.client'|trans, invoice.client.name) }}
     {% endif %}
 
     {{ email.spacer('xs') }}
@@ -44,7 +44,7 @@
     {% endif %}
 
     {{ email.spacer('xs') }}
-    {{ email.info_row('invoice.recurring_created.status'|trans({}, 'email'), invoice.status.label) }}
+    {{ email.info_row('label.status'|trans, invoice.status.label) }}
 
     {# Line items #}
     {% if invoice.lines|length > 0 %}
