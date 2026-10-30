@@ -35,7 +35,7 @@ final class RecurringInvoiceCreatedNotificationTest extends KernelTestCase
 
         $twig = self::getContainer()->get(Environment::class);
         $router = self::getContainer()->get(UrlGeneratorInterface::class);
-        $parameters = ['invoice' => $invoice];
+        $parameters = ['invoice' => $invoice, 'notification_email' => true];
 
         foreach ([RecurringInvoiceCreatedNotification::HTML_TEMPLATE, RecurringInvoiceCreatedNotification::TEXT_TEMPLATE] as $template) {
             $output = $twig->render($template, $parameters);

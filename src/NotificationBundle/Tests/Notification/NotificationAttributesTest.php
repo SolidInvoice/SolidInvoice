@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
+use SolidInvoice\InvoiceBundle\Notification\RecurringInvoiceCreatedNotification;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification;
@@ -28,6 +29,7 @@ use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 #[CoversClass(InvoiceStatusNotification::class)]
 #[CoversClass(PaymentReceivedNotification::class)]
 #[CoversClass(QuoteStatusNotification::class)]
+#[CoversClass(RecurringInvoiceCreatedNotification::class)]
 final class NotificationAttributesTest extends TestCase
 {
     #[DataProvider('notificationClassProvider')]
@@ -128,6 +130,17 @@ final class NotificationAttributesTest extends TestCase
         self::assertSame(NotificationCategory::QUOTE, $attribute->category);
     }
 
+    public function testRecurringInvoiceCreatedNotificationMetadata(): void
+    {
+        $attribute = $this->getNotificationAttribute(RecurringInvoiceCreatedNotification::class);
+
+        self::assertSame('recurring_invoice_created', $attribute->name);
+        self::assertSame('notifications.events.recurring_invoice_created.title', $attribute->title);
+        self::assertSame('notifications.events.recurring_invoice_created.description', $attribute->description);
+        self::assertSame('tabler:repeat', $attribute->icon);
+        self::assertSame(NotificationCategory::INVOICE, $attribute->category);
+    }
+
     /**
      * @return iterable<string, array<string>>
      */
@@ -137,6 +150,7 @@ final class NotificationAttributesTest extends TestCase
         yield 'InvoiceStatusNotification' => [InvoiceStatusNotification::class];
         yield 'PaymentReceivedNotification' => [PaymentReceivedNotification::class];
         yield 'QuoteStatusNotification' => [QuoteStatusNotification::class];
+        yield 'RecurringInvoiceCreatedNotification' => [RecurringInvoiceCreatedNotification::class];
     }
 
     private function getNotificationAttribute(string $class): AsNotification

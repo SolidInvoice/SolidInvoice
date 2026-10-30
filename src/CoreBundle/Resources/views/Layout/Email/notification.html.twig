@@ -10,6 +10,9 @@
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
 {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
+{# Only notifications sent to users set notification_email; client emails share some of these templates. #}
 {%- block footer -%}
-    {{ email.footer(false, true) }}
+    {% if notification_email ?? false %}
+        {{ email.footer(false, true) }}
+    {% endif %}
 {%- endblock footer -%}

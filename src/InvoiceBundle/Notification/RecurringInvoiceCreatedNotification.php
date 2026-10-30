@@ -27,8 +27,8 @@ use Twig\Environment;
  */
 #[AsNotification(
     name: self::EVENT,
-    title: 'Recurring Invoice Created',
-    description: 'When a new invoice is automatically created from a recurring invoice',
+    title: 'notifications.events.recurring_invoice_created.title',
+    description: 'notifications.events.recurring_invoice_created.description',
     icon: 'tabler:repeat',
     category: NotificationCategory::INVOICE,
 )]
@@ -67,7 +67,7 @@ class RecurringInvoiceCreatedNotification extends NotificationMessage
         if ($email instanceof NotificationEmail) {
             $email->textTemplate(self::TEXT_TEMPLATE);
             $email->htmlTemplate(self::HTML_TEMPLATE);
-            $email->context($this->getParameters());
+            $email->context($this->notificationEmailContext($this->getParameters()));
         }
 
         return $message;

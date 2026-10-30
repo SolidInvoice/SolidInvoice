@@ -1343,6 +1343,9 @@ notifications:
         quote_status_changed:
             description: 'When a quote status changes (draft, sent, accepted, etc.)'
             title: 'Quote Status Changed'
+        recurring_invoice_created:
+            description: 'When an invoice is created automatically from a recurring invoice'
+            title: 'Recurring Invoice Created'
     flash:
         saved: 'Notification saved!'
     manage_integrations: 'Manage Integrations'
