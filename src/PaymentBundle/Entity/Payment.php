@@ -165,10 +165,19 @@ class Payment extends BasePayment
     #[Groups(['searchable', 'payment_api:read'])]
     private ?string $notes = null;
 
+    #[ORM\Column(name: 'receipt_sent_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $receiptSentAt = null;
+
     /**
      * Not persisted: what recording this payment added to the client's credit.
      */
     private ?BigNumber $creditAdded = null;
+
+    /**
+     * Not persisted: whoever recorded the payment chose whether to send a receipt. Null follows the
+     * company's automatic receipt setting.
+     */
+    private ?bool $sendReceipt = null;
 
     public function getId(): ?Ulid
     {
@@ -307,6 +316,30 @@ class Payment extends BasePayment
         }
 
         return sprintf('%s-%d', $this->invoice->getInvoiceId(), $position);
+    }
+
+    public function getReceiptSentAt(): ?DateTimeImmutable
+    {
+        return $this->receiptSentAt;
+    }
+
+    public function setReceiptSentAt(?DateTimeImmutable $receiptSentAt): self
+    {
+        $this->receiptSentAt = $receiptSentAt;
+
+        return $this;
+    }
+
+    public function getSendReceipt(): ?bool
+    {
+        return $this->sendReceipt;
+    }
+
+    public function setSendReceipt(?bool $sendReceipt): self
+    {
+        $this->sendReceipt = $sendReceipt;
+
+        return $this;
     }
 
     public function getAmount(): Money

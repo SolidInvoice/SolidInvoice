@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 
+use Brick\Math\BigInteger;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,14 +29,20 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Manager\ReceiptManager;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\PaymentBundle\Config\ConfigProvider;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
+use SolidInvoice\PaymentBundle\Event\PaymentEvents;
+use SolidInvoice\PaymentBundle\Manager\ManualPaymentManager;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
@@ -190,6 +197,38 @@ final class PaymentReceiptTest extends WebTestCase
         $this->capture(false);
 
         $this->mailer()->assertNoEmailSent();
+    }
+
+    public function testARecordedPaymentSendsAReceiptAutomatically(): void
+    {
+        $payment = self::getContainer()->get(ManualPaymentManager::class)->record($this->invoice, BigInteger::of(10000), method: 'receipt_test');
+
+        $this->mailer()->assertSentEmailCount(1);
+        $this->mailer()->sentEmails()->first()->assertTo('jane@example.com')->assertHasFile('receipt_INV-2024-001-1.pdf');
+        self::assertNotNull($payment->getReceiptSentAt());
+    }
+
+    public function testNoReceiptIsSentAutomaticallyWhenTheSettingIsOff(): void
+    {
+        self::getContainer()->get(SystemConfig::class)->set(ConfigProvider::RECEIPT_AUTO_SEND, '0');
+
+        self::getContainer()->get(ManualPaymentManager::class)->record($this->invoice, BigInteger::of(10000), method: 'receipt_test');
+
+        $this->mailer()->assertNoEmailSent();
+
+        $crawler = $this->browser->request(Request::METHOD_GET, '/payments/create/' . $this->invoice->getUuid());
+        self::assertCount(0, $crawler->filter('#payment_send_receipt[checked]'), 'The capture form follows the setting.');
+    }
+
+    public function testACompletionSeenTwiceSendsOneReceipt(): void
+    {
+        $payment = $this->createPayment(PaymentStatus::Captured, 50000);
+        $dispatcher = self::getContainer()->get(EventDispatcherInterface::class);
+
+        $dispatcher->dispatch(new PaymentCompleteEvent($payment), PaymentEvents::PAYMENT_COMPLETE);
+        $dispatcher->dispatch(new PaymentCompleteEvent($payment), PaymentEvents::PAYMENT_COMPLETE);
+
+        $this->mailer()->assertSentEmailCount(1);
     }
 
     public function testTheReceiptPdfMatchesTheSnapshot(): void
