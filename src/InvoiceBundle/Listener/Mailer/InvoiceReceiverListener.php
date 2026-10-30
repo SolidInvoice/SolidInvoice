@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use function array_map;
@@ -24,13 +24,14 @@ use function in_array;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceReceiverListenerTest
  */
-class InvoiceReceiverListener implements EventSubscriberInterface
+class InvoiceReceiverListener
 {
     public function __construct(
         private readonly SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         /** @var InvoiceEmail $message */
@@ -53,12 +54,5 @@ class InvoiceReceiverListener implements EventSubscriberInterface
         if ('' !== $bcc && ! in_array($bcc, array_map(static fn (Address $address): string => $address->getAddress(), $message->getBcc()), true)) {
             $message->addBcc($bcc);
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }

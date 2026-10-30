@@ -16,7 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
 /**
@@ -26,13 +26,14 @@ use Symfony\Component\Mailer\Event\MessageEvent;
  *
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceEmailTemplateListenerTest
  */
-readonly class InvoiceEmailTemplateListener implements EventSubscriberInterface
+readonly class InvoiceEmailTemplateListener
 {
     public function __construct(
         private BillingTemplateResolver $templateResolver,
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class, priority: 100)]
     public function __invoke(MessageEvent $event): void
     {
         $message = $event->getMessage();
@@ -46,15 +47,5 @@ readonly class InvoiceEmailTemplateListener implements EventSubscriberInterface
         if (null !== $template) {
             $message->htmlTemplate($template);
         }
-    }
-
-    /**
-     * @return array<string, array{string, int}>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => ['__invoke', 100],
-        ];
     }
 }

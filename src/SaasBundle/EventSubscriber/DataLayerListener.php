@@ -22,7 +22,7 @@ use SolidInvoice\SaasBundle\Analytics\DataLayerQueue;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Enum\SignupMethod;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use function json_encode;
@@ -37,7 +37,7 @@ use function str_replace;
  *
  * @see \SolidInvoice\SaasBundle\Tests\Functional\DataLayerEventsTest
  */
-final readonly class DataLayerListener implements EventSubscriberInterface
+final readonly class DataLayerListener
 {
     private const string SIGN_UP_SENT = 'saas.data_layer_sign_up_sent';
 
@@ -47,11 +47,7 @@ final readonly class DataLayerListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [ResponseEvent::class => 'onResponse'];
-    }
-
+    #[AsEventListener(event: ResponseEvent::class)]
     public function onResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();

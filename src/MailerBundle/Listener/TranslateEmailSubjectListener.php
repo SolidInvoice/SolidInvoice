@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MailerBundle\Listener;
 
 use SolidInvoice\MailerBundle\Email\MessageSubjectParametersInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,13 +25,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @see \SolidInvoice\MailerBundle\Tests\Listener\TranslateEmailSubjectListenerTest
  */
-final readonly class TranslateEmailSubjectListener implements EventSubscriberInterface
+final readonly class TranslateEmailSubjectListener
 {
     public function __construct(
         private TranslatorInterface $translator,
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class, priority: -100)]
     public function __invoke(MessageEvent $event): void
     {
         $message = $event->getMessage();
@@ -43,13 +44,5 @@ final readonly class TranslateEmailSubjectListener implements EventSubscriberInt
         $parameters = $message instanceof MessageSubjectParametersInterface ? $message->getMessageSubjectParameters() : [];
 
         $message->subject($this->translator->trans($subject, $parameters, 'email'));
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        // After the listeners that fill in a subject (e.g. InvoiceSubjectListener).
-        return [
-            MessageEvent::class => ['__invoke', -100],
-        ];
     }
 }

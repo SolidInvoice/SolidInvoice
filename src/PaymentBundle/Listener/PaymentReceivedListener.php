@@ -17,25 +17,16 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class PaymentReceivedListener implements EventSubscriberInterface
+class PaymentReceivedListener
 {
-    /**
-     * @return string[]
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            PaymentEvents::PAYMENT_COMPLETE => 'onPaymentCapture',
-        ];
-    }
-
     public function __construct(
         private readonly NotificationManager $notification
     ) {
     }
 
+    #[AsEventListener(event: PaymentEvents::PAYMENT_COMPLETE)]
     public function onPaymentCapture(PaymentCompleteEvent $event): void
     {
         $this->notification->sendNotification(new PaymentReceivedNotification(['payment' => $event->getPayment()]));

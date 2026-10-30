@@ -21,21 +21,11 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 
-class InvoicePaidListener implements EventSubscriberInterface
+class InvoicePaidListener
 {
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.invoice.entered.paid' => 'onInvoicePaid',
-        ];
-    }
-
     public function __construct(
         private readonly ManagerRegistry $registry,
     ) {
@@ -48,6 +38,7 @@ class InvoicePaidListener implements EventSubscriberInterface
      *
      * @throws MathException
      */
+    #[AsEventListener(event: 'workflow.invoice.entered.paid')]
     public function onInvoicePaid(Event $event): void
     {
         /** @var Invoice $invoice */

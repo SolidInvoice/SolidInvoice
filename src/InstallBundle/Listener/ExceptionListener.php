@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Listener;
 
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -22,21 +22,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ExceptionListener implements EventSubscriberInterface
+class ExceptionListener
 {
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::EXCEPTION => 'onKernelException',
-        ];
-    }
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly RouterInterface $router
     ) {
     }
 
+    #[AsEventListener(event: KernelEvents::EXCEPTION)]
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();

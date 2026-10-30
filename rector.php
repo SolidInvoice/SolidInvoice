@@ -29,7 +29,6 @@ use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRe
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Transform\Rector\Attribute\AttributeKeyToClassConstFetchRector;
-use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use Rector\ValueObject\PhpVersion;
 use SolidWorx\Platform\Tools\Rector\Set\SolidWorxSetList;
 use Zenstruck\Foundry\Utils\Rector\FoundrySetList;
@@ -107,11 +106,6 @@ return RectorConfig::configure()
 
         // This makes the exception names too long and is not a meaningful changerector
         CatchExceptionNameMatchingTypeRector::class,
-
-        DeclareStrictTypesRector::class => [
-            // This file is auto-generated, which removes the strict types declare every time
-            'config/reference.php',
-        ],
 
         RemoveNewArrayCollectionOutsideConstructorRector::class => [
             // This file uses __clone() which must use a new array collection
