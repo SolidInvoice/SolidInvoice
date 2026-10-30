@@ -254,7 +254,10 @@
 
                     {% if show_preferences %}
                         <p style="font-size: 14px; color: #626976; margin: 8px 0 0 0; Margin: 8px 0 0 0;">
-                            <a href="{{ url('_settings_notifications') }}" target="_blank" style="color: #206bc4; text-decoration: none;">
+                            {{ 'notification.sent_for'|trans({'%company%': company_name()}, 'email') }}
+                        </p>
+                        <p style="font-size: 14px; color: #626976; margin: 8px 0 0 0; Margin: 8px 0 0 0;">
+                            <a href="{{ url('_profile_notifications') }}" target="_blank" style="color: #206bc4; text-decoration: none;">
                                 {{ 'notification.preferences'|trans({}, 'email') }}
                             </a>
                         </p>

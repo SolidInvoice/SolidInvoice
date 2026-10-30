@@ -20,3 +20,4 @@
 
 {{ '-'|repeat(60) }}
 {{ 'invoice.status_change.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

@@ -24,10 +24,13 @@ use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Notification\RecurringInvoiceCreatedNotification;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Throwable;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
@@ -43,6 +46,7 @@ final readonly class CreateInvoiceFromRecurringHandler
         private ClockInterface $clock,
         private RecurringInvoiceRepository $recurringInvoiceRepository,
         private EventDispatcherInterface $eventDispatcher,
+        private NotificationManager $notificationManager,
     ) {
     }
 
@@ -69,6 +73,16 @@ final readonly class CreateInvoiceFromRecurringHandler
             // Every other path that publishes an invoice mails it too. This is the event
             // InvoiceMailerListener sends on, and nothing else dispatched it.
             $this->eventDispatcher->dispatch(new InvoiceEvent($newInvoice), InvoiceEvents::INVOICE_POST_ACCEPT);
+
+            try {
+                $this->notificationManager->sendNotification(new RecurringInvoiceCreatedNotification([
+                    'invoice' => $newInvoice,
+                    'recurring_invoice' => $invoice,
+                ]));
+            } catch (Throwable $e) {
+                // The invoice is already created; a failed notification must not undo or retry that.
+                $this->logger->error('Failed to send recurring invoice created notification', ['exception' => $e]);
+            }
         } catch (MathException | InvalidTransitionException | JsonException $e) {
             $this->logger->error('An error occurred while creating invoice from recurring', ['exception' => $e]);
         } finally {

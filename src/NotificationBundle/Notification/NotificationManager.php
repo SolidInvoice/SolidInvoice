@@ -15,6 +15,9 @@ namespace SolidInvoice\NotificationBundle\Notification;
 
 use Psr\Log\LoggerInterface;
 use ReflectionObject;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
@@ -26,6 +29,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationManager
@@ -43,6 +47,8 @@ class NotificationManager
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,
         private readonly TranslatorInterface $translator,
+        private readonly CompanySelectorInterface $companySelector,
+        private readonly CompanyRepository $companyRepository,
     ) {
     }
 
@@ -63,10 +69,10 @@ class NotificationManager
 
         $message->subject($this->translator->trans($message->getSubjectKey(), $message->getSubjectParameters(), 'email'));
 
-        $userNotifications = $this->userNotificationRepository->findBy(['event' => $event]);
-        $hasTransportFailure = false;
+        $recipients = [];
 
-        foreach ($userNotifications as $userNotification) {
+        foreach ($this->userNotificationRepository->findBy(['event' => $event]) as $userNotification) {
+            $user = $userNotification->getUser();
             $channels = [];
 
             if ($userNotification->isEmail()) {
@@ -89,10 +95,31 @@ class NotificationManager
                 );
             }
 
+            $recipients[$user->getId()->toString()] = [$user, $channels];
+        }
+
+        // Email is on by default: a user who never saved a preference for this event gets it by email.
+        // Saving the preferences form writes a row for every event, so "off" is a row with no channels.
+        $companyId = $this->companySelector->getCompany();
+        $company = $companyId instanceof Ulid ? $this->companyRepository->find($companyId) : null;
+
+        if ($company instanceof Company) {
+            foreach ($company->getUsers() as $user) {
+                $recipients[$user->getId()->toString()] ??= [$user, ['email']];
+            }
+        }
+
+        $hasTransportFailure = false;
+
+        foreach ($recipients as [$user, $channels]) {
+            if ($channels === []) {
+                continue;
+            }
+
             $message->channels($channels);
 
             try {
-                $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
+                $this->notifier->send($message, new Recipient($user->getEmail(), (string) $user->getMobile()));
             } catch (TransportExceptionInterface $e) {
                 $this->logger->error('Failed to send notification: ' . $e->getMessage(), [
                     'exception' => $e,

@@ -37,3 +37,4 @@
 {{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url("_view_invoice", {"id" : invoice.id}) }}
 
 {{ 'invoice.reminder_stopped.footer'|trans({}, 'email') }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

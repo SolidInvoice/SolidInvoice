@@ -1,0 +1,12 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ '-'|repeat(60) }}
+{{ 'notification.sent_for'|trans({'%company%': company_name()}, 'email') }}
+{{ 'notification.preferences'|trans({}, 'email') }}: {{ url('_profile_notifications') }}

@@ -65,6 +65,13 @@ invoice:
         invoice_number: 'Invoice Number'
     pay_now: 'Pay Now'
     payment_method: 'Payment (%method%)'
+    recurring_created:
+        client: Client
+        heading: 'A new recurring invoice has been created'
+        message: 'An invoice has been automatically created from a recurring invoice.'
+        status: Status
+        subject: 'Invoice %id% was created from a recurring invoice'
+        view_invoice: 'View Invoice'
     reminder:
         amount_due: 'Amount Due'
         closing:
@@ -138,6 +145,7 @@ layout:
     powered_by_cta: 'Send your own invoices free'
 notification:
     preferences: 'Notification Preferences'
+    sent_for: 'You are receiving this notification for %company%.'
 onboarding:
     coupon:
         desc: '%percent%% off your first three months. Enter this code at checkout before %date%, when your trial ends.'

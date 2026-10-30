@@ -8,3 +8,8 @@
  #}
 
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block footer -%}
+    {{ email.footer(false, true) }}
+{%- endblock footer -%}
