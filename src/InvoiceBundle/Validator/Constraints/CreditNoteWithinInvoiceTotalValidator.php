@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Validator\Constraints;
 
+use Brick\Math\Exception\MathException;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\CreditNoteStatus;
@@ -29,9 +31,13 @@ final class CreditNoteWithinInvoiceTotalValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly CreditNoteRepository $creditNoteRepository,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (! $constraint instanceof CreditNoteWithinInvoiceTotal) {
@@ -53,6 +59,12 @@ final class CreditNoteWithinInvoiceTotalValidator extends ConstraintValidator
         if (! $invoice instanceof Invoice) {
             return;
         }
+
+        // InvoiceSaveListener computes totals from the lines at prePersist/preUpdate, which runs
+        // after validation, so $value->getTotal() is still unset here. Project from the real
+        // total instead of trusting a client-supplied one — otherwise the cap below is checked
+        // against a number nobody is actually about to persist.
+        $this->totalCalculator->calculateTotals($value);
 
         $creditedByOthers = $this->creditNoteRepository->getTotalCreditedForInvoice($invoice, $value);
         $projectedTotal = $creditedByOthers->toBigDecimal()->plus($value->getTotal());
