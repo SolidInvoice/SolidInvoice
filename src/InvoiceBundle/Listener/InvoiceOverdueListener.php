@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceOverdueNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 use Throwable;
 
@@ -28,7 +28,7 @@ use Throwable;
  *
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\InvoiceOverdueListenerTest
  */
-final readonly class InvoiceOverdueListener implements EventSubscriberInterface
+final readonly class InvoiceOverdueListener
 {
     public function __construct(
         private NotificationManager $notificationManager,
@@ -36,18 +36,12 @@ final readonly class InvoiceOverdueListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.invoice.entered.overdue' => 'onInvoiceOverdue',
-        ];
-    }
-
     /**
      * @template TSubject of object
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.invoice.entered.overdue')]
     public function onInvoiceOverdue(Event $event): void
     {
         $invoice = $event->getSubject();

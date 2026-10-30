@@ -17,29 +17,20 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class RecurringInvoiceCreateListener implements EventSubscriberInterface
+class RecurringInvoiceCreateListener
 {
     public function __construct(
         private readonly WorkflowInterface $recurringInvoiceStateMachine
     ) {
     }
 
-    /**
-     * @return array<string, list<list<string|int>>>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::VIEW => [['setRecurringInvoiceStatus', EventPriorities::PRE_WRITE]],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::VIEW, priority: EventPriorities::PRE_WRITE)]
     public function setRecurringInvoiceStatus(ViewEvent $event): void
     {
         $recurringInvoice = $event->getControllerResult();

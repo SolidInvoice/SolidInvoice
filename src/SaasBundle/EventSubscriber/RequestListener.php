@@ -31,7 +31,7 @@ use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +49,7 @@ use function in_array;
 /**
  * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RequestListenerTest
  */
-final readonly class RequestListener implements EventSubscriberInterface
+final readonly class RequestListener
 {
     private const array SKIPPED_ROUTES = [
         // Always leave a way out of a blocking page. This matters most in
@@ -102,14 +102,7 @@ final readonly class RequestListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            RequestEvent::class => 'onRequest',
-            ResponseEvent::class => 'onResponse',
-        ];
-    }
-
+    #[AsEventListener(event: RequestEvent::class)]
     public function onRequest(RequestEvent $event): void
     {
         $subscription = $this->getSubscription($event->getRequest());
@@ -193,6 +186,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         }
     }
 
+    #[AsEventListener(event: ResponseEvent::class)]
     public function onResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();

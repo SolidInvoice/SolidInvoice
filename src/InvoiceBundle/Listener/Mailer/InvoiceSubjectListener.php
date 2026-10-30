@@ -15,16 +15,17 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
-class InvoiceSubjectListener implements EventSubscriberInterface
+class InvoiceSubjectListener
 {
     public function __construct(
         private readonly SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         $message = $event->getMessage();
@@ -32,12 +33,5 @@ class InvoiceSubjectListener implements EventSubscriberInterface
         if ($message instanceof InvoiceEmail && null === $message->getSubject()) {
             $message->subject(\str_replace('{id}', (string) $message->getInvoice()->getInvoiceId(), $this->config->get('invoice/email_subject')));
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }
