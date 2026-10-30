@@ -74,21 +74,26 @@ class NotificationManager
         $message->subject($this->translator->trans($message->getSubjectKey(), $message->getSubjectParameters(), 'email'));
 
         $companyId = $this->companySelector->getCompany();
-        $company = $companyId instanceof Ulid ? $this->companyRepository->find($companyId) : null;
+
+        // Recipients are a company's users, so there must be one. Without it the company filter is
+        // off and the preferences below would be read across every tenant.
+        if (! $companyId instanceof Ulid) {
+            $this->logger->warning('Notification not sent: no company is selected', ['event' => $event]);
+
+            return;
+        }
 
         // A disabled company sends nothing to anyone. CompanyEnabledFilter already hides it, so a
         // selected company that no longer loads counts as disabled too.
-        if ($companyId instanceof Ulid && (! $company instanceof Company || ! $company->isEnabled())) {
+        $company = $this->companyRepository->find($companyId);
+
+        if (! $company instanceof Company || ! $company->isEnabled()) {
             return;
         }
 
         $recipients = [];
 
-        foreach ($this->userNotificationRepository->findBy(['event' => $event]) as $userNotification) {
-            if (! $userNotification->getCompany()->isEnabled()) {
-                continue;
-            }
-
+        foreach ($this->userNotificationRepository->findBy(['event' => $event, 'company' => $company]) as $userNotification) {
             $user = $userNotification->getUser();
             $channels = [];
 
@@ -117,10 +122,8 @@ class NotificationManager
 
         // Email is on by default: a user who never saved a preference for this event gets it by email.
         // Saving the preferences form writes a row for every event, so "off" is a row with no channels.
-        if ($company instanceof Company) {
-            foreach ($company->getUsers() as $user) {
-                $recipients[$user->getId()->toString()] ??= [$user, ['email']];
-            }
+        foreach ($company->getUsers() as $user) {
+            $recipients[$user->getId()->toString()] ??= [$user, ['email']];
         }
 
         $hasTransportFailure = false;

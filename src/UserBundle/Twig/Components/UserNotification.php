@@ -106,15 +106,6 @@ final class UserNotification extends AbstractController
     }
 
     /**
-     * @return list<UserNotificationEntity>
-     */
-    #[ExposeInTemplate]
-    public function allNotifications(): array
-    {
-        return $this->userNotificationRepository->findAll();
-    }
-
-    /**
      * @return list<TransportSetting>
      */
     #[ExposeInTemplate]

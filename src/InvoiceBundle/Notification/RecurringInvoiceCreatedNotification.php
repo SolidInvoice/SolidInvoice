@@ -34,7 +34,7 @@ use Twig\Environment;
 )]
 class RecurringInvoiceCreatedNotification extends NotificationMessage
 {
-    public const EVENT = 'recurring_invoice_created';
+    public const string EVENT = 'recurring_invoice_created';
 
     final public const string HTML_TEMPLATE = '@SolidInvoiceInvoice/Email/recurring_created.html.twig';
 

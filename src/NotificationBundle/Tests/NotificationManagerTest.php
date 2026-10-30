@@ -578,6 +578,43 @@ final class NotificationManagerTest extends KernelTestCase
         self::assertSame(['notification.send_failed'], $session->getFlashBag()->get('error'));
     }
 
+    public function testNothingIsSentWithoutACompany(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $user = new User()
+            ->setEmail($this->getFaker()->email())
+            ->setPassword('password')
+            ->setEnabled(true)
+            ->setVerified(true)
+            ->addCompany($this->company);
+
+        $userNotification = new UserNotification()
+            ->setEvent('test_event')
+            ->setEmail(true)
+            ->setUser($user);
+
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($userNotification);
+        $em->flush();
+        $em->clear();
+
+        // With no company selected the company filter is off, so preferences would be read across tenants.
+        self::getContainer()->get(CompanySelector::class)->reset();
+
+        $this->notifier
+            ->expects('send')
+            ->never();
+
+        $this->notificationManager->sendNotification($class);
+    }
+
     public function testDisabledUserIsSkipped(): void
     {
         $this->assertCompanyUserIsSkipped(static fn (User $user): User => $user->setEnabled(false));

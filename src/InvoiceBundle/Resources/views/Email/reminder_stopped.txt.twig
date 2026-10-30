@@ -34,7 +34,7 @@
 - {{ 'invoice.reminder_stopped.actions.payment_plan'|trans({}, 'email') }}
 - {{ 'invoice.reminder_stopped.actions.services'|trans({}, 'email') }}
 
-{{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url("_view_invoice", {"id" : invoice.id}) }}
+{{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url("_invoices_view", {"id" : invoice.id}) }}
 
 {{ 'invoice.reminder_stopped.footer'|trans({}, 'email') }}
 {{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}
