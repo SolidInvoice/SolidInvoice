@@ -36,7 +36,7 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $repo = $this->em->getRepository(Credit::class);
 
-        $credit = $repo->addCredit($client->_real(), 500);
+        $credit = $repo->addCredit($client, 500);
 
         self::assertTrue(BigInteger::of(500)->isEqualTo($credit->getValue()));
     }
@@ -50,8 +50,9 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $repo = $this->em->getRepository(Credit::class);
 
-        $repo->addCredit($client->_real(), 300);
-        $credit = $repo->addCredit($client->_real(), 200);
+        $repo->addCredit($client, 300);
+
+        $credit = $repo->addCredit($client, 200);
 
         self::assertTrue(BigInteger::of(500)->isEqualTo($credit->getValue()));
     }
@@ -65,8 +66,9 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $repo = $this->em->getRepository(Credit::class);
 
-        $repo->addCredit($client->_real(), 1000);
-        $credit = $repo->deductCredit($client->_real(), 400);
+        $repo->addCredit($client, 1000);
+
+        $credit = $repo->deductCredit($client, 400);
 
         self::assertTrue(BigInteger::of(600)->isEqualTo($credit->getValue()));
     }
@@ -80,8 +82,9 @@ final class CreditRepositoryTest extends KernelTestCase
 
         $repo = $this->em->getRepository(Credit::class);
 
-        $repo->addCredit($client->_real(), 500);
-        $credit = $repo->deductCredit($client->_real(), 500);
+        $repo->addCredit($client, 500);
+
+        $credit = $repo->deductCredit($client, 500);
 
         self::assertTrue(BigInteger::zero()->isEqualTo($credit->getValue()));
     }
@@ -96,7 +99,7 @@ final class CreditRepositoryTest extends KernelTestCase
         $this->expectException(InsufficientCreditException::class);
 
         $this->em->getRepository(Credit::class)
-            ->deductCredit($client->_real(), 100);
+            ->deductCredit($client, 100);
     }
 
     public function testDeductCreditThrowsWhenDeductionExceedsBalance(): void
@@ -107,10 +110,10 @@ final class CreditRepositoryTest extends KernelTestCase
         ]);
 
         $repo = $this->em->getRepository(Credit::class);
-        $repo->addCredit($client->_real(), 200);
+        $repo->addCredit($client, 200);
 
         $this->expectException(InsufficientCreditException::class);
 
-        $repo->deductCredit($client->_real(), 300);
+        $repo->deductCredit($client, 300);
     }
 }
