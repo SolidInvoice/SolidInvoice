@@ -41,6 +41,7 @@ use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -54,6 +55,9 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Entity\PaymentTest
+ */
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'invoice' => 'exact', 'client' => 'exact'])]
@@ -375,7 +379,8 @@ class Payment extends BasePayment
     #[SerializedName('total')]
     public function getSearchableTotal(): float
     {
-        return (int) $this->getTotalAmount() / 100;
+        // The search index only filters and ranks on this, so a float is precise enough.
+        return new CurrencyScale()->toMajorUnit((int) $this->getTotalAmount(), new Currency((string) $this->getCurrencyCode()));
     }
 
     #[Groups(['searchable', 'payment_api:read'])]
