@@ -38,6 +38,7 @@ Changelog
 
 ### Fixes
 
+* The MCP server no longer fails with a server error on every request when SolidInvoice runs on its built-in FrankenPHP server. Some log entries could not be written to the server log, which failed the request
 * Trimmed internal payment method fields from API payment responses
 * Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
 * Recording a second payment against an invoice through the API no longer fails with a "circular reference" error
