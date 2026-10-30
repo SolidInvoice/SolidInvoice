@@ -20,7 +20,7 @@
 {% if invoice.due -%}
 {{ 'invoice.due'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
 {% endif -%}
-{{ 'label.status'|trans }}: {{ invoice.status.label }}
+{{ 'label.status'|trans }}: {{ invoice.status.label|trans }}
 {% if invoice.lines|length > 0 %}
 
 {{ '-'|repeat(60) }}
@@ -34,7 +34,7 @@
 {% if invoice.tax.positive -%}
 {{ 'invoice.tax'|trans({}, 'email') }}: {{ invoice.tax|formatCurrency(invoice.currency) }}
 {% endif -%}
-{% if invoice.discount.type is not empty -%}
+{% if invoice.hasDiscount -%}
 {{ 'invoice.discount'|trans({}, 'email') }}: -{{ discount(invoice)|formatCurrency(invoice.currency) }}
 {% endif -%}
 {{ 'invoice.total'|trans({}, 'email') }}: {{ invoice.total|formatCurrency(invoice.currency) }}

@@ -44,7 +44,7 @@
     {% endif %}
 
     {{ email.spacer('xs') }}
-    {{ email.info_row('label.status'|trans, invoice.status.label) }}
+    {{ email.info_row('label.status'|trans, invoice.status.label|trans) }}
 
     {# Line items #}
     {% if invoice.lines|length > 0 %}
@@ -68,7 +68,7 @@
         {{ email.info_row('invoice.tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.currency)) }}
     {% endif %}
 
-    {% if invoice.discount.type is not empty %}
+    {% if invoice.hasDiscount %}
         {{ email.spacer('xs') }}
         {{ email.info_row('invoice.discount'|trans({}, 'email'), '-' ~ discount(invoice)|formatCurrency(invoice.currency)) }}
     {% endif %}

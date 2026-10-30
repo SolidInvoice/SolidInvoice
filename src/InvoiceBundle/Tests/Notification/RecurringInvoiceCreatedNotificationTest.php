@@ -18,7 +18,9 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Notification\RecurringInvoiceCreatedNotification;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -45,7 +47,23 @@ final class RecurringInvoiceCreatedNotificationTest extends KernelTestCase
             self::assertStringContainsString($router->generate('_invoices_view', ['id' => $invoice->getId()]), (string) $output, $template);
             self::assertStringContainsString($router->generate('_profile_notifications'), (string) $output, $template);
             self::assertStringContainsString('You are receiving this notification for', (string) $output, $template);
+            self::assertStringNotContainsString('status.' . $invoice->getStatus()->value, (string) $output, $template . ' shows the raw status key');
         }
+    }
+
+    public function testTheEmailUsesTheRecurringTemplatesWithTheNotificationFooter(): void
+    {
+        $invoice = InvoiceFactory::createOne(['company' => $this->company]);
+
+        $email = new RecurringInvoiceCreatedNotification(['invoice' => $invoice])
+            ->asEmailMessage(new Recipient('user@example.com'))
+            ->getMessage();
+
+        self::assertInstanceOf(NotificationEmail::class, $email);
+        self::assertSame(RecurringInvoiceCreatedNotification::HTML_TEMPLATE, $email->getHtmlTemplate());
+        self::assertSame(RecurringInvoiceCreatedNotification::TEXT_TEMPLATE, $email->getTextTemplate());
+        self::assertSame($invoice, $email->getContext()['invoice']);
+        self::assertTrue($email->getContext()['notification_email']);
     }
 
     public function testSubjectIncludesInvoiceNumber(): void
