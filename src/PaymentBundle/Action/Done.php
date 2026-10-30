@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Action;
 use Carbon\Carbon;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -31,6 +32,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Action\DoneTest
+ */
 final class Done
 {
     use SaveableTrait;
@@ -40,6 +44,7 @@ final class Done
         private readonly RouterInterface $router,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AuthorizationCheckerInterface $authorization,
+        private readonly CompanySelector $companySelector,
     ) {
     }
 
@@ -58,6 +63,13 @@ final class Done
         $payment->setCompleted(Carbon::now());
 
         $this->save($payment);
+
+        // The gateway returns the payer here, often a client with no company selected, or a user
+        // with another one selected; the listeners (notifications, receipts) must act for the
+        // invoice's company, as Prepare does for offline payments.
+        if (($invoice = $payment->getInvoice()) instanceof Invoice) {
+            $this->companySelector->switchCompany($invoice->getCompany()->getId());
+        }
 
         $event = new PaymentCompleteEvent($payment);
         $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
