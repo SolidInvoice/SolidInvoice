@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://difi.no/xsd/vefa/validator/1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" configuration="tc434-ubl">
+	<assert>
+		<scope>NS-01</scope>
+	</assert>
+	<test>
+		<assert>
+			<description>Fires a warning; the fragment must keep the inherited cbc: namespace</description>
+			<warning>NS-01</warning>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+			<cbc:ID>INV-1</cbc:ID>
+		</Invoice>
+	</test>
+</testSet>

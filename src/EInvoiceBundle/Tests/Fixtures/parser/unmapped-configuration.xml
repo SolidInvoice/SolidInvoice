@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://difi.no/xsd/vefa/validator/1.0" configuration="not-a-real-profile">
+	<assert>
+		<scope>BR-UNKNOWN</scope>
+	</assert>
+	<test>
+		<assert>
+			<success>BR-UNKNOWN</success>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+	</test>
+</testSet>

@@ -2313,6 +2313,10 @@ settings:
     bcc_address:
         help: 'Receive a blind carbon copy of every %type% email sent.'
     description:
+        credit_note:
+            id_generation:
+                id_prefix: 'Example: CN-'
+                id_suffix: 'Example: -CN'
         design:
             template: 'Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.'
         invoice:

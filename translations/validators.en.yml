@@ -48,6 +48,9 @@ install:
         password:
             not_blank: 'You must enter a secure password'
 invoice:
+    constraint:
+        credit_note_exceeds_invoice_total: 'The total credited against this invoice cannot exceed the invoice total.'
+        credit_note_invoice_same_company: 'The invoice must belong to the same company as the credit note.'
     invoice_id:
         unique: 'This invoice number is already in use.'
     lines:
@@ -91,7 +94,7 @@ recurring_invoice:
         min: 'You need to select at least 1 user to attach to the Invoice'
 tax:
     constraint:
-        exactly_one_document: 'Exactly one of invoice, quote, or recurring invoice must be set on an InvoiceTax.'
+        exactly_one_document: 'Exactly one of invoice, quote, recurring invoice, or credit note must be set on an InvoiceTax.'
         exactly_one_line: 'Exactly one of invoiceLine or quoteLine must be set on a LineTax.'
         incompatible:
             flat_rate_compound: 'A flat-rate tax cannot be compound.'
