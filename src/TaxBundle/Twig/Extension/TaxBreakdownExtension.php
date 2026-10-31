@@ -19,6 +19,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Calculator\Result\CalculationResult;
 use SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow;
@@ -26,10 +27,14 @@ use SolidInvoice\TaxBundle\Calculator\TaxCalculatorInterface;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Repository\TaxIdentifierRepository;
+use SolidInvoice\TaxBundle\Twig\Breakdown\RenderedTaxSummaryRow;
 use Symfony\Component\Uid\Ulid;
 use Twig\Attribute\AsTwigFunction;
 use WeakMap;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Twig\Extension\TaxBreakdownExtensionTest
+ */
 final class TaxBreakdownExtension
 {
     /**
@@ -41,6 +46,7 @@ final class TaxBreakdownExtension
         private readonly TaxIdentifierRepository $taxIdentifierRepository,
         private readonly CompanySelector $companySelector,
         private readonly TaxCalculatorInterface $taxCalculator,
+        private readonly CurrencyScale $currencyScale,
     ) {
         $this->cache = new WeakMap();
     }
@@ -75,14 +81,18 @@ final class TaxBreakdownExtension
      *
      * Shape:
      *  - subTotal:       BigNumber
-     *  - lineTaxRows:    list<TaxSummaryRow>    line-level taxes (Additive)
-     *  - additiveRows:   list<TaxSummaryRow>    invoice-level Additive taxes
-     *  - deductiveRows:  list<TaxSummaryRow>    invoice-level Deductive (withholding)
-     *  - informationalRows: list<TaxSummaryRow> invoice-level Informational rows
+     *  - lineTaxRows:    list<RenderedTaxSummaryRow>    line-level taxes (Additive)
+     *  - additiveRows:   list<RenderedTaxSummaryRow>    invoice-level Additive taxes
+     *  - deductiveRows:  list<RenderedTaxSummaryRow>    invoice-level Deductive (withholding)
+     *  - informationalRows: list<RenderedTaxSummaryRow> invoice-level Informational rows
      *  - total:          BigNumber
      *  - totalLineTax:   BigNumber
      *  - totalWithholding: BigNumber
      *  - amountPayable:  BigNumber
+     *
+     * Each row is shaped through {@see RenderedTaxSummaryRow::fromSummaryRow()} so the
+     * printed taxable base always reconciles with the printed tax amount (SOL-560); the
+     * exact value {@see TaxSummaryRow} carries is never rounded on this path.
      *
      * @return array<string, mixed>
      */
@@ -102,15 +112,17 @@ final class TaxBreakdownExtension
         $informationalRows = [];
 
         foreach ($result->summaryRows as $row) {
+            $renderedRow = RenderedTaxSummaryRow::fromSummaryRow($row, $this->currencyScale);
+
             // Line-level rows are always Additive with note=null.
             // Invoice-level rows can be in any direction.
             if ($row->direction === TaxDirection::Deductive) {
-                $deductiveRows[] = $row;
+                $deductiveRows[] = $renderedRow;
                 continue;
             }
 
             if ($row->direction === TaxDirection::Informational) {
-                $informationalRows[] = $row;
+                $informationalRows[] = $renderedRow;
                 continue;
             }
 
@@ -118,10 +130,12 @@ final class TaxBreakdownExtension
             // Heuristic: line-level rows are merged across all lines and carry note=null;
             // invoice-level Additive rows always come from InvoiceTax (note may still be null).
             // Use the invoice-level breakdown's own row list to decide which is which.
+            // Compared on the unmapped row: isInvoiceLevelRow() matches against
+            // CalculationResult::$invoiceLevelBreakdown, which still holds TaxSummaryRow.
             if ($this->isInvoiceLevelRow($row, $result)) {
-                $additiveRows[] = $row;
+                $additiveRows[] = $renderedRow;
             } else {
-                $lineTaxRows[] = $row;
+                $lineTaxRows[] = $renderedRow;
             }
         }
 

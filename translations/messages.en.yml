@@ -1097,6 +1097,7 @@ invoice:
         recurring_active: Active
         recurring_archived: Archived
         recurring_completed: Completed
+    taxable_base_on: 'on %base%'
     template:
         compact:
             label: INVOICE
@@ -1910,6 +1911,7 @@ quote:
         active: Active
         archived: Archived
         label: 'Quote list navigation'
+    taxable_base_on: 'on %base%'
     template:
         friendly:
             greeting: 'Hi %name%,'

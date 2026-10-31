@@ -131,19 +131,21 @@
             </td>
         </tr>
         {% set _tb = tax_breakdown(invoice) %}
-        {% if invoice.tax.positive %}
-            <tr>
-                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
-                    {{ 'invoice.line_tax'|trans }}
-                </td>
-                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
-                    {{ invoice.tax|formatCurrency(currency) }}
-                </td>
-            </tr>
+        {% if invoice.tax.positive or _tb.lineTaxRows is not empty %}
+            {% if invoice.tax.positive %}
+                <tr>
+                    <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ 'invoice.line_tax'|trans }}
+                    </td>
+                    <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                        {{ invoice.tax|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endif %}
             {% for row in _tb.lineTaxRows %}
                 <tr>
                     <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
-                        {{ row.name }} ({{ row.rate }}%)
+                        {{ row.name }} ({{ row.rate }}%) {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}
                     </td>
                     <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #475569;">
                         {{ row.amount|formatCurrency(currency) }}
@@ -154,7 +156,7 @@
         {% for row in _tb.additiveRows %}
             <tr>
                 <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
-                    {{ row.name }} ({{ row.rate }}%)
+                    {{ row.name }} ({{ row.rate }}%) {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}
                 </td>
                 <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
                     {{ row.amount|formatCurrency(currency) }}
@@ -164,7 +166,7 @@
         {% for row in _tb.informationalRows %}
             <tr>
                 <td style="padding: 4px 20px 4px 24px; font-size: 8pt; text-align: right; color: {{ p.labelColor }};">
-                    {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %}
+                    {{ row.name }} ({{ row.rate }}%){% if row.note %} — {{ row.note }}{% endif %} {{ 'invoice.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(currency)}) }}
                 </td>
                 <td style="padding: 4px 12px; font-size: 8pt; text-align: right; font-family: {{ p.mono }}; color: #64748b;">
                     {{ 'invoice.invoice_taxes.informational'|trans }}

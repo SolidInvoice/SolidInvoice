@@ -14,15 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Tests\Calculator;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Calculator\InvoiceTaxCalculator;
 use SolidInvoice\TaxBundle\Calculator\LineTaxCalculator;
+use SolidInvoice\TaxBundle\Calculator\Result\CalculationResult;
+use SolidInvoice\TaxBundle\Calculator\Result\TaxSummaryRow;
+use SolidInvoice\TaxBundle\Calculator\Rounder;
 use SolidInvoice\TaxBundle\Calculator\TaxCalculator;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\RoundingStrategy;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use SolidInvoice\TaxBundle\Enum\TaxDirection;
 use SolidInvoice\TaxBundle\Enum\TaxType;
@@ -131,6 +136,133 @@ final class InvoiceLevelOrchestrationTest extends TestCase
         $row = $result->invoiceLevelBreakdown->taxRows[0];
         self::assertTrue($row->amount->isEqualTo(BigDecimal::zero()));
         self::assertSame('Customer accounts for VAT under reverse charge.', $row->note);
+    }
+
+    /**
+     * Design §6, invariant 1: for Standard + Exclusive rows, amount ==
+     * round(taxableBase × rate / 100), within a tolerance of one minor unit
+     * per contributing line (each line rounds its own tax before the rows
+     * merge).
+     */
+    public function testExclusivePerRowArithmeticHoldsWithinRoundingTolerance(): void
+    {
+        $invoice = new Invoice();
+        $prices = [333, 1067, 2401];
+
+        foreach ($prices as $price) {
+            $line = new Line();
+            $line->setPrice($price);
+            $line->setQty(1);
+            $line->addTax($this->lineTax('VAT 15%', '15.0000', TaxType::Exclusive));
+            $invoice->addLine($line);
+        }
+
+        $result = $this->calculator->calculate($invoice);
+        $row = $this->singleSummaryRow($result, 'VAT 15%');
+
+        $rate = BigDecimal::of('15.0000');
+        $expected = new Rounder(RoundingStrategy::HalfEven)->round(
+            $row->taxableBase->multipliedBy($rate->dividedBy(100, 10, RoundingMode::HalfEven))
+        );
+
+        $diff = $row->amount->minus($expected)->abs();
+        self::assertTrue(
+            $diff->isLessThanOrEqualTo(BigDecimal::of(count($prices))),
+            sprintf('Expected amount %s within %d of %s, diff %s', $row->amount, count($prices), $expected, $diff),
+        );
+    }
+
+    /**
+     * Design §6, invariant 2: for Standard + Inclusive rows, taxableBase +
+     * amount equals that row's gross contribution.
+     */
+    public function testInclusivePerRowArithmeticEqualsGrossContribution(): void
+    {
+        $invoice = new Invoice();
+        $line = new Line();
+        $line->setPrice(30000);
+        $line->setQty(1);
+        $line->addTax($this->lineTax('VAT Inclusive 20%', '20.0000', TaxType::Inclusive));
+
+        $invoice->addLine($line);
+
+        $result = $this->calculator->calculate($invoice);
+        $row = $this->singleSummaryRow($result, 'VAT Inclusive 20%');
+
+        self::assertTrue($row->taxableBase->plus($row->amount)->isEqualTo(BigDecimal::of(30000)));
+    }
+
+    /**
+     * Design §6, invariant 3: the sum of every summary row's amount equals
+     * {@see CalculationResult::getTotalTax()} - already true before this
+     * change, kept as a regression guard. Deductive taxes are excluded from
+     * this invoice so withholding does not also land in the row sum.
+     */
+    public function testTotalAmountAcrossSummaryRowsEqualsGetTotalTax(): void
+    {
+        $invoice = new Invoice();
+        $line = new Line();
+        $line->setPrice(100000);
+        $line->setQty(1);
+        $line->addTax($this->lineTax('VAT', '18.0000', TaxType::Exclusive));
+
+        $invoice->addLine($line);
+
+        $invoice->addInvoiceTax($this->invoiceTax('Surcharge', '5.0000', TaxDirection::Additive));
+
+        $result = $this->calculator->calculate($invoice);
+
+        $sumOfRows = BigDecimal::zero();
+        foreach ($result->summaryRows as $row) {
+            $sumOfRows = $sumOfRows->plus($row->amount);
+        }
+
+        self::assertTrue($sumOfRows->isEqualTo($result->getTotalTax()));
+    }
+
+    /**
+     * Design §6, invariant 4: "bases sum to the subtotal" only holds in the
+     * restricted case where every line carries exactly one Standard,
+     * non-compound, Exclusive tax and there are no invoice-level taxes.
+     */
+    public function testBasesSumToSubtotalInTheRestrictedCase(): void
+    {
+        $invoice = new Invoice();
+
+        $line1 = new Line();
+        $line1->setPrice(10000);
+        $line1->setQty(1);
+        $line1->addTax($this->lineTax('VAT A', '10.0000', TaxType::Exclusive));
+
+        $invoice->addLine($line1);
+
+        $line2 = new Line();
+        $line2->setPrice(20000);
+        $line2->setQty(1);
+        $line2->addTax($this->lineTax('VAT B', '20.0000', TaxType::Exclusive));
+
+        $invoice->addLine($line2);
+
+        $result = $this->calculator->calculate($invoice);
+
+        $sumOfBases = BigDecimal::zero();
+        foreach ($result->summaryRows as $row) {
+            $sumOfBases = $sumOfBases->plus($row->taxableBase);
+        }
+
+        self::assertTrue($sumOfBases->isEqualTo($result->subTotal));
+    }
+
+    private function singleSummaryRow(CalculationResult $result, string $name): TaxSummaryRow
+    {
+        $matching = array_values(array_filter(
+            $result->summaryRows,
+            static fn (TaxSummaryRow $row): bool => $row->name === $name,
+        ));
+
+        self::assertCount(1, $matching, sprintf('Expected exactly one summary row named "%s"', $name));
+
+        return $matching[0];
     }
 
     private function lineTax(string $name, string $rate, TaxType $type): LineTax

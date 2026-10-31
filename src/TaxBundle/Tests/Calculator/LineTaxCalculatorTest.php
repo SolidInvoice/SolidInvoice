@@ -58,6 +58,8 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->lineTotal->isEqualTo(BigDecimal::of(30000)));
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::of('5000.00')));
         self::assertCount(1, $breakdown->taxRows);
+        // base = gross - amount, the net the rate was extracted from
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of('25000.00')));
     }
 
     public function testExclusiveTaxAddsThePercentageOnTopOfTheSubtotal(): void
@@ -70,6 +72,8 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->lineSubtotal->isEqualTo(BigDecimal::of(30000)));
         self::assertTrue($breakdown->lineTotal->isEqualTo(BigDecimal::of(36000)));
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::of(6000)));
+        // base = the line subtotal the percentage was applied to
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(30000)));
     }
 
     public function testFlatRateAddsAFixedAmountInMinorUnits(): void
@@ -82,6 +86,8 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->lineSubtotal->isEqualTo(BigDecimal::of(30000)));
         self::assertTrue($breakdown->lineTotal->isEqualTo(BigDecimal::of(30200)));
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::of(200)));
+        // base = the line subtotal the flat charge was levied against
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(30000)));
     }
 
     public function testExemptCategoryIsSkippedEntirely(): void
@@ -117,6 +123,8 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertCount(1, $breakdown->taxRows);
         self::assertSame(TaxCategory::ZeroRated, $breakdown->taxRows[0]->category);
         self::assertTrue($breakdown->taxRows[0]->amount->isEqualTo(BigDecimal::zero()));
+        // base must be the real line subtotal, not zero - EN 16931 BG-23 (BT-116)
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(30000)));
     }
 
     public function testOutOfScopeCategoryRecordsAZeroAmountRow(): void
@@ -133,6 +141,8 @@ final class LineTaxCalculatorTest extends TestCase
 
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::zero()));
         self::assertSame(TaxCategory::OutOfScope, $breakdown->taxRows[0]->category);
+        // base must be the real line subtotal, not zero - EN 16931 BG-23 (BT-116)
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(5000)));
     }
 
     public function testReverseChargeCategoryRecordsAZeroAmountRow(): void
@@ -149,6 +159,8 @@ final class LineTaxCalculatorTest extends TestCase
 
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::zero()));
         self::assertSame(TaxCategory::ReverseCharge, $breakdown->taxRows[0]->category);
+        // base must be the real line subtotal, not zero - EN 16931 BG-23 (BT-116)
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(10000)));
     }
 
     /**
@@ -167,6 +179,10 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->lineSubtotal->isEqualTo(BigDecimal::of(10000)));
         self::assertTrue($breakdown->lineTotal->isEqualTo(BigDecimal::of(11547)));
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::of(1547)));
+        // GST (non-compound) bases on the plain subtotal; QST (compound) bases
+        // on the subtotal plus the GST it stacks on top of.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(10000)));
+        self::assertTrue($breakdown->taxRows[1]->taxableBase->isEqualTo(BigDecimal::of(10500)));
     }
 
     /**
@@ -185,6 +201,10 @@ final class LineTaxCalculatorTest extends TestCase
         self::assertTrue($breakdown->lineTotal->isEqualTo(BigDecimal::of(118000)));
         self::assertTrue($breakdown->lineTax->isEqualTo(BigDecimal::of(18000)));
         self::assertCount(2, $breakdown->taxRows);
+        // both rows take the same subtotal as their base - this is why
+        // "bases sum to the subtotal" does not hold in general.
+        self::assertTrue($breakdown->taxRows[0]->taxableBase->isEqualTo(BigDecimal::of(100000)));
+        self::assertTrue($breakdown->taxRows[1]->taxableBase->isEqualTo(BigDecimal::of(100000)));
     }
 
     public function testExclusiveTaxRoundsToHalfEvenAtTheCent(): void
