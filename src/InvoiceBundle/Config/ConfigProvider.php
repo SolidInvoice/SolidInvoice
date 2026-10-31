@@ -36,6 +36,7 @@ final class ConfigProvider implements ProviderInterface
             new Config('invoice/bcc_address', null, 'settings.description.invoice.bcc_address', EmailType::class),
             new Config('invoice/email_subject', 'New Invoice - #{id}', 'settings.description.invoice.email_subject', TextType::class),
             new Config(PaymentTerms::CONFIG_PATH, PaymentTerms::Net30->value, 'settings.description.invoice.payment_terms', PaymentTermsSettingType::class),
+            new Config('invoice/payment_instructions/remittance_reference', '{id}', 'settings.description.invoice.payment_instructions.remittance_reference', TextType::class),
             new Config('invoice/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
             new Config('invoice/id_generation/id_prefix', '', 'settings.description.invoice.id_generation.id_prefix', TextType::class),
             new Config('invoice/id_generation/id_suffix', '', 'settings.description.invoice.id_generation.id_suffix', TextType::class),

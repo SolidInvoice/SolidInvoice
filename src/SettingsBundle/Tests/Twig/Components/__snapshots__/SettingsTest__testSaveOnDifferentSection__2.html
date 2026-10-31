@@ -1,5 +1,5 @@
 <html><body>
-<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value="{&quot;section&quot;:{&quot;name&quot;:&quot;section&quot;}}" data-live-props-value="{&quot;section&quot;:&quot;invoice&quot;,&quot;formName&quot;:&quot;settings&quot;,&quot;settings&quot;:{&quot;watermark&quot;:&quot;1&quot;,&quot;bcc_address&quot;:&quot;&quot;,&quot;email_subject&quot;:&quot;invoice subject&quot;,&quot;payment_terms&quot;:&quot;net_30&quot;,&quot;id_generation&quot;:{&quot;strategy&quot;:&quot;random_number&quot;,&quot;id_prefix&quot;:&quot;&quot;,&quot;id_suffix&quot;:&quot;&quot;},&quot;reminder&quot;:{&quot;enabled&quot;:&quot;1&quot;,&quot;pre_due_enabled&quot;:&quot;1&quot;,&quot;pre_due_days&quot;:&quot;3&quot;},&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value="{&quot;section&quot;:{&quot;name&quot;:&quot;section&quot;}}" data-live-props-value="{&quot;section&quot;:&quot;invoice&quot;,&quot;formName&quot;:&quot;settings&quot;,&quot;settings&quot;:{&quot;watermark&quot;:&quot;1&quot;,&quot;bcc_address&quot;:&quot;&quot;,&quot;email_subject&quot;:&quot;invoice subject&quot;,&quot;payment_terms&quot;:&quot;net_30&quot;,&quot;payment_instructions&quot;:{&quot;remittance_reference&quot;:&quot;{id}&quot;},&quot;id_generation&quot;:{&quot;strategy&quot;:&quot;random_number&quot;,&quot;id_prefix&quot;:&quot;&quot;,&quot;id_suffix&quot;:&quot;&quot;},&quot;reminder&quot;:{&quot;enabled&quot;:&quot;1&quot;,&quot;pre_due_enabled&quot;:&quot;1&quot;,&quot;pre_due_days&quot;:&quot;3&quot;},&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
         <ul class="nav nav-underline mb-4" role="tablist">
                                 <li class="nav-item">
                 <a href="/settings?section=system" class="nav-link">
@@ -258,6 +258,12 @@
         </div>
     </div>
 
+                    <fieldset class="mb-3">                
+    <div id="settings_payment_instructions">                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_payment_instructions_remittance_reference">Remittance reference</label><input type="text" id="settings_payment_instructions_remittance_reference" name="settings[payment_instructions][remittance_reference]" aria-describedby="settings_payment_instructions_remittance_reference_help" class="form-control" value="{id}"><div class="form-text text-muted mb-0" id="settings_payment_instructions_remittance_reference_help">Reference the client should quote when paying. {id} is replaced with the invoice id.</div>
+</div>
+    </div>
+</fieldset>
     <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
 </form>
 

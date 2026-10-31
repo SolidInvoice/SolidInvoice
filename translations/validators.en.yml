@@ -62,6 +62,12 @@ notification:
 payment:
     amount:
         greater_than_zero: 'This value should be greater than {{ compared_value }}.'
+    constraint:
+        instruction:
+            account_identifier:
+                required: 'An account number or IBAN is required for this payment method.'
+            creditor_identifier:
+                required: 'A creditor identifier is required for a direct debit payment instruction.'
 quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'

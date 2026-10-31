@@ -1690,6 +1690,13 @@ payment:
             not_captured: 'Only a completed payment can be voided.'
             not_manual: 'Only a manually recorded payment can be voided. Refund an online payment through its gateway.'
             too_old: 'A payment can only be voided within %days% days of being paid.'
+payment_means:
+    bank_transfer: 'Bank transfer'
+    direct_debit: 'Direct debit'
+    other: 'Other'
+    sepa_credit_transfer: 'SEPA credit transfer'
+    sepa_direct_debit: 'SEPA direct debit'
+    standing_agreement: 'Standing agreement'
 payment_terms:
     custom: Custom
     due_on_receipt: 'Due on receipt'
@@ -2321,6 +2328,8 @@ settings:
             id_generation:
                 id_prefix: 'Example: INV-'
                 id_suffix: 'Example: -INV'
+            payment_instructions:
+                remittance_reference: 'Reference the client should quote when paying. {id} is replaced with the invoice id.'
             payment_terms: 'Default payment terms for new invoices. A client can override this.'
             reminder:
                 enabled: 'Enable automatic invoice payment reminders'
