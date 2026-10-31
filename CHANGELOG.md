@@ -46,6 +46,7 @@ Changelog
 * Trimmed internal payment method fields from API payment responses
 * Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
 * Recording a second payment against an invoice through the API no longer fails with a "circular reference" error
+* The dashboard revenue chart no longer shows the current month twice, and drops the previous month, on the 29th to 31st of a month
 
 3.1.2 / 2026-10-21
 -------------------
