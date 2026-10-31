@@ -206,6 +206,7 @@ final class QuoteTest extends ApiTestCase
                 'value' => 0,
             ],
             'terms' => $quote->getTerms(),
+            'reference' => $quote->getReference(),
             'notes' => $quote->getNotes(),
             'due' => '2005-01-20T00:00:00+02:00',
             'lines' => [
@@ -301,6 +302,7 @@ final class QuoteTest extends ApiTestCase
                 'value' => 10,
             ],
             'terms' => $quote->getTerms(),
+            'reference' => $quote->getReference(),
             'notes' => $quote->getNotes(),
             'due' => '2005-01-20T00:00:00+02:00',
             'lines' => [
