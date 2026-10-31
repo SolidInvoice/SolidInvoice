@@ -159,6 +159,7 @@ final class RenderedTaxSummaryRowTest extends TestCase
         $line->setPrice($grossMinorUnits);
         $line->setQty(1);
         $line->addTax($this->lineTax('VAT', $rate));
+
         $invoice->addLine($line);
 
         $result = $calculator->calculate($invoice);
