@@ -84,7 +84,10 @@ final readonly class ClientListener
             return;
         }
 
-        // client is created
+        // Relies on the selected company, like the rest of client creation (prePersist's currency,
+        // CompanyListener's company). Every path that creates clients selects one first: web
+        // requests, the API and MCP authenticators, and the dummy-data command. Switching company
+        // from inside a flush would change global state under the caller.
         $this->notification->sendNotification(new ClientCreateNotification(['client' => $entity]));
     }
 }

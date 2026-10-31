@@ -18,4 +18,9 @@ use Symfony\Component\Uid\Ulid;
 interface CompanySelectorInterface
 {
     public function getCompany(): ?Ulid;
+
+    /**
+     * Scopes everything that follows (Doctrine's company filter, settings, URLs) to this company.
+     */
+    public function switchCompany(Ulid $companyId): void;
 }
