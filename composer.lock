@@ -28981,10 +28981,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ecsphp/ecs/issues",
-                "source": "https://github.com/ecsphp/ecs/tree/13.3.12"
+                "source": "https://github.com/ecsphp/ecs/tree/13.3.5"
             },
-            "time": "2026-10-29T14:53:28+00:00",
-            "published-time": "2026-10-29T14:53:58+00:00"
+            "time": "2026-10-10T13:28:36+00:00"
         },
         {
             "name": "zenstruck/assert",
