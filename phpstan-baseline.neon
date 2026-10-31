@@ -361,6 +361,18 @@ parameters:
 			path: src/CoreBundle/Tests/Search/QualifiedResultFormatterInterfaceTest.php
 
 		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\Company\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\Company\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
+
+		-
 			message: '#^Trait SolidInvoice\\CoreBundle\\Traits\\SerializeTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1

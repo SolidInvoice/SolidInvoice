@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureType;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureValue;
@@ -41,11 +42,13 @@ use Symfony\Component\Routing\RouterInterface;
 #[CoversClass(HostRoutingListener::class)]
 final class HostRoutingListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testSubscribesToKernelRequestAtPriority30(): void
     {
-        $events = HostRoutingListener::getSubscribedEvents();
+        $events = self::listenedEvents(HostRoutingListener::class);
 
         self::assertArrayHasKey(KernelEvents::REQUEST, $events);
         self::assertSame(['onKernelRequest', 30], $events[KernelEvents::REQUEST]);

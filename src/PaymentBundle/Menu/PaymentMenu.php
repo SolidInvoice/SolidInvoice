@@ -58,6 +58,16 @@ final readonly class PaymentMenu
         );
 
         $section->addChild(
+            'payment.menu.receipts',
+            [
+                'route' => '_invoices_receipts',
+                'extras' => [
+                    'icon' => 'receipt-2',
+                ],
+            ],
+        );
+
+        $section->addChild(
             'payment.menu.methods',
             [
                 'route' => '_payment_settings_index',

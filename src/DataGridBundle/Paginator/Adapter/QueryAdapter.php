@@ -38,7 +38,7 @@ final class QueryAdapter extends BaseQueryAdapter
     }
 
     /**
-     * @phpstan-return int<0, max>
+     * @return int<0, max>
      */
     #[Override]
     public function getNbResults(): int

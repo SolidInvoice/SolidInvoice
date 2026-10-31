@@ -17,7 +17,7 @@ use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use SolidInvoice\CoreBundle\Currency\FrozenCurrencyThaw;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
@@ -47,7 +47,7 @@ use Symfony\Component\Workflow\Transition;
  *
  * @see \SolidInvoice\CoreBundle\Tests\Listener\FreezeCurrencyListenerTest
  */
-final readonly class FreezeCurrencyListener implements EventSubscriberInterface
+final readonly class FreezeCurrencyListener
 {
     private const array INVOICE_DRAFT_PLACES = [
         InvoiceStatus::New->value,
@@ -77,21 +77,11 @@ final readonly class FreezeCurrencyListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.invoice.transition' => 'onInvoiceTransition',
-            'workflow.quote.transition' => 'onQuoteTransition',
-        ];
-    }
-
-    /**
      * @template TSubject of object
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.invoice.transition')]
     public function onInvoiceTransition(Event $event): void
     {
         $this->apply($event, self::INVOICE_DRAFT_PLACES, self::INVOICE_ISSUED_PLACES);
@@ -102,6 +92,7 @@ final readonly class FreezeCurrencyListener implements EventSubscriberInterface
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.quote.transition')]
     public function onQuoteTransition(Event $event): void
     {
         $this->apply($event, self::QUOTE_DRAFT_PLACES, self::QUOTE_ISSUED_PLACES);

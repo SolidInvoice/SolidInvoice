@@ -17,7 +17,7 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -26,23 +26,14 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\InvoiceCreateListenerTest
  */
-class InvoiceCreateListener implements EventSubscriberInterface
+class InvoiceCreateListener
 {
     public function __construct(
         private readonly WorkflowInterface $invoiceStateMachine
     ) {
     }
 
-    /**
-     * @return array<string, list<list<string|int>>>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::VIEW, priority: EventPriorities::PRE_WRITE)]
     public function setInvoiceStatus(ViewEvent $event): void
     {
         $invoice = $event->getControllerResult();

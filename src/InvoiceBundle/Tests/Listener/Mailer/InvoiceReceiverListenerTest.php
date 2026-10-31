@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceReceiverListener;
@@ -27,6 +28,8 @@ use Symfony\Component\Mime\Address;
 
 final class InvoiceReceiverListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testWithoutBcc(): void
@@ -69,6 +72,6 @@ final class InvoiceReceiverListenerTest extends TestCase
 
     public function testEvents(): void
     {
-        self::assertSame([MessageEvent::class], \array_keys(InvoiceReceiverListener::getSubscribedEvents()));
+        self::assertSame([MessageEvent::class], \array_keys(self::listenedEvents(InvoiceReceiverListener::class)));
     }
 }

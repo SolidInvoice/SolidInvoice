@@ -210,6 +210,7 @@ client:
             invoices: Invoices
             payments: Payments
             quotes: Quotes
+            receipts: Receipts
 company:
     country:
         help: 'Where your business is based.'
@@ -500,6 +501,7 @@ email_verification:
     flash:
         send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
         send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
+        send_receipt: 'Please verify your email address before sending receipts. Check your inbox for the verification link.'
         send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
     tooltip:
         send_invoice: 'Please verify your email address before sending this invoice.'
@@ -1593,6 +1595,7 @@ payment:
     menu:
         main: Payments
         methods: 'Payment Methods'
+        receipts: Receipts
     method:
         add: 'Add Payment Method'
         credit: Credit
@@ -1615,6 +1618,39 @@ payment:
         help: 'These notes are for internal use only'
         label: Notes
         placeholder: 'Add any additional notes about this payment...'
+    receipt:
+        action:
+            download: 'Download receipt'
+            send: 'Send receipt'
+            view: 'View receipt'
+        amount_paid: 'Amount paid'
+        balance: 'Balance remaining'
+        confirm_send: 'Email the receipt for each selected payment to the contacts on its invoice?'
+        description: 'Payment for invoice #%invoice%'
+        empty:
+            description: 'A receipt is available for every payment that has been received.'
+            title: 'No receipts yet'
+        flash:
+            no_contacts: 'The invoice has no contacts to send the receipt to.'
+            send_failed: 'The receipt could not be sent. Please try again.'
+            sent: 'The receipt has been sent.'
+        form:
+            send:
+                help: 'Email a receipt for this payment to the contacts on the invoice'
+                label: 'Send a digital receipt'
+        invoice_total: 'Invoice total'
+        list:
+            title: Receipts
+        modal:
+            recipients: 'The receipt will be emailed, with a PDF copy attached, to:'
+        never_sent: 'Not sent yet'
+        number: 'Receipt #'
+        payment_date: 'Payment date'
+        pdf:
+            title: Receipt
+        received_from: 'Received from'
+        sent_at: 'Receipt last sent'
+        thank_you: 'Thank you for your payment.'
     record:
         error:
             amount_invalid: 'The amount must be a decimal number, such as "150.00".'
@@ -1647,6 +1683,8 @@ payment:
         pending: Pending
         this_month: 'This Month'
         total_received: 'Total Received'
+    view:
+        title: 'Payment of %amount%'
     void:
         error:
             credit_spent: 'The client has already used the credit this payment added, so it cannot be voided.'
@@ -2291,6 +2329,9 @@ settings:
                 pre_due_days: 'Days before due date to send pre-due reminder (0 to disable)'
                 pre_due_enabled: 'Send reminder before invoice is due'
             watermark: 'Display a watermark on the invoice with the status'
+        payment:
+            receipt:
+                auto_send: 'Email a receipt to the client whenever a payment is received'
         quote:
             bcc_address: 'Send BCC copy of quote to this address'
             email_subject: 'To include the id of the quote in the subject, add the placeholder {id} where you want the id'
@@ -2392,6 +2433,10 @@ settings:
             help: 'New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.'
             label: 'Default payment terms'
             title: 'Payment Terms'
+        receipt:
+            auto_send: 'Send receipts automatically'
+            auto_send_help: 'Email a receipt, with a PDF copy, to the invoice contacts whenever a payment is received: online, recorded in the app, or through the API. When recording a payment yourself you can still choose otherwise.'
+            title: 'Payment Receipts'
         reminder:
             enable: 'Enable Automatic Reminders'
             enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'
@@ -2415,6 +2460,7 @@ settings:
             design: Design
             email: Email
             invoice: Invoices
+            payment: Payments
             quote: Quotes
             system: Company
     save: Save

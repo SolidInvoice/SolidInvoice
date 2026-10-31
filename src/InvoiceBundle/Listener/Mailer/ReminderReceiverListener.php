@@ -15,20 +15,21 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use SolidInvoice\InvoiceBundle\Email\InvoiceReminderEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\ReminderReceiverListenerTest
  */
-readonly class ReminderReceiverListener implements EventSubscriberInterface
+readonly class ReminderReceiverListener
 {
     public function __construct(
         private SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         /** @var InvoiceReminderEmail $message */
@@ -45,12 +46,5 @@ readonly class ReminderReceiverListener implements EventSubscriberInterface
                 $message->addBcc($bcc);
             }
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }

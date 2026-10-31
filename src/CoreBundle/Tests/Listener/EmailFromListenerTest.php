@@ -19,6 +19,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Listener\EmailFromListener;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Email\InvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
@@ -39,6 +40,8 @@ use Symfony\Component\Uid\Ulid;
 
 final class EmailFromListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testWithFromAddressConfigured(): void
@@ -205,8 +208,8 @@ final class EmailFromListenerTest extends TestCase
 
     public function testEvents(): void
     {
-        self::assertSame([MessageEvent::class], \array_keys(EmailFromListener::getSubscribedEvents()));
-        self::assertSame(['__invoke', -256], EmailFromListener::getSubscribedEvents()[MessageEvent::class]);
+        self::assertSame([MessageEvent::class], \array_keys(self::listenedEvents(EmailFromListener::class)));
+        self::assertSame(['__invoke', -256], self::listenedEvents(EmailFromListener::class)[MessageEvent::class]);
     }
 
     private function companySelector(?Ulid $company): CompanySelectorInterface

@@ -41,6 +41,7 @@ use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -54,6 +55,9 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Entity\PaymentTest
+ */
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'invoice' => 'exact', 'client' => 'exact'])]
@@ -165,10 +169,19 @@ class Payment extends BasePayment
     #[Groups(['searchable', 'payment_api:read'])]
     private ?string $notes = null;
 
+    #[ORM\Column(name: 'receipt_sent_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $receiptSentAt = null;
+
     /**
      * Not persisted: what recording this payment added to the client's credit.
      */
     private ?BigNumber $creditAdded = null;
+
+    /**
+     * Not persisted: whoever recorded the payment chose whether to send a receipt. Null follows the
+     * company's automatic receipt setting.
+     */
+    private ?bool $sendReceipt = null;
 
     public function getId(): ?Ulid
     {
@@ -277,6 +290,62 @@ class Payment extends BasePayment
         return $this;
     }
 
+    /**
+     * Only a settled payment against an invoice is something a client can be given a receipt for.
+     */
+    public function hasReceipt(): bool
+    {
+        return $this->status === PaymentStatus::Captured && $this->invoice instanceof Invoice;
+    }
+
+    /**
+     * Receipts are not stored, so the number is derived: the invoice number and this payment's place
+     * among the invoice's payments. ULIDs sort by creation and a payment is never deleted on its own,
+     * so the number does not change once given out.
+     */
+    public function getReceiptNumber(): string
+    {
+        if (! $this->invoice instanceof Invoice || ! $this->id instanceof Ulid) {
+            return (string) $this->id;
+        }
+
+        $position = 1;
+
+        foreach ($this->invoice->getPayments() as $payment) {
+            $id = $payment->getId();
+
+            if ($id instanceof Ulid && $id->compare($this->id) < 0) {
+                ++$position;
+            }
+        }
+
+        return sprintf('%s-%d', $this->invoice->getInvoiceId(), $position);
+    }
+
+    public function getReceiptSentAt(): ?DateTimeImmutable
+    {
+        return $this->receiptSentAt;
+    }
+
+    public function setReceiptSentAt(?DateTimeImmutable $receiptSentAt): self
+    {
+        $this->receiptSentAt = $receiptSentAt;
+
+        return $this;
+    }
+
+    public function getSendReceipt(): ?bool
+    {
+        return $this->sendReceipt;
+    }
+
+    public function setSendReceipt(?bool $sendReceipt): self
+    {
+        $this->sendReceipt = $sendReceipt;
+
+        return $this;
+    }
+
     public function getAmount(): Money
     {
         return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));
@@ -310,7 +379,8 @@ class Payment extends BasePayment
     #[SerializedName('total')]
     public function getSearchableTotal(): float
     {
-        return (int) $this->getTotalAmount() / 100;
+        // The search index only filters and ranks on this, so a float is precise enough.
+        return new CurrencyScale()->toMajorUnit((int) $this->getTotalAmount(), new Currency((string) $this->getCurrencyCode()));
     }
 
     #[Groups(['searchable', 'payment_api:read'])]

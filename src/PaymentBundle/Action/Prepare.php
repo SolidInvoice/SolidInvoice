@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\PaymentBundle\Config\ConfigProvider;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
@@ -33,6 +34,7 @@ use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -50,6 +52,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
+use function array_key_exists;
 use function array_map;
 use function filter_var;
 use function in_array;
@@ -76,6 +79,7 @@ final class Prepare
         private readonly RouterInterface $router,
         private readonly CompanySelector $companySelector,
         private readonly InvoiceRepository $invoiceRepository,
+        private readonly SystemConfig $config,
     ) {
     }
 
@@ -142,6 +146,7 @@ final class Prepare
             PaymentType::class,
             [
                 'amount' => $invoice->getBalance(),
+                'send_receipt' => $this->config->get(ConfigProvider::RECEIPT_AUTO_SEND) === '1',
             ],
             [
                 'user' => $this->getUser(),
@@ -225,6 +230,11 @@ final class Prepare
             $payment->setStatus(PaymentStatus::Captured);
             $payment->setCompleted(Carbon::now());
             $this->save($payment);
+
+            // Only a signed-in user gets the choice; a client paying follows the company setting.
+            if (array_key_exists('send_receipt', $data)) {
+                $payment->setSendReceipt(filter_var($data['send_receipt'], FILTER_VALIDATE_BOOLEAN));
+            }
 
             $event = new PaymentCompleteEvent($payment);
             $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);

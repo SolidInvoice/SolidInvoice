@@ -294,6 +294,14 @@ payment:
     notification:
         message: 'A payment has been received.'
         subject: 'A Payment has been received'
+    receipt:
+        amount_paid: 'Amount paid'
+        balance: 'Balance remaining'
+        info: 'Thank you for your payment. %company% has received %amount% towards invoice #%invoice%.'
+        number: 'Receipt #'
+        reference: Reference
+        subject: 'Payment receipt %number%'
+        title: 'Receipt %number%'
     view_invoice: 'View Invoice'
 quote:
     amount_payable: 'Amount payable'

@@ -516,8 +516,15 @@
                             {% for payment in payments %}
                                 <div class="payment-card {{ payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured ? 'payment-card-captured' : '' }}">
                                     <div class="payment-card-header">
-                                        <div class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</div>
-                                        <div class="payment-status">{{ payment_label(payment.status) }}</div>
+                                        <a href="{{ path('_invoices_payment_view', {'id': payment.id}) }}" class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</a>
+                                        <div class="payment-status">
+                                            {{ payment_label(payment.status) }}
+                                            {% if payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured and can_print_pdf() %}
+                                                <a href="{{ path('_invoices_receipt_view', {'id': payment.id}) }}" target="_blank" class="ms-1" title="{{ 'payment.receipt.action.view'|trans }}" aria-label="{{ 'payment.receipt.action.view'|trans }}">
+                                                    {{ ux_icon('tabler:receipt', {width: 16, height: 16}) }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="payment-card-body">
                                         {% if payment.method is not empty %}

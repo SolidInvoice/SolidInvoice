@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,7 +34,7 @@ use function str_starts_with;
  *
  * @see \SolidInvoice\CoreBundle\Tests\Listener\HostRoutingListenerTest
  */
-final readonly class HostRoutingListener implements EventSubscriberInterface
+final readonly class HostRoutingListener
 {
     public const string REQUEST_ATTR = '_resolved_host';
 
@@ -55,13 +55,7 @@ final readonly class HostRoutingListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest', self::PRIORITY],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: self::PRIORITY)]
     public function onKernelRequest(RequestEvent $event): void
     {
         if (! $event->isMainRequest() || $this->installed === null) {

@@ -17,7 +17,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -28,7 +28,7 @@ use function in_array;
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Listener\RequestListenerTest
  */
-final class RequestListener implements EventSubscriberInterface, ServiceSubscriberInterface
+final class RequestListener implements ServiceSubscriberInterface
 {
     public const string INSTALLER_ROUTE = '_system_install';
 
@@ -57,13 +57,6 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
         '_profiler_router',
     ];
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest', 10],
-        ];
-    }
-
     public function __construct(
         private readonly RouterInterface $router,
         private readonly ContainerInterface $locator,
@@ -79,6 +72,7 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 10)]
     public function onKernelRequest(RequestEvent $event): void
     {
         if (! $event->isMainRequest()) {

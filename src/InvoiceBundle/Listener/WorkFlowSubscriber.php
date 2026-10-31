@@ -22,14 +22,14 @@ use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\WorkFlowSubscriberTest
  */
-class WorkFlowSubscriber implements EventSubscriberInterface
+class WorkFlowSubscriber
 {
     public function __construct(
         private readonly ManagerRegistry $registry,
@@ -38,21 +38,12 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.invoice.entered' => 'onWorkflowTransitionApplied',
-            'workflow.recurring_invoice.entered' => 'onWorkflowTransitionApplied',
-        ];
-    }
-
-    /**
      * @template TSubject of object
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.invoice.entered')]
+    #[AsEventListener(event: 'workflow.recurring_invoice.entered')]
     public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Invoice|RecurringInvoice $invoice */

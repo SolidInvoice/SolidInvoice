@@ -1,0 +1,221 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Styled to match Pdf/invoice.html.twig.
+ #}
+{% set currency = invoice.currency %}
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style type="text/css">
+        {{ file(asset('static/pdf.css')) }}
+
+        @page {
+            margin-top: 20mm;
+            margin-bottom: 25mm;
+            margin-left: 15mm;
+            margin-right: 15mm;
+            footer: html_footer;
+        }
+    </style>
+</head>
+<body>
+
+<htmlpagefooter name="footer">
+    <table width="100%" style="font-size: 8pt; color: #64748b;">
+        <tr>
+            <td style="border-top: 1px solid #e2e8f0; padding-top: 8px;">{% if (setting('system/general/hide_powered_by') is not same as('1') or not feature_enabled('custom_branding')) %}<a href="https://solidinvoice.co/invoiced-with-solidinvoice?utm_source=pdf&amp;utm_medium=product&amp;utm_campaign=g02-powered-by&amp;utm_content={{ toggle('saas_enabled') ? 'cloud' : 'self-hosted' }}" style="color: #64748b; text-decoration: none;">{{ 'layout.powered_by'|trans }} {{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% endif %}</td>
+            <td style="border-top: 1px solid #e2e8f0; padding-top: 8px; text-align: right;">{{ 'pdf.page'|trans }} {PAGENO} {{ 'pdf.of'|trans }} {nb}</td>
+        </tr>
+    </table>
+</htmlpagefooter>
+
+{# ============================================================================
+   HEADER SECTION - Company Info + Receipt Details
+============================================================================ #}
+<table class="invoice-header-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="header-left" style="width: 50%; vertical-align: top;">
+            {% set logo = setting('system/company/logo') %}
+            {% if logo is not empty %}
+                <div class="company-logo" style="margin-bottom: 10px;">
+                    {{ app_logo(50) }}
+                </div>
+            {% endif %}
+
+            <div class="company-name" style="font-size: 18pt; font-weight: bold; color: #1e293b; margin-bottom: 8px;">
+                {{ company_name() }}
+            </div>
+
+            <div class="company-details" style="font-size: 9pt; color: #475569; line-height: 1.6;">
+                {% for identifier in tax_identifiers() %}
+                    <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+                {% endfor %}
+
+                {% set email = setting('system/company/contact_details/email') %}
+                {% if email is not empty %}
+                    <div>{{ email }}</div>
+                {% endif %}
+
+                {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
+                {% if phoneNumber is not empty %}
+                    <div>{{ phoneNumber }}</div>
+                {% endif %}
+
+                {% set companyAddress = setting('system/company/contact_details/address', null, true) %}
+                {% if companyAddress is not empty %}
+                    <div>{{ address(companyAddress)|replace({"\n": ", "}) }}</div>
+                {% endif %}
+            </div>
+        </td>
+
+        <td class="header-right" style="width: 50%; vertical-align: top; text-align: right;">
+            <div class="invoice-label" style="font-size: 10pt; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px;">
+                {{ 'payment.receipt.pdf.title'|trans }}
+            </div>
+
+            <div class="invoice-number" style="font-size: 24pt; font-weight: bold; color: #1e293b; margin-bottom: 16px;">
+                #{{ payment.receiptNumber }}
+            </div>
+
+            <table class="invoice-dates-table" cellpadding="0" cellspacing="0" style="margin-left: auto; margin-bottom: 16px;">
+                <tr>
+                    <td class="date-label" style="font-size: 9pt; color: #64748b; text-align: right; padding: 4px 16px 4px 0;">
+                        {{ 'payment.receipt.payment_date'|trans }}
+                    </td>
+                    <td class="date-value" style="font-size: 9pt; color: #1e293b; font-weight: 500; text-align: right; padding: 4px 0;">
+                        {{ payment.completed|format_date('long') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="date-label" style="font-size: 9pt; color: #64748b; text-align: right; padding: 4px 16px 4px 0;">
+                        {{ 'invoice.label'|trans }}
+                    </td>
+                    <td class="date-value" style="font-size: 9pt; color: #1e293b; font-weight: 500; text-align: right; padding: 4px 0;">
+                        #{{ invoice.invoiceId }}
+                    </td>
+                </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0" style="margin-left: auto;">
+                <tr>
+                    <td style="background-color: #2e963a; color: #ffffff; padding: 14px 20px; border-radius: 6px; text-align: right;">
+                        <div style="font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                            {{ 'payment.receipt.amount_paid'|trans }}
+                        </div>
+                        <div style="font-size: 18pt; font-weight: bold;">
+                            {{ payment.totalAmount|formatCurrency(currency) }}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<br />
+
+{# ============================================================================
+   RECEIVED FROM
+============================================================================ #}
+<div class="bill-to-section" style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+    <div class="section-label" style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid #2e963a; display: inline-block;">
+        {{ 'payment.receipt.received_from'|trans }}
+    </div>
+
+    <div class="client-name" style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+        {{ invoice.client }}
+    </div>
+
+    <div class="client-details" style="font-size: 9pt; color: #475569; line-height: 1.6;">
+        {% for identifier in tax_identifiers(invoice.client) %}
+            <div><span style="font-weight: 600; color: #1e293b;">{{ identifier.label }}:</span> {{ identifier.value }}</div>
+        {% endfor %}
+
+        {% for clientAddress in invoice.client.addresses %}
+            <div>{{ clientAddress|replace({"\n": ", "}) }}</div>
+        {% endfor %}
+
+        {% if invoice.users|length > 0 and (invoice.users|first).email is not empty %}
+            <div style="margin-top: 4px;">{{ (invoice.users|first).email }}</div>
+        {% endif %}
+    </div>
+</div>
+
+{# ============================================================================
+   PAYMENT DETAILS
+============================================================================ #}
+<table class="items-table" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+    <thead>
+        <tr style="background-color: #f8fafc;">
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: left; border-bottom: 2px solid #e2e8f0;">
+                {{ 'label.description'|trans }}
+            </th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: left; border-bottom: 2px solid #e2e8f0;">
+                {{ 'payment.method.label'|trans }}
+            </th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: left; border-bottom: 2px solid #e2e8f0;">
+                {{ 'payment.reference.label'|trans }}
+            </th>
+            <th style="padding: 12px 16px; font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; text-align: right; border-bottom: 2px solid #e2e8f0;">
+                {{ 'payment.list.grid.amount'|trans }}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
+                {{ 'payment.receipt.description'|trans({'%invoice%': invoice.invoiceId}) }}
+            </td>
+            <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
+                {{ payment.method.name }}
+            </td>
+            <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
+                {{ payment.reference|default('-') }}
+            </td>
+            <td style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">
+                {{ payment.totalAmount|formatCurrency(currency) }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{# ============================================================================
+   SUMMARY
+============================================================================ #}
+<div class="totals-wrapper">
+    <table class="totals-table" cellpadding="0" cellspacing="0" style="width: 280px; border-collapse: collapse; margin-left: auto;">
+        <tr>
+            <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
+                {{ 'payment.receipt.invoice_total'|trans }}
+            </td>
+            <td class="value-cell" style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: 'Courier New', monospace; color: #1e293b;">
+                {{ invoice.total|formatCurrency(currency) }}
+            </td>
+        </tr>
+        <tr class="divider-row">
+            <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"></td>
+        </tr>
+        <tr class="balance-row" style="background-color: {{ receipt_balance(payment).positive ? '#fef3c7' : '#f0fdf4' }};">
+            <td class="label-cell" style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                {{ 'payment.receipt.balance'|trans }}
+            </td>
+            <td class="value-cell" style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: 'Courier New', monospace; color: {{ receipt_balance(payment).positive ? '#92400e' : '#166534' }};">
+                {{ receipt_balance(payment)|formatCurrency(currency) }}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="margin-top: 24px; padding: 20px; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 10pt; color: #166534;">
+    {{ 'payment.receipt.thank_you'|trans }}
+</div>
+
+</body>
+</html>

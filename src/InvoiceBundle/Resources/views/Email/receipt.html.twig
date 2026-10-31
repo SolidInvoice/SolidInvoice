@@ -1,0 +1,61 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
+
+{%- block title -%}
+    {{ 'payment.receipt.title'|trans({'%number%': payment.receiptNumber}, 'email') }}
+{%- endblock -%}
+
+{%- block header -%}
+    {{ email.view_online_link(invoicePath) }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'payment.receipt.info'|trans({'%company%': company_name(), '%amount%': payment.totalAmount|formatCurrency(invoice.currency), '%invoice%': invoice.invoiceId}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {{ email.info_row('payment.receipt.number'|trans({}, 'email'), payment.receiptNumber) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('payment.details.date'|trans({}, 'email'), payment.completed|format_date('long')) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('payment.details.method'|trans({}, 'email'), payment.method.name) }}
+    {% if payment.reference is not empty %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('payment.receipt.reference'|trans({}, 'email'), payment.reference) }}
+    {% endif %}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('payment.details.invoice'|trans({}, 'email'), invoice.invoiceId) }}
+
+    {{ email.divider('md') }}
+
+    {{ email.info_row('payment.receipt.amount_paid'|trans({}, 'email'), payment.totalAmount|formatCurrency(invoice.currency), true) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('payment.receipt.balance'|trans({}, 'email'), receipt_balance(payment)|formatCurrency(invoice.currency)) }}
+
+    {{ email.divider('lg') }}
+    {{ email.button('payment.view_invoice'|trans({}, 'email'), invoicePath, 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+{%- endblock -%}
+
+{%- block footer -%}
+    {{ email.footer(true, false) }}
+{%- endblock footer -%}

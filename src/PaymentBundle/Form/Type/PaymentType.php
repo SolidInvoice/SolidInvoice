@@ -31,7 +31,7 @@ use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentTypeTest
- * @extends AbstractType<array{payment_method: mixed, amount: string, capture_online: bool, reference: mixed, notes: string}>
+ * @extends AbstractType<array{payment_method: mixed, amount: string, capture_online: bool, send_receipt: bool, reference: mixed, notes: string}>
  */
 class PaymentType extends AbstractType
 {
@@ -89,6 +89,7 @@ class PaymentType extends AbstractType
             $attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
 
             $builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
+            $builder->add('send_receipt', CheckboxType::class, ['required' => false, 'label' => 'payment.receipt.form.send.label']);
             $builder->add('reference', null, ['required' => false]);
             $builder->add('notes', TextareaType::class, ['required' => false]);
         }
