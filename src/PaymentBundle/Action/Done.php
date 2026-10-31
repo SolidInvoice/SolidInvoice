@@ -16,7 +16,7 @@ namespace SolidInvoice\PaymentBundle\Action;
 use Carbon\Carbon;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
-use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -44,7 +44,7 @@ final class Done
         private readonly RouterInterface $router,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AuthorizationCheckerInterface $authorization,
-        private readonly CompanySelector $companySelector,
+        private readonly CompanySelectorInterface $companySelector,
     ) {
     }
 
