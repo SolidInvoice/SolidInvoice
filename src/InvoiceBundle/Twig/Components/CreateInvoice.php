@@ -214,6 +214,13 @@ final class CreateInvoice extends AbstractController
         return $this->saveInvoice('send');
     }
 
+    /** Backwards-compatible alias for saveSend; handles cached pages that still carry data-live-action-param="Send" (#2960). */
+    #[LiveAction]
+    public function send(): ?Response
+    {
+        return $this->saveSend();
+    }
+
     private function saveInvoice(string $action): ?Response
     {
         $this->submitForm();
