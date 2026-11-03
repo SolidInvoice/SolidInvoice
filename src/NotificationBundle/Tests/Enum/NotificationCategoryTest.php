@@ -22,11 +22,11 @@ final class NotificationCategoryTest extends TestCase
 {
     public function testGetLabel(): void
     {
-        self::assertSame('Client Notifications', NotificationCategory::CLIENT->getLabel());
-        self::assertSame('Invoice Notifications', NotificationCategory::INVOICE->getLabel());
-        self::assertSame('Payment Notifications', NotificationCategory::PAYMENT->getLabel());
-        self::assertSame('Quote Notifications', NotificationCategory::QUOTE->getLabel());
-        self::assertSame('Other Notifications', NotificationCategory::OTHER->getLabel());
+        self::assertSame('notifications.categories.client', NotificationCategory::CLIENT->getLabel());
+        self::assertSame('notifications.categories.invoice', NotificationCategory::INVOICE->getLabel());
+        self::assertSame('notifications.categories.payment', NotificationCategory::PAYMENT->getLabel());
+        self::assertSame('notifications.categories.quote', NotificationCategory::QUOTE->getLabel());
+        self::assertSame('notifications.categories.other', NotificationCategory::OTHER->getLabel());
     }
 
     public function testGetIcon(): void

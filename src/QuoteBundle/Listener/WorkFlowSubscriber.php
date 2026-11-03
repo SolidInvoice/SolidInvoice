@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
+use SolidInvoice\CoreBundle\Mailer\DocumentSendOptions;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -24,8 +25,9 @@ use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Workflow\Event\EnteredEvent;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -33,7 +35,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\WorkFlowSubscriberTest
  */
-final readonly class WorkFlowSubscriber implements EventSubscriberInterface
+final readonly class WorkFlowSubscriber
 {
     public function __construct(
         private ManagerRegistry $registry,
@@ -45,21 +47,11 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.quote.entered.accepted' => 'onQuoteAccepted',
-            'workflow.quote.entered' => 'onWorkflowTransitionApplied',
-        ];
-    }
-
-    /**
      * @template TSubject of object
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.quote.entered.accepted')]
     public function onQuoteAccepted(Event $event): void
     {
         $quote = $event->getSubject();
@@ -76,6 +68,7 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
      *
      * @throws JsonException|InvalidTransitionException|TransportExceptionInterface
      */
+    #[AsEventListener(event: 'workflow.quote.entered')]
     public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Quote $quote */
@@ -91,7 +84,8 @@ final readonly class WorkFlowSubscriber implements EventSubscriberInterface
         $em->flush();
 
         if (($transition = $event->getTransition()) instanceof Transition && QuoteGraph::TRANSITION_SEND === $transition->getName()) {
-            $this->quoteMailer->send($quote);
+            $options = $event instanceof EnteredEvent ? $event->getContext()[QuoteMailer::OPTIONS] ?? null : null;
+            $this->quoteMailer->send($quote, $options instanceof DocumentSendOptions ? $options : null);
         }
 
         if (QuoteStatus::New !== $quote->getStatus()) {

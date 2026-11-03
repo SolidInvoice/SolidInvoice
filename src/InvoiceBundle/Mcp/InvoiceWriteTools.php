@@ -172,6 +172,10 @@ final readonly class InvoiceWriteTools
             $invoice->addUser($contact);
         }
 
+        if ($invoice_id !== null && $invoice_id !== '' && $this->invoiceRepository->findByInvoiceIdIncludingArchived(['invoiceId' => $invoice_id]) !== []) {
+            throw new ToolCallException(sprintf('Invoice number "%s" is already in use.', $invoice_id));
+        }
+
         $invoice->setInvoiceId(
             $invoice_id !== null && $invoice_id !== ''
                 ? $invoice_id

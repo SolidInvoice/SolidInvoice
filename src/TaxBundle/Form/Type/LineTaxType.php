@@ -16,7 +16,6 @@ namespace SolidInvoice\TaxBundle\Form\Type;
 use Override;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use SolidInvoice\TaxBundle\Enum\TaxCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -24,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @extends AbstractType<LineTax>
@@ -37,20 +37,15 @@ final class LineTaxType extends AbstractType
                 'class' => Tax::class,
                 'placeholder' => 'tax.line_tax.tax.placeholder',
                 'required' => false,
-                'choice_label' => static function (Tax $tax): string {
+                'choice_label' => static function (Tax $tax): TranslatableMessage {
                     $rate = $tax->getRate() ?? 0;
-                    $category = $tax->getCategory();
-                    $compound = $tax->isCompound() ? ', compound' : '';
-                    $rateLabel = $tax->getType() === Tax::TYPE_FLAT_RATE ? (string) $rate : $rate . '%';
-                    $base = sprintf('%s (%s%s)', $tax->getName() ?? '', $rateLabel, $compound);
 
-                    return match ($category) {
-                        TaxCategory::Exempt => $base . ' [exempt]',
-                        TaxCategory::OutOfScope => $base . ' [out of scope]',
-                        TaxCategory::ZeroRated => $base . ' [zero-rated]',
-                        TaxCategory::ReverseCharge => $base . ' [reverse charge]',
-                        TaxCategory::Standard => $base,
-                    };
+                    return new TranslatableMessage('tax.choice_label', [
+                        'name' => $tax->getName() ?? '',
+                        'rate' => $tax->getType() === Tax::TYPE_FLAT_RATE ? (string) $rate : $rate . '%',
+                        'compound' => $tax->isCompound() ? 'yes' : 'no',
+                        'category' => $tax->getCategory()->value,
+                    ]);
                 },
                 'attr' => [
                     'class' => 'line-tax-select',

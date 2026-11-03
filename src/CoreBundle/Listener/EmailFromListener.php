@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -28,7 +28,7 @@ use Symfony\Component\Uid\Ulid;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\EmailFromListenerTest
  */
-final readonly class EmailFromListener implements EventSubscriberInterface
+final readonly class EmailFromListener
 {
     public function __construct(
         private SystemConfig $config,
@@ -39,6 +39,7 @@ final readonly class EmailFromListener implements EventSubscriberInterface
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class, priority: -256)]
     public function __invoke(MessageEvent $event): void
     {
         $message = $event->getMessage();
@@ -89,12 +90,5 @@ final readonly class EmailFromListener implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()?->getUser();
 
         return $user instanceof User ? $user->getEmail() : null;
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => ['__invoke', -256],
-        ];
     }
 }

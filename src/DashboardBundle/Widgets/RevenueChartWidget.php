@@ -21,6 +21,8 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use IntlDateFormatter;
+use Locale;
 use Money\Currency;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -36,6 +38,8 @@ use Symfony\UX\Chartjs\Model\Chart;
  */
 final readonly class RevenueChartWidget implements WidgetInterface
 {
+    private const int MONTHS = 12;
+
     private ObjectManager $manager;
 
     public function __construct(
@@ -56,10 +60,12 @@ final readonly class RevenueChartWidget implements WidgetInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->manager->getRepository(Payment::class);
 
-        $now = CarbonImmutable::now();
+        // Step back from the 1st: on the 29th-31st, "-1 months" overflows into the current month
+        // (31 Oct - 1 month = 1 Oct), which charted that month twice and skipped the one before.
+        $now = CarbonImmutable::now()->startOfMonth();
 
         try {
-            $revenueData = $paymentRepository->getRevenueByMonthGrouped(12);
+            $revenueData = $paymentRepository->getRevenueByMonthGrouped(self::MONTHS);
             $labels = $this->buildLabels($now);
             $currencies = $this->resolveCurrencies($revenueData);
             $datasets = $this->buildDatasets($revenueData, $currencies, $now);
@@ -72,6 +78,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
                 'chart' => null,
                 'hasError' => true,
                 'hasData' => false,
+                'months' => self::MONTHS,
             ];
         }
 
@@ -128,6 +135,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
             'chart' => $chart,
             'hasError' => false,
             'hasData' => [] !== $revenueData,
+            'months' => self::MONTHS,
         ];
     }
 
@@ -137,7 +145,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
     }
 
     /**
-     * Generate labels for the last 12 months.
+     * Generate month labels ("Jan 2026") in the current locale for the charted months.
      *
      * @return list<string>
      * @throws DateMalformedStringException
@@ -146,8 +154,8 @@ final readonly class RevenueChartWidget implements WidgetInterface
     {
         $labels = [];
 
-        for ($i = 11; $i >= 0; --$i) {
-            $labels[] = $now->modify(sprintf('-%d months', $i))->format('M Y');
+        for ($i = self::MONTHS - 1; $i >= 0; --$i) {
+            $labels[] = (string) IntlDateFormatter::formatObject($now->modify(sprintf('-%d months', $i)), 'MMM y', Locale::getDefault());
         }
 
         return $labels;
@@ -203,7 +211,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
             $data = [];
             $currencyObject = new Currency($currency);
 
-            for ($i = 11; $i >= 0; --$i) {
+            for ($i = self::MONTHS - 1; $i >= 0; --$i) {
                 $monthKey = $now->modify(sprintf('-%d months', $i))->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
                     ? $this->currencyScale->toMajorUnit($revenueData[$monthKey][$currency], $currencyObject)

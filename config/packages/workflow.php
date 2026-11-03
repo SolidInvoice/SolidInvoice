@@ -80,6 +80,11 @@ return App::config([
                             'to' => [InvoiceStatus::Draft->value],
                         ],
                         [
+                            'name' => InvoiceGraph::TRANSITION_UNPAY,
+                            'from' => [InvoiceStatus::Paid->value],
+                            'to' => [InvoiceStatus::Pending->value],
+                        ],
+                        [
                             'name' => InvoiceGraph::TRANSITION_ARCHIVE,
                             'from' => [InvoiceStatus::New->value, InvoiceStatus::Draft->value, InvoiceStatus::Cancelled->value, InvoiceStatus::Paid->value],
                             'to' => [InvoiceStatus::Archived->value],

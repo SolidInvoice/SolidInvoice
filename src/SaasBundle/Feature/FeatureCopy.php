@@ -15,8 +15,8 @@ namespace SolidInvoice\SaasBundle\Feature;
 
 /**
  * Marketing copy for a single gated feature, surfaced on the full-page gate
- * card and the inline upgrade banner. Strings are stored as English source
- * keys and translated in the template via `|trans`.
+ * card and the inline upgrade banner. Text fields are `messages` catalogue
+ * keys, translated in the template via `|trans`.
  */
 final readonly class FeatureCopy
 {

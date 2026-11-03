@@ -25,8 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Disables form fields that have a `feature_gated` option pointing at a feature
  * key that is currently disabled on the company's plan, and exposes view vars
- * (`feature_gated_active`, `feature_gated_plan`) so templates can render an
- * upgrade badge with the plan name where the feature becomes available.
+ * (`feature_gated_active`, `feature_gated_plan`, `feature_gated_feature`) so
+ * templates can render an upgrade badge with the plan name where the feature
+ * becomes available, or a trial offer for the feature.
  *
  * Independent of the `trial_restricted` mechanism: a single Config can carry
  * both keys. On self-hosted deployments this extension is shadowed by a no-op
@@ -58,6 +59,7 @@ final class FeatureRestrictedExtension extends AbstractTypeExtension
         if (! $this->isGated($featureKey)) {
             $view->vars['feature_gated_active'] = false;
             $view->vars['feature_gated_plan'] = null;
+            $view->vars['feature_gated_feature'] = null;
 
             return;
         }
@@ -65,6 +67,7 @@ final class FeatureRestrictedExtension extends AbstractTypeExtension
         $view->vars['disabled'] = true;
         $view->vars['feature_gated_active'] = true;
         $view->vars['feature_gated_plan'] = $this->planLabelProvider->menuLabel($featureKey);
+        $view->vars['feature_gated_feature'] = $featureKey;
         $view->vars['attr']['class'] = trim(($view->vars['attr']['class'] ?? '') . ' feature-gated');
 
         if (isset($view->vars['checked'])) {

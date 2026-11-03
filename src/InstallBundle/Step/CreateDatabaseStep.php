@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use function in_array;
 use function str_replace;
 
@@ -33,6 +34,7 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         private ManagerRegistry $doctrine,
         #[Autowire(param: 'kernel.project_dir')]
         private string $projectDir,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -77,7 +79,7 @@ final readonly class CreateDatabaseStep implements InstallationStepInterface
         }
 
         if ($callback !== null) {
-            yield from $callback(sprintf('Database "%s" created', $dbName));
+            yield from $callback($this->translator->trans('installation.progress_log.database_created', ['%database%' => $dbName]));
         }
     }
 

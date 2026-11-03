@@ -8,7 +8,7 @@
  #}
 {% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
-{% set date = trial_end|date('F j, Y') %}
+{% set date = trial_end|format_date('long') %}
 {% set params = {'%days%': days_remaining, '%count%': days_remaining, '%plan%': plan.name, '%date%': date} %}
 
 {% block title %}{{ (will_charge ? 'onboarding.trial_about_to_end.charged.subject' : 'onboarding.trial_about_to_end.subject')|trans(params, 'email') }}{% endblock %}
@@ -29,7 +29,7 @@
         <div class="onb-days">{{ '%02d'|format(days_remaining) }}</div>
         <div class="onb-days-label">{{ 'onboarding.trial_about_to_end.days_label'|trans({}, 'email') }}</div>
         <div class="onb-days-sub">
-            {{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|date('F j, Y \\a\\t g:ia')}, 'email')|raw }}
+            {{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|format_datetime('long', 'short')}, 'email')|raw }}
         </div>
     </div>
 

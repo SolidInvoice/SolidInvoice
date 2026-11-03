@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_flip;
 use function array_merge;
 
@@ -34,6 +35,7 @@ final class InvoiceTemplateType extends AbstractType
 {
     public function __construct(
         private readonly BillingTemplateRegistry $registry,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -41,7 +43,7 @@ final class InvoiceTemplateType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => array_merge(
-                ['Default' => BillingTemplateRegistry::DEFAULT_SLUG],
+                [$this->translator->trans('settings.page.design.template.default') => BillingTemplateRegistry::DEFAULT_SLUG],
                 array_flip($this->registry->getChoices()),
             ),
             'expanded' => true,

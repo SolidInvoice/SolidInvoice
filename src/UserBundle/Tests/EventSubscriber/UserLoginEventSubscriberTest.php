@@ -23,6 +23,7 @@ use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -37,14 +38,16 @@ use Symfony\Component\Uid\Ulid;
 #[CoversClass(UserLoginEventSubscriber::class)]
 final class UserLoginEventSubscriberTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     public function testGetSubscribedEvents(): void
     {
         self::assertSame([
-            LoginSuccessEvent::class => 'onLogin',
-            AuthenticationSuccessEvent::class => 'onAuthenticationSuccess',
-        ], UserLoginEventSubscriber::getSubscribedEvents());
+            AuthenticationSuccessEvent::class => ['onAuthenticationSuccess', 0],
+            LoginSuccessEvent::class => ['onLogin', 0],
+        ], self::listenedEvents(UserLoginEventSubscriber::class));
     }
 
     public function testOnLogin(): void

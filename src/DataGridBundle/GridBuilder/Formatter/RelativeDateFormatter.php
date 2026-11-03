@@ -17,8 +17,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Exception;
+use Locale;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use function htmlspecialchars;
 use function sprintf;
 
@@ -31,7 +33,7 @@ use function sprintf;
  */
 final class RelativeDateFormatter implements FormatterInterface
 {
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string | TranslatableInterface
     {
         if (! $column instanceof RelativeDateColumn) {
             return (string) $value;
@@ -39,6 +41,10 @@ final class RelativeDateFormatter implements FormatterInterface
 
         if ($value === null) {
             return '';
+        }
+
+        if ($value instanceof TranslatableInterface) {
+            return $value;
         }
 
         // Convert to DateTimeInterface if needed
@@ -50,12 +56,12 @@ final class RelativeDateFormatter implements FormatterInterface
             }
         }
 
-        $value = CarbonImmutable::instance($value);
+        $value = CarbonImmutable::instance($value)->locale(Locale::getDefault());
 
         $now = CarbonImmutable::now();
         $diff = $value->diff($now);
 
-        $absoluteDate = $value->format($column->getAbsoluteFormat());
+        $absoluteDate = $value->translatedFormat($column->getAbsoluteFormat());
         $isoDate = $value->format(DateTimeInterface::ATOM);
 
         // If beyond threshold, show absolute date
@@ -72,7 +78,7 @@ final class RelativeDateFormatter implements FormatterInterface
             '<time class="datagrid-relative-date" datetime="%s" title="%s">%s</time>',
             htmlspecialchars($isoDate, ENT_QUOTES, 'UTF-8'),
             htmlspecialchars($absoluteDate, ENT_QUOTES, 'UTF-8'),
-            htmlspecialchars($diff->forHumans(syntax: CarbonInterface::DIFF_RELATIVE_TO_NOW, parts: 1), ENT_QUOTES, 'UTF-8')
+            htmlspecialchars($diff->locale(Locale::getDefault())->forHumans(syntax: CarbonInterface::DIFF_RELATIVE_TO_NOW, parts: 1), ENT_QUOTES, 'UTF-8')
         );
     }
 }

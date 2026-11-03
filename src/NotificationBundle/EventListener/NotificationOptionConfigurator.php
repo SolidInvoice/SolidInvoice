@@ -50,15 +50,11 @@ class NotificationOptionConfigurator
             return;
         }
 
-        $message->subject($this->translator->trans($message->getSubject(), [], 'email'));
-
         $notification = $message->getNotification();
 
         if (! $notification instanceof NotificationMessage) {
             return;
         }
-
-        $notification->subject($this->translator->trans($notification->getSubject(), [], 'email'));
 
         $notification->content($notification->getTextContent($this->twig));
 
@@ -94,7 +90,7 @@ class NotificationOptionConfigurator
         foreach ($options as $key => $option) {
             $resolvedOptions[$key] = match (true) {
                 $option instanceof UrlRouteReference => $this->urlGenerator->generate($option->routeName, $option->routeParameters, UrlGeneratorInterface::ABSOLUTE_URL),
-                $option instanceof TranslationReference => $this->translator->trans($option->translationId, $option->parameters),
+                $option instanceof TranslationReference => $this->translator->trans($option->translationId, $option->parameters, $option->domain),
                 $option instanceof TemplateReference => $this->twig->render($option->template, $option->parameters),
                 $option instanceof MessageOptionsInterface => $this->resolveOptions($option->toArray()),
                 is_array($option) => $this->resolveOptions($option),

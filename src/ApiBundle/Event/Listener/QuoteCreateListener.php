@@ -17,7 +17,7 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Model\Graph;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -26,23 +26,14 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\QuoteCreateListenerTest
  */
-class QuoteCreateListener implements EventSubscriberInterface
+class QuoteCreateListener
 {
     public function __construct(
         private readonly WorkflowInterface $quoteStateMachine
     ) {
     }
 
-    /**
-     * @return array<string, list<list<string|int>>>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::VIEW => [['setQuoteStatus', EventPriorities::PRE_WRITE]],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::VIEW, priority: EventPriorities::PRE_WRITE)]
     public function setQuoteStatus(ViewEvent $event): void
     {
         $quote = $event->getControllerResult();

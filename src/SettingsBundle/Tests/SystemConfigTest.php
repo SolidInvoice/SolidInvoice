@@ -60,6 +60,7 @@ final class SystemConfigTest extends KernelTestCase
             'invoice/reminder/pre_due_days' => '3',
             'invoice/reminder/pre_due_enabled' => '1',
             'invoice/watermark' => '1',
+            'payment/receipt/auto_send' => '1',
             'quote/bcc_address' => null,
             'quote/email_subject' => 'New Quotation - #{id}',
             'quote/id_generation/id_prefix' => '',

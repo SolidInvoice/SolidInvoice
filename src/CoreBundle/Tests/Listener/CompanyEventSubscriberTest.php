@@ -156,6 +156,27 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertNull($event->getResponse());
     }
 
+    public function testItContinuesTheRequestOnARouteThatSelectsTheCompanyItself(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects($this->never())->method('generate');
+
+        $security = $this->createStub(Security::class);
+        $security->method('getToken')->willReturn(null);
+
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->attributes->set('_route', 'some_oauth_authorize');
+        $request->attributes->set('_company_selection', true);
+
+        $listener = new CompanyEventSubscriber($router, new CompanySelector($this->createStub(ManagerRegistry::class)), $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+    }
+
     public function testItDoesNotRedirectWhileTwoFactorAuthenticationIsInProgress(): void
     {
         $router = M::mock(RouterInterface::class);
@@ -218,13 +239,15 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $companySelector = new CompanySelector($registry);
 
-        $security->shouldNotReceive('getUser');
-
         $router->shouldNotReceive('generate');
 
         $company = new Company();
         $this->setCompanyId($company, new Ulid());
         $filter = $this->expectSwitchCompanyCalls($registry, $company);
+
+        $user = new User();
+        $user->addCompany($company);
+        $security->shouldReceive('getUser')->andReturn($user);
 
         $session = new Session(new MockArraySessionStorage());
         $session->set('company', $company->getId());
@@ -240,6 +263,44 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+    }
+
+    /**
+     * A company disabled after it was put in the session no longer loads with the user's
+     * companies, so it is forgotten instead of being switched to.
+     */
+    public function testItForgetsASessionCompanyTheUserNoLongerHas(): void
+    {
+        $router = M::mock(RouterInterface::class);
+        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $security = M::mock(Security::class);
+        $security->shouldReceive('getToken')->andReturnNull();
+
+        $user = new User();
+        $user->addCompany(new Company());
+        $user->addCompany(new Company());
+        $security->shouldReceive('getUser')->andReturn($user);
+
+        $router
+            ->shouldReceive('generate')
+            ->with('_select_company')
+            ->once()
+            ->andReturn('/select-company');
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->set('company', new Ulid());
+
+        $request = new Request();
+        $request->setSession($session);
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, Carbon::now()->format('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertInstanceOf(RedirectResponse::class, $event->getResponse());
+        self::assertFalse($session->has('company'));
+        self::assertNull($companySelector->getCompany());
     }
 
     public function testItSwitchesToTheResolvedCompanyOnACustomDomainForAnAnonymousUserAndSkipsRedirect(): void

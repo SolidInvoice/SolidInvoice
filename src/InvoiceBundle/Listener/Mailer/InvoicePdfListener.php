@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Email\InvoiceTestCopyEmail;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -30,7 +30,7 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoicePdfListenerTest
  */
-readonly class InvoicePdfListener implements EventSubscriberInterface
+readonly class InvoicePdfListener
 {
     public function __construct(
         private Generator $generator,
@@ -43,11 +43,12 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
     /**
      * @throws MpdfException|LoaderError|RuntimeError|SyntaxError
      */
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         $message = $event->getMessage();
 
-        if (($message instanceof InvoiceEmail || $message instanceof InvoiceTestCopyEmail) && $this->generator->canPrintPdf()) {
+        if ((($message instanceof InvoiceEmail && $message->attachesPdf()) || $message instanceof InvoiceTestCopyEmail) && $this->generator->canPrintPdf()) {
             $this->clientRepository->initializeArchived($message->getInvoice()->getClient());
 
             $content = $this->generator->generate(
@@ -56,15 +57,5 @@ readonly class InvoicePdfListener implements EventSubscriberInterface
 
             $message->attach($content, sprintf('invoice_%s.pdf', $message->getInvoice()->getInvoiceId()), 'application/pdf');
         }
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }

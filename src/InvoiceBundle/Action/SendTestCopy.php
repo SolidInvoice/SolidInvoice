@@ -25,7 +25,6 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 /**
@@ -42,7 +41,6 @@ final class SendTestCopy extends AbstractController
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
-        private readonly TranslatorInterface $translator,
         private readonly RateLimiterFactoryInterface $invoiceTestCopyLimiter,
         private readonly RateLimiterFactoryInterface $invoiceTestCopyIpLimiter,
         // Only registered while email verification is on, which is the only time this action does anything.
@@ -82,8 +80,7 @@ final class SendTestCopy extends AbstractController
         );
 
         $email = new InvoiceTestCopyEmail($invoice, $signature->getSignedUrl())
-            ->to((string) $user->getEmail())
-            ->subject($this->translator->trans('invoice.test_copy.subject', ['%id%' => $invoice->getInvoiceId()], 'email'));
+            ->to((string) $user->getEmail());
 
         try {
             $this->mailer->send($email);

@@ -86,7 +86,7 @@ $config = LoginExtension::defaultFormLoginConfig([
             'security' => false,
         ],
         'mcp_well_known' => [
-            'pattern' => '^/\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json|agent-skills/index\.json)',
+            'pattern' => '^/(\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json|agent-skills/|ai-catalog\.json$)|auth\.md$)',
             'stateless' => true,
             'security' => false,
         ],
@@ -144,7 +144,11 @@ $config = LoginExtension::defaultFormLoginConfig([
                 '/\.well-known/oauth-authorization-server|' .
                 '/\.well-known/oauth-protected-resource|' .
                 '/\.well-known/mcp/server-card\.json$|' .
-                '/\.well-known/agent-skills/index\.json$|' .
+                '/\.well-known/agent-skills/|' .
+                '/\.well-known/ai-catalog\.json$|' .
+                '/auth\.md$|' .
+                '/robots\.txt$|' .
+                '/sitemap\.xml$|' .
                 '/\.well-known/api-catalog$|' .
                 '/install|' .
                 '/verify$|' .

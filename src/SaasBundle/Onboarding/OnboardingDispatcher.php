@@ -17,12 +17,10 @@ use DateTimeImmutable;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
-use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
-use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use function array_filter;
 use function array_search;
@@ -86,14 +84,20 @@ final readonly class OnboardingDispatcher
             return;
         }
 
+        $steps = array_filter(
+            $this->registry->all(),
+            static fn (OnboardingEmailStepInterface $step): bool => $step::audience()->matches($subscription, $user, $context->now),
+        );
+
+        // Most accounts the job reaches are past onboarding: stop before any query.
+        if ($steps === []) {
+            return;
+        }
+
         $sent = $this->sentKeys($user);
 
-        // The trial steps don't look at the status, so an account already past its
-        // trial (on Free) is only offered the step meant for it.
-        $pastTrial = $subscription->getStatus() === SubscriptionStatus::ACTIVE;
-
-        foreach ($this->registry->all() as $step) {
-            if (($pastTrial && ! $step instanceof FreeFeedbackStep) || in_array($step::key(), $sent, true) || ! $step->shouldSend($context)) {
+        foreach ($steps as $step) {
+            if (in_array($step::key(), $sent, true) || ! $step->shouldSend($context)) {
                 continue;
             }
 
@@ -101,7 +105,7 @@ final readonly class OnboardingDispatcher
 
             $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardingEmailsSent, implode(',', $sent));
 
-            $this->messageBus->dispatch(new SendOnboardingEmailMessage($user->getId(), $step::key()));
+            $this->messageBus->dispatch(new SendOnboardingEmailMessage($user->getId(), $step::key(), $subscription->getId()));
 
             $this->logger->info('Dispatched onboarding email step', [
                 'user_id' => $user->getId()->toString(),

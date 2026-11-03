@@ -26,21 +26,31 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\MediaType;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\Response;
+use ArrayObject;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\DTO\SendDocumentInput;
+use SolidInvoice\ApiBundle\State\Processor\QuoteCloneProcessor;
 use SolidInvoice\ApiBundle\State\Processor\QuoteToInvoiceProcessor;
 use SolidInvoice\ApiBundle\State\Processor\QuoteTransitionProcessor;
+use SolidInvoice\ApiBundle\State\Processor\SendDocumentProcessor;
+use SolidInvoice\ApiBundle\State\Provider\OptionalBodyProvider;
 use SolidInvoice\ApiBundle\State\Provider\QuoteItemProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Action\Api\BillingPdfAction;
 use SolidInvoice\CoreBundle\Contracts\HasFrozenCurrencyInterface;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -49,6 +59,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\HasFrozenCurrency;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
+use SolidInvoice\CoreBundle\Traits\Entity\SentTo;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -57,9 +68,12 @@ use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,15 +81,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
-#[ApiFilter(DateFilter::class, properties: ['due'])]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact', 'quoteId' => 'partial', 'client.name' => 'partial'])]
+#[ApiFilter(DateFilter::class, properties: ['due', 'created', 'updated'])]
 #[ApiFilter(NumericFilter::class, properties: ['total', 'baseTotal', 'tax'])]
-#[ApiFilter(OrderFilter::class, properties: ['due', 'status'])]
+#[ApiFilter(OrderFilter::class, properties: ['due', 'status', 'created', 'updated'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
         new Get(),
-        new Post(),
+        new Post(extraProperties: ['idempotent' => true]),
         new Patch(),
         new Delete(),
         new GetCollection(
@@ -97,6 +111,56 @@ use Symfony\Component\Validator\Constraints as Assert;
             name: 'quote_transition',
             provider: QuoteItemProvider::class,
             processor: QuoteTransitionProcessor::class,
+        ),
+        new Get(
+            uriTemplate: '/quotes/{id}/pdf',
+            outputFormats: ['pdf' => ['application/pdf']],
+            controller: BillingPdfAction::class,
+            openapi: new Operation(
+                responses: [
+                    '200' => new Response(
+                        description: 'The quote PDF',
+                        content: new ArrayObject(['application/pdf' => new MediaType(new ArrayObject(['type' => 'string', 'format' => 'binary']))]),
+                    ),
+                    '304' => new Response(description: 'The quote has not changed since the ETag was issued'),
+                ],
+                summary: 'Downloads the quote as a PDF.',
+                description: 'Rendered with the same template as the public quote page. Send the returned ETag back in If-None-Match to get a 304 while the quote is unchanged.',
+            ),
+            serialize: false,
+            name: 'quote_pdf',
+        ),
+        new Post(
+            uriTemplate: '/quotes/{id}/clone',
+            uriVariables: [
+                'id' => new Link(fromClass: Quote::class),
+            ],
+            input: false,
+            output: Quote::class,
+            validate: false,
+            name: 'quote_clone',
+            provider: QuoteItemProvider::class,
+            processor: QuoteCloneProcessor::class,
+        ),
+        new Post(
+            uriTemplate: '/quotes/{id}/send',
+            uriVariables: [
+                'id' => new Link(fromClass: Quote::class),
+            ],
+            status: 200,
+            normalizationContext: [
+                'groups' => ['quote_api:read', 'billing_api:sent'],
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+            ],
+            denormalizationContext: ['groups' => ['billing_api:send']],
+            input: SendDocumentInput::class,
+            output: Quote::class,
+            // The body is optional and holds the send options; the processor loads the quote.
+            deserialize: false,
+            name: 'quote_send',
+            provider: OptionalBodyProvider::class,
+            processor: SendDocumentProcessor::class,
+            extraProperties: ['idempotent' => true],
         ),
         new Post(
             uriTemplate: '/quotes/{id}/invoice',
@@ -122,6 +186,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
 )]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'quotes')])]
+#[UniqueEntity(fields: ['quoteId'], message: 'quote.quote_id.unique', repositoryMethod: 'findByQuoteIdIncludingArchived')]
 class Quote implements HasFrozenCurrencyInterface
 {
     final public const string TABLE_NAME = 'quotes';
@@ -131,6 +196,7 @@ class Quote implements HasFrozenCurrencyInterface
         Archivable::isArchived insteadof QuoteStatusTrait;
     }
     use LinePositions;
+    use SentTo;
     use TimeStampable;
     use CompanyAware;
     use HasFrozenCurrency;
@@ -342,6 +408,26 @@ class Quote implements HasFrozenCurrencyInterface
     public function getUuid(): Uuid
     {
         return Uuid::fromString($this->uuid);
+    }
+
+    /**
+     * Placeholder for the API docs; {@see \SolidInvoice\CoreBundle\Serializer\Normalizer\BillingLinksNormalizer} sets the value.
+     */
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(description: 'Absolute URL of the public quote page, the link sent to the client', writable: false, schema: ['type' => 'string', 'format' => 'uri'])]
+    public function getPublicUrl(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Placeholder for the API docs; {@see \SolidInvoice\CoreBundle\Serializer\Normalizer\BillingLinksNormalizer} sets the value.
+     */
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(description: 'Absolute URL of the public PDF of the quote', writable: false, schema: ['type' => 'string', 'format' => 'uri'])]
+    public function getPdfUrl(): ?string
+    {
+        return null;
     }
 
     public function setUuid(Uuid $uuid): self
@@ -662,5 +748,29 @@ class Quote implements HasFrozenCurrencyInterface
         }
 
         return $this;
+    }
+
+    #[Groups(['quote_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('created')]
+    public function getApiCreated(): ?DateTimeImmutable
+    {
+        return $this->created;
+    }
+
+    #[Groups(['quote_api:read'])]
+    #[Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
+    #[SerializedName('updated')]
+    public function getApiUpdated(): ?DateTimeImmutable
+    {
+        return $this->updated;
+    }
+
+    #[Groups(['quote_api:read'])]
+    #[SerializedName('currencyCode')]
+    #[ApiProperty(writable: false, example: 'USD')]
+    public function getApiCurrencyCode(): ?string
+    {
+        return $this->resolveCurrencyCode();
     }
 }

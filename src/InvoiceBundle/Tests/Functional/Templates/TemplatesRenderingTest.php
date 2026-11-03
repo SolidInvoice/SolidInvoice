@@ -632,7 +632,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     #[DataProvider('freeTemplateSlugProvider')]
     public function testStatusLineLabelKeyIsTranslated(string $slug): void
     {
-        self::assertStringNotContainsString('pdf.status', $this->renderPdf($slug));
+        self::assertStringNotContainsString('label.status', $this->renderPdf($slug));
     }
 
     /**

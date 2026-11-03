@@ -32,7 +32,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Archive')
+        yield BatchAction::new('action.archive')
             ->icon('trash')
             ->color('warning')
             ->action(static function (InvoiceRepository $repository, array $selectedItems): void {
@@ -65,7 +65,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
     #[Override]
     public function getCreateLabel(): ?TranslatableMessage
     {
-        return new TranslatableMessage('Create Invoice');
+        return new TranslatableMessage('invoice.create.new');
     }
 
     #[Override]

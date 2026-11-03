@@ -128,9 +128,11 @@ class SubscribeController extends AbstractController
      *    still PENDING and has never been billed, so it must receive the
      *    trial. A variant configured with no trial days simply charges
      *    immediately, which is the intended "no trial" behaviour.
-     *  - Free trial: the trial already ran locally, and checkout is how the
-     *    user extends it by adding a card. Only an actively-trialling,
-     *    never-billed subscription qualifies.
+     *  - Free trial: the trial already runs locally, and checkout is how the
+     *    user keeps the plan by adding a card. The provider trial only lets
+     *    the card be taken without a charge; ProviderTrialAlignmentListener
+     *    ends it on the local trial's end date, so no extra days are given.
+     *    Only an actively-trialling, never-billed subscription qualifies.
      *
      * Either way, a subscription that is already externally billed is
      * changing plans and must never receive a second trial.

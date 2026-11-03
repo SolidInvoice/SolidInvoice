@@ -52,6 +52,7 @@ class DatabaseConfigStep extends AbstractType
             'host' => [
                 null,
                 [
+                    'label' => 'installation.database.host',
                     'attr' => [
                         'placeholder' => 'localhost',
                     ],
@@ -60,6 +61,7 @@ class DatabaseConfigStep extends AbstractType
             'port' => [
                 IntegerType::class,
                 [
+                    'label' => 'installation.database.port',
                     'constraints' => new Type('integer'),
                     'required' => false,
                 ],
@@ -67,12 +69,14 @@ class DatabaseConfigStep extends AbstractType
             'user' => [
                 null,
                 [
+                    'label' => 'installation.database.user',
                     'required' => false,
                 ],
             ],
             'password' => [
                 PasswordType::class,
                 [
+                    'label' => 'installation.database.password',
                     'required' => false,
                     'always_empty' => false,
                 ],

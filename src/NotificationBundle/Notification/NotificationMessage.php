@@ -56,6 +56,23 @@ abstract class NotificationMessage extends Notification implements EmailNotifica
 
     abstract public function getTextContent(Environment $twig): string;
 
+    /**
+     * Translation key (in the "email" domain) for the subject. NotificationManager
+     * translates it with getSubjectParameters() and stores the result as the subject.
+     */
+    public function getSubjectKey(): string
+    {
+        return parent::getSubject();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getSubjectParameters(): array
+    {
+        return [];
+    }
+
     public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
     {
         $message = EmailMessage::fromNotification($this, $recipient);
@@ -67,6 +84,20 @@ abstract class NotificationMessage extends Notification implements EmailNotifica
         }
 
         return $message;
+    }
+
+    /**
+     * Email template context. The notification_email flag turns on the footer (company and a link to
+     * the user's notification preferences); some templates are shared with client-facing emails,
+     * which must not show it.
+     *
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    protected function notificationEmailContext(array $parameters): array
+    {
+        return $parameters + ['notification_email' => true];
     }
 
     public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ChatMessage

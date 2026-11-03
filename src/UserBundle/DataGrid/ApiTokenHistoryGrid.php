@@ -54,12 +54,12 @@ final class ApiTokenHistoryGrid extends Grid
     {
         return [
             DateTimeColumn::new('created')
-                ->label(new TranslatableMessage('Date'))
+                ->label(new TranslatableMessage('profile.api.history.list.date'))
                 ->format('d M Y H:i')
                 ->sortable(true)
                 ->filter(new DateRangeFilter('created')),
             StringColumn::new('method')
-                ->label(new TranslatableMessage('Method'))
+                ->label(new TranslatableMessage('profile.api.history.list.method'))
                 ->sortable(false)
                 ->filter(new ChoiceFilter('method', [
                     'GET' => 'GET',
@@ -69,24 +69,24 @@ final class ApiTokenHistoryGrid extends Grid
                     'DELETE' => 'DELETE',
                 ])),
             StringColumn::new('resource')
-                ->label(new TranslatableMessage('Endpoint'))
+                ->label(new TranslatableMessage('profile.api.history.list.endpoint'))
                 ->sortable(false)
                 ->formatValue(static fn (?string $value) => $value ? (strlen($value) > 40 ? substr($value, 0, 40) . '...' : $value) : '-'),
             StringColumn::new('statusCode')
-                ->label(new TranslatableMessage('Status'))
+                ->label(new TranslatableMessage('label.status'))
                 ->sortable(false)
                 ->formatValue(static fn ($value, ApiTokenHistory $history) => $history->getStatusCode() ?? '-')
                 ->filter(new ChoiceFilter('statusCode', [
-                    '2xx' => '2xx Success',
-                    '3xx' => '3xx Redirect',
-                    '4xx' => '4xx Client Error',
-                    '5xx' => '5xx Server Error',
+                    '2xx' => 'profile.api.history.status_code.success',
+                    '3xx' => 'profile.api.history.status_code.redirect',
+                    '4xx' => 'profile.api.history.status_code.client_error',
+                    '5xx' => 'profile.api.history.status_code.server_error',
                 ])),
             StringColumn::new('ip')
-                ->label(new TranslatableMessage('IP Address'))
+                ->label(new TranslatableMessage('profile.api.history.list.ip'))
                 ->sortable(false),
             StringColumn::new('userAgent')
-                ->label(new TranslatableMessage('User Agent'))
+                ->label(new TranslatableMessage('profile.api.history.list.user_agent'))
                 ->sortable(false)
                 ->formatValue(static fn (?string $value) => $value ? (strlen($value) > 30 ? substr($value, 0, 30) . '...' : $value) : '-'),
         ];
