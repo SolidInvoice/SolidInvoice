@@ -13,31 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Twig\Extension;
 
-use Override;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Twig\Extension\BillingPeriodExtensionTest
  */
-final class BillingPeriodExtension extends AbstractExtension
+final class BillingPeriodExtension
 {
-    /**
-     * @return TwigFunction[]
-     */
-    #[Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('billing_period', $this->formatBillingPeriod(...)),
-        ];
-    }
-
     /**
      * Returns '' when the invoice has no period, so this is safe to call
      * unconditionally in every template.
      */
+    #[AsTwigFunction(name: 'billing_period')]
     public function formatBillingPeriod(Invoice $invoice): string
     {
         $period = $invoice->getPeriod();

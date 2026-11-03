@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Migration;
 
-use DoctrineMigrations\Version30200_9;
 use DoctrineMigrations\Version30200_46;
+use DoctrineMigrations\Version30200_9;
 
 final class Version30200_46MigrationTest extends MigrationIsIdempotentAcrossLineagesTestCase
 {

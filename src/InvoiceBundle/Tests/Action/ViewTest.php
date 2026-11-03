@@ -138,7 +138,7 @@ final class ViewTest extends KernelTestCase
 
         // The fixture invoice above states no period: confirms the summary
         // row stays invisible for every status, not only the default one.
-        self::assertStringNotContainsString('Billing Period', $response);
+        self::assertStringNotContainsString('Billing Period', (string) $response);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -211,8 +211,8 @@ final class ViewTest extends KernelTestCase
         $response = $twig->resolveTemplate('@SolidInvoiceInvoice/Default/view.html.twig')
             ->renderBlock('content', $params);
 
-        self::assertStringContainsString('Billing Period', $response);
-        self::assertStringContainsString('1–31 August 2021', $response);
+        self::assertStringContainsString('Billing Period', (string) $response);
+        self::assertStringContainsString('1–31 August 2021', (string) $response);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
