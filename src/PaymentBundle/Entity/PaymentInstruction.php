@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: PaymentInstruction::TABLE_NAME)]
 #[ORM\UniqueConstraint(name: 'uniq_payment_instructions_company_label', columns: ['company_id', 'label'])]
 #[ORM\Entity(repositoryClass: PaymentInstructionRepository::class)]
-#[UniqueEntity(fields: ['company', 'label'])]
+#[UniqueEntity(fields: ['label'], message: 'payment.constraint.instruction.label.unique', errorPath: 'label')]
 #[ApiResource(
     shortName: 'PaymentInstruction',
     operations: [

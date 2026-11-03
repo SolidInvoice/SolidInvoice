@@ -66,6 +66,29 @@ final class PaymentInstructionTest extends ApiTestCase
         self::assertResponseStatusCodeSame(422);
     }
 
+    public function testCreateRejectsDuplicateLabelInSameCompany(): void
+    {
+        PaymentInstructionFactory::createOne([
+            'company' => $this->company,
+            'label' => 'Business account',
+        ]);
+
+        $data = [
+            'label' => 'Business account',
+            'means' => 'bank_transfer',
+        ];
+
+        self::$client->request('POST', '/api/payment-instructions', [
+            'json' => $data,
+            'headers' => [
+                'content-type' => 'application/ld+json',
+                'accept' => 'application/ld+json',
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+    }
+
     public function testGetCollectionIsScopedByCompany(): void
     {
         $company = $this->company;
