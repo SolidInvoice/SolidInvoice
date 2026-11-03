@@ -21,14 +21,14 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use function assert;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\CreditNoteWorkflowTest
  */
-final readonly class CreditNoteIssuedListener implements EventSubscriberInterface
+final readonly class CreditNoteIssuedListener
 {
     public function __construct(
         private ManagerRegistry $registry,
@@ -39,20 +39,11 @@ final readonly class CreditNoteIssuedListener implements EventSubscriberInterfac
     }
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.credit_note.completed.issue' => 'onCreditNoteIssued',
-        ];
-    }
-
-    /**
      * @param CompletedEvent<CreditNote> $event
      *
      * @throws MathException
      */
+    #[AsEventListener(event: 'workflow.credit_note.completed.issue')]
     public function onCreditNoteIssued(CompletedEvent $event): void
     {
         $creditNote = $event->getSubject();

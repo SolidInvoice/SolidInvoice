@@ -19,14 +19,14 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\CompletedEvent;
 use function assert;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\CreditNoteWorkflowTest
  */
-final readonly class CreditNoteCancelledListener implements EventSubscriberInterface
+final readonly class CreditNoteCancelledListener
 {
     public function __construct(
         private ManagerRegistry $registry,
@@ -36,20 +36,11 @@ final readonly class CreditNoteCancelledListener implements EventSubscriberInter
     }
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.credit_note.completed.cancel' => 'onCreditNoteCancelled',
-        ];
-    }
-
-    /**
      * @param CompletedEvent<CreditNote> $event
      *
      * @throws MathException
      */
+    #[AsEventListener(event: 'workflow.credit_note.completed.cancel')]
     public function onCreditNoteCancelled(CompletedEvent $event): void
     {
         $creditNote = $event->getSubject();
