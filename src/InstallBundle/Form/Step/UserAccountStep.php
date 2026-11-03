@@ -131,7 +131,9 @@ class UserAccountStep extends AbstractType
                 'locale',
                 ChoiceType::class,
                 [
+                    'label' => 'installation.user_account.locale_label',
                     'choices' => array_flip(Locales::getNames()),
+                    'choice_translation_domain' => false,
                     'placeholder' => 'installation.user_account.locale_placeholder',
                 ]
             );
@@ -140,6 +142,7 @@ class UserAccountStep extends AbstractType
                 'locale',
                 null,
                 [
+                    'label' => 'installation.user_account.locale_label',
                     'data' => 'en',
                     'attr' => [
                         'readonly' => true,
@@ -150,15 +153,16 @@ class UserAccountStep extends AbstractType
             );
         }
 
-        $builder->add('firstName');
-        $builder->add('lastName');
+        $builder->add('firstName', null, ['label' => 'installation.user_account.first_name']);
+        $builder->add('lastName', null, ['label' => 'installation.user_account.last_name']);
 
-        $builder->add('emailAddress', EmailType::class);
+        $builder->add('emailAddress', EmailType::class, ['label' => 'installation.user_account.email_address']);
 
         $builder->add(
             'password',
             PasswordType::class,
             [
+                'label' => 'installation.user_account.password',
                 'attr' => ['class' => 'password-field'],
                 'required' => true,
                 'always_empty' => false,

@@ -115,7 +115,7 @@ final class StatusFormatterTest extends TestCase
         $this->translator
             ->expects(self::once())
             ->method('trans')
-            ->with('Paid')
+            ->with('status.paid')
             ->willReturn('Bezahlt');
 
         $formatter = new StatusFormatter($this->translator);

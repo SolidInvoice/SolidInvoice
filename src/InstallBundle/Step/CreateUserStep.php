@@ -20,6 +20,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Step\CreateUserStepTest
@@ -30,6 +31,7 @@ final readonly class CreateUserStep implements InstallationStepInterface
     public function __construct(
         private UserRepository $userRepository,
         private PasswordHasherFactoryInterface $passwordHasherFactory,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -57,11 +59,11 @@ final readonly class CreateUserStep implements InstallationStepInterface
             $this->userRepository->save($user);
 
             if ($callback !== null) {
-                yield from $callback('Admin user created');
+                yield from $callback($this->translator->trans('installation.progress_log.admin_user_created'));
             }
         } catch (UniqueConstraintViolationException) {
             if ($callback !== null) {
-                yield from $callback('Admin user already exists, skipping creation');
+                yield from $callback($this->translator->trans('installation.progress_log.admin_user_exists'));
             }
         }
     }

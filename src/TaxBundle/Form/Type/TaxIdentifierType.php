@@ -39,6 +39,7 @@ final class TaxIdentifierType extends AbstractType
             'required' => true,
             'empty_data' => self::PRESET_LABELS[0],
             'placeholder' => false,
+            'choice_label' => static fn (string $label): string => $label === 'Other' ? 'tax.company_identifiers.other' : $label,
         ]);
 
         $builder->add('value', TextType::class, [

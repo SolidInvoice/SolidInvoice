@@ -45,7 +45,7 @@ final class EntityFilterTest extends TestCase
 
         self::assertSame('App\\Entity\\Client', $options['class']);
         self::assertFalse($options['multiple']);
-        self::assertSame('Choose a value', $options['placeholder']);
+        self::assertSame('datagrid.filter.choose', $options['placeholder']);
         self::assertSame('name', $options['choice_name']);
         self::assertIsCallable($options['choice_value']);
     }

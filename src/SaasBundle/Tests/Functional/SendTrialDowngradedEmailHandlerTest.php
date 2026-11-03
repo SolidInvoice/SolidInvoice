@@ -39,7 +39,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_filter;
 use function array_values;
 
@@ -135,7 +134,6 @@ final class SendTrialDowngradedEmailHandlerTest extends WebTestCase
             $container->get(CompanySelector::class),
             $container->get(MailerInterface::class),
             $container->get(SystemConfig::class),
-            $container->get(TranslatorInterface::class),
             new NullLogger(),
             $this->gate(),
         );

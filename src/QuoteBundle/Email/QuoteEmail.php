@@ -14,18 +14,26 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Email;
 
 use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
+use SolidInvoice\CoreBundle\Mailer\DocumentSendOptions;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class QuoteEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
-        private readonly Quote $quote
+        private readonly Quote $quote,
+        private readonly ?DocumentSendOptions $options = null,
     ) {
         parent::__construct();
 
         $this->htmlTemplate('@SolidInvoiceQuote/Email/quote.html.twig');
         $this->context(['quote' => $this->quote]);
+        $this->options?->applyTo($this);
+    }
+
+    public function attachesPdf(): bool
+    {
+        return $this->options->attachPdf ?? true;
     }
 
     public function getQuote(): Quote

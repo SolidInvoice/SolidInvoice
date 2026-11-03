@@ -21,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)', '');
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE)', '');
     $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_PERCENT)', '30');
-    $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS)', '7');
+    $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS)', '5');
     $parameters->set('env(SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS)', '2');
 
     // '1' requires payment details up front: the trial is started

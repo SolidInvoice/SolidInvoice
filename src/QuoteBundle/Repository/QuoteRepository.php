@@ -31,6 +31,31 @@ class QuoteRepository extends EntityRepository
         parent::__construct($registry, Quote::class);
     }
 
+    /**
+     * Backs the UniqueEntity constraint on Quote::$quoteId. Archived documents keep their
+     * number, so they count; a blank number is not a number, so it never collides. The
+     * CompanyFilter scopes the lookup to the current company.
+     *
+     * @param array<string, mixed> $criteria
+     *
+     * @return list<Quote>
+     */
+    public function findByQuoteIdIncludingArchived(array $criteria): array
+    {
+        if (($criteria['quoteId'] ?? '') === '') {
+            return [];
+        }
+
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        try {
+            return array_values($this->findBy($criteria));
+        } finally {
+            $filters->enable('archivable');
+        }
+    }
+
     public function getTotalQuotes(?QuoteStatus $status = null): int
     {
         $qb = $this->createQueryBuilder('q');

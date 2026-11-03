@@ -12,7 +12,7 @@
                     {{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}
                 </p>
                 <p style="color: #2a2a2a; font-family: Georgia, 'Times New Roman', serif; font-size: 15px; line-height: 1.7; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
+                    {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|format_date('long')}, 'email') }}
                 </p>
             </columns>
         </row>

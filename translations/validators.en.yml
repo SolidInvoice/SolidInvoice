@@ -2,6 +2,7 @@ client:
     constraint:
         contacts:
             min: 'You need to add at least one contact to this client'
+        plan_limit: 'You have reached the maximum number of clients allowed on your current plan.'
         unique_name: 'A client with the name "{{ value }}" already exists.'
 core:
     company:
@@ -15,8 +16,20 @@ core:
         application_url_host: 'This domain is reserved for the default application URL.'
     custom_field:
         field_key: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.'
+        options_required: 'At least one option is required for select fields.'
         similar_label: 'A custom field with a similar label already exists for the selected target.'
         unique_label: 'A custom field with this label already exists for the selected target.'
+        visibility_not_supported: 'Visibility only applies to invoice and quote custom fields.'
+        visibility_required: 'Visibility is required for invoice and quote custom fields.'
+    image_upload:
+        invalid_image: 'The uploaded file is not a valid image.'
+        invalid_mime_type: 'The uploaded file must be a JPEG, PNG, GIF or WebP image.'
+document:
+    mark_sent:
+        channel_email: 'Use the send endpoint to email a document.'
+    send:
+        no_recipients: 'There is no one to send this to. Add a contact with an email address.'
+        unknown_contact: 'This is not a contact of the client this document is for.'
 install:
     database:
         driver:
@@ -35,17 +48,25 @@ install:
         password:
             not_blank: 'You must enter a secure password'
 invoice:
+    invoice_id:
+        unique: 'This invoice number is already in use.'
     lines:
         min: 'You need to add at least 1 line to the Invoice'
+    plan_limit: 'You have reached the maximum number of invoices allowed on your current plan this month.'
     users:
         min: 'Choose who gets this invoice. If the client has no contacts yet, add one with an email address.'
 notification:
     constraint:
         transport_setting:
             unique_name: 'The name is already in use'
+payment:
+    amount:
+        greater_than_zero: 'This value should be greater than {{ compared_value }}.'
 quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'
+    quote_id:
+        unique: 'This quote number is already in use.'
     users:
         min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
 recurring_invoice:
@@ -70,16 +91,19 @@ recurring_invoice:
         min: 'You need to select at least 1 user to attach to the Invoice'
 tax:
     constraint:
+        exactly_one_document: 'Exactly one of invoice, quote, or recurring invoice must be set on an InvoiceTax.'
+        exactly_one_line: 'Exactly one of invoiceLine or quoteLine must be set on a LineTax.'
         incompatible:
             flat_rate_compound: 'A flat-rate tax cannot be compound.'
             inclusive_compound: 'A tax cannot be both inclusive and compound.'
+        same_company_as_client: 'The tax identifier client must belong to the same company.'
 user:
     email:
-        invalid: 'The email {{ value }} is not a valid email.'
-        not_blank: 'Please enter your email'
+        throwaway: 'Disposable or temporary email addresses are not allowed. Please use a permanent email address.'
+    invitation:
+        exists: 'There is already an existing invitation for this email address'
     password:
         compromised: 'This password has been leaked in a data breach, please use a different password.'
-        fields_match: 'The password fields must match.'
         min_length: 'Your password should be at least {{ limit }} characters'
         min_length_long: 'Your password must be at least {{ limit }} characters long'
         mismatch: 'Passwords do not match.'

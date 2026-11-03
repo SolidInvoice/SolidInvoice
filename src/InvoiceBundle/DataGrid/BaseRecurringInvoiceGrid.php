@@ -59,30 +59,37 @@ abstract class BaseRecurringInvoiceGrid extends Grid
     {
         return [
             StringColumn::new('client')
+                ->label('label.client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             StringColumn::new('frequency')
+                ->label('invoice.recurring.frequency')
                 ->formatValue(fn (RecurringInvoice $recurringInvoice): string => $this->schedule->getFrequency($recurringInvoice->getRecurringOptions())),
             DateTimeColumn::new('dateStart')
+                ->label('invoice.recurring.start_date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('dateStart')),
             DateTimeColumn::new('endDate')
+                ->label('invoice.recurring.end_date')
                 ->format('d F Y')
                 ->formatValue(fn (RecurringInvoice $recurringInvoice) => $this->schedule->getEndDate($recurringInvoice->getRecurringOptions()))
                 ->filter(new DateRangeFilter('endDate')),
             DateTimeColumn::new('nextRunDate')
-                ->label('Next Run Date')
+                ->label('invoice.grid.next_run_date')
                 ->formatValue(fn (RecurringInvoice $recurringInvoice): ?DateTimeInterface => $this->schedule->getNextRunDate($recurringInvoice->getRecurringOptions()))
                 ->format('d F Y'),
             StringColumn::new('status')
+                ->label('label.status')
                 ->twigFunction('invoice_label')
-                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (RecurringInvoiceStatus $s) => [$s->value, $s->name], RecurringInvoiceStatus::cases()), 1, 0))->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (RecurringInvoiceStatus $s) => [$s->value, $s->getLabel()], RecurringInvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
+                ->label('billing.total')
                 ->formatValue(fn (float | BigNumber $value, RecurringInvoice $invoice): Money => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('tax')
+                ->label('billing.tax')
                 ->formatValue(fn (float | BigNumber $value, RecurringInvoice $invoice): Money => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('payableAmount')
-                ->label('Payable')
+                ->label('invoice.grid.payable')
                 ->searchable(false)
                 ->formatValue(function (BigNumber $value, RecurringInvoice $invoice): Money {
                     $withholding = $invoice->getWithholdingAmount();
@@ -91,7 +98,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                     return new Money((string) $amount, $invoice->getCurrency());
                 }),
             MoneyColumn::new('discount.value')
-                ->label('Discount')
+                ->label('billing.discount')
                 ->searchable(false)
                 ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
@@ -116,7 +123,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Delete')
+        yield BatchAction::new('action.delete')
             ->icon('trash')
             ->color('danger')
             ->action(static function (RecurringInvoiceRepository $repository, array $selectedItems): void {

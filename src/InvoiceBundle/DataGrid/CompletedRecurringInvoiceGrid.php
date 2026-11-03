@@ -32,7 +32,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Reactivate')
+        yield BatchAction::new('action.reactivate')
             ->icon('refresh')
             ->color('success')
             ->action(static function (RecurringInvoiceRepository $repository, EntityManagerInterface $em, array $selectedItems): void {

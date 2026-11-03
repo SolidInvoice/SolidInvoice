@@ -6,6 +6,14 @@
             </div>
         </div>
 
+        {# getLabel() doubles as the step's service id and action name, so it stays English; display it via this map. #}
+        {% set step_titles = {
+            creating_database: 'installation.process.step.createdb',
+            generating_secret: 'installation.process.step.secret',
+            generating_build_id: 'installation.process.step.build_id',
+            creating_database_schema: 'installation.process.step.migrations',
+            creating_admin_user: 'installation.process.step.admin_user',
+        } %}
         <div class="vstack gap-3 mb-4" id="installation-steps">
             {% for step in this.installationSteps %}
                 <div class="card" id="step-{{ step.label|u.snake }}-card">
@@ -18,7 +26,7 @@
                             </div>
                             <div class="flex-grow-1 overflow-hidden">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="card-title mb-0">{{ step.label }}</h5>
+                                    <h5 class="card-title mb-0">{{ step_titles[step.label|u.snake]|default(step.label)|trans }}</h5>
                                     <div class="d-flex gap-2">
                                         <button type="button"
                                                 class="btn btn-sm btn-danger d-none"
@@ -68,7 +76,10 @@
             nextBtn.innerHTML = originalBtnText;
             nextBtn.disabled = false;
 
-            document.querySelector('#install-title').textContent = 'Installation Complete';
+            const currentStepTitle = currentStepText?.querySelector('strong');
+            if (currentStepTitle) {
+                currentStepTitle.textContent = {{ 'installation.process.title.complete'|trans|json_encode|raw }};
+            }
 
             progressBar.style.width = '100%';
             progressBar.setAttribute('aria-valuenow', '100');
@@ -152,7 +163,7 @@
                 // Connection error, not a step error
                 errorData = {
                     status: 'error',
-                    message: 'Connection lost or step failed to complete',
+                    message: {{ 'installation.process_page.connection_lost'|trans|json_encode|raw }},
                     trace: '',
                 };
             }
@@ -168,7 +179,7 @@
                 toggleBtn.classList.remove('d-none');
             }
 
-            outputContent.textContent += '❌ Error: ' + errorData.message;
+            outputContent.textContent += '❌ ' + {{ 'installation.process_page.error'|trans|json_encode|raw }}.replace('%message%', errorData.message);
 
             if (errorData.trace) {
                 // outputContent.textContent += '\n\nStack trace:\n' + errorData.trace;
@@ -177,7 +188,7 @@
             // Auto-expand to show error
             if (!outputCollapse.classList.contains('show')) {
                 outputCollapse.classList.add('show');
-                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">{{ 'installation.process_page.hide_logs'|trans|e('js') }}</span>';
             }
 
             // Auto-scroll to show error
@@ -213,12 +224,12 @@
                 toggleBtn.classList.remove('d-none');
             }
 
-            outputContent.textContent += '❌ Error: Connection lost or step failed to complete';
+            outputContent.textContent += '❌ ' + {{ 'installation.process_page.error'|trans|json_encode|raw }}.replace('%message%', {{ 'installation.process_page.connection_lost'|trans|json_encode|raw }});
 
             // Auto-expand to show error
             if (!outputCollapse.classList.contains('show')) {
                 outputCollapse.classList.add('show');
-                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">{{ 'installation.process_page.hide_logs'|trans|e('js') }}</span>';
             }
 
             // Show retry button
@@ -290,7 +301,7 @@
 
         nextBtn.classList.add('disabled');
         originalBtnText = nextBtn.innerHTML;
-        nextBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Installing...';
+        nextBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> {{ 'installation.process.title.busy'|trans|e('js') }}';
         nextBtn.disabled = true;
 
         // Auto-start installation when page loads
@@ -302,7 +313,7 @@
             const stepId = event.target.id.replace('step-', '').replace('-output', '');
             const toggleBtn = document.querySelector(`#step-${stepId}-toggle`);
             if (toggleBtn) {
-                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">{{ 'installation.process_page.hide_logs'|trans|e('js') }}</span>';
             }
         }
     });
@@ -312,7 +323,7 @@
             const stepId = event.target.id.replace('step-', '').replace('-output', '');
             const toggleBtn = document.querySelector(`#step-${stepId}-toggle`);
             if (toggleBtn) {
-                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-down', {width: 20, height: 20})|e('js') }}<span class="ms-1">View logs</span>';
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-down', {width: 20, height: 20})|e('js') }}<span class="ms-1">{{ 'installation.process_page.view_logs'|trans|e('js') }}</span>';
             }
         }
     });

@@ -14,28 +14,25 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action;
 
 use SolidInvoice\UserBundle\DTO\Registration;
-use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
+use SolidInvoice\UserBundle\Registration\UserRegistrar;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
-use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Ulid;
 use function assert;
 
 final class Register extends AbstractController
 {
     public function __construct(
-        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly UserRegistrar $userRegistrar,
         private readonly UserInvitationRepository $invitationRepository,
-        private readonly UserRepository $userRepository,
         private readonly Security $security,
         private readonly ToggleInterface $toggle,
         #[Autowire(env: 'SOLIDINVOICE_TURNSTILE_SITE_KEY')]
@@ -82,22 +79,17 @@ final class Register extends AbstractController
             $data = $form->getData();
             assert($data instanceof Registration);
 
-            $user = new User();
-            $user->setEmail($invitation instanceof UserInvitation ? $invitation->getEmail() : $data->email);
-            $user->setPassword($data->plainPassword);
-            $user->setSignupMethod($invitation instanceof UserInvitation ? SignupMethod::Invitation : SignupMethod::Registration);
+            $user = $this->userRegistrar->register(
+                (string) ($invitation instanceof UserInvitation ? $invitation->getEmail() : $data->email),
+                (string) $data->plainPassword,
+                $invitation instanceof UserInvitation ? SignupMethod::Invitation : SignupMethod::Registration,
+                // Invited users join the inviting company; everyone else creates one during onboarding.
+                $invitation?->getCompany(),
+            );
 
-            // If invited, add to existing company
             if ($invitation instanceof UserInvitation) {
-                $user->addCompany($invitation->getCompany());
                 $this->invitationRepository->delete($invitation);
             }
-
-            // For regular users, company will be created during onboarding
-
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
-            $user->setEnabled(true);
-            $this->userRepository->save($user);
 
             // Auto-login and redirect
             // OnboardingLoginListener will handle post-login redirect:

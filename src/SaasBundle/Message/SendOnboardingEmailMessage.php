@@ -20,6 +20,9 @@ final readonly class SendOnboardingEmailMessage
     public function __construct(
         public Ulid $userId,
         public string $stepKey,
+        // Null on messages queued before Free accounts were emailed; those
+        // fall back to the user's Trial row.
+        public ?Ulid $subscriptionId = null,
     ) {
     }
 }

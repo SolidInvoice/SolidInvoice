@@ -18,7 +18,6 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Sent once the first invoice is out: the win, and the next step towards
@@ -28,11 +27,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class TurnInvoicesIntoPaymentsStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
-        TranslatorInterface $translator,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly PaymentRepository $paymentRepository,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string

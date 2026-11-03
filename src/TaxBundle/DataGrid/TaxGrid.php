@@ -24,6 +24,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
 #[AsDataGrid(name: 'tax_grid', title: 'Tax Rates')]
@@ -41,14 +42,19 @@ final class TaxGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('name'),
+            StringColumn::new('name')
+                ->label('label.name'),
             StringColumn::new('rate')
+                ->label('tax.grid.rate')
                 ->formatValue(static fn (string | float $value) => (string) $value . '%'),
-            StringColumn::new('type'),
+            StringColumn::new('type')
+                ->label('tax.grid.type')
+                ->formatValue(static fn (?string $value) => TaxType::tryFrom((string) $value) ?? $value),
             StringColumn::new('category')
-                ->formatValue(static fn (mixed $value) => $value instanceof TaxCategory ? $value->getLabel() : (string) $value)
+                ->label('tax.grid.category')
                 ->filter(ChoiceFilter::new('category', array_column(array_map(static fn (TaxCategory $c) => [$c->value, $c->getLabel()], TaxCategory::cases()), 1, 0))->multiple()),
             DateTimeColumn::new('created')
+                ->label('label.created')
                 ->format('d F Y'),
         ];
     }
@@ -57,13 +63,10 @@ final class TaxGrid extends Grid
     public function batchActions(): iterable
     {
         return [
-            BatchAction::new('Delete')
+            BatchAction::new('action.delete')
                 ->icon('trash')
                 ->color('danger')
-                ->confirmMessage(<<<MSG
-Are you sure you want to delete the selected tax rates?\n
-Note, deleting a tax rate will remove it from all invoices and quotes that are using it and affect the totals.
-MSG)
+                ->confirmMessage('tax.grid.delete_confirm')
                 ->action(static function (TaxRepository $repository, array $selectedItems): void {
                     $repository->deleteTaxRates($selectedItems);
                 }),

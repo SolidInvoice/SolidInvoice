@@ -23,10 +23,11 @@
 {% endif %}
 
 {{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method.name ?? payment.method }}
-{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|date }}
+{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|format_datetime('long', 'short') }}
 {{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status.label }}
 
 {% if payment.invoice is not empty %}
 {{ '-'|repeat(60) }}
 {{ 'payment.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': payment.invoice.id}) }}
 {% endif %}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

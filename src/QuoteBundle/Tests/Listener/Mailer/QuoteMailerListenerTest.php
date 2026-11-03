@@ -18,6 +18,7 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
@@ -32,6 +33,8 @@ use Symfony\Component\Mailer\MailerInterface;
 
 final class QuoteMailerListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     use MockeryPHPUnitIntegration;
 
     public function testListener(): void
@@ -85,6 +88,6 @@ final class QuoteMailerListenerTest extends TestCase
 
     public function testEvents(): void
     {
-        self::assertSame([QuoteEvents::QUOTE_POST_SEND], \array_keys(QuoteMailerListener::getSubscribedEvents()));
+        self::assertSame([QuoteEvents::QUOTE_POST_SEND], \array_keys(self::listenedEvents(QuoteMailerListener::class)));
     }
 }

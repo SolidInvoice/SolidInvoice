@@ -24,6 +24,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -33,8 +34,9 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-final class McpOAuthAuthenticator extends AbstractAuthenticator
+final class McpOAuthAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     public const string ATTR_ACCESS_TOKEN_ID = 'mcp_oauth_access_token_id';
 
@@ -51,6 +53,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly CompanySelector $companySelector,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly UrlGeneratorInterface $urlGenerator,
         Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -133,6 +136,19 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         return $this->buildErrorResponse('invalid_token', $exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
 
+    // No bearer token at all: point the client at the RFC 9728 metadata so it can discover how to authenticate.
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
+        return new JsonResponse(
+            [
+                'error' => 'invalid_request',
+                'error_description' => 'Missing bearer token.',
+            ],
+            Response::HTTP_UNAUTHORIZED,
+            ['WWW-Authenticate' => sprintf('Bearer resource_metadata="%s"', $this->resourceMetadataUrl())],
+        );
+    }
+
     private function buildAccessDeniedResponse(string $reason): Response
     {
         return $this->buildErrorResponse('access_denied', $reason, Response::HTTP_FORBIDDEN);
@@ -152,9 +168,14 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
             ],
             $statusCode,
             [
-                'WWW-Authenticate' => sprintf('Bearer error="%s", error_description="%s"', $error, $headerSafeMessage),
+                'WWW-Authenticate' => sprintf('Bearer resource_metadata="%s", error="%s", error_description="%s"', $this->resourceMetadataUrl(), $error, $headerSafeMessage),
             ],
         );
+    }
+
+    private function resourceMetadataUrl(): string
+    {
+        return $this->urlGenerator->generate('mcp_well_known_protected_resource_mcp', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     private function extractReason(AccessDecision $decision): string

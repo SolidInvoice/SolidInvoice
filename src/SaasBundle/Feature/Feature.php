@@ -59,4 +59,19 @@ enum Feature: string
             self::CustomTemplates => FeatureType::BOOLEAN,
         };
     }
+
+    /**
+     * Whether a trial can unlock this feature. API and MCP access are denied to
+     * trials by SubscriptionVoter, and the custom domain is locked during trials
+     * (`trial_restricted`), so offering a trial for them would grant nothing.
+     */
+    public function isTrialable(): bool
+    {
+        return match ($this) {
+            self::RestApiAccess,
+            self::McpAccess,
+            self::CustomDomain => false,
+            default => true,
+        };
+    }
 }

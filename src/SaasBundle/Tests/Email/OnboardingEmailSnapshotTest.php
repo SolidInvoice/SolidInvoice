@@ -39,7 +39,6 @@ use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class OnboardingEmailSnapshotTest extends KernelTestCase
@@ -60,8 +59,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private Environment $twig;
 
-    private TranslatorInterface $translator;
-
     #[Override]
     protected static function getKernelClass(): string
     {
@@ -73,7 +70,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
         parent::setUp();
 
         $this->twig = self::getContainer()->get('twig');
-        $this->translator = self::getContainer()->get(TranslatorInterface::class);
     }
 
     public function testWelcomeHtmlSnapshot(): void
@@ -143,19 +139,19 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     public function testWelcomeForUnverifiedUserHtmlSnapshot(): void
     {
-        $this->assertMatchesHtmlSnapshot($this->renderHtml(new WelcomeStep($this->translator), ['verify_url' => self::VERIFY_URL]));
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(new WelcomeStep(), ['verify_url' => self::VERIFY_URL]));
     }
 
     public function testVerifyEmailReminderHtmlSnapshot(): void
     {
-        $step = new VerifyEmailReminderStep($this->translator, self::getContainer()->get(EmailVerificationGateInterface::class));
+        $step = new VerifyEmailReminderStep(self::getContainer()->get(EmailVerificationGateInterface::class));
 
         $this->assertMatchesHtmlSnapshot($this->renderHtml($step, ['verify_url' => self::VERIFY_URL]));
     }
 
     public function testVerifyEmailFinalReminderTextSnapshot(): void
     {
-        $step = new VerifyEmailFinalReminderStep($this->translator, self::getContainer()->get(EmailVerificationGateInterface::class));
+        $step = new VerifyEmailFinalReminderStep(self::getContainer()->get(EmailVerificationGateInterface::class));
 
         $this->assertMatchesTextSnapshot($this->renderText($step, ['verify_url' => self::VERIFY_URL]));
     }
@@ -212,7 +208,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     private function trialAboutToEndStep(bool $paidTrial = false): TrialAboutToEndStep
     {
         return new TrialAboutToEndStep(
-            $this->translator,
             self::getContainer()->get(ClientRepository::class),
             self::getContainer()->get(InvoiceRepository::class),
             $paidTrial ? BillingModeFactory::paidTrial('SOLID30') : BillingModeFactory::freeTrial('SOLID30'),
@@ -221,6 +216,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private function upgradeOfferStep(): UpgradeOfferStep
     {
-        return new UpgradeOfferStep($this->translator, BillingModeFactory::freeTrial('SOLID30'));
+        return new UpgradeOfferStep(BillingModeFactory::freeTrial('SOLID30'));
     }
 }

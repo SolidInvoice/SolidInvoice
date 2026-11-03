@@ -24,8 +24,8 @@ use Twig\Environment;
 
 #[AsNotification(
     name: self::EVENT,
-    title: 'Payment Received',
-    description: 'When a payment is received for an invoice',
+    title: 'notifications.events.payment_received.title',
+    description: 'notifications.events.payment_received.description',
     icon: 'tabler:cash',
     category: NotificationCategory::PAYMENT,
 )]
@@ -43,9 +43,9 @@ class PaymentReceivedNotification extends NotificationMessage
     }
 
     #[Override]
-    public function getSubject(): string
+    public function getSubjectKey(): string
     {
-        return 'A Payment has been received';
+        return 'payment.notification.subject';
     }
 
     #[Override]
@@ -58,7 +58,7 @@ class PaymentReceivedNotification extends NotificationMessage
         if ($email instanceof NotificationEmail) {
             $email->textTemplate(self::TEXT_TEMPLATE);
             $email->htmlTemplate(self::HTML_TEMPLATE);
-            $email->context($this->getParameters());
+            $email->context($this->notificationEmailContext($this->getParameters()));
         }
 
         return $message;

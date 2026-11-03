@@ -35,6 +35,7 @@
             {% include '@SolidInvoiceSaas/subscription/_plans_grid.html.twig' with {
                 plans: plans,
                 currentPlanId: currentPlanId,
+                subscribeToCurrent: subscription.status.value == 'trial' and not subscription.externallyBilled,
                 actionRoute: 'saas_subscription_change_confirm',
                 csrfToken: 'change_plan',
             } only %}

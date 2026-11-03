@@ -144,6 +144,10 @@ final readonly class QuoteWriteTools
             $quote->addUser($contact);
         }
 
+        if ($quote_id !== null && $quote_id !== '' && $this->quoteRepository->findByQuoteIdIncludingArchived(['quoteId' => $quote_id]) !== []) {
+            throw new ToolCallException(sprintf('Quote number "%s" is already in use.', $quote_id));
+        }
+
         $quote->setQuoteId(
             $quote_id !== null && $quote_id !== ''
                 ? $quote_id

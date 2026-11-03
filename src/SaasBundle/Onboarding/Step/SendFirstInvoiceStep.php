@@ -18,7 +18,6 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * A day in with nothing sent. The onboarding wizard leaves a draft behind, so
@@ -29,11 +28,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class SendFirstInvoiceStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
-        TranslatorInterface $translator,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
-        parent::__construct($translator);
     }
 
     public static function key(): string

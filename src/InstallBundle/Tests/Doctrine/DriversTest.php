@@ -74,10 +74,10 @@ final class DriversTest extends TestCase
         $choices = Drivers::getChoiceList();
 
         if (in_array('sqlite', $availableDrivers, true)) {
-            self::assertArrayHasKey('Embedded Database (SQLite)', $choices);
-            self::assertSame('sqlite', $choices['Embedded Database (SQLite)']);
+            self::assertArrayHasKey('installation.database.drivers.sqlite', $choices);
+            self::assertSame('sqlite', $choices['installation.database.drivers.sqlite']);
         } else {
-            self::assertArrayNotHasKey('Embedded Database (SQLite)', $choices);
+            self::assertArrayNotHasKey('installation.database.drivers.sqlite', $choices);
         }
     }
 

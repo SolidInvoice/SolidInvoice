@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class SameCompanyAsClient extends Constraint
 {
-    public string $message = 'The tax identifier client must belong to the same company.';
+    public string $message = 'tax.constraint.same_company_as_client';
 
     #[Override]
     public function getTargets(): string | array

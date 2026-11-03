@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class ExactlyOneDocument extends Constraint
 {
-    public string $message = 'Exactly one of invoice, quote, or recurring invoice must be set on an InvoiceTax.';
+    public string $message = 'tax.constraint.exactly_one_document';
 
     #[Override]
     public function getTargets(): string | array

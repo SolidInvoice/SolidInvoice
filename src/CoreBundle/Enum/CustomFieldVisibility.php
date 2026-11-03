@@ -21,8 +21,8 @@ enum CustomFieldVisibility: string
     public function label(): string
     {
         return match ($this) {
-            self::INTERNAL => 'Internal only',
-            self::CLIENT_VISIBLE => 'Visible to client',
+            self::INTERNAL => 'custom_field.visibility.internal',
+            self::CLIENT_VISIBLE => 'custom_field.visibility.client_visible',
         };
     }
 }

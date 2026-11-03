@@ -51,6 +51,7 @@ final class OnboardingFlowTest extends WebTestCase
             ->visit('/onboarding')
             ->assertSuccessful()
             ->fillField('company_setup_step[companyName]', 'Acme Corporation')
+            ->selectFieldOption('company_setup_step[companyCountry]', 'DE')
             ->selectFieldOption('company_setup_step[companyCurrency]', 'EUR')
             ->interceptRedirects()
             ->click('Continue to your first invoice')
@@ -65,6 +66,9 @@ final class OnboardingFlowTest extends WebTestCase
         self::assertCount(1, $user->getCompanies());
         $company = $user->getCompanies()->first();
         self::assertSame('Acme Corporation', $company->getName());
+        self::assertSame('DE', $company->getCountry());
+        self::assertSame($user->getId()->toString(), $company->getOwner()?->getId()->toString());
+        self::assertNotNull($company->getCreated());
 
         $setting = $this->userSettingRepository->findOneBy(['user' => $user, 'key' => UserSettingType::OnboardComplete]);
         self::assertSame('true', $setting?->getValue());
@@ -85,6 +89,20 @@ final class OnboardingFlowTest extends WebTestCase
         ;
 
         self::assertFalse(self::getContainer()->get(OnboardingManager::class)->isOnboardingComplete($user));
+    }
+
+    public function testABlankCountryIsReportedOnce(): void
+    {
+        $user = $this->createUser('test-country@example.com', 'password');
+
+        $this->browser()
+            ->actingAs($user)
+            ->visit('/onboarding')
+            ->fillField('company_setup_step[companyName]', 'Acme Corporation')
+            ->click('Continue to your first invoice')
+            ->assertStatus(422)
+            ->assertElementCount('.invalid-feedback', 1)
+        ;
     }
 
     public function testInvitedUserDoesNotSeeOnboarding(): void

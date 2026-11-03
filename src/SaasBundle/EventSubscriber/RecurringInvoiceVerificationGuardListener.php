@@ -18,6 +18,7 @@ use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificati
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Component\Workflow\TransitionBlocker;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RecurringInvoiceVerificationGuardListenerTest
@@ -26,6 +27,7 @@ final readonly class RecurringInvoiceVerificationGuardListener
 {
     public function __construct(
         private EmailVerificationGateInterface $gate,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -41,7 +43,7 @@ final readonly class RecurringInvoiceVerificationGuardListener
 
         $event->addTransitionBlocker(
             TransitionBlocker::createUnknown(
-                $this->gate->reason('activating this recurring invoice'),
+                $this->translator->trans('email_verification.blocked.activate_recurring_invoice'),
             ),
         );
     }

@@ -13,33 +13,51 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\State\Processor;
 
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use ApiPlatform\Validator\Exception\ValidationException;
+use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Carbon\CarbonImmutable;
-use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
-use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
-use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\PaymentBundle\Exception\InvalidPaymentException;
+use SolidInvoice\PaymentBundle\Manager\ManualPaymentManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Workflow\WorkflowInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\WebLink\GenericLinkProvider;
+use Symfony\Component\WebLink\Link;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use function is_float;
+use function is_int;
+use function sprintf;
 
 /**
  * @implements ProcessorInterface<RecordPaymentInput, Payment>
  * @see \SolidInvoice\ApiBundle\Tests\State\Processor\RecordPaymentProcessorTest
+ * @see \SolidInvoice\PaymentBundle\Tests\Functional\Api\RecordPaymentTest
  */
 final readonly class RecordPaymentProcessor implements ProcessorInterface
 {
+    /**
+     * Where the integer (minor unit) amount is documented as deprecated.
+     */
+    public const string LEGACY_AMOUNT_DOCS = 'https://solidinvoice.co/docs/api/rest-api#recording-a-payment';
+
     public function __construct(
         private InvoiceRepository $invoiceRepository,
-        private PaymentMethodRepository $paymentMethodRepository,
-        private ManagerRegistry $registry,
-        private WorkflowInterface $invoiceStateMachine,
+        private ManualPaymentManager $paymentManager,
+        private CurrencyScale $currencyScale,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -51,56 +69,74 @@ final readonly class RecordPaymentProcessor implements ProcessorInterface
 
         $invoice = $this->invoiceRepository->findOneBy(['id' => $invoiceId]);
 
-        if ($invoice === null) {
+        if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $invoiceId));
         }
 
-        $offlineMethod = $this->paymentMethodRepository->findOneBy(['factoryName' => PaymentMethod::FACTORY_OFFLINE]);
+        $request = $context['request'] ?? null;
 
-        if (! $offlineMethod instanceof PaymentMethod) {
-            throw new ServiceUnavailableHttpException(null, 'Offline payment method is not configured.');
+        // A JSON integer is the original minor-unit form, still accepted for one deprecation cycle.
+        if (is_int($data->amount) && $request instanceof Request && $operation instanceof HttpOperation) {
+            $request->attributes->set('_api_operation', $operation->withHeaders([...($operation->getHeaders() ?? []), 'Deprecation' => ApiVersion::LEGACY_DEPRECATION]));
+
+            // API Platform builds the Link header from this provider, so a Link set on the operation is lost.
+            $links = $request->attributes->get('_api_platform_links') ?? new GenericLinkProvider();
+            $request->attributes->set('_api_platform_links', $links->withLink(new Link('deprecation', self::LEGACY_AMOUNT_DOCS)));
         }
 
-        $client = $invoice->getClient();
-
-        if ($client === null) {
-            throw new UnprocessableEntityHttpException('Invoice has no client to resolve a currency from.');
-        }
-
-        $invoiceCurrency = $invoice->getCurrency()->getCode();
-
-        if ($data->currency !== $invoiceCurrency) {
-            throw new UnprocessableEntityHttpException(
-                sprintf('Payment currency "%s" does not match invoice currency "%s".', $data->currency, $invoiceCurrency)
+        try {
+            return $this->paymentManager->record(
+                $invoice,
+                $this->minorAmount($data->amount, $invoice),
+                $data->currency,
+                $data->method,
+                $data->paidAt === null ? null : new CarbonImmutable($data->paidAt, 'UTC'),
+                $data->reference,
+                $data->notes,
             );
+        } catch (InvalidPaymentException $exception) {
+            throw $this->violation($exception->field, $exception->getMessage(), null);
+        }
+    }
+
+    private function minorAmount(string | int | float | null $amount, Invoice $invoice): BigInteger
+    {
+        if (is_int($amount)) {
+            return BigInteger::of($amount);
         }
 
-        if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            throw new UnprocessableEntityHttpException(
-                sprintf('Pay transition cannot be applied to invoice in status "%s".', $invoice->getStatus()?->value ?? 'unknown')
-            );
+        try {
+            // As BigIntegerNormalizer does: pin a JSON float's string form so it is host-independent.
+            $major = BigDecimal::of(is_float($amount) ? sprintf('%.14G', $amount) : (string) $amount);
+        } catch (MathException) {
+            throw $this->violation('amount', $this->translator->trans('payment.record.error.amount_invalid'), $amount);
         }
 
-        $payment = new Payment();
-        $payment->setTotalAmount($data->amount);
-        $payment->setCurrencyCode($data->currency);
-        $payment->setReference($data->reference);
-        $payment->setNotes($data->notes);
-        $payment->setMethod($offlineMethod);
-        $payment->setInvoice($invoice);
-        $payment->setClient($client);
+        try {
+            $currency = $invoice->getCurrency();
+        } catch (LogicException) {
+            throw $this->violation('invoice', $this->translator->trans('payment.record.error.no_client'), null);
+        }
 
-        $payment->setStatus(PaymentStatus::Captured);
-        $payment->setCompleted(CarbonImmutable::now());
-        $payment->setCompany($invoice->getCompany());
+        $minor = $this->currencyScale->toMinorUnit($major, $currency);
 
-        $em = $this->registry->getManager();
-        $em->persist($payment);
+        // Rejected rather than rounded: a silently rounded payment is a wrong payment.
+        if ($minor->strippedOfTrailingZeros()->getScale() > 0) {
+            throw $this->violation('amount', $this->translator->trans('payment.record.error.amount_too_precise', ['%currency%' => $currency->getCode()]), $amount);
+        }
 
-        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
+        // Payments store the amount as a PHP integer.
+        if ($minor->isGreaterThan(PHP_INT_MAX)) {
+            throw $this->violation('amount', $this->translator->trans('payment.record.error.amount_too_large'), $amount);
+        }
 
-        $em->flush();
+        return $minor->toBigInteger();
+    }
 
-        return $payment;
+    private function violation(string $field, string $message, mixed $invalidValue): ValidationException
+    {
+        return new ValidationException(new ConstraintViolationList([
+            new ConstraintViolation($message, null, [], null, $field, $invalidValue),
+        ]));
     }
 }

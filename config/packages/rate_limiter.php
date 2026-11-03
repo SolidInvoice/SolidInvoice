@@ -25,6 +25,24 @@ return App::config([
                 // "Email me a test copy" mails an address nobody has verified yet, with content the
                 // account controls. Cap it per account for its unverified life, and per IP so new
                 // accounts don't multiply that.
+                // POST /api/invoices/{id}/reminder, keyed by invoice.
+                // Sending an invoice or quote by email, per document, so the API cannot be used to relay mail.
+                'document_send' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 5,
+                    'interval' => '1 hour',
+                ],
+                // Recipients emailed through the API per company, so many documents cannot add up to a relay.
+                'document_send_recipients' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 500,
+                    'interval' => '1 hour',
+                ],
+                'invoice_manual_reminder' => [
+                    'policy' => 'fixed_window',
+                    'limit' => 1,
+                    'interval' => '1 hour',
+                ],
                 'invoice_test_copy' => [
                     'policy' => 'fixed_window',
                     'limit' => 3,
@@ -39,6 +57,13 @@ return App::config([
                     'policy' => 'fixed_window',
                     'limit' => 60,
                     'interval' => '1 hour',
+                ],
+                // SaaS: invoice and quote emails a company may send per day in its first week.
+                // Past it they are held for review, not dropped (HoldNewAccountClientEmailListener).
+                'new_account_client_email' => [
+                    'policy' => 'sliding_window',
+                    'limit' => 3,
+                    'interval' => '1 day',
                 ],
                 'one_tap_nonce' => [
                     'policy' => 'sliding_window',

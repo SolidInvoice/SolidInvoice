@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
-use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
@@ -51,6 +51,7 @@ final class CompanyEventSubscriber
         private readonly BillingMode $billingMode,
         private readonly OnboardingDispatcher $onboardingDispatcher,
         private readonly LoggerInterface $logger,
+        private readonly TrialPeriod $trialPeriod,
     ) {
     }
 
@@ -72,17 +73,19 @@ final class CompanyEventSubscriber
             $user = $this->security->getUser();
             assert($user instanceof User);
 
-            if ($this->billingMode->requiresCardForTrial()) {
-                $this->recordTrialEntry($user);
-                $event->setResponse($this->createWelcomeRedirect());
-                $this->subscription = null;
-
-                return;
-            }
-
             $plan = $this->subscription->getPlan();
 
-            if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() instanceof DateInterval) {
+            if ($plan->isFree() && ! $this->trialPeriod->hasTrial($plan)) {
+                // Free default: there is nothing to pay or trial, so the new
+                // company goes straight to ACTIVE in every billing mode, whether
+                // or not the user had a trial before. No Trial row: the opt-in
+                // trial is still theirs.
+                $this->subscriptionManager->activate($this->subscription);
+                $this->sendWelcomeEmail($user, $this->subscription);
+            } elseif ($this->billingMode->requiresCardForTrial()) {
+                $this->recordTrialEntry($user);
+                $this->redirect($event, $this->createWelcomeRedirect());
+            } elseif (! $this->trialManager->userHasTrial($user) && $this->trialPeriod->hasTrial($plan)) {
                 try {
                     // User is new and plan has a trial configured, start the trial atomically
                     $this->entityManager->wrapInTransaction(function () use ($user): void {
@@ -93,12 +96,12 @@ final class CompanyEventSubscriber
                     $this->sendWelcomeEmail($user, $this->subscription);
                 } catch (TrialAlreadyExistsException) {
                     // Race condition: another request already created a trial for this user
-                    $event->setResponse($this->createPlanSelectionRedirect());
+                    $this->redirect($event, $this->createPlanSelectionRedirect());
                 }
             } else {
                 // User already had a trial — let them pick a plan for this new
                 // company instead of silently checking them out on the default.
-                $event->setResponse($this->createPlanSelectionRedirect());
+                $this->redirect($event, $this->createPlanSelectionRedirect());
             }
 
             $this->subscription = null;
@@ -110,10 +113,10 @@ final class CompanyEventSubscriber
      * user completes checkout, so nothing is started locally — the subscription
      * stays PENDING and RequestListener blocks the app until the webhook lands.
      *
-     * The Trial row is still recorded here. It is the ledger the onboarding
-     * email scheduler joins against, so skipping it would silently stop the
-     * whole onboarding sequence, not just the trial-specific emails. In this
-     * mode it records "entered the trial funnel" rather than "trial started".
+     * The Trial row is still recorded here: the trial on this paid plan is the
+     * user's one trial, and the row is what marks it used (so no opt-in trial
+     * is offered later). In this mode it records "entered the trial funnel"
+     * rather than "trial started".
      */
     private function recordTrialEntry(User $user): void
     {
@@ -141,6 +144,20 @@ final class CompanyEventSubscriber
         } catch (Throwable $e) {
             $this->logger->error('Could not dispatch the welcome email at signup', ['exception' => $e]);
         }
+    }
+
+    /**
+     * Sends a browser on to the next billing step. A JSON client creating a company through the API
+     * keeps the response it asked for: the subscription state the step resolves reaches it through
+     * the API's access checks instead.
+     */
+    private function redirect(ResponseEvent $event, RedirectResponse $redirect): void
+    {
+        if (\in_array($event->getRequest()->getPreferredFormat(), ['json', 'jsonld'], true)) {
+            return;
+        }
+
+        $event->setResponse($redirect);
     }
 
     private function createPlanSelectionRedirect(): RedirectResponse

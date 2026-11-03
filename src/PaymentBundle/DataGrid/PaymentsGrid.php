@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
@@ -54,7 +56,7 @@ final class PaymentsGrid extends Grid
     {
         return [
             StringColumn::new('invoice')
-                ->label('Invoice #')
+                ->label('payment.list.grid.invoice_number')
                 ->searchable(false)
                 ->formatValue(static function (Invoice $invoice) {
                     try {
@@ -65,9 +67,11 @@ final class PaymentsGrid extends Grid
                 })
                 ->linkToRoute('_invoices_view', ['id' => 'invoice.id']),
             StringColumn::new('client')
+                ->label('label.client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             StringColumn::new('method')
+                ->label('payment.list.grid.method')
                 ->searchable(false)
                 ->linkToRoute('_payment_settings_index', ['method' => 'method.gatewayName'])
                 ->filter(
@@ -75,19 +79,43 @@ final class PaymentsGrid extends Grid
                         ->multiple()
                 ),
             StringColumn::new('status')
+                ->label('label.status')
                 ->twigFunction('payment_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (PaymentStatus $s) => [$s->value, $s->getLabel()], PaymentStatus::cases()), 1, 0))->multiple()),
             DateTimeColumn::new('completed')
-                ->label('Completed Date')
+                ->label('payment.list.grid.completed_date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('completed')),
-            StringColumn::new('message'),
+            StringColumn::new('message')
+                ->label('payment.list.grid.message'),
             MoneyColumn::new('amount')
+                ->label('payment.list.grid.amount')
                 ->searchable(false)
                 ->sortableField('totalAmount'),
             DateTimeColumn::new('created')
+                ->label('label.created')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('created')),
+        ];
+    }
+
+    /**
+     * @return list<Action>
+     */
+    #[Override]
+    public function actions(): array
+    {
+        return [
+            ViewAction::new('_invoices_payment_view', ['id' => 'id']),
+            // Only a captured payment has a receipt; the others answer with a 404.
+            Action::new('_invoices_receipt_view', ['id' => 'id'])
+                ->label('payment.receipt.action.view')
+                ->icon('file-type-pdf')
+                ->inMenu(),
+            Action::new('_invoices_receipt_download', ['id' => 'id'])
+                ->label('payment.receipt.action.download')
+                ->icon('download')
+                ->inMenu(),
         ];
     }
 

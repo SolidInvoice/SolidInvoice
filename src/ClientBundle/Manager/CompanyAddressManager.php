@@ -164,7 +164,7 @@ final class CompanyAddressManager
             ->setZip($decoded['zip'] ?? null)
             // Legacy settings predate Address::$country's #[Assert\Country], which
             // requires an uppercase ISO-3166 code; normalize the same way
-            // Version30200_4::normalizeCountry() does, so the two cannot disagree.
+            // Version30200_44::normalizeCountry() does, so the two cannot disagree.
             ->setCountry($this->normalizeCountry($decoded['country'] ?? null));
 
         $violations = $this->validator->validateProperty($address, 'country');

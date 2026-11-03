@@ -52,7 +52,7 @@ final readonly class Add
 
             $session = $request->getSession();
             assert($session instanceof Session);
-            $session->getFlashBag()->add('success', 'Tax rate successfully saved');
+            $session->getFlashBag()->add('success', 'tax.rates.flash.saved');
 
             return new RedirectResponse($this->router->generate('_tax_rates'));
         }
