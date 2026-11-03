@@ -1415,7 +1415,7 @@ payment:
             amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
             invoice_cannot_be_paid: 'This invoice cannot be paid'
             no_payment_methods: 'No payment methods are currently available'
-            not_enough_credit: 'Not have enough credit available'
+            not_enough_credit: 'Not enough credit available'
         force: 'Force payment status (Optional)'
         invoice_date: 'Invoice Date'
         payment_label: Payment
