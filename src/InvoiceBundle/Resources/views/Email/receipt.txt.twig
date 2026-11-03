@@ -1,0 +1,23 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{{ 'payment.receipt.title'|trans({'%number%': payment.receiptNumber}, 'email')|upper }}
+
+{{ 'payment.receipt.info'|trans({'%company%': company_name(), '%amount%': payment.totalAmount|formatCurrency(invoice.currency), '%invoice%': invoice.invoiceId}, 'email') }}
+
+{{ 'payment.receipt.number'|trans({}, 'email') }}: {{ payment.receiptNumber }}
+{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.completed|format_date('long') }}
+{{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method.name }}
+{% if payment.reference is not empty %}
+{{ 'payment.receipt.reference'|trans({}, 'email') }}: {{ payment.reference }}
+{% endif %}
+{{ 'payment.details.invoice'|trans({}, 'email') }}: {{ invoice.invoiceId }}
+{{ 'payment.receipt.amount_paid'|trans({}, 'email') }}: {{ payment.totalAmount|formatCurrency(invoice.currency) }}
+{{ 'payment.receipt.balance'|trans({}, 'email') }}: {{ receipt_balance(payment)|formatCurrency(invoice.currency) }}
+
+{{ 'payment.view_invoice'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}

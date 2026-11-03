@@ -65,7 +65,7 @@
                             {% endif %}
                         </span>
                         <div class="d-flex flex-column">
-                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
+                            <strong>{{ ('installation.flow.' ~ step.name)|trans }}</strong>
                         </div>
                     </div>
                 {% endfor %}

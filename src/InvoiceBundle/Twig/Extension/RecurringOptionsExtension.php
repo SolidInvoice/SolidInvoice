@@ -14,17 +14,19 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Twig\Extension;
 
 use Override;
-use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function array_filter;
 
 final class RecurringOptionsExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly RecurringSchedule $schedule
+        private readonly RecurringSchedule $schedule,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -66,10 +68,16 @@ final class RecurringOptionsExtension extends AbstractExtension
             return $frequency;
         }
 
-        return $frequency . match ($recurringOptions->getEndType()) {
-            ScheduleEndType::ON => sprintf(' from %s to %s', $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format), $this->schedule->getEndDate($recurringOptions)?->format($format)),
-            ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format), $this->schedule->getEndDate($recurringOptions)?->format($format), $recurringOptions->getEndOccurrence()),
-            ScheduleEndType::NEVER => sprintf(' from %s', $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format)),
-        };
+        $parameters = [
+            'frequency' => $frequency,
+            'start' => $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format),
+            'end' => $this->schedule->getEndDate($recurringOptions)?->format($format),
+            'count' => $recurringOptions->getEndOccurrence(),
+        ];
+
+        return $this->translator->trans(
+            'invoice.recurring.schedule_summary.' . $recurringOptions->getEndType()->value,
+            array_filter($parameters, static fn (mixed $value): bool => $value !== null),
+        );
     }
 }

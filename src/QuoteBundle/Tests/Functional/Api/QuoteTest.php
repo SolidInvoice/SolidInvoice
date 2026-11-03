@@ -186,6 +186,7 @@ final class QuoteTest extends ApiTestCase
         ]);
 
         $data = $this->requestGet($this->getIriFromResource($quote));
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Quote',
@@ -198,6 +199,7 @@ final class QuoteTest extends ApiTestCase
                 ->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
+            'currencyCode' => $quote->getCurrency()->getCode(),
             'total' => 100,
             'baseTotal' => 100,
             'tax' => 0,
@@ -232,6 +234,8 @@ final class QuoteTest extends ApiTestCase
             'payableAmount' => 100,
             'invoiceTaxes' => [],
             'customFields' => [],
+            'publicUrl' => 'http://localhost/view/quote/' . $quote->getUuid()->toString(),
+            'pdfUrl' => 'http://localhost/view/quote/' . $quote->getUuid()->toString() . '.pdf',
         ], $data);
     }
 
@@ -278,6 +282,7 @@ final class QuoteTest extends ApiTestCase
                 ],
             ]
         );
+        $data = self::assertTimestampsAndRemove($data);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Quote',
@@ -290,6 +295,7 @@ final class QuoteTest extends ApiTestCase
                 ->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
+            'currencyCode' => $quote->getCurrency()->getCode(),
             'total' => 11250,
             'baseTotal' => 12500,
             'tax' => 0,
@@ -340,6 +346,8 @@ final class QuoteTest extends ApiTestCase
             'payableAmount' => 11250,
             'invoiceTaxes' => [],
             'customFields' => [],
+            'publicUrl' => 'http://localhost/view/quote/' . $quote->getUuid()->toString(),
+            'pdfUrl' => 'http://localhost/view/quote/' . $quote->getUuid()->toString() . '.pdf',
         ], $data);
     }
 }

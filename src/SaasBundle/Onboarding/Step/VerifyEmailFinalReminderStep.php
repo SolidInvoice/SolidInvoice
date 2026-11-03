@@ -36,4 +36,10 @@ final class VerifyEmailFinalReminderStep extends VerifyEmailReminderStep
     {
         return 72;
     }
+
+    #[Override]
+    protected static function beforeHours(): ?int
+    {
+        return null;
+    }
 }

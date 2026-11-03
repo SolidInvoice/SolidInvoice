@@ -29,10 +29,10 @@
                 </div>
                 <div class="col-md-4">
                     <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
-                    <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    <div>{{ invoice.invoiceDate|format_date('long') }}</div>
                     {% if invoice.due %}
-                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'invoice.due_date'|trans }}</div>
-                        <div>{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
+                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'billing.due_date'|trans }}</div>
+                        <div>{{ invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
                     {% endif %}
                 </div>
             </div>
@@ -40,10 +40,10 @@
             <table class="table table-borderless">
                 <thead>
                     <tr class="border-bottom">
-                        <th class="text-muted small text-uppercase" style="letter-spacing: 1px;">{{ 'invoice.item.heading.description'|trans }}</th>
+                        <th class="text-muted small text-uppercase" style="letter-spacing: 1px;">{{ 'label.description'|trans }}</th>
                         <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.qty'|trans }}</th>
                         <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.price'|trans }}</th>
-                        <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.total'|trans }}</th>
+                        <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'billing.total'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,9 +61,9 @@
             <div class="row justify-content-end mt-4">
                 <div class="col-md-5">
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
-                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'billing.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between border-top pt-3 mt-3">
-                        <span class="fw-bold fs-5">{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}</span>
+                        <span class="fw-bold fs-5">{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'billing.total'|trans }}</span>
                         <span class="fw-bold fs-3">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</span>
                     </div>
                 </div>

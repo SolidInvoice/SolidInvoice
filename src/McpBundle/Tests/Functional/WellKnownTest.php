@@ -16,10 +16,13 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\McpBundle\Action\AgentDocument;
 use SolidInvoice\McpBundle\Action\WellKnownAgentSkillsIndex;
+use SolidInvoice\McpBundle\Action\WellKnownAiCatalog;
 use SolidInvoice\McpBundle\Action\WellKnownAuthServer;
 use SolidInvoice\McpBundle\Action\WellKnownProtectedResource;
 use SolidInvoice\McpBundle\Action\WellKnownServerCard;
+use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,6 +30,9 @@ use Symfony\Component\HttpFoundation\Request;
 #[CoversClass(WellKnownProtectedResource::class)]
 #[CoversClass(WellKnownServerCard::class)]
 #[CoversClass(WellKnownAgentSkillsIndex::class)]
+#[CoversClass(WellKnownAiCatalog::class)]
+#[CoversClass(AgentDocument::class)]
+#[CoversClass(McpOAuthAuthenticator::class)]
 #[Group('functional')]
 final class WellKnownTest extends WebTestCase
 {
@@ -102,7 +108,80 @@ final class WellKnownTest extends WebTestCase
 
         self::assertIsArray($data);
         self::assertArrayHasKey('$schema', $data);
-        self::assertArrayHasKey('skills', $data);
         self::assertIsArray($data['skills']);
+        self::assertCount(1, $data['skills']);
+
+        $skill = $data['skills'][0];
+        self::assertSame('solidinvoice-mcp', $skill['name']);
+        self::assertSame('skill-md', $skill['type']);
+
+        $client->request(Request::METHOD_GET, $skill['url']);
+
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('Content-Type', 'text/markdown; charset=UTF-8');
+
+        $content = (string) $client->getResponse()->getContent();
+
+        self::assertSame('sha256:' . hash('sha256', $content), $skill['digest']);
+        self::assertStringContainsString('http://localhost/_mcp', $content);
+        self::assertStringNotContainsString('%base_url%', $content);
+    }
+
+    public function testPathSuffixedProtectedResourceMetadata(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request(Request::METHOD_GET, '/.well-known/oauth-protected-resource/_mcp');
+
+        self::assertResponseIsSuccessful();
+
+        $data = json_decode((string) $client->getResponse()->getContent(), true);
+
+        self::assertIsArray($data);
+        self::assertSame('http://localhost/_mcp', $data['resource']);
+    }
+
+    public function testMcpWithoutTokenPointsAtResourceMetadata(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request(Request::METHOD_POST, '/_mcp', [], [], ['CONTENT_TYPE' => 'application/json'], '{}');
+
+        self::assertResponseStatusCodeSame(401);
+        self::assertResponseHeaderSame('WWW-Authenticate', 'Bearer resource_metadata="http://localhost/.well-known/oauth-protected-resource/_mcp"');
+    }
+
+    public function testAiCatalog(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request(Request::METHOD_GET, '/.well-known/ai-catalog.json');
+
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('Access-Control-Allow-Origin', '*');
+
+        $data = json_decode((string) $client->getResponse()->getContent(), true);
+
+        self::assertIsArray($data);
+        self::assertSame('1.0', $data['specVersion']);
+        self::assertSame('did:web:localhost', $data['host']['identifier']);
+        self::assertNotEmpty($data['entries']);
+
+        foreach ($data['entries'] as $entry) {
+            self::assertStringStartsWith('urn:air:localhost:solidinvoice:', $entry['identifier']);
+            self::assertStringStartsWith('http://localhost/', $entry['url']);
+            self::assertGreaterThanOrEqual(2, \count($entry['representativeQueries']));
+        }
+    }
+
+    public function testAuthMd(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request(Request::METHOD_GET, '/auth.md');
+
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('Content-Type', 'text/markdown; charset=UTF-8');
+        self::assertStringStartsWith('# auth.md', (string) $client->getResponse()->getContent());
     }
 }

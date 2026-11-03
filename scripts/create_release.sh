@@ -142,6 +142,30 @@ EOF
 }
 
 # ---------------------------------------------------------------------------
+# ensure_milestone TITLE
+#
+# Creates the milestone only if no milestone with that title exists in any
+# state. Makes the release script safe to re-run after a partial failure.
+# ---------------------------------------------------------------------------
+ensure_milestone() {
+  local TITLE="$1"
+  local EXISTING
+
+  EXISTING=$(gh api --paginate "repos/${REPOSITORY}/milestones?state=all&per_page=100" \
+    | jq -r -s --arg t "${TITLE}" 'add | map(select(.title == $t)) | .[0].number // empty')
+
+  if [ -n "${EXISTING}" ]; then
+    echo "==> Milestone '${TITLE}' already exists (#${EXISTING}) — leaving it as is"
+    return 0
+  fi
+
+  echo "==> Opening milestone '${TITLE}'..."
+  gh api --method POST "repos/${REPOSITORY}/milestones" \
+    -f "title=${TITLE}" \
+    -f "state=open"
+}
+
+# ---------------------------------------------------------------------------
 
 if [ "$PATCH" != "0" ]; then
   # PATCH RELEASE — e.g. 2.3.14
@@ -159,14 +183,21 @@ if [ "$PATCH" != "0" ]; then
     --target "$FROM_BRANCH" \
     --generate-notes
 
-  create_merge_up_pr "${FROM_BRANCH}" "${NEXT_MINOR_BRANCH}" "${MERGE_UP_BRANCH}" "${VERSION}"
+  MERGE_UP_STATUS=0
+  create_merge_up_pr "${FROM_BRANCH}" "${NEXT_MINOR_BRANCH}" "${MERGE_UP_BRANCH}" "${VERSION}" \
+    || MERGE_UP_STATUS=$?
 
-  # Open a milestone for the next patch so issues can be triaged immediately
-  gh api \
-    --method POST \
-    "repos/${REPOSITORY}/milestones" \
-    -f "title=${NEXT_PATCH_RELEASE}" \
-    -f "state=open"
+  # Open a milestone for the next patch so issues can be triaged immediately. This must not
+  # depend on the merge-up: a conflict there is recoverable and routine, and leaving the patch
+  # track with nowhere to land is a worse failure than the conflict itself.
+  ensure_milestone "${NEXT_PATCH_RELEASE}"
+
+  if [ "${MERGE_UP_STATUS}" -ne 0 ]; then
+    echo ""
+    echo "⚠️  Release ${VERSION} completed, but the merge-up to ${NEXT_MINOR_BRANCH} needs manual"
+    echo "    resolution — see the steps above. Milestone ${NEXT_PATCH_RELEASE} was opened."
+    exit "${MERGE_UP_STATUS}"
+  fi
 
 elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   # MINOR RELEASE — e.g. 2.4.0
@@ -190,17 +221,8 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
 
   gh repo edit "${REPOSITORY}" --default-branch "${NEW_BRANCH}"
 
-  gh api \
-    --method POST \
-    "repos/${REPOSITORY}/milestones" \
-    -f "title=${NEXT_MINOR_RELEASE}" \
-    -f "state=open"
-
-  gh api \
-    --method POST \
-    "repos/${REPOSITORY}/milestones" \
-    -f "title=${NEXT_PATCH_RELEASE}" \
-    -f "state=open"
+  ensure_milestone "${NEXT_MINOR_RELEASE}"
+  ensure_milestone "${NEXT_PATCH_RELEASE}"
 
 else
   # MAJOR RELEASE — e.g. 3.0.0
@@ -224,15 +246,6 @@ else
 
   gh repo edit "${REPOSITORY}" --default-branch "${NEXT_MINOR_BRANCH}"
 
-  gh api \
-    --method POST \
-    "repos/${REPOSITORY}/milestones" \
-    -f "title=${NEXT_MINOR_RELEASE}" \
-    -f "state=open"
-
-  gh api \
-    --method POST \
-    "repos/${REPOSITORY}/milestones" \
-    -f "title=${NEXT_PATCH_RELEASE}" \
-    -f "state=open"
+  ensure_milestone "${NEXT_MINOR_RELEASE}"
+  ensure_milestone "${NEXT_PATCH_RELEASE}"
 fi

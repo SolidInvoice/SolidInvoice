@@ -57,31 +57,38 @@ abstract class BaseInvoiceGrid extends Grid
     {
         return [
             StringColumn::new('invoiceId')
-                ->label('Invoice #'),
+                ->label('invoice.grid.invoice_number'),
             RelativeDateColumn::new('invoiceDate')
+                ->label('invoice.date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('invoiceDate')),
             StringColumn::new('client')
+                ->label('label.client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('balance')
+                ->label('invoice.grid.balance')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             RelativeDateColumn::new('due')
-                ->label('Due Date')
+                ->label('billing.due_date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('due')),
             RelativeDateColumn::new('paidDate')
+                ->label('invoice.paid_date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('paidDate')),
             StringColumn::new('status')
+                ->label('label.status')
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (InvoiceStatus $s) => [$s->value, $s->getLabel()], InvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
+                ->label('billing.total')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('tax')
+                ->label('billing.tax')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getCurrency())),
             MoneyColumn::new('payableAmount')
-                ->label('Payable')
+                ->label('invoice.grid.payable')
                 ->searchable(false)
                 ->formatValue(function (BigNumber $value, Invoice $invoice): Money {
                     // Render the explicit payable figure only when withholding is in
@@ -93,7 +100,7 @@ abstract class BaseInvoiceGrid extends Grid
                     return new Money((string) $amount, $invoice->getCurrency());
                 }),
             MoneyColumn::new('discount.value')
-                ->label('Discount')
+                ->label('billing.discount')
                 ->searchable(false)
                 ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
@@ -118,7 +125,7 @@ abstract class BaseInvoiceGrid extends Grid
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Delete')
+        yield BatchAction::new('action.delete')
             ->icon('trash')
             ->color('danger')
             ->action(static function (InvoiceRepository $repository, array $selectedItems): void {

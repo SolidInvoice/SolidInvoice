@@ -61,7 +61,7 @@ final class InvoiceTaxTest extends KernelTestCase
         $violations = $this->validator->validate($invoiceTax);
 
         self::assertGreaterThan(0, $violations->count());
-        self::assertSame((new ExactlyOneDocument())->message, $violations->get(0)->getMessage());
+        self::assertSame((new ExactlyOneDocument())->message, $violations->get(0)->getMessageTemplate());
     }
 
     public function testValidatorSkipsUnpersistedRowsWithNoDocument(): void
@@ -70,7 +70,7 @@ final class InvoiceTaxTest extends KernelTestCase
 
         $violations = $this->validator->validate($invoiceTax);
 
-        $messages = array_map(static fn ($v) => $v->getMessage(), iterator_to_array($violations));
+        $messages = array_map(static fn ($v) => $v->getMessageTemplate(), iterator_to_array($violations));
         self::assertNotContains((new ExactlyOneDocument())->message, $messages);
     }
 
@@ -89,7 +89,7 @@ final class InvoiceTaxTest extends KernelTestCase
         $violations = $this->validator->validate($invoiceTax);
 
         self::assertGreaterThan(0, $violations->count());
-        self::assertSame((new ExactlyOneDocument())->message, $violations->get(0)->getMessage());
+        self::assertSame((new ExactlyOneDocument())->message, $violations->get(0)->getMessageTemplate());
     }
 
     public function testValidatorAcceptsWithOnlyInvoiceSet(): void

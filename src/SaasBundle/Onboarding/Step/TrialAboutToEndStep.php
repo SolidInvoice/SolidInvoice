@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Carbon\CarbonImmutable;
+use Locale;
 use Override;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use function ceil;
 
 /**
@@ -35,12 +37,10 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     private const int NOTICE_DAYS = 4;
 
     public function __construct(
-        TranslatorInterface $translator,
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
         private readonly BillingMode $billingMode,
     ) {
-        parent::__construct($translator);
     }
 
     #[Override]
@@ -60,24 +60,34 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     }
 
     #[Override]
+    public static function audience(): OnboardingAudience
+    {
+        return OnboardingAudience::Trial;
+    }
+
+    #[Override]
     public function createEmail(OnboardingContext $context): TemplatedEmail
     {
         $email = parent::createEmail($context);
 
-        $daysRemaining = $this->daysRemaining($context);
-
-        $email->subject($this->translator->trans(
-            $this->willCharge($context) ? 'onboarding.trial_about_to_end.charged.subject' : 'onboarding.trial_about_to_end.subject',
-            [
-                '%days%' => $daysRemaining,
-                '%count%' => $daysRemaining,
-                '%plan%' => $context->plan->getName(),
-                '%date%' => $context->trialEnd->format('F j'),
-            ],
-            'email',
-        ));
+        if ($this->willCharge($context)) {
+            $email->subject('onboarding.trial_about_to_end.charged.subject');
+        }
 
         return $email;
+    }
+
+    #[Override]
+    protected function subjectParameters(OnboardingContext $context): array
+    {
+        $daysRemaining = $this->daysRemaining($context);
+
+        return [
+            '%days%' => $daysRemaining,
+            '%count%' => $daysRemaining,
+            '%plan%' => $context->plan->getName(),
+            '%date%' => CarbonImmutable::instance($context->trialEnd)->locale(Locale::getDefault())->translatedFormat('F j'),
+        ];
     }
 
     #[Override]

@@ -12,7 +12,7 @@
                                 {{ 'invoice.template.photographer.intro_title'|trans }}
                             </p>
                             <p style="color: #2a2418; font-family: Georgia, serif; font-size: 15px; line-height: 1.6; margin: 0; Margin: 0;">
-                                {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|date}, 'email') }}
+                                {{ 'quote.info'|trans({'%company%': company_name(), '%created%': quote.created|format_date('long')}, 'email') }}
                             </p>
                         </td>
                     </tr>

@@ -57,12 +57,12 @@
                                     <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin-bottom: 4px;">
                                         {{ 'quote.pdf.date'|trans }}
                                     </div>
-                                    <div style="font-size: 11pt; color: #1a1a1a;">{{ quote.created|date('F j, Y') }}</div>
+                                    <div style="font-size: 11pt; color: #1a1a1a;">{{ quote.created|format_date('long') }}</div>
                                     {% if quote.due %}
                                         <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
                                             {{ 'quote.pdf.valid_until'|trans }}
                                         </div>
-                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ quote.due|date('F j, Y') }}</div>
+                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ quote.due|format_date('long') }}</div>
                                         <div style="margin-top: 4px;">{{ q.validity_indicator(quote) }}</div>
                                     {% endif %}
                                     {{ q.status_pair(quote.status, {labelColor: '#6b6b6b', ink: '#1a1a1a'}) }}
@@ -92,13 +92,13 @@
                             <thead>
                                 <tr>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: left; border-bottom: 1px solid #d6cdb8;">
-                                        {{ 'quote.item.heading.description'|trans }}
+                                        {{ 'label.description'|trans }}
                                     </th>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: right; border-bottom: 1px solid #d6cdb8;">
                                         {{ 'quote.item.heading.qty'|trans }} × {{ 'quote.item.heading.price'|trans }}
                                     </th>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: right; border-bottom: 1px solid #d6cdb8;">
-                                        {{ 'quote.item.heading.total'|trans }}
+                                        {{ 'billing.total'|trans }}
                                     </th>
                                 </tr>
                             </thead>

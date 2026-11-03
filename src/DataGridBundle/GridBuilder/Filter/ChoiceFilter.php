@@ -80,7 +80,7 @@ final class ChoiceFilter implements ColumnFilterInterface
             // Render as checkboxes for better UX
             $options['expanded'] = true;
         } else {
-            $options['placeholder'] = 'Choose a value';
+            $options['placeholder'] = 'datagrid.filter.choose';
         }
 
         return $options;

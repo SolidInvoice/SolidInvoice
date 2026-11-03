@@ -35,7 +35,7 @@ final class CustomFieldTypeTest extends TestCase
 
     public function testLabel(): void
     {
-        self::assertSame('Text', CustomFieldType::TEXT->label());
-        self::assertSame('Multi-select', CustomFieldType::MULTI_SELECT->label());
+        self::assertSame('custom_field.type.text', CustomFieldType::TEXT->label());
+        self::assertSame('custom_field.type.multi_select', CustomFieldType::MULTI_SELECT->label());
     }
 }

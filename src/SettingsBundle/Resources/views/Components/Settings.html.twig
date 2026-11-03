@@ -14,6 +14,7 @@
     'system': {'title': 'settings.page.tab.system'|trans, 'icon': 'tabler:building'},
     'invoice': {'title': 'settings.page.tab.invoice'|trans, 'icon': 'tabler:file-invoice'},
     'quote': {'title': 'settings.page.tab.quote'|trans, 'icon': 'tabler:file-text'},
+    'payment': {'title': 'settings.page.tab.payment'|trans, 'icon': 'tabler:credit-card'},
     'email': {'title': 'settings.page.tab.email'|trans, 'icon': 'tabler:mail'},
     'design': {'title': 'settings.page.tab.design'|trans, 'icon': 'tabler:palette'}
 } %}
@@ -401,6 +402,20 @@
                                 {{ 'settings.page.reminder.how_help'|trans }}
                             </div>
                         </div>
+                    </div>
+                {% endif %}
+
+            {% elseif section == 'payment' %}
+                {% if form.receipt is defined %}
+                    <div>
+                        <h3 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:receipt', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
+                            {{ 'settings.page.receipt.title'|trans }}
+                        </h3>
+                        {{ form_row(form.receipt.auto_send, {
+                            label: 'settings.page.receipt.auto_send'|trans,
+                            help: 'settings.page.receipt.auto_send_help'|trans
+                        }) }}
                     </div>
                 {% endif %}
 

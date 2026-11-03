@@ -24,6 +24,8 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 
 #[CoversClass(CreateUserStep::class)]
 final class CreateUserStepTest extends TestCase
@@ -68,7 +70,7 @@ final class CreateUserStepTest extends TestCase
                 return true;
             }));
 
-        $step = new CreateUserStep($userRepository, $hasherFactory);
+        $step = new CreateUserStep($userRepository, $hasherFactory, $this->translator());
 
         $installation = new Installation(
             userAccount: new UserAccount(
@@ -112,7 +114,7 @@ final class CreateUserStepTest extends TestCase
             ->method('save')
             ->willThrowException($exception);
 
-        $step = new CreateUserStep($userRepository, $hasherFactory);
+        $step = new CreateUserStep($userRepository, $hasherFactory, $this->translator());
 
         $installation = new Installation(
             userAccount: new UserAccount(
@@ -153,7 +155,7 @@ final class CreateUserStepTest extends TestCase
             ->expects(self::once())
             ->method('save');
 
-        $step = new CreateUserStep($userRepository, $hasherFactory);
+        $step = new CreateUserStep($userRepository, $hasherFactory, $this->translator());
 
         $installation = new Installation(
             userAccount: new UserAccount(
@@ -168,5 +170,14 @@ final class CreateUserStepTest extends TestCase
         // Execute without callback - should not throw exception
         $generator = $step->execute($installation, null);
         self::assertSame([], iterator_to_array($generator));
+    }
+
+    private function translator(): Translator
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', __DIR__ . '/../../../../translations/messages.en.yml', 'en');
+
+        return $translator;
     }
 }

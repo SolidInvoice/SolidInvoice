@@ -19,49 +19,41 @@ interface SearchResult {
     meta?: string;
 }
 
+interface SearchLabels {
+    qualifiers: Record<string, string>;
+    groups: Record<string, string>;
+    remove: string;
+    noResults: string;
+    searchFailed: string;
+}
+
 interface Qualifier {
-    label: string;
     values?: string[];
     hint: string;
 }
 
 const QUALIFIERS: Record<string, Qualifier> = {
     'in': {
-        label: 'Scope',
         values: ['invoices', 'recurring_invoices', 'quotes', 'payments', 'clients', 'contacts'],
         hint: 'in:invoices',
     },
     'status': {
-        label: 'Status',
         values: ['draft', 'pending', 'paid', 'overdue', 'cancelled', 'active', 'paused', 'captured', 'authorized', 'refunded', 'failed'],
         hint: 'status:paid',
     },
     'amount': {
-        label: 'Amount',
         hint: 'amount:>100 or amount:100..500',
     },
     'client': {
-        label: 'Client',
         hint: 'client:"Acme Corp"',
     },
     'created': {
-        label: 'Created',
         hint: 'created:>2024-01-01',
     },
     'sort': {
-        label: 'Sort',
         values: ['amount', 'amount_desc', 'date', 'date_desc'],
         hint: 'sort:amount_desc',
     },
-};
-
-const LABELS: Record<string, string> = {
-    clients: 'Clients',
-    contacts: 'Contacts',
-    invoices: 'Invoices',
-    recurring_invoices: 'Recurring Invoices',
-    quotes: 'Quotes',
-    payments: 'Payments',
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -103,11 +95,13 @@ const ICON_COLORS: Record<string, string> = {
 
 /* stimulusFetch: 'lazy' */
 export default class GlobalSearchController extends Controller<HTMLElement> {
-    static values = { url: String, suggestionsUrl: String };
+    static values = { url: String, suggestionsUrl: String, labels: Object };
     static targets = ['input', 'dropdown', 'results', 'spinner', 'chips', 'suggestions'];
 
     declare urlValue: string;
     declare suggestionsUrlValue: string;
+    // Translated UI strings, rendered by Twig (Menu/search.html.twig).
+    declare labelsValue: SearchLabels;
     declare inputTarget: HTMLInputElement;
     declare dropdownTarget: HTMLElement;
     declare resultsTarget: HTMLElement;
@@ -274,7 +268,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
 
         const header = document.createElement('div');
         header.className = 'search-suggestions-header';
-        header.textContent = qualifier.label;
+        header.textContent = this.labelsValue.qualifiers[qualifierName] ?? qualifierName;
         container.appendChild(header);
 
         for (const value of filtered) {
@@ -340,8 +334,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
     private showDynamicSuggestions(qualifierName: string, names: string[]): void {
         if (!this.hasSuggestionsTarget) return;
 
-        const qualifier = QUALIFIERS[qualifierName];
-        const label = qualifier?.label ?? qualifierName;
+        const label = this.labelsValue.qualifiers[qualifierName] ?? qualifierName;
 
         const container = this.suggestionsTarget;
         container.textContent = '';
@@ -489,7 +482,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
             removeBtn.className = 'search-chip-remove';
-            removeBtn.setAttribute('aria-label', 'Remove');
+            removeBtn.setAttribute('aria-label', this.labelsValue.remove);
             removeBtn.dataset['qualifier'] = chip;
             removeBtn.textContent = '×';
 
@@ -559,7 +552,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
 
         const text = document.createElement('p');
         text.className = 'search-empty-text';
-        text.textContent = 'No results found';
+        text.textContent = this.labelsValue.noResults;
 
         wrapper.appendChild(iconWrapper);
         wrapper.appendChild(text);
@@ -572,7 +565,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
 
         const label = document.createElement('div');
         label.className = 'search-group-label';
-        label.textContent = LABELS[group] ?? group;
+        label.textContent = this.labelsValue.groups[group] ?? group;
 
         wrapper.appendChild(label);
 
@@ -685,7 +678,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
     private renderError(): void {
         const err = document.createElement('div');
         err.className = 'search-error';
-        err.textContent = 'Search failed. Please try again.';
+        err.textContent = this.labelsValue.searchFailed;
         this.resultsTarget.textContent = '';
         this.resultsTarget.appendChild(err);
         this.hideSpinner();

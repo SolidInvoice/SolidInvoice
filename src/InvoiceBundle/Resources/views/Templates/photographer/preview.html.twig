@@ -21,7 +21,7 @@
                 <div style="font-size: 28px; color: #a2492b;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
                 <div class="text-end">
                     <div class="text-muted small text-uppercase">{{ 'invoice.date'|trans }}</div>
-                    <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    <div>{{ invoice.invoiceDate|format_date('long') }}</div>
                 </div>
             </div>
 
@@ -53,9 +53,9 @@
             <div class="row justify-content-end mt-4">
                 <div class="col-md-5">
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
-                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'billing.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between p-3 rounded" style="background: #a2492b; color: #faf3e6;">
-                        <strong>{{ 'invoice.total'|trans }}</strong>
+                        <strong>{{ 'billing.total'|trans }}</strong>
                         <strong>{{ invoice.total|formatCurrency(currency) }}</strong>
                     </div>
                 </div>

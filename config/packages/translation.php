@@ -26,6 +26,9 @@ $locales = [
 return App::config([
     'framework' => [
         'default_locale' => env('SOLIDINVOICE_LOCALE'),
+        // Locales that ship a catalog. lint:translations checks exactly these, and the
+        // translator warms only these up; add a locale here once its catalog is complete.
+        'enabled_locales' => ['en'],
         'translator' => [
             'fallbacks' => ['en'],
             // Provider-agnostic push/pull integration. The DSN selects the provider

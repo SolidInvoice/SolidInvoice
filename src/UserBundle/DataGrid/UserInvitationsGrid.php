@@ -42,13 +42,13 @@ final class UserInvitationsGrid extends Grid
     {
         return [
             StringColumn::new('email')
-                ->label('Email Address'),
+                ->label('label.email_address'),
             RelativeDateColumn::new('created')
-                ->label('Invited'),
+                ->label('users.grid.invitation.invited'),
             RelativeDateColumn::new('expiresAt')
-                ->label('Expires'),
+                ->label('users.grid.invitation.expires'),
             StatusColumn::new('status')
-                ->label('Status')
+                ->label('label.status')
                 ->statusMap([
                     InvitationStatus::Pending->value => 'warning',
                     InvitationStatus::Expired->value => 'danger',
@@ -57,7 +57,7 @@ final class UserInvitationsGrid extends Grid
                     ? InvitationStatus::Expired->value
                     : $invitation->getStatus()->value),
             StringColumn::new('invitedBy.email')
-                ->label('Invited By'),
+                ->label('users.grid.invitation.invited_by'),
         ];
     }
 
@@ -69,24 +69,24 @@ final class UserInvitationsGrid extends Grid
     {
         return [
             Action::new('_user_resend_invite', ['id' => 'id'])
-                ->label('Resend Invitation')
+                ->label('users.grid.invitation.actions.resend')
                 ->icon('mail'),
             Action::new('_user_delete_invite', ['id' => 'id'])
-                ->label('Delete')
+                ->label('action.delete')
                 ->icon('trash')
                 ->color('danger')
-                ->confirm('Are you sure you want to delete this invitation?'),
+                ->confirm('users.grid.invitation.delete_confirm'),
         ];
     }
 
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Delete')
+        yield BatchAction::new('action.delete')
             ->icon('trash')
             ->color('danger')
             ->confirm()
-            ->confirmMessage('Are you sure you want to delete the selected invitation(s)?')
+            ->confirmMessage('users.grid.invitation.batch_delete_confirm')
             ->action(static function (UserInvitationRepository $repository, array $selectedItems): void {
                 $repository->deleteInvitations($selectedItems);
             });

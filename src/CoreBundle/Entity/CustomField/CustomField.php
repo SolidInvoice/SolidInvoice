@@ -270,7 +270,7 @@ class CustomField
         }
 
         if ($this->options === null || $this->options === []) {
-            $context->buildViolation('At least one option is required for select fields.')
+            $context->buildViolation('core.custom_field.options_required')
                 ->atPath('options')
                 ->addViolation();
         }
@@ -285,7 +285,7 @@ class CustomField
 
         if ($this->target->supportsVisibility()) {
             if (! $this->visibility instanceof CustomFieldVisibility) {
-                $context->buildViolation('Visibility is required for invoice and quote custom fields.')
+                $context->buildViolation('core.custom_field.visibility_required')
                     ->atPath('visibility')
                     ->addViolation();
             }
@@ -294,7 +294,7 @@ class CustomField
         }
 
         if ($this->visibility instanceof CustomFieldVisibility) {
-            $context->buildViolation('Visibility only applies to invoice and quote custom fields.')
+            $context->buildViolation('core.custom_field.visibility_not_supported')
                 ->atPath('visibility')
                 ->addViolation();
         }

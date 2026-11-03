@@ -14,56 +14,72 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
-use Doctrine\Persistence\ManagerRegistry;
+use ApiPlatform\Validator\Exception\ValidationException;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
 use SolidInvoice\ApiBundle\State\Processor\RecordPaymentProcessor;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
-use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
+use SolidInvoice\PaymentBundle\Manager\ManualPaymentManager;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[CoversClass(RecordPaymentProcessor::class)]
 final class RecordPaymentProcessorTest extends TestCase
 {
     /**
-     * An invoice's `client` column is non-nullable, but {@see Invoice::getClient()} is
-     * still typed nullable, so the processor must guard the no-client case explicitly rather
-     * than let {@see \SolidInvoice\CoreBundle\Traits\Entity\HasFrozenCurrency::getCurrency()}'s
-     * `LogicException` surface as an unhandled 500.
+     * An invoice's `client` column is non-nullable, but {@see Invoice::getClient()} is still typed
+     * nullable, and without a client the invoice has no currency to scale the amount by. That
+     * must surface as a 422, not as HasFrozenCurrency::getCurrency()'s LogicException and a 500.
      */
     public function testRecordPaymentRejectsAnInvoiceWithNoClientAs422NotA500(): void
     {
-        $invoice = new Invoice();
+        $data = new RecordPaymentInput();
+        $data->amount = '10.00';
 
+        $this->expectException(ValidationException::class);
+
+        $this->processor(new Invoice())->process($data, $this->createStub(Operation::class), ['invoiceId' => 'invoice-id']);
+    }
+
+    public function testAnUnknownInvoiceIs404(): void
+    {
+        $data = new RecordPaymentInput();
+        $data->amount = '10.00';
+
+        $this->expectException(NotFoundHttpException::class);
+
+        $this->processor(null)->process($data, $this->createStub(Operation::class), ['invoiceId' => 'invoice-id']);
+    }
+
+    private function processor(?Invoice $invoice): RecordPaymentProcessor
+    {
         $invoiceRepository = $this->createMock(InvoiceRepository::class);
         $invoiceRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['id' => 'invoice-id'])
             ->willReturn($invoice);
 
-        $paymentMethodRepository = $this->createMock(PaymentMethodRepository::class);
-        $paymentMethodRepository->expects($this->once())
-            ->method('findOneBy')
-            ->with(['factoryName' => PaymentMethod::FACTORY_OFFLINE])
-            ->willReturn(new PaymentMethod());
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator->method('trans')->willReturnArgument(0);
 
-        $processor = new RecordPaymentProcessor(
+        return new RecordPaymentProcessor(
             $invoiceRepository,
-            $paymentMethodRepository,
-            $this->createStub(ManagerRegistry::class),
-            $this->createStub(WorkflowInterface::class),
+            new ManualPaymentManager(
+                $this->createStub(PaymentMethodRepository::class),
+                $this->createStub(EntityManagerInterface::class),
+                $this->createStub(EventDispatcherInterface::class),
+                $this->createStub(WorkflowInterface::class),
+                $translator,
+            ),
+            new CurrencyScale(),
+            $translator,
         );
-
-        $data = new RecordPaymentInput();
-        $data->amount = 1000;
-        $data->currency = 'USD';
-
-        $this->expectException(UnprocessableEntityHttpException::class);
-
-        $processor->process($data, $this->createStub(Operation::class), ['invoiceId' => 'invoice-id']);
     }
 }

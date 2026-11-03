@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Enum;
 use Override;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function strtolower;
 
 /**
  * What a line bills its quantity in, as a UN/ECE Recommendation 20 code.
@@ -67,6 +68,6 @@ enum UnitCode: string implements TranslatableInterface
      */
     public function forQuantity(TranslatorInterface $translator, float $quantity, ?string $locale = null): string
     {
-        return $translator->trans('line.unit.' . $this->value, ['%count%' => $quantity], locale: $locale);
+        return $translator->trans('line.unit.' . strtolower($this->value), ['%count%' => $quantity], locale: $locale);
     }
 }

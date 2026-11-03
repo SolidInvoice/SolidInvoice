@@ -27,7 +27,7 @@ final class Drivers
     private static array $driverMap = [
         'mysql' => 'MySQL',
         'pgsql' => 'PostgreSQL',
-        'sqlite' => 'Embedded Database (SQLite)',
+        'sqlite' => 'installation.database.drivers.sqlite',
         // 'mssql' => 'SQL Server',  // Not Supported
         // 'db2' => 'DB2',  // Not Supported
         // 'oci8' => 'Oracle',  // Not Supported

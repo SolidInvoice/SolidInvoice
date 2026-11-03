@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,7 +36,7 @@ use function in_array;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\CompanyEventSubscriberTest
  */
-final readonly class CompanyEventSubscriber implements EventSubscriberInterface
+final readonly class CompanyEventSubscriber
 {
     public function __construct(
         private RouterInterface $router,
@@ -46,13 +46,7 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest', 7],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 7)]
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
@@ -98,8 +92,20 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
         }
 
         if ($session->has('company')) {
-            $this->companySelector->switchCompany($session->get('company'));
-        } elseif (! $this->isOnCompanySelectionRoute($request) && ($user = $this->security->getUser()) instanceof UserInterface) {
+            $companyId = $session->get('company');
+            $user = $this->security->getUser();
+
+            // A user's companies are loaded through CompanyEnabledFilter, so a company disabled
+            // after it was put in the session drops out here: forget it and select again.
+            if (! $user instanceof User || $user->getCompanies()->exists(static fn (int $key, Company $company): bool => $company->getId()->equals($companyId))) {
+                $this->companySelector->switchCompany($companyId);
+                return;
+            }
+
+            $session->remove('company');
+        }
+
+        if (! $this->isOnCompanySelectionRoute($request) && ($user = $this->security->getUser()) instanceof UserInterface) {
             assert($user instanceof User);
 
             if (count($user->getCompanies()) === 1) {
@@ -115,6 +121,12 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
 
     private function isOnCompanySelectionRoute(Request $request): bool
     {
+        // A route can declare that it picks the company itself (route default `_company_selection`),
+        // e.g. an OAuth authorize endpoint that binds the token it issues to a company.
+        if ($request->attributes->getBoolean('_company_selection')) {
+            return true;
+        }
+
         $routeName = $request->attributes->get('_route');
 
         return in_array(

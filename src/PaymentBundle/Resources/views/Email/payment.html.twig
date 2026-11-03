@@ -45,7 +45,7 @@
 
     {{ email.info_row('payment.details.method'|trans({}, 'email'), payment.method.name ?? payment.method) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('payment.details.date'|trans({}, 'email'), payment.created|date) }}
+    {{ email.info_row('payment.details.date'|trans({}, 'email'), payment.created|format_datetime('long', 'short')) }}
 
     {{ email.spacer('sm') }}
 

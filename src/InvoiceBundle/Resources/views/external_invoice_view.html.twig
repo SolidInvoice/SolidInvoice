@@ -91,13 +91,13 @@
                             <div class="row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
                                     <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.date'|trans }}</div>
-                                    <div class="ext-doc-metadata-value fw-medium">{{ invoice.invoiceDate|date('M d, Y') }}</div>
+                                    <div class="ext-doc-metadata-value fw-medium">{{ invoice.invoiceDate|format_date('medium') }}</div>
                                 </div>
                                 {% if invoice.due is not empty %}
                                     <div class="col-sm-4 mb-3 mb-sm-0">
-                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.due_date'|trans }}</div>
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'billing.due_date'|trans }}</div>
                                         <div class="ext-doc-metadata-value fw-medium {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'text-danger' : '' }}">
-                                            {{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
+                                            {{ invoice.due|format_date('medium') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
                                             {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue %}
                                                 <span class="badge bg-danger-lt ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}
@@ -105,7 +105,7 @@
                                     </div>
                                 {% endif %}
                                 <div class="col-sm-4">
-                                    <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.total'|trans }}</div>
+                                    <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'billing.total'|trans }}</div>
                                     <div class="ext-doc-metadata-total fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
                                 </div>
                             </div>
@@ -164,13 +164,13 @@
                         <table class="table ext-doc-items-table">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase small">{{ 'invoice.item.heading.description'|trans }}</th>
+                                    <th class="text-uppercase small">{{ 'label.description'|trans }}</th>
                                     <th class="text-uppercase small text-end" style="width: 100px">{{ 'invoice.item.heading.price'|trans }}</th>
                                     <th class="text-uppercase small text-center" style="width: 80px">{{ 'invoice.item.heading.qty'|trans }}</th>
                                     {% if invoice.tax.positive %}
-                                        <th class="text-uppercase small text-end" style="width: 80px">{{ 'invoice.item.heading.tax'|trans }}</th>
+                                        <th class="text-uppercase small text-end" style="width: 80px">{{ 'billing.tax'|trans }}</th>
                                     {% endif %}
-                                    <th class="text-uppercase small text-end" style="width: 120px">{{ 'invoice.item.heading.total'|trans }}</th>
+                                    <th class="text-uppercase small text-end" style="width: 120px">{{ 'billing.total'|trans }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -236,7 +236,7 @@
                                     {% endfor %}
                                     {% if invoice.hasDiscount %}
                                         <div class="ext-doc-totals-row">
-                                            <div class="ext-doc-totals-label">{{ 'invoice.discount'|trans }}</div>
+                                            <div class="ext-doc-totals-label">{{ 'billing.discount'|trans }}</div>
                                             <div class="ext-doc-totals-value">-{{ discount(invoice)|formatCurrency(currency) }}</div>
                                         </div>
                                     {% endif %}
@@ -257,7 +257,7 @@
                                         <div class="ext-doc-totals-row">
                                             <div class="ext-doc-totals-label">
                                                 {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.isZero %}
-                                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}
+                                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'billing.total'|trans }}
                                             </div>
                                             <div class="ext-doc-totals-value">
                                                 {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}

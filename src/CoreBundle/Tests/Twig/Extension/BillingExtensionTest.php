@@ -26,6 +26,7 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\Translator;
 use function dirname;
 use function sprintf;
+use function strtolower;
 
 #[CoversClass(BillingExtension::class)]
 #[CoversClass(UnitCode::class)]
@@ -62,7 +63,7 @@ final class BillingExtensionTest extends TestCase
         $translator = $this->createTranslator();
 
         foreach (UnitCode::cases() as $unitCode) {
-            $key = 'line.unit.' . $unitCode->value;
+            $key = 'line.unit.' . strtolower($unitCode->value);
 
             self::assertNotSame($key, $unitCode->trans($translator), sprintf('%s has no label', $unitCode->name));
             // A message left as `hour|hours` would otherwise reach an invoice verbatim.

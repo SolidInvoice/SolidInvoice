@@ -35,6 +35,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -170,6 +171,7 @@ final class SubscriptionGateTest extends KernelTestCase
             $accessTokenRepo,
             $container->get(CompanySelector::class),
             $authorizationChecker,
+            $container->get(UrlGeneratorInterface::class),
         );
     }
 

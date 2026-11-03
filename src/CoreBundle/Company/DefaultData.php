@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use Mpociot\VatCalculator\VatCalculator;
 use RuntimeException;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
@@ -26,14 +27,33 @@ use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use function array_map;
+use function array_unique;
 use function get_debug_type;
+use function round;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Company\DefaultDataTest
  */
 final readonly class DefaultData
 {
+    /**
+     * Countries the VatCalculator does not know, as country => [tax name key, percentages].
+     *
+     * ponytail: hand-maintained; update when one of these countries changes its rates.
+     *
+     * @var array<string, array{string, list<float>}>
+     */
+    private const array OTHER_TAX_RATES = [
+        'AU' => ['tax.default_rate.gst', [10.0]],
+        'GB' => ['tax.default_rate.vat', [20.0, 5.0]],
+        'ZA' => ['tax.default_rate.vat', [15.0]],
+    ];
+
     private ObjectManager $em;
 
     /**
@@ -43,6 +63,8 @@ final readonly class DefaultData
         ManagerRegistry $registry,
         #[AutowireIterator(ProviderInterface::class)]
         private iterable $configProviders,
+        private VatCalculator $vatCalculator,
+        private TranslatorInterface $translator,
     ) {
         $this->em = $registry->getManager();
     }
@@ -56,8 +78,40 @@ final readonly class DefaultData
         $this->createAppConfig($company, $data);
         $this->createDefaultCustomFields($company);
         $this->createPaymentMethods();
+        $this->createTaxRates($company);
 
         $this->em->flush();
+    }
+
+    /**
+     * One rate per distinct VAT/GST rate of the company's country: the EU, Switzerland, Monaco
+     * and the Isle of Man from the VatCalculator, plus OTHER_TAX_RATES. Anywhere else (the US,
+     * whose sales tax is set per state) starts with no rates.
+     */
+    private function createTaxRates(Company $company): void
+    {
+        $country = $company->getCountry();
+
+        if ($country === null) {
+            return;
+        }
+
+        if ($this->vatCalculator->shouldCollectVAT($country)) {
+            $nameKey = 'tax.default_rate.vat';
+            $percentages = array_map(static fn (float $rate): float => round($rate * 100, 2), $this->vatCalculator->getTaxRatesForCountry($country));
+        } else {
+            [$nameKey, $percentages] = self::OTHER_TAX_RATES[$country] ?? ['', []];
+        }
+
+        foreach (array_unique($percentages) as $percentage) {
+            $tax = new Tax();
+            $tax->setName($this->translator->trans($nameKey, ['%rate%' => $percentage]));
+            $tax->setRate($percentage);
+            $tax->setType(TaxType::Exclusive->value);
+            $tax->setCompany($company);
+
+            $this->em->persist($tax);
+        }
     }
 
     private function createDefaultCustomFields(Company $company): void
@@ -120,6 +174,22 @@ final readonly class DefaultData
             [
                 'name' => 'Bank Transfer',
                 'gateway_name' => 'bank_transfer',
+                'config' => [],
+                'internal' => true,
+                'enabled' => true,
+                'factory' => 'offline',
+            ],
+            [
+                'name' => $this->translator->trans('payment.gateway.cheque.display_name'),
+                'gateway_name' => 'cheque',
+                'config' => [],
+                'internal' => true,
+                'enabled' => true,
+                'factory' => 'offline',
+            ],
+            [
+                'name' => $this->translator->trans('payment.gateway.card_terminal.display_name'),
+                'gateway_name' => 'card_terminal',
                 'config' => [],
                 'internal' => true,
                 'enabled' => true,

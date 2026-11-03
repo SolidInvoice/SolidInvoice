@@ -20,7 +20,7 @@
                     </tr>
                 </table>
                 <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 16px 0 0 0; Margin: 16px 0 0 0;">
-                    {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
+                    {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|format_date('long')}, 'email') }}
                 </p>
             </columns>
         </row>

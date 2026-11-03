@@ -64,9 +64,7 @@
                                         aria-label="{{ 'security.two_factor.code_aria_label'|trans }}"
                                     />
                                     <div class="two-factor-form-hint">
-                                        {{ 'security.two_factor.lost_authenticator'|trans }}
-                                        <a href="#" onclick="return false;">{{ 'security.two_factor.backup_code'|trans }}</a>
-                                        {{ 'security.two_factor.instead'|trans }}
+                                        {{ 'security.two_factor.lost_authenticator'|trans({'%link_start%': '<a href="#" onclick="return false;">', '%link_end%': '</a>'})|raw }}
                                     </div>
                                 </div>
 
@@ -114,7 +112,7 @@
                                                 {% else %}
                                                     {{ ux_icon('tabler:device-mobile', {width: 18, height: 18}) }}
                                                 {% endif %}
-                                                {{ ('Use ' ~ provider)|trans }}
+                                                {{ (provider == 'totp' ? 'security.two_factor.use_totp' : 'security.two_factor.use_email')|trans }}
                                             </a>
                                         {% endfor %}
                                     </div>

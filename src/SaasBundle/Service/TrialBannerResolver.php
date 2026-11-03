@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Service;
 
+use Carbon\CarbonImmutable;
+use Locale;
 use Psr\Clock\ClockInterface;
-use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -32,9 +33,8 @@ final readonly class TrialBannerResolver
     public function __construct(
         private ClockInterface $clock,
         private BillingMode $billingMode,
-        private TrialPeriod $trialPeriod,
         #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_BANNER_DAYS')]
-        private int $bannerDays = 7,
+        private int $bannerDays = 5,
         #[Autowire(env: 'int:SOLIDINVOICE_SAAS_TRIAL_COUPON_DAYS')]
         private int $couponDays = 2,
     ) {
@@ -54,7 +54,7 @@ final readonly class TrialBannerResolver
                 'tabler:alert-circle',
                 'saas.trial_banner.cancelled.title',
                 'saas.trial_banner.cancelled.message',
-                ['%date%' => $subscription->getEndDate()->format('F j, Y')],
+                ['%date%' => CarbonImmutable::instance($subscription->getEndDate())->locale(Locale::getDefault())->translatedFormat('F j, Y')],
                 'saas.trial_banner.cancelled.cta',
             );
         }
@@ -63,15 +63,15 @@ final readonly class TrialBannerResolver
             return null;
         }
 
-        // Below here the banner is a trial *incentive* — extend the trial, or
-        // redeem a coupon. A paid trial already has a card on file, so neither
-        // is on offer. The cancelled notice above still applies in both modes.
+        // Below here the banner asks the user to keep the plan they are trialling,
+        // with a coupon near the end. A paid trial already has a card on file, so
+        // neither applies. The cancelled notice above still applies in both modes.
         if ($this->billingMode->requiresCardForTrial()) {
             return null;
         }
 
-        // A card is already on file (Lemon Squeezy is billing this trial); the
-        // extension has already happened, so nudging them again is wrong.
+        // A card is already on file (Lemon Squeezy is billing this trial), so
+        // they are keeping the plan already.
         if ($subscription->isExternallyBilled()) {
             return null;
         }
@@ -89,16 +89,8 @@ final readonly class TrialBannerResolver
             return null;
         }
 
-        // The trial length is synced onto the Plan from the payment provider, so
-        // the "get N more days" copy always reflects the real trial the user
-        // receives by adding a card. Without a trial length we cannot make that
-        // promise, so no banner is shown.
-        $extensionDays = $this->trialPeriod->days($subscription->getPlan());
-
-        if ($extensionDays === null) {
-            return null;
-        }
-
+        $plan = $subscription->getPlan();
+        $params = ['%plan%' => $plan->getName(), '%date%' => CarbonImmutable::instance($endDate)->locale(Locale::getDefault())->translatedFormat('F j')];
         $couponCode = $this->billingMode->couponCode();
 
         if ($couponCode !== '' && $daysRemaining <= $this->couponDays) {
@@ -107,23 +99,24 @@ final readonly class TrialBannerResolver
                 'tabler:gift',
                 'saas.trial_banner.coupon.title',
                 'saas.trial_banner.coupon.message',
-                [
-                    '%days%' => $extensionDays,
+                $params + [
                     '%percent%' => $this->billingMode->couponPercent(),
                     '%code%' => $couponCode,
                 ],
                 'saas.trial_banner.coupon.cta',
                 $couponCode,
+                $plan->getPlanId(),
             );
         }
 
         return new TrialBanner(
             'info',
-            'tabler:calendar-plus',
-            'saas.trial_banner.extend.title',
-            'saas.trial_banner.extend.message',
-            ['%days%' => $extensionDays],
-            'saas.trial_banner.extend.cta',
+            'tabler:clock',
+            'saas.trial_banner.ending.title',
+            'saas.trial_banner.ending.message',
+            $params,
+            'saas.trial_banner.ending.cta',
+            planId: $plan->getPlanId(),
         );
     }
 }

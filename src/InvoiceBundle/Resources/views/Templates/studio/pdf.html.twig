@@ -32,9 +32,9 @@
         <td style="width: 33%; vertical-align: top;">{{ inv.from_block('invoice.template.studio.studio') }}</td>
         <td style="width: 33%; vertical-align: top;">{{ inv.bill_to_block(invoice, 'invoice.template.studio.client') }}</td>
         <td style="width: 34%; vertical-align: top;">
-            {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
+            {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|format_date('long')) }}
             {% if invoice.due %}
-                {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
+                {{ inv.meta_pair('billing.due_date'|trans, invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
             {% endif %}
             {{ inv.status_pair(invoice.status) }}
         </td>
@@ -47,7 +47,7 @@
             <th style="padding: 10px 14px; font-size: 8pt; text-align: left;">{{ 'invoice.template.studio.deliverable'|trans }}</th>
             <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 70px;">{{ 'invoice.item.heading.qty'|trans }}</th>
             <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 90px;">{{ 'invoice.item.heading.price'|trans }}</th>
-            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 100px;">{{ 'invoice.item.heading.total'|trans }}</th>
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 100px;">{{ 'billing.total'|trans }}</th>
         </tr>
     </thead>
     <tbody>

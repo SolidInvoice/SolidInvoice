@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Enum;
 
-enum TaxCategory: string
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+enum TaxCategory: string implements TranslatableInterface
 {
     case Standard = 'Standard';
     case ZeroRated = 'ZeroRated';
@@ -24,11 +27,16 @@ enum TaxCategory: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::Standard => 'Standard',
-            self::ZeroRated => 'Zero-Rated',
-            self::Exempt => 'Exempt',
-            self::OutOfScope => 'Out of Scope',
-            self::ReverseCharge => 'Reverse Charge',
+            self::Standard => 'tax.category.standard',
+            self::ZeroRated => 'tax.category.zero_rated',
+            self::Exempt => 'tax.category.exempt',
+            self::OutOfScope => 'tax.category.out_of_scope',
+            self::ReverseCharge => 'tax.category.reverse_charge',
         };
+    }
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return $translator->trans($this->getLabel(), [], null, $locale);
     }
 }

@@ -24,7 +24,7 @@ final class Registration
     #[
         Assert\NotBlank,
         Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
-        EmailChecker\NotThrowawayEmail(message: 'Disposable or temporary email addresses are not allowed. Please use a permanent email address.'),
+        EmailChecker\NotThrowawayEmail(message: 'user.email.throwaway'),
     ]
     public ?string $email = null;
 

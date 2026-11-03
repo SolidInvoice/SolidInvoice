@@ -31,9 +31,9 @@
         <td style="width: 33%; vertical-align: top;">{{ q.from_block('invoice.template.studio.studio') }}</td>
         <td style="width: 33%; vertical-align: top;">{{ q.bill_to_block(quote, 'invoice.template.studio.client') }}</td>
         <td style="width: 34%; vertical-align: top;">
-            {{ q.meta_pair('quote.pdf.date'|trans, quote.created|date('F j, Y')) }}
+            {{ q.meta_pair('quote.pdf.date'|trans, quote.created|format_date('long')) }}
             {% if quote.due %}
-                {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
+                {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|format_date('long')) }}
                 {{ q.validity_indicator(quote) }}
             {% endif %}
             {{ q.status_pair(quote.status) }}
@@ -47,7 +47,7 @@
             <th style="padding: 10px 14px; font-size: 8pt; text-align: left;">{{ 'invoice.template.studio.deliverable'|trans }}</th>
             <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 70px;">{{ 'quote.item.heading.qty'|trans }}</th>
             <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 90px;">{{ 'quote.item.heading.price'|trans }}</th>
-            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 100px;">{{ 'quote.item.heading.total'|trans }}</th>
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 100px;">{{ 'billing.total'|trans }}</th>
         </tr>
     </thead>
     <tbody>

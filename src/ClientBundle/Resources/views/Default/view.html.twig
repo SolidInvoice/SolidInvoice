@@ -67,12 +67,12 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item d-flex align-items-center gap-2" href="{{ path('_clients_edit', {'id': client.id}) }}">
                             {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
-                            {{ 'client.view.actions.edit'|trans }}
+                            {{ 'action.edit'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" data-bs-toggle="modal" data-bs-target="#delete-client-modal">
                             {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                            {{ 'client.view.actions.delete'|trans }}
+                            {{ 'action.delete'|trans }}
                         </a>
                     </div>
                 </div>
@@ -111,10 +111,10 @@
                 <div class="client-stat-value">{{ client.invoices|length }}</div>
                 <div class="client-stat-badges">
                     <span class="badge bg-success-lt" title="{{ 'client.stats.tooltip.total_paid'|trans }}">
-                        {{ total_invoices_paid }} {{ 'paid'|trans }}
+                        {{ 'client.stats.paid_count'|trans({count: total_invoices_paid}) }}
                     </span>
                     <span class="badge bg-warning-lt" title="{{ 'client.stats.tooltip.total_outstanding'|trans }}">
-                        {{ total_invoices_pending }} {{ 'pending'|trans }}
+                        {{ 'client.stats.pending_count'|trans({count: total_invoices_pending}) }}
                     </span>
                 </div>
             </twig:Ui:Card>
@@ -183,6 +183,16 @@
                         </button>
                     </li>
                 {% endif %}
+                {% set receiptCount = payments|filter(p => p.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured)|length %}
+                {% if receiptCount > 0 %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="receipts-tab" data-bs-toggle="tab" data-bs-target="#receipts" type="button" role="tab" aria-controls="receipts" aria-selected="false">
+                            {{ ux_icon('tabler:receipt', {width: 16, height: 16}) }}
+                            <span>{{ 'client.view.tabs.receipts'|trans }}</span>
+                            <span class="badge bg-secondary-lt">{{ receiptCount }}</span>
+                        </button>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 
@@ -211,6 +221,13 @@
                         {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data": {'client': client.id}} only %}
                     </div>
                 {% endif %}
+
+                {# Receipts Tab #}
+                {% if receiptCount > 0 %}
+                    <div class="tab-pane fade" id="receipts" role="tabpanel" aria-labelledby="receipts-tab">
+                        <twig:DataGrid name="receipts_grid" context="{{ {'client_id': client.id} }}" />
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -234,7 +251,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
                 <button type="submit" class="btn btn-danger">
                     {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                    {{ 'client.view.actions.delete'|trans }}
+                    {{ 'action.delete'|trans }}
                 </button>
             </form>
         </twig:block>

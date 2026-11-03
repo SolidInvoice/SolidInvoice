@@ -1,0 +1,46 @@
+client:
+    stats:
+        paid_count: '{count, plural, other {# paid}}'
+        pending_count: '{count, plural, other {# pending}}'
+company:
+    create:
+        trial_duration: '{years, plural, =0 {} one {# year } other {# years }}{months, plural, =0 {} one {# month } other {# months }}{days, plural, =0 {} one {# day} other {# days}}'
+custom_field:
+    delete_confirm: '{count, plural, =0 {Delete {label}?} one {Delete {label}? # record has a value for this field. This value will be permanently deleted.} other {Delete {label}? # records have a value for this field. These values will be permanently deleted.}}'
+    form:
+        type:
+            locked: '{count, plural, one {This field has # value; type cannot be changed. Delete and recreate to change type.} other {This field has # values; type cannot be changed. Delete and recreate to change type.}}'
+dashboard:
+    charts:
+        revenue_subtitle: '{count, plural, one {Last month} other {Last # months}}'
+    checklist:
+        tasks_remaining: '{count, plural, one {# step left, whenever you have a minute} other {# steps left, whenever you have a minute}}'
+    hero:
+        currency_breakdown: '{count, plural, one {in 1 currency} other {shown separately, one line per currency}}'
+feature:
+    trial_start: '{count, plural, one {Try {plan} free for # day} other {Try {plan} free for # days}}'
+invoice:
+    recurring:
+        schedule_summary:
+            after: '{frequency} from {start} to {end} ({count, plural, one {# occurrence} other {# occurrences}})'
+            never: '{frequency} from {start}'
+            'on': '{frequency} from {start} to {end}'
+        view_all: '{count, plural, one {View # invoice} other {View all # invoices}}'
+    reminder_email:
+        overdue_14: '{days, plural, one {Invoice {invoice} remains unpaid after # day.} other {Invoice {invoice} remains unpaid after # days.}} This is our final automated reminder. Immediate payment is required to avoid service interruption. Please contact us if you need to discuss payment arrangements.'
+        overdue_7: '{days, plural, one {Invoice {invoice} is now # day overdue.} other {Invoice {invoice} is now # days overdue.}} Please arrange payment at your earliest convenience. If there are any issues preventing payment, please contact us so we can help resolve them.'
+        pre_due: '{days, plural, one {This is a friendly reminder that invoice {invoice} is due in # day.} other {This is a friendly reminder that invoice {invoice} is due in # days.}} We wanted to give you advance notice to make payment arrangements convenient.'
+        stopped_days_overdue: '{days, plural, one {The final automated payment reminder has been sent for invoice {invoice}, which is now # day overdue.} other {The final automated payment reminder has been sent for invoice {invoice}, which is now # days overdue.}} All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.'
+notifications:
+    integrations_count: '{count, plural, one {You have # integration configured} other {You have # integrations configured}}'
+saas:
+    overview:
+        trial_days_left: '{count, plural, one {# day left in your trial} other {# days left in your trial}}'
+    plan:
+        start_trial: '{count, plural, one {Start #-day trial} other {Start #-day trial}}'
+    welcome:
+        cta_trial: '{count, plural, one {Start my #-day free trial} other {Start my #-day free trial}}'
+        plan_free_for: '{count, plural, one {Free for # day} other {Free for # days}}'
+        subtitle: "{count, plural, one {Add your card to unlock a full day of everything SolidInvoice can do, free. We won't charge you until your trial ends, and you can cancel any time before then.} other {Add your card to unlock # days of everything SolidInvoice can do, free. We won't charge you until your trial ends, and you can cancel any time before then.}}"
+tax:
+    choice_label: '{name} ({rate}{compound, select, yes {, compound} other {}}){category, select, Exempt { [exempt]} OutOfScope { [out of scope]} ZeroRated { [zero-rated]} ReverseCharge { [reverse charge]} other {}}'

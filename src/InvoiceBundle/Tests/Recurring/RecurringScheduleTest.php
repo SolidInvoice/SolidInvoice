@@ -24,6 +24,9 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use Symfony\Component\Clock\MockClock;
+use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 use function iterator_to_array;
 
 final class RecurringScheduleTest extends TestCase
@@ -31,7 +34,7 @@ final class RecurringScheduleTest extends TestCase
     #[DataProvider('getEndDateDataProvider')]
     public function testGetEndDate(RecurringOptions $options, ?string $expected): void
     {
-        $scheduleFormatter = new RecurringSchedule('en', $this->createStub(ClockInterface::class));
+        $scheduleFormatter = new RecurringSchedule('en', $this->createStub(ClockInterface::class), new IdentityTranslator());
 
         self::assertEquals($expected, $scheduleFormatter->getEndDate($options)?->format('Y-m-d'));
     }
@@ -42,11 +45,40 @@ final class RecurringScheduleTest extends TestCase
     #[DataProvider('getOccurrencesProvider')]
     public function testGetOccurrences(RecurringOptions $options, array $expected): void
     {
-        $scheduleFormatter = new RecurringSchedule('en', new MockClock('2024-01-01'));
+        $scheduleFormatter = new RecurringSchedule('en', new MockClock('2024-01-01'), new IdentityTranslator());
 
         $occurrences = array_map(static fn (DateTimeInterface $date) => $date->format('Y-m-d'), iterator_to_array($scheduleFormatter->getOccurrences($options)));
 
         self::assertSame($expected, $occurrences);
+    }
+
+    /**
+     * @param list<int> $days
+     */
+    #[DataProvider('getFrequencyProvider')]
+    public function testGetFrequency(ScheduleRecurringType $type, array $days, string $expected): void
+    {
+        $translator = new Translator('en');
+        $translator->addLoader('yaml', new YamlFileLoader());
+        $translator->addResource('yaml', __DIR__ . '/../../../../translations/messages.en.yml', 'en');
+
+        $options = new RecurringOptions();
+        $options->setType($type);
+        $options->setDays($days);
+
+        self::assertSame($expected, new RecurringSchedule('en', new MockClock('2024-01-01'), $translator)->getFrequency($options));
+    }
+
+    /**
+     * @return iterable<array{ScheduleRecurringType, list<int>, string}>
+     */
+    public static function getFrequencyProvider(): iterable
+    {
+        yield 'daily' => [ScheduleRecurringType::DAILY, [], 'Every day'];
+        yield 'weekly' => [ScheduleRecurringType::WEEKLY, [1, 3, 5], 'Every Monday, Wednesday and Friday'];
+        yield 'monthly' => [ScheduleRecurringType::MONTHLY, [1, 15], 'Every 1st and 15th of the month'];
+        yield 'yearly' => [ScheduleRecurringType::YEARLY, [1], 'Every January'];
+        yield 'weekly without days' => [ScheduleRecurringType::WEEKLY, [], ''];
     }
 
     /**

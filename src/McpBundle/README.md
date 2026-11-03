@@ -50,6 +50,10 @@ Every tool call runs under **exactly one company** — bound at consent time, im
 |--------|------|---------|
 | `GET` | `/.well-known/oauth-authorization-server` | RFC 8414 metadata |
 | `GET` | `/.well-known/oauth-protected-resource` | RFC 9728 metadata |
+| `GET` | `/.well-known/oauth-protected-resource/_mcp` | RFC 9728 metadata for `/_mcp` (advertised in the 401 `WWW-Authenticate` header) |
+| `GET` | `/.well-known/agent-skills/index.json` | Agent Skills discovery index |
+| `GET` | `/.well-known/ai-catalog.json` | ARD catalog (MCP server card, OpenAPI, skills) |
+| `GET` | `/auth.md` | Agent sign-in instructions |
 | `POST` | `/oauth/register` | RFC 7591 Dynamic Client Registration (rate-limited) |
 | `GET` | `/oauth/authorize` | Consent screen (requires session login) |
 | `POST` | `/oauth/authorize` | Processes consent submission |

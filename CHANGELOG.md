@@ -1,7 +1,54 @@
 Changelog
 =========
 
-3.1.2 / Unreleased
+3.2.0 / Unreleased
+-------------------
+
+### Changes
+
+* Payment receipts: every received payment has a receipt that can be viewed, downloaded as a PDF or emailed (PDF attached) to the invoice's contacts. Payments have their own page, a Receipts list sits under Payments in the menu and on each client, and every received payment (online, recorded in the app, or through the API or MCP) emails a receipt automatically. This can be turned off under Settings > Payments, and someone recording a payment can choose otherwise with "Send a digital receipt"
+* API: clients, contacts, invoices, quotes, recurring invoices and payments include their `created` and `updated` times (UTC), and can be sorted by them (`order[updated]=desc`) and filtered to what changed since a time (`updated[after]=...`); invoices, quotes and recurring invoices include their `currencyCode`; invoices and quotes can be searched by number (`invoiceId`, `quoteId`) and client name (`client.name`); `itemsPerPage` sets the page size, up to 100
+* API: invoices and quotes created without a number are numbered the same way as in the app, numbers must be unique within a company, `GET /api/next-number` previews the next number, and `POST /api/invoices/{id}/clone` and `POST /api/quotes/{id}/clone` copy a document into a new draft
+* API: `POST /api/invoices/{id}/send` and `POST /api/quotes/{id}/send` email a document, with optional recipients, Cc, subject, personal note, PDF attachment and a copy to yourself, and re-send it while it is pending; `POST /api/invoices/{id}/reminder` sends a payment reminder (at most one an hour), and `POST /api/invoices/{id}/mark-sent` marks an invoice sent without emailing it
+* API: clients can be archived and restored with `POST /api/clients/{id}/archive` and `POST /api/clients/{id}/restore`
+* API: creating clients, invoices and quotes, and recording payments, accept an `Idempotency-Key` header so a retried request is not applied twice
+* API: requests that send `Api-Version: 2026-10` get every amount as a decimal string at the currency's own precision (`"1250.00"`, JPY `"1250"`, BHD `"12.500"`), and send amounts the same way. This fixes amounts for currencies without two decimals. The original format, which scales by a fixed 100, is deprecated: its responses carry `Deprecation`, `Sunset` and a `Link` to the docs, and from 1 May 2027 requests without the header get the new format automatically
+* Every piece of text in the app, emails, PDFs and installer now comes from the translation files, so all of it can be translated. This covers payment reminder emails, notification and email subjects, list columns and filters, statuses, the installer, plan upgrade prompts and form validation messages
+* Dates show month and day names in the user's language, and counts use the right singular or plural form (for example "1 day overdue" instead of "1 days overdue")
+* Dates on invoice and quote emails no longer include a meaningless time, and short dates no longer pad the day ("Sep 1, 2021" instead of "Sep 01, 2021")
+* The REST API can download invoices and quotes as PDFs (`/api/invoices/{id}/pdf`, `/api/quotes/{id}/pdf`), and invoice and quote responses now include their public page, public PDF and online payment links
+* API: recording a payment (`POST /api/invoices/{id}/payments`) now works like the web form. The amount is a decimal in the invoice currency (`"150.00"`), a payment method (`cash` by default) and payment date can be chosen, a part-payment only reduces the balance, an overpayment marks the invoice paid and adds the excess to the client's credit (returned as `creditAdded`), and an invoice that has not been issued is refused with a `409`. An integer amount is still read in minor units, but is deprecated
+* API: a manually recorded payment can be voided within 30 days with `POST /api/payments/{id}/void`, which reopens the invoice if it was paid
+* API: payment responses now contain only the payment's own fields, with its method as `{gatewayName, name}`, and `GET /api/payment-methods` lists the company's payment methods
+* New companies get Cheque and Card terminal payment methods, and existing companies get them on upgrade
+* Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, the UK, Switzerland, Monaco, the Isle of Man, South Africa and Australia start with their country's VAT or GST rates already set up
+* AI agents can discover SolidInvoice on their own: the app now serves `/auth.md` with sign-in steps for agents, an agent skill for connecting over MCP, and an `/.well-known/ai-catalog.json` listing the MCP server and REST API
+* You can now be notified when SolidInvoice creates an invoice from a recurring invoice. The email shows the invoice details and links to the invoice
+* Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
+* Notification emails now show which company they were sent for and link to your notification preferences
+* Notifications are never sent to disabled users, to users who have not verified their email address, or to anyone in a disabled company
+
+### Fixes
+
+* MCP clients that connect without a token now receive a `WWW-Authenticate` header pointing them to the OAuth metadata, so they can start sign-in automatically
+* The installer no longer stops with a JavaScript error when installation finishes
+* Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
+* Apostrophes in plain-text emails no longer show up as `&#039;`
+* Adding a new client while creating an invoice or quote now respects the plan's client limit
+
+
+3.1.3 / Unreleased
+------------------
+
+### Fixes
+
+* The MCP server no longer fails with a server error on every request when SolidInvoice runs on its built-in FrankenPHP server. Some log entries could not be written to the server log, which failed the request
+* Trimmed internal payment method fields from API payment responses
+* Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
+* Recording a second payment against an invoice through the API no longer fails with a "circular reference" error
+* The dashboard revenue chart no longer shows the current month twice, and drops the previous month, on the 29th to 31st of a month
+
+3.1.2 / 2026-10-21
 -------------------
 
 ### Changes

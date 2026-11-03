@@ -22,8 +22,8 @@ use Twig\TwigFunction;
  * SolidInvoice\SaasBundle\Twig\FeatureExtension.
  *
  * Vendor PlatformBundle already exposes `feature_enabled`, `feature_can_use`
- * and `feature_remaining` in every deployment, so we only stub the three
- * names that are SaaS-specific. This extension is registered conditionally
+ * and `feature_remaining` in every deployment, so we only stub the names
+ * that are SaaS-specific. This extension is registered conditionally
  * (only when SOLIDINVOICE_PLATFORM is not 'saas') so SaaS deployments can
  * register the real implementations without colliding on Twig function names.
  */
@@ -53,6 +53,10 @@ final class FeatureExtension extends AbstractExtension
             new TwigFunction(
                 'feature_copy',
                 static fn (string $featureKey): ?object => null,
+            ),
+            new TwigFunction(
+                'trial_offer',
+                static fn (string $featureKey): ?array => null,
             ),
         ];
     }
