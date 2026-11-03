@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -28,7 +28,7 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 /**
  * @see \SolidInvoice\UserBundle\Tests\EventSubscriber\UserLoginEventSubscriberTest
  */
-final readonly class UserLoginEventSubscriber implements EventSubscriberInterface
+final readonly class UserLoginEventSubscriber
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -36,17 +36,7 @@ final readonly class UserLoginEventSubscriber implements EventSubscriberInterfac
     ) {
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            LoginSuccessEvent::class => 'onLogin',
-            AuthenticationSuccessEvent::class => 'onAuthenticationSuccess',
-        ];
-    }
-
+    #[AsEventListener(event: AuthenticationSuccessEvent::class)]
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
@@ -71,6 +61,7 @@ final readonly class UserLoginEventSubscriber implements EventSubscriberInterfac
         }
     }
 
+    #[AsEventListener(event: LoginSuccessEvent::class)]
     public function onLogin(LoginSuccessEvent $event): void
     {
         $user = $event->getUser();

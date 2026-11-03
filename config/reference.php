@@ -419,7 +419,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         enabled?: bool|Param, // Default: true
  *     },
  *     lock?: Param|bool|string|array{ // Lock configuration
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *         resources?: Param|string|array<string, Param|string|list<scalar|Param|null>>,
  *     },
  *     semaphore?: Param|bool|string|array{ // Semaphore configuration
@@ -1919,7 +1919,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         reset?: array{
  *             connections?: list<scalar|Param|null>,
  *             entity_managers?: list<scalar|Param|null>,
- *             mode?: \Zenstruck\Foundry\ORM\ResetDatabase\ResetDatabaseMode::SCHEMA|\Zenstruck\Foundry\ORM\ResetDatabase\ResetDatabaseMode::MIGRATE|"schema"|"migrate"|Param, // Reset mode to use with ResetDatabase trait // Default: "schema"
+ *             mode?: null|\Zenstruck\Foundry\ORM\ResetDatabase\ResetDatabaseMode::SCHEMA|\Zenstruck\Foundry\ORM\ResetDatabase\ResetDatabaseMode::MIGRATE|\Zenstruck\Foundry\ORM\ResetDatabase\ResetDatabaseMode::AUTO|"schema"|"migrate"|"auto"|Param, // Reset mode to use with ResetDatabase trait ("auto" migrates if the app has migrations, otherwise resets the schema) // Default: null
  *             migrations?: array{
  *                 configurations?: list<scalar|Param|null>,
  *             },
@@ -1943,6 +1943,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     dsn?: scalar|Param|null, // If this value is not provided, the SDK will try to read it from the SENTRY_DSN environment variable. If that variable also does not exist, the SDK will not send any events.
  *     register_error_listener?: bool|Param, // Default: true
  *     register_error_handler?: bool|Param, // Default: true
+ *     register_monolog_handler?: bool|Param, // EXPERIMENT: automatically push a Sentry handler onto every Monolog channel (requires MonologBundle). // Default: false
  *     logger?: scalar|Param|null, // The service ID of the PSR-3 logger used to log messages coming from the SDK client. Be aware that setting the same logger of the application may create a circular loop when an event fails to be sent. // Default: null
  *     options?: array{
  *         integrations?: mixed, // Default: []
@@ -2096,12 +2097,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     },
  *     clients?: array<string, array<string, mixed>>,
  * }
- * @psalm-type SymfonycastsResetPasswordConfig = array{
- *     request_password_repository?: scalar|Param|null, // A class that implements ResetPasswordRequestRepositoryInterface - usually your ResetPasswordRequestRepository.
- *     lifetime?: int|Param, // The length of time in seconds that a password reset request is valid for after it is created. // Default: 3600
- *     throttle_limit?: int|Param, // Another password reset cannot be made faster than this throttle time in seconds. // Default: 3600
- *     enable_garbage_collection?: bool|Param, // Enable/Disable automatic garbage collection. // Default: true
- * }
  * @psalm-type TwigExtraConfig = array{
  *     cache?: bool|array{
  *         enabled?: bool|Param, // Default: false
@@ -2113,7 +2108,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         enabled?: bool|Param, // Default: true
  *     },
  *     intl?: bool|array{
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *     },
  *     cssinliner?: bool|array{
  *         enabled?: bool|Param, // Default: true
@@ -2266,6 +2261,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         skip_same_as_origin?: bool|Param,
  *     }>,
  * }
+ * @psalm-type SymfonycastsResetPasswordConfig = array{
+ *     request_password_repository?: scalar|Param|null, // A class that implements ResetPasswordRequestRepositoryInterface - usually your ResetPasswordRequestRepository.
+ *     lifetime?: int|Param, // The length of time in seconds that a password reset request is valid for after it is created. // Default: 3600
+ *     throttle_limit?: int|Param, // Another password reset cannot be made faster than this throttle time in seconds. // Default: 3600
+ *     enable_garbage_collection?: bool|Param, // Enable/Disable automatic garbage collection. // Default: true
+ * }
  * @psalm-type SchebTwoFactorConfig = array{
  *     persister?: scalar|Param|null, // Default: "scheb_two_factor.persister.doctrine"
  *     model_manager_name?: scalar|Param|null, // Default: null
@@ -2346,13 +2347,13 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     live_component?: LiveComponentConfig,
  *     babdev_pagerfanta?: BabdevPagerfantaConfig,
  *     knpu_oauth2_client?: KnpuOauth2ClientConfig,
- *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     twig_extra?: TwigExtraConfig,
  *     knp_menu?: KnpMenuConfig,
  *     ux_icons?: UxIconsConfig,
  *     meilisearch?: MeilisearchConfig,
  *     mcp?: McpConfig,
  *     nelmio_cors?: NelmioCorsConfig,
+ *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
  *     payment?: PaymentConfig,
  *     "when@dev"?: array{
@@ -2382,7 +2383,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         live_component?: LiveComponentConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
- *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         twig_extra?: TwigExtraConfig,
  *         knp_menu?: KnpMenuConfig,
  *         ux_icons?: UxIconsConfig,
@@ -2415,7 +2415,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         live_component?: LiveComponentConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
- *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         twig_extra?: TwigExtraConfig,
  *         knp_menu?: KnpMenuConfig,
  *         ux_icons?: UxIconsConfig,

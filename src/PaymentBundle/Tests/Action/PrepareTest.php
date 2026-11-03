@@ -24,6 +24,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Action\Prepare;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -57,6 +58,7 @@ final class PrepareTest extends KernelTestCase
             $router,
             self::getContainer()->get(CompanySelector::class),
             $invoiceRepository,
+            self::getContainer()->get(SystemConfig::class),
         );
 
         $action->setDoctrine(self::getContainer()->get('doctrine'));

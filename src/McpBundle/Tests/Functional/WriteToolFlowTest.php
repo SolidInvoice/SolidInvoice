@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use Brick\Math\BigDecimal;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -20,13 +21,17 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Mcp\ClientWriteTools;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Mcp\PaymentWriteTools;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -208,6 +213,80 @@ final class WriteToolFlowTest extends KernelTestCase
 
         $reloaded = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($clientId));
         self::assertNull($reloaded);
+    }
+
+    /**
+     * A partial payment leaves the invoice pending with a reduced balance; the payment that settles
+     * it marks it paid, and an overpayment's excess is reported as credit.
+     */
+    public function testRecordPaymentOnlyMarksTheInvoicePaidOnceSettled(): void
+    {
+        $this->setActiveScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $invoice = InvoiceFactory::new([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => InvoiceStatus::Pending,
+            'paidDate' => null,
+            'discount' => new Discount(),
+        ])
+            ->afterInstantiate(static function (Invoice $invoice): void {
+                $invoice->addLine(new Line()->setQty(1)->setPrice(100000));
+            })
+            ->create();
+
+        $tool = self::getContainer()->get(PaymentWriteTools::class);
+        self::assertInstanceOf(PaymentWriteTools::class, $tool);
+
+        $result = $tool->recordPayment($invoice->getId()->toRfc4122(), 1, 'USD', method: 'bank_transfer');
+
+        self::assertSame(InvoiceStatus::Pending, $invoice->getStatus());
+        self::assertTrue(BigDecimal::of(99999)->isEqualTo($invoice->getBalance()));
+        self::assertSame('0', $result['credit_added']);
+
+        $result = $tool->recordPayment($invoice->getId()->toRfc4122(), 100999, 'USD');
+
+        self::assertSame(InvoiceStatus::Paid, $invoice->getStatus());
+        self::assertSame('1000', $result['credit_added']);
+    }
+
+    public function testRecordPaymentRejectsADraftInvoice(): void
+    {
+        $this->setActiveScopes([McpScope::Write->value]);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']),
+            'status' => InvoiceStatus::Draft,
+        ]);
+
+        $tool = self::getContainer()->get(PaymentWriteTools::class);
+        self::assertInstanceOf(PaymentWriteTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('not been issued');
+
+        $tool->recordPayment($invoice->getId()->toRfc4122(), 100, 'USD');
+    }
+
+    public function testUnpayIsNotAnInvoiceTransitionOfItsOwn(): void
+    {
+        $this->setActiveScopes([McpScope::Write->value]);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => ClientFactory::createOne(['company' => $this->company]),
+            'status' => InvoiceStatus::Paid,
+        ]);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('not enabled');
+
+        $tool->applyInvoiceTransition($invoice->getId()->toRfc4122(), 'unpay');
     }
 
     /**

@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InstallBundle\Listener\RequestListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,13 +30,15 @@ use Symfony\Component\Routing\RouterInterface;
 #[CoversClass(RequestListener::class)]
 final class RequestListenerTest extends TestCase
 {
+    use EventListenerAttributeTrait;
+
     public function testGetSubscribedEvents(): void
     {
         self::assertSame(
             [
                 'kernel.request' => ['onKernelRequest', 10],
             ],
-            RequestListener::getSubscribedEvents()
+            self::listenedEvents(RequestListener::class)
         );
     }
 

@@ -28,7 +28,6 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Address;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
 final readonly class SendTrialDowngradedEmailHandler
@@ -38,7 +37,6 @@ final readonly class SendTrialDowngradedEmailHandler
         private CompanySelector $companySelector,
         private MailerInterface $mailer,
         private SystemConfig $systemConfig,
-        private TranslatorInterface $translator,
         private LoggerInterface $logger,
         private EmailVerificationGateInterface $emailVerificationGate,
     ) {
@@ -99,7 +97,7 @@ final readonly class SendTrialDowngradedEmailHandler
 
             $this->companySelector->switchCompany($company->getId());
 
-            $email = new TrialDowngradedEmail($user, $company, $this->translator);
+            $email = new TrialDowngradedEmail($user, $company);
 
             $fromAddress = $this->systemConfig->get('email/from_address');
             $fromName = $this->systemConfig->get('email/from_name');

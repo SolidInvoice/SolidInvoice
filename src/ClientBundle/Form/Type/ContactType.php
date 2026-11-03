@@ -36,8 +36,8 @@ class ContactType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('firstName', null, ['label' => 'client.contact.firstName.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
-        $builder->add('lastName', null, ['label' => 'client.contact.lastName.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
+        $builder->add('firstName', null, ['label' => 'client.contact.first_name.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
+        $builder->add('lastName', null, ['label' => 'client.contact.last_name.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('email', null, ['label' => 'client.contact.email.label']);
 
         if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {

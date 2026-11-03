@@ -81,6 +81,8 @@ return App::config([
         ],
         'defaults' => [
             'stateless' => true,
+            'pagination_client_items_per_page' => true,
+            'pagination_maximum_items_per_page' => 100,
             'extra_properties' => [
                 'standard_put' => true,
                 'rfc_7807_compliant_errors' => true,

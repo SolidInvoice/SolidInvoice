@@ -4,6 +4,8 @@ platform:
     version: !php/const SolidInvoice\CoreBundle\SolidInvoiceCoreBundle::VERSION
 
     security:
+        reset_password:
+            enabled: true
         two_factor:
             enabled: true
             base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"

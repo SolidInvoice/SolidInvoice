@@ -65,7 +65,7 @@
                         <tr>
                             <th>{{ 'export.requested'|trans }}</th>
                             <th>{{ 'export.format'|trans }}</th>
-                            <th>{{ 'export.status'|trans }}</th>
+                            <th>{{ 'label.status'|trans }}</th>
                             <th>{{ 'export.size'|trans }}</th>
                             <th>{{ 'export.completed'|trans }}</th>
                             <th class="text-end">{{ 'export.actions'|trans }}</th>
@@ -86,12 +86,12 @@
                                     }[status] %}
                                     <span class="badge {{ badgeClass }}">{{ status|title|trans }}</span>
                                     {% if job.status.value == 'failed' and job.failureReason %}
-                                        <div class="small text-muted">{{ job.failureReason }}</div>
+                                        <div class="small text-muted">{{ job.failureReason|trans }}</div>
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if job.fileSize %}
-                                        {{ (job.fileSize / 1024 / 1024)|number_format(2) }} MB
+                                        {{ 'export.email.archive_size_value'|trans({'%size%': (job.fileSize / 1024 / 1024)|number_format(2)}) }}
                                     {% else %}
                                         &mdash;
                                     {% endif %}

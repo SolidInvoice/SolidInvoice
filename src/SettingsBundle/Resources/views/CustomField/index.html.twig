@@ -75,7 +75,7 @@
                                     </span>
                                     <div class="flex-fill">
                                         <strong>{{ row.field.label }}</strong>
-                                        <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
+                                        <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label|trans }}</span>
                                         {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'label.required'|trans }}</span>{% endif %}
                                         {% if row.field.visibility is not null %}
                                             {% if row.field.visibility.value == 'CLIENT_VISIBLE' %}
@@ -93,7 +93,7 @@
                                            aria-label="{{ 'action.edit'|trans }}">
                                             {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
                                         </a>
-                                        <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'custom_field.delete_confirm'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
+                                        <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'custom_field.delete_confirm'|trans({'%label%': row.field.label, '%count%': row.count})|e('js') }}')">
                                             <input type="hidden" name="_token" value="{{ csrf_token('cf_delete_' ~ row.field.id) }}">
                                             <button class="btn btn-ghost-danger btn-icon btn-icon-sm" type="submit"
                                                     title="{{ 'action.delete'|trans }}"

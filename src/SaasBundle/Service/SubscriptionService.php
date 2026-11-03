@@ -17,6 +17,7 @@ use Exception;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use SolidWorx\Toggler\ToggleInterface;
@@ -34,28 +35,33 @@ final readonly class SubscriptionService
 
     public function isTrialSubscription(): bool
     {
-        // Return false if SaaS is not enabled
+        return $this->current()?->getStatus() === SubscriptionStatus::TRIAL;
+    }
+
+    /**
+     * The selected company's subscription, or null without SaaS, a company or one.
+     */
+    public function current(): ?Subscription
+    {
         if (! $this->toggler->isActive('saas_enabled')) {
-            return false;
+            return null;
         }
 
         try {
             $companyId = $this->companySelector->getCompany();
             if (! $companyId instanceof Ulid) {
-                return false;
+                return null;
             }
 
             $company = $this->companyRepository->find($companyId);
             if (! $company instanceof Company) {
-                return false;
+                return null;
             }
 
-            $subscription = $this->subscriptionProvider->getSubscriptionFor($company);
-
-            return $subscription?->getStatus() === SubscriptionStatus::TRIAL;
+            return $this->subscriptionProvider->getSubscriptionFor($company);
         } catch (Exception) {
             // Handle cases where subscription tables don't exist (self-hosted, dev environments)
-            return false;
+            return null;
         }
     }
 }

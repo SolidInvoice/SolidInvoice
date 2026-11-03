@@ -13,32 +13,43 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Uid\Ulid;
 
 final class Version30200_4 extends AbstractMigration
 {
-    private const array SETTING_KEYS = [
-        'invoice/attachments/max_file_size' => [
-            'value' => '10',
-            'description' => 'Largest single attachment, in MB.',
-        ],
-        'invoice/attachments/max_per_invoice' => [
-            'value' => '10',
-            'description' => 'How many files one invoice may carry.',
-        ],
+    private const string TABLE_NAME = 'app_config';
+
+    /**
+     * Setting key => [English description older releases stored, translation key the ConfigProviders now store].
+     *
+     * @var array<string, array{string, string}>
+     */
+    private const array DESCRIPTIONS = [
+        'invoice/watermark' => ['Display a watermark on the invoice with the status', 'settings.description.invoice.watermark'],
+        'invoice/bcc_address' => ['Send BCC copy of invoice to this address', 'settings.description.invoice.bcc_address'],
+        'invoice/email_subject' => ['To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'settings.description.invoice.email_subject'],
+        'invoice/payment_terms' => ['Default payment terms for new invoices. A client can override this.', 'settings.description.invoice.payment_terms'],
+        'invoice/id_generation/id_prefix' => ['Example: INV-', 'settings.description.invoice.id_generation.id_prefix'],
+        'invoice/id_generation/id_suffix' => ['Example: -INV', 'settings.description.invoice.id_generation.id_suffix'],
+        'invoice/reminder/enabled' => ['Enable automatic invoice payment reminders', 'settings.description.invoice.reminder.enabled'],
+        'invoice/reminder/pre_due_enabled' => ['Send reminder before invoice is due', 'settings.description.invoice.reminder.pre_due_enabled'],
+        'invoice/reminder/pre_due_days' => ['Days before due date to send pre-due reminder (0 to disable)', 'settings.description.invoice.reminder.pre_due_days'],
+        'quote/watermark' => ['Display a watermark on the quote with the status', 'settings.description.quote.watermark'],
+        'quote/bcc_address' => ['Send BCC copy of quote to this address', 'settings.description.quote.bcc_address'],
+        'quote/email_subject' => ['To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'settings.description.quote.email_subject'],
+        'quote/id_generation/id_prefix' => ['Example: QUOT-', 'settings.description.quote.id_generation.id_prefix'],
+        'quote/id_generation/id_suffix' => ['Example: -QUOT', 'settings.description.quote.id_generation.id_suffix'],
+        'system/general/hide_powered_by' => ['Hide "Powered by SolidInvoice" text in invoices and quotes.', 'settings.description.system.general.hide_powered_by'],
+        'system/domain/custom_domain' => ['Custom domain for this company (leave empty to use the default URL).', 'settings.description.system.domain.custom_domain'],
+        'design/template' => ['Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.', 'settings.description.design.template'],
     ];
 
     public function getDescription(): string
     {
-        return 'Create invoice_attachments table for file attachments on invoices, and seed the per-company size and count settings';
+        return 'Replace the English setting descriptions stored per company with translation keys';
     }
 
     public function isTransactional(): bool
@@ -50,77 +61,26 @@ final class Version30200_4 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('invoice_attachments');
-
-        $table->addColumn('id', UlidType::NAME);
-        $table->addColumn('company_id', UlidType::NAME, ['notnull' => true]);
-        $table->addColumn('invoice_id', UlidType::NAME, ['notnull' => true]);
-        $table->addColumn('filename', Types::STRING, ['length' => 255, 'notnull' => true]);
-        $table->addColumn('mime_type', Types::STRING, ['length' => 127, 'notnull' => true]);
-        $table->addColumn('file_size', Types::INTEGER, ['notnull' => true]);
-        $table->addColumn('storage_key', Types::STRING, ['length' => 64, 'notnull' => true]);
-        $table->addColumn('uploaded_by', UlidType::NAME, ['notnull' => false]);
-        $table->addColumn('shared_with_client', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
-        $table->addColumn('created', Types::DATETIME_IMMUTABLE, ['notnull' => true]);
-        $table->addColumn('updated', Types::DATETIME_IMMUTABLE, ['notnull' => true]);
-
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['company_id']);
-        $table->addIndex(['invoice_id']);
-        $table->addUniqueIndex(['storage_key']);
-        $table->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $table->addForeignKeyConstraint('invoices', ['invoice_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $table->addForeignKeyConstraint('users', ['uploaded_by'], ['id'], ['onDelete' => 'SET NULL']);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function postUp(Schema $schema): void
-    {
-        foreach ($this->connection->fetchFirstColumn('SELECT id FROM companies') as $companyId) {
-            foreach (self::SETTING_KEYS as $settingKey => $setting) {
-                $exists = $this->connection->fetchOne(
-                    'SELECT 1 FROM app_config WHERE company_id = ? AND setting_key = ?',
-                    [$companyId, $settingKey]
-                );
-
-                if ($exists !== false) {
-                    continue;
-                }
-
-                $this->connection->insert(
-                    'app_config',
-                    [
-                        'id' => new Ulid(),
-                        'company_id' => $companyId,
-                        'setting_key' => $settingKey,
-                        'setting_value' => $setting['value'],
-                        'description' => $setting['description'],
-                        'field_type' => IntegerType::class,
-                    ],
-                    // Letting DBAL's UlidType convert per-platform, rather than calling
-                    // toBinary() directly, which hard-codes the MySQL binary(16) shape and
-                    // breaks on PostgreSQL's native uuid column with an invalid-UTF8-byte
-                    // error — reproduced against a real PostgreSQL 17 instance.
-                    ['id' => UlidType::NAME],
-                );
-            }
+        foreach (self::DESCRIPTIONS as $key => [, $translationKey]) {
+            $this->updateDescription($key, $translationKey);
         }
     }
 
     public function down(Schema $schema): void
     {
-        $schema->dropTable('invoice_attachments');
+        foreach (self::DESCRIPTIONS as $key => [$english]) {
+            $this->updateDescription($key, $english);
+        }
     }
 
-    /**
-     * @throws Exception
-     */
-    public function postDown(Schema $schema): void
+    private function updateDescription(string $settingKey, string $description): void
     {
-        foreach (array_keys(self::SETTING_KEYS) as $settingKey) {
-            $this->connection->delete('app_config', ['setting_key' => $settingKey]);
-        }
+        $query = $this->connection->createQueryBuilder()
+            ->update(self::TABLE_NAME)
+            ->set('description', ':description')
+            ->where('setting_key = :setting_key');
+
+        // addSql() rather than executing the builder, so --dry-run does not write.
+        $this->addSql($query->getSQL(), ['description' => $description, 'setting_key' => $settingKey]);
     }
 }

@@ -92,15 +92,15 @@ final class UserNotificationTest extends KernelTestCase
         $grouped = $this->component->groupNotificationsByCategory();
 
         self::assertIsArray($grouped);
-        self::assertArrayHasKey('Client Notifications', $grouped);
-        self::assertArrayHasKey('Invoice Notifications', $grouped);
-        self::assertArrayHasKey('Payment Notifications', $grouped);
-        self::assertArrayHasKey('Quote Notifications', $grouped);
+        self::assertArrayHasKey('notifications.categories.client', $grouped);
+        self::assertArrayHasKey('notifications.categories.invoice', $grouped);
+        self::assertArrayHasKey('notifications.categories.payment', $grouped);
+        self::assertArrayHasKey('notifications.categories.quote', $grouped);
 
-        self::assertContains('client_created', $grouped['Client Notifications']);
-        self::assertContains('invoice_status_changed', $grouped['Invoice Notifications']);
-        self::assertContains('payment_made', $grouped['Payment Notifications']);
-        self::assertContains('quote_status_changed', $grouped['Quote Notifications']);
+        self::assertContains('client_created', $grouped['notifications.categories.client']);
+        self::assertContains('invoice_status_changed', $grouped['notifications.categories.invoice']);
+        self::assertContains('payment_made', $grouped['notifications.categories.payment']);
+        self::assertContains('quote_status_changed', $grouped['notifications.categories.quote']);
     }
 
     public function testGetEventTitle(): void
@@ -168,10 +168,10 @@ final class UserNotificationTest extends KernelTestCase
 
     public function testGetCategoryIcon(): void
     {
-        self::assertSame('tabler:users', $this->component->getCategoryIcon('Client Notifications'));
-        self::assertSame('tabler:file-invoice', $this->component->getCategoryIcon('Invoice Notifications'));
-        self::assertSame('tabler:credit-card', $this->component->getCategoryIcon('Payment Notifications'));
-        self::assertSame('tabler:file-text', $this->component->getCategoryIcon('Quote Notifications'));
+        self::assertSame('tabler:users', $this->component->getCategoryIcon('notifications.categories.client'));
+        self::assertSame('tabler:file-invoice', $this->component->getCategoryIcon('notifications.categories.invoice'));
+        self::assertSame('tabler:credit-card', $this->component->getCategoryIcon('notifications.categories.payment'));
+        self::assertSame('tabler:file-text', $this->component->getCategoryIcon('notifications.categories.quote'));
     }
 
     public function testGetCategoryIconFallback(): void

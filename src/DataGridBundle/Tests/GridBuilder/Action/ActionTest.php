@@ -74,7 +74,7 @@ final class ActionTest extends TestCase
         $this->action->confirm();
 
         self::assertTrue($this->action->shouldConfirm());
-        self::assertSame('Are you sure?', $this->action->getConfirmMessage());
+        self::assertSame('datagrid.confirm.single', $this->action->getConfirmMessage());
     }
 
     public function testConfirmWithCustomMessage(): void

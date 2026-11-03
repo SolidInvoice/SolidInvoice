@@ -1,11 +1,11 @@
-{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|date('F j')} %}
+{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|format_date(pattern: 'MMMM d')} %}
 {{ 'onboarding.upgrade_offer.heading'|trans(params, 'email') }}
 {{ '='|repeat(60) }}
 
 {{ 'onboarding.upgrade_offer.lede'|trans(params, 'email') }}
 
 {{ 'onboarding.coupon.heading'|trans({}, 'email') }}: {{ coupon_code }}
-{{ 'onboarding.coupon.desc'|trans({'%percent%': coupon_percent, '%date%': trial_end|date('F j')}, 'email') }}
+{{ 'onboarding.coupon.desc'|trans({'%percent%': coupon_percent, '%date%': trial_end|format_date(pattern: 'MMMM d')}, 'email') }}
 
 {{ plan.name }} — ${{ (plan.price / 100)|number_format(2) }} {{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }}
 

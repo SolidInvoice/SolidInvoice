@@ -14,18 +14,26 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
+use SolidInvoice\CoreBundle\Mailer\DocumentSendOptions;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class InvoiceEmail extends TemplatedEmail implements ClientEmailInterface
 {
     public function __construct(
-        private readonly Invoice $invoice
+        private readonly Invoice $invoice,
+        private readonly ?DocumentSendOptions $options = null,
     ) {
         parent::__construct();
 
         $this->htmlTemplate('@SolidInvoiceInvoice/Email/invoice.html.twig');
         $this->context(['invoice' => $this->invoice]);
+        $this->options?->applyTo($this);
+    }
+
+    public function attachesPdf(): bool
+    {
+        return $this->options->attachPdf ?? true;
     }
 
     public function getInvoice(): Invoice

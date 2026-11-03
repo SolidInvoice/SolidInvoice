@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SaasBundle\Email\TrialDowngradedEmail;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TrialDowngradedEmailTest extends TestCase
 {
@@ -26,14 +25,11 @@ final class TrialDowngradedEmailTest extends TestCase
         $user = new User()->setEmail('owner@example.com');
         $company = new Company()->setName('Acme');
 
-        $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')->willReturn('You are all set on SolidInvoice');
-
-        $email = new TrialDowngradedEmail($user, $company, $translator);
+        $email = new TrialDowngradedEmail($user, $company);
 
         self::assertSame('@SolidInvoiceSaas/Email/trial_downgraded.html.twig', $email->getHtmlTemplate());
         self::assertSame('@SolidInvoiceSaas/Email/trial_downgraded.txt.twig', $email->getTextTemplate());
-        self::assertSame('You are all set on SolidInvoice', $email->getSubject());
+        self::assertSame('trial_downgraded.subject', $email->getSubject());
         self::assertSame('owner@example.com', $email->getTo()[0]->getAddress());
     }
 }

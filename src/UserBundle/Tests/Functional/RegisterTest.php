@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Enum\SignupMethod;
+use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
+use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +61,38 @@ final class RegisterTest extends WebTestCase
         /** @var ManagerRegistry $registry */
         $registry = self::getContainer()->get('doctrine');
         self::assertSame(SignupMethod::Registration, $registry->getRepository(User::class)->findOneBy([])?->getSignupMethod());
+    }
+
+    /**
+     * Invitations work with registration closed: the new user joins the inviting company, and the
+     * invitation is used up.
+     */
+    public function testAnInvitedUserJoinsTheInvitingCompany(): void
+    {
+        $client = $this->bootClient();
+        $company = self::getContainer()->get(EntityManagerInterface::class)->find(Company::class, $this->company->getId());
+        self::assertInstanceOf(Company::class, $company);
+        $invitation = new UserInvitation()
+            ->setEmail('invited@acmeplumbing.co.za')
+            ->setInvitedBy(UserFactory::createOne(['companies' => [$company]]))
+            ->setCompany($company);
+        self::getContainer()->get(UserInvitationRepository::class)->save($invitation);
+        $invitationId = $invitation->getId();
+
+        $crawler = $client->request(Request::METHOD_GET, '/register?invitation=' . $invitationId);
+        self::assertResponseIsSuccessful();
+        $client->submit($crawler->filter('form')->form([
+            'register[plainPassword]' => self::PASSWORD,
+            'register[acceptTerms]' => '1',
+        ]));
+
+        self::assertResponseRedirects();
+        $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'invited@acmeplumbing.co.za']);
+        self::assertInstanceOf(User::class, $user);
+        self::assertSame(SignupMethod::Invitation, $user->getSignupMethod());
+        self::assertTrue($user->isEnabled());
+        self::assertSame([$company->getId()->toString()], $user->getCompanies()->map(static fn (Company $member): string => $member->getId()->toString())->getValues());
+        self::assertNull(self::getContainer()->get(UserInvitationRepository::class)->find($invitationId));
     }
 
     /**

@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
+use SolidInvoice\InvoiceBundle\Notification\RecurringInvoiceCreatedNotification;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification;
@@ -28,6 +29,7 @@ use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 #[CoversClass(InvoiceStatusNotification::class)]
 #[CoversClass(PaymentReceivedNotification::class)]
 #[CoversClass(QuoteStatusNotification::class)]
+#[CoversClass(RecurringInvoiceCreatedNotification::class)]
 final class NotificationAttributesTest extends TestCase
 {
     #[DataProvider('notificationClassProvider')]
@@ -89,8 +91,8 @@ final class NotificationAttributesTest extends TestCase
         $attribute = $this->getNotificationAttribute(ClientCreateNotification::class);
 
         self::assertSame('client_create', $attribute->name);
-        self::assertSame('Client Created', $attribute->title);
-        self::assertSame('When a new client is added to your account', $attribute->description);
+        self::assertSame('notifications.events.client_created.title', $attribute->title);
+        self::assertSame('notifications.events.client_created.description', $attribute->description);
         self::assertSame('tabler:user-plus', $attribute->icon);
         self::assertSame(NotificationCategory::CLIENT, $attribute->category);
     }
@@ -100,8 +102,8 @@ final class NotificationAttributesTest extends TestCase
         $attribute = $this->getNotificationAttribute(InvoiceStatusNotification::class);
 
         self::assertSame('invoice_status_update', $attribute->name);
-        self::assertSame('Invoice Status Changed', $attribute->title);
-        self::assertSame('When an invoice status changes (draft, sent, paid, etc.)', $attribute->description);
+        self::assertSame('notifications.events.invoice_status_changed.title', $attribute->title);
+        self::assertSame('notifications.events.invoice_status_changed.description', $attribute->description);
         self::assertSame('tabler:file-invoice', $attribute->icon);
         self::assertSame(NotificationCategory::INVOICE, $attribute->category);
     }
@@ -111,8 +113,8 @@ final class NotificationAttributesTest extends TestCase
         $attribute = $this->getNotificationAttribute(PaymentReceivedNotification::class);
 
         self::assertSame('payment_made', $attribute->name);
-        self::assertSame('Payment Received', $attribute->title);
-        self::assertSame('When a payment is received for an invoice', $attribute->description);
+        self::assertSame('notifications.events.payment_received.title', $attribute->title);
+        self::assertSame('notifications.events.payment_received.description', $attribute->description);
         self::assertSame('tabler:cash', $attribute->icon);
         self::assertSame(NotificationCategory::PAYMENT, $attribute->category);
     }
@@ -122,10 +124,21 @@ final class NotificationAttributesTest extends TestCase
         $attribute = $this->getNotificationAttribute(QuoteStatusNotification::class);
 
         self::assertSame('quote_status_update', $attribute->name);
-        self::assertSame('Quote Status Changed', $attribute->title);
-        self::assertSame('When a quote status changes (draft, sent, accepted, etc.)', $attribute->description);
+        self::assertSame('notifications.events.quote_status_changed.title', $attribute->title);
+        self::assertSame('notifications.events.quote_status_changed.description', $attribute->description);
         self::assertSame('tabler:file-text', $attribute->icon);
         self::assertSame(NotificationCategory::QUOTE, $attribute->category);
+    }
+
+    public function testRecurringInvoiceCreatedNotificationMetadata(): void
+    {
+        $attribute = $this->getNotificationAttribute(RecurringInvoiceCreatedNotification::class);
+
+        self::assertSame('recurring_invoice_created', $attribute->name);
+        self::assertSame('notifications.events.recurring_invoice_created.title', $attribute->title);
+        self::assertSame('notifications.events.recurring_invoice_created.description', $attribute->description);
+        self::assertSame('tabler:repeat', $attribute->icon);
+        self::assertSame(NotificationCategory::INVOICE, $attribute->category);
     }
 
     /**
@@ -137,6 +150,7 @@ final class NotificationAttributesTest extends TestCase
         yield 'InvoiceStatusNotification' => [InvoiceStatusNotification::class];
         yield 'PaymentReceivedNotification' => [PaymentReceivedNotification::class];
         yield 'QuoteStatusNotification' => [QuoteStatusNotification::class];
+        yield 'RecurringInvoiceCreatedNotification' => [RecurringInvoiceCreatedNotification::class];
     }
 
     private function getNotificationAttribute(string $class): AsNotification

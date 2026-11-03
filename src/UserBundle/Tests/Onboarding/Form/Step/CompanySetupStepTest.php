@@ -23,6 +23,7 @@ final class CompanySetupStepTest extends FormTestCase
         $formData = [
             'test' => [
                 'companyName' => 'Acme Corporation',
+                'companyCountry' => 'ZA',
                 'companyCurrency' => 'USD',
             ],
         ];
@@ -35,6 +36,7 @@ final class CompanySetupStepTest extends FormTestCase
         $formData = [
             'test' => [
                 'companyName' => '',
+                'companyCountry' => '',
                 'companyCurrency' => '',
             ],
         ];

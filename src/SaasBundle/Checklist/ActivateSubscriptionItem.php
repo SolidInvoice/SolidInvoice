@@ -66,30 +66,37 @@ final readonly class ActivateSubscriptionItem implements ChecklistItemInterface
         // In paid-trial mode a company cannot reach the dashboard without an
         // active subscription in the first place, so prompting them to activate
         // one is redundant.
-        return ! $this->billingMode->requiresCardForTrial();
+        if ($this->billingMode->requiresCardForTrial()) {
+            return false;
+        }
+
+        // An ACTIVE Free subscription is Free forever, not one awaiting activation.
+        $subscription = $this->subscription();
+
+        return ! ($subscription instanceof Subscription
+            && $subscription->getStatus() === SubscriptionStatus::ACTIVE
+            && $subscription->getPlan()->isFree());
     }
 
     public function isComplete(): bool
     {
+        return $this->subscription()?->getStatus() === SubscriptionStatus::ACTIVE;
+    }
+
+    private function subscription(): ?Subscription
+    {
         $companyId = $this->companySelector->getCompany();
 
         if (! $companyId instanceof Ulid) {
-            return false;
+            return null;
         }
 
         $company = $this->companyRepository->find($companyId);
 
         if (! $company instanceof Company) {
-            return false;
+            return null;
         }
 
-        $subscription = $this->subscriptionProvider->getSubscriptionFor($company);
-
-        if (! $subscription instanceof Subscription) {
-            return false;
-        }
-
-        // Consider complete if subscription is active
-        return $subscription->getStatus() === SubscriptionStatus::ACTIVE;
+        return $this->subscriptionProvider->getSubscriptionFor($company);
     }
 }

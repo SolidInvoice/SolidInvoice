@@ -21,6 +21,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\Translation\TranslatableMessage;
 
 #[AsDataGrid(name: 'users_list', title: 'Users')]
 final class UserGrid extends Grid
@@ -38,17 +39,17 @@ final class UserGrid extends Grid
     {
         return [
             StringColumn::new('email')
-                ->label('Email Address'),
+                ->label('label.email_address'),
             StringColumn::new('mobile')
-                ->label('Mobile')
+                ->label('profile.show.mobile')
                 ->formatValue(fn ($value) => $value ?: '—'),
             RelativeDateColumn::new('created')
-                ->label('Joined'),
+                ->label('users.grid.joined'),
             RelativeDateColumn::new('lastLogin')
-                ->label('Last Login')
-                ->formatValue(fn ($value) => $value ?: 'Never'),
+                ->label('profile.show.last_login')
+                ->formatValue(static fn ($value) => $value ?: new TranslatableMessage('users.grid.never_logged_in')),
             StatusColumn::new('enabled')
-                ->label('Status')
+                ->label('label.status')
                 ->formatValue(fn ($value) => $value ? 'active' : 'disabled')
                 ->statusMap([
                     'active' => 'success',

@@ -17,19 +17,18 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @see \SolidInvoice\SaasBundle\Tests\Email\TrialDowngradedEmailTest
  */
 final class TrialDowngradedEmail extends TemplatedEmail
 {
-    public function __construct(User $user, Company $company, TranslatorInterface $translator)
+    public function __construct(User $user, Company $company)
     {
         parent::__construct();
 
         $this->to(Address::create((string) $user->getEmail()));
-        $this->subject($translator->trans('trial_downgraded.subject', [], 'email'));
+        $this->subject('trial_downgraded.subject');
         $this->htmlTemplate('@SolidInvoiceSaas/Email/trial_downgraded.html.twig');
         $this->textTemplate('@SolidInvoiceSaas/Email/trial_downgraded.txt.twig');
         $this->context([

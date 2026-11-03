@@ -58,12 +58,12 @@
                                     <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin-bottom: 4px;">
                                         {{ 'invoice.date'|trans }}
                                     </div>
-                                    <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                                    <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.invoiceDate|format_date('long') }}</div>
                                     {% if invoice.due %}
                                         <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
-                                            {{ 'invoice.due_date'|trans }}
+                                            {{ 'billing.due_date'|trans }}
                                         </div>
-                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
+                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
                                     {% endif %}
                                     {{ inv.status_pair(invoice.status, {labelColor: '#6b6b6b', ink: '#1a1a1a'}) }}
                                 </td>
@@ -92,13 +92,13 @@
                             <thead>
                                 <tr>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: left; border-bottom: 1px solid #d6cdb8;">
-                                        {{ 'invoice.item.heading.description'|trans }}
+                                        {{ 'label.description'|trans }}
                                     </th>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: right; border-bottom: 1px solid #d6cdb8;">
                                         {{ 'invoice.item.heading.qty'|trans }} × {{ 'invoice.item.heading.price'|trans }}
                                     </th>
                                     <th style="padding: 0 0 10px 0; font-size: 7pt; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; text-align: right; border-bottom: 1px solid #d6cdb8;">
-                                        {{ 'invoice.item.heading.total'|trans }}
+                                        {{ 'billing.total'|trans }}
                                     </th>
                                 </tr>
                             </thead>

@@ -33,15 +33,4 @@ enum RoundingStrategy: string
             self::Down => RoundingMode::Down,
         };
     }
-
-    public function getLabel(): string
-    {
-        return match ($this) {
-            self::HalfEven => "Half to Even (Banker's Rounding)",
-            self::HalfUp => 'Half Up',
-            self::HalfDown => 'Half Down',
-            self::Up => 'Up (Away from Zero)',
-            self::Down => 'Down (Toward Zero)',
-        };
-    }
 }

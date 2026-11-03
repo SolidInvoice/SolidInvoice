@@ -27,7 +27,7 @@ final class ClientGrid extends BaseClientGrid
     {
         yield from parent::batchActions();
 
-        yield BatchAction::new('Archive')
+        yield BatchAction::new('action.archive')
             ->icon('trash')
             ->color('warning')
             ->action(static function (ClientRepository $repository, array $selectedItems): void {

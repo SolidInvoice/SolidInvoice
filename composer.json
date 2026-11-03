@@ -16,7 +16,7 @@
     ],
     "homepage": "https://solidinvoice.co",
     "require": {
-        "php": ">=8.4.1",
+        "php": ">=8.4.27",
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",
@@ -118,6 +118,7 @@
         "symfony/iqsms-notifier": "^8.1",
         "symfony/light-sms-notifier": "^8.1",
         "symfony/linked-in-notifier": "^8.1",
+        "symfony/lock": "^8.1",
         "symfony/mailchimp-mailer": "^8.1",
         "symfony/mailer": "^8.1",
         "symfony/mailgun-mailer": "^8.1",
@@ -181,12 +182,12 @@
         "symfony/yunpian-notifier": "^8.1",
         "symfony/zulip-notifier": "^8.1",
         "symfonycasts/dynamic-forms": "^0.2",
-        "symfonycasts/reset-password-bundle": "^1.25",
         "symfonycasts/verify-email-bundle": "^1.18",
         "tijsverkoyen/css-to-inline-styles": "^2.4",
         "twig/cssinliner-extra": "^3.26",
         "twig/extra-bundle": "^3.24",
         "twig/inky-extra": "^3.26",
+        "twig/intl-extra": "^3.24",
         "twig/markdown-extra": "^3.28",
         "twig/string-extra": "^3.24",
         "twig/twig": "^3.28",
@@ -274,7 +275,7 @@
         },
         "bin-dir": "bin",
         "platform": {
-            "php": "8.4.1"
+            "php": "8.4.27"
         },
         "sort-packages": true
     },

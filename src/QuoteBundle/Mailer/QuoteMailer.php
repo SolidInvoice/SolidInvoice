@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Mailer;
 
 use JsonException;
+use SolidInvoice\CoreBundle\Mailer\DocumentSendOptions;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -27,6 +28,11 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 final readonly class QuoteMailer
 {
+    /**
+     * Workflow context key carrying the {@see DocumentSendOptions} of a send from draft.
+     */
+    public const string OPTIONS = 'send_options';
+
     public function __construct(
         private WorkflowInterface $quoteStateMachine,
         private MailerInterface $mailer,
@@ -37,7 +43,7 @@ final readonly class QuoteMailer
     /**
      * @throws InvalidTransitionException|JsonException
      */
-    private function applyTransition(Quote $quote): void
+    private function applyTransition(Quote $quote, ?DocumentSendOptions $options): void
     {
         if (! $this->quoteStateMachine->can($quote, Graph::TRANSITION_SEND)) {
             throw new InvalidTransitionException(Graph::TRANSITION_SEND);
@@ -45,7 +51,8 @@ final readonly class QuoteMailer
 
         $oldStatus = $quote->getStatus();
 
-        $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+        // The workflow subscriber sends the email once the quote is pending; the options ride along.
+        $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND, [self::OPTIONS => $options]);
 
         $newStatus = $quote->getStatus();
 
@@ -62,12 +69,12 @@ final readonly class QuoteMailer
     /**
      * @throws InvalidTransitionException|TransportExceptionInterface|JsonException
      */
-    public function send(Quote $quote): Quote
+    public function send(Quote $quote, ?DocumentSendOptions $options = null): Quote
     {
         if (QuoteStatus::Draft === $quote->getStatus()) {
-            $this->applyTransition($quote);
+            $this->applyTransition($quote, $options);
         } else {
-            $this->mailer->send(new QuoteEmail($quote));
+            $this->mailer->send(new QuoteEmail($quote, $options));
         }
 
         return $quote;

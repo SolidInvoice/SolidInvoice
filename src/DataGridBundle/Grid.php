@@ -115,7 +115,7 @@ abstract class Grid implements GridInterface
      */
     public function getCreateLabel(): ?TranslatableMessage
     {
-        return new TranslatableMessage('Create');
+        return new TranslatableMessage('action.create');
     }
 
     /**

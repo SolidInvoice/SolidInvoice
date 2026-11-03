@@ -44,10 +44,10 @@
             {
                 "@context": "http://schema.org",
                 "@type": "EmailMessage",
-                "description": "View invoice",
+                "description": {{ 'invoice.schema.view'|trans({}, 'email')|json_encode|raw }},
                 "potentialAction": {
                     "@type": "ViewAction",
-                    "name": "View invoice",
+                    "name": {{ 'invoice.schema.view'|trans({}, 'email')|json_encode|raw }},
                     "target": "{{ invoicePath }}"
                 }
             }
@@ -57,12 +57,23 @@
 
 
 {%- block content -%}
+    {# Optional note from the sender, escaped by nl2br before its line breaks are added #}
+    {% if personal_note is defined and personal_note is not empty %}
+        {% apply inky_to_html %}
+            <row>
+                <columns>
+                    <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">{{ personal_note|nl2br }}</p>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
     {# Invoice intro message #}
     {% apply inky_to_html %}
         <row>
             <columns>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                    {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|format_date('long')}, 'email') }}
                 </p>
             </columns>
         </row>
@@ -73,7 +84,7 @@
     {# Invoice details section #}
     {{ email.info_row('invoice.number'|trans({}, 'email'), invoice.invoiceId) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('invoice.created'|trans({}, 'email'), invoice.created|date) }}
+    {{ email.info_row('invoice.created'|trans({}, 'email'), invoice.created|format_date('long')) }}
 
     {% if invoice.due %}
         {{ email.spacer('xs') }}

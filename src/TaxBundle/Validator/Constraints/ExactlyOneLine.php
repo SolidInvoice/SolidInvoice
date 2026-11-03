@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class ExactlyOneLine extends Constraint
 {
-    public string $message = 'Exactly one of invoiceLine or quoteLine must be set on a LineTax.';
+    public string $message = 'tax.constraint.exactly_one_line';
 
     #[Override]
     public function getTargets(): string | array

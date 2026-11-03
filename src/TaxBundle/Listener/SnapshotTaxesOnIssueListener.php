@@ -22,7 +22,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Transition;
 
@@ -38,7 +38,7 @@ use Symfony\Component\Workflow\Transition;
  * re-snapshots from the source {@see \SolidInvoice\TaxBundle\Entity\Tax}.
  * @see \SolidInvoice\TaxBundle\Tests\Listener\SnapshotTaxesOnIssueListenerTest
  */
-final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
+final class SnapshotTaxesOnIssueListener
 {
     private const array INVOICE_DRAFT_PLACES = [
         InvoiceStatus::Draft->value,
@@ -63,21 +63,12 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
     ];
 
     /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'workflow.invoice.transition' => 'onTransition',
-            'workflow.quote.transition' => 'onTransition',
-        ];
-    }
-
-    /**
      * @template TSubject of object
      *
      * @param Event<TSubject> $event
      */
+    #[AsEventListener(event: 'workflow.invoice.transition')]
+    #[AsEventListener(event: 'workflow.quote.transition')]
     public function onTransition(Event $event): void
     {
         $subject = $event->getSubject();

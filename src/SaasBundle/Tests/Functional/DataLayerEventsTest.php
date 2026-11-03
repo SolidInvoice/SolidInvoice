@@ -72,6 +72,7 @@ final class DataLayerEventsTest extends WebTestCase
 
         $client->submit($crawler->filter('form')->form([
             'company_setup_step[companyName]' => 'Acme',
+            'company_setup_step[companyCountry]' => 'US',
             'company_setup_step[companyCurrency]' => 'USD',
             'company_setup_step[heardAbout]' => 'other',
             'company_setup_step[heardAboutOther]' => '<b>A podcast</b>',
@@ -114,6 +115,7 @@ final class DataLayerEventsTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/onboarding');
         $client->submit($crawler->filter('form')->form([
             'company_setup_step[companyName]' => 'Acme',
+            'company_setup_step[companyCountry]' => 'US',
             'company_setup_step[companyCurrency]' => 'USD',
         ]));
         self::assertResponseRedirects();

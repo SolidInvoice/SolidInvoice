@@ -15,16 +15,17 @@ namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 
-class QuoteSubjectListener implements EventSubscriberInterface
+class QuoteSubjectListener
 {
     public function __construct(
         private readonly SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         /** @var QuoteEmail $message */
@@ -33,12 +34,5 @@ class QuoteSubjectListener implements EventSubscriberInterface
         if ($message instanceof QuoteEmail && null === $message->getSubject()) {
             $message->subject(\str_replace('{id}', (string) $message->getQuote()->getQuoteId(), $this->config->get('quote/email_subject')));
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }

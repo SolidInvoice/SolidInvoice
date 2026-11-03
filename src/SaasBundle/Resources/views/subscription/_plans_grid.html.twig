@@ -12,11 +12,13 @@
  #   - currentPlanId: string|null  (planId of the user's current plan; that card is disabled)
  #   - actionRoute: string         (form action route name; defaults to saas_subscription_choose)
  #   - csrfToken: string           (CSRF intent; defaults to choose_plan)
+ #   - subscribeToCurrent: bool    (current card links to checkout instead of being disabled)
  #}
 
 {% import _self as macros %}
 
 {% set currentPlanId = currentPlanId|default(null) %}
+{% set subscribeToCurrent = subscribeToCurrent|default(false) %}
 {% set actionRoute = actionRoute|default('saas_subscription_choose') %}
 {% set csrfToken = csrfToken|default('choose_plan') %}
 
@@ -72,7 +74,12 @@
 
                     {{ macros.feature_list(plan.features) }}
 
-                    {% if isCurrent %}
+                    {% if isCurrent and subscribeToCurrent %}
+                        <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-success w-100 mt-auto">
+                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                            {{ 'saas.plan.subscribe_to'|trans({'%plan%': plan.name}) }}
+                        </a>
+                    {% elseif isCurrent %}
                         <button type="button" class="btn btn-outline-success w-100 mt-auto" disabled>
                             {{ 'saas.plan.current'|trans }}
                         </button>

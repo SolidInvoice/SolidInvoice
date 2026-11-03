@@ -18,9 +18,6 @@ use SolidInvoice\UserBundle\Action\Affiliate\ReferAndEarn;
 use SolidInvoice\UserBundle\Action\ApiIndex;
 use SolidInvoice\UserBundle\Action\DeleteUserInvite;
 use SolidInvoice\UserBundle\Action\EditProfile;
-use SolidInvoice\UserBundle\Action\ForgotPassword\Check;
-use SolidInvoice\UserBundle\Action\ForgotPassword\Request;
-use SolidInvoice\UserBundle\Action\ForgotPassword\Reset;
 use SolidInvoice\UserBundle\Action\InviteUser;
 use SolidInvoice\UserBundle\Action\Notifications;
 use SolidInvoice\UserBundle\Action\Profile;
@@ -68,19 +65,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(Onboarding::class);
 
     $routingConfigurator->add('_logout', '/logout');
-
-    $routingConfigurator
-        ->add('_user_forgot_password', '/forgot-password')
-        ->controller(Request::class);
-
-    $routingConfigurator
-        ->add('_user_forgot_password_check_email', '/forgot-password/check')
-        ->controller(Check::class);
-
-    $routingConfigurator
-        ->add('_user_password_reset', '/forgot-password/reset/{token}')
-        ->defaults(['token' => null])
-        ->controller(Reset::class);
 
     $routingConfigurator
         ->add('_profile', '/profile')

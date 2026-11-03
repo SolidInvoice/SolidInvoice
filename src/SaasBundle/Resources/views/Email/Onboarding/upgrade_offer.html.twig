@@ -8,7 +8,7 @@
  #}
 {% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
-{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|date('F j')} %}
+{% set params = {'%percent%': coupon_percent, '%plan%': plan.name, '%date%': trial_end|format_date(pattern: 'MMMM d')} %}
 
 {% block title %}{{ 'onboarding.upgrade_offer.subject'|trans(params, 'email') }}{% endblock %}
 
