@@ -329,6 +329,16 @@
                                     <small class="form-text text-muted">{{ 'payment.notes.help'|trans }}</small>
                                 </div>
                             {% endif %}
+
+                            {% if form.send_receipt is defined %}
+                                <div class="mb-4">
+                                    <div class="form-check form-switch">
+                                        {{ form_widget(form.send_receipt, {attr: {class: 'form-check-input'}}) }}
+                                        {{ form_label(form.send_receipt, 'payment.receipt.form.send.label'|trans, {label_attr: {class: 'form-check-label'}}) }}
+                                    </div>
+                                    <small class="form-text text-muted d-block mt-2">{{ 'payment.receipt.form.send.help'|trans }}</small>
+                                </div>
+                            {% endif %}
                         </div>
 
                         {# Form Actions #}

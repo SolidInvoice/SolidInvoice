@@ -24,23 +24,13 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class PaymentCompleteListener implements EventSubscriberInterface
+class PaymentCompleteListener
 {
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete',
-        ];
-    }
-
     public function __construct(
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly ManagerRegistry $registry,
@@ -51,6 +41,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     /**
      * @throws MathException
      */
+    #[AsEventListener(event: PaymentEvents::PAYMENT_COMPLETE)]
     public function onPaymentComplete(PaymentCompleteEvent $event): void
     {
         $payment = $event->getPayment();

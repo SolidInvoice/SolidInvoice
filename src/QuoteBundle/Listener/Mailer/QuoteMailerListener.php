@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Mailer\MailerInterface;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuoteMailerListenerTest
  */
-class QuoteMailerListener implements EventSubscriberInterface
+class QuoteMailerListener
 {
     use FlashErrorTrait;
 
@@ -37,13 +37,7 @@ class QuoteMailerListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            QuoteEvents::QUOTE_POST_SEND => 'onQuoteSend',
-        ];
-    }
-
+    #[AsEventListener(event: QuoteEvents::QUOTE_POST_SEND)]
     public function onQuoteSend(QuoteEvent $event): void
     {
         try {

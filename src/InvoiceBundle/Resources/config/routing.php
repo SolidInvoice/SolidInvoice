@@ -19,14 +19,19 @@ use SolidInvoice\InvoiceBundle\Action\Edit;
 use SolidInvoice\InvoiceBundle\Action\EditRecurring;
 use SolidInvoice\InvoiceBundle\Action\Fields;
 use SolidInvoice\InvoiceBundle\Action\Index;
+use SolidInvoice\InvoiceBundle\Action\ReceiptIndex;
+use SolidInvoice\InvoiceBundle\Action\ReceiptPdf;
 use SolidInvoice\InvoiceBundle\Action\RecurringIndex;
 use SolidInvoice\InvoiceBundle\Action\RecurringTransition;
 use SolidInvoice\InvoiceBundle\Action\SendManualReminder;
+use SolidInvoice\InvoiceBundle\Action\SendReceipt;
 use SolidInvoice\InvoiceBundle\Action\SendTestCopy;
 use SolidInvoice\InvoiceBundle\Action\Transition;
 use SolidInvoice\InvoiceBundle\Action\Transition\Send;
 use SolidInvoice\InvoiceBundle\Action\View;
+use SolidInvoice\InvoiceBundle\Action\ViewPayment;
 use SolidInvoice\InvoiceBundle\Action\ViewRecurring;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
@@ -92,6 +97,29 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_send_manual_reminder', '/action/send-reminder/{id}')
         ->methods(['POST'])
         ->controller(SendManualReminder::class);
+
+    $routingConfigurator
+        ->add('_invoices_receipts', '/receipts')
+        ->controller(ReceiptIndex::class);
+
+    $routingConfigurator
+        ->add('_invoices_payment_view', '/payments/{id}')
+        ->controller(ViewPayment::class);
+
+    $routingConfigurator
+        ->add('_invoices_receipt_view', '/payments/{id}/receipt.pdf')
+        ->controller(ReceiptPdf::class)
+        ->defaults(['disposition' => ResponseHeaderBag::DISPOSITION_INLINE]);
+
+    $routingConfigurator
+        ->add('_invoices_receipt_download', '/payments/{id}/receipt/download')
+        ->controller(ReceiptPdf::class)
+        ->defaults(['disposition' => ResponseHeaderBag::DISPOSITION_ATTACHMENT]);
+
+    $routingConfigurator
+        ->add('_invoices_receipt_send', '/payments/{id}/receipt/send')
+        ->methods(['POST'])
+        ->controller(SendReceipt::class);
 
     $routingConfigurator
         ->add('_action_invoice', '/action/{action}/{id}')

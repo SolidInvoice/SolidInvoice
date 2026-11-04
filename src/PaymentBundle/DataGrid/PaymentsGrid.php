@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
@@ -94,6 +96,26 @@ final class PaymentsGrid extends Grid
                 ->label('label.created')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('created')),
+        ];
+    }
+
+    /**
+     * @return list<Action>
+     */
+    #[Override]
+    public function actions(): array
+    {
+        return [
+            ViewAction::new('_invoices_payment_view', ['id' => 'id']),
+            // Only a captured payment has a receipt; the others answer with a 404.
+            Action::new('_invoices_receipt_view', ['id' => 'id'])
+                ->label('payment.receipt.action.view')
+                ->icon('file-type-pdf')
+                ->inMenu(),
+            Action::new('_invoices_receipt_download', ['id' => 'id'])
+                ->label('payment.receipt.action.download')
+                ->icon('download')
+                ->inMenu(),
         ];
     }
 

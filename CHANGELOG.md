@@ -6,6 +6,7 @@ Changelog
 
 ### Changes
 
+* Payment receipts: every received payment has a receipt that can be viewed, downloaded as a PDF or emailed (PDF attached) to the invoice's contacts. Payments have their own page, a Receipts list sits under Payments in the menu and on each client, and every received payment (online, recorded in the app, or through the API or MCP) emails a receipt automatically. This can be turned off under Settings > Payments, and someone recording a payment can choose otherwise with "Send a digital receipt"
 * API: clients, contacts, invoices, quotes, recurring invoices and payments include their `created` and `updated` times (UTC), and can be sorted by them (`order[updated]=desc`) and filtered to what changed since a time (`updated[after]=...`); invoices, quotes and recurring invoices include their `currencyCode`; invoices and quotes can be searched by number (`invoiceId`, `quoteId`) and client name (`client.name`); `itemsPerPage` sets the page size, up to 100
 * API: invoices and quotes created without a number are numbered the same way as in the app, numbers must be unique within a company, `GET /api/next-number` previews the next number, and `POST /api/invoices/{id}/clone` and `POST /api/quotes/{id}/clone` copy a document into a new draft
 * API: `POST /api/invoices/{id}/send` and `POST /api/quotes/{id}/send` email a document, with optional recipients, Cc, subject, personal note, PDF attachment and a copy to yourself, and re-send it while it is pending; `POST /api/invoices/{id}/reminder` sends a payment reminder (at most one an hour), and `POST /api/invoices/{id}/mark-sent` marks an invoice sent without emailing it
@@ -37,6 +38,7 @@ Changelog
 
 ### Fixes
 
+* The MCP server no longer fails with a server error on every request when SolidInvoice runs on its built-in FrankenPHP server. Some log entries could not be written to the server log, which failed the request
 * Trimmed internal payment method fields from API payment responses
 * Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
 * Recording a second payment against an invoice through the API no longer fails with a "circular reference" error

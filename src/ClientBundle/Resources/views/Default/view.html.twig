@@ -183,6 +183,16 @@
                         </button>
                     </li>
                 {% endif %}
+                {% set receiptCount = payments|filter(p => p.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured)|length %}
+                {% if receiptCount > 0 %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="receipts-tab" data-bs-toggle="tab" data-bs-target="#receipts" type="button" role="tab" aria-controls="receipts" aria-selected="false">
+                            {{ ux_icon('tabler:receipt', {width: 16, height: 16}) }}
+                            <span>{{ 'client.view.tabs.receipts'|trans }}</span>
+                            <span class="badge bg-secondary-lt">{{ receiptCount }}</span>
+                        </button>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 
@@ -209,6 +219,13 @@
                 {% if payments|length > 0 %}
                     <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                         {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data": {'client': client.id}} only %}
+                    </div>
+                {% endif %}
+
+                {# Receipts Tab #}
+                {% if receiptCount > 0 %}
+                    <div class="tab-pane fade" id="receipts" role="tabpanel" aria-labelledby="receipts-tab">
+                        <twig:DataGrid name="receipts_grid" context="{{ {'client_id': client.id} }}" />
                     </div>
                 {% endif %}
             </div>
