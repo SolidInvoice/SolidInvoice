@@ -930,6 +930,7 @@ invoice:
             name: Item
             price: Price
             qty: Qty
+            unit: Unit
         name:
             label: 'Item name'
             placeholder: 'e.g. Website design'
@@ -1212,6 +1213,22 @@ layout:
     powered_by: 'Powered by'
     profile: Profile
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
+line:
+    unit:
+        # The countable units carry both forms, so a line billing one of something reads
+        # "1 hour" rather than "1 hours". The ones written as symbols do not inflect.
+        ann: year|years
+        c62: unit|units
+        day: day|days
+        e48: service|services
+        hur: hour|hours
+        kgm: kg
+        ltr: L
+        mon: month|months
+        mtk: m²
+        mtq: m³
+        mtr: m
+        tne: t
 mcp:
     connected_apps:
         empty: "You haven't connected any AI agents yet."
@@ -1863,6 +1880,7 @@ quote:
             name: Item
             price: Price
             qty: Qty
+            unit: Unit
         name:
             label: 'Item name'
             placeholder: 'e.g. Website design'

@@ -51,7 +51,7 @@
                     {% for line in quote.lines %}
                         <tr>
                             <td>{{ line.name }}{{ q.line_description(line) }}</td>
-                            <td class="text-end">{{ line.qty }}</td>
+                            <td class="text-end">{{ quantity(line) }}</td>
                             <td class="text-end">{{ line.price|formatCurrency(currency) }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>

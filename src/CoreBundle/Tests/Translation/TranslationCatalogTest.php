@@ -79,6 +79,7 @@ final class TranslationCatalogTest extends TestCase
             'invoice.transition.exception.',
             'invoice.transition.recurring.action.',
             'label.',
+            'line.unit.',
             'onboarding.company.fields.heard_about.choices.',
             'payment.gateway.',
             'payment_terms.',

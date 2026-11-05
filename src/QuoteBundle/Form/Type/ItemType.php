@@ -16,11 +16,13 @@ namespace SolidInvoice\QuoteBundle\Form\Type;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Override;
+use SolidInvoice\CoreBundle\Enum\UnitCode;
 use SolidInvoice\CoreBundle\Form\Transformer\QuantityTransformer;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -97,6 +99,21 @@ class ItemType extends AbstractType
         $builder->get('qty')
             ->resetViewTransformers()
             ->addViewTransformer(new QuantityTransformer());
+
+        $builder->add(
+            'unitCode',
+            EnumType::class,
+            [
+                'class' => UnitCode::class,
+                // There is always a unit, so no blank option — and a payload that leaves the
+                // field out (the API, an older client) means the default rather than null.
+                'placeholder' => false,
+                'empty_data' => UnitCode::UNIT,
+                'attr' => [
+                    'class' => 'input-mini invoice-item-unit',
+                ],
+            ]
+        );
 
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(

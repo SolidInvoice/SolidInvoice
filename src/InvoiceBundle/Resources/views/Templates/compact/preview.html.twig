@@ -53,7 +53,7 @@
                             <tr>
                                 <td class="text-muted small">{{ loop.index }}</td>
                                 <td class="small">{{ line.name }}{{ inv.line_description(line) }}</td>
-                                <td class="text-end font-monospace small">{{ line.qty }}</td>
+                                <td class="text-end font-monospace small">{{ quantity(line) }}</td>
                                 <td class="text-end font-monospace small">{{ line.price|formatCurrency(currency) }}</td>
                                 <td class="text-end font-monospace small fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                             </tr>

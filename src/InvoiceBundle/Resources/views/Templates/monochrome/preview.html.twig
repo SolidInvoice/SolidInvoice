@@ -50,7 +50,7 @@
                     {% for line in invoice.lines %}
                         <tr style="border-bottom: 1px solid #e0d8c8;">
                             <td>{{ line.name }}{{ inv.line_description(line) }}</td>
-                            <td class="text-muted text-end">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</td>
+                            <td class="text-muted text-end">{{ quantity(line) }} × {{ line.price|formatCurrency(currency) }}</td>
                             <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>
                     {% endfor %}

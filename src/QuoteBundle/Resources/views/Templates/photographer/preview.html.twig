@@ -46,7 +46,7 @@
                         <tr style="border-bottom: 1px solid #e8d7b8;">
                             <td>
                                 <div class="fs-5">{{ line.name }}</div>{{ q.line_description(line) }}
-                                <div class="text-muted small">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+                                <div class="text-muted small">{{ quantity(line) }} × {{ line.price|formatCurrency(currency) }}</div>
                             </td>
                             <td class="text-end fs-4 fw-bold" style="color: #a2492b;">{{ line.total|formatCurrency(currency) }}</td>
                         </tr>

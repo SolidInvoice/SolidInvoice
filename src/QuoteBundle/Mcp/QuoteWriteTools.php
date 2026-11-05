@@ -66,7 +66,9 @@ final readonly class QuoteWriteTools
      * as a draft — use `apply_quote_transition` to send/accept/etc.
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
-     * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
+     * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, unit_code?, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
+     *                                                        `unit_code` is a UN/ECE Rec 20 code (C62 unit, HUR hour, DAY, MON, ANN,
+     *                                                        E48 service, KGM, TNE, MTR, MTK, MTQ, LTR); omitted means C62.
      *                                                        Provide `taxes[]` for multi-tax lines (India GST, Quebec compound, etc.);
      *                                                        `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $due            ISO-8601 due date (optional)

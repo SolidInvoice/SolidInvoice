@@ -37,6 +37,30 @@ final class CreateQuoteTest extends LiveComponentTest
     }
 
     /**
+     * The unit labels are the only translations in the line editor that are not ASCII, and
+     * the snapshots are no use for checking them: Spatie's HtmlDriver runs the markup through
+     * DOMDocument::loadHTML(), which reads a fragment with no charset as ISO-8859-1 and so
+     * re-encodes "m²" to "m&Acirc;&sup2;" in the stored .html. That is the serialiser, not
+     * the page — this asserts against the render itself, so the difference stays provable.
+     */
+    public function testTheUnitLabelsRenderAsUtf8(): void
+    {
+        $dto = new QuoteFormDTO();
+        $dto->lines->add(new Line()->setPrice(10000)->setQty(1));
+
+        $component = $this->createLiveComponent(
+            name: CreateQuote::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $rendered = $component->render()->toString();
+
+        self::assertStringContainsString('<option value="MTK">m²</option>', $rendered);
+        self::assertStringContainsString('<option value="MTQ">m³</option>', $rendered);
+        self::assertStringNotContainsString('&Acirc;', $rendered);
+    }
+
+    /**
      * @throws MathException
      */
     public function testCreateQuoteWithMultipleLines(): void
