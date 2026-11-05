@@ -62,7 +62,7 @@ class LineTax
 
     #[ORM\ManyToOne(targetEntity: Tax::class)]
     #[ORM\JoinColumn(name: 'tax_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     #[ApiProperty(readableLink: false, writableLink: false)]
     private ?Tax $tax = null;
 
@@ -76,32 +76,32 @@ class LineTax
 
     #[ORM\Column(name: 'name_snapshot', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read', 'credit_note_api:read'])]
     private ?string $nameSnapshot = null;
 
     #[ORM\Column(name: 'rate_snapshot', type: Types::DECIMAL, precision: 10, scale: 4)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read', 'credit_note_api:read'])]
     private string $rateSnapshot = '0.0000';
 
     #[ORM\Column(name: 'category_snapshot', type: Types::STRING, length: 32, enumType: TaxCategory::class, options: ['default' => TaxCategory::Standard->value])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read', 'credit_note_api:read'])]
     private TaxCategory $categorySnapshot = TaxCategory::Standard;
 
     #[ORM\Column(name: 'type_snapshot', type: Types::STRING, length: 32, enumType: TaxType::class)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read', 'credit_note_api:read'])]
     private TaxType $typeSnapshot = TaxType::Exclusive;
 
     #[ORM\Column(name: 'compound', type: Types::BOOLEAN, options: ['default' => false])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     private bool $compound = false;
 
     #[ORM\Column(name: 'sequence', type: Types::SMALLINT, options: ['default' => 0])]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'quote_api:read', 'quote_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     private int $sequence = 0;
 
     #[ORM\Column(name: 'amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'quote_api:read', 'credit_note_api:read'])]
     private BigNumber $amount;
 
     #[ORM\Column(name: 'snapshotted_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]

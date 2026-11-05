@@ -140,17 +140,17 @@ class Line implements LineInterface, Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     protected ?Ulid $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: LineName::MAX_LENGTH, options: ['default' => ''])]
     #[Assert\NotBlank]
     #[Assert\Length(max: LineName::MAX_LENGTH)]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected string $name = '';
 
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected ?string $description = null;
 
     /**
@@ -159,13 +159,13 @@ class Line implements LineInterface, Stringable
      * order you want, not by setting this on a single line.
      */
     #[ORM\Column(name: 'position', type: Types::INTEGER, options: ['default' => 0])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(writable: false)]
     protected int $position = LineInterface::UNPLACED;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -178,7 +178,7 @@ class Line implements LineInterface, Stringable
 
     #[ORM\Column(name: 'qty', type: QuantityType::NAME, precision: QuantityType::PRECISION, scale: QuantityType::SCALE)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     #[Context(
         normalizationContext: [BigIntegerNormalizer::MONETARY => false],
         denormalizationContext: [BigIntegerNormalizer::MONETARY => false],
@@ -206,11 +206,11 @@ class Line implements LineInterface, Stringable
      * @var Collection<int, LineTax>
      */
     #[ORM\OneToMany(targetEntity: LineTax::class, mappedBy: 'invoiceLine', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected Collection $taxes;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
