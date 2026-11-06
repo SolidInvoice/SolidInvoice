@@ -105,6 +105,35 @@
                     </div>
                 {% endif %}
 
+                {% if expiringQuotes is not empty %}
+                    <div class="attention-section">
+                        <div class="attention-section-header attention-section-header--warning">
+                            {{ ux_icon('tabler:calendar-x', {width: 16, height: 16}) }}
+                            <span>{{ 'dashboard.attention.expiring_quotes'|trans }}</span>
+                            {{ section.sectionBadge(expiringQuotes, expiringQuotesTotal, 'warning') }}
+                        </div>
+                        <div class="attention-items">
+                            {% for quote in expiringQuotes %}
+                                <a href="{{ path('_quotes_view', {id: quote.id}) }}" class="attention-item">
+                                    <div class="attention-item-main">
+                                        <span class="attention-item-id">#{{ quote.quoteId }}</span>
+                                        <span class="attention-item-client">{{ quote.client.name }}</span>
+                                    </div>
+                                    <div class="attention-item-meta">
+                                        <span class="attention-item-amount">
+                                            {{ money.money(quote.total, quote.currency) }}
+                                        </span>
+                                        <span class="attention-item-date text-warning">
+                                            {{ 'dashboard.attention.valid_until'|trans({'%date%': quote.due|format_date(pattern: 'MMM d')}) }}
+                                        </span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                        {{ section.truncationNotice(expiringQuotes, expiringQuotesTotal, '_quotes_index') }}
+                    </div>
+                {% endif %}
+
                 {% if pendingQuotes is not empty %}
                     <div class="attention-section">
                         <div class="attention-section-header attention-section-header--info">

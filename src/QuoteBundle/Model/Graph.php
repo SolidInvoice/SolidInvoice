@@ -30,4 +30,6 @@ final class Graph
     public const string TRANSITION_REOPEN = 'reopen';
 
     public const string TRANSITION_ARCHIVE = 'archive';
+
+    public const string TRANSITION_EXPIRE = 'expire';
 }
