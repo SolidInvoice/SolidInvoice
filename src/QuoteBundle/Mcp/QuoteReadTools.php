@@ -39,7 +39,7 @@ final readonly class QuoteReadTools
     /**
      * List quotes filtered by status, optionally scoped to a client.
      *
-     * @param string      $status    One of: new, draft, pending, accepted, cancelled, declined, archived
+     * @param string      $status    One of: new, draft, pending, accepted, cancelled, declined, archived, expired
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
