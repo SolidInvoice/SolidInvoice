@@ -81,6 +81,7 @@ final class TranslationCatalogTest extends TestCase
             'label.',
             'onboarding.company.fields.heard_about.choices.',
             'payment.gateway.',
+            'payment_means.',
             'payment_terms.',
             'quote.transition.action.',
             'quote.transition.exception.',
