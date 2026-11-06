@@ -47,6 +47,9 @@ final class SystemConfigTest extends KernelTestCase
         $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         self::assertSame([
+            'credit_note/id_generation/id_prefix' => 'CN-',
+            'credit_note/id_generation/id_suffix' => '',
+            'credit_note/id_generation/strategy' => 'auto_increment',
             'email/from_address' => 'no-reply@solidinvoice.co',
             'email/from_name' => 'SolidInvoice',
             'email/sending_options/provider' => null,

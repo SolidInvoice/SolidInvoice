@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CronBundle\SolidInvoiceCronBundle;
 use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
 use SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle;
+use SolidInvoice\EInvoiceBundle\SolidInvoiceEInvoiceBundle;
 use SolidInvoice\FormBundle\SolidInvoiceFormBundle;
 use SolidInvoice\InstallBundle\SolidInvoiceInstallBundle;
 use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
@@ -80,6 +81,7 @@ return [
     SolidInvoiceCronBundle::class => ['all' => true],
     SolidInvoiceDashboardBundle::class => ['all' => true],
     SolidInvoiceDataGridBundle::class => ['all' => true],
+    SolidInvoiceEInvoiceBundle::class => ['all' => true],
     SolidInvoiceFormBundle::class => ['all' => true],
     SolidInvoiceInstallBundle::class => ['all' => true],
     SolidInvoiceInvoiceBundle::class => ['all' => true],

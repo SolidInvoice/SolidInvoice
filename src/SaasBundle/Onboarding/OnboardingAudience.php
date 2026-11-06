@@ -47,7 +47,7 @@ enum OnboardingAudience
         $onTrial = $subscription->getStatus() === SubscriptionStatus::TRIAL && $subscription->getEndDate() > $now;
         $onFree = $subscription->getStatus() === SubscriptionStatus::ACTIVE && $subscription->getPlan()->isFree();
         $created = $user->getCreated();
-        $newUser = $created instanceof DateTimeInterface && $created > DateTimeImmutable::createFromInterface($now)->modify('-' . self::NEW_USER_DAYS . ' days');
+        $newUser = $created > DateTimeImmutable::createFromInterface($now)->modify('-' . self::NEW_USER_DAYS . ' days');
 
         return match ($this) {
             self::Trial => $onTrial,

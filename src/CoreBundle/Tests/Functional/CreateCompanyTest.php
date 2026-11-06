@@ -57,7 +57,6 @@ final class CreateCompanyTest extends WebTestCase
         self::assertInstanceOf(Company::class, $company);
         self::assertSame('NL', $company->getCountry());
         self::assertSame($user->getId()->toString(), $company->getOwner()?->getId()->toString());
-        self::assertNotNull($company->getCreated());
 
         // Read past the company filter, which is still scoped to the installer's company.
         $taxes = $this->em->getConnection()->createQueryBuilder()

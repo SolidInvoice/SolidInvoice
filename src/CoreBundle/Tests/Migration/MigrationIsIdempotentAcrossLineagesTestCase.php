@@ -145,7 +145,10 @@ abstract class MigrationIsIdempotentAcrossLineagesTestCase extends TestCase
                 $this->seedUpgradedLineage($connection);
 
                 $this->console($databaseName, ['doctrine:migrations:migrate', static::migrationClass(), '--no-interaction']);
-                $dumpSql = $this->console($databaseName, ['doctrine:schema:update', '--dump-sql']);
+                $dumpSql = SchemaDriftDump::scopedToExistingTables(
+                    $this->console($databaseName, ['doctrine:schema:update', '--dump-sql']),
+                    $connection->createSchemaManager()->listTableNames(),
+                );
 
                 foreach (static::resolvedDriftFragments() as $fragment) {
                     self::assertStringNotContainsString(
