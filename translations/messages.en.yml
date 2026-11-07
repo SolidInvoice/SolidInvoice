@@ -2334,6 +2334,9 @@ settings:
         design:
             template: 'Design template used for invoices and quotes everywhere clients see them: PDF downloads, emails and the client portal.'
         invoice:
+            attachments:
+                max_file_size: 'Largest single attachment, in MB.'
+                max_per_invoice: 'How many files one invoice may carry.'
             bcc_address: 'Send BCC copy of invoice to this address'
             email_subject: 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id'
             id_generation:

@@ -24,6 +24,8 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Storage\AttachmentStorageInterface;
+use SolidInvoice\CoreBundle\Storage\LocalAttachmentStorage;
 use SolidInvoice\CoreBundle\Subscription\NullPaidSubscriptionGate;
 use SolidInvoice\CoreBundle\Templates\BillingDocumentType;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateRegistry;
@@ -112,6 +114,13 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         PaidSubscriptionGateInterface::class,
         NullPaidSubscriptionGate::class,
     );
+
+    // Local filesystem is the only shipped attachment backend. SaasBundle can
+    // bind AttachmentStorageInterface to an object-storage implementation for
+    // AppMode::SAAS later; this binding does not assume a mode.
+    $services->set(LocalAttachmentStorage::class)
+        ->arg('$attachmentsDir', '%kernel.project_dir%/var/attachments');
+    $services->alias(AttachmentStorageInterface::class, LocalAttachmentStorage::class);
 
     // Design template slugs are discovered from the filesystem so a new
     // template directory is picked up without any code changes.
