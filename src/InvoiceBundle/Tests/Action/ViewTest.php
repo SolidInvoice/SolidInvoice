@@ -19,6 +19,7 @@ use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
@@ -134,6 +135,84 @@ final class ViewTest extends KernelTestCase
 
         $response = $twig->resolveTemplate('@SolidInvoiceInvoice/Default/view.html.twig')
             ->renderBlock('content', $params);
+
+        // The fixture invoice above states no period: confirms the summary
+        // row stays invisible for every status, not only the default one.
+        self::assertStringNotContainsString('Billing Period', (string) $response);
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithBillingPeriod(): void
+    {
+        $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $this->mockCsrfTokenManager();
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
+            new Generator('', new NullLogger()),
+            $twig,
+            self::getContainer()->get(BillingTemplateResolver::class),
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+        ]);
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => InvoiceStatus::Pending,
+                'total' => 100,
+                'balance' => 100,
+                'baseTotal' => 100,
+                'created' => CarbonImmutable::parse('2021-09-01'),
+                'lines' => [
+                    new Line()
+                        ->setDescription('Test Item')
+                        ->setPrice(100)
+                        ->setQty(1)
+                        ->updateTotal(),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'due' => CarbonImmutable::parse('2021-09-30'),
+                'invoiceDate' => CarbonImmutable::parse('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 0,
+                'period' => BillingPeriod::of(
+                    CarbonImmutable::parse('2021-08-01'),
+                    CarbonImmutable::parse('2021-08-31'),
+                ),
+            ]);
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+        ;
+
+        $params = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate('@SolidInvoiceInvoice/Default/view.html.twig')
+            ->renderBlock('content', $params);
+
+        self::assertStringContainsString('Billing Period', (string) $response);
+        self::assertStringContainsString('1–31 August 2021', (string) $response);
 
         $this->assertMatchesHtmlSnapshot($response);
     }

@@ -251,6 +251,7 @@ final class InvoiceTest extends ApiTestCase
             'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
+            'period' => ['start' => null, 'end' => null],
             'payments' => [],
             'quote' => null,
             'lines' => [
@@ -349,6 +350,7 @@ final class InvoiceTest extends ApiTestCase
             'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => Carbon::now()->format('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
+            'period' => ['start' => null, 'end' => null],
             'payments' => [],
             'quote' => null,
             'lines' => [

@@ -203,6 +203,8 @@ class InvoiceType extends AbstractType
             'empty_data' => PaymentTerms::Custom->value,
         ]);
         $builder->add('due', DateType::class, ['widget' => 'single_text', 'label' => 'billing.due_date', 'required' => false, 'input' => 'datetime_immutable']);
+        $builder->add('periodStart', DateType::class, ['widget' => 'single_text', 'label' => 'billing.period.start', 'required' => false, 'input' => 'datetime_immutable']);
+        $builder->add('periodEnd', DateType::class, ['widget' => 'single_text', 'label' => 'billing.period.end', 'required' => false, 'input' => 'datetime_immutable']);
 
         $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
             if (! $client instanceof Client || ! $client->getId() instanceof Ulid) {

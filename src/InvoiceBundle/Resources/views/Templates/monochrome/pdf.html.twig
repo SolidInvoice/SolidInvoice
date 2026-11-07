@@ -59,6 +59,13 @@
                                         {{ 'invoice.date'|trans }}
                                     </div>
                                     <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.invoiceDate|format_date('long') }}</div>
+                                    {% set period = billing_period(invoice) %}
+                                    {% if period is not empty %}
+                                        <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
+                                            {{ 'billing.period.label'|trans }}
+                                        </div>
+                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ period }}</div>
+                                    {% endif %}
                                     {% if invoice.due %}
                                         <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
                                             {{ 'billing.due_date'|trans }}

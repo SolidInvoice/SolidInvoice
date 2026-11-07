@@ -484,6 +484,13 @@
                             <span class="summary-label">{{ 'invoice.date'|trans }}</span>
                             <span class="summary-value">{{ invoice.invoiceDate|format_date('medium') }}</span>
                         </div>
+                        {% set period = billing_period(invoice) %}
+                        {% if period is not empty %}
+                            <div class="summary-item">
+                                <span class="summary-label">{{ 'billing.period.label'|trans }}</span>
+                                <span class="summary-value">{{ period }}</span>
+                            </div>
+                        {% endif %}
                         {% if invoice.due is not empty %}
                             <div class="summary-item {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'summary-item-overdue' : '' }}">
                                 <span class="summary-label">{{ 'billing.due_date'|trans }}</span>

@@ -37,6 +37,11 @@
                     <div class="p-3 rounded" style="background: #fff1e0;">
                         <div class="text-uppercase small mb-1" style="color: #94704a; letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
                         <strong>{{ invoice.invoiceDate|format_date('long') }}</strong>
+                        {% set period = billing_period(invoice) %}
+                        {% if period is not empty %}
+                            <div class="text-uppercase small mb-1 mt-2" style="color: #94704a; letter-spacing: 1px;">{{ 'billing.period.label'|trans }}</div>
+                            <strong>{{ period }}</strong>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-4 mb-2">

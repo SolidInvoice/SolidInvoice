@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\BillingPeriodMode;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
@@ -109,6 +110,12 @@ class RecurringInvoiceType extends AbstractType
             'label' => 'invoice.payment_terms.label',
             'empty_data' => PaymentTerms::Custom->value,
             'help' => 'invoice.payment_terms.recurring_help',
+        ]);
+        $builder->add('billingPeriodMode', EnumType::class, [
+            'class' => BillingPeriodMode::class,
+            'choice_label' => static fn (BillingPeriodMode $mode): string => $mode->getLabel(),
+            'label' => 'billing.period.label',
+            'empty_data' => BillingPeriodMode::None->value,
         ]);
         $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);

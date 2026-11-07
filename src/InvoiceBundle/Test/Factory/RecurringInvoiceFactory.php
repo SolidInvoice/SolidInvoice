@@ -22,6 +22,7 @@ use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
+use SolidInvoice\InvoiceBundle\Enum\BillingPeriodMode;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Zenstruck\Foundry\FactoryCollection;
@@ -100,5 +101,19 @@ final class RecurringInvoiceFactory extends PersistentObjectFactory
     public static function class(): string
     {
         return RecurringInvoice::class;
+    }
+
+    /**
+     * A monthly schedule billed in arrears: {@see BillingPeriodMode::Previous} derives the
+     * prior calendar month as the period on every invoice this template generates.
+     */
+    public function monthlyBilledInArrears(): static
+    {
+        return $this->with([
+            'billingPeriodMode' => BillingPeriodMode::Previous,
+            'recurringOptions' => new RecurringOptions()
+                ->setType(ScheduleRecurringType::MONTHLY)
+                ->setEndType(ScheduleEndType::NEVER),
+        ]);
     }
 }

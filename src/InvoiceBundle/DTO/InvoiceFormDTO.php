@@ -68,6 +68,12 @@ final class InvoiceFormDTO
     #[Assert\Type(DateTimeInterface::class)]
     public ?DateTimeInterface $due = null;
 
+    #[Assert\Type(DateTimeInterface::class)]
+    public ?DateTimeInterface $periodStart = null;
+
+    #[Assert\Type(DateTimeInterface::class)]
+    public ?DateTimeInterface $periodEnd = null;
+
     public PaymentTerms $paymentTerms = PaymentTerms::Custom;
 
     public ?Discount $discount = null;

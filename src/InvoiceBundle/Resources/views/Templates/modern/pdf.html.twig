@@ -33,6 +33,10 @@
         <td style="width: 33%; vertical-align: top; padding: 0 12px;">{{ inv.bill_to_block(invoice) }}</td>
         <td style="width: 34%; vertical-align: top;">
             {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|format_date('long')) }}
+            {% set period = billing_period(invoice) %}
+            {% if period is not empty %}
+                {{ inv.meta_pair('billing.period.label'|trans, period) }}
+            {% endif %}
             {% if invoice.due %}
                 {{ inv.meta_pair('billing.due_date'|trans, invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
             {% endif %}

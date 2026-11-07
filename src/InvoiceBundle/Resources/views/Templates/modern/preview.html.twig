@@ -30,6 +30,11 @@
                 <div class="col-md-4">
                     <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
                     <div>{{ invoice.invoiceDate|format_date('long') }}</div>
+                    {% set period = billing_period(invoice) %}
+                    {% if period is not empty %}
+                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'billing.period.label'|trans }}</div>
+                        <div>{{ period }}</div>
+                    {% endif %}
                     {% if invoice.due %}
                         <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'billing.due_date'|trans }}</div>
                         <div>{{ invoice.due|format_date('long') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>

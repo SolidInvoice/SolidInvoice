@@ -70,6 +70,7 @@ final class TranslationCatalogTest extends TestCase
      */
     private const array DYNAMIC_PREFIXES = [
         'messages' => [
+            'billing.period.mode.',
             'installation.flow.',
             'installation.telemetry.',
             'invoice.recurring.days.',
