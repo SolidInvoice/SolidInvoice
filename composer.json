@@ -30,7 +30,7 @@
         "babdev/pagerfanta-bundle": "^4.6",
         "brick/math": "^0.20",
         "defuse/php-encryption": "^2.4",
-        "doctrine/collections": "^2.6",
+        "doctrine/collections": "^3.1",
         "doctrine/common": "^3.5",
         "doctrine/dbal": "^4.4",
         "doctrine/doctrine-bundle": "^3.2",
