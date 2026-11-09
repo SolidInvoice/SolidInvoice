@@ -59,6 +59,14 @@ final class ProductTest extends ApiTestCase
         ], $result);
     }
 
+    public function testAcceptsTheLargestPriceAndQuantityTheColumnsHold(): void
+    {
+        // Strings: a JSON float carries only ~14 significant digits, so it cannot express the boundary.
+        $result = $this->requestPostRaw('{"name":"Max","price":"9999999999999.999999","quantity":"99999999999999.999999"}');
+
+        self::assertArrayHasKey('id', $result);
+    }
+
     public function testCreateWithoutTaxReturnsNullTax(): void
     {
         $result = $this->requestPost('/api/products', ['name' => 'Widget', 'price' => 10, 'quantity' => 1]);
@@ -164,6 +172,21 @@ final class ProductTest extends ApiTestCase
 
         self::assertResponseStatusCodeSame(400);
         self::assertCount(0, ProductFactory::all());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function requestPostRaw(string $json): array
+    {
+        $response = self::$client->request('POST', '/api/products', [
+            'body' => $json,
+            'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
+        ]);
+
+        self::assertResponseStatusCodeSame(201);
+
+        return $response->toArray(false);
     }
 
     /**
