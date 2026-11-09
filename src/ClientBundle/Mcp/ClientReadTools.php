@@ -153,7 +153,7 @@ final readonly class ClientReadTools
 
         $client = $this->findClient($client_id);
 
-        /** @var list<array{status: InvoiceStatus|string, cnt: int|string}> $statusRows */
+        /** @var list<array{status: InvoiceStatus|string|null, cnt: int|string}> $statusRows */
         $statusRows = $this->invoiceRepository->createQueryBuilder('i')
             ->select('i.status AS status, COUNT(i) AS cnt')
             ->andWhere('i.client = :client')
@@ -162,12 +162,20 @@ final readonly class ClientReadTools
             ->getQuery()
             ->getResult();
 
+        $countsByStatus = [];
+
+        foreach ($statusRows as $row) {
+            // A row without a (known) status has no bucket to count in.
+            $status = $row['status'] instanceof InvoiceStatus ? $row['status'] : InvoiceStatus::tryFrom((string) $row['status']);
+
+            if ($status instanceof InvoiceStatus) {
+                $countsByStatus[] = new StatusCountOutput($status, (int) $row['cnt']);
+            }
+        }
+
         return new ClientSummaryStatsOutput(
             client: $this->normalizer->client($client),
-            counts_by_status: array_map(
-                static fn (array $row): StatusCountOutput => new StatusCountOutput($row['status'] instanceof InvoiceStatus ? $row['status'] : InvoiceStatus::from($row['status']), (int) $row['cnt']),
-                $statusRows,
-            ),
+            counts_by_status: $countsByStatus,
             total_invoiced: $this->currencyTotals->invoices('total', client: $client),
             outstanding: $this->currencyTotals->invoices('balance', [InvoiceStatus::Pending, InvoiceStatus::Overdue], $client),
             total_paid: $this->currencyTotals->capturedPayments($client),

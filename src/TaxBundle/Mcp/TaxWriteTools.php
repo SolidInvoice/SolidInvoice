@@ -173,9 +173,11 @@ final readonly class TaxWriteTools
             throw new ToolCallException(sprintf('Tax rate %s not found.', $id));
         }
 
+        $taxId = $tax->getId()->toBase58();
+
         $this->entityManager->remove($tax);
         $this->entityManager->flush();
 
-        return new DeletedOutput(deleted: true, id: $id);
+        return new DeletedOutput(deleted: true, id: $taxId);
     }
 }

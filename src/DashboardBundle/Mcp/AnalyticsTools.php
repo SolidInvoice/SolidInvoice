@@ -210,7 +210,12 @@ final readonly class AnalyticsTools
         $result = [];
 
         foreach ($counts as $status => $count) {
-            $result[] = new StatusCountOutput(InvoiceStatus::from($status), $count);
+            // A row without a (known) status has no bucket to count in.
+            $invoiceStatus = InvoiceStatus::tryFrom((string) $status);
+
+            if ($invoiceStatus instanceof InvoiceStatus) {
+                $result[] = new StatusCountOutput($invoiceStatus, $count);
+            }
         }
 
         return $result;

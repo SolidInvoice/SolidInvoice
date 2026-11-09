@@ -157,7 +157,7 @@ final readonly class EntityNormalizer
             date_end: $this->date($invoice->getDateEnd()),
             schedule: new RecurringScheduleOutput(
                 type: $options->getType(),
-                days: array_map(static fn (WeekDay | int $day): int => $day instanceof WeekDay ? $day->value : $day, $options->getDays()),
+                days: array_values(array_map(static fn (WeekDay | int $day): int => $day instanceof WeekDay ? $day->value : $day, $options->getDays())),
                 end_type: $options->getEndType(),
                 end_date: $this->date($options->getEndDate()),
                 end_occurrence: $options->getEndOccurrence(),

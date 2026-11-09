@@ -20,6 +20,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Output\AmountOutput;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function ksort;
 
@@ -34,6 +35,7 @@ final readonly class CurrencyTotals
         private InvoiceRepository $invoiceRepository,
         private PaymentRepository $paymentRepository,
         private EntityNormalizer $normalizer,
+        private SystemConfig $config,
     ) {
     }
 
@@ -90,11 +92,13 @@ final readonly class CurrencyTotals
         $sums = [];
 
         foreach ($rows as $row) {
-            if ($row['currency'] === null || $row['currency'] === '' || $row['amount'] === null) {
+            if ($row['amount'] === null) {
                 continue;
             }
 
-            $sums[$row['currency']] = ($sums[$row['currency']] ?? BigInteger::zero())->plus(BigInteger::of($row['amount']));
+            // A record with no currency of its own or via its client uses the system default, as everywhere else.
+            $currency = $row['currency'] === null || $row['currency'] === '' ? $this->config->getCurrency()->getCode() : $row['currency'];
+            $sums[$currency] = ($sums[$currency] ?? BigInteger::zero())->plus(BigInteger::of($row['amount']));
         }
 
         ksort($sums);

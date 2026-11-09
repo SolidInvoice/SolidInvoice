@@ -120,10 +120,13 @@ final readonly class ClientWriteTools
     {
         $this->scopeGuard->require(McpScope::Write);
 
-        $this->entityManager->remove($this->findClient($id, 'id'));
+        $client = $this->findClient($id, 'id');
+        $clientId = $client->getId()?->toBase58() ?? $id;
+
+        $this->entityManager->remove($client);
         $this->entityManager->flush();
 
-        return new DeletedOutput(deleted: true, id: $id);
+        return new DeletedOutput(deleted: true, id: $clientId);
     }
 
     /**
@@ -209,12 +212,13 @@ final readonly class ClientWriteTools
         $this->scopeGuard->require(McpScope::Write);
 
         $contact = $this->findContact($id);
+        $contactId = $contact->getId()?->toBase58() ?? $id;
         $contact->getClient()?->removeContact($contact);
 
         $this->entityManager->remove($contact);
         $this->entityManager->flush();
 
-        return new DeletedOutput(deleted: true, id: $id);
+        return new DeletedOutput(deleted: true, id: $contactId);
     }
 
     /**
