@@ -60,7 +60,7 @@ final readonly class ClientWriteTools
      * @param string|null $website       Website URL (optional)
      * @param string|null $status        One of: active, inactive, archived (default active)
      */
-    #[McpTool(name: 'create_client', title: 'Create client', description: 'Create a new client (name, currency, website, status).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
+    #[McpTool(name: 'create_client', title: 'Create client', description: 'Create a new client (name, currency, website, status).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
     #[McpOutput(ClientOutput::class)]
     public function createClient(string $name, ?string $currency_code = null, ?string $website = null, ?string $status = null): ClientOutput
