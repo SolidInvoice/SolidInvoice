@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\PHPStan\data;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 
@@ -24,6 +25,16 @@ function ulid(Ulid $ulid): string
 function uuid(Uuid $uuid): string
 {
     return $uuid->toRfc4122();
+}
+
+function nullsafe(?Ulid $ulid): ?string
+{
+    return $ulid?->toRfc4122();
+}
+
+function nullsafeChain(Client $client): ?string
+{
+    return $client->getId()?->toRfc4122();
 }
 
 function base58(Ulid $ulid): string

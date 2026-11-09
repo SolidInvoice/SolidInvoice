@@ -35,10 +35,9 @@ final class OAuthClientRepository extends EntityRepository implements ClientRepo
 
     public function getClientEntity(string $clientIdentifier): ?ClientEntityInterface
     {
-        // Ulid::fromString() accepts both the Crockford base32 form (26 chars)
-        // and the RFC 4122 UUID form (36 chars) that OAuthClient::getIdentifier()
-        // emits for the client_id. Ulid::isValid() only covers the former, so
-        // use fromString() with a try/catch to accept both.
+        // OAuthClient::getIdentifier() emits the client_id as base58. Ulid::fromString()
+        // accepts that and the base32 / RFC 4122 forms, but Ulid::isValid() only covers
+        // base32, so use fromString() with a try/catch.
         try {
             $ulid = Ulid::fromString($clientIdentifier);
         } catch (InvalidArgumentException) {

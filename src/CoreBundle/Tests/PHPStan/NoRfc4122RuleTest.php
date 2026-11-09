@@ -32,8 +32,10 @@ final class NoRfc4122RuleTest extends RuleTestCase
         $message = 'Use toBase58() instead of toRfc4122(): IDs are always base58 (AGENTS.md §9).';
 
         $this->analyse([__DIR__ . '/data/rfc4122.php'], [
-            [$message, 21],
-            [$message, 26],
+            [$message, 22],
+            [$message, 27],
+            [$message, 32],
+            [$message, 37],
         ]);
     }
 }
