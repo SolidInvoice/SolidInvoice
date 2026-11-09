@@ -24,9 +24,9 @@ Every token is bound to exactly one company. You cannot reach another company's 
 - `list_workflow_transitions` (`mcp:read`): the status changes currently allowed on an invoice, quote or recurring invoice.
 - `create_*`, `update_*`, `delete_*` (`mcp:write`): clients, contacts and tax rates.
 
-IDs are returned in base58; any ULID form is accepted as input. Money is a decimal string in the document's currency, such as `"12.50"`.
+IDs are returned in base58; any ULID form is accepted as input. Money is a decimal string in the document's currency, at that currency's precision (`"12.50"` USD, `"1500"` JPY, `"1.234"` BHD). JSON numbers are rejected for money inputs. Totals that can span currencies come back as a list of `{currency, amount}`. Lists return `{results, page, items_per_page, total}`.
 
-Call `tools/list` after connecting for the full input schemas.
+`tools/list` is visible without signing in; calling a tool needs a token. It also gives the full input schemas and each tool's read-only/destructive/open-world hints.
 
 ## Other machine-readable resources
 

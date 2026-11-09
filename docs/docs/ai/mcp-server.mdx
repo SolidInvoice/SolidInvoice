@@ -147,48 +147,65 @@ You can connect the same agent to multiple companies by registering it more than
 
 ## Available tools
 
-The server exposes a single, consistent toolset across every agent. Tools requiring `mcp:write` will only succeed if you granted write access at consent time.
+The server exposes a single, consistent toolset across every agent. Anyone can see the tool list without signing in, which lets an agent show you what it can do before you connect. Calling a tool needs OAuth, and tools that change data only succeed if you granted `mcp:write` at consent time. The same list is published in the server card at `/.well-known/mcp/server-card.json`.
+
+Every tool carries a title and hints that tell the agent how careful to be: whether it is read-only, whether it is destructive (it deletes or irreversibly changes something), whether repeating it is safe, and whether it reaches outside SolidInvoice. Tools that send email are marked as reaching outside SolidInvoice, so your agent can ask you before using them.
+
+### How values look
+
+- **IDs** are short base58 strings in every response. When you give an agent an ID, any ULID form is accepted.
+- **Money** is a decimal string in the document's own currency, at that currency's precision: `"1050.00"` for USD, `"1500"` for JPY, `"1.234"` for BHD. Plain JSON numbers are rejected for money inputs. Line prices and discounts may be negative to express credits; payment amounts must be positive.
+- **Totals that can span currencies** (outstanding, overdue, client summaries) are returned per currency as a list of `{currency, amount}` entries.
+- **Lists** return `{results, page, items_per_page, total}`.
 
 ### Read tools (`mcp:read`)
 
-| Tool                           | What it does                                                                                  |
-|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `list_resource`                | List records of any resource (invoice, quote, client, contact, payment, tax, recurring invoice) with filters and pagination. |
-| `get_resource`                 | Fetch a single record by ID.                                                                  |
-| `list_invoices_by_status`      | List invoices filtered by status (draft, pending, paid, overdue, etc.).                       |
-| `list_overdue_invoices`        | List overdue invoices, optionally for a specific client.                                      |
-| `list_quotes_by_status`        | List quotes filtered by status.                                                               |
-| `list_recurring_invoices`      | List recurring invoices, optionally filtered by status and/or client.                         |
-| `list_payment_methods`         | List configured payment methods for the active company.                                       |
-| `list_tax_rates`               | List tax rates configured for the active company.                                             |
-| `list_workflow_transitions`    | List workflow transitions currently enabled on a record.                                      |
-| `get_company_info`             | Return id, name, and default currency for the active company.                                 |
-| `get_client_summary`           | Totals invoiced, outstanding balance, total paid, and counts for a client.                    |
-| `get_dashboard_stats`          | Outstanding/overdue totals per currency, invoice counts by status, client count.              |
-| `get_invoice_status_distribution` | Count of invoices grouped by status.                                                       |
-| `get_revenue_by_period`        | Revenue from captured payments between two dates, grouped by day/week/month.                  |
-| `get_total_outstanding`        | Total outstanding invoiced amounts per currency, optionally filtered by client.               |
-| `get_total_overdue`            | Total overdue invoiced amounts per currency, optionally filtered by client.                   |
+| Tool                              | What it does                                                                                  |
+|-----------------------------------|-----------------------------------------------------------------------------------------------|
+| `list_clients` / `get_client`     | List clients with pagination, or fetch one by ID.                                             |
+| `list_contacts` / `get_contact`   | List client contacts (optionally for one client), or fetch one by ID.                         |
+| `list_client_tax_identifiers`     | List the tax identifiers (VAT, GSTIN, TIN, and so on) configured for a client.                |
+| `get_client_summary`              | Totals invoiced, outstanding balance, and total paid for a client, per currency.              |
+| `list_invoices` / `get_invoice`   | List invoices, optionally filtered by status (for example `overdue`) and client, or fetch one with its lines, taxes, and totals. |
+| `list_quotes` / `get_quote`       | List quotes, optionally filtered by status and client, or fetch one with its lines, taxes, and totals. |
+| `list_recurring_invoices` / `get_recurring_invoice` | List recurring invoices (optionally by status and client), or fetch one with its schedule, lines, and totals. |
+| `list_payments` / `get_payment`   | List payments (optionally for an invoice and/or client), or fetch one by ID.                  |
+| `list_payment_methods` / `get_payment_method` | List configured payment methods, or fetch one by ID.                              |
+| `list_tax_rates` / `get_tax_rate` | List tax rates, or fetch one by ID.                                                           |
+| `list_workflow_transitions`       | List the workflow transitions currently available on an invoice, quote, or recurring invoice. |
+| `get_company_info`                | Return id, name, and default currency for the active company.                                 |
+| `get_dashboard_stats`             | Outstanding and overdue totals per currency, invoice counts by status, and client count.      |
+| `get_invoice_status_distribution` | Count of invoices grouped by status.                                                          |
+| `get_revenue_by_period`           | Revenue from captured payments between two dates, grouped by day, week, or month.             |
+| `get_total_outstanding`           | Total outstanding amounts per currency, optionally for one client.                           |
+| `get_total_overdue`               | Total overdue amounts per currency, optionally for one client.                                |
 
 ### Write tools (`mcp:write`)
 
 | Tool                           | What it does                                                                                  |
 |--------------------------------|-----------------------------------------------------------------------------------------------|
-| `create_resource`              | Create a flat resource — `client`, `contact`, or `tax`.                                       |
-| `update_resource`              | Update scalar fields on an existing client, contact, or tax.                                  |
-| `delete_resource`              | Delete a client, contact, or tax.                                                             |
+| `create_client`                | Create a client (name, currency, website, status).                                            |
+| `update_client`                | Update a client. Pass only the fields you want to change.                                     |
+| `delete_client`                | Delete a client. Destructive.                                                                 |
+| `create_contact`               | Add a contact (email and name) to an existing client.                                         |
+| `update_contact`               | Update a contact. Pass only the fields you want to change.                                    |
+| `delete_contact`               | Delete a contact. Destructive.                                                                |
+| `add_client_tax_identifier`    | Add a tax identifier (VAT, GSTIN, TIN, ABN, CNPJ, TRN, or Other) to a client.                 |
+| `remove_client_tax_identifier` | Remove a tax identifier from a client. Destructive.                                           |
+| `create_tax_rate`              | Create a tax rate (name, rate, type, category, compound flag).                                |
+| `update_tax_rate`              | Update a tax rate. Pass only the fields you want to change.                                   |
+| `delete_tax_rate`              | Delete a tax rate. Destructive.                                                               |
 | `create_invoice`               | Create an invoice for a client with line items, optional discount, due date, and contacts.    |
 | `create_quote`                 | Create a quote for a client with line items, optional discount, due date, and contacts.       |
 | `create_recurring_invoice`     | Create a recurring invoice on a daily, weekly, monthly, or yearly cadence.                    |
-| `clone_invoice`                | Clone an existing invoice into a new draft with the same line items.                          |
-| `clone_quote`                  | Clone an existing quote into a new draft with the same line items.                            |
+| `clone_invoice`                | Clone an invoice into a new draft with the same line items.                                   |
+| `clone_quote`                  | Clone a quote into a new draft with the same line items.                                      |
 | `convert_quote_to_invoice`     | Convert a quote into a new invoice, copying client, line items, and totals.                   |
 | `apply_invoice_transition`     | Apply a workflow transition (`accept`, `cancel`, `overdue`, `pay`, `reopen`, `archive`) to an invoice. |
 | `apply_quote_transition`       | Apply a workflow transition (`send`, `accept`, `decline`, `cancel`, `reopen`, `archive`) to a quote. |
 | `apply_recurring_transition`   | Apply a workflow transition to a recurring invoice.                                           |
-| `record_payment`               | Record an offline payment (cash by default, or another offline method) against an invoice. The invoice is marked paid once settled, and an overpayment becomes client credit. |
-| `add_contact`                  | Add a contact (email + optional name) to an existing client.                                  |
-| `send_invoice_reminder`        | Email a manual reminder for an invoice to its contacts.                                       |
+| `record_payment`               | Record an offline payment against an invoice. The amount must be positive. The invoice is marked paid once settled, and an overpayment becomes client credit. |
+| `send_invoice_reminder`        | Email a manual reminder for an invoice to its contacts. Reaches outside SolidInvoice.         |
 
 :::note
 The agent always operates as the user who consented, on the company chosen at consent time. Any `company`/`company_id` an agent tries to pass in a write call is ignored — the active company is enforced server-side.
