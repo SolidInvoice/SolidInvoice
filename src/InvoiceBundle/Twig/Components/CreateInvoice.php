@@ -34,6 +34,8 @@ use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\MoneyBundle\Calculator;
+use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\ProductBundle\Twig\Components\AddsProductLines;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
@@ -63,6 +65,7 @@ final class CreateInvoice extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use AddsProductLines;
     use ReordersLines;
 
     public InvoiceFormDTO $dto;
@@ -80,6 +83,7 @@ final class CreateInvoice extends AbstractController
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
         private readonly TaxRepository $taxRepository,
+        private readonly ProductRepository $productRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly MailerInterface $mailer,

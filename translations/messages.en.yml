@@ -1741,6 +1741,11 @@ product:
         price: Price
         quantity: Quantity
         tax: Tax
+    picker:
+        manage: 'Manage products'
+        no_results: 'No products found'
+        placeholder: '+ Add Product…'
+        upgrade: '+ Add Product'
     title: Products
 profile:
     api:

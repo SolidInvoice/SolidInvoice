@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
 use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType;
@@ -37,8 +38,11 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 final class QuoteTypeTest extends FormTestCase
 {
@@ -171,7 +175,7 @@ final class QuoteTypeTest extends FormTestCase
         );
 
         return [
-            new PreloadedExtension([$type, $itemType, new DiscountType($systemConfig), $customFieldsType], [
+            new PreloadedExtension([$type, $itemType, new DiscountType($systemConfig), $customFieldsType, new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class)), new ProductAutocompleteType($featureGate, $this->createStub(TranslatorInterface::class))], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
                 ],

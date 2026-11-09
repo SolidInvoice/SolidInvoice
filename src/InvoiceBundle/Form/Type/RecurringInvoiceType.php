@@ -26,6 +26,7 @@ use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
@@ -85,6 +86,15 @@ class RecurringInvoiceType extends AbstractType
                 ],
             ]
         );
+
+        if ($this->featureGate->isEnabled(Feature::Products->value)) {
+            // Not part of the document: choosing a product adds a line (see AddsProductLines), then clears itself.
+            $builder->add('addProduct', ProductAutocompleteType::class, [
+                'mapped' => false,
+                'label' => false,
+                'attr' => ['data-action' => 'change->live#action', 'data-live-action-param' => 'addProductLine'],
+            ]);
+        }
 
         $builder->add(
             'invoiceTaxes',

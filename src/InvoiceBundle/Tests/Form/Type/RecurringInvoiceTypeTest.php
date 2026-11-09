@@ -34,10 +34,17 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceLineType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
+use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 final class RecurringInvoiceTypeTest extends FormTestCase
 {
@@ -172,7 +179,13 @@ final class RecurringInvoiceTypeTest extends FormTestCase
                 new RecurringInvoiceLineType($this->registry),
                 new DiscountType($systemConfig),
                 $customFieldsType,
-            ], []),
+                new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class)),
+                new ProductAutocompleteType($featureGate, $this->createStub(TranslatorInterface::class)),
+            ], [
+                ChoiceType::class => [
+                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
+                ],
+            ]),
         ];
     }
 }
