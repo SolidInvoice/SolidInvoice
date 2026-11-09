@@ -146,6 +146,13 @@ final class ProductToolsTest extends KernelTestCase
         } catch (ToolCallException) {
         }
 
+        // A parse failure must not leave the already-set name on the managed entity either.
+        try {
+            $write->updateProduct($id, name: 'Changed', price: '1/3');
+            self::fail('Expected ToolCallException.');
+        } catch (ToolCallException) {
+        }
+
         $product = self::getContainer()->get(ProductRepository::class)->find(Ulid::fromString($id));
         self::assertSame('Widget', $product->getName());
         self::assertSame('5', (string) $product->getPrice());

@@ -108,24 +108,28 @@ final readonly class ProductWriteTools
 
         $product = $this->find($product_id);
 
+        $newPrice = $price === null ? null : $this->number($price, 'price');
+        $newQuantity = $quantity === null ? null : $this->number($quantity, 'quantity');
+        $newTax = $tax_id === null ? null : $this->tax($tax_id);
+
         if ($name !== null) {
             $product->setName($name);
         }
 
-        if ($price !== null) {
-            $product->setPrice($this->number($price, 'price'));
+        if ($newPrice instanceof BigNumber) {
+            $product->setPrice($newPrice);
         }
 
         if ($description !== null) {
             $product->setDescription($description);
         }
 
-        if ($quantity !== null) {
-            $product->setQuantity($this->number($quantity, 'quantity'));
+        if ($newQuantity instanceof BigNumber) {
+            $product->setQuantity($newQuantity);
         }
 
-        if ($tax_id !== null) {
-            $product->setTax($this->tax($tax_id));
+        if ($newTax instanceof Tax) {
+            $product->setTax($newTax);
         }
 
         try {

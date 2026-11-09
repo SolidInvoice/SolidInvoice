@@ -1245,8 +1245,8 @@ mcp:
         revoke_hint: 'You can revoke this app at any time from your'
         revoke_hint_link: 'connected apps'
         scope:
-            read: 'Read your invoices, quotes, clients, payments, taxes and analytics'
-            write: 'Create and modify invoices, quotes, clients, payments and taxes'
+            read: 'Read your invoices, quotes, clients, payments, taxes, products and analytics'
+            write: 'Create and modify invoices, quotes, clients, payments, taxes and products'
         title: 'Authorize application'
     error:
         title: 'Authorization error'
