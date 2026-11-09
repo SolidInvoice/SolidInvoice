@@ -32,7 +32,7 @@ final readonly class TaxReadTools
     /**
      * List tax rates configured for the current company.
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_tax_rates', description: 'List tax rates configured for the current company.')]
     #[McpScopeRequired(McpScope::Read)]

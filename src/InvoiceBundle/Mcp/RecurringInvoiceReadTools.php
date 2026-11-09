@@ -43,7 +43,7 @@ final readonly class RecurringInvoiceReadTools
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_recurring_invoices', description: 'List recurring invoices, optionally filtered by status and/or client.')]
     #[McpScopeRequired(McpScope::Read)]

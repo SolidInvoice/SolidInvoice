@@ -88,8 +88,8 @@ final readonly class PaymentWriteTools
         }
 
         return [
-            ...$this->normalizer->normalize($payment),
-            'credit_added' => (string) $payment->getCreditAdded(),
+            ...get_object_vars($this->normalizer->payment($payment)),
+            'credit_added' => $this->normalizer->money($payment->getCreditAdded(), $payment->getAmount()->getCurrency()->getCode()),
         ];
     }
 }

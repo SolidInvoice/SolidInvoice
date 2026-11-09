@@ -78,15 +78,14 @@ final class MultiTaxLineTest extends KernelTestCase
             ],
         );
 
-        self::assertArrayHasKey('lines', $result);
-        self::assertCount(1, $result['lines']);
-        self::assertCount(2, $result['lines'][0]['taxes']);
+        self::assertCount(1, $result->lines);
+        self::assertCount(2, $result->lines[0]->taxes);
 
-        $taxNames = array_column($result['lines'][0]['taxes'], 'name');
+        $taxNames = array_column($result->lines[0]->taxes, 'name');
         self::assertSame(['CGST', 'SGST'], $taxNames);
-        self::assertSame([0, 1], array_column($result['lines'][0]['taxes'], 'sequence'));
+        self::assertSame([0, 1], array_column($result->lines[0]->taxes, 'sequence'));
 
-        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Invoice::class, $invoice);
         self::assertCount(2, $invoice->getLines()->first()->getTaxes());
     }
@@ -133,16 +132,15 @@ final class MultiTaxLineTest extends KernelTestCase
             ],
         );
 
-        self::assertArrayHasKey('lines', $result);
-        self::assertCount(1, $result['lines']);
-        $taxes = $result['lines'][0]['taxes'];
+        self::assertCount(1, $result->lines);
+        $taxes = $result->lines[0]->taxes;
         self::assertCount(2, $taxes);
-        self::assertSame('GST', $taxes[0]['name']);
-        self::assertSame('QST', $taxes[1]['name']);
-        self::assertFalse($taxes[0]['compound']);
-        self::assertTrue($taxes[1]['compound']);
+        self::assertSame('GST', $taxes[0]->name);
+        self::assertSame('QST', $taxes[1]->name);
+        self::assertFalse($taxes[0]->compound);
+        self::assertTrue($taxes[1]->compound);
 
-        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString($result['id']));
+        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Quote::class, $quote);
         $line = $quote->getLines()
             ->first();
@@ -179,8 +177,8 @@ final class MultiTaxLineTest extends KernelTestCase
             ],
         );
 
-        self::assertCount(1, $result['lines'][0]['taxes']);
-        self::assertSame('VAT', $result['lines'][0]['taxes'][0]['name']);
+        self::assertCount(1, $result->lines[0]->taxes);
+        self::assertSame('VAT', $result->lines[0]->taxes[0]->name);
     }
 
     public function testRejectsMissingTaxId(): void

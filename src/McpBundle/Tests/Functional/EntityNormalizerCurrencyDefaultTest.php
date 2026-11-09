@@ -20,6 +20,10 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -56,9 +60,10 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         self::assertInstanceOf(Ulid::class, $invoiceId);
 
         $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toBase58());
+        self::assertInstanceOf(InvoiceOutput::class, $result);
 
-        self::assertSame('USD', $result['currency']);
-        self::assertSame('USD', $result['client']['currency']);
+        self::assertSame('USD', $result->currency);
+        self::assertSame('USD', $result->client?->currency);
     }
 
     public function testQuoteWithNoFrozenCurrencyAndNullClientCurrencyReportsSystemDefault(): void
@@ -75,8 +80,9 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         self::assertInstanceOf(Ulid::class, $quoteId);
 
         $result = $this->getResourceTool()->getResource('quote', $quoteId->toBase58());
+        self::assertInstanceOf(QuoteOutput::class, $result);
 
-        self::assertSame('USD', $result['currency']);
+        self::assertSame('USD', $result->currency);
     }
 
     public function testRecurringInvoiceWithNullClientCurrencyReportsSystemDefault(): void
@@ -93,8 +99,9 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         self::assertInstanceOf(Ulid::class, $recurringInvoiceId);
 
         $result = $this->getResourceTool()->getResource('recurring_invoice', $recurringInvoiceId->toBase58());
+        self::assertInstanceOf(RecurringInvoiceOutput::class, $result);
 
-        self::assertSame('USD', $result['currency']);
+        self::assertSame('USD', $result->currency);
     }
 
     public function testClientWithNullCurrencyReportsSystemDefault(): void
@@ -107,8 +114,9 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         self::assertInstanceOf(Ulid::class, $clientId);
 
         $result = $this->getResourceTool()->getResource('client', $clientId->toBase58());
+        self::assertInstanceOf(ClientOutput::class, $result);
 
-        self::assertSame('USD', $result['currency']);
+        self::assertSame('USD', $result->currency);
     }
 
     /**
@@ -130,8 +138,9 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         self::assertInstanceOf(Ulid::class, $invoiceId);
 
         $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toBase58());
+        self::assertInstanceOf(InvoiceOutput::class, $result);
 
-        self::assertSame('USD', $result['currency']);
+        self::assertSame('USD', $result->currency);
     }
 
     private function getResourceTool(): ResourceQueryTools

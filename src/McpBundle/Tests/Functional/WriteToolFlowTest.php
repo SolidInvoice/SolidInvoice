@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -71,12 +72,12 @@ final class WriteToolFlowTest extends KernelTestCase
             'currency_code' => 'USD',
         ]);
 
-        self::assertSame('Acme Corp', $result['name']);
-        self::assertSame('USD', $result['currency']);
-        self::assertArrayHasKey('id', $result);
+        self::assertInstanceOf(ClientOutput::class, $result);
+        self::assertSame('Acme Corp', $result->name);
+        self::assertSame('USD', $result->currency);
 
         // Round-trip via direct Doctrine read to verify company binding.
-        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
+        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Client::class, $client);
         self::assertSame($this->company->getId()->toBase58(), $client->getCompany()->getId()->toBase58());
     }
@@ -97,8 +98,9 @@ final class WriteToolFlowTest extends KernelTestCase
             'company' => $forgedCompanyId,
             'company_id' => $forgedCompanyId,
         ]);
+        self::assertInstanceOf(ClientOutput::class, $result);
 
-        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
+        $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Client::class, $client);
         self::assertSame(
             $this->company->getId()->toBase58(),
@@ -132,7 +134,8 @@ final class WriteToolFlowTest extends KernelTestCase
 
         $result = $tool->updateResource('client', $client->getId()->toBase58(), ['name' => 'After']);
 
-        self::assertSame('After', $result['name']);
+        self::assertInstanceOf(ClientOutput::class, $result);
+        self::assertSame('After', $result->name);
     }
 
     public function testAddContactAttachesToClient(): void
@@ -151,11 +154,11 @@ final class WriteToolFlowTest extends KernelTestCase
             'Doe',
         );
 
-        self::assertSame('new@example.com', $result['email']);
-        self::assertSame('Jane', $result['first_name']);
-        self::assertSame('Doe', $result['last_name']);
+        self::assertSame('new@example.com', $result->email);
+        self::assertSame('Jane', $result->first_name);
+        self::assertSame('Doe', $result->last_name);
 
-        $contact = self::getContainer()->get('doctrine')->getRepository(Contact::class)->find(Ulid::fromString($result['id']));
+        $contact = self::getContainer()->get('doctrine')->getRepository(Contact::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Contact::class, $contact);
         self::assertSame($client->getId()->toBase58(), $contact->getClient()?->getId()?->toBase58());
     }
@@ -243,12 +246,12 @@ final class WriteToolFlowTest extends KernelTestCase
 
         self::assertSame(InvoiceStatus::Pending, $invoice->getStatus());
         self::assertTrue(BigDecimal::of(99999)->isEqualTo($invoice->getBalance()));
-        self::assertSame('0', $result['credit_added']);
+        self::assertSame('0.00', $result['credit_added']);
 
         $result = $tool->recordPayment($invoice->getId()->toBase58(), 100999, 'USD');
 
         self::assertSame(InvoiceStatus::Paid, $invoice->getStatus());
-        self::assertSame('1000', $result['credit_added']);
+        self::assertSame('10.00', $result['credit_added']);
     }
 
     public function testRecordPaymentRejectsADraftInvoice(): void

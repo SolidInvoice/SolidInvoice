@@ -27,6 +27,8 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
@@ -78,8 +80,6 @@ final readonly class QuoteWriteTools
      * @param string|null                     $quote_id       Explicit quote number (generated if omitted)
      * @param list<array<string, mixed>>      $invoice_taxes  Invoice-level taxes (withholding/surcharge/informational):
      *                                                        [{tax_id, direction: Additive|Deductive|Informational, sequence?, note?}].
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'create_quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
     #[McpScopeRequired(McpScope::Write)]
@@ -94,7 +94,7 @@ final readonly class QuoteWriteTools
         array $contact_ids = [],
         ?string $quote_id = null,
         array $invoice_taxes = [],
-    ): array {
+    ): QuoteOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
@@ -169,7 +169,7 @@ final readonly class QuoteWriteTools
             $this->entityManager->flush();
         }
 
-        return $this->normalizer->normalize($quote);
+        return $this->normalizer->quote($quote);
     }
 
     /**
@@ -177,12 +177,10 @@ final readonly class QuoteWriteTools
      *
      * @param string $quote_id   Quote ULID
      * @param string $transition One of: send, accept, decline, cancel, reopen, archive
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'apply_quote_transition', description: 'Apply a workflow transition (send, accept, decline, cancel, reopen, archive) to a quote.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function applyQuoteTransition(string $quote_id, string $transition): array
+    public function applyQuoteTransition(string $quote_id, string $transition): QuoteOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -203,19 +201,17 @@ final readonly class QuoteWriteTools
         $this->quoteWorkflow->apply($quote, $transition);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($quote);
+        return $this->normalizer->quote($quote);
     }
 
     /**
      * Clone an existing quote into a new draft.
      *
      * @param string $quote_id Quote ULID
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'clone_quote', description: 'Clone an existing quote into a new draft with the same line items.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function cloneQuote(string $quote_id): array
+    public function cloneQuote(string $quote_id): QuoteOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -233,19 +229,17 @@ final readonly class QuoteWriteTools
         $this->entityManager->persist($cloned);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($cloned);
+        return $this->normalizer->quote($cloned);
     }
 
     /**
      * Convert an accepted quote into a new invoice.
      *
      * @param string $quote_id Quote ULID
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'convert_quote_to_invoice', description: 'Convert a quote into a new invoice, copying client, line items, and totals.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function convertQuoteToInvoice(string $quote_id): array
+    public function convertQuoteToInvoice(string $quote_id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -269,6 +263,6 @@ final readonly class QuoteWriteTools
         $invoice = $this->invoiceManager->createFromQuote($quote);
         $invoice = $this->invoiceManager->create($invoice);
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->invoice($invoice);
     }
 }

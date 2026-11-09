@@ -35,6 +35,8 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
@@ -97,8 +99,6 @@ final readonly class InvoiceWriteTools
      *                                                        end_of_next_month or custom. Any value but custom sets the due date from the invoice date.
      *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
      *                                                        `due` can only be combined with custom.
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'create_invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
     #[McpScopeRequired(McpScope::Write)]
@@ -115,7 +115,7 @@ final readonly class InvoiceWriteTools
         ?string $invoice_id = null,
         array $invoice_taxes = [],
         ?string $payment_terms = null,
-    ): array {
+    ): InvoiceOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         if ($due !== null && $payment_terms !== null && $payment_terms !== PaymentTerms::Custom->value) {
@@ -188,7 +188,7 @@ final readonly class InvoiceWriteTools
 
         $invoice = $this->invoiceManager->create($invoice);
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->invoice($invoice);
     }
 
     private function parseDate(?string $value, DateTimeImmutable $default): DateTimeImmutable
@@ -209,12 +209,10 @@ final readonly class InvoiceWriteTools
      *
      * @param string $invoice_id Invoice ULID
      * @param string $transition One of: accept, cancel, overdue, pay, reopen, archive
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'apply_invoice_transition', description: 'Apply a workflow transition (accept, cancel, overdue, pay, reopen, archive) to an invoice.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function applyInvoiceTransition(string $invoice_id, string $transition): array
+    public function applyInvoiceTransition(string $invoice_id, string $transition): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -235,7 +233,7 @@ final readonly class InvoiceWriteTools
         $this->invoiceWorkflow->apply($invoice, $transition);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->invoice($invoice);
     }
 
     /**
@@ -243,12 +241,10 @@ final readonly class InvoiceWriteTools
      *
      * @param string $recurring_id Recurring invoice ULID
      * @param string $transition   One of: activate, pause, resume, complete, cancel, archive
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'apply_recurring_transition', description: 'Apply a workflow transition to a recurring invoice.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function applyRecurringTransition(string $recurring_id, string $transition): array
+    public function applyRecurringTransition(string $recurring_id, string $transition): RecurringInvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -269,19 +265,17 @@ final readonly class InvoiceWriteTools
         $this->recurringInvoiceWorkflow->apply($recurring, $transition);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($recurring);
+        return $this->normalizer->recurringInvoice($recurring);
     }
 
     /**
      * Clone an existing invoice into a new draft.
      *
      * @param string $invoice_id Invoice ULID
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'clone_invoice', description: 'Clone an existing invoice into a new draft with the same line items.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function cloneInvoice(string $invoice_id): array
+    public function cloneInvoice(string $invoice_id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -302,7 +296,7 @@ final readonly class InvoiceWriteTools
             $this->entityManager->flush();
         }
 
-        return $this->normalizer->normalize($cloned);
+        return $this->normalizer->invoice($cloned);
     }
 
     /**

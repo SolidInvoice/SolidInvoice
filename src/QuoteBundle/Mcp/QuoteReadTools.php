@@ -43,7 +43,7 @@ final readonly class QuoteReadTools
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_quotes_by_status', description: 'List quotes filtered by status.')]
     #[McpScopeRequired(McpScope::Read)]

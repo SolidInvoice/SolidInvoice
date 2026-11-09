@@ -32,7 +32,7 @@ final readonly class PaymentMethodReadTools
     /**
      * List payment methods configured for the current company.
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_payment_methods', description: 'List configured payment methods for the current company.')]
     #[McpScopeRequired(McpScope::Read)]

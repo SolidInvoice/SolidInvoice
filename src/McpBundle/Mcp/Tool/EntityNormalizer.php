@@ -13,16 +13,35 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Tool;
 
-use BackedEnum;
+use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
+use Carbon\WeekDay;
 use DateTimeInterface;
 use Mcp\Exception\ToolCallException;
-use Money\Money;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\MoneyCurrencyNormalizer;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientSummaryOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ContactOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\DiscountOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceTaxOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\LineOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\LineTaxOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\PaymentMethodOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\PaymentOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ProductOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringScheduleOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxIdentifierOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxOutput;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\ProductBundle\Entity\Product;
@@ -31,17 +50,23 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Entity\TaxIdentifier;
+use function array_map;
+use function array_values;
+use function sprintf;
 
 /**
- * Normalises business entities to plain arrays suitable for MCP tool results.
- * Kept intentionally narrow — only fields that AI agents legitimately need.
+ * Builds the typed MCP output DTO for a business entity. Kept intentionally narrow: only fields
+ * that AI agents legitimately need. Money is a decimal string in the document's currency, at
+ * that currency's own scale.
  */
-final class EntityNormalizer
+final readonly class EntityNormalizer
 {
-    /**
-     * @return array<string, mixed>
-     */
-    public function normalize(object $entity): array
+    public function __construct(
+        private BigIntegerNormalizer $moneyNormalizer = new BigIntegerNormalizer(),
+    ) {
+    }
+
+    public function normalize(object $entity): object
     {
         return match (true) {
             $entity instanceof Invoice => $this->invoice($entity),
@@ -55,7 +80,7 @@ final class EntityNormalizer
             $entity instanceof Product => $this->product($entity),
             $entity instanceof TaxIdentifier => $this->taxIdentifier($entity),
             default => throw new ToolCallException(sprintf(
-                'Unsupported entity type "%s". Add a dedicated serializer before exposing it via MCP.',
+                'Unsupported entity type "%s". Add a dedicated output DTO before exposing it via MCP.',
                 $entity::class,
             )),
         };
@@ -64,7 +89,7 @@ final class EntityNormalizer
     /**
      * @param iterable<object> $entities
      *
-     * @return list<array<string, mixed>>
+     * @return list<object>
      */
     public function normalizeMany(iterable $entities): array
     {
@@ -77,130 +102,228 @@ final class EntityNormalizer
         return $result;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function invoice(Invoice $invoice): array
+    public function invoice(Invoice $invoice): InvoiceOutput
     {
         $discount = $invoice->getDiscount();
         $client = $invoice->getClient();
         $currency = $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode();
 
-        return [
-            'id' => $invoice->getId()?->toBase58(),
-            'invoice_number' => $invoice->getInvoiceId(),
-            'status' => $invoice->getStatus()?->value,
-            'client' => $this->clientSummary($client),
-            'currency' => $currency,
-            'total' => $this->bigNumber($invoice->getTotal()),
-            'base_total' => $this->bigNumber($invoice->getBaseTotal()),
-            'balance' => $this->bigNumber($invoice->getBalance()),
-            'tax' => $this->bigNumber($invoice->getTax()),
-            'withholding_amount' => $this->bigNumber($invoice->getWithholdingAmount()),
-            'amount_payable' => $this->bigNumber($invoice->getPayableAmount()),
-            'discount' => [
-                'type' => $discount->getType(),
-                'value_money' => $this->bigNumber($discount->getValueMoney()),
-                'value_percentage' => $discount->getValuePercentage(),
-            ],
-            'invoice_date' => $this->date($invoice->getInvoiceDate()),
-            'due' => $this->date($invoice->getDue()),
-            'payment_terms' => $invoice->getPaymentTerms()->value,
-            'paid_date' => $this->date($invoice->getPaidDate()),
-            'created' => $this->date($invoice->getCreated()),
-            'terms' => $invoice->getTerms(),
-            'notes' => $invoice->getNotes(),
-            'lines' => $this->lines($invoice->getLines()->toArray()),
-            'invoice_taxes' => $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray()),
-        ];
+        return new InvoiceOutput(
+            id: $invoice->getId()?->toBase58(),
+            invoice_number: $invoice->getInvoiceId(),
+            status: $invoice->getStatus(),
+            client: $this->clientSummary($client),
+            currency: $currency,
+            total: $this->money($invoice->getTotal(), $currency),
+            base_total: $this->money($invoice->getBaseTotal(), $currency),
+            balance: $this->money($invoice->getBalance(), $currency),
+            tax: $this->money($invoice->getTax(), $currency),
+            withholding_amount: $this->money($invoice->getWithholdingAmount(), $currency),
+            amount_payable: $this->money($invoice->getPayableAmount(), $currency),
+            discount: new DiscountOutput(
+                type: $discount->getType(),
+                value_money: $this->money($discount->getValueMoney(), $currency),
+                value_percentage: $discount->getValuePercentage(),
+            ),
+            invoice_date: $invoice->getInvoiceDate()->format(DateTimeInterface::ATOM),
+            due: $this->date($invoice->getDue()),
+            payment_terms: $invoice->getPaymentTerms(),
+            paid_date: $this->date($invoice->getPaidDate()),
+            created: $this->date($invoice->getCreated()),
+            terms: $invoice->getTerms(),
+            notes: $invoice->getNotes(),
+            lines: $this->lines($invoice->getLines()->toArray(), $currency),
+            invoice_taxes: $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray(), $currency),
+        );
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function recurringInvoice(RecurringInvoice $invoice): array
+    public function recurringInvoice(RecurringInvoice $invoice): RecurringInvoiceOutput
     {
         $options = $invoice->getRecurringOptions();
         $client = $invoice->getClient();
+        $currency = $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode();
 
-        return [
-            'id' => $invoice->getId()?->toBase58(),
-            'status' => $invoice->getStatus()?->value,
-            'client' => $this->clientSummary($client),
-            'currency' => $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode(),
-            'total' => $this->bigNumber($invoice->getTotal()),
-            'base_total' => $this->bigNumber($invoice->getBaseTotal()),
-            'tax' => $this->bigNumber($invoice->getTax()),
-            'withholding_amount' => $this->bigNumber($invoice->getWithholdingAmount()),
-            'amount_payable' => $this->bigNumber($invoice->getPayableAmount()),
-            'date_start' => $this->date($invoice->getDateStart()),
-            'date_end' => $this->date($invoice->getDateEnd()),
-            'schedule' => [
-                'type' => $options->getType()->value,
-                'days' => $options->getDays(),
-                'end_type' => $options->getEndType()->value,
-                'end_date' => $this->date($options->getEndDate()),
-                'end_occurrence' => $options->getEndOccurrence(),
-            ],
-            'generated_invoice_count' => $invoice->getInvoices()->count(),
-            'payment_terms' => $invoice->getPaymentTerms()->value,
-            'terms' => $invoice->getTerms(),
-            'notes' => $invoice->getNotes(),
-            'created' => $this->date($invoice->getCreated()),
-            'lines' => $this->lines($invoice->getLines()->toArray()),
-            'invoice_taxes' => $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray()),
-        ];
+        return new RecurringInvoiceOutput(
+            id: $invoice->getId()?->toBase58(),
+            status: $invoice->getStatus(),
+            client: $this->clientSummary($client),
+            currency: $currency,
+            total: $this->money($invoice->getTotal(), $currency),
+            base_total: $this->money($invoice->getBaseTotal(), $currency),
+            tax: $this->money($invoice->getTax(), $currency),
+            withholding_amount: $this->money($invoice->getWithholdingAmount(), $currency),
+            amount_payable: $this->money($invoice->getPayableAmount(), $currency),
+            date_start: $this->date($invoice->getDateStart()),
+            date_end: $this->date($invoice->getDateEnd()),
+            schedule: new RecurringScheduleOutput(
+                type: $options->getType(),
+                days: array_map(static fn (WeekDay | int $day): int => $day instanceof WeekDay ? $day->value : $day, $options->getDays()),
+                end_type: $options->getEndType(),
+                end_date: $this->date($options->getEndDate()),
+                end_occurrence: $options->getEndOccurrence(),
+            ),
+            generated_invoice_count: $invoice->getInvoices()->count(),
+            payment_terms: $invoice->getPaymentTerms(),
+            terms: $invoice->getTerms(),
+            notes: $invoice->getNotes(),
+            created: $this->date($invoice->getCreated()),
+            lines: $this->lines($invoice->getLines()->toArray(), $currency),
+            invoice_taxes: $this->invoiceTaxes($invoice->getInvoiceTaxes()->toArray(), $currency),
+        );
+    }
+
+    public function quote(Quote $quote): QuoteOutput
+    {
+        $client = $quote->getClient();
+        $currency = $quote->getCurrencyCode() ?? $client?->getCurrency()->getCode();
+
+        return new QuoteOutput(
+            id: $quote->getId()?->toBase58(),
+            quote_number: $quote->getQuoteId(),
+            status: $quote->getStatus(),
+            client: $this->clientSummary($client),
+            currency: $currency,
+            total: $this->money($quote->getTotal(), $currency),
+            base_total: $this->money($quote->getBaseTotal(), $currency),
+            tax: $this->money($quote->getTax(), $currency),
+            withholding_amount: $this->money($quote->getWithholdingAmount(), $currency),
+            amount_payable: $this->money($quote->getPayableAmount(), $currency),
+            due: $this->date($quote->getDue()),
+            created: $this->date($quote->getCreated()),
+            terms: $quote->getTerms(),
+            notes: $quote->getNotes(),
+            lines: $this->lines($quote->getLines()->toArray(), $currency),
+            invoice_taxes: $this->invoiceTaxes($quote->getInvoiceTaxes()->toArray(), $currency),
+        );
+    }
+
+    public function client(Client $client): ClientOutput
+    {
+        return new ClientOutput(
+            id: $client->getId()?->toBase58(),
+            name: $client->getName(),
+            status: $client->getStatus(),
+            website: $client->getWebsite(),
+            currency: $client->getCurrency()->getCode(),
+            tax_identifiers: array_values(array_map(
+                $this->taxIdentifier(...),
+                $client->getTaxIdentifiers()->toArray(),
+            )),
+            created: $this->date($client->getCreated()),
+        );
+    }
+
+    public function taxIdentifier(TaxIdentifier $taxIdentifier): TaxIdentifierOutput
+    {
+        return new TaxIdentifierOutput(
+            id: $taxIdentifier->getId()?->toBase58(),
+            label: $taxIdentifier->getLabel(),
+            value: $taxIdentifier->getValue(),
+            primary: $taxIdentifier->isPrimary(),
+        );
+    }
+
+    public function contact(Contact $contact): ContactOutput
+    {
+        return new ContactOutput(
+            id: $contact->getId()?->toBase58(),
+            first_name: $contact->getFirstName(),
+            last_name: $contact->getLastName(),
+            email: $contact->getEmail(),
+            client: $this->clientSummary($contact->getClient()),
+        );
+    }
+
+    public function payment(Payment $payment): PaymentOutput
+    {
+        $amount = $payment->getAmount();
+        $currency = $amount->getCurrency()->getCode();
+
+        return new PaymentOutput(
+            id: $payment->getId()?->toBase58(),
+            status: $payment->getStatus(),
+            method: $payment->getMethod()?->getName(),
+            amount: $this->money(BigInteger::of($amount->getAmount()), $currency),
+            currency: $currency,
+            invoice_id: $payment->getInvoice()?->getId()?->toBase58(),
+            client_id: $payment->getClient()?->getId()?->toBase58(),
+            created: $this->date($payment->getCreated()),
+            completed: $this->date($payment->getCompleted()),
+        );
+    }
+
+    public function paymentMethod(PaymentMethod $method): PaymentMethodOutput
+    {
+        return new PaymentMethodOutput(
+            id: $method->getId()?->toBase58(),
+            name: $method->getName(),
+            gateway_name: $method->getGatewayName(),
+            enabled: $method->isEnabled(),
+        );
+    }
+
+    public function product(Product $product): ProductOutput
+    {
+        $tax = $product->getTax();
+
+        return new ProductOutput(
+            id: $product->getId()?->toBase58(),
+            name: $product->getName(),
+            description: $product->getDescription(),
+            price: (string) $product->getPrice()->stripTrailingZeros(),
+            quantity: (string) $product->getQuantity()->stripTrailingZeros(),
+            tax: $tax instanceof Tax ? $this->tax($tax) : null,
+            created: $this->date($product->getCreated()),
+            updated: $this->date($product->getUpdated()),
+        );
+    }
+
+    public function tax(Tax $tax): TaxOutput
+    {
+        return new TaxOutput(
+            id: $tax->getId()->toBase58(),
+            name: $tax->getName(),
+            rate: $tax->getRate(),
+            type: $tax->getType(),
+            category: $tax->getCategory(),
+            compound: $tax->isCompound(),
+        );
     }
 
     /**
-     * @return array<string, mixed>
+     * A stored minor-unit amount as a decimal string in $currency, at its own scale. The same
+     * conversion the REST API applies to decimal money.
      */
-    private function quote(Quote $quote): array
+    public function money(BigNumber $amount, ?string $currency): string
     {
-        $client = $quote->getClient();
-
-        return [
-            'id' => $quote->getId()?->toBase58(),
-            'quote_number' => $quote->getQuoteId(),
-            'status' => $quote->getStatus()?->value,
-            'client' => $this->clientSummary($client),
-            'currency' => $quote->getCurrencyCode() ?? $client?->getCurrency()->getCode(),
-            'total' => $this->bigNumber($quote->getTotal()),
-            'base_total' => $this->bigNumber($quote->getBaseTotal()),
-            'tax' => $this->bigNumber($quote->getTax()),
-            'withholding_amount' => $this->bigNumber($quote->getWithholdingAmount()),
-            'amount_payable' => $this->bigNumber($quote->getPayableAmount()),
-            'due' => $this->date($quote->getDue()),
-            'created' => $this->date($quote->getCreated()),
-            'terms' => $quote->getTerms(),
-            'notes' => $quote->getNotes(),
-            'lines' => $this->lines($quote->getLines()->toArray()),
-            'invoice_taxes' => $this->invoiceTaxes($quote->getInvoiceTaxes()->toArray()),
-        ];
+        return (string) $this->moneyNormalizer->normalize($amount, null, [
+            ApiVersion::DECIMAL_MONEY => true,
+            MoneyCurrencyNormalizer::CURRENCY => $currency,
+        ]);
     }
 
     /**
      * @param list<LineInterface> $lines
      *
-     * @return list<array<string, mixed>>
+     * @return list<LineOutput>
      */
-    private function lines(array $lines): array
+    private function lines(array $lines, ?string $currency): array
     {
         $result = [];
 
         foreach ($lines as $line) {
-            $result[] = [
-                'id' => $line->getId()->toBase58(),
-                'name' => $line->getName(),
-                'description' => $line->getDescription(),
-                'price' => $this->bigNumber($line->getPrice()),
-                'qty' => $this->bigNumber($line->getQty()),
-                'total' => $this->bigNumber($line->getTotal()),
-                'taxes' => array_values(array_map(
-                    $this->lineTax(...),
+            $result[] = new LineOutput(
+                id: $line->getId()->toBase58(),
+                name: $line->getName(),
+                description: $line->getDescription(),
+                price: $this->money($line->getPrice(), $currency),
+                qty: (string) $line->getQty(),
+                total: $this->money($line->getTotal(), $currency),
+                taxes: array_values(array_map(
+                    fn (LineTax $lineTax): LineTaxOutput => $this->lineTax($lineTax, $currency),
                     $line->getTaxes()->toArray(),
                 )),
-            ];
+            );
         }
 
         return $result;
@@ -209,195 +332,55 @@ final class EntityNormalizer
     /**
      * @param list<InvoiceTax> $invoiceTaxes
      *
-     * @return list<array<string, mixed>>
+     * @return list<InvoiceTaxOutput>
      */
-    private function invoiceTaxes(array $invoiceTaxes): array
+    private function invoiceTaxes(array $invoiceTaxes, ?string $currency): array
     {
         $rows = [];
 
         foreach ($invoiceTaxes as $invoiceTax) {
-            $rows[] = [
-                'id' => $invoiceTax->getId()?->toBase58(),
-                'tax_id' => $invoiceTax->getTax()?->getId()?->toBase58(),
-                'name' => $invoiceTax->getNameSnapshot(),
-                'rate' => $invoiceTax->getRateSnapshot(),
-                'category' => $invoiceTax->getCategorySnapshot()->value,
-                'direction' => $invoiceTax->getDirection()->value,
-                'sequence' => $invoiceTax->getSequence(),
-                'amount' => $this->bigNumber($invoiceTax->getAmount()),
-                'note' => $invoiceTax->getNote(),
-            ];
+            $rows[] = new InvoiceTaxOutput(
+                id: $invoiceTax->getId()?->toBase58(),
+                tax_id: $invoiceTax->getTax()?->getId()->toBase58(),
+                name: $invoiceTax->getNameSnapshot(),
+                rate: $invoiceTax->getRateSnapshot(),
+                category: $invoiceTax->getCategorySnapshot(),
+                direction: $invoiceTax->getDirection(),
+                sequence: $invoiceTax->getSequence(),
+                amount: $this->money($invoiceTax->getAmount(), $currency),
+                note: $invoiceTax->getNote(),
+            );
         }
 
         return $rows;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function lineTax(LineTax $lineTax): array
+    private function lineTax(LineTax $lineTax, ?string $currency): LineTaxOutput
     {
-        return [
-            'id' => $lineTax->getId()?->toBase58(),
-            'tax_id' => $lineTax->getTax()?->getId()?->toBase58(),
-            'name' => $lineTax->getNameSnapshot(),
-            'rate' => $lineTax->getRateSnapshot(),
-            'type' => $lineTax->getTypeSnapshot()->value,
-            'category' => $lineTax->getCategorySnapshot()->value,
-            'compound' => $lineTax->isCompound(),
-            'sequence' => $lineTax->getSequence(),
-            'amount' => $this->bigNumber($lineTax->getAmount()),
-        ];
+        return new LineTaxOutput(
+            id: $lineTax->getId()?->toBase58(),
+            tax_id: $lineTax->getTax()?->getId()->toBase58(),
+            name: $lineTax->getNameSnapshot(),
+            rate: $lineTax->getRateSnapshot(),
+            type: $lineTax->getTypeSnapshot(),
+            category: $lineTax->getCategorySnapshot(),
+            compound: $lineTax->isCompound(),
+            sequence: $lineTax->getSequence(),
+            amount: $this->money($lineTax->getAmount(), $currency),
+        );
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function client(Client $client): array
-    {
-        $status = $client->getStatus();
-
-        return [
-            'id' => $client->getId()?->toBase58(),
-            'name' => $client->getName(),
-            'status' => $status instanceof BackedEnum ? $status->value : $status,
-            'website' => $client->getWebsite(),
-            'currency' => $client->getCurrency()->getCode(),
-            'tax_identifiers' => array_values(array_map(
-                $this->taxIdentifier(...),
-                $client->getTaxIdentifiers()->toArray(),
-            )),
-            'created' => $this->date($client->getCreated()),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function taxIdentifier(TaxIdentifier $taxIdentifier): array
-    {
-        return [
-            'id' => $taxIdentifier->getId()?->toBase58(),
-            'label' => $taxIdentifier->getLabel(),
-            'value' => $taxIdentifier->getValue(),
-            'primary' => $taxIdentifier->isPrimary(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>|null
-     */
-    private function clientSummary(?Client $client): ?array
+    private function clientSummary(?Client $client): ?ClientSummaryOutput
     {
         if (! $client instanceof Client) {
             return null;
         }
 
-        return [
-            'id' => $client->getId()?->toBase58(),
-            'name' => $client->getName(),
-            'currency' => $client->getCurrency()->getCode(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function contact(Contact $contact): array
-    {
-        return [
-            'id' => $contact->getId()?->toBase58(),
-            'first_name' => $contact->getFirstName(),
-            'last_name' => $contact->getLastName(),
-            'email' => $contact->getEmail(),
-            'client' => $this->clientSummary($contact->getClient()),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function payment(Payment $payment): array
-    {
-        $status = $payment->getStatus();
-
-        return [
-            'id' => $payment->getId()?->toBase58(),
-            'status' => $status instanceof BackedEnum ? $status->value : $status,
-            'method' => $payment->getMethod()?->getName(),
-            'amount' => $this->money($payment->getAmount()),
-            'invoice_id' => $payment->getInvoice()?->getId()?->toBase58(),
-            'client_id' => $payment->getClient()?->getId()?->toBase58(),
-            'created' => $this->date($payment->getCreated()),
-            'completed' => $this->date($payment->getCompleted()),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function paymentMethod(PaymentMethod $method): array
-    {
-        return [
-            'id' => $method->getId()?->toBase58(),
-            'name' => $method->getName(),
-            'gateway_name' => $method->getGatewayName(),
-            'enabled' => $method->isEnabled(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function tax(Tax $tax): array
-    {
-        return [
-            'id' => $tax->getId()->toBase58(),
-            'name' => $tax->getName(),
-            'rate' => $tax->getRate(),
-            'type' => $tax->getType(),
-            'category' => $tax->getCategory()->value,
-            'compound' => $tax->isCompound(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function product(Product $product): array
-    {
-        $tax = $product->getTax();
-
-        return [
-            'id' => $product->getId()?->toRfc4122(),
-            'name' => $product->getName(),
-            'description' => $product->getDescription(),
-            'price' => $this->bigNumber($product->getPrice()),
-            'quantity' => $this->bigNumber($product->getQuantity()),
-            'tax' => $tax instanceof Tax ? ['id' => $tax->getId()->toRfc4122(), 'name' => $tax->getName()] : null,
-            'created' => $this->date($product->getCreated()),
-            'updated' => $this->date($product->getUpdated()),
-        ];
-    }
-
-    /**
-     * @return array{amount: string, currency: string}|null
-     */
-    private function money(?Money $money): ?array
-    {
-        if (! $money instanceof Money) {
-            return null;
-        }
-
-        return [
-            'amount' => $money->getAmount(),
-            'currency' => $money->getCurrency()->getCode(),
-        ];
-    }
-
-    private function bigNumber(?BigNumber $number): ?string
-    {
-        return $number?->__toString();
+        return new ClientSummaryOutput(
+            id: $client->getId()?->toBase58(),
+            name: $client->getName(),
+            currency: $client->getCurrency()->getCode(),
+        );
     }
 
     private function date(?DateTimeInterface $date): ?string

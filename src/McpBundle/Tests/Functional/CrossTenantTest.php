@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
@@ -73,7 +74,9 @@ final class CrossTenantTest extends KernelTestCase
 
         self::assertSame(1, $result['total'], 'CompanyFilter should hide foreign-company invoices.');
         self::assertCount(1, $result['results']);
-        self::assertSame('Our Client', $result['results'][0]['client']['name']);
+        $invoice = $result['results'][0];
+        self::assertInstanceOf(InvoiceOutput::class, $invoice);
+        self::assertSame('Our Client', $invoice->client?->name);
     }
 
     public function testGetResourceReturnsNotFoundForOtherCompanyRecord(): void

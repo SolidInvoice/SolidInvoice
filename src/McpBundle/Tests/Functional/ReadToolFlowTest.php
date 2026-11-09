@@ -24,6 +24,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -70,8 +71,9 @@ final class ReadToolFlowTest extends KernelTestCase
 
         $result = $tool->getResource('invoice', $invoice->getId()->toBase58());
 
-        self::assertSame($invoice->getId()->toBase58(), $result['id']);
-        self::assertSame('pending', $result['status']);
+        self::assertInstanceOf(InvoiceOutput::class, $result);
+        self::assertSame($invoice->getId()->toBase58(), $result->id);
+        self::assertSame(InvoiceStatus::Pending, $result->status);
     }
 
     public function testListOverdueInvoicesReturnsOverdueOnly(): void
@@ -99,7 +101,9 @@ final class ReadToolFlowTest extends KernelTestCase
 
         self::assertSame(1, $result['count']);
         self::assertCount(1, $result['results']);
-        self::assertSame('overdue', $result['results'][0]['status']);
+        $overdue = $result['results'][0];
+        self::assertInstanceOf(InvoiceOutput::class, $overdue);
+        self::assertSame(InvoiceStatus::Overdue, $overdue->status);
     }
 
     public function testDashboardStatsReturnsStructuredTotals(): void

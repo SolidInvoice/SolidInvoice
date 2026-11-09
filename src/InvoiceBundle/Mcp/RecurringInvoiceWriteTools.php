@@ -31,6 +31,7 @@ use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
@@ -78,8 +79,6 @@ final readonly class RecurringInvoiceWriteTools
      * @param string|null                     $payment_terms  When each generated invoice is due: due_on_receipt, net_7, net_14, net_15, net_30, net_45,
      *                                                        net_60, net_90, end_of_month, end_of_next_month or custom (no due date).
      *                                                        Defaults to the client's terms, else the company's.
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'create_recurring_invoice', description: 'Create a new recurring invoice for a client with a scheduled cadence (daily/weekly/monthly/yearly).')]
     #[McpScopeRequired(McpScope::Write)]
@@ -96,7 +95,7 @@ final readonly class RecurringInvoiceWriteTools
         array $contact_ids = [],
         bool $activate = false,
         ?string $payment_terms = null,
-    ): array {
+    ): RecurringInvoiceOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
@@ -175,7 +174,7 @@ final readonly class RecurringInvoiceWriteTools
             $this->entityManager->flush();
         }
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->recurringInvoice($invoice);
     }
 
     /**

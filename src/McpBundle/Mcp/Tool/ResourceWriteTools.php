@@ -101,12 +101,10 @@ final readonly class ResourceWriteTools
      *
      * @param string               $resource Resource name (client, contact, tax)
      * @param array<string, mixed> $data     Field values. "company" is always ignored; the token's bound company is used.
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'create_resource', description: 'Create a new record of a safe, flat resource (client, contact, tax).')]
     #[McpScopeRequired(McpScope::Write)]
-    public function createResource(string $resource, array $data): array
+    public function createResource(string $resource, array $data): object
     {
         $this->scopeGuard->require(McpScope::Write);
         $class = $this->resolveCreatable($resource);
@@ -139,12 +137,10 @@ final readonly class ResourceWriteTools
      * @param string               $resource Resource name (client, contact, tax)
      * @param string               $id       ULID of the record
      * @param array<string, mixed> $data     Partial field values (only provided fields are changed)
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'update_resource', description: 'Update scalar fields on an existing record (client, contact, tax).')]
     #[McpScopeRequired(McpScope::Write)]
-    public function updateResource(string $resource, string $id, array $data): array
+    public function updateResource(string $resource, string $id, array $data): object
     {
         $this->scopeGuard->require(McpScope::Write);
         $class = $this->resolveUpdatable($resource);

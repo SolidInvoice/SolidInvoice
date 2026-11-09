@@ -17,6 +17,8 @@ use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
@@ -60,16 +62,15 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
             terms: 'Monthly billing',
         );
 
-        self::assertArrayHasKey('id', $result);
-        self::assertSame('250000', $result['total']);
-        self::assertSame('monthly', $result['schedule']['type']);
+        self::assertSame('2500.00', $result->total);
+        self::assertSame(ScheduleRecurringType::MONTHLY, $result->schedule->type);
         // No payment_terms passed, so the client's own terms apply.
-        self::assertSame('net_45', $result['payment_terms']);
-        self::assertSame('after', $result['schedule']['end_type']);
-        self::assertSame(12, $result['schedule']['end_occurrence']);
-        self::assertSame('2026-05-01', substr((string) $result['date_start'], 0, 10));
+        self::assertSame(PaymentTerms::Net45, $result->payment_terms);
+        self::assertSame(ScheduleEndType::AFTER, $result->schedule->end_type);
+        self::assertSame(12, $result->schedule->end_occurrence);
+        self::assertSame('2026-05-01', substr((string) $result->date_start, 0, 10));
 
-        $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString($result['id']));
+        $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(RecurringInvoice::class, $recurring);
         self::assertSame($this->company->getId()->toBase58(), $recurring->getCompany()->getId()->toBase58());
     }
@@ -91,10 +92,10 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
             schedule: ['type' => 'weekly', 'end_type' => 'never'],
         );
 
-        self::assertSame('weekly', $result['schedule']['type']);
-        self::assertSame('never', $result['schedule']['end_type']);
-        self::assertNull($result['schedule']['end_date']);
-        self::assertNull($result['schedule']['end_occurrence']);
+        self::assertSame(ScheduleRecurringType::WEEKLY, $result->schedule->type);
+        self::assertSame(ScheduleEndType::NEVER, $result->schedule->end_type);
+        self::assertNull($result->schedule->end_date);
+        self::assertNull($result->schedule->end_occurrence);
     }
 
     public function testCreateRecurringRejectsInvalidScheduleType(): void

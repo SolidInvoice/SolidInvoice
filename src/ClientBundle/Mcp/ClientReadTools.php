@@ -22,6 +22,7 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxIdentifierOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -120,7 +121,7 @@ final readonly class ClientReadTools
      *
      * @param string $client_id Client ULID
      *
-     * @return list<array<string, mixed>>
+     * @return list<TaxIdentifierOutput>
      */
     #[McpTool(name: 'list_client_tax_identifiers', description: 'List the tax identifiers (e.g. VAT, GSTIN, TIN) configured for a client.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -135,7 +136,7 @@ final readonly class ClientReadTools
         }
 
         return array_values(array_map(
-            $this->normalizer->normalize(...),
+            $this->normalizer->taxIdentifier(...),
             $client->getTaxIdentifiers()->toArray(),
         ));
     }

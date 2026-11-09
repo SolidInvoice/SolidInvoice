@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -60,14 +61,12 @@ final class InvoiceCreateTest extends KernelTestCase
             notes: 'Thanks for your business',
         );
 
-        self::assertArrayHasKey('id', $result);
-        self::assertArrayHasKey('invoice_number', $result);
-        self::assertNotEmpty($result['invoice_number']);
-        self::assertSame('105000', $result['total']);
-        self::assertSame('Net 30', $result['terms']);
-        self::assertSame('Thanks for your business', $result['notes']);
+        self::assertNotEmpty($result->invoice_number);
+        self::assertSame('1050.00', $result->total);
+        self::assertSame('Net 30', $result->terms);
+        self::assertSame('Thanks for your business', $result->notes);
 
-        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Invoice::class, $invoice);
         self::assertSame($this->company->getId()->toBase58(), $invoice->getCompany()->getId()->toBase58());
         self::assertCount(2, $invoice->getLines());
@@ -88,8 +87,8 @@ final class InvoiceCreateTest extends KernelTestCase
             payment_terms: 'net_14',
         );
 
-        self::assertSame('net_14', $result['payment_terms']);
-        self::assertStringStartsWith('2026-04-15', (string) $result['due']);
+        self::assertSame(PaymentTerms::Net14, $result->payment_terms);
+        self::assertStringStartsWith('2026-04-15', (string) $result->due);
     }
 
     public function testADueDateCannotBeCombinedWithAPresetTerm(): void
@@ -136,7 +135,7 @@ final class InvoiceCreateTest extends KernelTestCase
             [['name' => $name, 'price' => 1000, 'qty' => 1]],
         );
 
-        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Invoice::class, $invoice);
 
         $line = $invoice->getLines()
@@ -206,7 +205,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company]);
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -220,14 +219,14 @@ final class InvoiceCreateTest extends KernelTestCase
         );
 
         // 10000 - 10% = 9000
-        self::assertSame('9000', $result['total']);
+        self::assertSame('90.00', $result->total);
     }
 
     public function testCreateInvoiceWithMoneyDiscount(): void
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company]);
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
 
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
@@ -241,7 +240,7 @@ final class InvoiceCreateTest extends KernelTestCase
         );
 
         // 20000 - 5000 = 15000
-        self::assertSame('15000', $result['total']);
+        self::assertSame('150.00', $result->total);
     }
 
     public function testCreateInvoiceRejectsInvalidDiscountType(): void
@@ -289,7 +288,7 @@ final class InvoiceCreateTest extends KernelTestCase
     {
         $this->activateScopes([McpScope::Write->value]);
 
-        $client = ClientFactory::createOne(['company' => $this->company]);
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
 
         $tool = self::getContainer()->get(QuoteWriteTools::class);
         self::assertInstanceOf(QuoteWriteTools::class, $tool);
@@ -302,12 +301,11 @@ final class InvoiceCreateTest extends KernelTestCase
             notes: 'Rough estimate',
         );
 
-        self::assertArrayHasKey('id', $result);
-        self::assertArrayHasKey('quote_number', $result);
-        self::assertSame('50000', $result['total']);
-        self::assertSame('Rough estimate', $result['notes']);
+        self::assertNotEmpty($result->quote_number);
+        self::assertSame('500.00', $result->total);
+        self::assertSame('Rough estimate', $result->notes);
 
-        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString($result['id']));
+        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Quote::class, $quote);
         self::assertSame($this->company->getId()->toBase58(), $quote->getCompany()->getId()->toBase58());
         self::assertCount(1, $quote->getLines());
@@ -323,7 +321,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
 
-        self::assertSame('MCP-7', $result['invoice_number']);
+        self::assertSame('MCP-7', $result->invoice_number);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Invoice number "MCP-7" is already in use.');
@@ -341,7 +339,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
 
-        self::assertSame('MCP-Q-7', $result['quote_number']);
+        self::assertSame('MCP-Q-7', $result->quote_number);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Quote number "MCP-Q-7" is already in use.');

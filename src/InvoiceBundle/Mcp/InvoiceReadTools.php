@@ -42,7 +42,7 @@ final readonly class InvoiceReadTools
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_overdue_invoices', description: 'List overdue invoices, optionally for a specific client.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -79,7 +79,7 @@ final readonly class InvoiceReadTools
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @return array{results: list<object>, count: int}
      */
     #[McpTool(name: 'list_invoices_by_status', description: 'List invoices filtered by status.')]
     #[McpScopeRequired(McpScope::Read)]

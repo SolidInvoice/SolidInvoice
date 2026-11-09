@@ -21,6 +21,8 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ContactOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxIdentifierOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -45,12 +47,10 @@ final readonly class ClientWriteTools
      * @param string|null $first_name Contact first name
      * @param string|null $last_name  Contact last name
      * @param string      $email      Contact email (required, must be valid)
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'add_contact', description: 'Add a new contact (email + optional name) to an existing client.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function addContact(string $client_id, string $email, ?string $first_name = null, ?string $last_name = null): array
+    public function addContact(string $client_id, string $email, ?string $first_name = null, ?string $last_name = null): ContactOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -76,7 +76,7 @@ final readonly class ClientWriteTools
         $this->entityManager->persist($contact);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($contact);
+        return $this->normalizer->contact($contact);
     }
 
     /**
@@ -86,12 +86,10 @@ final readonly class ClientWriteTools
      * @param string $label     Identifier label (e.g. "VAT", "GSTIN", "TIN", "ABN", "CNPJ", "TRN", "Other")
      * @param string $value     Identifier value
      * @param bool   $primary   Whether this is the primary identifier for the client
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'add_client_tax_identifier', description: 'Add a tax identifier (VAT, GSTIN, TIN, ABN, CNPJ, TRN, Other) to a client.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function addTaxIdentifier(string $client_id, string $label, string $value, bool $primary = false): array
+    public function addTaxIdentifier(string $client_id, string $label, string $value, bool $primary = false): TaxIdentifierOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -123,7 +121,7 @@ final readonly class ClientWriteTools
         $this->entityManager->persist($identifier);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($identifier);
+        return $this->normalizer->taxIdentifier($identifier);
     }
 
     /**

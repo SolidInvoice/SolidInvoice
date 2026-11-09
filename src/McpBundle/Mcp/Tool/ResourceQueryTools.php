@@ -50,7 +50,7 @@ final readonly class ResourceQueryTools
      * @param string|null          $order_by       Field name to sort by (e.g. "created")
      * @param string               $order          "asc" or "desc"
      *
-     * @return array{results: list<array<string, mixed>>, page: int, items_per_page: int, total: int, resource: string}
+     * @return array{results: list<object>, page: int, items_per_page: int, total: int, resource: string}
      */
     #[McpTool(name: 'list_resource', description: 'List records of a SolidInvoice resource with optional filters and pagination.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -109,12 +109,10 @@ final readonly class ResourceQueryTools
      *
      * @param string $resource Resource name (see list_resource for supported values)
      * @param string $id       ULID of the record
-     *
-     * @return array<string, mixed>
      */
     #[McpTool(name: 'get_resource', description: 'Fetch a single SolidInvoice record by ID.')]
     #[McpScopeRequired(McpScope::Read)]
-    public function getResource(string $resource, string $id): array
+    public function getResource(string $resource, string $id): object
     {
         $this->scopeGuard->require(McpScope::Read);
 
