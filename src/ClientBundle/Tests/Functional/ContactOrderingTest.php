@@ -44,7 +44,7 @@ final class ContactOrderingTest extends KernelTestCase
                 'client' => $client,
             ]);
 
-            $expected[] = $contact->getId()->toRfc4122();
+            $expected[] = $contact->getId()->toBase58();
         }
 
         // The mapping promises ascending id, not insertion order. Those coincide while ULID
@@ -60,7 +60,7 @@ final class ContactOrderingTest extends KernelTestCase
         self::assertInstanceOf(Client::class, $reloaded);
 
         $actual = array_map(
-            static fn ($contact): string => $contact->getId()->toRfc4122(),
+            static fn ($contact): string => $contact->getId()->toBase58(),
             $reloaded->getContacts()->toArray()
         );
 

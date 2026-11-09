@@ -333,7 +333,7 @@ final readonly class InvoiceWriteTools
 
             $this->logger->info('Manual reminder sent via MCP', [
                 'invoice_id' => $invoice->getInvoiceId(),
-                'company_id' => $invoice->getCompany()->getId()->toRfc4122(),
+                'company_id' => $invoice->getCompany()->getId()->toBase58(),
             ]);
         } catch (TransportExceptionInterface $exception) {
             // Don't surface transport-level detail (SMTP host, auth failures,
@@ -349,7 +349,7 @@ final readonly class InvoiceWriteTools
 
         return [
             'sent' => true,
-            'invoice_id' => $invoice->getId()?->toRfc4122() ?? $invoice_id,
+            'invoice_id' => $invoice->getId()?->toBase58() ?? $invoice_id,
         ];
     }
 }

@@ -49,7 +49,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 ['description' => 'Consulting, 10 hours', 'price' => 10000, 'qty' => 10],
                 ['description' => 'Setup fee', 'price' => 5000, 'qty' => 1],
@@ -69,7 +69,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Invoice::class, $invoice);
-        self::assertSame($this->company->getId()->toRfc4122(), $invoice->getCompany()->getId()->toRfc4122());
+        self::assertSame($this->company->getId()->toBase58(), $invoice->getCompany()->getId()->toBase58());
         self::assertCount(2, $invoice->getLines());
     }
 
@@ -82,7 +82,7 @@ final class InvoiceCreateTest extends KernelTestCase
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
         $result = $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()->toBase58(),
             [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
             invoice_date: '2026-04-01',
             payment_terms: 'net_14',
@@ -104,7 +104,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectExceptionMessageIsOrContains('payment_terms "net_30" sets the due date itself');
 
         $tool->createInvoice(
-            $client->getId()->toRfc4122(),
+            $client->getId()->toBase58(),
             [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
             due: '2030-12-31',
             payment_terms: 'net_30',
@@ -132,7 +132,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['name' => $name, 'price' => 1000, 'qty' => 1]],
         );
 
@@ -161,7 +161,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('At least one line item');
 
-        $tool->createInvoice($client->getId()->toRfc4122(), []);
+        $tool->createInvoice($client->getId()->toBase58(), []);
     }
 
     public function testCreateInvoiceRejectsBadLine(): void
@@ -178,7 +178,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['price' => 1000, 'qty' => 1]],
         );
     }
@@ -197,7 +197,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
         );
     }
@@ -213,7 +213,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Widget', 'price' => 10000, 'qty' => 1]],
             discount_type: 'percentage',
             discount_value: 10,
@@ -234,7 +234,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Service', 'price' => 20000, 'qty' => 1]],
             discount_type: 'money',
             discount_value: 5000,
@@ -258,7 +258,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
             discount_type: 'bogus',
             discount_value: 5,
@@ -279,7 +279,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
             discount_type: 'percentage',
         );
@@ -296,7 +296,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createQuote(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [['description' => 'Estimate', 'price' => 25000, 'qty' => 2]],
             due: '2026-06-01',
             notes: 'Rough estimate',
@@ -309,7 +309,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Quote::class, $quote);
-        self::assertSame($this->company->getId()->toRfc4122(), $quote->getCompany()->getId()->toRfc4122());
+        self::assertSame($this->company->getId()->toBase58(), $quote->getCompany()->getId()->toBase58());
         self::assertCount(1, $quote->getLines());
     }
 
@@ -321,14 +321,14 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
-        $result = $tool->createInvoice($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+        $result = $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
 
         self::assertSame('MCP-7', $result['invoice_number']);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Invoice number "MCP-7" is already in use.');
 
-        $tool->createInvoice($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+        $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
     }
 
     public function testASuppliedQuoteNumberIsKeptAndCannotBeReused(): void
@@ -339,14 +339,14 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool = self::getContainer()->get(QuoteWriteTools::class);
         self::assertInstanceOf(QuoteWriteTools::class, $tool);
 
-        $result = $tool->createQuote($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+        $result = $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
 
         self::assertSame('MCP-Q-7', $result['quote_number']);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Quote number "MCP-Q-7" is already in use.');
 
-        $tool->createQuote($client->getId()->toRfc4122(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+        $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
     }
 
     /**

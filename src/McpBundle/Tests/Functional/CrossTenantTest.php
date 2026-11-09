@@ -80,7 +80,7 @@ final class CrossTenantTest extends KernelTestCase
     {
         $this->seedForeignTenant();
         self::assertNotNull($this->foreign);
-        $foreignId = $this->foreign['invoice']->getId()?->toRfc4122();
+        $foreignId = $this->foreign['invoice']->getId()?->toBase58();
         self::assertNotNull($foreignId);
 
         $this->activateToken(McpScope::Read);
@@ -98,7 +98,7 @@ final class CrossTenantTest extends KernelTestCase
     {
         $this->seedForeignTenant();
         self::assertNotNull($this->foreign);
-        $foreignId = $this->foreign['invoice']->getId()?->toRfc4122();
+        $foreignId = $this->foreign['invoice']->getId()?->toBase58();
         self::assertNotNull($foreignId);
 
         $this->activateToken(McpScope::Write);
@@ -116,7 +116,7 @@ final class CrossTenantTest extends KernelTestCase
     {
         $this->seedForeignTenant();
         self::assertNotNull($this->foreign);
-        $foreignId = $this->foreign['client']->getId()?->toRfc4122();
+        $foreignId = $this->foreign['client']->getId()?->toBase58();
         self::assertNotNull($foreignId);
 
         $this->activateToken(McpScope::Write);

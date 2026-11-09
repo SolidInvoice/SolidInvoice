@@ -64,15 +64,15 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 [
                     'description' => 'Consulting',
                     'price' => 100000,
                     'qty' => 1,
                     'taxes' => [
-                        ['tax_id' => $cgst->getId()->toRfc4122(), 'sequence' => 0, 'compound' => false],
-                        ['tax_id' => $sgst->getId()->toRfc4122(), 'sequence' => 1, 'compound' => false],
+                        ['tax_id' => $cgst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
+                        ['tax_id' => $sgst->getId()->toBase58(), 'sequence' => 1, 'compound' => false],
                     ],
                 ],
             ],
@@ -119,15 +119,15 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createQuote(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 [
                     'description' => 'Service',
                     'price' => 10000,
                     'qty' => 1,
                     'taxes' => [
-                        ['tax_id' => $gst->getId()->toRfc4122(), 'sequence' => 0, 'compound' => false],
-                        ['tax_id' => $qst->getId()->toRfc4122(), 'sequence' => 1, 'compound' => true],
+                        ['tax_id' => $gst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
+                        ['tax_id' => $qst->getId()->toBase58(), 'sequence' => 1, 'compound' => true],
                     ],
                 ],
             ],
@@ -173,9 +173,9 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
-                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'tax_id' => $vat->getId()->toRfc4122()],
+                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'tax_id' => $vat->getId()->toBase58()],
             ],
         );
 
@@ -197,7 +197,7 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'taxes' => [['sequence' => 0]]],
             ],

@@ -87,7 +87,7 @@ final class EntityNormalizer
         $currency = $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode();
 
         return [
-            'id' => $invoice->getId()?->toRfc4122(),
+            'id' => $invoice->getId()?->toBase58(),
             'invoice_number' => $invoice->getInvoiceId(),
             'status' => $invoice->getStatus()?->value,
             'client' => $this->clientSummary($client),
@@ -124,7 +124,7 @@ final class EntityNormalizer
         $client = $invoice->getClient();
 
         return [
-            'id' => $invoice->getId()?->toRfc4122(),
+            'id' => $invoice->getId()?->toBase58(),
             'status' => $invoice->getStatus()?->value,
             'client' => $this->clientSummary($client),
             'currency' => $invoice->getCurrencyCode() ?? $client?->getCurrency()->getCode(),
@@ -160,7 +160,7 @@ final class EntityNormalizer
         $client = $quote->getClient();
 
         return [
-            'id' => $quote->getId()?->toRfc4122(),
+            'id' => $quote->getId()?->toBase58(),
             'quote_number' => $quote->getQuoteId(),
             'status' => $quote->getStatus()?->value,
             'client' => $this->clientSummary($client),
@@ -190,7 +190,7 @@ final class EntityNormalizer
 
         foreach ($lines as $line) {
             $result[] = [
-                'id' => $line->getId()->toRfc4122(),
+                'id' => $line->getId()->toBase58(),
                 'name' => $line->getName(),
                 'description' => $line->getDescription(),
                 'price' => $this->bigNumber($line->getPrice()),
@@ -217,8 +217,8 @@ final class EntityNormalizer
 
         foreach ($invoiceTaxes as $invoiceTax) {
             $rows[] = [
-                'id' => $invoiceTax->getId()?->toRfc4122(),
-                'tax_id' => $invoiceTax->getTax()?->getId()?->toRfc4122(),
+                'id' => $invoiceTax->getId()?->toBase58(),
+                'tax_id' => $invoiceTax->getTax()?->getId()?->toBase58(),
                 'name' => $invoiceTax->getNameSnapshot(),
                 'rate' => $invoiceTax->getRateSnapshot(),
                 'category' => $invoiceTax->getCategorySnapshot()->value,
@@ -238,8 +238,8 @@ final class EntityNormalizer
     private function lineTax(LineTax $lineTax): array
     {
         return [
-            'id' => $lineTax->getId()?->toRfc4122(),
-            'tax_id' => $lineTax->getTax()?->getId()?->toRfc4122(),
+            'id' => $lineTax->getId()?->toBase58(),
+            'tax_id' => $lineTax->getTax()?->getId()?->toBase58(),
             'name' => $lineTax->getNameSnapshot(),
             'rate' => $lineTax->getRateSnapshot(),
             'type' => $lineTax->getTypeSnapshot()->value,
@@ -258,7 +258,7 @@ final class EntityNormalizer
         $status = $client->getStatus();
 
         return [
-            'id' => $client->getId()?->toRfc4122(),
+            'id' => $client->getId()?->toBase58(),
             'name' => $client->getName(),
             'status' => $status instanceof BackedEnum ? $status->value : $status,
             'website' => $client->getWebsite(),
@@ -277,7 +277,7 @@ final class EntityNormalizer
     private function taxIdentifier(TaxIdentifier $taxIdentifier): array
     {
         return [
-            'id' => $taxIdentifier->getId()?->toRfc4122(),
+            'id' => $taxIdentifier->getId()?->toBase58(),
             'label' => $taxIdentifier->getLabel(),
             'value' => $taxIdentifier->getValue(),
             'primary' => $taxIdentifier->isPrimary(),
@@ -294,7 +294,7 @@ final class EntityNormalizer
         }
 
         return [
-            'id' => $client->getId()?->toRfc4122(),
+            'id' => $client->getId()?->toBase58(),
             'name' => $client->getName(),
             'currency' => $client->getCurrency()->getCode(),
         ];
@@ -306,7 +306,7 @@ final class EntityNormalizer
     private function contact(Contact $contact): array
     {
         return [
-            'id' => $contact->getId()?->toRfc4122(),
+            'id' => $contact->getId()?->toBase58(),
             'first_name' => $contact->getFirstName(),
             'last_name' => $contact->getLastName(),
             'email' => $contact->getEmail(),
@@ -322,12 +322,12 @@ final class EntityNormalizer
         $status = $payment->getStatus();
 
         return [
-            'id' => $payment->getId()?->toRfc4122(),
+            'id' => $payment->getId()?->toBase58(),
             'status' => $status instanceof BackedEnum ? $status->value : $status,
             'method' => $payment->getMethod()?->getName(),
             'amount' => $this->money($payment->getAmount()),
-            'invoice_id' => $payment->getInvoice()?->getId()?->toRfc4122(),
-            'client_id' => $payment->getClient()?->getId()?->toRfc4122(),
+            'invoice_id' => $payment->getInvoice()?->getId()?->toBase58(),
+            'client_id' => $payment->getClient()?->getId()?->toBase58(),
             'created' => $this->date($payment->getCreated()),
             'completed' => $this->date($payment->getCompleted()),
         ];
@@ -339,7 +339,7 @@ final class EntityNormalizer
     private function paymentMethod(PaymentMethod $method): array
     {
         return [
-            'id' => $method->getId()?->toRfc4122(),
+            'id' => $method->getId()?->toBase58(),
             'name' => $method->getName(),
             'gateway_name' => $method->getGatewayName(),
             'enabled' => $method->isEnabled(),
@@ -352,7 +352,7 @@ final class EntityNormalizer
     private function tax(Tax $tax): array
     {
         return [
-            'id' => $tax->getId()->toRfc4122(),
+            'id' => $tax->getId()->toBase58(),
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),

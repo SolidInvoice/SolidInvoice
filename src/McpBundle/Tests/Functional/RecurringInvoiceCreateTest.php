@@ -49,7 +49,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             lines: [['description' => 'Monthly retainer', 'price' => 250000, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: [
@@ -71,7 +71,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(RecurringInvoice::class, $recurring);
-        self::assertSame($this->company->getId()->toRfc4122(), $recurring->getCompany()->getId()->toRfc4122());
+        self::assertSame($this->company->getId()->toBase58(), $recurring->getCompany()->getId()->toBase58());
     }
 
     public function testCreateRecurringWithEndTypeNever(): void
@@ -85,7 +85,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             lines: [['description' => 'Weekly cleanup', 'price' => 5000, 'qty' => 1]],
             date_start: '2026-04-30',
             schedule: ['type' => 'weekly', 'end_type' => 'never'],
@@ -111,7 +111,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             lines: [['description' => 'Bad', 'price' => 1, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'hourly'],
@@ -132,7 +132,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             lines: [['description' => 'Lines', 'price' => 100, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly', 'end_type' => 'on'],
@@ -165,7 +165,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             lines: [['description' => 'x', 'price' => 1, 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly'],

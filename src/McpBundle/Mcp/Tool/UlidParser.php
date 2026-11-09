@@ -18,9 +18,9 @@ use Mcp\Exception\ToolCallException;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * Parses ULIDs from tool inputs, accepting both the canonical Crockford-base32
- * form (26 chars) and the RFC 4122 UUID form (36 chars with hyphens) that
- * {@see Ulid::toRfc4122()} emits.
+ * Parses ULIDs from tool inputs. IDs are emitted as base58 ({@see Ulid::toBase58()}),
+ * but any form {@see Ulid::fromString()} understands is accepted: base58, Crockford
+ * base32 (26 chars) and RFC 4122 (36 chars with hyphens).
  */
 final class UlidParser
 {

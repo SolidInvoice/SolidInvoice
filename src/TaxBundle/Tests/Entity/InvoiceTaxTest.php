@@ -123,10 +123,10 @@ final class InvoiceTaxTest extends KernelTestCase
 
         self::assertSame(
             $this->company->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             $invoiceTax->getCompany()
                 ->getId()
-                ->toRfc4122(),
+                ->toBase58(),
         );
     }
 
@@ -145,10 +145,10 @@ final class InvoiceTaxTest extends KernelTestCase
 
         self::assertSame(
             $this->company->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             $invoiceTax->getCompany()
                 ->getId()
-                ->toRfc4122(),
+                ->toBase58(),
         );
     }
 

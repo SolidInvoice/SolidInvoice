@@ -272,7 +272,7 @@ final readonly class AnalyticsTools
         if ($currency === null || $currency === '') {
             throw new ToolCallException(sprintf(
                 'Client %s has no currency configured.',
-                $client->getId()?->toRfc4122() ?? '',
+                $client->getId()?->toBase58() ?? '',
             ));
         }
 

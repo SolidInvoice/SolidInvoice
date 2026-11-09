@@ -50,7 +50,7 @@ final class ReadToolFlowTest extends KernelTestCase
 
         $result = $tool->getCompanyInfo();
 
-        self::assertSame($this->company->getId()->toRfc4122(), $result['id']);
+        self::assertSame($this->company->getId()->toBase58(), $result['id']);
         self::assertSame('SolidInvoice', $result['name']);
     }
 
@@ -68,9 +68,9 @@ final class ReadToolFlowTest extends KernelTestCase
         $tool = self::getContainer()->get(ResourceQueryTools::class);
         self::assertInstanceOf(ResourceQueryTools::class, $tool);
 
-        $result = $tool->getResource('invoice', $invoice->getId()->toRfc4122());
+        $result = $tool->getResource('invoice', $invoice->getId()->toBase58());
 
-        self::assertSame($invoice->getId()->toRfc4122(), $result['id']);
+        self::assertSame($invoice->getId()->toBase58(), $result['id']);
         self::assertSame('pending', $result['status']);
     }
 
@@ -152,9 +152,9 @@ final class ReadToolFlowTest extends KernelTestCase
         $tool = self::getContainer()->get(ClientReadTools::class);
         self::assertInstanceOf(ClientReadTools::class, $tool);
 
-        $summary = $tool->getClientSummary($client->getId()->toRfc4122());
+        $summary = $tool->getClientSummary($client->getId()->toBase58());
 
-        self::assertSame($client->getId()->toRfc4122(), $summary['client']['id']);
+        self::assertSame($client->getId()->toBase58(), $summary['client']['id']);
         self::assertArrayHasKey('counts_by_status', $summary);
         self::assertArrayHasKey('total_invoiced_amount', $summary);
         self::assertArrayHasKey('outstanding_amount', $summary);

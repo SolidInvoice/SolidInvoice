@@ -57,8 +57,8 @@ final class OAuthClientLookupTest extends KernelTestCase
 
         self::assertInstanceOf(OAuthClient::class, $byCrockford);
         self::assertInstanceOf(OAuthClient::class, $byRfc4122);
-        self::assertSame($client->getId()?->toRfc4122(), $byCrockford->getId()?->toRfc4122());
-        self::assertSame($client->getId()?->toRfc4122(), $byRfc4122->getId()?->toRfc4122());
+        self::assertSame($client->getId()?->toBase58(), $byCrockford->getId()?->toBase58());
+        self::assertSame($client->getId()?->toBase58(), $byRfc4122->getId()?->toBase58());
     }
 
     public function testGetClientEntityReturnsNullForGarbage(): void

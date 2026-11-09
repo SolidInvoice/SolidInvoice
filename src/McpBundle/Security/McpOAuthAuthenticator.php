@@ -102,7 +102,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator implements Authe
         $request->attributes->set(self::ATTR_ACCESS_TOKEN_ID, $jti);
         $request->attributes->set(self::ATTR_ACCESS_TOKEN, $token);
         $request->attributes->set(self::ATTR_SCOPES, \is_array($scopes) ? $scopes : []);
-        $request->attributes->set(self::ATTR_COMPANY_ID, $token->getCompany()->getId()->toRfc4122());
+        $request->attributes->set(self::ATTR_COMPANY_ID, $token->getCompany()->getId()->toBase58());
 
         return new SelfValidatingPassport(new UserBadge($userId));
     }

@@ -56,7 +56,7 @@ final readonly class SettingsReadTools
         }
 
         return [
-            'id' => $company->getId()->toRfc4122(),
+            'id' => $company->getId()->toBase58(),
             'name' => $company->getName(),
             'currency' => $company->currency,
         ];

@@ -67,14 +67,14 @@ final class SendManualReminder extends AbstractController
 
             $this->logger->info('Manual reminder sent for invoice', [
                 'invoice_id' => $invoice->getInvoiceId(),
-                'company_id' => $invoice->getCompany()->getId()->toRfc4122(),
+                'company_id' => $invoice->getCompany()->getId()->toBase58(),
             ]);
 
             return $this->createSuccessResponse($invoice);
         } catch (TransportExceptionInterface $e) {
             $this->logger->error('Failed to send manual reminder', [
                 'invoice_id' => $invoice->getInvoiceId(),
-                'company_id' => $invoice->getCompany()->getId()->toRfc4122(),
+                'company_id' => $invoice->getCompany()->getId()->toBase58(),
                 'exception' => $e->getMessage(),
             ]);
 

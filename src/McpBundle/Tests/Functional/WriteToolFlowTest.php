@@ -78,7 +78,7 @@ final class WriteToolFlowTest extends KernelTestCase
         // Round-trip via direct Doctrine read to verify company binding.
         $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Client::class, $client);
-        self::assertSame($this->company->getId()->toRfc4122(), $client->getCompany()->getId()->toRfc4122());
+        self::assertSame($this->company->getId()->toBase58(), $client->getCompany()->getId()->toBase58());
     }
 
     public function testCreateClientIgnoresCompanyIdFromInput(): void
@@ -101,8 +101,8 @@ final class WriteToolFlowTest extends KernelTestCase
         $client = self::getContainer()->get('doctrine')->getRepository(Client::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Client::class, $client);
         self::assertSame(
-            $this->company->getId()->toRfc4122(),
-            $client->getCompany()->getId()->toRfc4122(),
+            $this->company->getId()->toBase58(),
+            $client->getCompany()->getId()->toBase58(),
             'Client must be bound to the active company, not the one supplied in input.',
         );
     }
@@ -130,7 +130,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $tool = self::getContainer()->get(ResourceWriteTools::class);
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
 
-        $result = $tool->updateResource('client', $client->getId()->toRfc4122(), ['name' => 'After']);
+        $result = $tool->updateResource('client', $client->getId()->toBase58(), ['name' => 'After']);
 
         self::assertSame('After', $result['name']);
     }
@@ -145,7 +145,7 @@ final class WriteToolFlowTest extends KernelTestCase
         self::assertInstanceOf(ClientWriteTools::class, $tool);
 
         $result = $tool->addContact(
-            $client->getId()->toRfc4122(),
+            $client->getId()->toBase58(),
             'new@example.com',
             'Jane',
             'Doe',
@@ -157,7 +157,7 @@ final class WriteToolFlowTest extends KernelTestCase
 
         $contact = self::getContainer()->get('doctrine')->getRepository(Contact::class)->find(Ulid::fromString($result['id']));
         self::assertInstanceOf(Contact::class, $contact);
-        self::assertSame($client->getId()->toRfc4122(), $contact->getClient()?->getId()?->toRfc4122());
+        self::assertSame($client->getId()->toBase58(), $contact->getClient()?->getId()?->toBase58());
     }
 
     public function testAddContactRejectsInvalidEmail(): void
@@ -172,7 +172,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Invalid email');
 
-        $tool->addContact($client->getId()->toRfc4122(), 'not-an-email');
+        $tool->addContact($client->getId()->toBase58(), 'not-an-email');
     }
 
     public function testInvoiceTransitionRejectsInvalidTransition(): void
@@ -193,7 +193,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $this->expectExceptionMessageIsOrContains('not enabled');
 
         // "pay" on an already-paid invoice should be rejected.
-        $tool->applyInvoiceTransition($invoice->getId()->toRfc4122(), 'pay');
+        $tool->applyInvoiceTransition($invoice->getId()->toBase58(), 'pay');
     }
 
     public function testDeleteRemovesTheRecord(): void
@@ -201,7 +201,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $this->setActiveScopes([McpScope::Write->value]);
 
         $client = ClientFactory::createOne(['company' => $this->company]);
-        $clientId = $client->getId()->toRfc4122();
+        $clientId = $client->getId()->toBase58();
 
         $tool = self::getContainer()->get(ResourceWriteTools::class);
         self::assertInstanceOf(ResourceWriteTools::class, $tool);
@@ -239,13 +239,13 @@ final class WriteToolFlowTest extends KernelTestCase
         $tool = self::getContainer()->get(PaymentWriteTools::class);
         self::assertInstanceOf(PaymentWriteTools::class, $tool);
 
-        $result = $tool->recordPayment($invoice->getId()->toRfc4122(), 1, 'USD', method: 'bank_transfer');
+        $result = $tool->recordPayment($invoice->getId()->toBase58(), 1, 'USD', method: 'bank_transfer');
 
         self::assertSame(InvoiceStatus::Pending, $invoice->getStatus());
         self::assertTrue(BigDecimal::of(99999)->isEqualTo($invoice->getBalance()));
         self::assertSame('0', $result['credit_added']);
 
-        $result = $tool->recordPayment($invoice->getId()->toRfc4122(), 100999, 'USD');
+        $result = $tool->recordPayment($invoice->getId()->toBase58(), 100999, 'USD');
 
         self::assertSame(InvoiceStatus::Paid, $invoice->getStatus());
         self::assertSame('1000', $result['credit_added']);
@@ -267,7 +267,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('not been issued');
 
-        $tool->recordPayment($invoice->getId()->toRfc4122(), 100, 'USD');
+        $tool->recordPayment($invoice->getId()->toBase58(), 100, 'USD');
     }
 
     public function testUnpayIsNotAnInvoiceTransitionOfItsOwn(): void
@@ -286,7 +286,7 @@ final class WriteToolFlowTest extends KernelTestCase
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('not enabled');
 
-        $tool->applyInvoiceTransition($invoice->getId()->toRfc4122(), 'unpay');
+        $tool->applyInvoiceTransition($invoice->getId()->toBase58(), 'unpay');
     }
 
     /**

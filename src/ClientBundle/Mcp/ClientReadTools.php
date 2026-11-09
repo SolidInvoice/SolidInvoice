@@ -102,7 +102,7 @@ final readonly class ClientReadTools
 
         return [
             'client' => [
-                'id' => $client->getId()?->toRfc4122(),
+                'id' => $client->getId()?->toBase58(),
                 'name' => $client->getName(),
                 'status' => $clientStatus instanceof BackedEnum ? $clientStatus->value : $clientStatus,
                 'currency' => $client->getCurrencyCode(),

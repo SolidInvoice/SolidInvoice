@@ -54,7 +54,7 @@ final class InvoiceTaxRepositoryTest extends KernelTestCase
         self::assertCount(2, $results);
         foreach ($results as $invoiceTax) {
             self::assertInstanceOf(InvoiceTax::class, $invoiceTax);
-            self::assertSame($this->company->getId()->toRfc4122(), $invoiceTax->getCompany()->getId()->toRfc4122());
+            self::assertSame($this->company->getId()->toBase58(), $invoiceTax->getCompany()->getId()->toBase58());
         }
     }
 }

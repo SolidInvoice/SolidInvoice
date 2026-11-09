@@ -54,7 +54,7 @@ final class LineTaxRepositoryTest extends KernelTestCase
         self::assertCount(2, $results);
         foreach ($results as $lineTax) {
             self::assertInstanceOf(LineTax::class, $lineTax);
-            self::assertSame($this->company->getId()->toRfc4122(), $lineTax->getCompany()->getId()->toRfc4122());
+            self::assertSame($this->company->getId()->toBase58(), $lineTax->getCompany()->getId()->toBase58());
         }
     }
 }

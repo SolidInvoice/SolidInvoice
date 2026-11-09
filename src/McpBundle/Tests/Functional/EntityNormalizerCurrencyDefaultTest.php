@@ -55,7 +55,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $this->clearEntityManager();
         self::assertInstanceOf(Ulid::class, $invoiceId);
 
-        $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toRfc4122());
+        $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toBase58());
 
         self::assertSame('USD', $result['currency']);
         self::assertSame('USD', $result['client']['currency']);
@@ -74,7 +74,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $this->clearEntityManager();
         self::assertInstanceOf(Ulid::class, $quoteId);
 
-        $result = $this->getResourceTool()->getResource('quote', $quoteId->toRfc4122());
+        $result = $this->getResourceTool()->getResource('quote', $quoteId->toBase58());
 
         self::assertSame('USD', $result['currency']);
     }
@@ -92,7 +92,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $this->clearEntityManager();
         self::assertInstanceOf(Ulid::class, $recurringInvoiceId);
 
-        $result = $this->getResourceTool()->getResource('recurring_invoice', $recurringInvoiceId->toRfc4122());
+        $result = $this->getResourceTool()->getResource('recurring_invoice', $recurringInvoiceId->toBase58());
 
         self::assertSame('USD', $result['currency']);
     }
@@ -106,7 +106,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $this->clearEntityManager();
         self::assertInstanceOf(Ulid::class, $clientId);
 
-        $result = $this->getResourceTool()->getResource('client', $clientId->toRfc4122());
+        $result = $this->getResourceTool()->getResource('client', $clientId->toBase58());
 
         self::assertSame('USD', $result['currency']);
     }
@@ -129,7 +129,7 @@ final class EntityNormalizerCurrencyDefaultTest extends KernelTestCase
         $this->clearEntityManager();
         self::assertInstanceOf(Ulid::class, $invoiceId);
 
-        $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toRfc4122());
+        $result = $this->getResourceTool()->getResource('invoice', $invoiceId->toBase58());
 
         self::assertSame('USD', $result['currency']);
     }
