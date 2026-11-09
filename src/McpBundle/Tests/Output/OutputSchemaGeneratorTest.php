@@ -20,11 +20,13 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
 use SolidInvoice\McpBundle\Mcp\Output\OutputSchemaGenerator;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\EnumOutput;
+use SolidInvoice\McpBundle\Tests\Output\Fixtures\JsonSerializableOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\LineOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\MixedOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\NestedOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\ScalarOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\UndocumentedArrayOutput;
+use SolidInvoice\McpBundle\Tests\Output\Fixtures\UnitEnumOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\UntypedOutput;
 
 #[CoversClass(OutputSchemaGenerator::class)]
@@ -102,6 +104,13 @@ final class OutputSchemaGeneratorTest extends TestCase
         ], $schema);
     }
 
+    public function testListOutputEncodesGappyResultsAsArray(): void
+    {
+        $output = new ListOutput([1 => new LineOutput('a'), 3 => new LineOutput('b')], 1, 10, 2);
+
+        self::assertSame('{"results":[{"description":"a"},{"description":"b"}],"page":1,"items_per_page":10,"total":2}', json_encode($output, JSON_THROW_ON_ERROR));
+    }
+
     /**
      * @param class-string $class
      */
@@ -122,5 +131,7 @@ final class OutputSchemaGeneratorTest extends TestCase
         yield 'untyped' => [UntypedOutput::class, 'value'];
         yield 'mixed' => [MixedOutput::class, 'value'];
         yield 'array without item type' => [UndocumentedArrayOutput::class, 'values'];
+        yield 'pure enum' => [UnitEnumOutput::class, 'suit'];
+        yield 'JsonSerializable' => [JsonSerializableOutput::class, 'value'];
     }
 }

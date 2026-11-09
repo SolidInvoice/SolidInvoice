@@ -15,11 +15,15 @@ namespace SolidInvoice\McpBundle\DependencyInjection;
 
 use LogicException;
 use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionType;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
 use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Output\OutputSchemaGenerator;
 use Symfony\AI\McpBundle\DependencyInjection\LiteralArguments;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use function is_a;
 use function is_array;
 use function sprintf;
 use function str_ends_with;
@@ -52,7 +56,8 @@ final class McpOutputSchemaPass implements CompilerPassInterface
                 }
 
                 [$class, $toolMethod] = $arguments[0];
-                $attributes = new ReflectionMethod($class, $toolMethod)->getAttributes(McpOutput::class);
+                $reflection = new ReflectionMethod($class, $toolMethod);
+                $attributes = $reflection->getAttributes(McpOutput::class);
 
                 if ([] === $attributes) {
                     continue;
@@ -63,6 +68,7 @@ final class McpOutputSchemaPass implements CompilerPassInterface
                 }
 
                 $output = $attributes[0]->newInstance();
+                $this->assertReturnType($reflection, $output);
                 $schema = $output->list ? $generator->generateList($output->class) : $generator->generate($output->class);
                 $arguments[self::OUTPUT_SCHEMA_ARGUMENT] = LiteralArguments::escape($schema);
                 $calls[$index][1] = $arguments;
@@ -70,5 +76,29 @@ final class McpOutputSchemaPass implements CompilerPassInterface
 
             $definition->setMethodCalls($calls);
         }
+    }
+
+    /**
+     * The schema describes the declared class, so the method must be typed to return exactly that
+     * (a {@see ListOutput} for a list), or the tool could return something the schema rejects.
+     */
+    private function assertReturnType(ReflectionMethod $method, McpOutput $output): void
+    {
+        $expected = $output->list ? ListOutput::class : $output->class;
+        $type = $method->getReturnType();
+
+        if ($type instanceof ReflectionNamedType && ! $type->isBuiltin() && ! $type->allowsNull() && is_a($type->getName(), $expected, true)) {
+            return;
+        }
+
+        throw new LogicException(sprintf(
+            'MCP tool %s::%s() carries #[McpOutput(%s%s)] so it must declare the return type %s, but it declares %s.',
+            $method->class,
+            $method->getName(),
+            $output->class,
+            $output->list ? ', list: true' : '',
+            $expected,
+            $type instanceof ReflectionType ? (string) $type : 'none',
+        ));
     }
 }

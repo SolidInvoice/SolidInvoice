@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Mcp\Output;
 
 use BackedEnum;
+use JsonSerializable;
 use LogicException;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
@@ -183,13 +184,21 @@ final class OutputSchemaGenerator
             return ['type' => self::SCALARS[$type]];
         }
 
-        if (enum_exists($type) && is_subclass_of($type, BackedEnum::class)) {
+        if (enum_exists($type)) {
+            if (! is_subclass_of($type, BackedEnum::class)) {
+                throw $this->undescribable($property, sprintf('enum "%s" has no backing type, so it encodes as an object', $type));
+            }
+
             $backing = (string) new ReflectionEnum($type)->getBackingType();
 
             return [
                 'type' => self::SCALARS[$backing],
                 'enum' => array_map(static fn (BackedEnum $case): int | string => $case->value, $type::cases()),
             ];
+        }
+
+        if (is_subclass_of($type, JsonSerializable::class)) {
+            throw $this->undescribable($property, sprintf('"%s" implements JsonSerializable, so its properties do not describe its encoding', $type));
         }
 
         if (class_exists($type)) {

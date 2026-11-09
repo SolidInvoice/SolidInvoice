@@ -13,15 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use LogicException;
 use Mcp\Capability\Discovery\SchemaValidator;
 use Mcp\Capability\Registry;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\DependencyInjection\McpOutputSchemaPass;
 use SolidInvoice\McpBundle\Mcp\Output\CompanyInfoOutput;
 use SolidInvoice\McpBundle\Mcp\Output\OutputSchemaGenerator;
+use SolidInvoice\McpBundle\Tests\Output\Fixtures\LineOutput;
+use SolidInvoice\McpBundle\Tests\Output\Fixtures\ReturnTypeTools;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 #[CoversClass(McpOutputSchemaPass::class)]
 #[Group('functional')]
@@ -52,6 +58,47 @@ final class OutputSchemaPassTest extends KernelTestCase
     public function testUnmarkedToolHasNoOutputSchema(): void
     {
         self::assertNull($this->registry()->getTool('list_tax_rates')->tool->outputSchema);
+    }
+
+    #[DataProvider('mismatchedReturnTypes')]
+    public function testReturnTypeMustMatchDeclaredOutput(string $method): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessageIsOrContains(sprintf('%s::%s()', ReturnTypeTools::class, $method));
+
+        $this->processTool($method);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function mismatchedReturnTypes(): iterable
+    {
+        yield 'other class' => ['otherClass'];
+        yield 'nullable' => ['nullable'];
+        yield 'no return type' => ['untyped'];
+        yield 'list returning an item' => ['listReturningItem'];
+        yield 'item returning a list' => ['itemReturningList'];
+    }
+
+    public function testMatchingReturnTypesPass(): void
+    {
+        self::assertSame(new OutputSchemaGenerator()->generate(LineOutput::class), $this->processTool('matching'));
+        self::assertSame(new OutputSchemaGenerator()->generateList(LineOutput::class), $this->processTool('matchingList'));
+    }
+
+    /**
+     * Runs the pass over a builder with a single addTool() call and returns the outputSchema it set.
+     */
+    private function processTool(string $method): mixed
+    {
+        $container = new ContainerBuilder();
+        $builder = $container->register('mcp.server.test.builder', stdClass::class)
+            ->addMethodCall('addTool', [[ReturnTypeTools::class, $method], null, null, null, null, null, null, null, null]);
+
+        new McpOutputSchemaPass()->process($container);
+
+        return $builder->getMethodCalls()[0][1][8];
     }
 
     private function registry(): Registry

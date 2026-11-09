@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Mcp\Output;
 
+use function array_values;
+
 /**
  * The envelope every MCP list tool returns. Its schema comes from
  * {@see OutputSchemaGenerator::generateList()}, which must stay in step with these properties.
@@ -20,13 +22,19 @@ namespace SolidInvoice\McpBundle\Mcp\Output;
 final readonly class ListOutput
 {
     /**
-     * @param list<object> $results
+     * @var list<object>
+     */
+    public array $results;
+
+    /**
+     * @param array<object> $results re-indexed, so a gappy array (array_filter() output) still encodes as a JSON array
      */
     public function __construct(
-        public array $results,
+        array $results,
         public int $page,
         public int $items_per_page,
         public int $total,
     ) {
+        $this->results = array_values($results);
     }
 }
