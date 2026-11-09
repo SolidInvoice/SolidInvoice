@@ -272,16 +272,47 @@ final class InvoiceCreateTest extends KernelTestCase
     }
 
     /**
+     * A credit line and a negative discount are allowed, as they were before decimal input.
+     */
+    public function testNegativeLinePriceAndMoneyDiscountAreAccepted(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $result = $tool->createInvoice(
+            $client->getId()->toBase58(),
+            [
+                ['description' => 'Work', 'price' => '100.00', 'qty' => 1],
+                ['description' => 'Credit', 'price' => '-12.50', 'qty' => 1],
+            ],
+            discount_type: 'money',
+            discount_value: '-2.50',
+        );
+
+        self::assertSame('-12.50', $result->lines[1]->price);
+        self::assertSame('90.00', $result->total);
+
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
+        self::assertInstanceOf(Invoice::class, $invoice);
+        self::assertTrue($invoice->getLines()->get(1)?->getPrice()->isEqualTo(-1250));
+        self::assertTrue($invoice->getDiscount()->getValueMoney()->isEqualTo(-250));
+    }
+
+    /**
      * @return iterable<string, array{array<string, mixed>, string|null, string|null, string}>
      */
     public static function invalidMoneyInputs(): iterable
     {
         yield 'price as a JSON number' => [['description' => 'X', 'price' => 10, 'qty' => 1], null, null, 'lines[0].price must be a decimal string'];
-        yield 'price not a number' => [['description' => 'X', 'price' => 'abc', 'qty' => 1], null, null, 'lines[0].price "abc" is not a non-negative decimal'];
-        yield 'negative price' => [['description' => 'X', 'price' => '-1', 'qty' => 1], null, null, 'lines[0].price "-1" is not a non-negative decimal'];
+        yield 'price not a number' => [['description' => 'X', 'price' => 'abc', 'qty' => 1], null, null, 'lines[0].price "abc" is not a decimal amount'];
+        yield 'price with a plus sign' => [['description' => 'X', 'price' => '+1', 'qty' => 1], null, null, 'lines[0].price "+1" is not a decimal amount'];
         yield 'price too precise' => [['description' => 'X', 'price' => '1.005', 'qty' => 1], null, null, 'more decimal places than USD allows (2)'];
         yield 'money discount too precise' => [['description' => 'X', 'price' => '1', 'qty' => 1], 'money', '0.001', 'discount_value "0.001" has more decimal places'];
-        yield 'percentage discount not a number' => [['description' => 'X', 'price' => '1', 'qty' => 1], 'percentage', 'ten', 'discount_value "ten" is not a non-negative percentage'];
+        yield 'percentage discount not a number' => [['description' => 'X', 'price' => '1', 'qty' => 1], 'percentage', 'ten', 'discount_value "ten" is not a percentage'];
     }
 
     /**

@@ -85,8 +85,8 @@ final readonly class LineItemBuilder
         }
 
         if ($type === Discount::TYPE_PERCENTAGE) {
-            if (preg_match('/^\d+(\.\d+)?\z/', $value) !== 1) {
-                throw new ToolCallException(sprintf('discount_value "%s" is not a non-negative percentage such as "10".', $value));
+            if (preg_match('/^-?\d+(\.\d+)?\z/', $value) !== 1) {
+                throw new ToolCallException(sprintf('discount_value "%s" is not a percentage such as "10".', $value));
             }
 
             $discount->setType(Discount::TYPE_PERCENTAGE);
@@ -97,7 +97,7 @@ final readonly class LineItemBuilder
 
         if ($type === Discount::TYPE_MONEY) {
             $discount->setType(Discount::TYPE_MONEY);
-            $discount->setValueMoney($this->moneyInput->toMinorUnits($value, $currency, 'discount_value'));
+            $discount->setValueMoney($this->moneyInput->toMinorUnits($value, $currency, 'discount_value', signed: true));
 
             return $discount;
         }
@@ -174,7 +174,7 @@ final readonly class LineItemBuilder
                 $line->setDescription($description);
             }
 
-            $line->setPrice($this->moneyInput->toMinorUnits($price, $currency, sprintf('lines[%d].price', $index)));
+            $line->setPrice($this->moneyInput->toMinorUnits($price, $currency, sprintf('lines[%d].price', $index), signed: true));
 
             try {
                 $line->setQty(BigDecimal::of($this->toExactString($qty)));
