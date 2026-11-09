@@ -32,6 +32,8 @@ use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
+use SolidInvoice\ProductBundle\Test\Factory\ProductFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -126,6 +128,30 @@ final class CrossTenantTest extends KernelTestCase
         $this->expectExceptionMessageIsOrContains('not found');
 
         $tool->updateResource('client', $foreignId, ['name' => 'Hijacked']);
+    }
+
+    public function testGetProductReturnsNotFoundForOtherCompanyProduct(): void
+    {
+        $this->seedForeignTenant();
+        self::assertNotNull($this->foreign);
+
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        $em->getFilters()->disable('company');
+        $product = ProductFactory::createOne(['company' => $this->foreign['company']]);
+        $foreignId = $product->getId()?->toRfc4122();
+        $em->clear();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        self::assertNotNull($foreignId);
+
+        $this->activateToken(McpScope::Read);
+
+        $tool = self::getContainer()->get(ProductReadTools::class);
+        self::assertInstanceOf(ProductReadTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains('not found');
+
+        $tool->getProduct($foreignId);
     }
 
     private function seedForeignTenant(): void
