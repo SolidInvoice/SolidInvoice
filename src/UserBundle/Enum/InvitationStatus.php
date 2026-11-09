@@ -22,10 +22,7 @@ enum InvitationStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Expired => 'Expired',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

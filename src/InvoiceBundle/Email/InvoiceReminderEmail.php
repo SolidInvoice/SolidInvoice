@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Email;
 
+use SolidInvoice\CoreBundle\Contracts\ClientEmailInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
+use SolidInvoice\MailerBundle\Email\MessageSubjectParametersInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-final class InvoiceReminderEmail extends TemplatedEmail
+final class InvoiceReminderEmail extends TemplatedEmail implements ClientEmailInterface, MessageSubjectParametersInterface
 {
     public function __construct(
         private readonly Invoice $invoice,
@@ -26,13 +28,19 @@ final class InvoiceReminderEmail extends TemplatedEmail
     ) {
         parent::__construct();
 
+        $this->subject('invoice.reminder.subject.' . $this->reminderType->value);
         $this->htmlTemplate('@SolidInvoiceInvoice/Email/reminder.html.twig');
-        $this->textTemplate('@SolidInvoiceInvoice/Email/reminder.text.twig');
+        $this->textTemplate('@SolidInvoiceInvoice/Email/reminder.txt.twig');
         $this->context([
             'invoice' => $this->invoice,
             'reminder_type' => $this->reminderType->value,
             'days_until_due' => $this->daysUntilDue,
         ]);
+    }
+
+    public function getMessageSubjectParameters(): array
+    {
+        return ['%id%' => (string) $this->invoice->getInvoiceId()];
     }
 
     public function getInvoice(): Invoice

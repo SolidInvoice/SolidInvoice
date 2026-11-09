@@ -37,7 +37,7 @@ final readonly class OAuthUser
     public function getFirstName(): string
     {
         return match (true) {
-            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getFirstName(),
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getFirstName() ?? '',
             default => '',
         };
     }
@@ -50,7 +50,7 @@ final readonly class OAuthUser
     public function getLastName(): string
     {
         return match (true) {
-            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getLastName(),
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getLastName() ?? '',
             default => '',
         };
     }

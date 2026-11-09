@@ -10,13 +10,13 @@
                 </div>
                 <div class="d-flex gap-1">
                     <button type="button" class="btn btn-ghost-secondary btn-icon btn-icon-sm"
-                            title="{{ 'contact_edit'|trans }}"
+                            title="{{ 'client.contact.edit'|trans }}"
                             data-model="edit" data-value="true" data-action="live#update:prevent">
                         {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
                     </button>
                     {% if this.canDelete %}
                         <button type="button" class="btn btn-ghost-danger btn-icon btn-icon-sm"
-                                title="{{ 'contact_delete'|trans }}"
+                                title="{{ 'client.contact.delete'|trans }}"
                                 data-bs-toggle="modal" data-bs-target="#delete-contact-{{ computed.contact.id }}">
                             {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
                         </button>

@@ -30,6 +30,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
@@ -55,6 +56,31 @@ class InvoiceRepository extends EntityRepository
         private readonly ClockInterface $clock
     ) {
         parent::__construct($registry, Invoice::class);
+    }
+
+    /**
+     * Backs the UniqueEntity constraint on Invoice::$invoiceId. Archived documents keep their
+     * number, so they count; a blank number is not a number, so it never collides. The
+     * CompanyFilter scopes the lookup to the current company.
+     *
+     * @param array<string, mixed> $criteria
+     *
+     * @return list<Invoice>
+     */
+    public function findByInvoiceIdIncludingArchived(array $criteria): array
+    {
+        if (($criteria['invoiceId'] ?? '') === '') {
+            return [];
+        }
+
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        try {
+            return array_values($this->findBy($criteria));
+        } finally {
+            $filters->enable('archivable');
+        }
     }
 
     /**
@@ -133,6 +159,19 @@ class InvoiceRepository extends EntityRepository
         } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
+    }
+
+    /**
+     * Invoices the company has issued to a client, so drafts never count. The
+     * company is explicit because the onboarding email scan runs with the
+     * CompanyFilter suspended.
+     */
+    public function countIssued(Company $company): int
+    {
+        return $this->count([
+            'company' => $company,
+            'status' => [InvoiceStatus::Pending, InvoiceStatus::Paid, InvoiceStatus::Overdue],
+        ]);
     }
 
     /**

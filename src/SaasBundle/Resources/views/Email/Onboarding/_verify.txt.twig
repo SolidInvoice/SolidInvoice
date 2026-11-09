@@ -1,0 +1,6 @@
+{% if verify_url is defined %}
+{{ 'onboarding.verify.title'|trans({}, 'email') }}
+{{ 'onboarding.verify.body'|trans({'%email%': user.email}, 'email') }}
+{{ 'onboarding.verify.cta'|trans({}, 'email') }}: {{ verify_url }}
+
+{% endif %}

@@ -186,7 +186,7 @@ The server exposes a single, consistent toolset across every agent. Tools requir
 | `apply_invoice_transition`     | Apply a workflow transition (`accept`, `cancel`, `overdue`, `pay`, `reopen`, `archive`) to an invoice. |
 | `apply_quote_transition`       | Apply a workflow transition (`send`, `accept`, `decline`, `cancel`, `reopen`, `archive`) to a quote. |
 | `apply_recurring_transition`   | Apply a workflow transition to a recurring invoice.                                           |
-| `record_payment`               | Record an offline payment against an invoice; it becomes paid once the balance is settled.    |
+| `record_payment`               | Record an offline payment (cash by default, or another offline method) against an invoice. The invoice is marked paid once settled, and an overpayment becomes client credit. |
 | `add_contact`                  | Add a contact (email + optional name) to an existing client.                                  |
 | `send_invoice_reminder`        | Email a manual reminder for an invoice to its contacts.                                       |
 

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "symfony-ai-mate": {
+      "command": "./vendor/bin/mate",
+      "args": [
+        "serve",
+        "--force-keep-alive"
+      ]
+    }
+  }
+}

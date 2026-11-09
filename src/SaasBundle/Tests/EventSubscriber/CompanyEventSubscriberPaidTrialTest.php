@@ -13,17 +13,26 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
+use Carbon\CarbonImmutable;
 use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use ReflectionProperty;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\SaasBundle\EventSubscriber\CompanyEventSubscriber;
+use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
 use SolidInvoice\SaasBundle\Plan\DefaultPlanProvider;
+use SolidInvoice\SaasBundle\Plan\TrialPeriod;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
+use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Entity\Trial;
@@ -34,12 +43,16 @@ use SolidWorx\Platform\SaasBundle\Repository\SubscriptionRepositoryInterface;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * In paid-trial mode the trial belongs to the payment provider, so signup must
@@ -53,6 +66,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 #[CoversClass(CompanyEventSubscriber::class)]
 final class CompanyEventSubscriberPaidTrialTest extends TestCase
 {
+    /**
+     * @var list<string>
+     */
+    private array $dispatchedSteps = [];
+
     public function testPaidTrialModeLeavesTheSubscriptionPending(): void
     {
         [, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial());
@@ -68,6 +86,23 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/billing/subscription/welcome', $response->getTargetUrl());
+    }
+
+    public function testAJsonClientKeepsItsResponseWhileTheTrialLedgerIsStillRecorded(): void
+    {
+        $trialManager = $this->createMock(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(false);
+        $trialManager->expects($this->once())->method('createTrial')->willReturn(new Trial());
+
+        $request = new Request();
+        $request->headers->set('Accept', 'application/json');
+
+        $response = new Response('{}', Response::HTTP_CREATED);
+
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager, request: $request, response: $response);
+
+        self::assertSame($response, $event->getResponse());
+        self::assertSame(SubscriptionStatus::PENDING, $subscription->getStatus());
     }
 
     /**
@@ -104,17 +139,106 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
     }
 
     /**
+     * The welcome goes out at signup, not at the next hourly scheduler run.
+     */
+    public function testFreeTrialModeSendsTheWelcomeEmailAtSignup(): void
+    {
+        $this->dispatchSignup(BillingModeFactory::freeTrial());
+
+        self::assertSame(['first'], $this->dispatchedSteps);
+    }
+
+    /**
+     * A zero interval (`P0D`) is how prod stored "no trial" on the Free plan.
+     * It must not start a trial that is already expired at signup.
+     */
+    public function testFreeTrialModeDoesNotStartAZeroLengthTrial(): void
+    {
+        $trialManager = $this->createMock(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(false);
+        $trialManager->expects($this->never())->method('createTrial');
+
+        [, $subscription] = $this->dispatchSignup(BillingModeFactory::freeTrial(), $trialManager, 'P0D');
+
+        self::assertNotSame(SubscriptionStatus::TRIAL, $subscription->getStatus());
+        self::assertSame([], $this->dispatchedSteps);
+    }
+
+    /**
+     * A Free default activates the new company in place: no plan picker, no
+     * PENDING subscription, and no Trial row (that would use up the user's
+     * one opt-in trial).
+     */
+    public function testFreeDefaultPlanActivatesTheSubscriptionAtSignup(): void
+    {
+        $trialManager = $this->createMock(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(false);
+        $trialManager->expects($this->never())->method('createTrial');
+
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::freeTrial(), $trialManager, null, freePlan: true);
+
+        self::assertSame(SubscriptionStatus::ACTIVE, $subscription->getStatus());
+        self::assertNotInstanceOf(RedirectResponse::class, $event->getResponse());
+        self::assertSame(['first'], $this->dispatchedSteps, 'the welcome goes out at signup');
+    }
+
+    /**
+     * Users who had the old automatic trial used to be sent to the plan picker.
+     * On a Free default there is nothing to pick, so they go ACTIVE too.
+     */
+    public function testFreeDefaultPlanActivatesEvenWhenTheUserHadATrial(): void
+    {
+        $trialManager = $this->createStub(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(true);
+
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::freeTrial(), $trialManager, null, freePlan: true);
+
+        self::assertSame(SubscriptionStatus::ACTIVE, $subscription->getStatus());
+        self::assertNotInstanceOf(RedirectResponse::class, $event->getResponse());
+    }
+
+    /**
+     * Paid-trial mode sends a new company to checkout, but a Free default has
+     * nothing to check out: it would sit PENDING on a page it cannot leave.
+     */
+    public function testPaidTrialModeStillActivatesAFreeDefault(): void
+    {
+        $trialManager = $this->createMock(TrialManagerInterface::class);
+        $trialManager->method('userHasTrial')->willReturn(false);
+        $trialManager->expects($this->never())->method('createTrial');
+
+        [$event, $subscription] = $this->dispatchSignup(BillingModeFactory::paidTrial(), $trialManager, null, freePlan: true);
+
+        self::assertSame(SubscriptionStatus::ACTIVE, $subscription->getStatus());
+        self::assertNotInstanceOf(RedirectResponse::class, $event->getResponse());
+    }
+
+    public function testPaidTrialModeSendsNoEmailBeforeCheckout(): void
+    {
+        $this->dispatchSignup(BillingModeFactory::paidTrial());
+
+        self::assertSame([], $this->dispatchedSteps);
+    }
+
+    /**
      * @return array{0: ResponseEvent, 1: Subscription}
      */
     private function dispatchSignup(
         BillingMode $billingMode,
         ?TrialManagerInterface $trialManager = null,
+        ?string $trialDuration = 'P14D',
+        bool $freePlan = false,
+        Request $request = new Request(),
+        Response $response = new Response(),
     ): array {
         $plan = new Plan();
-        $plan->setName('Pro');
-        $plan->setPlanId('variant-123');
-        $plan->setPrice(1000);
-        $plan->setTrialDuration(new DateInterval('P14D'));
+        $plan->setName($freePlan ? 'Free' : 'Pro');
+        $plan->setPlanId($freePlan ? '0' : 'variant-123');
+        $plan->setPrice($freePlan ? 0 : 1000);
+
+        if ($trialDuration !== null) {
+            $plan->setTrialDuration(new DateInterval($trialDuration));
+        }
 
         $planRepository = $this->createStub(PlanRepositoryInterface::class);
         $planRepository->method('find')->willReturn($plan);
@@ -144,8 +268,22 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
             $trialManager->method('createTrial')->willReturn(new Trial());
         }
 
+        $user = new User();
+        new ReflectionProperty($user, 'id')->setValue($user, new Ulid());
+        // A user signing up was created a moment ago.
+        $user->setCreated(CarbonImmutable::now());
+
         $security = $this->createStub(Security::class);
-        $security->method('getUser')->willReturn(new User());
+        $security->method('getUser')->willReturn($user);
+
+        $messageBus = $this->createStub(MessageBusInterface::class);
+        $messageBus->method('dispatch')->willReturnCallback(
+            function (SendOnboardingEmailMessage $message): Envelope {
+                $this->dispatchedSteps[] = $message->stepKey;
+
+                return new Envelope($message);
+            },
+        );
 
         $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('wrapInTransaction')->willReturnCallback(
@@ -168,6 +306,15 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
             $entityManager,
             $urlGenerator,
             $billingMode,
+            new OnboardingDispatcher(
+                new OnboardingStepRegistry([new StepFirst()]),
+                $this->createStub(UserSettingRepositoryInterface::class),
+                $messageBus,
+                new MockClock(),
+                new NullLogger(),
+            ),
+            new NullLogger(),
+            new TrialPeriod(),
         );
 
         $company = new Company();
@@ -176,9 +323,9 @@ final class CompanyEventSubscriberPaidTrialTest extends TestCase
 
         $responseEvent = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
-            new Request(),
+            $request,
             HttpKernelInterface::MAIN_REQUEST,
-            new Response(),
+            $response,
         );
 
         $subscriber->onResponse($responseEvent);

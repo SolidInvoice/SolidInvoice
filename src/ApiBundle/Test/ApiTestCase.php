@@ -357,6 +357,26 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         self::assertEmpty($response->getContent(false));
     }
 
+    /**
+     * Asserts the read-only `created`/`updated` timestamps are RFC 3339 in UTC, then
+     * strips them so callers can keep exact-equality assertions on the rest.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected static function assertTimestampsAndRemove(array $data): array
+    {
+        foreach (['created', 'updated'] as $key) {
+            self::assertArrayHasKey($key, $data);
+            self::assertIsString($data[$key]);
+            self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$/', $data[$key]);
+            unset($data[$key]);
+        }
+
+        return $data;
+    }
+
     protected function getContextForResource(object | string $resource): string
     {
         /** @var ContextBuilderInterface $contextBuilder */

@@ -31,9 +31,9 @@
                         <div style="font-family: Georgia, serif; font-size: 18pt; color: #a2492b;">{{ 'invoice.number_prefix'|trans }} {{ quote.quoteId }}</div>
                     </td>
                     <td style="vertical-align: top; text-align: right;">
-                        {{ q.meta_pair('quote.pdf.date'|trans, quote.created|date('F j, Y')) }}
+                        {{ q.meta_pair('quote.pdf.date'|trans, quote.created|format_date('long')) }}
                         {% if quote.due %}
-                            {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
+                            {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|format_date('long')) }}
                             {{ q.validity_indicator(quote) }}
                         {% endif %}
                         {{ q.status_pair(quote.status) }}

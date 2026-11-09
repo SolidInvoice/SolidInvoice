@@ -20,7 +20,7 @@ function HomepageHeader() {
             Everything you need to bill clients{' '}
             <span className={styles.heroTitleAccent}>your way.</span>
           </Heading>
-          <p className={styles.heroSubtitle}>{siteConfig.tagline}. Run it on your own server, or use the hosted version — no per-client limits, ever.</p>
+          <p className={styles.heroSubtitle}>{siteConfig.tagline}. Run it on your own server, or use the hosted version — free to start, with paid plans from $9/month.</p>
           <div className={styles.buttons}>
             <Link className="button button--primary button--lg" to="/intro">
               Get Started →
@@ -39,7 +39,7 @@ function HomepageHeader() {
               <span className={styles.heroBadgeDot} /> Self-hostable
             </span>
             <span className={styles.heroBadge}>
-              <span className={styles.heroBadgeDot} /> Symfony 7 + PHP 8.4
+              <span className={styles.heroBadgeDot} /> Symfony 8.1 + PHP 8.4
             </span>
           </div>
         </div>

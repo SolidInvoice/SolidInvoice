@@ -1,4 +1,5 @@
 import './scss/app.scss';
+import '@tabler/core/dist/css/tabler-flags.min.css';
 import './webmcp';
 
 import { getApp, registerControllers } from '@solidworx/platform';

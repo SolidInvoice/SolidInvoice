@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Repository;
 
 use Payum\Core\Model\Identity;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -22,6 +23,8 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\SecurityToken;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use function str_repeat;
 
 #[CoversClass(CompanyRepository::class)]
 final class CompanyRepositoryTest extends KernelTestCase
@@ -76,5 +79,47 @@ final class CompanyRepositoryTest extends KernelTestCase
         $companyRepository->deleteCompany(null);
 
         self::assertNotNull($this->em->find(Company::class, $this->company->getId()));
+    }
+
+    public function testUpdateCompanyName(): void
+    {
+        /** @var CompanyRepository $companyRepository */
+        $companyRepository = $this->em->getRepository(Company::class);
+
+        $companyRepository->updateCompanyName('Acme Corp');
+
+        $this->em->clear();
+
+        self::assertSame('Acme Corp', $this->em->find(Company::class, $this->company->getId())?->getName());
+    }
+
+    #[DataProvider('invalidCompanyNames')]
+    public function testUpdateCompanyNameRejectsInvalidName(?string $name): void
+    {
+        $originalName = $this->company->getName();
+
+        /** @var CompanyRepository $companyRepository */
+        $companyRepository = $this->em->getRepository(Company::class);
+
+        try {
+            $companyRepository->updateCompanyName($name);
+            self::fail('Expected a ValidationFailedException');
+        } catch (ValidationFailedException) {
+        }
+
+        $this->em->clear();
+
+        self::assertSame($originalName, $this->em->find(Company::class, $this->company->getId())?->getName());
+    }
+
+    /**
+     * @return iterable<string, array{?string}>
+     */
+    public static function invalidCompanyNames(): iterable
+    {
+        yield 'null' => [null];
+        yield 'blank' => ['   '];
+        yield 'too short' => ['ab'];
+        yield 'too long' => [str_repeat('a', 46)];
     }
 }

@@ -1,0 +1,23 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ 'invoice.status_change.heading'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
+
+{{ 'invoice.status_change.message'|trans({}, 'email') }}
+
+{{ 'invoice.status_change.id'|trans({}, 'email') }}: {{ invoice.invoiceId ?? invoice.id }}
+{% if invoice.client -%}
+{{ 'invoice.status_change.client'|trans({}, 'email') }}: {{ invoice.client.name }}
+{% endif -%}
+{{ 'invoice.status_change.new_status'|trans({}, 'email') }}: {{ invoice.status.label|trans }}
+
+{{ '-'|repeat(60) }}
+{{ 'invoice.status_change.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

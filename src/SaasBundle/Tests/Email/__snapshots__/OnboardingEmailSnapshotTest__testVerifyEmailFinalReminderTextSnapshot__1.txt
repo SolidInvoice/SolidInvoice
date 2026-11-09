@@ -1,0 +1,13 @@
+Your invoices are waiting on one click.
+============================================================
+
+It's been a few days and alex@example.test still isn't confirmed, so nothing you create can be sent to a client yet.
+
+We ask every new account to confirm its address before invoices go out to clients. It keeps SolidInvoice from being used to send fake invoices, and it takes one click.
+
+Confirm my email: https://app.example.test/verify?id=abc&signature=xyz
+
+Wrong address? Change it under your profile, then use the resend link on the banner inside SolidInvoice.
+
+See you inside,
+— The SolidInvoice team

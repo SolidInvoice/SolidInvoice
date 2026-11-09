@@ -332,8 +332,8 @@ final class TemplatesRenderingTest extends KernelTestCase
      * urgency hint inline rather than through a macro, and it always prints on
      * white, so it carries the AA-safe light literals.
      *
-     * The offset is `days + 6 hours` so the floor division in the template lands
-     * on `days` and not on `days - 1` when it renders.
+     * The offset is `days + 6 hours` to prove the template counts calendar days:
+     * a time of day on the due date must not shift the count.
      *
      * @return iterable<string, array{int, string, string}>
      */
@@ -459,7 +459,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     #[DataProvider('freeTemplateSlugProvider')]
     public function testStatusLineLabelKeyIsTranslated(string $slug): void
     {
-        self::assertStringNotContainsString('pdf.status', $this->renderPdf($slug));
+        self::assertStringNotContainsString('label.status', $this->renderPdf($slug));
     }
 
     /**

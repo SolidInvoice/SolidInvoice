@@ -14,6 +14,8 @@
 
 {% block content %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+{% import '@SolidInvoiceInvoice/Default/_send_gate.html.twig' as send_gate %}
+{% set gated = is_email_verification_gated() %}
 {% set currency = invoice.currency %}
 <div class="doc-view-page">
     <div class="doc-view-header no-print">
@@ -28,7 +30,7 @@
                     {% if invoice.due is not empty %}
                         <span class="doc-view-meta-item">
                             {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
-                            {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
+                            {{ 'billing.due_date'|trans }}: {{ invoice.due|format_date('medium') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}
                         </span>
                     {% endif %}
                 </div>
@@ -41,6 +43,16 @@
                 <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
                     {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
                 </button>
+                {# The public page 404s while the company is unverified, and the archivable filter hides archived invoices from it, so only offer a link that works. #}
+                {% if not gated and invoice.status not in [enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Draft, enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Archived] %}
+                    <span {{ stimulus_controller('clipboard', {'success-content': 'invoice.view.toolbar.link_copied'|trans}) }}>
+                        <input type="hidden" value="{{ url('_view_invoice_external', {'uuid': invoice.uuid}) }}" {{ stimulus_target('clipboard', 'source') }}>
+                        <button type="button" class="btn btn-ghost" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
+                            {{ ux_icon('tabler:link', {width: 18, height: 18}) }}
+                            {{ 'invoice.view.toolbar.copy_link'|trans }}
+                        </button>
+                    </span>
+                {% endif %}
                 {% if can_print_pdf() %}
                     <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.pdf'|trans }}">
                         {{ ux_icon('tabler:file-type-pdf', {width: 20, height: 20}) }}
@@ -83,10 +95,10 @@
                         {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid and invoice.users|length > 0 %}
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                {% if is_email_verification_gated() %}
+                                {% if gated %}
                                     <span class="d-block" tabindex="0"
                                           data-bs-toggle="tooltip"
-                                          title="{{ email_verification_message('sending this invoice') }}">
+                                          title="{{ 'email_verification.tooltip.send_invoice'|trans }}">
                                         <button type="button" class="dropdown-item disabled" disabled style="pointer-events: none;">
                                             {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                             {{ "invoice.view.toolbar.send"|trans }}
@@ -105,7 +117,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
                                     {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
-                                    {{ "invoice.view.toolbar.edit"|trans }}
+                                    {{ "action.edit"|trans }}
                                 </a>
                             </li>
                         {% endif %}
@@ -124,7 +136,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ path('_action_invoice', {'action' : 'archive', 'id' : invoice.id}) }}">
                                     {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
-                                    {{ "invoice.view.toolbar.archive"|trans }}
+                                    {{ "action.archive"|trans }}
                                 </a>
                             </li>
                         {% endif %}
@@ -148,15 +160,13 @@
                     {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                     {{ "invoice.view.toolbar.pay_now"|trans }}
                 </a>
-                {% if is_email_verification_gated() %}
-                    <span class="d-inline-block" tabindex="0"
-                          data-bs-toggle="tooltip"
-                          title="{{ email_verification_message('sending this invoice') }}">
-                        <button type="button" class="btn btn-primary btn-hero disabled {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-hero-urgent' : '' }}" disabled style="pointer-events: none;">
-                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
-                            {{ "invoice.view.toolbar.send"|trans }}
-                        </button>
-                    </span>
+                {% if gated %}
+                    {{ send_gate.hint() }}
+                    {{ send_gate.test_copy(invoice) }}
+                    <button type="button" class="btn btn-primary btn-hero {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-hero-urgent' : '' }}" disabled aria-describedby="send-gated-hint">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ "invoice.view.toolbar.send"|trans }}
+                    </button>
                 {% else %}
                     <form method="post" action="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="d-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token('send_invoice') }}">
@@ -167,34 +177,34 @@
                     </form>
                 {% endif %}
             {% elseif workflow_can(invoice, 'accept') %}
+                {% if gated %}
+                    {{ send_gate.hint() }}
+                    {{ send_gate.test_copy(invoice) }}
+                {% endif %}
                 <div class="btn-group">
-                    <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
-                        {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
-                        {{ 'invoice.save.publish'|trans }}
-                    </a>
+                    {% if gated %}
+                        <button type="button" class="btn btn-primary btn-hero" disabled aria-describedby="send-gated-hint">
+                            {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                            {{ 'invoice.save.send'|trans }}
+                        </button>
+                    {% else %}
+                        <form method="post" action="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="d-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token('send_invoice') }}">
+                            <button type="submit" class="btn btn-primary btn-hero rounded-end-0">
+                                {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                                {{ 'invoice.save.send'|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            {% if is_email_verification_gated() %}
-                                <span class="d-block" tabindex="0"
-                                      data-bs-toggle="tooltip"
-                                      title="{{ email_verification_message('sending this invoice') }}">
-                                    <button type="button" class="dropdown-item disabled" disabled style="pointer-events: none;">
-                                        {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                        {{ 'invoice.view.toolbar.publish_and_send'|trans }}
-                                    </button>
-                                </span>
-                            {% else %}
-                                <form method="post" action="{{ path('_send_invoice', {'id' : invoice.id}) }}">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('send_invoice') }}">
-                                    <button type="submit" class="dropdown-item">
-                                        {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                        {{ 'invoice.view.toolbar.publish_and_send'|trans }}
-                                    </button>
-                                </form>
-                            {% endif %}
+                            <a class="dropdown-item" href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}">
+                                {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                {{ 'invoice.save.publish_only'|trans }}
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -286,27 +296,27 @@
                     <table class="doc-items-table">
                         <thead>
                             <tr>
-                                <th class="column-description">{{ 'invoice.item.heading.description'|trans }}</th>
+                                <th class="column-description">{{ 'label.description'|trans }}</th>
                                 <th class="column-price">{{ 'invoice.item.heading.price'|trans }}</th>
                                 <th class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</th>
                                 {% if invoice.tax.positive %}
-                                    <th class="column-tax">{{ 'invoice.item.heading.tax'|trans }}</th>
+                                    <th class="column-tax">{{ 'billing.tax'|trans }}</th>
                                 {% endif %}
-                                <th class="column-total">{{ 'invoice.item.heading.total'|trans }}</th>
+                                <th class="column-total">{{ 'billing.total'|trans }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in invoice.lines %}
                                 <tr>
-                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.name }}{{ inv.line_description(item, false) }}</td>
+                                    <td class="column-description" data-label="{{ 'label.description'|trans }}">{{ item.name }}{{ inv.line_description(item, false) }}</td>
                                     <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
                                     <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
                                     {% if invoice.tax.positive %}
-                                        <td class="column-tax" data-label="{{ 'invoice.item.heading.tax'|trans }}">
+                                        <td class="column-tax" data-label="{{ 'billing.tax'|trans }}">
                                             {% for lineTax in item.taxes %}{{ lineTax.nameSnapshot }} ({{ lineTax.rateSnapshot }}%){% if not loop.last %}, {% endif %}{% endfor %}
                                         </td>
                                     {% endif %}
-                                    <td class="column-total" data-label="{{ 'invoice.item.heading.total'|trans }}">{{ item.total|formatCurrency(currency) }}</td>
+                                    <td class="column-total" data-label="{{ 'billing.total'|trans }}">{{ item.total|formatCurrency(currency) }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -349,7 +359,7 @@
 
                         {% if invoice.hasDiscount %}
                             <div class="totals-row totals-row-discount">
-                                <span class="totals-label">{{ 'invoice.discount'|trans }}</span>
+                                <span class="totals-label">{{ 'billing.discount'|trans }}</span>
                                 <span class="totals-value">-{{ discount(invoice)|formatCurrency(currency) }}</span>
                             </div>
                         {% endif %}
@@ -369,7 +379,7 @@
                         {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.isZero %}
                         <div class="totals-row totals-row-final">
                             <span class="totals-label">
-                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}
+                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'billing.total'|trans }}
                             </span>
                             <span class="totals-value">
                                 {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
@@ -421,7 +431,7 @@
                     <div class="doc-sidebar-card-icon">
                         {{ ux_icon('tabler:building', {width: 18, height: 18}) }}
                     </div>
-                    <h3 class="doc-sidebar-card-title">{{ 'invoice.client.title'|trans }}</h3>
+                    <h3 class="doc-sidebar-card-title">{{ 'label.client'|trans }}</h3>
                 </div>
                 <div class="doc-sidebar-card-body">
                     <div class="client-info">
@@ -457,11 +467,11 @@
                 <div class="doc-sidebar-card-body">
                     <div class="doc-summary-grid">
                         <div class="summary-item">
-                            <span class="summary-label">{{ 'invoice.status'|trans }}</span>
+                            <span class="summary-label">{{ 'label.status'|trans }}</span>
                             <span class="summary-value">{{ invoice_label(invoice.status) }}</span>
                         </div>
                         <div class="summary-item">
-                            <span class="summary-label">{{ 'invoice.total'|trans }}</span>
+                            <span class="summary-label">{{ 'billing.total'|trans }}</span>
                             <span class="summary-value summary-value-amount">{{ invoice.total|formatCurrency(currency) }}</span>
                         </div>
                         {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
@@ -472,18 +482,18 @@
                         {% endif %}
                         <div class="summary-item">
                             <span class="summary-label">{{ 'invoice.date'|trans }}</span>
-                            <span class="summary-value">{{ invoice.invoiceDate|date('M d, Y') }}</span>
+                            <span class="summary-value">{{ invoice.invoiceDate|format_date('medium') }}</span>
                         </div>
                         {% if invoice.due is not empty %}
                             <div class="summary-item {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'summary-item-overdue' : '' }}">
-                                <span class="summary-label">{{ 'invoice.due_date'|trans }}</span>
-                                <span class="summary-value">{{ invoice.due|date('M d, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</span>
+                                <span class="summary-label">{{ 'billing.due_date'|trans }}</span>
+                                <span class="summary-value">{{ invoice.due|format_date('medium') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</span>
                             </div>
                         {% endif %}
                         {% if invoice.paidDate is not empty %}
                             <div class="summary-item summary-item-paid">
                                 <span class="summary-label">{{ 'invoice.paid_date'|trans }}</span>
-                                <span class="summary-value">{{ invoice.paidDate|date('M d, Y') }}</span>
+                                <span class="summary-value">{{ invoice.paidDate|format_date('medium') }}</span>
                             </div>
                         {% endif %}
                     </div>
@@ -504,8 +514,15 @@
                             {% for payment in payments %}
                                 <div class="payment-card {{ payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured ? 'payment-card-captured' : '' }}">
                                     <div class="payment-card-header">
-                                        <div class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</div>
-                                        <div class="payment-status">{{ payment_label(payment.status) }}</div>
+                                        <a href="{{ path('_invoices_payment_view', {'id': payment.id}) }}" class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</a>
+                                        <div class="payment-status">
+                                            {{ payment_label(payment.status) }}
+                                            {% if payment.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured and can_print_pdf() %}
+                                                <a href="{{ path('_invoices_receipt_view', {'id': payment.id}) }}" target="_blank" class="ms-1" title="{{ 'payment.receipt.action.view'|trans }}" aria-label="{{ 'payment.receipt.action.view'|trans }}">
+                                                    {{ ux_icon('tabler:receipt', {width: 16, height: 16}) }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="payment-card-body">
                                         {% if payment.method is not empty %}
@@ -517,7 +534,7 @@
                                         {% if payment.completed is not empty %}
                                             <div class="payment-date">
                                                 {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
-                                                {{ payment.completed|date('M d, Y') }}
+                                                {{ payment.completed|format_date('medium') }}
                                             </div>
                                         {% endif %}
                                         {% if payment.message is not empty %}
@@ -624,6 +641,10 @@
                 </form>
             </twig:block>
         </twig:Ui:Modal>
+    {% endif %}
+
+    {% if gated %}
+        {{ send_gate.resend_form() }}
     {% endif %}
 </div>
 {% endblock content %}

@@ -37,7 +37,7 @@ class Action
 
     private bool $confirm = false;
 
-    private string $confirmMessage = 'Are you sure?';
+    private string $confirmMessage = 'datagrid.confirm.single';
 
     private string $color = '';
 
@@ -91,7 +91,7 @@ class Action
     /**
      * Require confirmation before executing the action.
      */
-    public function confirm(string $message = 'Are you sure?'): static
+    public function confirm(string $message = 'datagrid.confirm.single'): static
     {
         $this->confirm = true;
         $this->confirmMessage = $message;

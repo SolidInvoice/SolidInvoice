@@ -33,24 +33,23 @@
                 {{ form_widget(form.telemetryEnabled, {attr: {class: 'form-check-input'}}) }}
             </label>
             <small class="form-hint d-block">
-                Help us improve SolidInvoice by sharing anonymous usage data. No personal or business information is ever collected.
-                <a href="#telemetry-details" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="telemetry-details">What do we collect?</a>
+                {{ 'installation.user_account.telemetry_help'|trans }}
+                <a href="#telemetry-details" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="telemetry-details">{{ 'installation.telemetry.details_toggle'|trans }}</a>
             </small>
             <div class="collapse mt-2" id="telemetry-details">
                 <div class="card card-sm">
                     <div class="card-body">
-                        <p class="mb-2"><strong>What we send</strong> (anonymous, aggregate):</p>
+                        <p class="mb-2"><strong>{{ 'installation.telemetry.sent.heading'|trans }}</strong></p>
                         <ul class="mb-3">
-                            <li>A random installation ID (not linked to you or your data)</li>
-                            <li>SolidInvoice version and install type (manual, Docker, etc.)</li>
-                            <li>PHP version, operating system and OS version</li>
-                            <li>Database type and version, and the configured locale</li>
-                            <li>Anonymous feature events (e.g. "an invoice was created") — never their contents</li>
+                            {% for i in 1..5 %}
+                                <li>{{ ('installation.telemetry.sent.items.' ~ i)|trans }}</li>
+                            {% endfor %}
                         </ul>
-                        <p class="mb-2"><strong>What we never send:</strong></p>
+                        <p class="mb-2"><strong>{{ 'installation.telemetry.never_sent.heading'|trans }}</strong></p>
                         <ul class="mb-0">
-                            <li>Invoices, quotes, clients, payment amounts or any business data</li>
-                            <li>Names, email addresses, IP addresses or any personally identifiable information</li>
+                            {% for i in 1..2 %}
+                                <li>{{ ('installation.telemetry.never_sent.items.' ~ i)|trans }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -71,8 +70,8 @@
             </svg>
         </div>
         <div>
-            <h4 class="alert-title">Review Your Installation Configuration</h4>
-            <div class="text-muted">Please review the information below. Once you proceed, the installation will begin using these settings.</div>
+            <h4 class="alert-title">{{ 'installation.review.title'|trans }}</h4>
+            <div class="text-muted">{{ 'installation.review.message'|trans }}</div>
         </div>
     </div>
 
@@ -83,13 +82,13 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         {{ ux_icon('tabler:database', {width: 20, height: 20}) }}
-                        Database Configuration
+                        {{ 'installation.step.database_configuration'|trans }}
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="datagrid">
                         <div class="datagrid-item">
-                            <div>Driver</div>
+                            <div>{{ 'installation.database.driver'|trans }}</div>
                             <div class="datagrid-content">
                                 <span class="badge bg-info-lt">{{ form.vars.data.databaseConfig.driver|upper }}</span>
                             </div>
@@ -97,7 +96,7 @@
                         {% if form.vars.data.databaseConfig.driver != 'sqlite' %}
                             {% if form.vars.data.databaseConfig.host %}
                                 <div class="datagrid-item">
-                                    <div>Host</div>
+                                    <div>{{ 'installation.database.host'|trans }}</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.host }}{% if form.vars.data.databaseConfig.port %}:{{ form.vars.data.databaseConfig.port }}{% endif %}</code>
                                     </div>
@@ -105,7 +104,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.name %}
                                 <div class="datagrid-item">
-                                    <div>Database Name</div>
+                                    <div>{{ 'installation.database.name'|trans }}</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.name }}</code>
                                     </div>
@@ -113,7 +112,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.user %}
                                 <div class="datagrid-item">
-                                    <div>Username</div>
+                                    <div>{{ 'installation.database.user'|trans }}</div>
                                     <div class="datagrid-content">
                                         <code>{{ form.vars.data.databaseConfig.user }}</code>
                                     </div>
@@ -121,7 +120,7 @@
                             {% endif %}
                             {% if form.vars.data.databaseConfig.password %}
                                 <div class="datagrid-item">
-                                    <div>Password</div>
+                                    <div>{{ 'installation.database.password'|trans }}</div>
                                     <div class="datagrid-content">
                                         <span class="password-toggle-container">
                                             <code class="password-masked" data-password="{{ form.vars.data.databaseConfig.password }}">••••••••</code>
@@ -154,14 +153,14 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
-                        Administrator Account
+                        {{ 'installation.review.admin_account'|trans }}
                     </h3>
                 </div>
                 <div class="card-body">
                     <div class="datagrid">
                         {% if form.vars.data.userAccount.firstName or form.vars.data.userAccount.lastName %}
                             <div class="datagrid-item">
-                                <div>Name</div>
+                                <div>{{ 'installation.user_account.name'|trans }}</div>
                                 <div class="datagrid-content">
                                     <strong>{{ form.vars.data.userAccount.firstName }} {{ form.vars.data.userAccount.lastName }}</strong>
                                 </div>
@@ -169,7 +168,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.emailAddress %}
                             <div class="datagrid-item">
-                                <div>Email Address</div>
+                                <div>{{ 'installation.user_account.email_address'|trans }}</div>
                                 <div class="datagrid-content">
                                     <code>{{ form.vars.data.userAccount.emailAddress }}</code>
                                 </div>
@@ -177,7 +176,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.locale %}
                             <div class="datagrid-item">
-                                <div>Language</div>
+                                <div>{{ 'installation.review.language'|trans }}</div>
                                 <div class="datagrid-content">
                                     <code>{{ form.vars.data.userAccount.locale|upper }}</code>
                                 </div>
@@ -185,7 +184,7 @@
                         {% endif %}
                         {% if form.vars.data.userAccount.password %}
                             <div class="datagrid-item">
-                                <div>Password</div>
+                                <div>{{ 'installation.user_account.password'|trans }}</div>
                                 <div class="datagrid-content">
                                     <span class="password-toggle-container">
                                         <code class="password-masked" data-password="{{ form.vars.data.userAccount.password }}">••••••••</code>
@@ -207,12 +206,12 @@
                             </div>
                         {% endif %}
                         <div class="datagrid-item">
-                            <div>Usage statistics</div>
+                            <div>{{ 'installation.review.telemetry'|trans }}</div>
                             <div class="datagrid-content">
                                 {% if form.vars.data.telemetryEnabled %}
-                                    <span class="badge bg-success-lt">Enabled</span>
+                                    <span class="badge bg-success-lt">{{ 'installation.review.enabled'|trans }}</span>
                                 {% else %}
-                                    <span class="badge bg-secondary-lt">Disabled</span>
+                                    <span class="badge bg-secondary-lt">{{ 'installation.review.disabled'|trans }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -257,8 +256,8 @@
             </svg>
         </div>
         <div>
-            <h4 class="alert-title">Choose your database connection</h4>
-            <div class="text-muted">If you are unsure which database to use, we recommend <strong>SQLite</strong> for most users. It requires no additional setup or configuration and works perfectly for small to medium-sized businesses.</div>
+            <h4 class="alert-title">{{ 'installation.database.choose.title'|trans }}</h4>
+            <div class="text-muted">{{ 'installation.database.choose.message'|trans({'%sqlite%': '<strong>SQLite</strong>'})|raw }}</div>
         </div>
     </div>
 

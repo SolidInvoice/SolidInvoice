@@ -15,42 +15,44 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
+use function array_map;
+use function in_array;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceReceiverListenerTest
  */
-class InvoiceReceiverListener implements EventSubscriberInterface
+class InvoiceReceiverListener
 {
     public function __construct(
         private readonly SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         /** @var InvoiceEmail $message */
         $message = $event->getMessage();
 
-        if ($message instanceof InvoiceEmail && [] === $message->getTo()) {
-            $invoice = $message->getInvoice();
+        if (! $message instanceof InvoiceEmail) {
+            return;
+        }
 
-            foreach ($invoice->getUsers() as $user) {
+        // A send can name its own recipients; the contacts are only the default.
+        if ([] === $message->getTo()) {
+            foreach ($message->getInvoice()->getUsers() as $user) {
                 $message->addTo(new Address($user->getEmail(), trim(sprintf('%s %s', $user->getFirstName(), $user->getLastName()))));
             }
-
-            if ('' !== ($bcc = (string) $this->config->get('invoice/bcc_address'))) {
-                $message->addBcc($bcc);
-            }
         }
-    }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
+        // Added, not set, so a sender's own copy survives. The event can fire twice for one message.
+        $bcc = (string) $this->config->get('invoice/bcc_address');
+
+        if ('' !== $bcc && ! in_array($bcc, array_map(static fn (Address $address): string => $address->getAddress(), $message->getBcc()), true)) {
+            $message->addBcc($bcc);
+        }
     }
 }

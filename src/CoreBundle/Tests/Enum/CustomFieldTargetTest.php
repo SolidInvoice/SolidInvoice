@@ -26,7 +26,7 @@ final class CustomFieldTargetTest extends TestCase
 
     public function testLabel(): void
     {
-        self::assertSame('Client', CustomFieldTarget::CLIENT->label());
-        self::assertSame('Contact', CustomFieldTarget::CONTACT->label());
+        self::assertSame('custom_field.target.client', CustomFieldTarget::CLIENT->label());
+        self::assertSame('custom_field.target.contact', CustomFieldTarget::CONTACT->label());
     }
 }

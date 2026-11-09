@@ -17,6 +17,8 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Action\ChoosePlanAction;
+use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 use SolidInvoice\SaasBundle\Service\BillingMode;
 use SolidInvoice\SaasBundle\Service\TrialBanner;
 use SolidInvoice\SaasBundle\Service\TrialBannerResolver;
@@ -24,15 +26,19 @@ use SolidWorx\Platform\PlatformBundle\Controller\Security\ResendVerificationEmai
 use SolidWorx\Platform\PlatformBundle\Controller\Security\VerifyEmail;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Exception\NoFreePlanConfiguredException;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepositoryInterface;
+use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
@@ -43,7 +49,7 @@ use function in_array;
 /**
  * @see \SolidInvoice\SaasBundle\Tests\EventSubscriber\RequestListenerTest
  */
-final readonly class RequestListener implements EventSubscriberInterface
+final readonly class RequestListener
 {
     private const array SKIPPED_ROUTES = [
         // Always leave a way out of a blocking page. This matters most in
@@ -91,17 +97,12 @@ final readonly class RequestListener implements EventSubscriberInterface
         private TrialBannerResolver $trialBannerResolver,
         private TranslatorInterface $translator,
         private BillingMode $billingMode,
+        private SubscriptionManager $subscriptions,
+        private MessageBusInterface $bus,
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            RequestEvent::class => 'onRequest',
-            ResponseEvent::class => 'onResponse',
-        ];
-    }
-
+    #[AsEventListener(event: RequestEvent::class)]
     public function onRequest(RequestEvent $event): void
     {
         $subscription = $this->getSubscription($event->getRequest());
@@ -159,22 +160,33 @@ final readonly class RequestListener implements EventSubscriberInterface
                 );
                 break;
             case SubscriptionStatus::TRIAL:
-                if ($subscription->getEndDate() <= $this->clock->now()) {
-                    $event->setResponse(
-                        new Response(
-                            $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
-                                'subscription' => $subscription,
-                                'coupon_code' => $this->billingMode->couponCode(),
-                                'coupon_percent' => $this->billingMode->couponPercent(),
-                            ]),
-                        )
-                    );
+                if ($subscription->getEndDate() > $this->clock->now()) {
+                    break;
                 }
+
+                // A local (no-card) trial ends on the Free plan. The hourly
+                // DowngradeExpiredTrialsCommand does the same; this covers the
+                // gap before it runs. A Lemon Squeezy trial is left to the
+                // provider's webhooks, and the wall stays as the fallback.
+                if (! $subscription->isExternallyBilled() && $this->downgradeToFree($event->getRequest(), $subscription)) {
+                    break;
+                }
+
+                $event->setResponse(
+                    new Response(
+                        $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
+                            'subscription' => $subscription,
+                            'coupon_code' => $this->billingMode->couponCode(),
+                            'coupon_percent' => $this->billingMode->couponPercent(),
+                        ]),
+                    )
+                );
 
                 break;
         }
     }
 
+    #[AsEventListener(event: ResponseEvent::class)]
     public function onResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
@@ -205,7 +217,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             'title' => $this->translator->trans($banner->titleKey, $banner->params),
             'message' => $this->translator->trans($banner->messageKey, $banner->params),
             'cta_label' => $this->translator->trans($banner->ctaLabelKey, $banner->params),
-            'cta_url' => $this->urlGenerator->generate('saas_subscription_checkout'),
+            'cta_url' => $this->urlGenerator->generate('saas_subscription_checkout', $banner->planId !== null ? [ChoosePlanAction::PENDING_PLAN_QUERY_PARAMETER => $banner->planId] : []),
             'code' => $banner->code,
         ]);
 
@@ -217,6 +229,25 @@ final readonly class RequestListener implements EventSubscriberInterface
         );
 
         $response->setContent($content);
+    }
+
+    private function downgradeToFree(Request $request, Subscription $subscription): bool
+    {
+        try {
+            $this->subscriptions->downgradeToFree($subscription);
+        } catch (NoFreePlanConfiguredException) {
+            return false;
+        }
+
+        $this->bus->dispatch(new SendTrialDowngradedEmailMessage($subscription->getId()));
+
+        $session = $request->hasSession() ? $request->getSession() : null;
+
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add('info', 'saas.flash.trial_ended_on_free');
+        }
+
+        return true;
     }
 
     private function getSubscription(Request $request): ?Subscription

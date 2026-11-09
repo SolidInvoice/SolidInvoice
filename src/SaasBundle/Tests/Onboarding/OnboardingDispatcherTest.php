@@ -14,219 +14,265 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\Onboarding;
 
 use Carbon\CarbonImmutable;
-use Mockery as M;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ReflectionProperty;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingAudience;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
-use SolidInvoice\SaasBundle\Onboarding\OnboardingScheduleCalculator;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
+use SolidInvoice\SaasBundle\Onboarding\Step\FreeFeedbackStep;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepSecond;
+use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StubStep;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserSetting;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
+use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Ulid;
 
+#[CoversClass(OnboardingDispatcher::class)]
 final class OnboardingDispatcherTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
+    /**
+     * @var array<string, string|null>
+     */
+    private array $settings = [];
 
-    public function testDispatchesFirstStepWhenNoProgressAndTargetReached(): void
+    /**
+     * @var list<string>
+     */
+    private array $log = [];
+
+    private ?Subscription $subscription = null;
+
+    private string $now = '2025-01-02';
+
+    private string $userCreated = '2025-01-01';
+
+    public function testSendsTheFirstDueStepAndRecordsItBeforeDispatching(): void
     {
-        $user = $this->user();
-        $subscription = $this->subscription();
+        $this->tick(new StepFirst(), new StepSecond());
 
-        $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->with($user, UserSettingType::OnboardingEmailSequenceLastStep)
-            ->andReturnNull();
-
-        $userSettingRepository
-            ->shouldReceive('saveSetting')
-            ->once()
-            ->with($user, UserSettingType::OnboardingEmailSequenceLastStep, 'first');
-
-        $messageBus = M::mock(MessageBusInterface::class);
-        $messageBus
-            ->shouldReceive('dispatch')
-            ->once()
-            ->withArgs(static fn (SendOnboardingEmailMessage $message): bool => $message->stepKey === 'first')
-            ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'first')));
-
-        $dispatcher = new OnboardingDispatcher(
-            new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
-            new OnboardingScheduleCalculator(),
-            $userSettingRepository,
-            $messageBus,
-            new MockClock('2025-01-01 00:00:00'),
-            new NullLogger(),
-        );
-
-        $dispatcher->tick($user, $subscription);
+        self::assertSame(['save:first', 'dispatch:first'], $this->log);
     }
 
-    public function testDispatchesNextStepAfterLast(): void
+    public function testSendsALaterStepWhoseConditionIsMetBeforeAnEarlierOne(): void
     {
-        $user = $this->user();
-        $subscription = $this->subscription();
+        $this->tick(new StepFirst(due: false), new StepSecond());
 
-        $existing = new UserSetting()->setValue('first');
-
-        $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
-
-        $userSettingRepository
-            ->shouldReceive('saveSetting')
-            ->once()
-            ->with($user, UserSettingType::OnboardingEmailSequenceLastStep, 'second');
-
-        $messageBus = M::mock(MessageBusInterface::class);
-        $messageBus
-            ->shouldReceive('dispatch')
-            ->once()
-            ->withArgs(static fn (SendOnboardingEmailMessage $message): bool => $message->stepKey === 'second')
-            ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'second')));
-
-        $dispatcher = new OnboardingDispatcher(
-            new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
-            new OnboardingScheduleCalculator(),
-            $userSettingRepository,
-            $messageBus,
-            new MockClock('2025-01-08 00:00:00'),
-            new NullLogger(),
-        );
-
-        $dispatcher->tick($user, $subscription);
+        self::assertSame(['save:second', 'dispatch:second'], $this->log);
     }
 
-    public function testNoOpWhenSequenceAlreadyComplete(): void
+    public function testSendsEachStepOnlyOnce(): void
     {
-        $user = $this->user();
-        $subscription = $this->subscription();
+        $this->settings[UserSettingType::OnboardingEmailsSent->value] = 'first';
 
-        $existing = new UserSetting()->setValue('second');
+        $this->tick(new StepFirst(), new StepSecond());
+        $this->tick(new StepFirst(), new StepSecond());
 
-        $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
-
-        $userSettingRepository->shouldNotReceive('saveSetting');
-
-        $messageBus = M::mock(MessageBusInterface::class);
-        $messageBus->shouldNotReceive('dispatch');
-
-        $dispatcher = new OnboardingDispatcher(
-            new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
-            new OnboardingScheduleCalculator(),
-            $userSettingRepository,
-            $messageBus,
-            new MockClock('2025-01-08 00:00:00'),
-            new NullLogger(),
-        );
-
-        $dispatcher->tick($user, $subscription);
+        self::assertSame(['save:first,second', 'dispatch:second'], $this->log);
     }
 
-    public function testNoDispatchWhenTargetTimeInFuture(): void
+    public function testSendsNothingWhileNoStepIsDue(): void
     {
-        $user = $this->user();
-        $subscription = $this->subscription();
+        $this->tick(new StepFirst(due: false), new StepSecond(due: false));
 
-        $existing = new UserSetting()->setValue('first');
-
-        $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturn($existing);
-
-        $userSettingRepository->shouldNotReceive('saveSetting');
-
-        $messageBus = M::mock(MessageBusInterface::class);
-        $messageBus->shouldNotReceive('dispatch');
-
-        // Trial 2025-01-01 → 2025-01-08 (7 days). 2 steps → spacing = 3.5 days.
-        // Step index 1 target = 2025-01-04 12:00:00. Clock at 2025-01-02 is before target.
-        $dispatcher = new OnboardingDispatcher(
-            new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
-            new OnboardingScheduleCalculator(),
-            $userSettingRepository,
-            $messageBus,
-            new MockClock('2025-01-02 00:00:00'),
-            new NullLogger(),
-        );
-
-        $dispatcher->tick($user, $subscription);
+        self::assertSame([], $this->log);
     }
 
-    public function testAdvancesSettingBeforeDispatch(): void
+    public function testUsersPartWayThroughTheOldSequenceAreNotSentWhatTheyAlreadyHad(): void
     {
-        $user = $this->user();
-        $subscription = $this->subscription();
+        $this->settings[UserSettingType::OnboardingEmailSequenceLastStep->value] = 'add_first_client';
 
-        $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
-        $userSettingRepository
-            ->shouldReceive('getSetting')
-            ->andReturnNull();
+        $welcome = new class() extends StubStep {
+            public static function key(): string
+            {
+                return 'welcome';
+            }
 
-        $order = [];
+            public static function priority(): int
+            {
+                return 100;
+            }
+        };
 
-        $userSettingRepository
-            ->shouldReceive('saveSetting')
-            ->once()
-            ->andReturnUsing(static function () use (&$order): void {
-                $order[] = 'save';
-            });
+        $this->tick($welcome, new StepFirst());
 
-        $messageBus = M::mock(MessageBusInterface::class);
-        $messageBus
-            ->shouldReceive('dispatch')
-            ->once()
-            ->andReturnUsing(static function (SendOnboardingEmailMessage $message) use (&$order): Envelope {
-                $order[] = 'dispatch';
-
-                return new Envelope($message);
-            });
-
-        $dispatcher = new OnboardingDispatcher(
-            new OnboardingStepRegistry([new StepFirst()]),
-            new OnboardingScheduleCalculator(),
-            $userSettingRepository,
-            $messageBus,
-            new MockClock('2025-01-01 00:00:00'),
-            new NullLogger(),
-        );
-
-        $dispatcher->tick($user, $subscription);
-
-        self::assertSame(['save', 'dispatch'], $order);
+        self::assertSame(['save:welcome,add_first_client,first', 'dispatch:first'], $this->log);
     }
 
-    private function subscription(): Subscription
+    public function testAnAccountOnFreeIsOfferedAnyAndFreeStepsButNotTrialOnes(): void
     {
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: true);
+        $this->now = '2025-02-01';
+
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
+        $this->tick($this->trialOnly(), new StepFirst(), new FreeFeedbackStep());
+
+        self::assertSame(['save:first', 'dispatch:first', 'save:first,free_feedback', 'dispatch:free_feedback'], $this->log);
+    }
+
+    public function testATrialIsNotOfferedTheFreeStep(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false);
+        $this->now = '2025-02-01';
+
+        $this->tick(new FreeFeedbackStep(), $this->trialOnly());
+
+        self::assertSame(['save:trial_only', 'dispatch:trial_only'], $this->log);
+    }
+
+    /**
+     * A long-standing user who moves to Free (or adds a Free company) is not
+     * welcomed again: onboarding is for new users.
+     */
+    public function testAnOldUserOnFreeIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: true);
+        $this->userCreated = '2024-06-01';
+        $this->now = '2025-02-01';
+
+        $this->tick(new StepFirst(), new FreeFeedbackStep());
+
+        self::assertSame([], $this->log);
+    }
+
+    /**
+     * An old user who opts into a trial gets the trial emails, not the welcome.
+     */
+    public function testAnOldUserOnATrialOnlyGetsTrialSteps(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false);
+        $this->userCreated = '2024-06-01';
+        $this->now = '2025-02-01';
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame(['save:trial_only', 'dispatch:trial_only'], $this->log);
+    }
+
+    public function testALapsedTrialIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::TRIAL, free: false)->setEndDate(CarbonImmutable::parse('2025-01-15'));
+        $this->now = '2025-01-20';
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame([], $this->log);
+    }
+
+    public function testAPayingAccountIsOfferedNothing(): void
+    {
+        $this->subscription = $this->subscription(SubscriptionStatus::ACTIVE, free: false);
+
+        $this->tick(new StepFirst(), $this->trialOnly());
+
+        self::assertSame([], $this->log);
+    }
+
+    private function trialOnly(): OnboardingEmailStepInterface
+    {
+        return new class() extends StubStep {
+            public static function key(): string
+            {
+                return 'trial_only';
+            }
+
+            public static function priority(): int
+            {
+                return 200;
+            }
+
+            #[Override]
+            public static function audience(): OnboardingAudience
+            {
+                return OnboardingAudience::Trial;
+            }
+        };
+    }
+
+    private function subscription(SubscriptionStatus $status, bool $free): Subscription
+    {
+        $plan = new Plan();
+        $plan->setPrice($free ? 0 : 1900);
+        $plan->setPlanId($free ? '0' : 'variant-123');
+
         $subscription = new Subscription();
-        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01 00:00:00'));
-        $subscription->setEndDate(CarbonImmutable::parse('2025-01-08 00:00:00'));
+        $subscription->setSubscriber(new Company());
+        $subscription->setPlan($plan);
+        $subscription->setStatus($status);
+        $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
+        $subscription->setEndDate(CarbonImmutable::parse('2125-01-01'));
 
         return $subscription;
     }
 
-    private function user(): User
+    private function tick(OnboardingEmailStepInterface ...$steps): void
     {
         $user = new User();
-        $idProperty = new ReflectionProperty($user, 'id');
-        $idProperty->setValue($user, new Ulid());
+        new ReflectionProperty($user, 'id')->setValue($user, new Ulid());
+        $user->setCreated(CarbonImmutable::parse($this->userCreated));
 
-        return $user;
+        $subscription = $this->subscription;
+
+        if (! $subscription instanceof Subscription) {
+            $subscription = new Subscription();
+            $subscription->setSubscriber(new Company());
+            $subscription->setPlan(new Plan());
+            $subscription->setStatus(SubscriptionStatus::TRIAL);
+            $subscription->setStartDate(CarbonImmutable::parse('2025-01-01'));
+            $subscription->setEndDate(CarbonImmutable::parse('2025-01-15'));
+        }
+
+        new OnboardingDispatcher(
+            new OnboardingStepRegistry($steps),
+            $this->settingRepository(),
+            $this->messageBus(),
+            new MockClock($this->now),
+            new NullLogger(),
+        )->tick($user, $subscription);
+    }
+
+    private function settingRepository(): UserSettingRepositoryInterface
+    {
+        $repository = $this->createStub(UserSettingRepositoryInterface::class);
+        $repository->method('getSetting')->willReturnCallback(
+            fn (User $user, UserSettingType $key): ?UserSetting => isset($this->settings[$key->value])
+                ? new UserSetting()->setKey($key)->setValue($this->settings[$key->value])
+                : null,
+        );
+        $repository->method('saveSetting')->willReturnCallback(
+            function (User $user, UserSettingType $key, ?string $value): void {
+                $this->settings[$key->value] = $value;
+                $this->log[] = 'save:' . $value;
+            },
+        );
+
+        return $repository;
+    }
+
+    private function messageBus(): MessageBusInterface
+    {
+        $messageBus = $this->createStub(MessageBusInterface::class);
+        $messageBus->method('dispatch')->willReturnCallback(
+            function (SendOnboardingEmailMessage $message): Envelope {
+                $this->log[] = 'dispatch:' . $message->stepKey;
+
+                return new Envelope($message);
+            },
+        );
+
+        return $messageBus;
     }
 }

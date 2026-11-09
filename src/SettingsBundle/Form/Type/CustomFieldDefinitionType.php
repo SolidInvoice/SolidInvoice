@@ -77,7 +77,7 @@ final class CustomFieldDefinitionType extends AbstractType
                 'label' => 'custom_field.form.type.label',
                 'choice_label' => static fn (CFType $t): string => $t->label(),
             ])
-            ->add('required', CheckboxType::class, ['label' => 'custom_field.form.required.label', 'required' => false]);
+            ->add('required', CheckboxType::class, ['label' => 'label.required', 'required' => false]);
 
         $builder->addDependent('visibility', ['target'], static function (DependentField $field, ?CustomFieldTarget $target): void {
             if (! $target instanceof CustomFieldTarget || ! $target->supportsVisibility()) {

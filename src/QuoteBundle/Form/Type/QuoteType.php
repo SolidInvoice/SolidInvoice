@@ -30,6 +30,7 @@ use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
@@ -37,6 +38,7 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -114,7 +116,7 @@ class QuoteType extends AbstractType
                 $field->add(
                     TextType::class,
                     [
-                        'label' => 'contact.firstName',
+                        'label' => 'client.contact.first_name.label',
                         'allow_single_quotes' => true,
                     ]
                 );
@@ -126,7 +128,7 @@ class QuoteType extends AbstractType
                 $field->add(
                     TextType::class,
                     [
-                        'label' => 'contact.lastName',
+                        'label' => 'client.contact.last_name.label',
                         'required' => false,
                         'allow_single_quotes' => true,
                     ]
@@ -192,6 +194,19 @@ class QuoteType extends AbstractType
 
         $builder->add('quoteId', null, ['data' => $data]);
 
+        $builder->add('validity', EnumType::class, [
+            'class' => QuoteValidity::class,
+            'choice_label' => static fn (QuoteValidity $validity): string => $validity->getLabel(),
+            'label' => 'quote.validity.label',
+            'empty_data' => QuoteValidity::None->value,
+        ]);
+        $builder->add('due', DateType::class, [
+            'widget' => 'single_text',
+            'label' => 'quote.valid_until',
+            'required' => false,
+            'input' => 'datetime_immutable',
+        ]);
+
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
@@ -241,6 +256,10 @@ class QuoteType extends AbstractType
                             $groups[] = 'new_client';
                         } else {
                             $groups[] = 'existing_client';
+                        }
+
+                        if ($data->validity === QuoteValidity::Custom) {
+                            $groups[] = 'custom_validity';
                         }
                     }
 

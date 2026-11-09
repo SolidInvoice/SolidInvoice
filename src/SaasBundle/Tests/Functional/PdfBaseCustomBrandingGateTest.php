@@ -36,15 +36,16 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Twig\Environment;
 
 /**
- * Verifies that the PDF base template (`_pdf_base.html.twig`) gates the
- * `system/general/hide_powered_by` setting on the `custom_branding` feature:
+ * Verifies that the PDF base template (`_pdf_base.html.twig`) and the client
+ * portal gate the `system/general/hide_powered_by` setting on the
+ * `custom_branding` feature:
  *
- * - When the feature is disabled (Free/Solo plans), the "Powered By" line is
+ * - When the feature is disabled (Free/Solo plans), the "Powered by" line is
  *   always rendered regardless of the stored DB value.
  * - When the feature is enabled, the setting controls visibility as before.
  * - On self-hosted (NoopFeatureGate), `hide_powered_by=1` suppresses the line.
  *
- * The "Powered By" link lives in the `<htmlpagefooter>` block of the rendered
+ * The "Powered by" link lives in the `<htmlpagefooter>` block of the rendered
  * template (see `classic/pdf.html.twig` which
  * extends `_pdf_base.html.twig`).
  */
@@ -73,14 +74,62 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         $output = $this->renderPdfTemplate();
 
-        // The "Powered By" attribute is populated despite the setting being '1'.
-        self::assertStringContainsString('Powered By', $output);
+        // The "Powered by" attribute is populated despite the setting being '1'.
+        self::assertStringContainsString('Powered by', $output);
 
         // Invoice emails use the same gate.
         $twig = self::getContainer()->get('twig');
         self::assertInstanceOf(Environment::class, $twig);
         $email = $twig->render('@SolidInvoiceInvoice/Email/invoice.html.twig', ['invoice' => InvoiceFactory::first()]);
         self::assertStringContainsString('utm_source=email', $email);
+    }
+
+    public function testGatedPlanAlwaysShowsPoweredByInTheLegacyPdfTemplates(): void
+    {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
+        $featureGate = $this->createStub(FeatureGate::class);
+        $featureGate->method('isEnabled')
+            ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
+        self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('1');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $invoice = $this->createFixtureInvoice();
+        $quote = QuoteFactory::createOne([
+            'company' => $this->company,
+            'client' => $invoice->getClient(),
+            'users' => $invoice->getUsers()->toArray(),
+        ]);
+
+        self::assertStringContainsString('Powered by', $twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice]));
+        self::assertStringContainsString('Powered by', $twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote]));
+    }
+
+    public function testGatedPlanAlwaysShowsPoweredByOnTheClientPortal(): void
+    {
+        self::ensureKernelShutdown();
+        self::bootKernel();
+
+        $featureGate = $this->createStub(FeatureGate::class);
+        $featureGate->method('isEnabled')
+            ->willReturnCallback(static fn (string $key): bool => $key !== 'custom_branding');
+        self::getContainer()->set(FeatureGate::class, $featureGate);
+
+        $this->reloadCompany();
+        $this->seedHidePoweredBy('1');
+
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        $output = $twig->render('@SolidInvoiceInvoice/external_invoice_view.html.twig', ['invoice' => $this->createFixtureInvoice()]);
+
+        self::assertStringContainsString('ext-doc-footer', $output);
     }
 
     public function testUngatedPlanRespectsHidePoweredBySetting(): void
@@ -99,7 +148,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
         $output = $this->renderPdfTemplate();
 
         // With custom_branding ON and hide_powered_by=1, the attribute is empty.
-        self::assertStringNotContainsString('Powered By', $output);
+        self::assertStringNotContainsString('Powered by', $output);
 
         $twig = self::getContainer()->get('twig');
         self::assertInstanceOf(Environment::class, $twig);
@@ -122,7 +171,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         $output = $this->renderPdfTemplate();
 
-        self::assertStringContainsString('Powered By', $output);
+        self::assertStringContainsString('Powered by', $output);
     }
 
     public function testSelfHostedNoopFeatureGateRespectsHidePoweredBySetting(): void
@@ -138,7 +187,7 @@ final class PdfBaseCustomBrandingGateTest extends KernelTestCase
 
         $output = $this->renderPdfTemplate();
 
-        self::assertStringNotContainsString('Powered By', $output);
+        self::assertStringNotContainsString('Powered by', $output);
     }
 
     public function testPoweredByFooterLinksMatchPlatform(): void

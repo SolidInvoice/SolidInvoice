@@ -80,6 +80,11 @@ return App::config([
                             'to' => [InvoiceStatus::Draft->value],
                         ],
                         [
+                            'name' => InvoiceGraph::TRANSITION_UNPAY,
+                            'from' => [InvoiceStatus::Paid->value],
+                            'to' => [InvoiceStatus::Pending->value],
+                        ],
+                        [
                             'name' => InvoiceGraph::TRANSITION_ARCHIVE,
                             'from' => [InvoiceStatus::New->value, InvoiceStatus::Draft->value, InvoiceStatus::Cancelled->value, InvoiceStatus::Paid->value],
                             'to' => [InvoiceStatus::Archived->value],
@@ -175,6 +180,7 @@ return App::config([
                         QuoteStatus::Archived->value,
                         QuoteStatus::Accepted->value,
                         QuoteStatus::Declined->value,
+                        QuoteStatus::Expired->value,
                     ],
                     'transitions' => [
                         [
@@ -209,13 +215,19 @@ return App::config([
                         ],
                         [
                             'name' => QuoteGraph::TRANSITION_REOPEN,
-                            'from' => [QuoteStatus::Declined->value, QuoteStatus::Cancelled->value],
+                            'from' => [QuoteStatus::Declined->value, QuoteStatus::Cancelled->value, QuoteStatus::Expired->value],
                             'to' => [QuoteStatus::Draft->value],
                         ],
                         [
                             'name' => QuoteGraph::TRANSITION_ARCHIVE,
-                            'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value],
+                            'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value, QuoteStatus::Expired->value],
                             'to' => [QuoteStatus::Archived->value],
+                        ],
+                        [
+                            // Applied by ExpireQuotesCommand once the validity date has passed.
+                            'name' => QuoteGraph::TRANSITION_EXPIRE,
+                            'from' => [QuoteStatus::Pending->value],
+                            'to' => [QuoteStatus::Expired->value],
                         ],
                     ],
                 ],

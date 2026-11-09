@@ -13,11 +13,25 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
+use Override;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
+/**
+ * Asks for feedback once the user has really used the app: a week in, with at
+ * least one invoice sent, so there is something to have an opinion about.
+ */
 #[AsTaggedItem(priority: 55)]
 final class FeedbackStep extends AbstractOnboardingEmailStep
 {
+    private const int AFTER_HOURS = 7 * 24;
+
+    public function __construct(
+        private readonly InvoiceRepository $invoiceRepository,
+    ) {
+    }
+
     public static function key(): string
     {
         return 'feedback';
@@ -26,5 +40,12 @@ final class FeedbackStep extends AbstractOnboardingEmailStep
     public static function priority(): int
     {
         return 55;
+    }
+
+    #[Override]
+    public function shouldSend(OnboardingContext $context): bool
+    {
+        return $context->hoursSinceTrialStart() >= self::AFTER_HOURS
+            && $this->invoiceRepository->countIssued($context->company) > 0;
     }
 }

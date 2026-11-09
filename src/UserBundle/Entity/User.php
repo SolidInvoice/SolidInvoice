@@ -15,10 +15,12 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\UserBundle\Enum\SignupMethod;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Platform\SaasBundle\Trial\TrialUserInterface;
 
@@ -42,6 +44,9 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
      */
     #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users', cascade: ['persist'])]
     private Collection $companies;
+
+    #[ORM\Column(name: 'signup_method', type: Types::STRING, length: 20, nullable: true, enumType: SignupMethod::class)]
+    private ?SignupMethod $signupMethod = null;
 
     /**
      * @deprecated This should not be used anymore. Remove once all usages are gone.
@@ -108,6 +113,18 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
         if ($this->companies->contains($company)) {
             $this->companies->removeElement($company);
         }
+
+        return $this;
+    }
+
+    public function getSignupMethod(): ?SignupMethod
+    {
+        return $this->signupMethod;
+    }
+
+    public function setSignupMethod(SignupMethod $signupMethod): static
+    {
+        $this->signupMethod = $signupMethod;
 
         return $this;
     }

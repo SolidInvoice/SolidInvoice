@@ -32,6 +32,8 @@ final readonly class TrialBanner
         public array $params,
         public string $ctaLabelKey,
         public ?string $code = null,
+        // The plan the CTA checks out; null checks out the current plan.
+        public ?string $planId = null,
     ) {
     }
 }

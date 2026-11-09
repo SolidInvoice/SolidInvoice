@@ -35,8 +35,12 @@
  #                                          description.
  # @param list<string>|null  bullets      - Short capability list. Defaults to the
  #                                          registry bullets. Pass `[]` to suppress.
+ #
+ # When `trial_offer()` has a trial for the feature, the primary action starts it
+ # (or moves a running trial up) instead of "Upgrade to %plan%".
  #}
 {% set plan_name = feature_required_plan_label(feature) %}
+{% set _trial = trial_offer(feature) %}
 {% set _copy = feature_copy(feature) %}
 {% set _icon = icon|default(_copy ? _copy.icon : 'tabler:lock') %}
 {% set _headline = headline|default(_copy ? _copy.headline|trans : 'feature.upgrade_required'|trans) %}
@@ -87,7 +91,19 @@
             {% endif %}
 
             <div class="empty-action">
-                {% if plan_name %}
+                {% if _trial %}
+                    <a href="{{ _trial.url }}" class="btn btn-primary">
+                        {{ ux_icon('tabler:sparkles', {width: 18, height: 18}) }}
+                        {% if _trial.moving_up %}
+                            {{ 'feature.trial_move_up'|trans({'%plan%': _trial.plan}) }}
+                        {% else %}
+                            {{ 'feature.trial_start'|trans({'%plan%': _trial.plan, '%count%': _trial.days}) }}
+                        {% endif %}
+                    </a>
+                    <a href="{{ path('saas_subscription_plans') }}" class="btn btn-link ms-2">
+                        {{ 'feature.view_all_plans'|trans }}
+                    </a>
+                {% elseif plan_name %}
                     <a href="{{ path('saas_subscription_plans') }}" class="btn btn-primary">
                         {{ ux_icon('tabler:arrow-up-circle', {width: 18, height: 18}) }}
                         {{ 'feature.upgrade_to'|trans({'%plan%': plan_name}) }}

@@ -17,7 +17,7 @@
                     <tr>
                         <td style="background: #fff1e0; padding: 12px 14px; border-radius: 6px;">
                             <p style="color: #94704a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">{{ 'quote.pdf.valid_until'|trans }}</p>
-                            <p style="color: #1e293b; font-size: 14px; font-weight: 600; margin: 0; Margin: 0;">{% if quote.due %}{{ quote.due|date }}{% else %}—{% endif %}</p>
+                            <p style="color: #1e293b; font-size: 14px; font-weight: 600; margin: 0; Margin: 0;">{% if quote.due %}{{ quote.due|format_date('long') }}{% else %}—{% endif %}</p>
                         </td>
                         <td style="width: 8px;"></td>
                         <td style="background: #ecf7ee; padding: 12px 14px; border-radius: 6px;">

@@ -59,6 +59,8 @@ return App::config([
             ['name' => 'custom', 'factory' => 'offline'],
             ['name' => 'cash', 'factory' => 'offline'],
             ['name' => 'bank_transfer', 'factory' => 'offline'],
+            ['name' => 'cheque', 'factory' => 'offline'],
+            ['name' => 'card_terminal', 'factory' => 'offline'],
             ['name' => 'paypal_express_checkout', 'factory' => 'paypal_express_checkout', 'form' => PaypalExpressCheckout::class],
             ['name' => 'paypal_pro_checkout', 'factory' => 'paypal_pro_checkout', 'form' => PaypalProCheckout::class],
             ['name' => 'stripe_checkout', 'factory' => 'stripe_checkout', 'form' => StripeCheckout::class],

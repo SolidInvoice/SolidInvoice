@@ -23,11 +23,7 @@ enum ClientStatus: string implements HasStatusLabel
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::Active => 'Active',
-            self::Inactive => 'Inactive',
-            self::Archived => 'Archived',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string

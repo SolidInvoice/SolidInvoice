@@ -19,6 +19,8 @@ use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
+use SolidInvoice\McpBundle\Security\PublicMcpRequestMatcher;
+use SolidInvoice\UserBundle\Security\LoginLinkSuccessHandler;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidInvoice\UserBundle\Security\UserChecker;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
@@ -85,7 +87,7 @@ $config = LoginExtension::defaultFormLoginConfig([
             'security' => false,
         ],
         'mcp_well_known' => [
-            'pattern' => '^/\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json|agent-skills/index\.json)',
+            'pattern' => '^/(\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json|agent-skills/|ai-catalog\.json$)|auth\.md$)',
             'stateless' => true,
             'security' => false,
         ],
@@ -101,31 +103,63 @@ $config = LoginExtension::defaultFormLoginConfig([
             'user_checker' => 'security.user_checker.chain.mcp',
             'custom_authenticators' => [McpOAuthAuthenticator::class],
         ],
+        // Google One Tap verify/nonce endpoints are stateless and cross-origin;
+        // they authenticate from the request body (the Google JWT + single-use
+        // nonce), never from a session, so the firewall itself carries no
+        // security. The `_onetap_login_check` route is deliberately excluded
+        // from this pattern so it falls through to `main`, where the login_link
+        // authenticator can establish the session. (Only present in the SaaS
+        // build, where the `^/onetap/*` routes are registered.)
+        'onetap' => [
+            'pattern' => '^/onetap/(verify|nonce)$',
+            'security' => false,
+        ],
         'main' => [
             'user_checker' => UserChecker::class,
             'custom_authenticators' => [OAuthAuthenticator::class],
             'form_login' => [
                 'default_target_path' => '_select_company',
             ],
+            // Consumes the single-use login links minted by the Google One Tap
+            // verify endpoint. Short-lived and single-use so a leaked link cannot
+            // be reused. Inert outside the SaaS build (the check route does not
+            // exist there, so the authenticator never matches a request).
+            'login_link' => [
+                'check_route' => '_onetap_login_check',
+                'lifetime' => 60,
+                'max_uses' => 1,
+                'signature_properties' => ['id'],
+                'success_handler' => LoginLinkSuccessHandler::class,
+            ],
         ],
     ],
     'access_control' => [
+        // MCP handshake + tools/list are public so tools can be browsed
+        // without an account; tools/call still requires a token.
+        [
+            'request_matcher' => PublicMcpRequestMatcher::class,
+            'roles' => ['PUBLIC_ACCESS'],
+        ],
         [
             'path' => '^(?:' .
                 '/_components/SystemInstallation|' .
                 '/webhook/lemon_squeezy|' .
                 '/view/(?:quote|invoice)/[A-Za-z0-9-]{36}(?:\.pdf)?|' .
                 '/(?:login|register)$|' .
-                '/forgot-password|' .
                 '/oauth/connect|' .
                 '/oauth/(token|register|revoke)$|' .
                 '/\.well-known/oauth-authorization-server|' .
                 '/\.well-known/oauth-protected-resource|' .
                 '/\.well-known/mcp/server-card\.json$|' .
-                '/\.well-known/agent-skills/index\.json$|' .
+                '/\.well-known/agent-skills/|' .
+                '/\.well-known/ai-catalog\.json$|' .
+                '/auth\.md$|' .
+                '/robots\.txt$|' .
+                '/sitemap\.xml$|' .
                 '/\.well-known/api-catalog$|' .
                 '/install|' .
                 '/verify$|' .
+                '/onetap/login-check$|' .
                 '/logout$|' .
                 '/invite/accept/[a-zA-Z0-9-]{26}$|' .
                 '/payments/create/[a-zA-Z0-9-]{36}$|' .

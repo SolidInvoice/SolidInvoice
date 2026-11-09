@@ -123,6 +123,7 @@ final class InstallationTest extends PantherTestCase
             self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)'),
             self::getContainer()->getParameter('kernel.cache_dir'),
             self::getContainer()->getParameter('kernel.logs_dir'),
+            self::getContainer()->get('translator'),
         );
 
         self::assertSame([], $req->getFailedRequirements());
@@ -159,7 +160,8 @@ final class InstallationTest extends PantherTestCase
             ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
+                // The Next button also exists on the page being replaced; wait for a field only this step has.
+                static fn (Client $client) => $client->waitFor('select[name="installation[user_account][locale]"]')
             )
             ->assertSee('User Account')
             ->selectFieldOption('installation[user_account][locale]', 'en')
@@ -180,7 +182,7 @@ final class InstallationTest extends PantherTestCase
             ->waitUntilSeeIn('h1', 'Installation Complete!')
             ->assertSee('Installation Complete!')
             ->click('button[name="installation[navigator][finish]"]')
-            ->waitUntilSeeIn('h2', "Let's get you set up")
+            ->waitUntilSeeIn('h2', "Who's sending the invoice?")
             ->assertOn('/onboarding');
     }
 

@@ -34,12 +34,6 @@ parameters:
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
-			path: src/ApiBundle/State/Processor/RecordPaymentProcessor.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
 			path: src/ApiBundle/State/Processor/RecurringInvoiceTransitionProcessor.php
 
 		-
@@ -365,6 +359,18 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/CoreBundle/Tests/Search/QualifiedResultFormatterInterfaceTest.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\Company\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
+
+		-
+			message: '#^Property SolidInvoice\\CoreBundle\\Entity\\Company\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
 
 		-
 			message: '#^Trait SolidInvoice\\CoreBundle\\Traits\\SerializeTrait is used zero times and is not analysed\.$#'
@@ -847,12 +853,6 @@ parameters:
 			path: src/PaymentBundle/Listener/PaymentCompleteListener.php
 
 		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/PaymentBundle/Mcp/PaymentWriteTools.php
-
-		-
 			message: '#^Method SolidInvoice\\PaymentBundle\\Tests\\Form\\Type\\PaymentTypeTest\:\:getTypes\(\) return type with generic interface Symfony\\Component\\Form\\FormTypeInterface does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -1247,12 +1247,6 @@ parameters:
 			identifier: doctrine.columnType
 			count: 1
 			path: src/UserBundle/Entity/ApiTokenHistory.php
-
-		-
-			message: '#^Property SolidInvoice\\UserBundle\\Entity\\ResetPasswordRequest\:\:\$user type mapping mismatch\: property can contain SolidInvoice\\UserBundle\\Entity\\User\|null but database expects SolidInvoice\\UserBundle\\Entity\\User\.$#'
-			identifier: doctrine.associationType
-			count: 1
-			path: src/UserBundle/Entity/ResetPasswordRequest.php
 
 		-
 			message: '#^Property SolidInvoice\\UserBundle\\Entity\\User\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'

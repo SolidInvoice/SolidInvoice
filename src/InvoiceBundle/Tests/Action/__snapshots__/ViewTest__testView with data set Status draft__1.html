@@ -24,7 +24,7 @@
                 <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="Print">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2m10-8V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"></path><path d="M7 15a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"></path></g></svg>
                 </button>
-                                    <a href="/invoices/view/0R3AQMM04Q27QSPS2T5KS1MNM0.pdf" target="_blank" class="btn btn-ghost btn-icon" title="PDF">
+                                                                    <a href="/invoices/view/0R3AQMM04Q27QSPS2T5KS1MNM0.pdf" target="_blank" class="btn btn-ghost btn-icon" title="PDF">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M5 12V5a2 2 0 0 1 2-2h7l5 5v4M5 18h1.5a1.5 1.5 0 0 0 0-3H5v6m12-3h2m1-3h-3v6m-6-6v6h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2z"></path></g></svg>
                     </a>
                 
@@ -70,24 +70,24 @@
                 </div>
             </div>
 
-                                        <div class="btn-group">
-                    <a href="/invoices/action/accept/0R3AQMM04Q27QSPS2T5KS1MNM0" class="btn btn-primary btn-hero">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"></path></svg>
-                        Publish
-                    </a>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <div class="btn-group">
+                                            <form method="post" action="/invoices/action/send/0R3AQMM04Q27QSPS2T5KS1MNM0" class="d-inline">
+                            <input type="hidden" name="_token" value="send_invoice">
+                            <button type="submit" class="btn btn-primary btn-hero rounded-end-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"></path></svg>
+                                Send to client
+                            </button>
+                        </form>
+                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                                                            <form method="post" action="/invoices/action/send/0R3AQMM04Q27QSPS2T5KS1MNM0">
-                                    <input type="hidden" name="_token" value="send_invoice">
-                                    <button type="submit" class="dropdown-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"></path></svg>
-                                        Publish and Send
-                                    </button>
-                                </form>
-                                                    </li>
+                            <a class="dropdown-item" href="/invoices/action/accept/0R3AQMM04Q27QSPS2T5KS1MNM0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"></path></svg>
+                                Publish without sending
+                            </a>
+                        </li>
                     </ul>
                 </div>
                     </div>
@@ -235,5 +235,6 @@
     </div>
 
         
+    
     </div>
 </body></html>

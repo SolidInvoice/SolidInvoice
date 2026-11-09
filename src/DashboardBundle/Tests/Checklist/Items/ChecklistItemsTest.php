@@ -17,6 +17,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\DashboardBundle\Checklist\Items\AddTaxRateItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\ConfigurePaymentGatewayItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\CreateClientItem;
+use SolidInvoice\DashboardBundle\Checklist\Items\CreateCompanyItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\CustomizeSettingsItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\SendInvoiceItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\UploadLogoItem;
@@ -30,6 +31,16 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 final class ChecklistItemsTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
+
+    public function testCreateCompanyItemIsAlwaysCompleteAndListedFirst(): void
+    {
+        $item = self::getContainer()->get(CreateCompanyItem::class);
+
+        self::assertSame('dashboard.checklist.create_company.name', $item->getName());
+        self::assertTrue($item->active());
+        self::assertTrue($item->isComplete());
+        self::assertGreaterThan(self::getContainer()->get(CreateClientItem::class)->getPriority(), $item->getPriority());
+    }
 
     // ============================================================================
     // UploadLogoItem Tests

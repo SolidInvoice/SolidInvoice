@@ -4,9 +4,9 @@ Guidance for AI agents working in this repository. Everything here is derived fr
 repository itself; each rule cites the file that establishes it. Where this file and the
 code disagree, the code wins — fix this file in the same PR.
 
-**Default branch is `3.1.x`, not `main`.** Branch from and target `3.1.x`. Release
+**Default branch is `3.2.x`, not `main`.** Branch from and target `3.2.x`. Release
 branches are one per minor (`2.3.x`, `2.4.x`, `3.0.x`, `3.1.x`); `main` does not exist.
-`unit-tests.yml` only runs on pushes to `3.0.x` and `3.1.x`.
+`unit-tests.yml` only runs on pushes to `3.1.x` and `3.2.x`.
 
 ---
 
@@ -20,7 +20,7 @@ Versions below are the constraints in `composer.json` / `package.json` as of thi
 
 | Thing | Constraint | Source |
 |---|---|---|
-| PHP | `>=8.4.1`, `config.platform.php = 8.4.1` | `composer.json` |
+| PHP | `>=8.4.27`, `config.platform.php = 8.4.27` | `composer.json` |
 | Symfony | `^8.1` | `composer.json`, `extra.symfony.require` |
 | Doctrine ORM / DBAL | `^3.6` / `^4.4` | `composer.json` |
 | API Platform | `^4.3` | `composer.json` |
@@ -198,7 +198,7 @@ Explicitly **skipped**: `MethodChainingNewlineFixer`, `PhpdocLineSpanFixer`,
   `src/CoreBundle/Entity/Discount.php`), for consistency with entities, not because
   Doctrine proxies them — it does not.
 - Typed class constants where the value is fixed: `private const string INDEX_NAME = '…';`
-  (`migrations/Version30100_1.php`), `private const int DEFAULT_SUBUNIT = 2;`
+  (`migrations/Version30100_1.php`), `public const int DEFAULT_SUBUNIT = 2;`
   (`src/MoneyBundle/Currency/CurrencyScale.php`).
 - **Backed enums, never class constants, for fixed sets of values.** The codebase is
   consistent on this: `src/TaxBundle/Enum/{TaxType,TaxDirection,TaxCategory,RoundingStrategy}.php`,
@@ -384,15 +384,24 @@ Live Components (`symfony/ux-live-component`, and `Twig/Components/` directories
 
 ## 8. Translations — no hard-coded strings
 
-`TRANSLATING.md` is a real spec and it is enforced socially, not by a linter. The rules
-that bite:
+`TRANSLATING.md` is a real spec, and CI enforces it: `translations-lint.yml` runs
+`lint:yaml`, `lint:translations`, `lint:twig` and
+`src/CoreBundle/Tests/Translation/TranslationCatalogTest.php` (sorted snake_case keys, ICU
+plurals, no undefined/unused keys, no natural-language keys, no hard-coded template text).
+The rules that bite:
 
 - **No hard-coded user-facing English**, anywhere: templates, forms, controllers,
   validators, enums.
 - Catalogs are app-level, one file per domain+locale: `translations/<domain>.<locale>.yml`.
   They are **not** split per bundle.
 - Domains are a fixed small set: `messages` (default), `email`, `validators`, plus
-  `messages+intl-icu` only where ICU plural/select is needed.
+  `messages+intl-icu` only where ICU plural/select is needed. Plurals are always ICU — the
+  legacy `{1}…|]1,Inf[` syntax fails the lint.
+- Whole sentences with `%placeholders%`; never concatenate translated fragments.
+- JS has no translator: pass translated strings to Stimulus controllers as values.
+- Email subjects are `email`-domain keys set on the email class (parameters via
+  `MessageSubjectParametersInterface`); one listener translates them. Plain-text email
+  templates are `*.txt.twig`, which Twig does not HTML-escape.
 - Keys are dotted, lowercase, feature-namespaced (`invoice.list.title`), stored **nested**
   and alphabetically sorted. English is the source locale.
 - **Never use natural-language text as a key.** `'Save'|trans` is wrong — use `action.save`.
@@ -735,6 +744,14 @@ gated. The bar below is the real one.
 - Unit tests sit at the top level of `src/*Bundle/Tests/`; functional tests in
   `Tests/Functional/`; API tests under `Tests/Functional/Api/`.
 - Mocking should use **PHPUnit Mocks**. There are some old tests using Mockery (`mockery/mockery`), plus `phpstan/phpstan-mockery`, but we actively want to move away from this and strictly only use PHPUnit mocks everywhere going forward.
+- **`createStub()` unless the test sets an expectation.** A double that only has
+  `method()->willReturn()` configured is a stub; reach for `createMock()` only when that
+  test calls `expects()` on it. A mock with no expectations triggers a PHPUnit notice
+  ("No expectations were configured for the mock object…"), and the suite should run
+  notice-free. Don't silence it with `#[AllowMockObjectsWithoutExpectations]`. When
+  `setUp()` builds the collaborators, create stubs there and have the tests that assert
+  on calls swap in a mock before building the subject (see `OAuthAuthenticatorTest`).
+  Type stub properties as `Foo & Stub`; a `MockObject` still fits that type.
 - Fixtures are **Foundry** (`zenstruck/foundry ^2.10`) with `FoundryExtension` and
   auto-reset enabled in `phpunit.xml.dist`. Also available:
   `doctrine/doctrine-fixtures-bundle`, `liip/test-fixtures-bundle`. Factories live next to

@@ -24,18 +24,11 @@ enum QuoteStatus: string implements HasStatusLabel
     case Cancelled = 'cancelled';
     case Declined = 'declined';
     case Archived = 'archived';
+    case Expired = 'expired';
 
     public function getLabel(): string
     {
-        return match ($this) {
-            self::New => 'New',
-            self::Draft => 'Draft',
-            self::Pending => 'Pending',
-            self::Accepted => 'Accepted',
-            self::Cancelled => 'Cancelled',
-            self::Declined => 'Declined',
-            self::Archived => 'Archived',
-        };
+        return 'status.' . $this->value;
     }
 
     public function getColor(): string
@@ -48,6 +41,7 @@ enum QuoteStatus: string implements HasStatusLabel
             self::Cancelled => 'gray',
             self::Declined => 'red',
             self::Archived => 'purple',
+            self::Expired => 'orange',
         };
     }
 }

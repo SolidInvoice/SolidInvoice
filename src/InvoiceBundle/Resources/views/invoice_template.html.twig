@@ -23,7 +23,7 @@
                     {% endblock %}
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
-                            From:
+                            {{ 'invoice.template.default.from'|trans }}
                             <h4>{{ company_name() }}</h4>
 
                             {% for identifier in tax_identifiers() %}
@@ -54,7 +54,7 @@
                             {% endif %}
                         </div>
                         <div class="col-sm-4 invoice-col">
-                            To:
+                            {{ 'invoice.template.default.to'|trans }}
                             <h4>{{ invoice.client }}</h4>
                             {% if invoice.client.website is not empty %}
                                 <p>
@@ -79,7 +79,7 @@
                                 {% for user in invoice.users %}
                                     <address class="col-6">
                                         <strong>{{ user }}</strong><br/>
-                                        {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
+                                        {{ icon('envelope-o') }} {{ 'invoice.template.default.contact_email'|trans({'%email%': user.email}) }}<br/>
                                     </address>
                                 {% endfor %}
                             </p>
@@ -88,7 +88,7 @@
                             <dl class="dl-horizontal">
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ invoice.invoiceId ?? invoice.id }}</dd>
-                                <dt>{{ "invoice.total"|trans }}</dt>
+                                <dt>{{ "billing.total"|trans }}</dt>
                                 <dd>{{ invoice.total|formatCurrency(invoice.currency) }}</dd>
                             </dl>
                         </div>
@@ -98,7 +98,7 @@
                                     <dt>{{ "invoice.date"|trans }}</dt>
                                     <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
                                     {% if invoice.due is not empty %}
-                                        <dt>{{ "invoice.due_date"|trans }}</dt>
+                                        <dt>{{ "billing.due_date"|trans }}</dt>
                                         <dd>{{ invoice.due | date('d F Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</dd>
                                     {% endif %}
                                 </dl>
@@ -114,13 +114,13 @@
                         <table id="invoice-rows" class="table table-condensed">
                             <thead>
                             <tr>
-                                <th>{{ 'invoice.item.heading.description'|trans }}</th>
+                                <th>{{ 'label.description'|trans }}</th>
                                 <th>{{ 'invoice.item.heading.price'|trans }}</th>
                                 <th>{{ 'invoice.item.heading.qty'|trans }}</th>
                                 {% if invoice.tax.positive %}
-                                    <th>{{ 'invoice.item.heading.tax'|trans }}</th>
+                                    <th>{{ 'billing.tax'|trans }}</th>
                                 {% endif %}
-                                <th class="text-right">{{ 'invoice.item.heading.total'|trans }}</th>
+                                <th class="text-right">{{ 'billing.total'|trans }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -204,7 +204,7 @@
                             {% if invoice.hasDiscount %}
                                 <tr>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
-                                        <strong>{{ 'invoice.discount'|trans }}</strong>
+                                        <strong>{{ 'billing.discount'|trans }}</strong>
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="invoice-discount">
@@ -219,7 +219,7 @@
                                     <tr>
                                         <td colspan="{{ footerSpan }}" class="no-line text-right">
                                             <strong>
-                                                Payment:
+                                                {{ 'invoice.template.default.payment'|trans }}
                                             </strong>
                                             {{ payment.method.name }}
                                         </td>
@@ -237,7 +237,7 @@
                                         {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.isZero %}
                                             {{ 'invoice.balance'|trans }}
                                         {% else %}
-                                            {{ 'invoice.total'|trans }}
+                                            {{ 'billing.total'|trans }}
                                         {% endif %}
                                     </strong>
                                 </td>

@@ -25,7 +25,7 @@ final class ViewActionTest extends TestCase
         $action = ViewAction::new('route', ['param' => 'value']);
 
         self::assertSame('eye', $action->getIcon());
-        self::assertSame('View', $action->getLabel());
+        self::assertSame('action.view', $action->getLabel());
         self::assertSame('route', $action->getRoute());
         self::assertSame(['param' => 'value'], $action->getParameters());
     }

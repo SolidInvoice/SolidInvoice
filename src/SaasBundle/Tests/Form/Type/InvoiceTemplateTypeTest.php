@@ -23,6 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Translation\IdentityTranslator;
 use function array_map;
 use function dirname;
 use function sprintf;
@@ -70,7 +71,7 @@ final class InvoiceTemplateTypeTest extends TypeTestCase
         ]);
 
         return [
-            new PreloadedExtension([new InvoiceTemplateType($registry)], []),
+            new PreloadedExtension([new InvoiceTemplateType($registry, new IdentityTranslator())], []),
         ];
     }
 

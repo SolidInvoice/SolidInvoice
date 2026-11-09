@@ -16,7 +16,7 @@
                 </div>
                 <div class="text-end">
                     <div class="fst-italic fs-4">{{ company_name() }}</div>
-                    <div class="text-muted small">{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    <div class="text-muted small">{{ invoice.invoiceDate|format_date('long') }}</div>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div style="color: #94704a; font-style: italic;" class="mb-2">III. {{ 'invoice.item.heading.description'|trans }}</div>
+            <div style="color: #94704a; font-style: italic;" class="mb-2">III. {{ 'label.description'|trans }}</div>
             <table class="table" style="background: transparent;">
                 <tbody>
                     {% for line in invoice.lines %}
@@ -48,11 +48,11 @@
 
             <div class="row justify-content-end mt-4">
                 <div class="col-md-5">
-                    <div style="color: #94704a; font-style: italic;" class="text-end mb-2">IV. {{ 'invoice.total'|trans }}</div>
+                    <div style="color: #94704a; font-style: italic;" class="text-end mb-2">IV. {{ 'billing.total'|trans }}</div>
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
-                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'billing.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between p-3 rounded" style="background: #f5ebd9;">
-                        <strong>{{ 'invoice.total'|trans }}</strong>
+                        <strong>{{ 'billing.total'|trans }}</strong>
                         <strong class="fs-4" style="color: #94704a;">{{ invoice.total|formatCurrency(currency) }}</strong>
                     </div>
                 </div>

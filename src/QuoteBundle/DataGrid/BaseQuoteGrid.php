@@ -26,6 +26,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
@@ -56,20 +57,24 @@ abstract class BaseQuoteGrid extends Grid
     {
         return [
             StringColumn::new('quoteId')
-                ->label('Quote #')
+                ->label('quote.grid.quote_number')
                 ->cellClass('col-id'),
             StringColumn::new('client')
+                ->label('label.client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('total')
+                ->label('billing.total')
                 ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getCurrency())),
             StringColumn::new('status')
+                ->label('label.status')
                 ->twigFunction('quote_label')
-                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (QuoteStatus $s) => [$s->value, $s->name], QuoteStatus::cases()), 1, 0))->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (QuoteStatus $s) => [$s->value, $s->getLabel()], QuoteStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('tax')
+                ->label('billing.tax')
                 ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getCurrency())),
             MoneyColumn::new('discount.value')
-                ->label('Discount')
+                ->label('billing.discount')
                 ->searchable(false)
                 ->formatValue(function (float | BigNumber $value, Quote $quote): Money {
                     $discountAmount = $this->calculator->calculateDiscount($quote);
@@ -77,8 +82,13 @@ abstract class BaseQuoteGrid extends Grid
                     return new Money((string) $discountAmount, $quote->getCurrency());
                 }),
             DateTimeColumn::new('created')
+                ->label('label.created')
                 ->format('d F Y')
-                ->filter(new DateRangeFilter('created'))
+                ->filter(new DateRangeFilter('created')),
+            RelativeDateColumn::new('due')
+                ->label('quote.valid_until')
+                ->format('d F Y')
+                ->filter(new DateRangeFilter('due')),
         ];
     }
 
@@ -97,7 +107,7 @@ abstract class BaseQuoteGrid extends Grid
     #[Override]
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Delete')
+        yield BatchAction::new('action.delete')
             ->icon('trash')
             ->color('danger')
             ->action(static function (QuoteRepository $repository, array $selectedItems): void {

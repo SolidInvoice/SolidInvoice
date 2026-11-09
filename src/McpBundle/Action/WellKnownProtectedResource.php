@@ -18,9 +18,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/.well-known/oauth-protected-resource', name: 'mcp_well_known_protected_resource', methods: ['GET'])]
 final class WellKnownProtectedResource
 {
+    // RFC 9728 §3.1: metadata for the /_mcp resource lives at the path-suffixed URL; the bare one stays for older clients.
+    #[Route(path: '/.well-known/oauth-protected-resource', name: 'mcp_well_known_protected_resource', methods: ['GET'])]
+    #[Route(path: '/.well-known/oauth-protected-resource/_mcp', name: 'mcp_well_known_protected_resource_mcp', methods: ['GET'])]
     public function __invoke(Request $request): JsonResponse
     {
         $base = rtrim($request->getSchemeAndHttpHost() . $request->getBaseUrl(), '/');

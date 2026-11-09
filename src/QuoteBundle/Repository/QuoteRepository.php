@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
+use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -20,6 +23,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
+use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function sprintf;
 
 /**
  * @extends EntityRepository<Quote>
@@ -29,6 +35,31 @@ class QuoteRepository extends EntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quote::class);
+    }
+
+    /**
+     * Backs the UniqueEntity constraint on Quote::$quoteId. Archived documents keep their
+     * number, so they count; a blank number is not a number, so it never collides. The
+     * CompanyFilter scopes the lookup to the current company.
+     *
+     * @param array<string, mixed> $criteria
+     *
+     * @return list<Quote>
+     */
+    public function findByQuoteIdIncludingArchived(array $criteria): array
+    {
+        if (($criteria['quoteId'] ?? '') === '') {
+            return [];
+        }
+
+        $filters = $this->getEntityManager()->getFilters();
+        $filters->disable('archivable');
+
+        try {
+            return array_values($this->findBy($criteria));
+        } finally {
+            $filters->enable('archivable');
+        }
     }
 
     public function getTotalQuotes(?QuoteStatus $status = null): int
@@ -208,5 +239,82 @@ class QuoteRepository extends EntityRepository
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Companies holding at least one pending quote whose last valid day is before `$today`.
+     *
+     * Runs across every tenant, so the caller must suspend the company filter.
+     *
+     * @return list<Ulid>
+     */
+    public function getCompanyIdsWithQuotesToExpire(DateTimeInterface $today): array
+    {
+        // Array, not single-column, hydration: only it converts the column to a Ulid.
+        return array_column($this->createExpirableQueryBuilder($today)
+            ->select('DISTINCT c.id AS id')
+            ->innerJoin('q.company', 'c')
+            ->getQuery()
+            ->getArrayResult(), 'id');
+    }
+
+    /**
+     * IDs of the current company's pending quotes whose last valid day is before `$today`.
+     * Only IDs, so a company with thousands of them does not fill the identity map.
+     *
+     * @return list<Ulid>
+     */
+    public function getIdsOfQuotesToExpire(DateTimeInterface $today): array
+    {
+        return array_column($this->createExpirableQueryBuilder($today)
+            ->select('q.id AS id')
+            ->getQuery()
+            ->getArrayResult(), 'id');
+    }
+
+    /**
+     * Pending quotes whose validity ends between today and `$today + $days`, soonest first.
+     *
+     * @return Quote[]
+     */
+    public function getQuotesExpiringSoon(DateTimeInterface $today, int $days, int $limit = 5): array
+    {
+        return $this->createExpiringSoonQueryBuilder($today, $days)
+            ->innerJoin('q.client', 'c')
+            ->addSelect('c')
+            ->orderBy('q.due', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countQuotesExpiringSoon(DateTimeInterface $today, int $days): int
+    {
+        return (int) $this->createExpiringSoonQueryBuilder($today, $days)
+            ->select('COUNT(q.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    private function createExpirableQueryBuilder(DateTimeInterface $today): QueryBuilder
+    {
+        return $this->createQueryBuilder('q')
+            ->where('q.status = :status')
+            ->andWhere('q.due < :today')
+            ->setParameter('status', QuoteStatus::Pending)
+            ->setParameter('today', $today, Types::DATE_IMMUTABLE);
+    }
+
+    private function createExpiringSoonQueryBuilder(DateTimeInterface $today, int $days): QueryBuilder
+    {
+        $until = DateTimeImmutable::createFromInterface($today)->modify(sprintf('+%d days', $days));
+
+        return $this->createQueryBuilder('q')
+            ->where('q.status = :status')
+            ->andWhere('q.due >= :today')
+            ->andWhere('q.due <= :until')
+            ->setParameter('status', QuoteStatus::Pending)
+            ->setParameter('today', $today, Types::DATE_IMMUTABLE)
+            ->setParameter('until', $until, Types::DATE_IMMUTABLE);
     }
 }

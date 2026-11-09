@@ -27,7 +27,6 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
@@ -134,11 +133,25 @@ final class WithinPlanClientLimitValidatorTest extends ConstraintValidatorTestCa
         $this->validator->validate(new Client(), $this->createStub(Constraint::class));
     }
 
-    #[AllowMockObjectsWithoutExpectations]
-    public function testWrongValueTypeThrows(): void
+    public function testViolationForInlineNewClientName(): void
     {
-        $this->expectException(UnexpectedValueException::class);
+        // Property-level use on the invoice/quote DTOs: the value is the new client's name.
+        $constraint = new WithinPlanClientLimit();
 
-        $this->validator->validate('not-a-client', new WithinPlanClientLimit());
+        $this->toggle
+            ->expects($this->once())
+            ->method('isActive')
+            ->with('saas_enabled')
+            ->willReturn(true);
+        $this->clientRepository->method('getTotalClients')->willReturn(10);
+        $this->featureGate
+            ->expects($this->once())
+            ->method('canUse')
+            ->with(Feature::TotalClients->value, 10)
+            ->willReturn(false);
+
+        $this->validator->validate('Acme', $constraint);
+
+        $this->buildViolation($constraint->message)->assertRaised();
     }
 }

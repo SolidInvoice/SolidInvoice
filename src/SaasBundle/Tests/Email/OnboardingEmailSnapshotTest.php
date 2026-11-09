@@ -22,25 +22,23 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
-use SolidInvoice\SaasBundle\Onboarding\Step\AddFirstClientStep;
-use SolidInvoice\SaasBundle\Onboarding\Step\CustomizeLogoStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
-use SolidInvoice\SaasBundle\Onboarding\Step\RecurringBillingStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\UpgradeOfferStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailFinalReminderStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\VerifyEmailReminderStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\WelcomeStep;
 use SolidInvoice\SaasBundle\Tests\BillingModeFactory;
 use SolidInvoice\Test\SaasKernel;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Security\EmailVerification\EmailVerificationGateInterface;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class OnboardingEmailSnapshotTest extends KernelTestCase
@@ -57,9 +55,9 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private const string TRIAL_END = '2026-04-22 00:00:00';
 
-    private Environment $twig;
+    private const string VERIFY_URL = 'https://app.example.test/verify?id=abc&signature=xyz';
 
-    private TranslatorInterface $translator;
+    private Environment $twig;
 
     #[Override]
     protected static function getKernelClass(): string
@@ -72,7 +70,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
         parent::setUp();
 
         $this->twig = self::getContainer()->get('twig');
-        $this->translator = self::getContainer()->get(TranslatorInterface::class);
     }
 
     public function testWelcomeHtmlSnapshot(): void
@@ -83,16 +80,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testWelcomeTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(WelcomeStep::class)));
-    }
-
-    public function testAddFirstClientHtmlSnapshot(): void
-    {
-        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(AddFirstClientStep::class)));
-    }
-
-    public function testAddFirstClientTextSnapshot(): void
-    {
-        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(AddFirstClientStep::class)));
     }
 
     public function testSendFirstInvoiceHtmlSnapshot(): void
@@ -113,26 +100,6 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testTurnInvoicesIntoPaymentsTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(TurnInvoicesIntoPaymentsStep::class)));
-    }
-
-    public function testCustomizeLogoHtmlSnapshot(): void
-    {
-        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(CustomizeLogoStep::class)));
-    }
-
-    public function testCustomizeLogoTextSnapshot(): void
-    {
-        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(CustomizeLogoStep::class)));
-    }
-
-    public function testRecurringBillingHtmlSnapshot(): void
-    {
-        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(RecurringBillingStep::class)));
-    }
-
-    public function testRecurringBillingTextSnapshot(): void
-    {
-        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(RecurringBillingStep::class)));
     }
 
     public function testFeedbackHtmlSnapshot(): void
@@ -165,18 +132,48 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
         $this->assertMatchesTextSnapshot($this->renderText($this->trialAboutToEndStep()));
     }
 
-    private function renderHtml(OnboardingEmailStepInterface $step): string
+    public function testTrialAboutToEndWithCardOnFileHtmlSnapshot(): void
     {
-        $email = $step->createEmail($this->context());
-
-        return $this->twig->render($email->getHtmlTemplate(), $email->getContext());
+        $this->assertMatchesHtmlSnapshot($this->renderHtml($this->trialAboutToEndStep(paidTrial: true)));
     }
 
-    private function renderText(OnboardingEmailStepInterface $step): string
+    public function testWelcomeForUnverifiedUserHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(new WelcomeStep(), ['verify_url' => self::VERIFY_URL]));
+    }
+
+    public function testVerifyEmailReminderHtmlSnapshot(): void
+    {
+        $step = new VerifyEmailReminderStep(self::getContainer()->get(EmailVerificationGateInterface::class));
+
+        $this->assertMatchesHtmlSnapshot($this->renderHtml($step, ['verify_url' => self::VERIFY_URL]));
+    }
+
+    public function testVerifyEmailFinalReminderTextSnapshot(): void
+    {
+        $step = new VerifyEmailFinalReminderStep(self::getContainer()->get(EmailVerificationGateInterface::class));
+
+        $this->assertMatchesTextSnapshot($this->renderText($step, ['verify_url' => self::VERIFY_URL]));
+    }
+
+    /**
+     * @param array<string, mixed> $extra what the handler adds, such as the verify link
+     */
+    private function renderHtml(OnboardingEmailStepInterface $step, array $extra = []): string
     {
         $email = $step->createEmail($this->context());
 
-        return $this->twig->render($email->getTextTemplate(), $email->getContext());
+        return $this->twig->render($email->getHtmlTemplate(), $email->getContext() + $extra);
+    }
+
+    /**
+     * @param array<string, mixed> $extra what the handler adds, such as the verify link
+     */
+    private function renderText(OnboardingEmailStepInterface $step, array $extra = []): string
+    {
+        $email = $step->createEmail($this->context());
+
+        return $this->twig->render($email->getTextTemplate(), $email->getContext() + $extra);
     }
 
     private function context(): OnboardingContext
@@ -204,22 +201,21 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
             $plan,
             new DateTimeImmutable(self::TRIAL_START),
             new DateTimeImmutable(self::TRIAL_END),
+            new DateTimeImmutable(self::FROZEN_NOW),
+        );
+    }
+
+    private function trialAboutToEndStep(bool $paidTrial = false): TrialAboutToEndStep
+    {
+        return new TrialAboutToEndStep(
+            self::getContainer()->get(ClientRepository::class),
+            self::getContainer()->get(InvoiceRepository::class),
+            $paidTrial ? BillingModeFactory::paidTrial('SOLID30') : BillingModeFactory::freeTrial('SOLID30'),
         );
     }
 
     private function upgradeOfferStep(): UpgradeOfferStep
     {
-        return new UpgradeOfferStep($this->translator, BillingModeFactory::freeTrial('SOLID30'));
-    }
-
-    private function trialAboutToEndStep(): TrialAboutToEndStep
-    {
-        return new TrialAboutToEndStep(
-            $this->translator,
-            new MockClock(self::FROZEN_NOW),
-            self::getContainer()->get(ClientRepository::class),
-            self::getContainer()->get(InvoiceRepository::class),
-            BillingModeFactory::freeTrial('SOLID30'),
-        );
+        return new UpgradeOfferStep(BillingModeFactory::freeTrial('SOLID30'));
     }
 }

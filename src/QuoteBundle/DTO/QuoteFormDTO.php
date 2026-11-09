@@ -19,9 +19,11 @@ use Doctrine\Common\Collections\Collection;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Validator\Constraints\UniqueClientName;
+use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,6 +42,7 @@ final class QuoteFormDTO
     #[Assert\NotBlank(groups: ['new_client'])]
     #[Assert\Length(max: 125, groups: ['new_client'])]
     #[UniqueClientName(groups: ['new_client'])]
+    #[WithinPlanClientLimit(groups: ['new_client'])]
     public ?string $newClientName = null;
 
     #[Assert\NotBlank(groups: ['new_client'])]
@@ -57,7 +60,10 @@ final class QuoteFormDTO
     #[Assert\NotBlank]
     public string $quoteId = '';
 
+    public QuoteValidity $validity = QuoteValidity::None;
+
     #[Assert\Type(DateTimeInterface::class)]
+    #[Assert\NotBlank(message: 'quote.validity.date_required', groups: ['custom_validity'])]
     public ?DateTimeInterface $due = null;
 
     public ?Discount $discount = null;
@@ -82,7 +88,7 @@ final class QuoteFormDTO
     /**
      * @var Collection<int, Contact>
      */
-    #[Assert\Count(min: 1, groups: ['existing_client'])]
+    #[Assert\Count(min: 1, minMessage: 'quote.users.min', groups: ['existing_client'])]
     public Collection $users;
 
     /**

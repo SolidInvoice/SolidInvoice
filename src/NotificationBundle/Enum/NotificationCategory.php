@@ -24,11 +24,11 @@ enum NotificationCategory: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::CLIENT => 'Client Notifications',
-            self::INVOICE => 'Invoice Notifications',
-            self::PAYMENT => 'Payment Notifications',
-            self::QUOTE => 'Quote Notifications',
-            self::OTHER => 'Other Notifications',
+            self::CLIENT => 'notifications.categories.client',
+            self::INVOICE => 'notifications.categories.invoice',
+            self::PAYMENT => 'notifications.categories.payment',
+            self::QUOTE => 'notifications.categories.quote',
+            self::OTHER => 'notifications.categories.other',
         };
     }
 

@@ -22,7 +22,6 @@ use function array_key_exists;
 use function assert;
 use function is_array;
 use function sprintf;
-use function Symfony\Component\String\u;
 
 /**
  * @see \SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter\DateRangeFilterTest
@@ -41,7 +40,7 @@ final readonly class DateRangeFilter implements ColumnFilterInterface
 
     public function formOptions(): array
     {
-        return ['field_name' => u($this->field)->snake()->replace('_', ' ')->title()->toString()];
+        return [];
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void
