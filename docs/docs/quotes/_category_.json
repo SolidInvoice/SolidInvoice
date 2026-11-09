@@ -1,0 +1,9 @@
+{
+  "label": "📝 Quotes",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "title": "Quotes",
+    "description": "Create quotes, send them to clients, and turn accepted quotes into invoices."
+  }
+}

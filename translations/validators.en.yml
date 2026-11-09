@@ -69,6 +69,8 @@ quote:
         unique: 'This quote number is already in use.'
     users:
         min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
+    validity:
+        date_required: 'Choose the date this quote is valid until.'
 recurring_invoice:
     end_date:
         future: 'End date must be in the future'

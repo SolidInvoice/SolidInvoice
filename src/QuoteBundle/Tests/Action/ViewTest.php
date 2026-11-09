@@ -82,6 +82,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => CarbonImmutable::parse('2021-09-01'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -155,6 +156,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '90.00',
                 'baseTotal' => '100.00',
                 'created' => CarbonImmutable::parse('2021-09-01'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -212,6 +214,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '115.00',
                 'baseTotal' => '100.00',
                 'created' => CarbonImmutable::parse('2021-09-01'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line with Tax')
@@ -279,6 +282,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => CarbonImmutable::parse('2021-09-01'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')
@@ -342,6 +346,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => CarbonImmutable::parse('2021-09-01'),
+                'due' => CarbonImmutable::parse('2021-09-30'),
                 'lines' => [
                     new Line()
                         ->setDescription('Test Line')

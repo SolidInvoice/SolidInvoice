@@ -338,12 +338,14 @@ dashboard:
     attention:
         draft_invoices: 'Draft Invoices'
         draft_label: Draft
+        expiring_quotes: 'Expiring Quotes'
         no_items: 'All caught up! Nothing needs your attention.'
         overdue_invoices: 'Overdue Invoices'
         pending_quotes: 'Pending Quotes'
         showing: '%shown% of %total%'
         title: 'Attention Required'
         upcoming_recurring: 'Upcoming Recurring'
+        valid_until: 'Until %date%'
         view_all: 'View all'
     charts:
         distribution_title: 'Invoice Status'
@@ -1932,6 +1934,7 @@ quote:
             archive: 'Quote has been archived'
             cancel: 'Quote has been cancelled'
             decline: 'Quote has been declined'
+            expire: 'Quote has expired'
             new: 'Quote is now a draft'
             publish: 'Quote has been published'
             reopen: 'Quote has been re-opened'
@@ -1940,6 +1943,18 @@ quote:
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'
+    valid_until: 'Valid until'
+    validity:
+        date_help: 'Set from the validity period. Choose Custom date to pick your own.'
+        label: 'Valid for'
+        period:
+            14_days: '14 days'
+            30_days: '30 days'
+            60_days: '60 days'
+            7_days: '7 days'
+            90_days: '90 days'
+            custom: 'Custom date'
+            none: 'No expiry'
     view:
         related_invoice: 'Related Invoice'
         toolbar:

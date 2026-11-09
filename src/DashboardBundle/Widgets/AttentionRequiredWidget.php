@@ -15,6 +15,7 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -38,10 +39,14 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
 
     private const int UPCOMING_RECURRING_DAYS = 7;
 
+    private const int EXPIRING_QUOTES_DAYS = 7;
+
     private ObjectManager $manager;
 
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private ClockInterface $clock,
+    ) {
         $this->manager = $registry->getManager();
     }
 
@@ -64,6 +69,8 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
         $overdueInvoices = $invoiceRepository->getOverdueInvoices(self::SECTION_LIMIT);
         $draftInvoices = $invoiceRepository->getDraftInvoices(self::SECTION_LIMIT);
         $pendingQuotes = $quoteRepository->getPendingQuotes(self::SECTION_LIMIT);
+        $today = $this->clock->now();
+        $expiringQuotes = $quoteRepository->getQuotesExpiringSoon($today, self::EXPIRING_QUOTES_DAYS, self::SECTION_LIMIT);
         $upcomingRecurring = $recurringRepository->getUpcomingRecurringInvoices(
             self::UPCOMING_RECURRING_DAYS,
             self::UPCOMING_RECURRING_LIMIT
@@ -76,6 +83,8 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
             'draftInvoicesTotal' => $invoiceRepository->getCountByStatus(InvoiceStatus::Draft),
             'pendingQuotes' => $pendingQuotes,
             'pendingQuotesTotal' => $quoteRepository->getTotalQuotes(QuoteStatus::Pending),
+            'expiringQuotes' => $expiringQuotes,
+            'expiringQuotesTotal' => $quoteRepository->countQuotesExpiringSoon($today, self::EXPIRING_QUOTES_DAYS),
             'upcomingRecurring' => $upcomingRecurring,
             // No repository method counts upcoming recurring invoices using the
             // same window as getUpcomingRecurringInvoices(), and the existing
@@ -83,7 +92,7 @@ final readonly class AttentionRequiredWidget implements WidgetInterface
             // counts a different thing (actual next run date). Null means "total
             // unknown" so the template omits the count rather than inventing one.
             'upcomingRecurringTotal' => null,
-            'hasItems' => [] !== $overdueInvoices || [] !== $draftInvoices || [] !== $pendingQuotes || [] !== $upcomingRecurring,
+            'hasItems' => [] !== $overdueInvoices || [] !== $draftInvoices || [] !== $pendingQuotes || [] !== $expiringQuotes || [] !== $upcomingRecurring,
         ];
     }
 

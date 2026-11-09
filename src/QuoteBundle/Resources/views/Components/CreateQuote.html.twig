@@ -118,8 +118,20 @@
                     </div>
                 </div>
 
-                {# Right Column: Discount only (no dates for quotes) #}
+                {# Right Column: Validity + Discount #}
                 <div class="billing-details-right">
+                    <div class="invoice-dates-row">
+                        {{ form_row(form.validity) }}
+                        {% if form.validity.vars.value == 'none' %}
+                            {% do form.due.setRendered %}
+                        {% else %}
+                            {# A preset period owns the date; only Custom lets the user pick it. #}
+                            {{ form_row(form.due, form.validity.vars.value == 'custom' ? {} : {
+                                attr: {readonly: true},
+                                help: 'quote.validity.date_help',
+                            }) }}
+                        {% endif %}
+                    </div>
                     {{ form_row(form.discount) }}
                 </div>
             </div>

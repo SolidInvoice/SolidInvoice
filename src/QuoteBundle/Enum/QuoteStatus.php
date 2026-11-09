@@ -24,6 +24,7 @@ enum QuoteStatus: string implements HasStatusLabel
     case Cancelled = 'cancelled';
     case Declined = 'declined';
     case Archived = 'archived';
+    case Expired = 'expired';
 
     public function getLabel(): string
     {
@@ -40,6 +41,7 @@ enum QuoteStatus: string implements HasStatusLabel
             self::Cancelled => 'gray',
             self::Declined => 'red',
             self::Archived => 'purple',
+            self::Expired => 'orange',
         };
     }
 }

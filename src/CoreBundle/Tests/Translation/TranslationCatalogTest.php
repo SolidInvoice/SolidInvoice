@@ -84,6 +84,7 @@ final class TranslationCatalogTest extends TestCase
             'payment_terms.',
             'quote.transition.action.',
             'quote.transition.exception.',
+            'quote.validity.period.',
             'status.',
         ],
         'email' => [

@@ -108,7 +108,7 @@ final class StatusExtensionTest extends TestCase
     {
         yield 'quote_label' => [
             '{{ quote_label()|keys|join(",") }}',
-            ['new', 'draft', 'pending', 'accepted', 'cancelled', 'declined', 'archived'],
+            ['new', 'draft', 'pending', 'accepted', 'cancelled', 'declined', 'archived', 'expired'],
         ];
 
         yield 'payment_label' => [
