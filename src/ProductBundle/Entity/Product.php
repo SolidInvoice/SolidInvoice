@@ -24,8 +24,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
+use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -73,6 +76,10 @@ class Product implements Stringable
 {
     final public const string TABLE_NAME = 'products';
 
+    private const int PRICE_PRECISION = 19;
+
+    private const int PRICE_SCALE = 6;
+
     use TimeStampable;
     use CompanyAware;
 
@@ -96,17 +103,40 @@ class Product implements Stringable
     private ?string $description = null;
 
     /**
-     * A major-unit decimal amount with no currency, held as a string so no precision is lost
-     * between the column and the {@see BigDecimal} the accessors expose.
+     * A major-unit decimal amount with no currency, stored as an exact `DECIMAL(19, 6)` (the
+     * {@see QuantityType} is the codebase's exact-decimal type, and gives the serializer a
+     * {@see BigDecimal} to work with where a plain `DECIMAL` column would have it see a string).
+     * Exposed over the API as a JSON number, exactly as stored, never scaled to a minor unit.
      */
-    #[ORM\Column(name: 'price', type: Types::DECIMAL, precision: 19, scale: 6)]
-    #[Assert\PositiveOrZero]
+    #[ORM\Column(name: 'price', type: QuantityType::NAME, precision: self::PRICE_PRECISION, scale: self::PRICE_SCALE)]
+    #[Assert\Expression('value.isGreaterThanOrEqualTo(0)', message: 'product.price.negative')]
+    #[Assert\Expression('value.getScale() <= ' . self::PRICE_SCALE, message: 'product.price.too_many_decimals')]
+    #[Assert\Expression('value.abs().isLessThan(10 ** ' . (self::PRICE_PRECISION - self::PRICE_SCALE) . ')', message: 'product.price.too_large')]
     #[Serialize\Groups(['product_api:read', 'product_api:write', 'searchable'])]
-    private string $price = '0';
+    #[Serialize\Context(
+        normalizationContext: [BigIntegerNormalizer::MONETARY => false],
+        denormalizationContext: [BigIntegerNormalizer::MONETARY => false],
+    )]
+    #[ApiProperty(
+        description: 'The unit price as a plain decimal number in major units (for example 4500.5), with no currency: it takes the currency of the document the product is added to. At most 13 digits before and 6 after the decimal point.',
+        openapiContext: ['type' => 'number'],
+        jsonSchemaContext: ['type' => 'number'],
+    )]
+    private BigDecimal $price;
 
     #[ORM\Column(name: 'quantity', type: QuantityType::NAME, precision: QuantityType::PRECISION, scale: QuantityType::SCALE)]
-    #[Assert\Expression('value.isPositive()', message: 'This value should be positive.')]
+    #[Assert\Expression('value.isPositive()', message: 'product.quantity.not_positive')]
+    #[Assert\Expression('value.abs().isLessThan(10 ** ' . (QuantityType::PRECISION - QuantityType::SCALE) . ')', message: 'product.quantity.too_large')]
     #[Serialize\Groups(['product_api:read', 'product_api:write'])]
+    #[Serialize\Context(
+        normalizationContext: [BigIntegerNormalizer::MONETARY => false],
+        denormalizationContext: [BigIntegerNormalizer::MONETARY => false],
+    )]
+    #[ApiProperty(
+        description: 'The default quantity, as a plain decimal number. Rounded to 6 decimal places, with at most 14 digits before the decimal point.',
+        openapiContext: ['type' => 'number'],
+        jsonSchemaContext: ['type' => 'number'],
+    )]
     private BigDecimal $quantity;
 
     #[ORM\ManyToOne(targetEntity: Tax::class)]
@@ -117,6 +147,7 @@ class Product implements Stringable
     public function __construct()
     {
         $this->id = new Ulid();
+        $this->price = BigDecimal::zero();
         $this->quantity = BigDecimal::one();
     }
 
@@ -158,12 +189,15 @@ class Product implements Stringable
 
     public function getPrice(): BigDecimal
     {
-        return BigDecimal::of($this->price);
+        return $this->price;
     }
 
-    public function setPrice(BigDecimal $price): self
+    /**
+     * @throws MathException
+     */
+    public function setPrice(BigNumber $price): self
     {
-        $this->price = (string) $price;
+        $this->price = $price->toBigDecimal();
 
         return $this;
     }
@@ -173,7 +207,10 @@ class Product implements Stringable
         return $this->quantity;
     }
 
-    public function setQuantity(BigDecimal $quantity): self
+    /**
+     * @throws MathException
+     */
+    public function setQuantity(BigNumber $quantity): self
     {
         $this->quantity = QuantityType::normalize($quantity);
 
