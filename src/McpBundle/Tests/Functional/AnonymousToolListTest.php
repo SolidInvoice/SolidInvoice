@@ -83,7 +83,13 @@ final class AnonymousToolListTest extends WebTestCase
      */
     private function rpc(KernelBrowser $client, array $payload, ?string $sessionId = null): void
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json, text/event-stream'];
+        $server = [
+            // A non-localhost Host, as in production: the SDK's DNS-rebinding
+            // guard 403s anything but localhost unless mcp.http.allowed_hosts is off.
+            'HTTP_HOST' => 'app.example.com',
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+        ];
 
         if ($sessionId !== null) {
             $server['HTTP_MCP_SESSION_ID'] = $sessionId;

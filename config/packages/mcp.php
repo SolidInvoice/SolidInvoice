@@ -39,6 +39,12 @@ return App::config([
         ],
         'http' => [
             'path' => '/_mcp',
+            // The SDK's DNS-rebinding guard only allows localhost, which 403s every
+            // public request. Hosts can't be listed here (custom domains are
+            // per-company, this is compile-time), and it isn't needed: unknown
+            // hosts already 404 in HostRoutingListener, and auth is a bearer
+            // token, not a cookie a rebound page could ride on.
+            'allowed_hosts' => false,
             'session' => [
                 'store' => (string) $env('SOLIDINVOICE_MCP_SESSION_STORE', 'file'),
                 'cache_pool' => (string) $env('SOLIDINVOICE_MCP_SESSION_CACHE_POOL', 'cache.mcp.sessions'),
