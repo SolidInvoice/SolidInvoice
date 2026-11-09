@@ -447,6 +447,9 @@ datagrid:
             create: 'Create an invoice'
             description: 'Payments land here once a client pays an invoice. Send an invoice to start getting paid.'
             title: 'No payments yet'
+        product:
+            description: 'Save the things you sell once, then add them to invoices and quotes in one click.'
+            title: 'No products yet'
         quote:
             description: 'Send a polished quote to win the work. When a client accepts, it becomes an invoice in one click.'
             title: 'No quotes yet'
@@ -1249,6 +1252,7 @@ mcp:
         description: 'Your current plan does not include MCP access. Upgrade your subscription to authorize AI agents and tools.'
         title: 'MCP access not available'
 menu:
+    products: Products
     top:
         api: 'API Tokens'
         custom_fields: 'Custom Fields'
@@ -1718,6 +1722,26 @@ pdf:
     additional_information: 'Additional information'
     of: of
     page: Page
+product:
+    add: 'Add Product'
+    details: 'Product Details'
+    edit: 'Edit Product'
+    flash:
+        saved: 'Product successfully saved'
+    form:
+        description: 'Set the name, description, price and default tax for this product'
+        no_tax: 'No Tax'
+        price: Price
+        quantity: Quantity
+        subtitle: 'Save a product to add it to invoices and quotes in one click'
+        tax: Tax
+    grid:
+        create: 'Add Product'
+        delete_confirm: 'Are you sure you want to delete the selected products? Invoices and quotes that already use them are not affected.'
+        price: Price
+        quantity: Quantity
+        tax: Tax
+    title: Products
 profile:
     api:
         create: 'Create Token'

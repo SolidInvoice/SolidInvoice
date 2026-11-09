@@ -11,8 +11,21 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\ProductBundle\Action\Add;
+use SolidInvoice\ProductBundle\Action\Edit;
+use SolidInvoice\ProductBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
+    $routingConfigurator
+        ->add('_products', '/')
+        ->controller(Index::class);
 
+    $routingConfigurator
+        ->add('_products_add', '/add')
+        ->controller(Add::class);
+
+    $routingConfigurator
+        ->add('_products_edit', '/edit/{id}')
+        ->controller(Edit::class);
 };
