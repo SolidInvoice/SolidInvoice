@@ -104,6 +104,7 @@
                                         <span class="mobile-label">{{ 'invoice.item.heading.name'|trans }}</span>
                                         {{ form_widget(item.name, {attr: {placeholder: 'invoice.item.name.placeholder'|trans, 'aria-label': 'invoice.item.name.label'|trans}}) }}
                                         {{ form_errors(item.name) }}
+                                        {{ form_widget(item.product) }}
                                         <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
                                             <summary class="line-description-toggle">{{ 'invoice.item.description.add'|trans }}</summary>
                                             {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2, 'aria-label': 'invoice.item.description.label'|trans}}) }}

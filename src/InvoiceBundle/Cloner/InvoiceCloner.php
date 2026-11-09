@@ -127,6 +127,7 @@ final readonly class InvoiceCloner
             $invoiceLine->setDescription($line->getDescription());
             $invoiceLine->setPrice($line->getPrice());
             $invoiceLine->setQty($line->getQty());
+            $invoiceLine->setProduct($line->getProduct());
 
             $invoiceLine->getTaxes()->clear();
             foreach ($line->getTaxes() as $sourceLineTax) {
