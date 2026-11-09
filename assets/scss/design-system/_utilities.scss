@@ -1,0 +1,16 @@
+/**
+ * SolidInvoice Design System - Vendor Utility Overrides
+ *
+ * Overrides for Tabler utility classes whose compiled value fails WCAG AA as
+ * text. Values only; this file never introduces a class of its own.
+ */
+
+// `.text-secondary` resolves through --swp-secondary-rgb, which _tokens.scss
+// sets to Warm Amber: 2.16:1 on surface, 1.99:1 on body-bg. Both fail 1.4.3.
+// Tabler's own default (--swp-gray-500 #64748b) passes on a card at 4.76:1
+// and fails on the canvas at 4.39:1, and a utility used in 28 templates lands
+// on both surfaces. --swp-text-secondary is the step DESIGN.md already names
+// for this job: 7.58:1 on surface, 6.99:1 on body-bg. See SOL-224, SOL-228.
+.text-secondary {
+    color: var(--swp-text-secondary) !important;
+}
