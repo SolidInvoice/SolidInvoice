@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
+use DateTimeInterface;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -52,6 +55,7 @@ final readonly class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPeriod(BillingPeriod::of($this->toImmutable($dto->periodStart), $this->toImmutable($dto->periodEnd)));
         $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
@@ -99,6 +103,7 @@ final readonly class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPeriod(BillingPeriod::of($this->toImmutable($dto->periodStart), $this->toImmutable($dto->periodEnd)));
         $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
@@ -148,6 +153,18 @@ final readonly class InvoiceFormManager
     }
 
     /**
+     * Narrows the DTO's DateTimeInterface to the DateTimeImmutable that BillingPeriod requires.
+     */
+    private function toImmutable(?DateTimeInterface $date): ?DateTimeImmutable
+    {
+        if (! $date instanceof DateTimeInterface || $date instanceof DateTimeImmutable) {
+            return $date;
+        }
+
+        return DateTimeImmutable::createFromInterface($date);
+    }
+
+    /**
      * Creates DTO from Invoice entity for editing
      */
     public function createDTOFromInvoice(Invoice $invoice): InvoiceFormDTO
@@ -162,6 +179,8 @@ final readonly class InvoiceFormManager
         $dto->invoiceId = $invoice->getInvoiceId();
         $dto->invoiceDate = $invoice->getInvoiceDate();
         $dto->due = $invoice->getDue();
+        $dto->periodStart = $invoice->getPeriod()->getStart();
+        $dto->periodEnd = $invoice->getPeriod()->getEnd();
         $dto->paymentTerms = $invoice->getPaymentTerms();
         $dto->discount = $invoice->getDiscount();
         $dto->terms = $invoice->getTerms();

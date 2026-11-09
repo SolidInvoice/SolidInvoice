@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use SolidInvoice\CoreBundle\Entity\BillingPeriod;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -78,6 +79,7 @@ final readonly class InvoiceCloner
         if ($invoice instanceof RecurringInvoice) {
             $newInvoice->setDateStart($invoice->getDateStart());
             $newInvoice->setDateEnd($invoice->getDateEnd());
+            $newInvoice->setBillingPeriodMode($invoice->getBillingPeriodMode());
 
             if ($invoice->getRecurringOptions() instanceof RecurringOptions) {
                 $recurringOptions = new RecurringOptions();
@@ -91,6 +93,8 @@ final readonly class InvoiceCloner
         } else {
             $newInvoice->setDue($invoice->getDue());
             $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice, ['field' => 'invoiceId']));
+            // A new instance, never the source: editing the copy must not mutate the original.
+            $newInvoice->setPeriod(BillingPeriod::of($invoice->getPeriod()->getStart(), $invoice->getPeriod()->getEnd()));
         }
 
         $newInvoice->setTax($invoice->getTax());

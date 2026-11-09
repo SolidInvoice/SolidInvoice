@@ -17,6 +17,10 @@
                 <div class="text-end">
                     <div class="fst-italic fs-4">{{ company_name() }}</div>
                     <div class="text-muted small">{{ invoice.invoiceDate|format_date('long') }}</div>
+                    {% set period = billing_period(invoice) %}
+                    {% if period is not empty %}
+                        <div class="text-muted small">{{ 'billing.period.label'|trans }}: {{ period }}</div>
+                    {% endif %}
                 </div>
             </div>
 

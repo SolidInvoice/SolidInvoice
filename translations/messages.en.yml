@@ -45,6 +45,14 @@ billing:
     discount: Discount
     due_date: 'Due Date'
     notes_help: 'Notes will not be visible to the client'
+    period:
+        end: 'Period end'
+        label: 'Billing Period'
+        mode:
+            current: 'Current period'
+            none: None
+            previous: 'Previous period'
+        start: 'Period start'
     subtotal: SubTotal
     tax: Tax
     total: Total
