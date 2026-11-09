@@ -43,6 +43,16 @@ final class AnonymousToolListTest extends WebTestCase
         $sessionId = $client->getResponse()->headers->get('Mcp-Session-Id');
         self::assertNotNull($sessionId);
 
+        $result = json_decode((string) $client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR)['result'];
+        self::assertSame('SolidInvoice', $result['serverInfo']['name']);
+        self::assertSame('https://solidinvoice.co/docs/ai/mcp-server/', $result['serverInfo']['websiteUrl']);
+        self::assertSame([
+            ['src' => 'https://solidinvoice.co/logo-512.png', 'mimeType' => 'image/png', 'sizes' => ['512x512']],
+            ['src' => 'https://solidinvoice.co/logo-192.png', 'mimeType' => 'image/png', 'sizes' => ['192x192']],
+        ], $result['serverInfo']['icons']);
+        self::assertNotEmpty($result['instructions']);
+        self::assertLessThanOrEqual(600, \strlen($result['instructions']));
+
         $this->rpc($client, ['jsonrpc' => '2.0', 'method' => 'notifications/initialized'], $sessionId);
         self::assertResponseIsSuccessful();
 

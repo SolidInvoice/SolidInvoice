@@ -37,6 +37,13 @@ return App::config([
                 'name' => SolidInvoiceCoreBundle::APP_NAME,
                 'version' => SolidInvoiceCoreBundle::VERSION,
                 'description' => 'Create and send invoices and quotes, manage clients, and track payments in SolidInvoice.',
+                // The bundle has no `title` key, so serverInfo carries name only; clients fall back to it.
+                'icons' => [
+                    ['src' => 'https://solidinvoice.co/logo-512.png', 'mime_type' => 'image/png', 'sizes' => ['512x512']],
+                    ['src' => 'https://solidinvoice.co/logo-192.png', 'mime_type' => 'image/png', 'sizes' => ['192x192']],
+                ],
+                'website_url' => 'https://solidinvoice.co/docs/ai/mcp-server/',
+                'instructions' => 'Sign in with OAuth (scopes mcp:read, mcp:write); tools/list needs no login. IDs are base58 ULIDs, and any ULID form is accepted as input. Money is a decimal string in the document\'s currency, e.g. "12.50". Call list_workflow_transitions before any apply_*_transition tool to see which transitions are allowed.',
                 'transports' => [
                     'stdio' => false,
                     'http' => true,
@@ -55,10 +62,10 @@ return App::config([
                     'cache_pool' => (string) $env('SOLIDINVOICE_MCP_SESSION_CACHE_POOL', 'cache.mcp.sessions'),
                     'prefix' => (string) $env('SOLIDINVOICE_MCP_SESSION_PREFIX', 'mcp-'),
                     'ttl' => (int) $env('SOLIDINVOICE_MCP_SESSION_TTL', 3600),
-                    'lock' => [
-                        // Without a LockFactory the lock is a flock() next to the file store's sessions.
-                        'enabled' => $store === 'file',
-                    ],
+                    // Serializes concurrent requests of one session. The file store locks with
+                    // flock() next to its sessions; any other store uses the app's lock.factory
+                    // (SOLIDINVOICE_LOCK_DSN), so multi-node deployments share one lock store.
+                    'lock' => $store === 'file' ? ['enabled' => true] : ['enabled' => true, 'factory' => 'lock.factory'],
                 ],
                 'registry' => '*',
             ],
