@@ -22,7 +22,12 @@ jobs:
         # ghcr.io/symfony-cli/symfony-cli:v5 digest, resolved 2026-11-09.
         # symfonycorp/security-checker-action hard-codes the mutable :v5
         # tag with no input to change it, so we call the image directly
-        # and pin it by digest here instead.
+        # and pin it by digest here instead. Args match the action's own
+        # defaults at symfonycorp/security-checker-action@258311ef7ac571f1310780ef3d79fc5abef642b5.
+        # Dependabot does not track docker:// refs, so this digest will
+        # not be bumped automatically. A stale digest is still safe: the
+        # advisory list is downloaded fresh on every run, so only the
+        # checker binary ages, not the data it checks against.
         # Refresh: `docker manifest inspect ghcr.io/symfony-cli/symfony-cli:v5`,
         # then update the digest and the date above.
         uses: docker://ghcr.io/symfony-cli/symfony-cli@sha256:a9e83ee6845088011241a1801ae33587a35552f0a1c236c1741a7152db06d274
