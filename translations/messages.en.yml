@@ -358,6 +358,9 @@ dashboard:
         activate_subscription:
             description: 'Pick a plan to keep your account active'
             name: 'Activate Your Subscription'
+        add_product:
+            description: 'Add a product or service you can reuse on invoices and quotes'
+            name: 'Add a Product'
         add_tax_rate:
             description: 'Configure tax rates for your invoices'
             name: 'Add a Tax Rate'
