@@ -36,6 +36,7 @@ final class LineTaxType extends AbstractType
             ->add('tax', EntityType::class, [
                 'class' => Tax::class,
                 'placeholder' => 'tax.line_tax.tax.placeholder',
+                'choice_translation_domain' => 'messages',
                 'required' => false,
                 'choice_label' => static function (Tax $tax): TranslatableMessage {
                     $rate = $tax->getRate() ?? 0;
