@@ -29,6 +29,9 @@ Changelog
 * Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
 * Notification emails now show which company they were sent for and link to your notification preferences
 * Notifications are never sent to disabled users, to users who have not verified their email address, or to anyone in a disabled company
+* MCP server: every tool now has a title, read-only/destructive/idempotent/open-world hints and an output schema, so clients can tell which tools change data and ask before running them. Each resource has its own tools (47 in total) instead of five generic ones, and `list_invoices` and `list_quotes` filter by status and client
+* MCP server: anyone can list the available tools without signing in; calling a tool still needs OAuth. The server describes itself with its logo, website and usage instructions, and `/.well-known/mcp/server-card.json` lists every tool
+* MCP server: all IDs are now base58 and all amounts are decimal strings at the currency's own precision (`"1250.00"`, JPY `"1250"`); totals that span currencies are returned per currency. Existing MCP clients need to reconnect
 
 ### Fixes
 
