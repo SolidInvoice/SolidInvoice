@@ -128,7 +128,14 @@ final readonly class ProductWriteTools
             $product->setTax($this->tax($tax_id));
         }
 
-        $this->validate($product);
+        try {
+            $this->validate($product);
+        } catch (ToolCallException $e) {
+            // Leave no half-applied edits on the managed entity.
+            $this->entityManager->refresh($product);
+
+            throw $e;
+        }
 
         $this->entityManager->flush();
 
@@ -148,10 +155,13 @@ final readonly class ProductWriteTools
     {
         $this->guard();
 
-        $this->entityManager->remove($this->find($product_id));
+        $product = $this->find($product_id);
+        $id = $product->getId()?->toRfc4122() ?? $product_id;
+
+        $this->entityManager->remove($product);
         $this->entityManager->flush();
 
-        return ['deleted' => true, 'id' => $product_id];
+        return ['deleted' => true, 'id' => $id];
     }
 
     private function guard(): void
@@ -192,7 +202,7 @@ final readonly class ProductWriteTools
     private function number(string $value, string $field): BigNumber
     {
         try {
-            return BigNumber::parse($value, NumberSyntax::ALL, self::MAX_DIGITS);
+            return BigNumber::parse($value, NumberSyntax::SCIENTIFIC, self::MAX_DIGITS);
         } catch (MathException) {
             throw new ToolCallException(sprintf('Invalid %s: "%s" is not a valid number of at most %d digits.', $field, mb_strimwidth($value, 0, 32, '...'), self::MAX_DIGITS));
         }

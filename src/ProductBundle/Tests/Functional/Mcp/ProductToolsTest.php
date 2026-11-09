@@ -114,6 +114,8 @@ final class ProductToolsTest extends KernelTestCase
 
         foreach ([
             ['Widget', 'abc'],
+            ['Widget', '1/3'],
+            ['Widget', '1', null, '1/3'],
             ['Widget', '-1'],
             ['Widget', '1.1234567'],
             ['Widget', '12345678901234'],
@@ -129,6 +131,24 @@ final class ProductToolsTest extends KernelTestCase
                 $this->addToAssertionCount(1);
             }
         }
+    }
+
+    public function testFailedUpdateLeavesTheManagedProductUntouched(): void
+    {
+        $this->setActiveScopes([McpScope::Write->value]);
+
+        $write = self::getContainer()->get(ProductWriteTools::class);
+        $id = $write->createProduct('Widget', '5')['id'];
+
+        try {
+            $write->updateProduct($id, name: 'Changed', price: '-1');
+            self::fail('Expected ToolCallException.');
+        } catch (ToolCallException) {
+        }
+
+        $product = self::getContainer()->get(ProductRepository::class)->find(Ulid::fromString($id));
+        self::assertSame('Widget', $product->getName());
+        self::assertSame('5', (string) $product->getPrice());
     }
 
     public function testGateOffRejectsEveryTool(): void

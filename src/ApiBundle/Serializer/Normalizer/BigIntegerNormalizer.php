@@ -121,7 +121,7 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
         }
 
         try {
-            return BigNumber::parse($data, NumberSyntax::ALL, self::MAX_DIGITS);
+            return BigNumber::parse($data, NumberSyntax::SCIENTIFIC, self::MAX_DIGITS);
         } catch (MathException) {
             throw new UnexpectedValueException(sprintf('"%s" is not a valid number of at most %d digits.', mb_strimwidth($data, 0, 32, '...'), self::MAX_DIGITS));
         }
@@ -145,7 +145,7 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
         }
 
         try {
-            $value = is_string($data) ? BigDecimal::parse($data, NumberSyntax::ALL, self::MAX_DIGITS) : BigDecimal::of($data);
+            $value = is_string($data) ? BigDecimal::parse($data, NumberSyntax::SCIENTIFIC, self::MAX_DIGITS) : BigDecimal::of($data);
 
             if (! ($context['api_denormalize'] ?? false) || ! ($context[self::MONETARY] ?? true)) {
                 return $value;
