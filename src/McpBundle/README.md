@@ -104,7 +104,7 @@ Three independent layers:
 
 1. **Token binding (write-time)** — `McpAccessToken.company_id` is set at consent time from the user's choice, immutable.
 2. **Filter activation (read-time)** — `McpOAuthAuthenticator` calls `CompanySelector::switchCompany()` on every authenticated MCP request, enabling `CompanyFilter`.
-3. **Write-path overrides** — `create_resource` / `record_payment` / `add_contact` strip any client-supplied `company` / `company_id`, always pulling from the active company.
+3. **Write-path overrides** — the write tools take no `company` / `company_id` argument; new records always get the active company.
 
 ## Connecting from Claude Desktop / mcp-inspector
 

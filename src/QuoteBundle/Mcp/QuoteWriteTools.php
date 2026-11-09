@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
@@ -69,11 +70,12 @@ final readonly class QuoteWriteTools
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
      * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
+     *                                                        `price` is a decimal string in the client's currency (e.g. "50.00").
      *                                                        Provide `taxes[]` for multi-tax lines (India GST, Quebec compound, etc.);
      *                                                        `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $due            ISO-8601 date the quote is valid until (optional); it expires after that day
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
-     * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
+     * @param string|null                  $discount_value Decimal string, required if discount_type is set: a percentage ("10") or an amount in the client's currency ("25.00")
      * @param string|null                     $terms          Optional terms text
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach (optional)
@@ -81,14 +83,14 @@ final readonly class QuoteWriteTools
      * @param list<array<string, mixed>>      $invoice_taxes  Invoice-level taxes (withholding/surcharge/informational):
      *                                                        [{tax_id, direction: Additive|Deductive|Informational, sequence?, note?}].
      */
-    #[McpTool(name: 'create_quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
+    #[McpTool(name: 'create_quote', title: 'Create quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
     public function createQuote(
         string $client_id,
         array $lines,
         ?string $due = null,
         ?string $discount_type = null,
-        int | float | null $discount_value = null,
+        ?string $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],
@@ -114,11 +116,11 @@ final readonly class QuoteWriteTools
             }
         }
 
-        foreach ($this->lineItemBuilder->buildQuoteLines($lines) as $line) {
+        foreach ($this->lineItemBuilder->buildQuoteLines($lines, $client->getCurrency()) as $line) {
             $quote->addLine($line);
         }
 
-        $quote->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value));
+        $quote->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value, $client->getCurrency()));
 
         if ($terms !== null) {
             $quote->setTerms($terms);

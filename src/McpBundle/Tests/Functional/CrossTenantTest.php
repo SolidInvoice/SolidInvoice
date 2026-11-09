@@ -14,25 +14,30 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Carbon\CarbonImmutable;
+use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
+use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
+use SolidInvoice\ClientBundle\Mcp\ClientWriteTools;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceWriteTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
-use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
-use SolidInvoice\McpBundle\Mcp\Tool\ResourceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Mcp\PaymentReadTools;
+use SolidInvoice\PaymentBundle\Mcp\PaymentWriteTools;
 use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
 use SolidInvoice\ProductBundle\Test\Factory\ProductFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -54,7 +59,7 @@ final class CrossTenantTest extends KernelTestCase
      */
     private ?array $foreign = null;
 
-    public function testListResourceHidesOtherCompanyInvoices(): void
+    public function testListInvoicesHidesOtherCompanyInvoices(): void
     {
         $this->seedForeignTenant();
 
@@ -67,34 +72,53 @@ final class CrossTenantTest extends KernelTestCase
 
         $this->activateToken(McpScope::Read);
 
-        $tool = self::getContainer()->get(ResourceQueryTools::class);
-        self::assertInstanceOf(ResourceQueryTools::class, $tool);
+        $tool = self::getContainer()->get(InvoiceReadTools::class);
+        self::assertInstanceOf(InvoiceReadTools::class, $tool);
 
-        $result = $tool->listResource('invoice');
+        $result = $tool->listInvoices();
 
-        self::assertSame(1, $result['total'], 'CompanyFilter should hide foreign-company invoices.');
-        self::assertCount(1, $result['results']);
-        $invoice = $result['results'][0];
+        self::assertSame(1, $result->total, 'CompanyFilter should hide foreign-company invoices.');
+        self::assertCount(1, $result->results);
+        $invoice = $result->results[0];
         self::assertInstanceOf(InvoiceOutput::class, $invoice);
         self::assertSame('Our Client', $invoice->client?->name);
     }
 
-    public function testGetResourceReturnsNotFoundForOtherCompanyRecord(): void
+    /**
+     * @param Closure(self, string, string): mixed $call receives the test, the foreign client id and the foreign invoice id
+     */
+    #[DataProvider('foreignRecordCalls')]
+    public function testForeignRecordIsNotFound(McpScope $scope, Closure $call): void
     {
         $this->seedForeignTenant();
         self::assertNotNull($this->foreign);
-        $foreignId = $this->foreign['invoice']->getId()?->toBase58();
-        self::assertNotNull($foreignId);
+        $clientId = $this->foreign['client']->getId()?->toBase58();
+        $invoiceId = $this->foreign['invoice']->getId()?->toBase58();
+        self::assertNotNull($clientId);
+        self::assertNotNull($invoiceId);
 
-        $this->activateToken(McpScope::Read);
-
-        $tool = self::getContainer()->get(ResourceQueryTools::class);
-        self::assertInstanceOf(ResourceQueryTools::class, $tool);
+        $this->activateToken($scope);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('not found');
 
-        $tool->getResource('invoice', $foreignId);
+        $call($this, $clientId, $invoiceId);
+    }
+
+    /**
+     * @return iterable<string, array{McpScope, Closure(self, string, string): mixed}>
+     */
+    public static function foreignRecordCalls(): iterable
+    {
+        yield 'get_invoice' => [McpScope::Read, static fn (self $test, string $client, string $invoice): mixed => $test->tool(InvoiceReadTools::class)->getInvoice($invoice)];
+        yield 'list_invoices by client' => [McpScope::Read, static fn (self $test, string $client): mixed => $test->tool(InvoiceReadTools::class)->listInvoices(client_id: $client)];
+        yield 'list_payments by invoice' => [McpScope::Read, static fn (self $test, string $client, string $invoice): mixed => $test->tool(PaymentReadTools::class)->listPayments(invoice_id: $invoice)];
+        yield 'get_client' => [McpScope::Read, static fn (self $test, string $client): mixed => $test->tool(ClientReadTools::class)->getClient($client)];
+        yield 'list_contacts by client' => [McpScope::Read, static fn (self $test, string $client): mixed => $test->tool(ClientReadTools::class)->listContacts(client_id: $client)];
+        yield 'update_client' => [McpScope::Write, static fn (self $test, string $client): mixed => $test->tool(ClientWriteTools::class)->updateClient($client, name: 'Hijacked')];
+        yield 'delete_client' => [McpScope::Write, static fn (self $test, string $client): mixed => $test->tool(ClientWriteTools::class)->deleteClient($client)];
+        yield 'create_contact' => [McpScope::Write, static fn (self $test, string $client): mixed => $test->tool(ClientWriteTools::class)->createContact($client, 'x@example.com', 'X')];
+        yield 'record_payment' => [McpScope::Write, static fn (self $test, string $client, string $invoice): mixed => $test->tool(PaymentWriteTools::class)->recordPayment($invoice, '1.00', 'EUR')];
     }
 
     public function testInvoiceTransitionOnForeignInvoiceFails(): void
@@ -115,22 +139,19 @@ final class CrossTenantTest extends KernelTestCase
         $tool->applyInvoiceTransition($foreignId, 'pay');
     }
 
-    public function testUpdateOnForeignClientFails(): void
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
+     */
+    public function tool(string $class): object
     {
-        $this->seedForeignTenant();
-        self::assertNotNull($this->foreign);
-        $foreignId = $this->foreign['client']->getId()?->toBase58();
-        self::assertNotNull($foreignId);
+        $tool = self::getContainer()->get($class);
+        self::assertInstanceOf($class, $tool);
 
-        $this->activateToken(McpScope::Write);
-
-        $tool = self::getContainer()->get(ResourceWriteTools::class);
-        self::assertInstanceOf(ResourceWriteTools::class, $tool);
-
-        $this->expectException(ToolCallException::class);
-        $this->expectExceptionMessageIsOrContains('not found');
-
-        $tool->updateResource('client', $foreignId, ['name' => 'Hijacked']);
+        return $tool;
     }
 
     public function testGetProductReturnsNotFoundForOtherCompanyProduct(): void

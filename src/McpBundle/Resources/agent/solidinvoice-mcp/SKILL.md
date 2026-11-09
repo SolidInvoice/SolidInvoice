@@ -20,9 +20,11 @@ Every token is bound to exactly one company. You cannot reach another company's 
 
 ## Tools
 
-- `list_resource`, `get_resource` (`mcp:read`): invoices, recurring invoices, quotes, clients, contacts, payments, payment methods and taxes.
+- `get_*` and `list_*` (`mcp:read`): one tool pair per resource, e.g. `get_invoice` / `list_invoices`, for invoices, recurring invoices, quotes, clients, contacts, payments, payment methods and tax rates. Lists are paginated (`page`, `items_per_page` up to 100).
 - `list_workflow_transitions` (`mcp:read`): the status changes currently allowed on an invoice, quote or recurring invoice.
-- `create_resource`, `update_resource`, `delete_resource` (`mcp:write`): clients, contacts and taxes.
+- `create_*`, `update_*`, `delete_*` (`mcp:write`): clients, contacts and tax rates.
+
+IDs are returned in base58; any ULID form is accepted as input. Money is a decimal string in the document's currency, such as `"12.50"`.
 
 Call `tools/list` after connecting for the full input schemas.
 

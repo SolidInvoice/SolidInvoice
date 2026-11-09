@@ -68,7 +68,7 @@ final class MultiTaxLineTest extends KernelTestCase
             [
                 [
                     'description' => 'Consulting',
-                    'price' => 100000,
+                    'price' => '1000',
                     'qty' => 1,
                     'taxes' => [
                         ['tax_id' => $cgst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
@@ -122,7 +122,7 @@ final class MultiTaxLineTest extends KernelTestCase
             [
                 [
                     'description' => 'Service',
-                    'price' => 10000,
+                    'price' => '100',
                     'qty' => 1,
                     'taxes' => [
                         ['tax_id' => $gst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
@@ -173,7 +173,7 @@ final class MultiTaxLineTest extends KernelTestCase
             $client->getId()
                 ->toBase58(),
             [
-                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'tax_id' => $vat->getId()->toBase58()],
+                ['description' => 'Item', 'price' => '10', 'qty' => 1, 'tax_id' => $vat->getId()->toBase58()],
             ],
         );
 
@@ -197,7 +197,7 @@ final class MultiTaxLineTest extends KernelTestCase
             $client->getId()
                 ->toBase58(),
             [
-                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'taxes' => [['sequence' => 0]]],
+                ['description' => 'Item', 'price' => '10', 'qty' => 1, 'taxes' => [['sequence' => 0]]],
             ],
         );
     }

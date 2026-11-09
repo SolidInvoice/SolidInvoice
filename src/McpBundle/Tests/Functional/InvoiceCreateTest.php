@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use Mcp\Exception\ToolCallException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\LineName;
@@ -52,8 +53,8 @@ final class InvoiceCreateTest extends KernelTestCase
             $client->getId()
                 ->toBase58(),
             [
-                ['description' => 'Consulting, 10 hours', 'price' => 10000, 'qty' => 10],
-                ['description' => 'Setup fee', 'price' => 5000, 'qty' => 1],
+                ['description' => 'Consulting, 10 hours', 'price' => '100', 'qty' => 10],
+                ['description' => 'Setup fee', 'price' => '50', 'qty' => 1],
             ],
             invoice_date: '2026-04-01',
             due: '2026-05-01',
@@ -82,7 +83,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()->toBase58(),
-            [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
+            [['name' => 'Retainer', 'price' => '10', 'qty' => 1]],
             invoice_date: '2026-04-01',
             payment_terms: 'net_14',
         );
@@ -104,7 +105,7 @@ final class InvoiceCreateTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()->toBase58(),
-            [['name' => 'Retainer', 'price' => 1000, 'qty' => 1]],
+            [['name' => 'Retainer', 'price' => '10', 'qty' => 1]],
             due: '2030-12-31',
             payment_terms: 'net_30',
         );
@@ -132,7 +133,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $result = $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['name' => $name, 'price' => 1000, 'qty' => 1]],
+            [['name' => $name, 'price' => '10', 'qty' => 1]],
         );
 
         $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
@@ -178,7 +179,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['price' => 1000, 'qty' => 1]],
+            [['price' => '10', 'qty' => 1]],
         );
     }
 
@@ -197,7 +198,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
+            [['description' => 'Thing', 'price' => '1', 'qty' => 1]],
         );
     }
 
@@ -213,12 +214,12 @@ final class InvoiceCreateTest extends KernelTestCase
         $result = $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Widget', 'price' => 10000, 'qty' => 1]],
+            [['description' => 'Widget', 'price' => '100', 'qty' => 1]],
             discount_type: 'percentage',
-            discount_value: 10,
+            discount_value: '10',
         );
 
-        // 10000 - 10% = 9000
+        // 100.00 - 10% = 90.00
         self::assertSame('90.00', $result->total);
     }
 
@@ -234,13 +235,72 @@ final class InvoiceCreateTest extends KernelTestCase
         $result = $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Service', 'price' => 20000, 'qty' => 1]],
+            [['description' => 'Service', 'price' => '200', 'qty' => 1]],
             discount_type: 'money',
-            discount_value: 5000,
+            discount_value: '50.00',
         );
 
-        // 20000 - 5000 = 15000
+        // 200.00 - 50.00 = 150.00
         self::assertSame('150.00', $result->total);
+    }
+
+    /**
+     * Line prices and money discounts are read at the client currency's own scale.
+     */
+    public function testLinePriceAndMoneyDiscountUseTheClientCurrencyScale(): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'BHD']);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $result = $tool->createInvoice(
+            $client->getId()->toBase58(),
+            [['description' => 'Service', 'price' => '10.125', 'qty' => 1]],
+            discount_type: 'money',
+            discount_value: '0.125',
+        );
+
+        self::assertSame('10.125', $result->lines[0]->price);
+        self::assertSame('10.000', $result->total);
+
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
+        self::assertInstanceOf(Invoice::class, $invoice);
+        self::assertTrue($invoice->getLines()->first()->getPrice()->isEqualTo(10125));
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, string|null, string|null, string}>
+     */
+    public static function invalidMoneyInputs(): iterable
+    {
+        yield 'price as a JSON number' => [['description' => 'X', 'price' => 10, 'qty' => 1], null, null, 'lines[0].price must be a decimal string'];
+        yield 'price not a number' => [['description' => 'X', 'price' => 'abc', 'qty' => 1], null, null, 'lines[0].price "abc" is not a non-negative decimal'];
+        yield 'negative price' => [['description' => 'X', 'price' => '-1', 'qty' => 1], null, null, 'lines[0].price "-1" is not a non-negative decimal'];
+        yield 'price too precise' => [['description' => 'X', 'price' => '1.005', 'qty' => 1], null, null, 'more decimal places than USD allows (2)'];
+        yield 'money discount too precise' => [['description' => 'X', 'price' => '1', 'qty' => 1], 'money', '0.001', 'discount_value "0.001" has more decimal places'];
+        yield 'percentage discount not a number' => [['description' => 'X', 'price' => '1', 'qty' => 1], 'percentage', 'ten', 'discount_value "ten" is not a non-negative percentage'];
+    }
+
+    /**
+     * @param array<string, mixed> $line
+     */
+    #[DataProvider('invalidMoneyInputs')]
+    public function testCreateInvoiceRejectsInvalidMoneyInput(array $line, ?string $discountType, ?string $discountValue, string $message): void
+    {
+        $this->activateScopes([McpScope::Write->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+
+        $tool = self::getContainer()->get(InvoiceWriteTools::class);
+        self::assertInstanceOf(InvoiceWriteTools::class, $tool);
+
+        $this->expectException(ToolCallException::class);
+        $this->expectExceptionMessageIsOrContains($message);
+
+        $tool->createInvoice($client->getId()->toBase58(), [$line], discount_type: $discountType, discount_value: $discountValue);
     }
 
     public function testCreateInvoiceRejectsInvalidDiscountType(): void
@@ -258,9 +318,9 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
+            [['description' => 'Thing', 'price' => '1', 'qty' => 1]],
             discount_type: 'bogus',
-            discount_value: 5,
+            discount_value: '5',
         );
     }
 
@@ -279,7 +339,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool->createInvoice(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Thing', 'price' => 100, 'qty' => 1]],
+            [['description' => 'Thing', 'price' => '1', 'qty' => 1]],
             discount_type: 'percentage',
         );
     }
@@ -296,7 +356,7 @@ final class InvoiceCreateTest extends KernelTestCase
         $result = $tool->createQuote(
             $client->getId()
                 ->toBase58(),
-            [['description' => 'Estimate', 'price' => 25000, 'qty' => 2]],
+            [['description' => 'Estimate', 'price' => '250', 'qty' => 2]],
             due: '2026-06-01',
             notes: 'Rough estimate',
         );
@@ -319,14 +379,14 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool = self::getContainer()->get(InvoiceWriteTools::class);
         self::assertInstanceOf(InvoiceWriteTools::class, $tool);
 
-        $result = $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+        $result = $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => '10', 'qty' => 1]], invoice_id: 'MCP-7');
 
         self::assertSame('MCP-7', $result->invoice_number);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Invoice number "MCP-7" is already in use.');
 
-        $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], invoice_id: 'MCP-7');
+        $tool->createInvoice($client->getId()->toBase58(), [['name' => 'Work', 'price' => '10', 'qty' => 1]], invoice_id: 'MCP-7');
     }
 
     public function testASuppliedQuoteNumberIsKeptAndCannotBeReused(): void
@@ -337,14 +397,14 @@ final class InvoiceCreateTest extends KernelTestCase
         $tool = self::getContainer()->get(QuoteWriteTools::class);
         self::assertInstanceOf(QuoteWriteTools::class, $tool);
 
-        $result = $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+        $result = $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => '10', 'qty' => 1]], quote_id: 'MCP-Q-7');
 
         self::assertSame('MCP-Q-7', $result->quote_number);
 
         $this->expectException(ToolCallException::class);
         $this->expectExceptionMessageIsOrContains('Quote number "MCP-Q-7" is already in use.');
 
-        $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => 1000, 'qty' => 1]], quote_id: 'MCP-Q-7');
+        $tool->createQuote($client->getId()->toBase58(), [['name' => 'Work', 'price' => '10', 'qty' => 1]], quote_id: 'MCP-Q-7');
     }
 
     /**

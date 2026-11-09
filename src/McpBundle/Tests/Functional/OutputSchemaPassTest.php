@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\DependencyInjection\McpOutputSchemaPass;
 use SolidInvoice\McpBundle\Mcp\Output\CompanyInfoOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxOutput;
 use SolidInvoice\McpBundle\Mcp\Output\OutputSchemaGenerator;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\LineOutput;
 use SolidInvoice\McpBundle\Tests\Output\Fixtures\ReturnTypeTools;
@@ -55,9 +56,17 @@ final class OutputSchemaPassTest extends KernelTestCase
         }
     }
 
+    public function testListToolGetsTheListEnvelopeSchema(): void
+    {
+        self::assertSame(
+            new OutputSchemaGenerator()->generateList(TaxOutput::class),
+            $this->registry()->getTool('list_tax_rates')->tool->outputSchema,
+        );
+    }
+
     public function testUnmarkedToolHasNoOutputSchema(): void
     {
-        self::assertNull($this->registry()->getTool('list_tax_rates')->tool->outputSchema);
+        self::assertNull($this->registry()->getTool('get_dashboard_stats')->tool->outputSchema);
     }
 
     #[DataProvider('mismatchedReturnTypes')]

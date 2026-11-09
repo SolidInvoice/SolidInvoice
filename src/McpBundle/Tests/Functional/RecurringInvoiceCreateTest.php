@@ -52,7 +52,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
                 ->toBase58(),
-            lines: [['description' => 'Monthly retainer', 'price' => 250000, 'qty' => 1]],
+            lines: [['description' => 'Monthly retainer', 'price' => '2500', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: [
                 'type' => 'monthly',
@@ -87,7 +87,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
                 ->toBase58(),
-            lines: [['description' => 'Weekly cleanup', 'price' => 5000, 'qty' => 1]],
+            lines: [['description' => 'Weekly cleanup', 'price' => '50', 'qty' => 1]],
             date_start: '2026-04-30',
             schedule: ['type' => 'weekly', 'end_type' => 'never'],
         );
@@ -113,7 +113,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $tool->createRecurringInvoice(
             client_id: $client->getId()
                 ->toBase58(),
-            lines: [['description' => 'Bad', 'price' => 1, 'qty' => 1]],
+            lines: [['description' => 'Bad', 'price' => '0.01', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'hourly'],
         );
@@ -134,7 +134,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $tool->createRecurringInvoice(
             client_id: $client->getId()
                 ->toBase58(),
-            lines: [['description' => 'Lines', 'price' => 100, 'qty' => 1]],
+            lines: [['description' => 'Lines', 'price' => '1', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly', 'end_type' => 'on'],
         );
@@ -149,7 +149,9 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->listRecurringInvoices();
 
-        self::assertSame(['results' => [], 'count' => 0], $result);
+        self::assertSame([], $result->results);
+        self::assertSame(0, $result->total);
+        self::assertSame('{"results":[],"page":1,"items_per_page":25,"total":0}', json_encode($result));
     }
 
     public function testCreateRecurringReadOnlyRejected(): void
@@ -167,7 +169,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $tool->createRecurringInvoice(
             client_id: $client->getId()
                 ->toBase58(),
-            lines: [['description' => 'x', 'price' => 1, 'qty' => 1]],
+            lines: [['description' => 'x', 'price' => '0.01', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly'],
         );

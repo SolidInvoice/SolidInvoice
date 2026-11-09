@@ -14,10 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\TaxBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
+use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
+use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
 final readonly class TaxReadTools
@@ -25,28 +33,45 @@ final readonly class TaxReadTools
     public function __construct(
         private TaxRepository $repository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
     }
 
     /**
-     * List tax rates configured for the current company.
+     * Fetch a single tax rate by its ID.
      *
-     * @return array{results: list<object>, count: int}
+     * @param string $id Tax ULID
      */
-    #[McpTool(name: 'list_tax_rates', description: 'List tax rates configured for the current company.')]
+    #[McpTool(name: 'get_tax_rate', title: 'Get tax rate', description: 'Fetch a single tax rate by ID.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listTaxRates(): array
+    #[McpOutput(TaxOutput::class)]
+    public function getTaxRate(string $id): TaxOutput
     {
         $this->scopeGuard->require(McpScope::Read);
 
-        $taxes = $this->repository->createQueryBuilder('t')
-            ->orderBy('t.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $tax = $this->repository->find(UlidParser::parse($id));
 
-        $results = $this->normalizer->normalizeMany($taxes);
+        if (! $tax instanceof Tax) {
+            throw new ToolCallException(sprintf('Tax rate %s not found.', $id));
+        }
 
-        return ['results' => $results, 'count' => count($results)];
+        return $this->normalizer->tax($tax);
+    }
+
+    /**
+     * List tax rates configured for the current company, by name.
+     *
+     * @param int $page           1-indexed page number
+     * @param int $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_tax_rates', title: 'List tax rates', description: 'List tax rates configured for the current company, with pagination.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(TaxOutput::class, list: true)]
+    public function listTaxRates(int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        return $this->paginator->paginate($this->repository->createQueryBuilder('t')->orderBy('t.name', 'ASC'), $page, $items_per_page);
     }
 }

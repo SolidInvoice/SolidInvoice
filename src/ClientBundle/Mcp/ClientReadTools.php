@@ -16,14 +16,22 @@ namespace SolidInvoice\ClientBundle\Mcp;
 use BackedEnum;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ContactOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxIdentifierOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
@@ -34,11 +42,100 @@ final readonly class ClientReadTools
 {
     public function __construct(
         private ClientRepository $clientRepository,
+        private ContactRepository $contactRepository,
         private InvoiceRepository $invoiceRepository,
         private PaymentRepository $paymentRepository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
+    }
+
+    /**
+     * Fetch a single client by its ID.
+     *
+     * @param string $id Client ULID
+     */
+    #[McpTool(name: 'get_client', title: 'Get client', description: 'Fetch a single client by ID.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(ClientOutput::class)]
+    public function getClient(string $id): ClientOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $client = $this->clientRepository->find(UlidParser::parse($id));
+
+        if (! $client instanceof Client) {
+            throw new ToolCallException(sprintf('Client %s not found.', $id));
+        }
+
+        return $this->normalizer->client($client);
+    }
+
+    /**
+     * List clients, newest first.
+     *
+     * @param int $page           1-indexed page number
+     * @param int $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_clients', title: 'List clients', description: 'List clients of the current company, with pagination.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(ClientOutput::class, list: true)]
+    public function listClients(int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        return $this->paginator->paginate($this->clientRepository->createQueryBuilder('c')->orderBy('c.created', 'DESC'), $page, $items_per_page);
+    }
+
+    /**
+     * Fetch a single client contact by its ID.
+     *
+     * @param string $id Contact ULID
+     */
+    #[McpTool(name: 'get_contact', title: 'Get contact', description: 'Fetch a single client contact by ID.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(ContactOutput::class)]
+    public function getContact(string $id): ContactOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $contact = $this->contactRepository->find(UlidParser::parse($id));
+
+        if (! $contact instanceof Contact) {
+            throw new ToolCallException(sprintf('Contact %s not found.', $id));
+        }
+
+        return $this->normalizer->contact($contact);
+    }
+
+    /**
+     * List client contacts, newest first, optionally for one client.
+     *
+     * @param string|null $client_id      Client ULID (optional)
+     * @param int         $page           1-indexed page number
+     * @param int         $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_contacts', title: 'List contacts', description: 'List client contacts with pagination, optionally for a specific client.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(ContactOutput::class, list: true)]
+    public function listContacts(?string $client_id = null, int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $qb = $this->contactRepository->createQueryBuilder('c')->orderBy('c.created', 'DESC');
+
+        if ($client_id !== null) {
+            $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
+
+            if (! $client instanceof Client) {
+                throw new ToolCallException(sprintf('Client %s not found.', $client_id));
+            }
+
+            $qb->andWhere('c.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
+        }
+
+        return $this->paginator->paginate($qb, $page, $items_per_page);
     }
 
     /**

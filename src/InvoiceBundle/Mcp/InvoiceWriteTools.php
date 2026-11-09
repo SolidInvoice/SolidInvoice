@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -82,12 +83,12 @@ final readonly class InvoiceWriteTools
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
      * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
-     *                                                        Price is in the minor unit (e.g. cents). Provide `taxes[]` for multi-tax lines
+     *                                                        `price` is a decimal string in the client's currency (e.g. "50.00"). Provide `taxes[]` for multi-tax lines
      *                                                        (India GST split, Quebec GST+QST compound); `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $invoice_date   ISO-8601 date (defaults to today)
      * @param string|null                     $due            ISO-8601 due date (optional)
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
-     * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
+     * @param string|null                  $discount_value Decimal string, required if discount_type is set: a percentage ("10") or an amount in the client's currency ("25.00")
      * @param string|null                     $terms          Optional terms text
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach to the invoice (optional)
@@ -100,7 +101,7 @@ final readonly class InvoiceWriteTools
      *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
      *                                                        `due` can only be combined with custom.
      */
-    #[McpTool(name: 'create_invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
+    #[McpTool(name: 'create_invoice', title: 'Create invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
     public function createInvoice(
         string $client_id,
@@ -108,7 +109,7 @@ final readonly class InvoiceWriteTools
         ?string $invoice_date = null,
         ?string $due = null,
         ?string $discount_type = null,
-        int | float | null $discount_value = null,
+        ?string $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],
@@ -142,11 +143,11 @@ final readonly class InvoiceWriteTools
             default => PaymentTerms::forClient($client, $this->systemConfig),
         });
 
-        foreach ($this->lineItemBuilder->buildInvoiceLines($lines) as $line) {
+        foreach ($this->lineItemBuilder->buildInvoiceLines($lines, $client->getCurrency()) as $line) {
             $invoice->addLine($line);
         }
 
-        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value));
+        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value, $client->getCurrency()));
 
         if ($terms !== null) {
             $invoice->setTerms($terms);

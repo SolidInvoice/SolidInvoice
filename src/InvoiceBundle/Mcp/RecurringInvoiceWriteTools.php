@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
@@ -62,7 +63,7 @@ final readonly class RecurringInvoiceWriteTools
      * use `apply_recurring_transition` to activate it.
      *
      * @param string                          $client_id   Client ULID
-     * @param list<array<string, mixed>>      $lines       Line items: [{name, description?, price, qty, tax_id?}, ...]
+     * @param list<array<string, mixed>>      $lines       Line items: [{name, description?, price, qty, tax_id?}, ...]; `price` is a decimal string in the client's currency (e.g. "50.00")
      * @param string                          $date_start  ISO-8601 date the first invoice should be generated
      * @param array<string, mixed>            $schedule    {"type": "daily"|"weekly"|"monthly"|"yearly",
      *                                                     "end_type": "never"|"on"|"after" (default "never"),
@@ -71,7 +72,7 @@ final readonly class RecurringInvoiceWriteTools
      *                                                     "days": list<int>}
      * @param string|null                     $date_end       Hard stop date for generated invoices (optional)
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
-     * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
+     * @param string|null                  $discount_value Decimal string, required if discount_type is set: a percentage ("10") or an amount in the client's currency ("25.00")
      * @param string|null                     $terms          Optional terms text
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach (optional)
@@ -80,7 +81,7 @@ final readonly class RecurringInvoiceWriteTools
      *                                                        net_60, net_90, end_of_month, end_of_next_month or custom (no due date).
      *                                                        Defaults to the client's terms, else the company's.
      */
-    #[McpTool(name: 'create_recurring_invoice', description: 'Create a new recurring invoice for a client with a scheduled cadence (daily/weekly/monthly/yearly).')]
+    #[McpTool(name: 'create_recurring_invoice', title: 'Create recurring invoice', description: 'Create a new recurring invoice for a client with a scheduled cadence (daily/weekly/monthly/yearly).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
     public function createRecurringInvoice(
         string $client_id,
@@ -89,7 +90,7 @@ final readonly class RecurringInvoiceWriteTools
         array $schedule,
         ?string $date_end = null,
         ?string $discount_type = null,
-        int | float | null $discount_value = null,
+        ?string $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],
@@ -121,11 +122,11 @@ final readonly class RecurringInvoiceWriteTools
             }
         }
 
-        foreach ($this->lineItemBuilder->buildRecurringInvoiceLines($lines) as $line) {
+        foreach ($this->lineItemBuilder->buildRecurringInvoiceLines($lines, $client->getCurrency()) as $line) {
             $invoice->addLine($line);
         }
 
-        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value));
+        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value, $client->getCurrency()));
 
         if ($terms !== null) {
             $invoice->setTerms($terms);

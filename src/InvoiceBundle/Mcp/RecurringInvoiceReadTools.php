@@ -15,13 +15,19 @@ namespace SolidInvoice\InvoiceBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -32,40 +38,55 @@ final readonly class RecurringInvoiceReadTools
         private RecurringInvoiceRepository $recurringInvoiceRepository,
         private ClientRepository $clientRepository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
     }
 
     /**
-     * List recurring invoices filtered by status, optionally scoped to a client.
+     * Fetch a single recurring invoice by its ID.
      *
-     * @param string|null $status    One of: new, active, complete, draft, paused, cancelled, archived (optional)
-     * @param string|null $client_id Optional client ULID
-     * @param int         $limit     Max rows (1..100)
-     *
-     * @return array{results: list<object>, count: int}
+     * @param string $id Recurring invoice ULID
      */
-    #[McpTool(name: 'list_recurring_invoices', description: 'List recurring invoices, optionally filtered by status and/or client.')]
+    #[McpTool(name: 'get_recurring_invoice', title: 'Get recurring invoice', description: 'Fetch a single recurring invoice by ID, with its schedule, lines and totals.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listRecurringInvoices(?string $status = null, ?string $client_id = null, int $limit = 25): array
+    #[McpOutput(RecurringInvoiceOutput::class)]
+    public function getRecurringInvoice(string $id): RecurringInvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Read);
-        $limit = max(1, min($limit, 100));
 
-        $qb = $this->recurringInvoiceRepository->createQueryBuilder('r')
-            ->orderBy('r.created', 'DESC')
-            ->setMaxResults($limit);
+        $invoice = $this->recurringInvoiceRepository->find(UlidParser::parse($id));
+
+        if (! $invoice instanceof RecurringInvoice) {
+            throw new ToolCallException(sprintf('Recurring invoice %s not found.', $id));
+        }
+
+        return $this->normalizer->recurringInvoice($invoice);
+    }
+
+    /**
+     * List recurring invoices, newest first, optionally filtered by status and/or client.
+     *
+     * @param string|null $status         One of: new, active, complete, draft, paused, cancelled, archived (optional)
+     * @param string|null $client_id      Client ULID (optional)
+     * @param int         $page           1-indexed page number
+     * @param int         $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_recurring_invoices', title: 'List recurring invoices', description: 'List recurring invoices with pagination, optionally filtered by status and/or client.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(RecurringInvoiceOutput::class, list: true)]
+    public function listRecurringInvoices(?string $status = null, ?string $client_id = null, int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $qb = $this->recurringInvoiceRepository->createQueryBuilder('r')->orderBy('r.created', 'DESC');
 
         if ($status !== null) {
-            $statusEnum = RecurringInvoiceStatus::tryFrom($status);
-
-            if ($statusEnum === null) {
-                throw new ToolCallException(sprintf(
-                    'Invalid status "%s". Valid values: %s.',
-                    $status,
-                    implode(', ', array_map(static fn (RecurringInvoiceStatus $s): string => $s->value, RecurringInvoiceStatus::cases())),
-                ));
-            }
+            $statusEnum = RecurringInvoiceStatus::tryFrom($status) ?? throw new ToolCallException(sprintf(
+                'Invalid status "%s". Valid values: %s.',
+                $status,
+                implode(', ', array_column(RecurringInvoiceStatus::cases(), 'value')),
+            ));
 
             $qb->andWhere('r.status = :status')->setParameter('status', $statusEnum);
         }
@@ -80,8 +101,6 @@ final readonly class RecurringInvoiceReadTools
             $qb->andWhere('r.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
-        $results = $this->normalizer->normalizeMany($qb->getQuery()->getResult());
-
-        return ['results' => $results, 'count' => count($results)];
+        return $this->paginator->paginate($qb, $page, $items_per_page);
     }
 }
