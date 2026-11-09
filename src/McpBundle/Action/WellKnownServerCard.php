@@ -37,7 +37,7 @@ final readonly class WellKnownServerCard
             ],
             'transport' => [
                 'type' => 'http',
-                'endpoint' => $this->urlGenerator->generate('_mcp_endpoint', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'endpoint' => $this->urlGenerator->generate('_mcp_endpoint_solidinvoice', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
             'authorization' => [
                 'type' => 'oauth2',

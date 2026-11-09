@@ -28,28 +28,39 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 // already loaded .env by the time this config runs).
 $env = static fn (string $name, string | int $default): string | int => $_ENV[$name] ?? $_SERVER[$name] ?? $default;
 
+$store = (string) $env('SOLIDINVOICE_MCP_SESSION_STORE', 'file');
+
 return App::config([
     'mcp' => [
-        'app' => SolidInvoiceCoreBundle::APP_NAME,
-        'version' => SolidInvoiceCoreBundle::VERSION,
-        'description' => 'MCP server for ' . SolidInvoiceCoreBundle::APP_NAME,
-        'client_transports' => [
-            'stdio' => false,
-            'http' => true,
-        ],
-        'http' => [
-            'path' => '/_mcp',
-            // The SDK's DNS-rebinding guard only allows localhost, which 403s every
-            // public request. Hosts can't be listed here (custom domains are
-            // per-company, this is compile-time), and it isn't needed: unknown
-            // hosts already 404 in HostRoutingListener, and auth is a bearer
-            // token, not a cookie a rebound page could ride on.
-            'allowed_hosts' => false,
-            'session' => [
-                'store' => (string) $env('SOLIDINVOICE_MCP_SESSION_STORE', 'file'),
-                'cache_pool' => (string) $env('SOLIDINVOICE_MCP_SESSION_CACHE_POOL', 'cache.mcp.sessions'),
-                'prefix' => (string) $env('SOLIDINVOICE_MCP_SESSION_PREFIX', 'mcp-'),
-                'ttl' => (int) $env('SOLIDINVOICE_MCP_SESSION_TTL', 3600),
+        'servers' => [
+            'solidinvoice' => [
+                'name' => SolidInvoiceCoreBundle::APP_NAME,
+                'version' => SolidInvoiceCoreBundle::VERSION,
+                'description' => 'Create and send invoices and quotes, manage clients, and track payments in SolidInvoice.',
+                'transports' => [
+                    'stdio' => false,
+                    'http' => true,
+                ],
+                'http' => [
+                    'path' => '/_mcp',
+                    // The SDK's DNS-rebinding guard only allows localhost, which 403s every
+                    // public request. Hosts can't be listed here (custom domains are
+                    // per-company, this is compile-time), and it isn't needed: unknown
+                    // hosts already 404 in HostRoutingListener, and auth is a bearer
+                    // token, not a cookie a rebound page could ride on.
+                    'allowed_hosts' => false,
+                ],
+                'session' => [
+                    'store' => $store,
+                    'cache_pool' => (string) $env('SOLIDINVOICE_MCP_SESSION_CACHE_POOL', 'cache.mcp.sessions'),
+                    'prefix' => (string) $env('SOLIDINVOICE_MCP_SESSION_PREFIX', 'mcp-'),
+                    'ttl' => (int) $env('SOLIDINVOICE_MCP_SESSION_TTL', 3600),
+                    'lock' => [
+                        // Without a LockFactory the lock is a flock() next to the file store's sessions.
+                        'enabled' => $store === 'file',
+                    ],
+                ],
+                'registry' => '*',
             ],
         ],
     ],
