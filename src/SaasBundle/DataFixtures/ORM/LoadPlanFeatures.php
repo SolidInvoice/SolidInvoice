@@ -49,6 +49,7 @@ final class LoadPlanFeatures extends Fixture implements DependentFixtureInterfac
             Feature::CustomDomain->value => false,
             Feature::CustomFields->value => false,
             Feature::CustomTemplates->value => false,
+            Feature::Products->value => true,
         ],
         LoadPlans::REF_SOLO => [
             Feature::TotalClients->value => 25,
@@ -65,6 +66,7 @@ final class LoadPlanFeatures extends Fixture implements DependentFixtureInterfac
             Feature::CustomDomain->value => false,
             Feature::CustomFields->value => false,
             Feature::CustomTemplates->value => false,
+            Feature::Products->value => true,
         ],
         LoadPlans::REF_BUSINESS => [
             Feature::TotalClients->value => 100,
@@ -81,6 +83,7 @@ final class LoadPlanFeatures extends Fixture implements DependentFixtureInterfac
             Feature::CustomDomain->value => false,
             Feature::CustomFields->value => true,
             Feature::CustomTemplates->value => true,
+            Feature::Products->value => true,
         ],
         LoadPlans::REF_AGENCY => [
             Feature::TotalClients->value => -1,
@@ -97,6 +100,7 @@ final class LoadPlanFeatures extends Fixture implements DependentFixtureInterfac
             Feature::CustomDomain->value => true,
             Feature::CustomFields->value => true,
             Feature::CustomTemplates->value => true,
+            Feature::Products->value => true,
         ],
     ];
 

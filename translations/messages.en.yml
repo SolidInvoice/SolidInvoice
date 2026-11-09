@@ -614,6 +614,13 @@ feature:
             3: 'Auto-marks invoices paid on settlement'
         description: 'Add a Pay Now button to every invoice using your own Stripe or PayPal keys — you keep the merchant relationship.'
         headline: 'Get paid online'
+    products:
+        bullets:
+            1: 'Save names, descriptions and prices once'
+            2: 'Add them to invoices and quotes in one click'
+            3: 'Edit a product without touching past documents'
+        description: 'Save the things you sell and add them to invoices and quotes in one click, instead of retyping the same lines every time.'
+        headline: 'Bill faster with saved products'
     quotes:
         bullets:
             1: 'Custom-branded PDF quotes'
