@@ -187,6 +187,7 @@
                                         <span class="mobile-label">{{ 'quote.item.heading.name'|trans }}</span>
                                         {{ form_widget(item.name, {attr: {placeholder: 'quote.item.name.placeholder'|trans, 'aria-label': 'quote.item.name.label'|trans}}) }}
                                         {{ form_errors(item.name) }}
+                                        {{ form_widget(item.product) }}
                                         <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
                                             <summary class="line-description-toggle">{{ 'quote.item.description.add'|trans }}</summary>
                                             {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2, 'aria-label': 'quote.item.description.label'|trans}}) }}

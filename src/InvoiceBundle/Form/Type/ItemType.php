@@ -18,9 +18,11 @@ use Money\Currency;
 use Override;
 use SolidInvoice\CoreBundle\Form\Transformer\QuantityTransformer;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\ProductBundle\Form\Transformer\ProductIdTransformer;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\LineTaxType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -97,6 +99,11 @@ class ItemType extends AbstractType
         $builder->get('qty')
             ->resetViewTransformers()
             ->addViewTransformer(new QuantityTransformer());
+
+        // Where the line's values were copied from. Hidden, because the product picker (not
+        // this field) is what the user interacts with.
+        $builder->add('product', HiddenType::class, ['required' => false]);
+        $builder->get('product')->addModelTransformer(new ProductIdTransformer($this->registry));
 
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(
