@@ -217,4 +217,24 @@ final class ProductTest extends ApiTestCase
         self::assertResponseStatusCodeSame(422);
         self::assertContains($path, array_column($response->toArray(false)['violations'], 'propertyPath'));
     }
+
+    #[DataProvider('fractionProvider')]
+    public function testRejectsFractionalNumbers(string $field): void
+    {
+        self::$client->request('POST', '/api/products', [
+            'body' => json_encode(['name' => 'Widget', 'price' => 1, 'quantity' => 1, $field => '1/3']),
+            'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
+        ]);
+
+        self::assertResponseStatusCodeSame(400);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function fractionProvider(): iterable
+    {
+        yield 'price' => ['price'];
+        yield 'quantity' => ['quantity'];
+    }
 }

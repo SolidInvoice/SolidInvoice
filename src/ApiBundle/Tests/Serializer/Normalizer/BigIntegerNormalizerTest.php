@@ -77,6 +77,7 @@ final class BigIntegerNormalizerTest extends TestCase
         yield 'long digit string' => [str_repeat('9', 65)];
         yield 'huge exponent' => ['1e1000000000'];
         yield 'not a number' => ['abc'];
+        yield 'fraction' => ['1/3'];
     }
 
     #[DataProvider('oversizedInputProvider')]
