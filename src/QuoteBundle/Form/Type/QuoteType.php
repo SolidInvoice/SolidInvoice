@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
@@ -170,6 +171,15 @@ class QuoteType extends AbstractType
                 ],
             ]
         );
+
+        if ($this->featureGate->isEnabled(Feature::Products->value)) {
+            // Not part of the document: choosing a product adds a line (see AddsProductLines), then clears itself.
+            $builder->add('addProduct', ProductAutocompleteType::class, [
+                'mapped' => false,
+                'label' => false,
+                'attr' => ['data-action' => 'change->live#action', 'data-live-action-param' => 'addProductLine'],
+            ]);
+        }
 
         $builder->add(
             'invoiceTaxes',

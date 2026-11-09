@@ -177,12 +177,27 @@
                     {% endif %}
 
                     {# Add Item Button #}
-                    <div class="add-item-action">
+                    <div class="add-item-action add-item-action-with-picker">
                         {{ form_widget(form.lines.vars.button_add, {
                             label: 'invoice.item.add'|trans,
                             attr: {class: 'add-item-btn btn-sm'}
                         }) }}
+                        {# Separate from "+ Add Item" so it stays obvious that any custom item can be typed in. #}
+                        {% if form.addProduct is defined %}
+                            <div class="add-product-picker">
+                                {{ form_widget(form.addProduct) }}
+                                {{ form_errors(form.addProduct) }}
+                                <a href="{{ path('_products') }}" class="add-product-manage small text-muted">{{ 'product.picker.manage'|trans }}</a>
+                            </div>
+                        {% else %}
+                            <div class="add-product-picker">
+                                <button type="button" class="btn btn-outline-secondary btn-sm w-100" disabled>{{ 'product.picker.upgrade'|trans }}</button>
+                            </div>
+                        {% endif %}
                     </div>
+                    {% if form.addProduct is not defined %}
+                        {{ upgrade_prompt('products') }}
+                    {% endif %}
                 </div>
             </div>
 
