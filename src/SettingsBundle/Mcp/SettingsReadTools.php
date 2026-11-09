@@ -20,6 +20,8 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\CompanyInfoOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Component\Uid\Ulid;
 
@@ -34,12 +36,11 @@ final readonly class SettingsReadTools
 
     /**
      * Basic information about the company this token is bound to.
-     *
-     * @return array{id: string, name: string, currency: string|null}
      */
     #[McpTool(name: 'get_company_info', description: 'Return id, name, and default currency for the active company.')]
     #[McpScopeRequired(McpScope::Read)]
-    public function getCompanyInfo(): array
+    #[McpOutput(CompanyInfoOutput::class)]
+    public function getCompanyInfo(): CompanyInfoOutput
     {
         $this->scopeGuard->require(McpScope::Read);
 
@@ -55,10 +56,10 @@ final readonly class SettingsReadTools
             throw new ToolCallException('Active company not found.');
         }
 
-        return [
-            'id' => $company->getId()->toBase58(),
-            'name' => $company->getName(),
-            'currency' => $company->currency,
-        ];
+        return new CompanyInfoOutput(
+            id: $company->getId()->toBase58(),
+            name: $company->getName(),
+            currency: $company->currency,
+        );
     }
 }

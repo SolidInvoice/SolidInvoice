@@ -50,8 +50,8 @@ final class ReadToolFlowTest extends KernelTestCase
 
         $result = $tool->getCompanyInfo();
 
-        self::assertSame($this->company->getId()->toBase58(), $result['id']);
-        self::assertSame('SolidInvoice', $result['name']);
+        self::assertSame($this->company->getId()->toBase58(), $result->id);
+        self::assertSame('SolidInvoice', $result->name);
     }
 
     public function testGetResourceReturnsSingleInvoice(): void

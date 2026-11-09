@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceMcpBundle::NAMESPACE . '\\', dirname(__DIR__, 2))
-        ->exclude(dirname(__DIR__, 2) . '/{DependencyInjection,Entity,Resources,Tests,SolidInvoiceMcpBundle.php}');
+        ->exclude(dirname(__DIR__, 2) . '/{DependencyInjection,Entity,Mcp/Output,Resources,Tests,SolidInvoiceMcpBundle.php}');
 
     $services
         ->load(SolidInvoiceMcpBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 2) . '/Action')
