@@ -91,12 +91,8 @@ final class AddProductLineTest extends LiveComponentTest
         self::assertSame('', $values['addProduct']);
     }
 
-    /**
-     * Run outside the live component: re-rendering a line with a tax already selected throws in
-     * the test environment ("TranslatableMessage could not be converted to string"), before and
-     * regardless of this feature, so the line is checked as the action leaves it.
-     */
-    public function testAddsTheProductsTaxInTheShapeOfLineTaxType(): void
+    #[DataProvider('documents')]
+    public function testAddsTheProductsTaxInTheShapeOfLineTaxType(string $document): void
     {
         $tax = new Tax()->setName('VAT')->setRate(20)->setType(Tax::TYPE_EXCLUSIVE);
         $em = self::getContainer()->get('doctrine')->getManager();
@@ -105,15 +101,15 @@ final class AddProductLineTest extends LiveComponentTest
 
         $product = ProductFactory::createOne(['tax' => $tax, 'company' => $this->company]);
 
-        $gate = $this->createStub(FeatureGate::class);
-        $gate->method('isEnabled')->willReturn(true);
+        $component = $this->component($document);
+        $component->set($document . '.addProduct', (string) $product->getId());
+        $component->call('addProductLine');
 
-        $subject = $this->subject($gate);
-        $subject->formValues = ['lines' => [], 'addProduct' => (string) $product->getId()];
+        $added = array_slice($component->component()->formValues['lines'], -1)[0];
 
-        $subject->addProductLine();
-
-        self::assertSame([['tax' => (string) $tax->getId(), 'sequence' => 0]], $subject->formValues['lines'][0]['taxes']);
+        self::assertSame((string) $tax->getId(), $added['taxes'][0]['tax']);
+        // The re-rendered line shows the tax choice label.
+        self::assertStringContainsString('VAT', $component->render()->toString());
     }
 
     #[DataProvider('documents')]
