@@ -34,6 +34,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\QuantityType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\ProductBundle\Security\ProductsAccessVoter;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -68,6 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     validationContext: [
         'groups' => ['Default', 'api'],
     ],
+    security: "is_granted('" . ProductsAccessVoter::ACCESS . "')",
 )]
 #[ORM\Table(name: Product::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -118,7 +120,7 @@ class Product implements Stringable
         denormalizationContext: [BigIntegerNormalizer::MONETARY => false],
     )]
     #[ApiProperty(
-        description: 'The unit price as a plain decimal number in major units (for example 4500.5), with no currency: it takes the currency of the document the product is added to. At most 13 digits before and 6 after the decimal point.',
+        description: 'The unit price as a plain decimal number in major units (for example 4500.5), with no currency: it takes the currency of the document the product is added to. At most ' . (self::PRICE_PRECISION - self::PRICE_SCALE) . ' digits before and ' . self::PRICE_SCALE . ' after the decimal point.',
         openapiContext: ['type' => 'number'],
         jsonSchemaContext: ['type' => 'number'],
     )]

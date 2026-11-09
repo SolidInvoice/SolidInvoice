@@ -66,9 +66,37 @@ final class ProductsApiGateTest extends ApiTestCase
         self::assertResponseStatusCodeSame(403);
     }
 
+    public function testGraphQlQueryIsDeniedWhenFeatureIsOff(): void
+    {
+        $this->setProductsEnabled(false);
+        ProductFactory::createOne(['name' => 'Secret widget']);
+
+        $response = $this->graphQl('{ products { edges { node { id name } } } }');
+
+        self::assertStringNotContainsString('Secret widget', $response);
+        self::assertStringContainsString('Access Denied', $response);
+    }
+
+    public function testGraphQlMutationIsDeniedWhenFeatureIsOff(): void
+    {
+        $this->setProductsEnabled(false);
+
+        $response = $this->graphQl('mutation { createProduct(input: {name: "Widget", price: 1, quantity: 1}) { product { id } } }');
+
+        self::assertStringContainsString('Access Denied', $response);
+        self::assertCount(0, ProductFactory::all());
+    }
+
+    public function testGraphQlQueryWorksWhenFeatureIsOn(): void
+    {
+        $this->setProductsEnabled(true);
+        ProductFactory::createOne(['name' => 'Visible widget']);
+
+        self::assertStringContainsString('Visible widget', $this->graphQl('{ products { edges { node { id name } } } }'));
+    }
+
     public function testCollectionWorksWhenFeatureIsOn(): void
     {
-        $this->skipInSaasMode();
         $this->setProductsEnabled(true);
 
         $this->requestGetCollection('/api/products');
@@ -76,15 +104,25 @@ final class ProductsApiGateTest extends ApiTestCase
 
     public function testOtherResourcesAreNotGated(): void
     {
-        $this->skipInSaasMode();
         $this->setProductsEnabled(false);
 
         $this->requestGetCollection('/api/taxes');
     }
 
+    private function graphQl(string $query): string
+    {
+        $response = self::$client->request('POST', '/api/graphql', [
+            'json' => ['query' => $query],
+            'headers' => ['content-type' => 'application/json', 'accept' => 'application/json'],
+        ]);
+
+        return $response->getContent(false);
+    }
+
     /**
      * With the SaaS container the API itself needs a paid subscription (SubscriptionVoter), which
-     * would deny these requests before they say anything about the products gate.
+     * would deny these requests before they say anything about the products gate; the plan-driven
+     * ProductsApiPlanGateTest covers that mode with the real FeatureGate.
      */
     private function skipInSaasMode(): void
     {
@@ -99,6 +137,8 @@ final class ProductsApiGateTest extends ApiTestCase
      */
     private function setProductsEnabled(bool $enabled): void
     {
+        $this->skipInSaasMode();
+
         self::ensureKernelShutdown();
         self::$client = self::createClient();
 
